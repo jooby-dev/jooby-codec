@@ -8,6 +8,8 @@
  *
  * console.log(decodeExtendedBytes(new Uint8Array([0xd5, 0x13])));
  * // print { value: 2517, position: 2 }, extended bit present, bytes [11010101, 00010011]
+ *
+ * @deprecated Use the  CommandBinaryBuffer.getExtendedValue
  */
 export default ( data: Uint8Array | Array<number>, startPosition = 0 ) => {
     let value = 0;

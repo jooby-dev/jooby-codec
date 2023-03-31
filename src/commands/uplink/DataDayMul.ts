@@ -1,15 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Command from '../../Command.js';
-import GetCurrentMul, {IGetCurrentMulParameters, IChannel} from './GetCurrentMul.js';
-
+import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
+import GetCurrentMul, {IGetCurrentMulParameters} from './GetCurrentMul.js';
 
 const COMMAND_ID = 0x16;
 const COMMAND_TITLE = 'DATA_DAY_MUL';
-const INITIAL_YEAR = 2000;
-const INITIAL_YEAR_TIMESTAMP = 946684800000;
-const MILLISECONDS_IN_SECONDS = 1000;
+const COMMAND_BODY_MAX_SIZE = 32;
 const MONTH_BIT_SIZE = 4;
 const DATE_BIT_SIZE = 5;
 const YEAR_START_INDEX = 1;
+const INITIAL_YEAR = 2000;
 
 
 /**
@@ -71,7 +72,7 @@ class DataDayMul extends GetCurrentMul {
         if ( realDate ) {
             date = realDate;
         } else {
-            date = this.getRealDate(time);
+            date = getDateFromSeconds(time);
         }
 
         const year = date.getUTCFullYear() - INITIAL_YEAR;
@@ -89,49 +90,30 @@ class DataDayMul extends GetCurrentMul {
     static fromBytes ( data: Uint8Array ): DataDayMul {
         const parameters: IDataDayMulParameters = {channels: [], time: 0};
 
-        const {date, position: channelsPosition} = this.getDate(data);
-        const {channels, position: valuesPosition} = GetCurrentMul.getChannels(data, channelsPosition);
-        const channelMap = GetCurrentMul.getChannelMap(channels, data, valuesPosition);
+        const buffer = new CommandBinaryBuffer(data);
 
-        channels.forEach((channelIndex: number) => {
-            const channel = channelMap.get(channelIndex);
+        const date = buffer.getDate();
+        const channelArray = buffer.getChannels(false);
 
-            if ( channel ) {
-                parameters.channels.push(channel);
-            }
-        });
+        parameters.channels = channelArray.map(channelIndex => ({
+            value: buffer.getExtendedValue(),
+            index: channelIndex
+        }));
 
-        parameters.time = this.getDeviceSeconds(date);
+        parameters.time = getSecondsFromDate(date);
 
         return new DataDayMul(parameters);
     }
 
-    /**
-     * Convert seconds from 2000 year to normal Date object.
-     *
-     * @param time seconds from 2000 year
-     * @returns normal date
-     */
-    protected static getRealDate ( time: number ): Date {
-        return new Date(INITIAL_YEAR_TIMESTAMP + (time * MILLISECONDS_IN_SECONDS));
-    }
-
-    protected static getDeviceSeconds ( date: Date ): number {
-        return (date.getTime() - INITIAL_YEAR_TIMESTAMP) / MILLISECONDS_IN_SECONDS;
-    }
-
     toBytes (): Uint8Array {
+        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
         const {channels, time} = this.parameters;
-        // eslint-disable-next-line @typescript-eslint/consistent-generic-constructors
-        const channelMap: Map<number, number> = new Map(
-            channels.map((channel: IChannel) => [channel.index, channel.value])
-        );
 
-        let data = DataDayMul.setDate(time);
-        data = data.concat(GetCurrentMul.setChannels(channelMap));
-        GetCurrentMul.setValues(channelMap, data);
+        buffer.setDate(time);
+        buffer.setChannels(channels.map(({index}) => index));
+        channels.forEach(({value}) => buffer.setExtendedValue(value));
 
-        return Command.toBytes(COMMAND_ID, new Uint8Array(data));
+        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 
