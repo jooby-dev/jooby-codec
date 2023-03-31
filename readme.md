@@ -5,7 +5,7 @@ Jooby message encoders/decoders
 [![Gitter](https://img.shields.io/badge/gitter-join%20chat-blue.svg?style=flat-square)](https://gitter.im/DarkPark/stbsdk)
 [![Docs](https://img.shields.io/badge/Docs-v1-orange.svg?style=flat-square)](https://stbapi.github.io/v1/)
 
-This library contains messages encoders and decoders for [Jooby](https://jooby.eu) LoRaWAN devices.
+This library contains message encoders and decoders for [Jooby](https://jooby.eu) LoRaWAN devices.
 
 
 ## Usage
