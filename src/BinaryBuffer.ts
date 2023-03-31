@@ -159,13 +159,13 @@ class BinaryBuffer {
     }
 
     /**
-     * Crop bytes from start to offset.
+     * Get bytes from start to offset.
      *
      * @param offset - current offset by default
      *
      * @returns sliced byte array
      */
-    crop ( offset = this.offset ): Uint8Array {
+    getBytesToOffset ( offset = this.offset ): Uint8Array {
         const bytes = this.toUint8Array();
 
         return bytes.slice(0, offset);
