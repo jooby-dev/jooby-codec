@@ -8,6 +8,8 @@
  *
  * console.log(encodeExtendedBytes(new Uint8Array([0xd5, 0x13])));
  * // print [ 213, 19 ], extended bit present, bytes [11010101, 00010011]
+ *
+ * @deprecated Use the  CommandBinaryBuffer.setExtendedValue
  */
 export default ( value: number ): Array<number> => {
     const data = [];

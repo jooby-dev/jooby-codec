@@ -25,9 +25,11 @@ export interface IGetCurrentMulParameters {
 }
 
 
-class GetCurrentMul extends Command {
+export class GetCurrentMul extends Command {
     constructor ( public parameters: IGetCurrentMulParameters ) {
         super();
+
+        this.parameters.channels = this.parameters.channels.sort((a, b) => a.index - b.index);
     }
 
     static id = COMMAND_ID;

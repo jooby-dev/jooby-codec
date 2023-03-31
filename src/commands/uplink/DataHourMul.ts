@@ -5,6 +5,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Command from '../../Command.js';
 import DataDayMul from './DataDayMul.js';
+import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 import decodeExtendedBytes from '../../utils/decodeExtendedBytes.js';
 import encodeExtendedBytes from '../../utils/encodeExtendedBytes.js';
 
@@ -92,7 +93,7 @@ class DataHourMul extends DataDayMul {
 
             const diff: Array<any> = [];
 
-            const channel = {value, index: channelIndex, time: DataDayMul.getDeviceSeconds(counterDate), diff};
+            const channel = {value, index: channelIndex, time: getSecondsFromDate(counterDate), diff};
 
             channelsArray.push(channel);
 
@@ -101,7 +102,7 @@ class DataHourMul extends DataDayMul {
 
                 counterDate.setUTCHours(counterDate.getUTCHours() + hourIndex);
 
-                diff.push({value, time: DataDayMul.getDeviceSeconds(counterDate)});
+                diff.push({value, time: getSecondsFromDate(counterDate)});
             }
         }
 
@@ -139,7 +140,7 @@ class DataHourMul extends DataDayMul {
         const {channels} = this.parameters;
 
         const {time} = channels[0];
-        const realDate = DataHourMul.getRealDate(time);
+        const realDate = getDateFromSeconds(time);
         const hour = realDate.getUTCHours();
         let hourAmount = channels[0].diff.length;
 
