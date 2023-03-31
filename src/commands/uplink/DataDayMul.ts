@@ -113,7 +113,7 @@ class DataDayMul extends GetCurrentMul {
         buffer.setChannels(channels.map(({index}) => index));
         channels.forEach(({value}) => buffer.setExtendedValue(value));
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(COMMAND_ID, buffer.crop());
     }
 }
 

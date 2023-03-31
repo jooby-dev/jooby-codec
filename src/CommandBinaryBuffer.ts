@@ -154,22 +154,6 @@ class CommandBinaryBuffer extends BinaryBuffer {
     setHours ( hour: number, hours: number ): void {
         this.setUint8(((hours & 0x07) << 5) | (hour & 0x1f));
     }
-
-    /**
-     * Get array of bytes.
-     *
-     * @param filter - filter zero values or not
-     * @returns - array of bytes
-     */
-    toUint8Array ( filter = true ): Uint8Array {
-        const uInt8Array = super.toUint8Array();
-
-        if ( filter ) {
-            return uInt8Array.filter(Boolean);
-        }
-
-        return uInt8Array;
-    }
 }
 
 
