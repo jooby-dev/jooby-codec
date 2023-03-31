@@ -1,0 +1,66 @@
+{
+    "name": "jooby-codec",
+    "version": "1.0.0",
+    "description": "Jooby message encoders/decoders",
+    "type": "module",
+    "main": "./dist/index.js",
+    "exports": {
+        ".": "./dist/index.js",
+        "./commands": "./dist/commands/index.js",
+        "./commands/downlink": "./dist/commands/downlink/index.js",
+        "./commands/downlink/*": "./dist/commands/downlink/*.js",
+        "./commands/uplink": "./dist/commands/uplink/index.js",
+        "./commands/uplink/*": "./dist/commands/uplink/*.js",
+        "./utils/*": "./dist/utils/*.js"
+    },
+    "types": "./dist/index.d.ts",
+    "typesVersions": {
+        "*": {
+            "*": [
+                "./dist/index.d.ts",
+                "./dist/utils/*.d.ts",
+                "./dist/*/index.d.ts"
+            ],
+            "./utils/*": ["./dist/utils/*.d.ts"]
+        }
+    },
+    "scripts": {
+        "start": "node ./dist/index.js",
+        "dev": "nodemon",
+        "build:js": "tsc --extendedDiagnostics",
+        "build:js:clean": "rm -rf ./dist/ && tsc --incremental false --extendedDiagnostics",
+        "build:js:watch": "tsc --watch",
+        "build:docs": "typedoc",
+        "build:docs:watch": "typedoc --watch --preserveWatchOutput",
+        "build": "npm run build:js & npm run build:docs",
+        "lint:tsc": "tsc --project ./tsconfig.eslint.json --noEmit",
+        "lint:eslint": "eslint ./src ./tests --ext .ts",
+        "lint": "npm run lint:tsc && npm run lint:eslint -- --max-warnings=0",
+        "lint-cached": "npm run lint:tsc && npm run lint:eslint -- --cache --max-warnings=0",
+        "lint:fix": "npm run lint:eslint -- --fix --max-warnings=0",
+        "preinstall": "git config core.hooksPath .githooks",
+        "test": "npm run lint && jest",
+        "test:watch": "jest --watch"
+    },
+    "devDependencies": {
+        "@types/jest": "^29.5.0",
+        "@typescript-eslint/eslint-plugin": "^5.56.0",
+        "@typescript-eslint/parser": "^5.56.0",
+        "eslint-config-airbnb-typescript": "^17.0.0",
+        "eslint-config-airbnb-base": "^15.0.0",
+        "eslint-import-resolver-typescript": "^3.5.3",
+        "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-tsdoc": "^0.2.17",
+        "eslint": "^8.36.0",
+        "jest": "^29.5.0",
+        "nodemon": "^2.0.22",
+        "ts-jest": "^29.0.5",
+        "ts-node": "^10.9.1",
+        "typedoc-plugin-missing-exports": "^1.0.0",
+        "typedoc-theme-hierarchy": "^3.1.0",
+        "typedoc-theme-yaf": "^0.0.4",
+        "typedoc": "^0.23.28",
+        "typescript": "^5.0.2"
+    },
+    "license": "MIT"
+}

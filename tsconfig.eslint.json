@@ -1,0 +1,15 @@
+// https://typescript-eslint.io/linting/typed-linting/monorepos
+
+{
+    "extends": "./tsconfig.json",
+
+    "include": [
+        "./src/**/*.ts",
+        "./tests/**/*.ts"
+    ],
+
+    "compilerOptions": {
+        "rootDir": ".",
+        "noEmit": true
+    }
+}

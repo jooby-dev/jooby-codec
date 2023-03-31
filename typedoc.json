@@ -1,0 +1,27 @@
+// https://typedoc.org/guides/options/
+{
+    "entryPoints": [
+        "./src/index.ts",
+        //"./src/devices/electro/index.ts",
+        //"./src/devices/electro/**/*.ts",
+        //"./src/devices/electro",
+        //"./src/devices/gas/",
+        //"./src/devices/gas/index.ts",
+        //"./src/devices/gas/commands/downlink/SetTime2000.ts",
+        //"./src/devices/gas/commands/downlink/index.ts",
+        //"./src/devices/gas/commands/uplink/index.ts",
+    ],
+    //"externalPattern": ["./src/devices/gas/**/*.ts"],
+    "out": "docs",
+    "includes": "./src",
+    "readme": "./readme.md",
+    "sort": "source-order",
+    //"plugin": [],
+    //"entryPointStrategy": "packages",
+    //"entryPointStrategy": "expand",
+    //"excludeExternals": true,
+    "disableSources": false,
+    //"plugin": ["typedoc-plugin-missing-exports", "typedoc-plugin-versions"],
+    "plugin": ["typedoc-plugin-missing-exports", "typedoc-theme-yaf"],
+	"theme": "yaf"
+}
