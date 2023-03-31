@@ -2,7 +2,7 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
-import {GetCurrentMul, IGetCurrentMulParameters} from './GetCurrentMul.js';
+import GetCurrentMul, {IGetCurrentMulParameters} from './GetCurrentMul.js';
 
 const COMMAND_ID = 0x16;
 const COMMAND_TITLE = 'DATA_DAY_MUL';

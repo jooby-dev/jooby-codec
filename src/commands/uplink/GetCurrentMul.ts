@@ -25,7 +25,7 @@ export interface IGetCurrentMulParameters {
 }
 
 
-export class GetCurrentMul extends Command {
+class GetCurrentMul extends Command {
     constructor ( public parameters: IGetCurrentMulParameters ) {
         super();
 
