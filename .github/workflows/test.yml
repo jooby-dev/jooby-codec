@@ -2,10 +2,13 @@ name: test
 
 on:
     # any branch
-    - push
-    - pull_request
+    push:
+        # don't run on release tag creation
+        tags-ignore:
+          - '**'
+    pull_request:
     # manually
-    - workflow_dispatch
+    workflow_dispatch:
 
 permissions:
     contents: read
