@@ -1,5 +1,3 @@
-# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
-
 name: docs
 
 on:
@@ -55,9 +53,6 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-          # - name: setup Github Pages
-          #   uses: actions/configure-pages@v3
-
           - name: deploy to GitHub Pages
             id: deployment
             uses: actions/deploy-pages@v2
