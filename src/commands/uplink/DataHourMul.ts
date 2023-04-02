@@ -4,7 +4,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Command from '../../Command.js';
-import DataDayMul from './DataDayMul.js';
+import GetCurrentMul from './GetCurrentMul.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 
@@ -18,7 +18,7 @@ const COMMAND_TITLE = 'DATA_HOUR_MUL';
 const COMMAND_BODY_MAX_SIZE = 104;
 
 
-class DataHourMul extends DataDayMul {
+class DataHourMul extends GetCurrentMul {
     constructor ( public parameters: any ) {
         super(parameters);
     }

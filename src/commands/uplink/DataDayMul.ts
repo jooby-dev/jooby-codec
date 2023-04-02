@@ -25,11 +25,11 @@ class DataDayMul extends GetCurrentMul {
         super(parameters);
     }
 
-    static id = COMMAND_ID;
+    static readonly id = COMMAND_ID;
 
     static readonly isUplink = true;
 
-    static title = COMMAND_TITLE;
+    static readonly title = COMMAND_TITLE;
 
     static fromBytes ( data: Uint8Array ): DataDayMul {
         const parameters: IDataDayMulParameters = {channels: [], time: 0};
