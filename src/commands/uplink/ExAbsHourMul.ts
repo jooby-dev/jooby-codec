@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+
 import Command from '../../Command.js';
 import ExAbsDayMul from './ExAbsDayMul.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
@@ -12,7 +13,7 @@ import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 const COMMAND_ID = 0x29;
 const COMMAND_TITLE = 'EX_ABS_HOUR_MUL';
 
-// date 2 bytes, hour 1 byte, channels - 1 byte, so max channels = 4
+// date 2 bytes, hour 1 byte, channels - 1 byte (max channels: 4)
 // max hours diff - 7 (3 bit value)
 // 4 + (4 channels * (1 byte IPK + 5 bytes of hour value)) + (4 * 2 bytes of diff * 7 max hours diff)
 const COMMAND_BODY_MAX_SIZE = 84;

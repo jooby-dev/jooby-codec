@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+
 import Command from '../../Command.js';
 import GetCurrentMul from './GetCurrentMul.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
@@ -11,7 +12,7 @@ import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 const COMMAND_ID = 0x2a;
 const COMMAND_TITLE = 'EX_ABS_DAY_MUL';
 
-// date 2 bytes, channels - 1 byte, so max channels = 4
+// date 2 bytes, channels - 1 byte (max channels: 4)
 // 3 + (4 channels * (1 byte IPK + 5 bytes of day values))
 const COMMAND_BODY_MAX_SIZE = 27;
 
