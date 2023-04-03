@@ -8,6 +8,7 @@ import Command from '../../Command.js';
 import GetCurrentMul from './GetCurrentMul.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import roundNumber from '../../utils/roundNumber.js';
+import {getSecondsFromDate} from '../../utils/time.js';
 
 
 const COMMAND_ID = 0x0b1f;
@@ -49,6 +50,7 @@ class ExAbsDayMul extends GetCurrentMul {
                 value,
                 pulseCoefficient,
                 index: channelIndex,
+                time: getSecondsFromDate(date),
                 meterValue: roundNumber(value / pulseCoefficient)
             });
         }
@@ -65,13 +67,9 @@ class ExAbsDayMul extends GetCurrentMul {
         buffer.setDate(time);
         buffer.setChannels(channels);
 
-        for ( const {value, diff, pulseCoefficient} of channels ) {
-            buffer.setExtendedValue(value);
+        for ( const {value, pulseCoefficient} of channels ) {
             buffer.setUint8(pulseCoefficient);
-
-            for ( const {value: diffValue} of diff ) {
-                buffer.setExtendedValue(diffValue);
-            }
+            buffer.setExtendedValue(value);
         }
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
