@@ -6,6 +6,9 @@ import GetCurrentMul, {IGetCurrentMulParameters} from './GetCurrentMul.js';
 
 const COMMAND_ID = 0x16;
 const COMMAND_TITLE = 'DATA_DAY_MUL';
+
+// 2 byte for date + 2 for channels, max channels - 7
+// 4 + (7 * 4)
 const COMMAND_BODY_MAX_SIZE = 32;
 
 
