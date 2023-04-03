@@ -3,6 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import Command from '../../Command.js';
 import GetCurrentMul from './GetCurrentMul.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
@@ -15,7 +16,7 @@ const COMMAND_TITLE = 'DATA_HOUR_MUL';
 // date 2 bytes, hour 1 byte, channels - 1 byte, so max channels = 4
 // max hours diff - 7 (3 bit value)
 // 4 + (4 channels * 3 bytes of hour values) + (4 * 2 bytes of diff * 7 max hours diff)
-const COMMAND_BODY_MAX_SIZE = 104;
+const COMMAND_BODY_MAX_SIZE = 72;
 
 
 class DataHourMul extends GetCurrentMul {

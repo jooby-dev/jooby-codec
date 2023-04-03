@@ -4,7 +4,8 @@ import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 
 const COMMAND_ID = 0x18;
 const COMMAND_TITLE = 'GET_CURRENT_MUL';
-// 2 bytes for 7 channels + (7 * 5)
+
+// 2 bytes for 7 channels + (7 channels * 5 byte for current value of channel)
 const COMMAND_BODY_MAX_SIZE = 37;
 
 /**
@@ -41,9 +42,9 @@ class GetCurrentMul extends Command {
 
         const buffer = new CommandBinaryBuffer(data);
 
-        const channelArray = buffer.getChannels(false);
+        const channels = buffer.getChannels(false);
 
-        parameters.channels = channelArray.map(channelIndex => ({
+        parameters.channels = channels.map(channelIndex => ({
             value: buffer.getExtendedValue(),
             index: channelIndex
         }));
