@@ -1,9 +1,9 @@
 Jooby message encoders/decoders
 ===============================
 
-[![npm version](https://img.shields.io/npm/v/stb-app.svg?style=flat-square)](https://www.npmjs.com/package/stb-app)
-[![Gitter](https://img.shields.io/badge/gitter-join%20chat-blue.svg?style=flat-square)](https://gitter.im/DarkPark/stbsdk)
-[![Docs](https://img.shields.io/badge/Docs-v1-orange.svg?style=flat-square)](https://stbapi.github.io/v1/)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/jooby-dev/jooby-codec/test.yml?label=test&style=flat-square)](https://github.com/jooby-dev/jooby-codec/actions)
+[![npm version](https://img.shields.io/npm/v/jooby-codec.svg?style=flat-square)](https://www.npmjs.com/package/jooby-codec)
+[![Docs](https://img.shields.io/badge/docs-orange.svg?style=flat-square)](https://jooby-dev.github.io/jooby-codec)
 
 This library contains message encoders and decoders for [Jooby](https://jooby.eu) LoRaWAN devices.
 
