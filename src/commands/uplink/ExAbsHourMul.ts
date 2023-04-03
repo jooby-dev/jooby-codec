@@ -5,9 +5,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import Command from '../../Command.js';
-import ExAbsDayMul from './ExAbsDayMul.js';
+import GetCurrentMul from './GetCurrentMul.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import roundNumber from '../../utils/roundNumber.js';
 
 // 0x1f + 0x0a
 const COMMAND_ID = 0x29;
@@ -19,7 +20,7 @@ const COMMAND_TITLE = 'EX_ABS_HOUR_MUL';
 const COMMAND_BODY_MAX_SIZE = 84;
 
 
-class ExAbsHourMul extends ExAbsDayMul {
+class ExAbsHourMul extends GetCurrentMul {
     constructor ( public parameters: any ) {
         super(parameters);
     }
@@ -58,15 +59,6 @@ class ExAbsHourMul extends ExAbsDayMul {
             counterDate.setTime(date.getTime());
 
             const diff: Array<any> = [];
-            const channel = {
-                diff,
-                pulseCoefficient,
-                index: channelIndex,
-                value: pulseValue,
-                meterValue: this.getMeterValue(pulseValue, pulseCoefficient)
-            };
-
-            channels.push(channel);
 
             for ( let hourIndex = 0; hourIndex < hourAmount; ++hourIndex ) {
                 const value = buffer.getExtendedValue();
@@ -77,9 +69,17 @@ class ExAbsHourMul extends ExAbsDayMul {
                     value,
                     pulseCoefficient,
                     time: getSecondsFromDate(counterDate),
-                    meterValue: this.getMeterValue(value + pulseValue, pulseCoefficient)
+                    meterValue: roundNumber((value + pulseValue) / pulseCoefficient)
                 });
             }
+
+            channels.push({
+                diff,
+                pulseCoefficient,
+                index: channelIndex,
+                value: pulseValue,
+                meterValue: roundNumber(pulseValue / pulseCoefficient)
+            });
         }
 
         return new ExAbsHourMul({channels, date});
@@ -94,6 +94,7 @@ class ExAbsHourMul extends ExAbsDayMul {
         const hour = realDate.getUTCHours();
         let hourAmount = channels[0].diff.length;
 
+        // TODO: add link to doc
         if ( hourAmount === 1 ) {
             hourAmount = 0;
         }

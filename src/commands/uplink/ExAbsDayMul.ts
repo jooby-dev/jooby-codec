@@ -7,6 +7,7 @@
 import Command from '../../Command.js';
 import GetCurrentMul from './GetCurrentMul.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import roundNumber from '../../utils/roundNumber.js';
 
 // 0x1f + 0x0b
 const COMMAND_ID = 0x2a;
@@ -28,10 +29,6 @@ class ExAbsDayMul extends GetCurrentMul {
 
     static title = COMMAND_TITLE;
 
-    protected static getMeterValue ( value: number, pulseCoefficient: number ): number {
-        return value * pulseCoefficient;
-    }
-
     static fromBytes ( data: Uint8Array ): any {
         const buffer = new CommandBinaryBuffer(data);
 
@@ -52,7 +49,7 @@ class ExAbsDayMul extends GetCurrentMul {
                 value,
                 pulseCoefficient,
                 index: channelIndex,
-                meterValue: this.getMeterValue(value, pulseCoefficient)
+                meterValue: roundNumber(value / pulseCoefficient)
             });
         }
 
