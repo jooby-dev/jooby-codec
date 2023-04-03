@@ -30,6 +30,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     setExtendedValue ( value: number ): void {
+        if ( value === 0 ) {
+            this.setUint8(0);
+
+            return;
+        }
+
         const data = [];
         let encodedValue = value;
 
