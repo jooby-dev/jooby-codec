@@ -142,6 +142,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
         [yearMonthByte, monthDateByte].forEach(byte => this.setUint8(byte));
     }
 
+    /**
+     * Retrieve device time from byte array.
+     *
+     * @example
+     * 0xb8 = 0b10111000 will be {hours: 0b101, hour: 0b11000} i.e. {hours: 5, hour: 24}
+     */
     getHours () {
         const byte = this.getUint8();
 

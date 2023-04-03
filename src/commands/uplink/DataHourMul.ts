@@ -3,19 +3,23 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import Command from '../../Command.js';
-import DataDayMul from './DataDayMul.js';
+import GetCurrentMul from './GetCurrentMul.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
-import decodeExtendedBytes from '../../utils/decodeExtendedBytes.js';
-import encodeExtendedBytes from '../../utils/encodeExtendedBytes.js';
+import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 
 
 const COMMAND_ID = 0x17;
 const COMMAND_TITLE = 'DATA_HOUR_MUL';
-const CHANNELS_MASK = [0x01, 0x02, 0x04, 0x08];
+
+// date 2 bytes, hour 1 byte, channels - 1 byte, so max channels = 4
+// max hours diff - 7 (3 bit value)
+// 4 + (4 channels * 3 bytes of hour values) + (4 * 2 bytes of diff * 7 max hours diff)
+const COMMAND_BODY_MAX_SIZE = 72;
 
 
-class DataHourMul extends DataDayMul {
+class DataHourMul extends GetCurrentMul {
     constructor ( public parameters: any ) {
         super(parameters);
     }
@@ -26,59 +30,21 @@ class DataHourMul extends DataDayMul {
 
     static readonly title = COMMAND_TITLE;
 
-    /**
-     * Retrieve device time from byte array.
-     *
-     * @example
-     * 0xb8 = 0b10111000 will be {hours: 0b101, hour: 0b11000} i.e. {hours: 5, hour: 24}
-     *
-     * @param data - array of bytes
-     */
-    protected static getHours ( data: Uint8Array, date: Date, startPosition: number ): any {
-        const hours = (data[startPosition] & 0xe0) >> 5;
-        const hour = data[startPosition] & 0x1f;
+    static fromBytes ( data: Uint8Array ): any {
+        const buffer = new CommandBinaryBuffer(data);
+
+        const date = buffer.getDate();
+        const {hour, hours} = buffer.getHours();
+        const channelArray = buffer.getChannels(true);
+        const maxChannel = Math.max.apply(null, channelArray);
 
         date.setUTCHours(hour);
 
-        const position = startPosition + 1;
-
-        return {hours, position};
-    }
-
-    protected static setHours ( hours: number, hour: number ): any {
-        return [((hours & 0x07) << 5) | (hour & 0x1f)];
-    }
-
-    protected static getChannels ( data: Uint8Array, startPosition = 0 ) {
-        const channels = [];
-
-        let extended = 1;
-        let channelIndex = 0;
-
-        let position = startPosition;
-
-        for ( ; extended && position < data.length; position++ ) {
-            extended = data[position] & 0x80;
-
-            for ( let index = 0; index < CHANNELS_MASK.length; index++ ) {
-                if ( data[position] & CHANNELS_MASK[index] ) {
-                    channels.push((channelIndex * 7) + index);
-                }
-            }
-
-            ++channelIndex;
-        }
-
-        return {channels, position};
-    }
-
-    protected static fillChannels ( data: Uint8Array, channels: Array<number>, date: Date, hours: any, startPosition: number ): Array<any> {
-        const channelsArray: Array<any> = [];
-        const maxChannel = Math.max.apply(null, channels);
-        const counterDate = date;
+        const counterDate = new Date(date);
         let hourAmount = hours;
         let value;
-        let position = startPosition;
+
+        const channels: Array<any> = [];
 
         if ( hourAmount === 0 ) {
             // one hour
@@ -87,18 +53,16 @@ class DataHourMul extends DataDayMul {
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
             // decode hour value for channel
-            ({value, position} = decodeExtendedBytes(data, position));
-
-            counterDate.setUTCHours(date.getUTCHours());
+            value = buffer.getExtendedValue();
+            counterDate.setTime(date.getTime());
 
             const diff: Array<any> = [];
-
             const channel = {value, index: channelIndex, time: getSecondsFromDate(counterDate), diff};
 
-            channelsArray.push(channel);
+            channels.push(channel);
 
             for ( let hourIndex = 0; hourIndex < hourAmount; ++hourIndex ) {
-                ({value, position} = decodeExtendedBytes(data, position));
+                value = buffer.getExtendedValue();
 
                 counterDate.setUTCHours(counterDate.getUTCHours() + hourIndex);
 
@@ -106,37 +70,11 @@ class DataHourMul extends DataDayMul {
             }
         }
 
-        return channelsArray;
-    }
-
-    protected static setCounters ( channels: number | Array<any> ) {
-        if ( !Array.isArray(channels) ) {
-            throw new Error('channels is not an array');
-        }
-
-        const data = [];
-
-        for ( const {value, diff} of channels ) {
-            data.push(...encodeExtendedBytes(value));
-
-            for ( const {value: diffValue} of diff ) {
-                data.push(...encodeExtendedBytes(diffValue));
-            }
-        }
-
-        return data;
-    }
-
-    static fromBytes ( data: Uint8Array ): any {
-        const {date, position: datePosition} = DataDayMul.getDate(data);
-        const {hours, position: hoursPosition} = this.getHours(data, date, datePosition);
-        const {channels: channelArray, position} = this.getChannels(data, hoursPosition);
-        const channels = this.fillChannels(data, channelArray, date, hours, position);
-
         return new DataHourMul({channels});
     }
 
-    toBytes () {
+    toBytes (): Uint8Array {
+        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
         const {channels} = this.parameters;
 
         const {time} = channels[0];
@@ -148,21 +86,19 @@ class DataHourMul extends DataDayMul {
             hourAmount = 0;
         }
 
-        const data = [];
+        buffer.setDate(time);
+        buffer.setHours(hour, hourAmount);
+        buffer.setChannels(channels);
 
-        const date = DataDayMul.setDate(time, realDate);
-        const hours = DataHourMul.setHours(hourAmount, hour);
-        // to reuse method DataDayMul.setChannels needs channel map, on that command i refuse to use Map as structure
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
-        const channelsData = DataDayMul.setChannels(new Map(channels.map((channel: {index: any}) => [
-            channel.index,
-            channel
-        ])));
-        const counters = DataHourMul.setCounters(channels);
+        for ( const {value, diff} of channels ) {
+            buffer.setExtendedValue(value);
 
-        data.push(...date, ...hours, ...channelsData, ...counters);
+            for ( const {value: diffValue} of diff ) {
+                buffer.setExtendedValue(diffValue);
+            }
+        }
 
-        return Command.toBytes(COMMAND_ID, new Uint8Array(data));
+        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 
