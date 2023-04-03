@@ -10,8 +10,7 @@ import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import roundNumber from '../../utils/roundNumber.js';
 
-// 0x1f + 0x0a
-const COMMAND_ID = 0x29;
+const COMMAND_ID = 0x0a1f;
 const COMMAND_TITLE = 'EX_ABS_HOUR_MUL';
 
 // date 2 bytes, hour 1 byte, channels - 1 byte (max channels: 4)
@@ -78,6 +77,7 @@ class ExAbsHourMul extends GetCurrentMul {
                 pulseCoefficient,
                 index: channelIndex,
                 value: pulseValue,
+                time: getSecondsFromDate(date),
                 meterValue: roundNumber(pulseValue / pulseCoefficient)
             });
         }
@@ -104,8 +104,8 @@ class ExAbsHourMul extends GetCurrentMul {
         buffer.setChannels(channels);
 
         for ( const {value, diff, pulseCoefficient} of channels ) {
-            buffer.setExtendedValue(value);
             buffer.setUint8(pulseCoefficient);
+            buffer.setExtendedValue(value);
 
             for ( const {value: diffValue} of diff ) {
                 buffer.setExtendedValue(diffValue);

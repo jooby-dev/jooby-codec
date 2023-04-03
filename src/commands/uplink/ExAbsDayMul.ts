@@ -9,8 +9,8 @@ import GetCurrentMul from './GetCurrentMul.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import roundNumber from '../../utils/roundNumber.js';
 
-// 0x1f + 0x0b
-const COMMAND_ID = 0x2a;
+
+const COMMAND_ID = 0x0b1f;
 const COMMAND_TITLE = 'EX_ABS_DAY_MUL';
 
 // date 2 bytes, channels - 1 byte (max channels: 4)
