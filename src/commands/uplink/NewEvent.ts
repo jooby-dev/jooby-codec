@@ -53,7 +53,6 @@ class NewEvent extends Command {
 
     static fromBytes ( data: Uint8Array ): NewEvent {
         const buffer = new CommandBinaryBuffer(data);
-
         const id = buffer.getUint8();
         const sequenceNumber = buffer.getUint8();
         let eventData;
@@ -94,7 +93,7 @@ class NewEvent extends Command {
                 throw new Error(`${this.getId()}: event ${id} not supported`);
         }
 
-        return new NewEvent({id, sequenceNumber, data});
+        return new NewEvent({id, sequenceNumber, data: eventData});
     }
 
     toBytes (): Uint8Array {
