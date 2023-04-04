@@ -3,31 +3,27 @@ import Command from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
 
 
-const COMMAND_ID = 0x09;
-const COMMAND_TITLE = 'TIME_2000';
-const COMMAND_BODY_SIZE = 5;
+const COMMAND_ID = 0x0c;
+const COMMAND_TITLE = 'CORRECT_TIME_2000';
+const COMMAND_BODY_SIZE = 1;
 
 
 /**
- * Time2000 command parameters
+ * CorrectTime2000 command parameters
  *
  * @example
- * // time: 2023-04-03T14:01:17.000Z
- * {sequenceNumber: 77, time: 733845677}
+ * {status: 1}
  */
-interface ITime2000Parameters {
-    /** sequence Number */
-    sequenceNumber: number,
-    /** seconds since year 2000 */
-    time: number
+interface IUplinkCorrectTime2000Parameters {
+    status: number
 }
 
 
 /**
- * https://github.com/jooby-dev/jooby-docs
+ * CorrectTime2000 command
  */
-class Time2000 extends Command {
-    constructor ( public parameters: ITime2000Parameters ) {
+class CorrectTime2000 extends Command {
+    constructor ( public parameters: IUplinkCorrectTime2000Parameters ) {
         super();
     }
 
@@ -44,29 +40,27 @@ class Time2000 extends Command {
         }
 
         const buffer = new BinaryBuffer(data, false);
+
         const parameters = {
-            sequenceNumber: buffer.getUint8(),
-            time: buffer.getUint32(false)
+            status: buffer.getUint8()
         };
 
         if ( !buffer.isEmpty ) {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new Time2000(parameters);
+        return new CorrectTime2000(parameters);
     }
 
-    // returns full message - header with body
     toBytes (): Uint8Array {
-        const {sequenceNumber, time} = this.parameters;
+        const {status} = this.parameters;
         const buffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
-        buffer.setUint8(sequenceNumber);
-        buffer.setUint32(time, false);
+        buffer.setUint8(status);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
 
-export default Time2000;
+export default CorrectTime2000;
