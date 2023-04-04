@@ -32,16 +32,21 @@ interface IDownlinkCorrectTime2000Parameters {
 
 
 /**
- * CorrectTime2000 downlink command
+ * Downlink command.
  *
  * @example
  * ```js
+ * import CorrectTime2000 from 'jooby-codec/commands/downlink/CorrectTime2000';
+ *
+ * // 120 seconds to the past
  * const parameters = {sequenceNumber: 45, time: -120};
  * const command = new CorrectTime2000(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
+ * // 0c 02 2d 88
  * ```
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/CorrectTime2000.md#request)
  */
 class CorrectTime2000 extends Command {
     constructor ( public parameters: IDownlinkCorrectTime2000Parameters ) {
