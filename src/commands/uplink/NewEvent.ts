@@ -117,7 +117,6 @@ class NewEvent extends Command {
             case events.EV_OPTOFLASH:
             case events.EV_REJOJN:
                 eventData = data as EventTime;
-
                 buffer.setUint8(eventData.time);
                 break;
 
