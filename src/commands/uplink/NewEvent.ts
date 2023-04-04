@@ -1,6 +1,6 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
-import * as Events from '../../constants/events.js';
+import * as events from '../../constants/events.js';
 
 
 const COMMAND_ID = 0x15;
@@ -59,34 +59,34 @@ class NewEvent extends Command {
         let eventData;
 
         switch ( id ) {
-            case Events.MAGNET_ON:
-            case Events.MAGNET_OFF:
-            case Events.ACTIVATE:
-            case Events.DEACTIVATE:
-            case Events.CAN_OFF:
-            case Events.INSERT:
-            case Events.REMOVE:
-            case Events.COUNTER_OVER:
-            case Events.EV_OPTOLOW:
-            case Events.EV_OPTOFLASH:
-            case Events.EV_REJOJN:
+            case events.MAGNET_ON:
+            case events.MAGNET_OFF:
+            case events.ACTIVATE:
+            case events.DEACTIVATE:
+            case events.CAN_OFF:
+            case events.INSERT:
+            case events.REMOVE:
+            case events.COUNTER_OVER:
+            case events.EV_OPTOLOW:
+            case events.EV_OPTOFLASH:
+            case events.EV_REJOJN:
                 eventData = {time: buffer.getUint8()} as EventTime;
                 break;
 
-            case Events.BATTERY_ALARM:
+            case events.BATTERY_ALARM:
                 eventData = {voltage: buffer.getUint8()} as EventBatteryAlarm;
                 break;
 
-            case Events.ACTIVATE_MTX:
+            case events.ACTIVATE_MTX:
                 eventData = {time: buffer.getUint8(), mtxAddr: buffer.getUint8()} as EventActivateMtx;
                 break;
 
-            case Events.CONNECT:
-            case Events.DISCONNECT:
+            case events.CONNECT:
+            case events.DISCONNECT:
                 eventData = {channel: buffer.getUint8(), value: buffer.getExtendedValue()} as EventConnection;
                 break;
 
-            case Events.EV_MTX:
+            case events.EV_MTX:
                 eventData = {status1: buffer.getUint8(), status2: buffer.getUint8()} as EventMtx;
                 break;
 
@@ -106,41 +106,41 @@ class NewEvent extends Command {
         buffer.setUint8(sequenceNumber);
 
         switch ( id ) {
-            case Events.MAGNET_ON:
-            case Events.MAGNET_OFF:
-            case Events.ACTIVATE:
-            case Events.DEACTIVATE:
-            case Events.CAN_OFF:
-            case Events.INSERT:
-            case Events.REMOVE:
-            case Events.COUNTER_OVER:
-            case Events.EV_OPTOLOW:
-            case Events.EV_OPTOFLASH:
-            case Events.EV_REJOJN:
+            case events.MAGNET_ON:
+            case events.MAGNET_OFF:
+            case events.ACTIVATE:
+            case events.DEACTIVATE:
+            case events.CAN_OFF:
+            case events.INSERT:
+            case events.REMOVE:
+            case events.COUNTER_OVER:
+            case events.EV_OPTOLOW:
+            case events.EV_OPTOFLASH:
+            case events.EV_REJOJN:
                 eventData = data as EventTime;
 
                 buffer.setUint8(eventData.time);
                 break;
 
-            case Events.BATTERY_ALARM:
+            case events.BATTERY_ALARM:
                 eventData = data as EventBatteryAlarm;
                 buffer.setUint8(eventData.voltage);
                 break;
 
-            case Events.ACTIVATE_MTX:
+            case events.ACTIVATE_MTX:
                 eventData = data as EventActivateMtx;
                 buffer.setUint8(eventData.time);
                 buffer.setUint8(eventData.mtxAddr);
                 break;
 
-            case Events.CONNECT:
-            case Events.DISCONNECT:
+            case events.CONNECT:
+            case events.DISCONNECT:
                 eventData = data as EventConnection;
                 buffer.setUint8(eventData.channel);
                 buffer.setExtendedValue(eventData.value);
                 break;
 
-            case Events.EV_MTX:
+            case events.EV_MTX:
                 eventData = data as EventMtx;
                 buffer.setUint8(eventData.status1);
                 buffer.setExtendedValue(eventData.status2);
