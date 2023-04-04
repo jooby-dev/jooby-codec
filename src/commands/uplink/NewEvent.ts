@@ -36,7 +36,7 @@ type EventMtx = EventBase & {
 interface INewEventParameters {
     id: number,
     sequenceNumber: number,
-    eventData: EventBase
+    data: EventBase
 }
 
 
@@ -94,13 +94,13 @@ class NewEvent extends Command {
                 throw new Error(`${this.getId()}: event ${id} not supported`);
         }
 
-        return new NewEvent({id, sequenceNumber, eventData});
+        return new NewEvent({id, sequenceNumber, data});
     }
 
     toBytes (): Uint8Array {
-        const {id, sequenceNumber, eventData} = this.parameters;
+        const {id, sequenceNumber, data} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
-        let data;
+        let eventData;
 
         buffer.setUint8(id);
         buffer.setUint8(sequenceNumber);
@@ -117,33 +117,33 @@ class NewEvent extends Command {
             case Events.EV_OPTOLOW:
             case Events.EV_OPTOFLASH:
             case Events.EV_REJOJN:
-                data = eventData as EventTime;
+                eventData = data as EventTime;
 
-                buffer.setUint8(data.time);
+                buffer.setUint8(eventData.time);
                 break;
 
             case Events.BATTERY_ALARM:
-                data = eventData as EventBatteryAlarm;
-                buffer.setUint8(data.voltage);
+                eventData = data as EventBatteryAlarm;
+                buffer.setUint8(eventData.voltage);
                 break;
 
             case Events.ACTIVATE_MTX:
-                data = eventData as EventActivateMtx;
-                buffer.setUint8(data.time);
-                buffer.setUint8(data.mtxAddr);
+                eventData = data as EventActivateMtx;
+                buffer.setUint8(eventData.time);
+                buffer.setUint8(eventData.mtxAddr);
                 break;
 
             case Events.CONNECT:
             case Events.DISCONNECT:
-                data = eventData as EventConnection;
-                buffer.setUint8(data.channel);
-                buffer.setExtendedValue(data.value);
+                eventData = data as EventConnection;
+                buffer.setUint8(eventData.channel);
+                buffer.setExtendedValue(eventData.value);
                 break;
 
             case Events.EV_MTX:
-                data = eventData as EventMtx;
-                buffer.setUint8(data.status1);
-                buffer.setExtendedValue(data.status2);
+                eventData = data as EventMtx;
+                buffer.setUint8(eventData.status1);
+                buffer.setExtendedValue(eventData.status2);
                 break;
 
             default:
