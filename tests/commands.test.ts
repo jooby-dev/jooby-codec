@@ -174,6 +174,26 @@ const uplinkCommands = [
             header: '1f 0a 10',
             body: '2e 6a ec 01 64 b9 f3 14 80 01 64 20 32 00 02 05'
         }
+    },
+    {
+        constructor: uplink.ExAbsDayMul,
+        name: 'uplink command 0xb1f:EX_ABS_DAY_MUL',
+        parameters: {
+            channels: [
+                {
+                    pulseCoefficient: 100,
+                    index: 0,
+                    value: 342457,
+                    meterValue: 3424.57,
+                    time: 731721600
+                }
+            ],
+            date: new Date('2023-03-10T00:00:00.000Z')
+        },
+        hex: {
+            header: '1f 0b 07',
+            body: '2e 6a 01 64 b9 f3 14'
+        }
     }
 ];
 
