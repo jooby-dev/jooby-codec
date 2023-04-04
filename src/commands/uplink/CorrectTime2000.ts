@@ -8,11 +8,6 @@ const COMMAND_TITLE = 'CORRECT_TIME_2000';
 const COMMAND_BODY_SIZE = 1;
 
 
-enum CommandStatus {
-    FAIL,
-    SUCCESS
-}
-
 /**
  * CorrectTime2000 command parameters
  *
@@ -20,7 +15,7 @@ enum CommandStatus {
  * {status: 1}
  */
 interface IUplinkCorrectTime2000Parameters {
-    status: CommandStatus
+    status: number
 }
 
 
@@ -29,10 +24,6 @@ interface IUplinkCorrectTime2000Parameters {
  */
 class CorrectTime2000 extends Command {
     constructor ( public parameters: IUplinkCorrectTime2000Parameters ) {
-        if ( !(parameters.status in CommandStatus) ) {
-            throw new Error(`${CorrectTime2000.getName()}. Status value: "${parameters.status}" is not available.`);
-        }
-
         super();
     }
 
