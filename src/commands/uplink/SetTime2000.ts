@@ -29,10 +29,6 @@ interface IUplinkSetTime2000Parameters {
  */
 class SetTime2000 extends Command {
     constructor ( public parameters: IUplinkSetTime2000Parameters ) {
-        if ( !(parameters.status in CommandStatus) ) {
-            throw new Error(`${SetTime2000.getName()}. Status value: "${parameters.status}" is not available.`);
-        }
-
         super();
     }
 
