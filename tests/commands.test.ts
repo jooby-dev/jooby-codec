@@ -22,6 +22,15 @@ const {uplink, downlink} = commands;
 
 const downlinkCommands: TCommandList = [
     {
+        constructor: downlink.CorrectTime2000,
+        name: 'downlink command 0x0c:CORRECT_TIME_2000',
+        parameters: {sequenceNumber: 45, time: -120},
+        hex: {
+            header: '0c 02',
+            body: '2d 88'
+        }
+    },
+    {
         constructor: downlink.SetTime2000,
         name: 'downlink command 0x02:SET_TIME_2000',
         parameters: {sequenceNumber: 78, time: 123456},
@@ -34,28 +43,12 @@ const downlinkCommands: TCommandList = [
 
 const uplinkCommands = [
     {
-        constructor: uplink.SetTime2000,
-        name: 'uplink command 0x02:SET_TIME_2000',
-        parameters: {status: 1},
+        constructor: uplink.CorrectTime2000,
+        name: 'uplink command 0x0c:CORRECT_TIME_2000',
+        parameters: {status: 0},
         hex: {
-            header: '02 01',
-            body: '01'
-        }
-    },
-    {
-        constructor: uplink.GetCurrentMul,
-        name: 'uplink command 0x18:GET_CURRENT_MUL',
-        parameters: {
-            channels: [
-                {index: 0, value: 131},
-                {index: 1, value: 8},
-                {index: 2, value: 10},
-                {index: 3, value: 12}
-            ]
-        },
-        hex: {
-            header: '18 06',
-            body: '0f 83 01 08 0a 0c'
+            header: '0c 01',
+            body: '00'
         }
     },
     {
@@ -109,6 +102,26 @@ const uplinkCommands = [
         hex: {
             header: '17 0d',
             body: '2f 97 0c 0f 83 01 0a 08 0a 08 0a 0c 0a'
+        }
+    },
+    {
+        constructor: uplink.ExAbsDayMul,
+        name: 'uplink command 0xb1f:EX_ABS_DAY_MUL',
+        parameters: {
+            channels: [
+                {
+                    pulseCoefficient: 100,
+                    index: 0,
+                    value: 342457,
+                    meterValue: 3424.57,
+                    time: 731721600
+                }
+            ],
+            date: new Date('2023-03-10T00:00:00.000Z')
+        },
+        hex: {
+            header: '1f 0b 07',
+            body: '2e 6a 01 64 b9 f3 14'
         }
     },
     {
@@ -176,23 +189,38 @@ const uplinkCommands = [
         }
     },
     {
-        constructor: uplink.ExAbsDayMul,
-        name: 'uplink command 0xb1f:EX_ABS_DAY_MUL',
+        constructor: uplink.GetCurrentMul,
+        name: 'uplink command 0x18:GET_CURRENT_MUL',
         parameters: {
             channels: [
-                {
-                    pulseCoefficient: 100,
-                    index: 0,
-                    value: 342457,
-                    meterValue: 3424.57,
-                    time: 731721600
-                }
-            ],
-            date: new Date('2023-03-10T00:00:00.000Z')
+                {index: 0, value: 131},
+                {index: 1, value: 8},
+                {index: 2, value: 10},
+                {index: 3, value: 12}
+            ]
         },
         hex: {
-            header: '1f 0b 07',
-            body: '2e 6a 01 64 b9 f3 14'
+            header: '18 06',
+            body: '0f 83 01 08 0a 0c'
+        }
+    },
+    {
+        constructor: uplink.SetTime2000,
+        name: 'uplink command 0x02:SET_TIME_2000',
+        parameters: {status: 1},
+        hex: {
+            header: '02 01',
+            body: '01'
+        }
+    },
+    {
+        constructor: uplink.Time2000,
+        name: 'uplink command 0x09:TIME_2000',
+        // time: 2023-04-03T14:01:17.000Z
+        parameters: {sequenceNumber: 77, time: 733845677},
+        hex: {
+            header: '09 05',
+            body: '4d 2b bd 98 ad'
         }
     }
 ];

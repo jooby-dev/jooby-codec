@@ -1,5 +1,5 @@
 /**
- * [[include:commands/downlink/SetTime2000.md]]
+ * [[include:commands/downlink/CorrectTime2000.md]]
  *
  * @packageDocumentation
  */
@@ -8,40 +8,43 @@ import Command from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
 
 
-const COMMAND_ID = 0x02;
-const COMMAND_TITLE = 'SET_TIME_2000';
-const COMMAND_BODY_SIZE = 5;
+const COMMAND_ID = 0x0c;
+const COMMAND_TITLE = 'CORRECT_TIME_2000';
+const COMMAND_BODY_SIZE = 2;
 
 
 /**
- * SetTime2000 command parameters
+ * CorrectTime2000 command parameters
  *
  * @example
- * // time: 2023-04-03T14:01:17.000Z
- * {sequenceNumber: 77, time: 733845677}
+ * // 120 seconds to the past
+ * {sequenceNumber: 45, time: -120}
  */
-interface IDownlinkSetTime2000Parameters {
+interface IDownlinkCorrectTime2000Parameters {
     /** sequence Number */
     sequenceNumber: number,
-    /** seconds */
+    /**
+     * seconds
+     * range: [-127..+127]
+     */
     time: number
 }
 
 
 /**
- * SetTime2000 downlink command
+ * CorrectTime2000 downlink command
  *
  * @example
  * ```js
- * const parameters = {sequenceNumber: 5, time: 9462957};
- * const command = new SetTime2000(parameters);
+ * const parameters = {sequenceNumber: 45, time: -120};
+ * const command = new CorrectTime2000(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * ```
  */
-class SetTime2000 extends Command {
-    constructor ( public parameters: IDownlinkSetTime2000Parameters ) {
+class CorrectTime2000 extends Command {
+    constructor ( public parameters: IDownlinkCorrectTime2000Parameters ) {
         super();
     }
 
@@ -60,14 +63,14 @@ class SetTime2000 extends Command {
         const buffer = new BinaryBuffer(data, false);
         const parameters = {
             sequenceNumber: buffer.getUint8(),
-            time: buffer.getInt32()
+            time: buffer.getInt8()
         };
 
         if ( !buffer.isEmpty ) {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new SetTime2000(parameters);
+        return new CorrectTime2000(parameters);
     }
 
     // returns full message - header with body
@@ -76,11 +79,11 @@ class SetTime2000 extends Command {
         const buffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
         buffer.setUint8(sequenceNumber);
-        buffer.setInt32(time);
+        buffer.setInt8(time);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
 
-export default SetTime2000;
+export default CorrectTime2000;
