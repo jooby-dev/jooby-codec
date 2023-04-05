@@ -36,7 +36,7 @@ interface IUplinkSetTime2000Parameters {
  * ```
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/SetTime2000.md#response)
  */
-class SetTime2000 extends Commmand {
+class SetTime2000 extends Command {
     constructor ( public parameters: IUplinkSetTime2000Parameters ) {
         super();
     }
