@@ -6,6 +6,7 @@
     "main": "./dist/index.js",
     "exports": {
         ".": "./dist/index.js",
+        "./ts": "./src/index.js",
         "./commands": "./dist/commands/index.js",
         "./commands/downlink": "./dist/commands/downlink/index.js",
         "./commands/downlink/*": "./dist/commands/downlink/*.js",
