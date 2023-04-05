@@ -13,4 +13,4 @@ export const DISCONNECT = 13;
 export const EV_OPTOLOW = 15;
 export const EV_OPTOFLASH = 16;
 export const EV_MTX = 17;
-export const EV_REJOJN = 18;
+export const EV_REJOIN = 18;

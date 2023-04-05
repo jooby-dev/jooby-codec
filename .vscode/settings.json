@@ -6,7 +6,6 @@
         "nodenext",
         "OPTOFLASH",
         "OPTOLOW",
-        "preinstall",
-        "REJOJN"
+        "preinstall"
     ]
 }

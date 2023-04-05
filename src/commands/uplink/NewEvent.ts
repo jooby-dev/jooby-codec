@@ -10,26 +10,26 @@ const COMMAND_BODY_MAX_SIZE = 6;
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface EventBase {}
+interface IEventBase {}
 
-interface EventTime extends EventBase {
+interface IEventTime extends IEventBase {
     time: number
 }
 
-interface EventBatteryAlarm extends EventBase {
+interface IEventBatteryAlarm extends IEventBase {
     voltage: number
 }
 
-interface EventActivateMtx extends EventTime {
-    mtxAddr: number
+interface IEventActivateMtx extends IEventTime {
+    mtxAddress: number
 }
 
-interface EventConnection extends EventBase {
+interface IEventConnection extends IEventBase {
     channel: number,
     value: number
 }
 
-interface EventMtx extends EventBase {
+interface IEventMtx extends IEventBase {
     status1: number,
     status2: number
 }
@@ -37,7 +37,7 @@ interface EventMtx extends EventBase {
 interface INewEventParameters {
     id: number,
     sequenceNumber: number,
-    data: EventBase
+    data: IEventBase
 }
 
 
@@ -69,25 +69,25 @@ class NewEvent extends Command {
             case events.COUNTER_OVER:
             case events.EV_OPTOLOW:
             case events.EV_OPTOFLASH:
-            case events.EV_REJOJN:
-                eventData = {time: buffer.getUint8()} as EventTime;
+            case events.EV_REJOIN:
+                eventData = {time: buffer.getUint8()} as IEventTime;
                 break;
 
             case events.BATTERY_ALARM:
-                eventData = {voltage: buffer.getUint8()} as EventBatteryAlarm;
+                eventData = {voltage: buffer.getUint8()} as IEventBatteryAlarm;
                 break;
 
             case events.ACTIVATE_MTX:
-                eventData = {time: buffer.getUint8(), mtxAddr: buffer.getUint8()} as EventActivateMtx;
+                eventData = {time: buffer.getUint8(), mtxAddress: buffer.getUint8()} as IEventActivateMtx;
                 break;
 
             case events.CONNECT:
             case events.DISCONNECT:
-                eventData = {channel: buffer.getUint8(), value: buffer.getExtendedValue()} as EventConnection;
+                eventData = {channel: buffer.getUint8(), value: buffer.getExtendedValue()} as IEventConnection;
                 break;
 
             case events.EV_MTX:
-                eventData = {status1: buffer.getUint8(), status2: buffer.getUint8()} as EventMtx;
+                eventData = {status1: buffer.getUint8(), status2: buffer.getUint8()} as IEventMtx;
                 break;
 
             default:
@@ -116,31 +116,31 @@ class NewEvent extends Command {
             case events.COUNTER_OVER:
             case events.EV_OPTOLOW:
             case events.EV_OPTOFLASH:
-            case events.EV_REJOJN:
-                eventData = data as EventTime;
+            case events.EV_REJOIN:
+                eventData = data as IEventTime;
                 buffer.setUint8(eventData.time);
                 break;
 
             case events.BATTERY_ALARM:
-                eventData = data as EventBatteryAlarm;
+                eventData = data as IEventBatteryAlarm;
                 buffer.setUint8(eventData.voltage);
                 break;
 
             case events.ACTIVATE_MTX:
-                eventData = data as EventActivateMtx;
+                eventData = data as IEventActivateMtx;
                 buffer.setUint8(eventData.time);
-                buffer.setUint8(eventData.mtxAddr);
+                buffer.setUint8(eventData.mtxAddress);
                 break;
 
             case events.CONNECT:
             case events.DISCONNECT:
-                eventData = data as EventConnection;
+                eventData = data as IEventConnection;
                 buffer.setUint8(eventData.channel);
                 buffer.setExtendedValue(eventData.value);
                 break;
 
             case events.EV_MTX:
-                eventData = data as EventMtx;
+                eventData = data as IEventMtx;
                 buffer.setUint8(eventData.status1);
                 buffer.setExtendedValue(eventData.status2);
                 break;
