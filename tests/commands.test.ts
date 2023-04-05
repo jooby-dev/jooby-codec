@@ -230,7 +230,7 @@ const uplinkCommands: TCommandList = [
         parameters: {id: events.BATTERY_ALARM, sequenceNumber: 2, data: {voltage: 3308}},
         hex: {
             header: '15 04',
-            body: `05 02 0c ec`
+            body: '05 02 0c ec'
         }
     },
     {
@@ -243,7 +243,7 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '15 0e',
-            body: `0b 02 2b c0 31 60 05 02 0b c0 05 02 0b c0`
+            body: '0b 02 2b c0 31 60 05 02 0b c0 05 02 0b c0'
         }
     },
     {
@@ -256,7 +256,7 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '15 05',
-            body: `0c 02 00 83 01`
+            body: '0c 02 00 83 01'
         }
     },
     {
@@ -269,7 +269,7 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '15 05',
-            body: `0d 02 00 83 01`
+            body: '0d 02 00 83 01'
         }
     },
     {
@@ -282,30 +282,10 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '15 04',
-            body: `11 02 00 83`
+            body: '11 02 00 83'
         }
     }
 ];
-
-
-[
-    events.MAGNET_ON, events.MAGNET_OFF, events.ACTIVATE, events.DEACTIVATE,
-    events.CAN_OFF, events.INSERT, events.REMOVE, events.COUNTER_OVER,
-    events.EV_OPTOFLASH, events.EV_OPTOLOW, events.EV_REJOIN
-].forEach(id => {
-    const hexId = id.toString(16).padStart(2, '0');
-
-    uplinkCommands.push({
-        constructor: uplink.NewEvent,
-        name: 'uplink command 0x15:NEW_EVENT',
-        // magnet on
-        parameters: {id, sequenceNumber: 2, data: {time: 734015840}},
-        hex: {
-            header: '15 06',
-            body: `${hexId} 02 2b c0 31 60`
-        }
-    });
-});
 
 
 const checkCommand = ( {constructor, name, parameters, hex:{header, body} }: ICommand ) => {
@@ -329,6 +309,25 @@ const checkCommand = ( {constructor, name, parameters, hex:{header, body} }: ICo
     expect(commandFromHex.getParameters()).toStrictEqual(parameters);
 };
 
+
+[
+    events.MAGNET_ON, events.MAGNET_OFF, events.ACTIVATE, events.DEACTIVATE,
+    events.CAN_OFF, events.INSERT, events.REMOVE, events.COUNTER_OVER,
+    events.EV_OPTOFLASH, events.EV_OPTOLOW, events.EV_REJOIN
+].forEach(id => {
+    const hexId = id.toString(16).padStart(2, '0');
+
+    uplinkCommands.push({
+        constructor: uplink.NewEvent,
+        name: 'uplink command 0x15:NEW_EVENT',
+        // magnet on
+        parameters: {id, sequenceNumber: 2, data: {time: 734015840}},
+        hex: {
+            header: '15 06',
+            body: `${hexId} 02 2b c0 31 60`
+        }
+    });
+});
 
 
 describe('general tests', () => {
