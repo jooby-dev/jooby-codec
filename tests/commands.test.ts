@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import Command from '../src/Command.js';
-import {commands} from '../src/index.js';
+import {commands, constants} from '../src/index.js';
 import getBytesFromHex from '../src/utils/getBytesFromHex.js';
 
 
@@ -19,6 +19,7 @@ type TCommandList = Array<ICommand>;
 
 
 const {uplink, downlink} = commands;
+const {events} = constants;
 
 const downlinkCommands: TCommandList = [
     {
@@ -41,7 +42,7 @@ const downlinkCommands: TCommandList = [
     }
 ];
 
-const uplinkCommands = [
+const uplinkCommands: TCommandList = [
     {
         constructor: uplink.CorrectTime2000,
         name: 'uplink command 0x0c:CORRECT_TIME_2000',
@@ -222,8 +223,70 @@ const uplinkCommands = [
             header: '09 05',
             body: '4d 2b bd 98 ad'
         }
+    },
+    {
+        constructor: uplink.NewEvent,
+        name: 'uplink command 0x15:NEW_EVENT',
+        parameters: {id: events.BATTERY_ALARM, sequenceNumber: 2, data: {voltage: 3308}},
+        hex: {
+            header: '15 04',
+            body: '05 02 0c ec'
+        }
+    },
+    {
+        constructor: uplink.NewEvent,
+        name: 'uplink command 0x15:NEW_EVENT',
+        parameters: {
+            id: events.ACTIVATE_MTX,
+            sequenceNumber: 2,
+            data: {time: 734015840, mtxAddress: '05 02 0b c0 05 02 0b c0'}
+        },
+        hex: {
+            header: '15 0e',
+            body: '0b 02 2b c0 31 60 05 02 0b c0 05 02 0b c0'
+        }
+    },
+    {
+        constructor: uplink.NewEvent,
+        name: 'uplink command 0x15:NEW_EVENT',
+        parameters: {
+            id: events.CONNECT,
+            sequenceNumber: 2,
+            data: {channel: 0, value: 131}
+        },
+        hex: {
+            header: '15 05',
+            body: '0c 02 00 83 01'
+        }
+    },
+    {
+        constructor: uplink.NewEvent,
+        name: 'uplink command 0x15:NEW_EVENT',
+        parameters: {
+            id: events.DISCONNECT,
+            sequenceNumber: 2,
+            data: {channel: 0, value: 131}
+        },
+        hex: {
+            header: '15 05',
+            body: '0d 02 00 83 01'
+        }
+    },
+    {
+        constructor: uplink.NewEvent,
+        name: 'uplink command 0x15:NEW_EVENT',
+        parameters: {
+            id: events.EV_MTX,
+            sequenceNumber: 2,
+            data: {status1: 0, status2: 131}
+        },
+        hex: {
+            header: '15 04',
+            body: '11 02 00 83'
+        }
     }
 ];
+
 
 const checkCommand = ( {constructor, name, parameters, hex:{header, body} }: ICommand ) => {
     const hex = `${header} ${body}`;
@@ -246,6 +309,25 @@ const checkCommand = ( {constructor, name, parameters, hex:{header, body} }: ICo
     expect(commandFromHex.getParameters()).toStrictEqual(parameters);
 };
 
+
+[
+    events.MAGNET_ON, events.MAGNET_OFF, events.ACTIVATE, events.DEACTIVATE,
+    events.CAN_OFF, events.INSERT, events.REMOVE, events.COUNTER_OVER,
+    events.EV_OPTOFLASH, events.EV_OPTOLOW, events.EV_REJOIN
+].forEach(id => {
+    const hexId = id.toString(16).padStart(2, '0');
+
+    uplinkCommands.push({
+        constructor: uplink.NewEvent,
+        name: 'uplink command 0x15:NEW_EVENT',
+        // magnet on
+        parameters: {id, sequenceNumber: 2, data: {time: 734015840}},
+        hex: {
+            header: '15 06',
+            body: `${hexId} 02 2b c0 31 60`
+        }
+    });
+});
 
 
 describe('general tests', () => {
