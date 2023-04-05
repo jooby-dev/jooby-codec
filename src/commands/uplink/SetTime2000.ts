@@ -8,11 +8,6 @@ const COMMAND_TITLE = 'SET_TIME_2000';
 const COMMAND_BODY_SIZE = 1;
 
 
-enum CommandStatus {
-    FAIL,
-    SUCCESS
-}
-
 /**
  * SetTime2000 command parameters
  *
@@ -20,14 +15,14 @@ enum CommandStatus {
  * {status: 1}
  */
 interface IUplinkSetTime2000Parameters {
-    status: CommandStatus
+    status: number
 }
 
 
 /**
  * SetTime2000 command
  */
-class SetTime2000 extends Command {
+class SetTime2000 extends Commmand {
     constructor ( public parameters: IUplinkSetTime2000Parameters ) {
         super();
     }
