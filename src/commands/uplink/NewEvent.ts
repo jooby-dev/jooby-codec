@@ -1,12 +1,34 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import * as events from '../../constants/events.js';
+import getHexFromBytes from '../../utils/getHexFromBytes.js';
+import getBytesFromHex from '../../utils/getBytesFromHex.js';
 
 
 const COMMAND_ID = 0x15;
 const COMMAND_TITLE = 'NEW_EVENT';
-// connect/disconnect events are biggest
-const COMMAND_BODY_MAX_SIZE = 6;
+// ACTIVATE_MTX are biggest,1 byte event id, 1 byte sequence number, 4 bytes time, 8 bytes mtx address
+const COMMAND_BODY_MAX_SIZE = 14;
+const MTX_ADDRESS_SIZE = 8;
+
+const getVoltage = ( buffer: CommandBinaryBuffer ): number => buffer.getUint16(false);
+const setVoltage = ( buffer: CommandBinaryBuffer, value: number ): void => buffer.setUint16(value, false);
+
+const getMtxAddress = ( buffer: CommandBinaryBuffer ): string => {
+    const bytes = [];
+
+    for ( let i = 0; i < MTX_ADDRESS_SIZE; ++i ) {
+        bytes.push(buffer.getUint8());
+    }
+
+    return getHexFromBytes(new Uint8Array(bytes));
+};
+
+const setMtxAddress = ( buffer: CommandBinaryBuffer, value: string ): void => {
+    const bytes = getBytesFromHex(value);
+
+    bytes.forEach(byte => buffer.setUint8(byte));
+};
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -21,7 +43,7 @@ interface IEventBatteryAlarm extends IEventBase {
 }
 
 interface IEventActivateMtx extends IEventTime {
-    mtxAddress: number
+    mtxAddress: string
 }
 
 interface IEventConnection extends IEventBase {
@@ -34,6 +56,16 @@ interface IEventMtx extends IEventBase {
     status2: number
 }
 
+/**
+ * NewEvent command parameters
+ *
+ * @example
+ * ```js
+ * import {events} = import from 'jooby-codec'
+ *
+ * // Magnet On at 2023-04-05 13:17:20 GMT
+ * {id: events.MAGNET_ON, sequenceNumber: 1, data: {time: 734015840}}
+ */
 interface INewEventParameters {
     id: number,
     sequenceNumber: number,
@@ -41,6 +73,25 @@ interface INewEventParameters {
 }
 
 
+/**
+ * Uplink command.
+ *
+ * @example
+ * ```js
+ * import {events} = import from 'jooby-codec'
+ * import NewEvent from 'jooby-codec/commands/uplink/NewEvent';
+ *
+ * // Magnet On at 2023-04-05 13:17:20 GMT
+ * const parameters = {id: events.MAGNET_ON, sequenceNumber: 3, data: {time: 734015840}}
+ * const command = new NewEvent(parameters);
+ *
+ * // output command binary in hex representation
+ * console.log(command.toHex());
+ * // 15 06 01 03 2b c0 31 60
+ * ```
+ *
+ * [Command format documentation](#link)
+ */
 class NewEvent extends Command {
     constructor ( public parameters: INewEventParameters ) {
         super();
@@ -70,15 +121,15 @@ class NewEvent extends Command {
             case events.EV_OPTOLOW:
             case events.EV_OPTOFLASH:
             case events.EV_REJOIN:
-                eventData = {time: buffer.getUint8()} as IEventTime;
+                eventData = {time: buffer.getTime()} as IEventTime;
                 break;
 
             case events.BATTERY_ALARM:
-                eventData = {voltage: buffer.getUint8()} as IEventBatteryAlarm;
+                eventData = {voltage: getVoltage(buffer)} as IEventBatteryAlarm;
                 break;
 
             case events.ACTIVATE_MTX:
-                eventData = {time: buffer.getUint8(), mtxAddress: buffer.getUint8()} as IEventActivateMtx;
+                eventData = {time: buffer.getTime(), mtxAddress: getMtxAddress(buffer)} as IEventActivateMtx;
                 break;
 
             case events.CONNECT:
@@ -118,18 +169,18 @@ class NewEvent extends Command {
             case events.EV_OPTOFLASH:
             case events.EV_REJOIN:
                 eventData = data as IEventTime;
-                buffer.setUint8(eventData.time);
+                buffer.setTime(eventData.time);
                 break;
 
             case events.BATTERY_ALARM:
                 eventData = data as IEventBatteryAlarm;
-                buffer.setUint8(eventData.voltage);
+                setVoltage(buffer, eventData.voltage);
                 break;
 
             case events.ACTIVATE_MTX:
                 eventData = data as IEventActivateMtx;
-                buffer.setUint8(eventData.time);
-                buffer.setUint8(eventData.mtxAddress);
+                buffer.setTime(eventData.time);
+                setMtxAddress(buffer, eventData.mtxAddress);
                 break;
 
             case events.CONNECT:
@@ -142,7 +193,7 @@ class NewEvent extends Command {
             case events.EV_MTX:
                 eventData = data as IEventMtx;
                 buffer.setUint8(eventData.status1);
-                buffer.setExtendedValue(eventData.status2);
+                buffer.setUint8(eventData.status2);
                 break;
 
             default:

@@ -166,6 +166,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
     setHours ( hour: number, hours: number ): void {
         this.setUint8(((hours & 0x07) << 5) | (hour & 0x1f));
     }
+
+    getTime (): number {
+        return this.getUint32(false);
+    }
+
+    setTime ( value: number ): void {
+        return this.setUint32(value, false);
+    }
 }
 
 
