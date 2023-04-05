@@ -8,30 +8,31 @@ const COMMAND_TITLE = 'NEW_EVENT';
 // connect/disconnect events are biggest
 const COMMAND_BODY_MAX_SIZE = 6;
 
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface EventBase {}
 
-type EventTime = EventBase & {
+interface EventTime extends EventBase {
     time: number
-};
+}
 
-type EventBatteryAlarm = EventBase & {
+interface EventBatteryAlarm extends EventBase {
     voltage: number
-};
+}
 
-type EventActivateMtx = EventTime & {
+interface EventActivateMtx extends EventTime {
     mtxAddr: number
-};
+}
 
-type EventConnection = EventBase & {
+interface EventConnection extends EventBase {
     channel: number,
     value: number
-};
+}
 
-type EventMtx = EventBase & {
+interface EventMtx extends EventBase {
     status1: number,
     status2: number
-};
+}
 
 interface INewEventParameters {
     id: number,
