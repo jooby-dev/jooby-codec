@@ -25,7 +25,21 @@ interface IUplinkSetTime2000Parameters {
 
 
 /**
- * SetTime2000 command
+ * Uplink command.
+ *
+ * @example
+ * ```js
+ * import SetTime2000 from 'jooby-codec/commands/uplink/SetTime2000';
+ *
+ * // success
+ * const parameters = {status: 1};
+ * const command = new SetTime2000(parameters);
+ *
+ * // output command binary in hex representation
+ * console.log(command.toHex());
+ * // 02 01 01
+ * ```
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/SetTime2000.md#response)
  */
 class SetTime2000 extends Command {
     constructor ( public parameters: IUplinkSetTime2000Parameters ) {
