@@ -44,10 +44,13 @@ interface IEventBatteryAlarm extends IEventBase {
 
 /**
  * MTX meters activation event.
- *
- * deviceId - hex string (like '00 1A 79 88 17 01 23 56'), 8 bytes contain unique meter id
  */
 interface IEventActivateMtx extends IEventTime {
+    /**
+     * hex string, 8 bytes contains unique meter ID
+     * @example
+     * '00 1A 79 88 17 01 23 56'
+     */
     deviceId: string
 }
 
