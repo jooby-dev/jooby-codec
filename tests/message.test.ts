@@ -55,6 +55,7 @@ const checkMessage = ( {hex}: IMessage ) => {
     const bytes = message.toBytes(commands);
 
     expect(bytes).toStrictEqual(getBytesFromHex(hex));
+    expect(messageData.isValid).toBe(true);
 };
 
 

@@ -62,17 +62,24 @@ class Command {
      * Build header with body.
      *
      * @param id command id
-     * @param commandData command binary data
+     * @param commandData optional command binary data
      * @returns merged data
      */
-    static toBytes ( id: number, commandData: Uint8Array ): Uint8Array {
-        const headerData = header.toBytes(id, commandData.length);
-        const resultData = new Uint8Array(headerData.length + commandData.length);
+    static toBytes ( id: number, commandData?: Uint8Array ): Uint8Array {
+        const commandLength = commandData?.length ?? 0;
+        const headerData = header.toBytes(id, commandLength);
 
-        resultData.set(headerData);
-        resultData.set(commandData, headerData.length);
+        if ( commandData && commandLength ) {
+            const resultData = new Uint8Array(headerData.length + commandLength);
 
-        return resultData;
+            resultData.set(headerData);
+            resultData.set(commandData, headerData.length);
+
+            return resultData;
+        }
+
+        // simple command without body
+        return headerData;
     }
 
     /** Get command parameters. */
