@@ -47,13 +47,6 @@ const UNKNOWN_CAPACITY = 255;
 
 /**
  * NewStatus command parameters
- *
- * @example
- * ```js
- * import {constants} from 'jooby-codec'
- *
- * // `Magnet On` event at 2023-04-05 13:17:20 GMT
- * {id: constants.events.MAGNET_ON, sequenceNumber: 1, data: {time: 734015840}}
  */
 interface INewStatusParameters {
     software: IProduct,
