@@ -14,7 +14,7 @@ const MTX_ADDRESS_SIZE = 8;
 const getVoltage = ( buffer: CommandBinaryBuffer ): number => buffer.getUint16(false);
 const setVoltage = ( buffer: CommandBinaryBuffer, value: number ): void => buffer.setUint16(value, false);
 
-const getMtxAddress = ( buffer: CommandBinaryBuffer ): string => {
+const getDeviceId = ( buffer: CommandBinaryBuffer ): string => {
     const bytes = [];
 
     for ( let i = 0; i < MTX_ADDRESS_SIZE; ++i ) {
@@ -24,7 +24,7 @@ const getMtxAddress = ( buffer: CommandBinaryBuffer ): string => {
     return getHexFromBytes(new Uint8Array(bytes));
 };
 
-const setMtxAddress = ( buffer: CommandBinaryBuffer, value: string ): void => {
+const setDeviceId = ( buffer: CommandBinaryBuffer, value: string ): void => {
     const bytes = getBytesFromHex(value);
 
     bytes.forEach(byte => buffer.setUint8(byte));
@@ -42,8 +42,13 @@ interface IEventBatteryAlarm extends IEventBase {
     voltage: number
 }
 
+/**
+ * MTX meters activation event.
+ *
+ * deviceId - hex string (like '00 1A 79 88 17 01 23 56'), 8 bytes contain unique meter id
+ */
 interface IEventActivateMtx extends IEventTime {
-    mtxAddress: string
+    deviceId: string
 }
 
 interface IEventConnection extends IEventBase {
@@ -129,7 +134,7 @@ class NewEvent extends Command {
                 break;
 
             case events.ACTIVATE_MTX:
-                eventData = {time: buffer.getTime(), mtxAddress: getMtxAddress(buffer)} as IEventActivateMtx;
+                eventData = {time: buffer.getTime(), deviceId: getDeviceId(buffer)} as IEventActivateMtx;
                 break;
 
             case events.CONNECT:
@@ -180,7 +185,7 @@ class NewEvent extends Command {
             case events.ACTIVATE_MTX:
                 eventData = data as IEventActivateMtx;
                 buffer.setTime(eventData.time);
-                setMtxAddress(buffer, eventData.mtxAddress);
+                setDeviceId(buffer, eventData.deviceId);
                 break;
 
             case events.CONNECT:
