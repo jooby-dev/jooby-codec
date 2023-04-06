@@ -239,11 +239,11 @@ const uplinkCommands: TCommandList = [
         parameters: {
             id: events.ACTIVATE_MTX,
             sequenceNumber: 2,
-            data: {time: 734015840, mtxAddress: '05 02 0b c0 05 02 0b c0'}
+            data: {time: 734015840, deviceId: '00 1a 79 88 17 01 23 56'}
         },
         hex: {
             header: '15 0e',
-            body: '0b 02 2b c0 31 60 05 02 0b c0 05 02 0b c0'
+            body: '0b 02 2b c0 31 60 00 1a 79 88 17 01 23 56'
         }
     },
     {
