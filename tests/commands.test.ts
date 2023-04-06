@@ -2,7 +2,9 @@
 
 import Command from '../src/Command.js';
 import {commands, constants} from '../src/index.js';
+import * as message from '../src/utils/message.js';
 import getBytesFromHex from '../src/utils/getBytesFromHex.js';
+import getHexFromBytes from '../src/utils/getHexFromBytes.js';
 
 
 interface ICommand {
@@ -11,7 +13,8 @@ interface ICommand {
     parameters: any
     hex: {
         header: string,
-        body: string
+        body: string,
+        lrc?: string
     }
 }
 
@@ -28,7 +31,8 @@ const downlinkCommands: TCommandList = [
         parameters: {sequenceNumber: 45, time: -120},
         hex: {
             header: '0c 02',
-            body: '2d 88'
+            body: '2d 88',
+            lrc: 'fe'
         }
     },
     {
@@ -37,7 +41,18 @@ const downlinkCommands: TCommandList = [
         parameters: {sequenceNumber: 78, time: 123456},
         hex: {
             header: '02 05',
-            body: '4e 00 01 e2 40'
+            body: '4e 00 01 e2 40',
+            lrc: 'bf'
+        }
+    },
+    {
+        constructor: downlink.SoftRestart,
+        name: 'downlink command 0x19:SOFT_RESTART',
+        parameters: undefined,
+        hex: {
+            header: '19 00',
+            body: '',
+            lrc: '4c'
         }
     }
 ];
@@ -49,7 +64,8 @@ const uplinkCommands: TCommandList = [
         parameters: {status: 0},
         hex: {
             header: '0c 01',
-            body: '00'
+            body: '00',
+            lrc: '58'
         }
     },
     {
@@ -66,7 +82,8 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '16 08',
-            body: '2f 97 0f 83 01 08 0a 0c'
+            body: '2f 97 0f 83 01 08 0a 0c',
+            lrc: '70'
         }
     },
     {
@@ -102,7 +119,8 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '17 0d',
-            body: '2f 97 0c 0f 83 01 0a 08 0a 08 0a 0c 0a'
+            body: '2f 97 0c 0f 83 01 0a 08 0a 08 0a 0c 0a',
+            lrc: '7a'
         }
     },
     {
@@ -122,7 +140,8 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '1f 0b 07',
-            body: '2e 6a 01 64 b9 f3 14'
+            body: '2e 6a 01 64 b9 f3 14',
+            lrc: '39'
         }
     },
     {
@@ -186,7 +205,8 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '1f 0a 10',
-            body: '2e 6a ec 01 64 b9 f3 14 80 01 64 20 32 00 02 05'
+            body: '2e 6a ec 01 64 b9 f3 14 80 01 64 20 32 00 02 05',
+            lrc: '33'
         }
     },
     {
@@ -202,26 +222,8 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '18 06',
-            body: '0f 83 01 08 0a 0c'
-        }
-    },
-    {
-        constructor: uplink.SetTime2000,
-        name: 'uplink command 0x02:SET_TIME_2000',
-        parameters: {status: 1},
-        hex: {
-            header: '02 01',
-            body: '01'
-        }
-    },
-    {
-        constructor: uplink.Time2000,
-        name: 'uplink command 0x09:TIME_2000',
-        // time: 2023-04-03T14:01:17.000Z
-        parameters: {sequenceNumber: 77, time: 733845677},
-        hex: {
-            header: '09 05',
-            body: '4d 2b bd 98 ad'
+            body: '0f 83 01 08 0a 0c',
+            lrc: 'c8'
         }
     },
     {
@@ -230,7 +232,8 @@ const uplinkCommands: TCommandList = [
         parameters: {id: events.BATTERY_ALARM, sequenceNumber: 2, data: {voltage: 3308}},
         hex: {
             header: '15 04',
-            body: '05 02 0c ec'
+            body: '05 02 0c ec',
+            lrc: 'a3'
         }
     },
     {
@@ -243,7 +246,8 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '15 0e',
-            body: '0b 02 2b c0 31 60 00 1a 79 88 17 01 23 56'
+            body: '0b 02 2b c0 31 60 00 1a 79 88 17 01 23 56',
+            lrc: '75'
         }
     },
     {
@@ -256,7 +260,8 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '15 05',
-            body: '0c 02 00 83 01'
+            body: '0c 02 00 83 01',
+            lrc: 'c9'
         }
     },
     {
@@ -269,7 +274,8 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '15 05',
-            body: '0d 02 00 83 01'
+            body: '0d 02 00 83 01',
+            lrc: 'c8'
         }
     },
     {
@@ -282,17 +288,50 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '15 04',
-            body: '11 02 00 83'
+            body: '11 02 00 83',
+            lrc: 'd4'
         }
-    }
+    },
+    {
+        constructor: uplink.SetTime2000,
+        name: 'uplink command 0x02:SET_TIME_2000',
+        parameters: {status: 1},
+        hex: {
+            header: '02 01',
+            body: '01',
+            lrc: '57'
+        }
+    },
+    {
+        constructor: uplink.SoftRestart,
+        name: 'uplink command 0x19:SOFT_RESTART',
+        parameters: undefined,
+        hex: {
+            header: '19 00',
+            body: '',
+            lrc: '4c'
+        }
+    },
+    {
+        constructor: uplink.Time2000,
+        name: 'uplink command 0x09:TIME_2000',
+        // time: 2023-04-03T14:01:17.000Z
+        parameters: {sequenceNumber: 77, time: 733845677},
+        hex: {
+            header: '09 05',
+            body: '4d 2b bd 98 ad',
+            lrc: 'b7'
+        }
+    },
+
 ];
 
 
-const checkCommand = ( {constructor, name, parameters, hex:{header, body} }: ICommand ) => {
-    const hex = `${header} ${body}`;
-
+const checkCommand = ( {constructor, name, parameters, hex:{header, body, lrc} }: ICommand ) => {
+    const commandHex = (`${header} ${body}`).trim();
+    const messageHex = `${commandHex} ${lrc}`;
     const command = new constructor(parameters);
-    const commandFromHex = constructor.fromBytes(getBytesFromHex(body));
+    const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null);
 
     expect(constructor.getName()).toBe(name);
 
@@ -300,13 +339,24 @@ const checkCommand = ( {constructor, name, parameters, hex:{header, body} }: ICo
     expect(command).toBeInstanceOf(Command);
     expect(command.parameters).toBe(parameters);
     expect(command.getParameters()).toBe(parameters);
-    expect(command.toHex()).toBe(hex);
+    expect(command.toHex()).toBe(commandHex);
     expect(command.toJson()).toBe(JSON.stringify(command.getParameters()));
 
     expect(commandFromHex).toStrictEqual(command);
-    expect(commandFromHex.toHex()).toBe(hex);
+    expect(commandFromHex.toHex()).toBe(commandHex);
     expect(commandFromHex.parameters).toStrictEqual(parameters);
     expect(commandFromHex.getParameters()).toStrictEqual(parameters);
+
+    if ( lrc ) {
+        const messageData = message.fromHex(messageHex, constructor.isUplink ? message.TYPE_UPLINK : message.TYPE_DOWNLINK);
+        const [{command: messageCommand, data: commandData}] = messageData.commands;
+
+        expect(messageCommand).toStrictEqual(command);
+        expect(commandData.header).toStrictEqual(getBytesFromHex(header));
+        expect(commandData.body).toStrictEqual(getBytesFromHex(body));
+        expect(lrc).toBe(getHexFromBytes(new Uint8Array([messageData.lrc.actual])));
+        expect(messageData.isValid).toBe(true);
+    }
 };
 
 
