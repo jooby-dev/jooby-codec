@@ -4,13 +4,6 @@ import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {getSecondsFromDate} from '../../utils/time.js';
 import GetCurrentMul, {IGetCurrentMulParameters} from './GetCurrentMul.js';
 
-const COMMAND_ID = 0x16;
-const COMMAND_TITLE = 'DATA_DAY_MUL';
-
-// 2 byte for date + 2 for channels (max channels: 7)
-// 4 + (7 * 4)
-const COMMAND_BODY_MAX_SIZE = 32;
-
 
 /**
  * DataDayMul command parameters.
@@ -21,6 +14,14 @@ interface IDataDayMulParameters extends IGetCurrentMulParameters {
      */
     time: number
 }
+
+
+const COMMAND_ID = 0x16;
+const COMMAND_TITLE = 'DATA_DAY_MUL';
+
+// 2 byte for date + 2 for channels (max channels: 7)
+// 4 + (7 * 4)
+const COMMAND_BODY_MAX_SIZE = 32;
 
 
 class DataDayMul extends GetCurrentMul {
@@ -53,7 +54,7 @@ class DataDayMul extends GetCurrentMul {
     }
 
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
+        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channels, time} = this.parameters;
 
         buffer.setDate(time);

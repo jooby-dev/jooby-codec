@@ -36,6 +36,16 @@ const downlinkCommands: TCommandList = [
         }
     },
     {
+        constructor: downlink.NewStatus,
+        name: 'downlink command 0x14:NEW_STATUS',
+        parameters: undefined,
+        hex: {
+            header: '14 00',
+            body: '',
+            lrc: '41'
+        }
+    },
+    {
         constructor: downlink.SetTime2000,
         name: 'downlink command 0x02:SET_TIME_2000',
         parameters: {sequenceNumber: 78, time: 123456},
@@ -293,6 +303,29 @@ const uplinkCommands: TCommandList = [
         }
     },
     {
+        constructor: uplink.NewStatus,
+        name: 'uplink command 0x14:NEW_STATUS',
+        parameters: {
+            software: {type: 4, version: 10},
+            hardware: {type: 1, version: 1},
+            data: {
+                voltage: {
+                    low: 63,
+                    high: 144
+                },
+                internalResistance: 10034,
+                temperature: 14,
+                remindedBatteryCapacity: 41,
+                lastEventSequenceNumber: 34
+            }
+        },
+        hex: {
+            header: '14 0c',
+            body: '04 0a 01 01 03 f0 90 27 32 0e 68 22',
+            lrc: '71'
+        }
+    },
+    {
         constructor: uplink.SetTime2000,
         name: 'uplink command 0x02:SET_TIME_2000',
         parameters: {status: 1},
@@ -322,8 +355,7 @@ const uplinkCommands: TCommandList = [
             body: '4d 2b bd 98 ad',
             lrc: 'b7'
         }
-    },
-
+    }
 ];
 
 

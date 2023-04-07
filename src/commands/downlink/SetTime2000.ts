@@ -8,11 +8,6 @@ import Command from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
 
 
-const COMMAND_ID = 0x02;
-const COMMAND_TITLE = 'SET_TIME_2000';
-const COMMAND_BODY_SIZE = 5;
-
-
 /**
  * SetTime2000 command parameters
  *
@@ -26,6 +21,11 @@ interface IDownlinkSetTime2000Parameters {
     /** seconds */
     time: number
 }
+
+
+const COMMAND_ID = 0x02;
+const COMMAND_TITLE = 'SET_TIME_2000';
+const COMMAND_BODY_SIZE = 5;
 
 
 /**
