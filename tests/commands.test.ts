@@ -117,16 +117,6 @@ const downlinkCommands: TCommandList = [
             body: '',
             lrc: '4c'
         }
-    },
-    {
-        constructor: downlink.NewStatus,
-        name: 'downlink command 0x14:NEW_STATUS',
-        parameters: undefined,
-        hex: {
-            header: '14 00',
-            body: '',
-            lrc: '41'
-        }
     }
 ];
 
