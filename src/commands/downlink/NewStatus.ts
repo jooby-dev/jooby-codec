@@ -16,7 +16,7 @@ const COMMAND_TITLE = 'NEW_STATUS';
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 19 00
+ * // 14 00
  * ```
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/NewStatus.md#request)
  */
