@@ -323,7 +323,28 @@ const uplinkCommands: TCommandList = [
             lrc: 'b7'
         }
     },
-
+    {
+        constructor: uplink.NewStatus,
+        name: 'uplink command 0x14:NEW_STATUS',
+        parameters: {
+            software: {type: 4, version: 10},
+            hardware: {type: 1, version: 1},
+            data: {
+                voltage: {
+                    low: 63,
+                    high: 144
+                },
+                internalResistance: 10034,
+                temperature: 14,
+                remindedBatteryCapacity: 41,
+                lastEventSequenceNumber: 34
+            }
+        },
+        hex: {
+            header: '14 0c',
+            body: '04 0a 01 01 03 f0 90 27 32 0e 68 22'
+        }
+    }
 ];
 
 

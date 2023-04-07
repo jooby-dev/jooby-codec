@@ -53,7 +53,7 @@ class DataDayMul extends GetCurrentMul {
     }
 
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
+        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channels, time} = this.parameters;
 
         buffer.setDate(time);

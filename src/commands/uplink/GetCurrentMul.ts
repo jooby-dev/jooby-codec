@@ -53,7 +53,7 @@ class GetCurrentMul extends Command {
     }
 
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
+        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channels} = this.parameters;
 
         buffer.setChannels(channels.map(({index}) => index));

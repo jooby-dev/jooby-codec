@@ -57,7 +57,7 @@ class Time2000 extends Command {
             throw new Error(`${this.getName()}. Wrong buffer size: ${data.byteLength}.`);
         }
 
-        const buffer = new CommandBinaryBuffer(data, false);
+        const buffer = new CommandBinaryBuffer(data);
         const parameters = {
             sequenceNumber: buffer.getUint8(),
             time: buffer.getTime()
@@ -73,7 +73,7 @@ class Time2000 extends Command {
     // returns full message - header with body
     toBytes (): Uint8Array {
         const {sequenceNumber, time} = this.parameters;
-        const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE, false);
+        const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
         buffer.setUint8(sequenceNumber);
         buffer.setTime(time);

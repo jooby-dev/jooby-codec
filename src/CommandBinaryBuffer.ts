@@ -26,6 +26,7 @@ export interface IBatteryVoltage {
     high: number | undefined
 }
 
+
 /**
  * Command specific byte array manipulation.
  */

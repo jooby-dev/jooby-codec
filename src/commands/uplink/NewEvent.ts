@@ -150,7 +150,7 @@ class NewEvent extends Command {
                 break;
 
             default:
-                throw new Error(`${this.getId()}: event ${id} not supported`);
+                throw new Error(`${this.getId()}: event ${id} is not supported`);
         }
 
         return new NewEvent({id, sequenceNumber, data: eventData});
@@ -158,7 +158,7 @@ class NewEvent extends Command {
 
     toBytes (): Uint8Array {
         const {id, sequenceNumber, data} = this.parameters;
-        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
+        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         let eventData;
 
         buffer.setUint8(id);
@@ -205,7 +205,7 @@ class NewEvent extends Command {
                 break;
 
             default:
-                throw new Error(`${NewEvent.getId()}: event ${id} not supported`);
+                throw new Error(`${NewEvent.getId()}: event ${id} is not supported`);
         }
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());

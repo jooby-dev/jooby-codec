@@ -74,7 +74,7 @@ class DataHourMul extends GetCurrentMul {
     }
 
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
+        const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channels} = this.parameters;
 
         const {time} = channels[0];
