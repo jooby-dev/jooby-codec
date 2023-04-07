@@ -342,7 +342,8 @@ const uplinkCommands: TCommandList = [
         },
         hex: {
             header: '14 0c',
-            body: '04 0a 01 01 03 f0 90 27 32 0e 68 22'
+            body: '04 0a 01 01 03 f0 90 27 32 0e 68 22',
+            lrc: '71'
         }
     }
 ];
