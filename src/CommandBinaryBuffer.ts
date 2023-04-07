@@ -1,14 +1,6 @@
 import BinaryBuffer from './BinaryBuffer.js';
 import {getDateFromSeconds} from './utils/time.js';
 
-const INITIAL_YEAR = 2000;
-const MONTH_BIT_SIZE = 4;
-const DATE_BIT_SIZE = 5;
-const YEAR_START_INDEX = 1;
-const CHANNELS_FULL_MASK = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40];
-const CHANNELS_SHORT_MASK = [0x01, 0x02, 0x04, 0x08];
-const UNKNOWN_BATTER_VOLTAGE = 4095;
-
 
 export interface IBatteryVoltage {
     /**
@@ -25,6 +17,15 @@ export interface IBatteryVoltage {
      */
     high: number | undefined
 }
+
+
+const INITIAL_YEAR = 2000;
+const MONTH_BIT_SIZE = 4;
+const DATE_BIT_SIZE = 5;
+const YEAR_START_INDEX = 1;
+const CHANNELS_FULL_MASK = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40];
+const CHANNELS_SHORT_MASK = [0x01, 0x02, 0x04, 0x08];
+const UNKNOWN_BATTER_VOLTAGE = 4095;
 
 
 /**

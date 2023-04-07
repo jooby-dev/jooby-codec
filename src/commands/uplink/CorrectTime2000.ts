@@ -3,11 +3,6 @@ import Command from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
 
 
-const COMMAND_ID = 0x0c;
-const COMMAND_TITLE = 'CORRECT_TIME_2000';
-const COMMAND_BODY_SIZE = 1;
-
-
 /**
  * CorrectTime2000 command parameters
  *
@@ -17,6 +12,11 @@ const COMMAND_BODY_SIZE = 1;
 interface IUplinkCorrectTime2000Parameters {
     status: number
 }
+
+
+const COMMAND_ID = 0x0c;
+const COMMAND_TITLE = 'CORRECT_TIME_2000';
+const COMMAND_BODY_SIZE = 1;
 
 
 /**

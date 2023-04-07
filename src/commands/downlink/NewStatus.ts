@@ -5,6 +5,21 @@ const COMMAND_ID = 0x14;
 const COMMAND_TITLE = 'NEW_STATUS';
 
 
+/**
+ * Downlink command.
+ *
+ * @example
+ * ```js
+ * import NewStatus from 'jooby-codec/commands/downlink/NewStatus';
+ *
+ * const command = new NewStatus();
+ *
+ * // output command binary in hex representation
+ * console.log(command.toHex());
+ * // 19 00
+ * ```
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/NewStatus.md#request)
+ */
 class NewStatus extends Command {
     constructor () {
         super();
@@ -17,14 +32,13 @@ class NewStatus extends Command {
     static readonly title = COMMAND_TITLE;
 
     // data - only body (without header)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    static fromBytes ( _data: Uint8Array ) {
+    static fromBytes () {
         return new NewStatus();
     }
 
     // eslint-disable-next-line class-methods-use-this
     toBytes (): Uint8Array {
-        return Command.toBytes(COMMAND_ID, new Uint8Array());
+        return Command.toBytes(COMMAND_ID);
     }
 }
 

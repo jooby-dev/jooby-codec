@@ -5,32 +5,6 @@ import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
 
 
-const COMMAND_ID = 0x15;
-const COMMAND_TITLE = 'NEW_EVENT';
-// ACTIVATE_MTX are biggest,1 byte event id, 1 byte sequence number, 4 bytes time, 8 bytes mtx address
-const COMMAND_BODY_MAX_SIZE = 14;
-const MTX_ADDRESS_SIZE = 8;
-
-const getVoltage = ( buffer: CommandBinaryBuffer ): number => buffer.getUint16(false);
-const setVoltage = ( buffer: CommandBinaryBuffer, value: number ): void => buffer.setUint16(value, false);
-
-const getDeviceId = ( buffer: CommandBinaryBuffer ): string => {
-    const bytes = [];
-
-    for ( let i = 0; i < MTX_ADDRESS_SIZE; ++i ) {
-        bytes.push(buffer.getUint8());
-    }
-
-    return getHexFromBytes(new Uint8Array(bytes));
-};
-
-const setDeviceId = ( buffer: CommandBinaryBuffer, value: string ): void => {
-    const bytes = getBytesFromHex(value);
-
-    bytes.forEach(byte => buffer.setUint8(byte));
-};
-
-
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IEventBase {}
 
@@ -79,6 +53,32 @@ interface INewEventParameters {
     sequenceNumber: number,
     data: IEventBase
 }
+
+
+const COMMAND_ID = 0x15;
+const COMMAND_TITLE = 'NEW_EVENT';
+// ACTIVATE_MTX are biggest,1 byte event id, 1 byte sequence number, 4 bytes time, 8 bytes mtx address
+const COMMAND_BODY_MAX_SIZE = 14;
+const MTX_ADDRESS_SIZE = 8;
+
+const getVoltage = ( buffer: CommandBinaryBuffer ): number => buffer.getUint16(false);
+const setVoltage = ( buffer: CommandBinaryBuffer, value: number ): void => buffer.setUint16(value, false);
+
+const getDeviceId = ( buffer: CommandBinaryBuffer ): string => {
+    const bytes = [];
+
+    for ( let i = 0; i < MTX_ADDRESS_SIZE; ++i ) {
+        bytes.push(buffer.getUint8());
+    }
+
+    return getHexFromBytes(new Uint8Array(bytes));
+};
+
+const setDeviceId = ( buffer: CommandBinaryBuffer, value: string ): void => {
+    const bytes = getBytesFromHex(value);
+
+    bytes.forEach(byte => buffer.setUint8(byte));
+};
 
 
 /**

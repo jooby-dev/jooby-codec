@@ -35,16 +35,6 @@ interface IGasStatus extends IStatusBase {
     lastEventSequenceNumber: number
 }
 
-
-const COMMAND_ID = 0x14;
-const COMMAND_TITLE = 'NEW_STATUS';
-const COMMAND_BODY_MAX_SIZE = 20;
-const UNKNOWN_RESISTANT = 65535;
-
-// max battery capacity, 254 - 100%
-const UNKNOWN_BATTERY_CAPACITY = 255;
-
-
 /**
  * NewStatus command parameters
  */
@@ -53,6 +43,15 @@ interface INewStatusParameters {
     hardware: IProduct,
     data: IStatusBase
 }
+
+
+const COMMAND_ID = 0x14;
+const COMMAND_TITLE = 'NEW_STATUS';
+const COMMAND_BODY_MAX_SIZE = 20;
+const UNKNOWN_RESISTANT = 65535;
+
+// max battery capacity, 254 - 100%
+const UNKNOWN_BATTERY_CAPACITY = 255;
 
 
 /**
@@ -84,7 +83,7 @@ interface INewStatusParameters {
  * // 14 0c 04 0a 01 01 03 f0 90 27 32 0e 68 22
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/NewStatus.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/NewStatus.md#response)
  */
 class NewStatus extends Command {
     constructor ( public parameters: INewStatusParameters ) {

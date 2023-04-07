@@ -3,11 +3,6 @@ import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 
 
-const COMMAND_ID = 0x09;
-const COMMAND_TITLE = 'TIME_2000';
-const COMMAND_BODY_SIZE = 5;
-
-
 /**
  * Time2000 command parameters
  *
@@ -21,6 +16,11 @@ interface ITime2000Parameters {
     /** seconds since year 2000 */
     time: number
 }
+
+
+const COMMAND_ID = 0x09;
+const COMMAND_TITLE = 'TIME_2000';
+const COMMAND_BODY_SIZE = 5;
 
 
 /**

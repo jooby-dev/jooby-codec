@@ -2,17 +2,11 @@ import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 
 
-const COMMAND_ID = 0x18;
-const COMMAND_TITLE = 'GET_CURRENT_MUL';
-
-// 2 bytes for 7 channels + (7 channels * 5 byte for current value of channel)
-const COMMAND_BODY_MAX_SIZE = 37;
-
 /**
  * GetCurrentMul command channel.
  */
 export interface IChannel {
-    index: number,
+    index: number
     value: number
 }
 
@@ -22,6 +16,13 @@ export interface IChannel {
 export interface IGetCurrentMulParameters {
     channels: Array<IChannel>
 }
+
+
+const COMMAND_ID = 0x18;
+const COMMAND_TITLE = 'GET_CURRENT_MUL';
+
+// 2 bytes for 7 channels + (7 channels * 5 byte for current value of channel)
+const COMMAND_BODY_MAX_SIZE = 37;
 
 
 class GetCurrentMul extends Command {
