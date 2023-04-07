@@ -98,7 +98,6 @@ class NewStatus extends Command {
 
     static fromBytes ( data: Uint8Array ): NewStatus {
         const buffer = new CommandBinaryBuffer(data);
-
         const software = {type: buffer.getUint8(), version: buffer.getUint8()};
         const hardware = {type: buffer.getUint8(), version: buffer.getUint8()};
 
