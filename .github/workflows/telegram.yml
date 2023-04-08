@@ -6,7 +6,6 @@ on:
     - issues
     - issue_comment
     - release
-    - workflow_dispatch
 
 jobs:
     notify:
