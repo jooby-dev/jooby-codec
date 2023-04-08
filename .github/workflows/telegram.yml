@@ -16,7 +16,7 @@ jobs:
           - uses: actions/checkout@v3
 
           - name: send notification
-            uses: EverythingSuckz/github-telegram-notify@main
+            uses: EverythingSuckz/github-telegram-notify@v1
             with:
                 bot_token: '${{ secrets.TELEGRAM_BOT_TOKEN }}'
                 chat_id: '${{ secrets.TELEGRAM_CHAT_ID }}'
