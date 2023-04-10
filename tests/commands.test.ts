@@ -10,7 +10,7 @@ import getHexFromBytes from '../src/utils/getHexFromBytes.js';
 interface ICommand {
     constructor: any,
     name: string,
-    parameters: any
+    parameters: any,
     hex: {
         header: string,
         body: string,

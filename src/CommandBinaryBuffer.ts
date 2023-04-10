@@ -8,7 +8,7 @@ export interface IBatteryVoltage {
      *
      * 4095 === undefined
      */
-    low: number | undefined
+    low: number | undefined,
 
     /**
      * battery voltage value at hight consumption, in mV;

@@ -6,7 +6,7 @@ import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
  * GetCurrentMul command channel.
  */
 export interface IChannel {
-    index: number
+    index: number,
     value: number
 }
 

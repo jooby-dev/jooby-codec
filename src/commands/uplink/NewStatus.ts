@@ -8,7 +8,7 @@ import roundNumber from '../../utils/roundNumber.js';
 interface IStatusBase {}
 
 interface IProduct {
-    version: number
+    version: number,
     type: number
 }
 
