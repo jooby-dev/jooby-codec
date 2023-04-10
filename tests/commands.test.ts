@@ -380,7 +380,7 @@ const checkCommand = ( {constructor, name, parameters, hex:{header, body, lrc} }
     expect(commandFromHex.getParameters()).toStrictEqual(parameters);
 
     if ( lrc ) {
-        const messageData = message.fromHex(messageHex, constructor.isUplink ? message.TYPE_UPLINK : message.TYPE_DOWNLINK);
+        const messageData = message.fromHex(messageHex, constructor.directionType);
         const [{command: messageCommand, data: commandData}] = messageData.commands;
 
         expect(messageCommand).toStrictEqual(command);
