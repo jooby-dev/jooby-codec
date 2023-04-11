@@ -9,6 +9,7 @@ import GetCurrentMul from './GetCurrentMul.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import roundNumber from '../../utils/roundNumber.js';
 import {getSecondsFromDate} from '../../utils/time.js';
+import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
 
 
 const COMMAND_ID = 0x0b1f;
@@ -26,7 +27,7 @@ class ExAbsDayMul extends GetCurrentMul {
 
     static id = COMMAND_ID;
 
-    static readonly isUplink = true;
+    static readonly directionType = DIRECTION_TYPE_UPLINK;
 
     static title = COMMAND_TITLE;
 

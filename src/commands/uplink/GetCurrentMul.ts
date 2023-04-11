@@ -1,12 +1,13 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
 
 
 /**
  * GetCurrentMul command channel.
  */
 export interface IChannel {
-    index: number
+    index: number,
     value: number
 }
 
@@ -34,7 +35,7 @@ class GetCurrentMul extends Command {
 
     static id = COMMAND_ID;
 
-    static readonly isUplink = true;
+    static readonly directionType = DIRECTION_TYPE_UPLINK;
 
     static title = COMMAND_TITLE;
 

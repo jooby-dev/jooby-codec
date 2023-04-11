@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {getSecondsFromDate} from '../../utils/time.js';
 import GetCurrentMul, {IGetCurrentMulParameters} from './GetCurrentMul.js';
+import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
 
 
 /**
@@ -31,7 +33,7 @@ class DataDayMul extends GetCurrentMul {
 
     static readonly id = COMMAND_ID;
 
-    static readonly isUplink = true;
+    static readonly directionType = DIRECTION_TYPE_UPLINK;
 
     static readonly title = COMMAND_TITLE;
 

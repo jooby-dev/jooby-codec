@@ -1,14 +1,15 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer, {IBatteryVoltage} from '../../CommandBinaryBuffer.js';
-import * as hardwareTypes from '../../constants/hardwareTypes.js';
 import roundNumber from '../../utils/roundNumber.js';
+import * as hardwareTypes from '../../constants/hardwareTypes.js';
+import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IStatusBase {}
 
 interface IProduct {
-    version: number
+    version: number,
     type: number
 }
 
@@ -92,7 +93,7 @@ class NewStatus extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly isUplink = true;
+    static readonly directionType = DIRECTION_TYPE_UPLINK;
 
     static readonly title = COMMAND_TITLE;
 

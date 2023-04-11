@@ -1,6 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+
 import Command from '../Command.js';
+import UnknownCommand from '../UnknownCommand.js';
 import * as downlinkCommands from '../commands/downlink/index.js';
 import * as uplinkCommands from '../commands/uplink/index.js';
+
+import * as directionTypes from '../constants/directionTypes.js';
+import {DIRECTION_TYPE_AUTO, DIRECTION_TYPE_DOWNLINK, DIRECTION_TYPE_UPLINK} from '../constants/directionTypes.js';
 
 import * as header from './header.js';
 import getBytesFromHex from './getBytesFromHex.js';
@@ -27,11 +33,10 @@ interface IMessage {
 }
 
 
-export const TYPE_AUTO = 0;
-export const TYPE_DOWNLINK = 1;
-export const TYPE_UPLINK = 2;
-
 const HEADER_MAX_SIZE = 3;
+
+// all allowed types
+const directionTypeIds: Set<number> = new Set<number>(Object.values(directionTypes));
 
 // convert export namespace to dictionary {commandId: commandConstructor}
 const downlinkCommandsById = Object.fromEntries(
@@ -59,42 +64,41 @@ const calculateLrc = ( data: Uint8Array, initialLrc = 0x55 ) => {
     return lrc;
 };
 
-const getCommand = ( id: number, data: Uint8Array, direction = TYPE_AUTO ): Command => {
-    // given direction
-    if ( direction === TYPE_DOWNLINK || direction === TYPE_UPLINK ) {
-        const commandsById = direction === TYPE_DOWNLINK ? downlinkCommandsById : uplinkCommandsById;
-        const command = commandsById[id];
-
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if ( !command ) {
-            throw new Error(`Unsupported command with id: ${id}.`);
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return command.fromBytes(data);
+const getCommand = ( id: number, data: Uint8Array, direction = DIRECTION_TYPE_AUTO ): Command => {
+    if ( !directionTypeIds.has(direction) ) {
+        throw new Error('wrong direction type');
     }
 
-    // auto direction
-    // try downlink
+    const downlinkCommand = downlinkCommandsById[id];
+    const uplinkCommand = uplinkCommandsById[id];
+
+    // check command availability
+    if (
+        (!downlinkCommand && !uplinkCommand)
+        || (direction === DIRECTION_TYPE_DOWNLINK && !downlinkCommand)
+        || (direction === DIRECTION_TYPE_UPLINK && !uplinkCommand)
+    ) {
+        // missing command implementation
+        return new UnknownCommand({id, data});
+    }
+
+    // ths specific direction
+    if ( direction === DIRECTION_TYPE_DOWNLINK || direction === DIRECTION_TYPE_UPLINK ) {
+        const command = direction === DIRECTION_TYPE_UPLINK ? uplinkCommand : downlinkCommand;
+
+        return command.fromBytes(data) as Command;
+    }
+
+    // direction autodetect
     try {
-        const command = downlinkCommandsById[id];
-        // console.log('command downlink:', command);
-        // console.log('downlinkCommandsById:', downlinkCommandsById);
-        // console.log('id:', id);
-
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return command.fromBytes(data);
+        // uplink should be more often
+        return uplinkCommand.fromBytes(data) as Command;
     } catch {
-        // try uplink
-        const command = uplinkCommandsById[id];
-        //console.log('command uplink:', command);
-
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return command.fromBytes(data);
+        return downlinkCommand.fromBytes(data) as Command;
     }
 };
 
-export const fromBytes = ( data: Uint8Array, direction = TYPE_AUTO ) => {
+export const fromBytes = ( data: Uint8Array, direction = DIRECTION_TYPE_AUTO ) => {
     const commandsData = data.slice(0, -1);
     const expectedLrc = data.at(-1) ?? 0;
     const actualLrc = calculateLrc(commandsData);
@@ -127,7 +131,7 @@ export const fromBytes = ( data: Uint8Array, direction = TYPE_AUTO ) => {
     return result;
 };
 
-export const fromHex = ( data: string, direction = TYPE_AUTO ) => fromBytes(getBytesFromHex(data), direction);
+export const fromHex = ( data: string, direction = DIRECTION_TYPE_AUTO ) => fromBytes(getBytesFromHex(data), direction);
 
 export const toBytes = ( commands: Array<Command> ): Uint8Array => {
     const arrays = commands.map(command => command.toBytes());
