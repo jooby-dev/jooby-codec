@@ -16,8 +16,8 @@ const COMMAND_TITLE = 'DATA_HOUR_MUL';
 
 // date 2 bytes, hour 1 byte, channels - 1 byte, so max channels = 4
 // max hours diff - 7 (3 bit value)
-// 4 + (4 channels * 3 bytes of hour values) + (4 * 2 bytes of diff * 7 max hours diff)
-const COMMAND_BODY_MAX_SIZE = 72;
+// 4 + (4 channels * 5 bytes of hour values) + (4 * 5 bytes of diff * 7 max hours diff)
+const COMMAND_BODY_MAX_SIZE = 164;
 
 
 class DataHourMul extends GetCurrentMul {
