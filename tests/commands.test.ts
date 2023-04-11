@@ -36,6 +36,16 @@ const downlinkCommands: TCommandList = [
         }
     },
     {
+        constructor: downlink.GetArchiveHoursMul,
+        name: 'downlink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        parameters: {channels: [0], hourAmount: 0, time: 756648000},
+        hex: {
+            header: '1a 04',
+            body: '2f 97 0c 01',
+            lrc: 'fe'
+        }
+    },
+    {
         constructor: downlink.NewStatus,
         name: 'downlink command 0x14:NEW_STATUS',
         parameters: undefined,
@@ -217,6 +227,49 @@ const uplinkCommands: TCommandList = [
             header: '1f 0a 10',
             body: '2e 6a ec 01 64 b9 f3 14 80 01 64 20 32 00 02 05',
             lrc: '33'
+        }
+    },
+    {
+        constructor: uplink.GetArchiveHoursMul,
+        name: 'uplink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        parameters: {
+            channels: [
+                {
+                    value: 131,
+                    index: 0,
+                    time: 756648000,
+                    date: new Date('2023-12-23T12:00:00.000Z'),
+                    diff: [{value: 10, hour: 0, time: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                },
+                {
+                    value: 8,
+                    index: 1,
+                    time: 756648000,
+                    date: new Date('2023-12-23T12:00:00.000Z'),
+                    diff: [{value: 10, hour: 0, time: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                },
+                {
+                    value: 8,
+                    index: 2,
+                    time: 756648000,
+                    date: new Date('2023-12-23T12:00:00.000Z'),
+                    diff: [{value: 10, hour: 0, time: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                },
+                {
+                    value: 12,
+                    index: 3,
+                    time: 756648000,
+                    date: new Date('2023-12-23T12:00:00.000Z'),
+                    diff: [{value: 10, hour: 0, time: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                }
+            ],
+            date: new Date('2023-12-23T12:00:00.000Z'),
+            hourAmount: 1
+        },
+        hex: {
+            header: '1a 0d',
+            body: '2f 97 0c 0f 83 01 0a 08 0a 08 0a 0c 0a',
+            lrc: '77'
         }
     },
     {
