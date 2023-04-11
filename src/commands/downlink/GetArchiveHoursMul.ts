@@ -5,7 +5,7 @@
  */
 
 import Command from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {Seconds} from '../../CommandBinaryBuffer.js';
 import {DIRECTION_TYPE_DOWNLINK} from '../../constants/directionTypes.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
@@ -14,14 +14,14 @@ import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
  * GetArchiveHoursMul command parameters
  *
  * @example
- * // time: 2023-04-03T14:01:17.000Z
- * {sequenceNumber: 77, time: 733845677}
+ * // request for 2 hours archive values from channel #1 from 2023-12-23T12:00:00.000Z or 756648000 seconds since 2000 year
+ * {channels: [0], hourAmount: 2, time: 756648000}
  */
 interface IDownlinkGetArchiveHoursMulParameters {
     /** amount of hours to retrieve */
     hourAmount: number,
-    /** seconds */
-    time: number,
+
+    time: Seconds,
 
     /** array of channels indexes */
     channels: Array<number>

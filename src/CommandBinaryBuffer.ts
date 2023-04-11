@@ -47,7 +47,7 @@ export interface IChannel {
     value: number,
 
     /**
-     *
+     * Values differences between hours.
      */
     diff: Array<IHourDiff>,
 
@@ -59,7 +59,7 @@ export interface IChannel {
 
 
     /**
-     * Normal da
+     * Normal date in UTC.
      */
     date: Date | undefined,
 }
@@ -230,14 +230,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     setHours ( hour: number, hours: number ): void {
-        let hoursAmount = hours;
+        let hourAmount = hours;
 
         // TODO: add link to doc
-        if ( hoursAmount === 1 ) {
-            hoursAmount = 0;
+        if ( hourAmount === 1 ) {
+            hourAmount = 0;
         }
 
-        this.setUint8(((hoursAmount & 0x07) << 5) | (hour & 0x1f));
+        this.setUint8(((hourAmount & 0x07) << 5) | (hour & 0x1f));
     }
 
     getTime (): number {

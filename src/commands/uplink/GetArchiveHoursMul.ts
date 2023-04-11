@@ -5,6 +5,24 @@ import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
 import {getDateFromSeconds} from '../../utils/time.js';
 
 
+/**
+ * GetArchiveHoursMul command parameters
+ *
+ * @example
+ * // archive hours values from 001-03-10T12:00:00.000Z with 1-hour diff
+ * {
+ *     channels: [{value: 101, index: 0, diff: [value: 1]}],
+ *     date: '2001-03-10T12:00:00.000Z',
+ *     hourAmount: 1
+ * }
+ */
+interface IUplinkGetArchiveHoursMulParameters {
+    channels: Array<IChannel>,
+    date: Date | undefined | string,
+    hourAmount: number | undefined
+}
+
+
 const COMMAND_ID = 0x1a;
 const COMMAND_TITLE = 'GET_ARCHIVE_HOURS_MUL';
 
@@ -15,7 +33,7 @@ const COMMAND_BODY_MAX_SIZE = 164;
 
 
 class GetArchiveHoursMul extends GetCurrentMul {
-    constructor ( public parameters: {channels: Array<IChannel>, date: Date | undefined | string, hourAmount: number | undefined} ) {
+    constructor ( public parameters: IUplinkGetArchiveHoursMulParameters ) {
         super(parameters);
 
         const {date, hourAmount, channels} = this.parameters;
