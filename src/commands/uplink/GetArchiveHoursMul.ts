@@ -1,7 +1,7 @@
 import Command from '../../Command.js';
 import GetCurrentMul from './GetCurrentMul.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
-import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directionTypes.js';
 import {getDateFromSeconds} from '../../utils/time.js';
 
 
@@ -59,7 +59,7 @@ class GetArchiveHoursMul extends GetCurrentMul {
 
     static readonly id = COMMAND_ID;
 
-    static readonly directionType = DIRECTION_TYPE_UPLINK;
+    static readonly directionType = UPLINK;
 
     static readonly title = COMMAND_TITLE;
 
