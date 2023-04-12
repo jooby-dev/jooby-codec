@@ -1,15 +1,14 @@
-name: npm
+name: npm-develop
 
 on:
-    release:
-        types:
-          - published
-
+    push:
+        branches:
+          - main
     # allow to run manually
     workflow_dispatch:
 
 # allow only one concurrent run
-concurrency: "npm"
+concurrency: "npm-develop"
 
 jobs:
     build:
@@ -26,7 +25,8 @@ jobs:
 
           - run: npm ci
           - run: npm run build:js:clean
+          - run: cat package.json
 
-          - run: npm run publish
+          - run: npm run publish:dev
             env:
                 NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
