@@ -26,7 +26,7 @@ export interface IBatteryVoltage {
 
 
 /**
- * Hour channel
+ * Channel value hour diff
  */
 export interface IHourDiff {
     value: number,
@@ -309,14 +309,18 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
+            const diff: Array<IHourDiff> = [];
+
             // decode hour value for channel
             value = this.getExtendedValue();
             counterDate.setTime(date.getTime());
-
-            const diff: Array<IHourDiff> = [];
-            const channel = {value, index: channelIndex, time: getSecondsFromDate(counterDate), date: new Date(counterDate), diff};
-
-            channels.push(channel);
+            channels.push({
+                value,
+                diff,
+                index: channelIndex,
+                time: getSecondsFromDate(counterDate),
+                date: new Date(counterDate)
+            });
 
             for ( let diffHour = 0; diffHour < hourAmount; ++diffHour ) {
                 value = this.getExtendedValue();
