@@ -21,7 +21,7 @@ export type TBooleanObject = Record<string, boolean>;
  * // 1001011
  * ```
  */
-export const fromObject = ( bitMask: TBitSetMask, booleanObject: TBooleanObject ): number => {
+export const fromObject = ( bitMask: TBitSetMask = {}, booleanObject: TBooleanObject = {} ): number => {
     let result = 0;
 
     for ( const [name, value] of Object.entries(booleanObject) ) {
@@ -52,7 +52,7 @@ export const fromObject = ( bitMask: TBitSetMask, booleanObject: TBooleanObject 
  * // {a: false, b: false, c: true, d: false, g: false}
  * ```
  */
-export const toObject = ( bitMask: TBitSetMask, value: number ): TBooleanObject => {
+export const toObject = ( bitMask: TBitSetMask = {}, value = 0 ): TBooleanObject => {
     const result: TBooleanObject = {};
 
     for ( const [name, position] of Object.entries(bitMask) ) {
