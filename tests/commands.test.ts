@@ -6,6 +6,7 @@ import * as message from '../src/utils/message.js';
 import getBytesFromHex from '../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../src/utils/getHexFromBytes.js';
 import * as hardwareTypes from '../src/constants/hardwareTypes.js';
+import * as deviceParameters from '../src/constants/deviceParameters.js';
 
 
 interface ICommand {
@@ -38,13 +39,43 @@ const downlinkCommands: TCommandList = [
         }
     },
     {
-        constructor: downlink.GetArchiveHoursMul,
-        name: 'downlink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        constructor: downlink.ExAbsArchiveDaysMul,
+        name: 'downlink command 0xd1f:EX_ABS_ARCHIVE_DAYS_MUL',
+        parameters: {channels: [0], dayAmount: 1, time: 731721600},
+        hex: {
+            header: '1f 0d 04',
+            body: '2e 6a 01 01',
+            lrc: '07'
+        }
+    },
+    {
+        constructor: downlink.ExAbsArchiveHoursMul,
+        name: 'downlink command 0xc1f:EX_ABS_ARCHIVE_HOUR_MUL',
         parameters: {channels: [0], hourAmount: 0, time: 756648000},
         hex: {
-            header: '1a 04',
+            header: '1f 0c 04',
             body: '2f 97 0c 01',
-            lrc: 'fe'
+            lrc: 'f7'
+        }
+    },
+    {
+        constructor: downlink.GetArchiveDaysMul,
+        name: 'downlink command 0x1b:GET_ARCHIVE_DAYS_MUL',
+        parameters: {channels: [0], dayAmount: 1, time: 731721600},
+        hex: {
+            header: '1b 04',
+            body: '2e 6a 01 01',
+            lrc: '0e'
+        }
+    },
+    {
+        constructor: downlink.GetArchiveHoursMul,
+        name: 'downlink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        parameters: {channels: [0], hourAmount: 2, time: 756648000},
+        hex: {
+            header: '1a 04',
+            body: '2f 97 4c 01',
+            lrc: 'be'
         }
     },
     {
@@ -55,6 +86,42 @@ const downlinkCommands: TCommandList = [
             header: '14 00',
             body: '',
             lrc: '41'
+        }
+    },
+    {
+        constructor: downlink.SetParameter,
+        name: 'downlink command 0x03:SET_PARAMETER',
+        parameters: {id: deviceParameters.ABSOLUTE_DATA_STATUS, data: {status: 1}},
+        hex: {
+            header: '03 02',
+            body: '18 01',
+            lrc: '4d'
+        }
+    },
+    {
+        constructor: downlink.SetParameter,
+        name: 'downlink command 0x03:SET_PARAMETER',
+        parameters: {
+            id: deviceParameters.INITIAL_DATA,
+            data: {value: 2023, meterValue: 204, pulseCoefficient: 100}
+        },
+        hex: {
+            header: '03 0a',
+            body: '17 00 00 00 cc 82 00 00 07 e7',
+            lrc: 'e5'
+        }
+    },
+    {
+        constructor: downlink.SetParameter,
+        name: 'downlink command 0x03:SET_PARAMETER',
+        parameters: {
+            id: deviceParameters.INITIAL_DATA_MULTI_CHANNEL,
+            data: {value: 2032, meterValue: 402, pulseCoefficient: 1000, channel: 1}
+        },
+        hex: {
+            header: '03 0b',
+            body: '1d 01 00 00 01 92 80 00 00 07 f0',
+            lrc: 'a5'
         }
     },
     {
