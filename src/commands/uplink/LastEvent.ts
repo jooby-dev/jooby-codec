@@ -16,7 +16,7 @@ interface ILastEventGasStatus {
     isConnectionLost?: boolean
 }
 
-interface ILastEvent2channelStatus {
+interface ILastEvent2ChannelStatus {
     /** the battery voltage has dropped below the set threshold */
     isBatteryLow?: boolean,
     /** the device has detected a loss of connection to the server */
@@ -39,7 +39,7 @@ interface ILastEventWaterStatus {
     isConnectionLost?: boolean
 }
 
-interface ILastEvent4channelStatus {
+interface ILastEvent4ChannelStatus {
     /** the battery voltage has dropped below the set threshold */
     isBatteryLow?: boolean,
     /** the device has detected a loss of connection to the server */
@@ -85,10 +85,10 @@ interface ILastEventMtxStatus {
 
 type TLastEventStatus =
     ILastEventGasStatus |
-    ILastEvent2channelStatus |
+    ILastEvent2ChannelStatus |
     ILastEventElimpStatus |
     ILastEventWaterStatus |
-    ILastEvent4channelStatus |
+    ILastEvent4ChannelStatus |
     ILastEventMtxStatus;
 
 /**
