@@ -1,6 +1,6 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
-import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directionTypes.js';
 
 
 /**
@@ -11,7 +11,7 @@ import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
  * {sequenceNumber: 77, time: 733845677}
  */
 interface ITime2000Parameters {
-    /** sequence Number */
+    /** unique time manipulation operation number */
     sequenceNumber: number,
     /** seconds since year 2000 */
     time: number
@@ -47,7 +47,7 @@ class Time2000 extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly directionType = DIRECTION_TYPE_UPLINK;
+    static readonly directionType = UPLINK;
 
     static readonly title = COMMAND_TITLE;
 

@@ -6,7 +6,7 @@ import * as downlinkCommands from '../commands/downlink/index.js';
 import * as uplinkCommands from '../commands/uplink/index.js';
 
 import * as directionTypes from '../constants/directionTypes.js';
-import {DIRECTION_TYPE_AUTO, DIRECTION_TYPE_DOWNLINK, DIRECTION_TYPE_UPLINK} from '../constants/directionTypes.js';
+import {AUTO, DOWNLINK, UPLINK} from '../constants/directionTypes.js';
 
 import * as header from './header.js';
 import getBytesFromHex from './getBytesFromHex.js';
@@ -64,7 +64,7 @@ const calculateLrc = ( data: Uint8Array, initialLrc = 0x55 ) => {
     return lrc;
 };
 
-const getCommand = ( id: number, data: Uint8Array, direction = DIRECTION_TYPE_AUTO ): Command => {
+const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareType?: number ): Command => {
     if ( !directionTypeIds.has(direction) ) {
         throw new Error('wrong direction type');
     }
@@ -75,30 +75,30 @@ const getCommand = ( id: number, data: Uint8Array, direction = DIRECTION_TYPE_AU
     // check command availability
     if (
         (!downlinkCommand && !uplinkCommand)
-        || (direction === DIRECTION_TYPE_DOWNLINK && !downlinkCommand)
-        || (direction === DIRECTION_TYPE_UPLINK && !uplinkCommand)
+        || (direction === DOWNLINK && !downlinkCommand)
+        || (direction === UPLINK && !uplinkCommand)
     ) {
         // missing command implementation
         return new UnknownCommand({id, data});
     }
 
     // ths specific direction
-    if ( direction === DIRECTION_TYPE_DOWNLINK || direction === DIRECTION_TYPE_UPLINK ) {
-        const command = direction === DIRECTION_TYPE_UPLINK ? uplinkCommand : downlinkCommand;
+    if ( direction === DOWNLINK || direction === UPLINK ) {
+        const command = direction === UPLINK ? uplinkCommand : downlinkCommand;
 
-        return command.fromBytes(data) as Command;
+        return command.fromBytes(data, hardwareType) as Command;
     }
 
     // direction autodetect
     try {
         // uplink should be more often
-        return uplinkCommand.fromBytes(data) as Command;
+        return uplinkCommand.fromBytes(data, hardwareType) as Command;
     } catch {
         return downlinkCommand.fromBytes(data) as Command;
     }
 };
 
-export const fromBytes = ( data: Uint8Array, direction = DIRECTION_TYPE_AUTO ) => {
+export const fromBytes = ( data: Uint8Array, direction = AUTO, hardwareType?: number ) => {
     const commandsData = data.slice(0, -1);
     const expectedLrc = data.at(-1) ?? 0;
     const actualLrc = calculateLrc(commandsData);
@@ -117,7 +117,7 @@ export const fromBytes = ( data: Uint8Array, direction = DIRECTION_TYPE_AUTO ) =
 
         commands.push({
             data: {header: headerData, body: bodyData},
-            command: getCommand(headerInfo.commandId, bodyData, direction)
+            command: getCommand(headerInfo.commandId, bodyData, direction, hardwareType)
         });
 
         // shift
@@ -131,7 +131,9 @@ export const fromBytes = ( data: Uint8Array, direction = DIRECTION_TYPE_AUTO ) =
     return result;
 };
 
-export const fromHex = ( data: string, direction = DIRECTION_TYPE_AUTO ) => fromBytes(getBytesFromHex(data), direction);
+export const fromHex = ( data: string, direction = AUTO, hardwareType?: number ) => (
+    fromBytes(getBytesFromHex(data), direction, hardwareType)
+);
 
 export const toBytes = ( commands: Array<Command> ): Uint8Array => {
     const arrays = commands.map(command => command.toBytes());

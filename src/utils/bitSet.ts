@@ -4,7 +4,7 @@ export type TBooleanObject = Record<string, boolean>;
 
 
 /**
- * Get integer number from object with value values according to the given bit mask.
+ * Get integer number from object with boolean values values according to the given bit mask.
  */
 export const fromObject = ( bitMask: TBitSetMask, booleanObject: TBooleanObject ): number => {
     let result = 0;
@@ -20,7 +20,7 @@ export const fromObject = ( bitMask: TBitSetMask, booleanObject: TBooleanObject 
 
 
 /**
- * Get object with value values from integer number according to the given bit mask.
+ * Get object with boolean values values from integer number according to the given bit mask.
  */
 export const toObject = ( bitMask: TBitSetMask, value: number ): TBooleanObject => {
     const result: TBooleanObject = {};

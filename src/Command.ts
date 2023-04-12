@@ -1,6 +1,6 @@
 import * as header from './utils/header.js';
 import getHexFromBytes, {IHexFormatOptions} from './utils/getHexFromBytes.js';
-import {DIRECTION_TYPE_UPLINK} from './constants/directionTypes.js';
+import {UPLINK} from './constants/directionTypes.js';
 
 
 /**
@@ -23,7 +23,7 @@ class Command {
     /** Get command ID and title. */
     static getName () {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        return `${this.directionType === DIRECTION_TYPE_UPLINK ? 'uplink' : 'downlink'} command ${this.getId()}:${this.title}`;
+        return `${this.directionType === UPLINK ? 'uplink' : 'downlink'} command ${this.getId()}:${this.title}`;
     }
 
 

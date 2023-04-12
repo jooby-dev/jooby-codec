@@ -1,5 +1,5 @@
 import Command from '../../Command.js';
-import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directionTypes.js';
 
 
 const COMMAND_ID = 0x19;
@@ -24,7 +24,7 @@ const COMMAND_TITLE = 'SOFT_RESTART';
 class SoftRestart extends Command {
     static readonly id = COMMAND_ID;
 
-    static readonly directionType = DIRECTION_TYPE_UPLINK;
+    static readonly directionType = UPLINK;
 
     static readonly title = COMMAND_TITLE;
 
