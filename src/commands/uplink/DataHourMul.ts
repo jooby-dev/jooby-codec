@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import Command from '../../Command.js';
 import GetCurrentMul from './GetCurrentMul.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
-import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directionTypes.js';
 
 
 const COMMAND_ID = 0x17;
@@ -27,7 +26,7 @@ class DataHourMul extends GetCurrentMul {
 
     static readonly id = COMMAND_ID;
 
-    static readonly directionType = DIRECTION_TYPE_UPLINK;
+    static readonly directionType = UPLINK;
 
     static readonly title = COMMAND_TITLE;
 

@@ -6,7 +6,7 @@
 
 import Command from '../../Command.js';
 import CommandBinaryBuffer, {Seconds} from '../../CommandBinaryBuffer.js';
-import {DIRECTION_TYPE_DOWNLINK} from '../../constants/directionTypes.js';
+import {DOWNLINK} from '../../constants/directionTypes.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
 
@@ -58,7 +58,7 @@ class GetArchiveHoursMul extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly directionType = DIRECTION_TYPE_DOWNLINK;
+    static readonly directionType = DOWNLINK;
 
     static readonly title = COMMAND_TITLE;
 

@@ -6,7 +6,7 @@
 
 import Command from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
-import {DIRECTION_TYPE_DOWNLINK} from '../../constants/directionTypes.js';
+import {DOWNLINK} from '../../constants/directionTypes.js';
 
 
 /**
@@ -17,7 +17,7 @@ import {DIRECTION_TYPE_DOWNLINK} from '../../constants/directionTypes.js';
  * {sequenceNumber: 77, time: 733845677}
  */
 interface IDownlinkSetTime2000Parameters {
-    /** sequence Number */
+    /** unique time manipulation operation number */
     sequenceNumber: number,
     /** seconds */
     time: number
@@ -52,7 +52,7 @@ class SetTime2000 extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly directionType = DIRECTION_TYPE_DOWNLINK;
+    static readonly directionType = DOWNLINK;
 
     static readonly title = COMMAND_TITLE;
 

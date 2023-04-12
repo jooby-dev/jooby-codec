@@ -1,6 +1,6 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
-import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directionTypes.js';
 
 
 /**
@@ -35,7 +35,7 @@ class GetCurrentMul extends Command {
 
     static id = COMMAND_ID;
 
-    static readonly directionType = DIRECTION_TYPE_UPLINK;
+    static readonly directionType = UPLINK;
 
     static title = COMMAND_TITLE;
 

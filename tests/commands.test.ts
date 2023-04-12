@@ -5,12 +5,14 @@ import {commands, constants} from '../src/index.js';
 import * as message from '../src/utils/message.js';
 import getBytesFromHex from '../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../src/utils/getHexFromBytes.js';
+import * as hardwareTypes from '../src/constants/hardwareTypes.js';
 
 
 interface ICommand {
     constructor: any,
     name: string,
     parameters: any,
+    hardwareType?: number,
     hex: {
         header: string,
         body: string,
@@ -290,9 +292,85 @@ const uplinkCommands: TCommandList = [
         }
     },
     {
+        constructor: uplink.LastEvent,
+        name: 'uplink command 0x60:LAST_EVENT',
+        parameters: {
+            sequenceNumber: 32,
+            status: {
+                isBatteryLow: true,
+                isButtonReleased: false,
+                isConnectionLost: true,
+                isMagneticInfluence: false
+            }
+        },
+        hardwareType: hardwareTypes.GAZM0NEW,
+        hex: {
+            header: '62',
+            body: '20 09',
+            lrc: '1e'
+        }
+    },
+    {
+        constructor: uplink.LastEvent,
+        name: 'uplink command 0x60:LAST_EVENT',
+        parameters: {
+            sequenceNumber: 16,
+            status: {
+                // first byte: 11100001 = e1 (225)
+                isBatteryLow: true,
+                isConnectionLost: false,
+                isFirstChannelInactive: false,
+                isSecondChannelInactive: true,
+                isThirdChannelInactive: true,
+                // second byte: 00000001 = 01
+                isForthChannelInactive: true
+            }
+        },
+        hardwareType: hardwareTypes.IMP4EU,
+        hex: {
+            header: '63',
+            body: '10 e1 01',
+            lrc: 'c6'
+        }
+    },
+    {
+        constructor: uplink.LastEvent,
+        name: 'uplink command 0x60:LAST_EVENT',
+        parameters: {
+            sequenceNumber: 48,
+            status: {
+                // first byte: 10000011 = 83 (131)
+                isMeterCaseOpen: true,
+                isMagneticInfluence: true,
+                isParametersSetRemotely: false,
+                isParametersSetLocally: false,
+                isMeterProgramRestarted: false,
+                isLockedOut: false,
+                isTimeSet: false,
+                isTimeCorrected: true,
+                // second byte: 00001010 = 0a (10)
+                isMeterFailure: false,
+                isMeterTerminalBoxOpen: true,
+                isModuleCompartmentOpen: false,
+                isTariffPlanChanged: true,
+                isNewTariffPlanReceived: false
+            }
+        },
+        hardwareType: hardwareTypes.MTXLORA,
+        hex: {
+            header: '63',
+            body: '30 83 0a',
+            lrc: '8f'
+        }
+    },
+    {
         constructor: uplink.NewEvent,
         name: 'uplink command 0x15:NEW_EVENT',
-        parameters: {id: events.BATTERY_ALARM, sequenceNumber: 2, data: {voltage: 3308}},
+        parameters: {
+            id: events.BATTERY_ALARM,
+            sequenceNumber: 2,
+            data: {voltage: 3308}
+        },
         hex: {
             header: '15 04',
             body: '05 02 0c ec',
@@ -362,10 +440,7 @@ const uplinkCommands: TCommandList = [
             software: {type: 4, version: 10},
             hardware: {type: 1, version: 1},
             data: {
-                voltage: {
-                    low: 63,
-                    high: 144
-                },
+                voltage: {low: 63, high: 144},
                 internalResistance: 10034,
                 temperature: 14,
                 remindedBatteryCapacity: 41,
@@ -412,11 +487,11 @@ const uplinkCommands: TCommandList = [
 ];
 
 
-const checkCommand = ( {constructor, name, parameters, hex:{header, body, lrc} }: ICommand ) => {
+const checkCommand = ( {constructor, name, parameters, hardwareType, hex:{header, body, lrc} }: ICommand ) => {
     const commandHex = (`${header} ${body}`).trim();
     const messageHex = `${commandHex} ${lrc}`;
-    const command = new constructor(parameters);
-    const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null);
+    const command = new constructor(parameters, hardwareType);
+    const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null, hardwareType);
 
     expect(constructor.getName()).toBe(name);
 
@@ -433,7 +508,7 @@ const checkCommand = ( {constructor, name, parameters, hex:{header, body, lrc} }
     expect(commandFromHex.getParameters()).toStrictEqual(parameters);
 
     if ( lrc ) {
-        const messageData = message.fromHex(messageHex, constructor.directionType);
+        const messageData = message.fromHex(messageHex, constructor.directionType, hardwareType);
         const [{command: messageCommand, data: commandData}] = messageData.commands;
 
         expect(messageCommand).toStrictEqual(command);

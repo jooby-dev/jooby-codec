@@ -3,7 +3,7 @@ import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
 import * as events from '../../constants/events.js';
-import {DIRECTION_TYPE_UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directionTypes.js';
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -108,7 +108,7 @@ class NewEvent extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly directionType = DIRECTION_TYPE_UPLINK;
+    static readonly directionType = UPLINK;
 
     static readonly title = COMMAND_TITLE;
 
