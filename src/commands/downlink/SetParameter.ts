@@ -51,7 +51,7 @@ type TParameter =
  * import {constants} from 'jooby-codec';
  * {id: constants.deviceParameters.INITIAL_DATA, data: {value: 2023, meterValue: 204, pulseCoefficient: 100}}
  */
-interface IDownlinkSetParameterParameters {
+interface ISetParameterParameters {
     /**
      * Parameter id - one of `constants/deviceParameters`.
      */
@@ -134,7 +134,7 @@ const setPulseCoefficient = ( buffer: CommandBinaryBuffer, value: number ): void
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/downlink/SetParameter.md)
  */
 class SetParameter extends Command {
-    constructor ( public parameters: IDownlinkSetParameterParameters ) {
+    constructor ( public parameters: ISetParameterParameters ) {
         super();
     }
 
@@ -150,25 +150,32 @@ class SetParameter extends Command {
         const id = buffer.getUint8();
         let parameterData;
 
-        if ( id === deviceParameters.INITIAL_DATA ) {
-            parameterData = {
-                meterValue: buffer.getUint32(false),
-                pulseCoefficient: getPulseCoefficient(buffer),
-                value: buffer.getUint32(false)
-            } as IParameterInitialData;
-        } else if ( id === deviceParameters.INITIAL_DATA_MULTI_CHANNEL ) {
-            parameterData = {
-                channel: buffer.getUint8(),
-                meterValue: buffer.getUint32(false),
-                pulseCoefficient: getPulseCoefficient(buffer),
-                value: buffer.getUint32(false)
-            } as IParameterInitialData;
-        } else if ( id === deviceParameters.ABSOLUTE_DATA_STATUS ) {
-            parameterData = {
-                status: buffer.getUint8()
-            } as IParameterAbsoluteDataStatus;
-        } else {
-            throw new Error(`${this.getId()}: parameter ${id} is not supported`);
+        switch ( id ) {
+            case deviceParameters.INITIAL_DATA:
+                parameterData = {
+                    meterValue: buffer.getUint32(false),
+                    pulseCoefficient: getPulseCoefficient(buffer),
+                    value: buffer.getUint32(false)
+                } as IParameterInitialData;
+                break;
+
+            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
+                parameterData = {
+                    channel: buffer.getUint8(),
+                    meterValue: buffer.getUint32(false),
+                    pulseCoefficient: getPulseCoefficient(buffer),
+                    value: buffer.getUint32(false)
+                } as IParameterInitialData;
+                break;
+
+            case deviceParameters.ABSOLUTE_DATA_STATUS:
+                parameterData = {
+                    status: buffer.getUint8()
+                } as IParameterAbsoluteDataStatus;
+                break;
+
+            default:
+                throw new Error(`${SetParameter.getId()}: parameter ${id} is not supported`);
         }
 
         return new SetParameter({id, data: parameterData});
@@ -183,24 +190,32 @@ class SetParameter extends Command {
 
         buffer.setUint8(id);
 
-        if ( id === deviceParameters.INITIAL_DATA ) {
-            parameterData = data as IParameterInitialData;
+        switch ( id ) {
+            case deviceParameters.INITIAL_DATA:
+                parameterData = data as IParameterInitialData;
 
-            buffer.setUint32(parameterData.meterValue, false);
-            setPulseCoefficient(buffer, parameterData.pulseCoefficient);
-            buffer.setUint32(parameterData.value, false);
-        } else if ( id === deviceParameters.INITIAL_DATA_MULTI_CHANNEL ) {
-            parameterData = data as IParameterInitialDataMultiChannel;
+                buffer.setUint32(parameterData.meterValue, false);
+                setPulseCoefficient(buffer, parameterData.pulseCoefficient);
+                buffer.setUint32(parameterData.value, false);
+                break;
 
-            buffer.setUint8(parameterData.channel);
-            buffer.setUint32(parameterData.meterValue, false);
-            setPulseCoefficient(buffer, parameterData.pulseCoefficient);
-            buffer.setUint32(parameterData.value, false);
-        } else if ( id === deviceParameters.ABSOLUTE_DATA_STATUS ) {
-            parameterData = data as IParameterAbsoluteDataStatus;
-            buffer.setUint8(parameterData.status);
-        } else {
-            throw new Error(`${SetParameter.getId()}: parameter ${id} is not supported`);
+            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
+                parameterData = data as IParameterInitialDataMultiChannel;
+
+                buffer.setUint8(parameterData.channel);
+                buffer.setUint32(parameterData.meterValue, false);
+                setPulseCoefficient(buffer, parameterData.pulseCoefficient);
+                buffer.setUint32(parameterData.value, false);
+                break;
+
+            case deviceParameters.ABSOLUTE_DATA_STATUS:
+                parameterData = data as IParameterAbsoluteDataStatus;
+
+                buffer.setUint8(parameterData.status);
+                break;
+
+            default:
+                throw new Error(`${SetParameter.getId()}: parameter ${id} is not supported`);
         }
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
