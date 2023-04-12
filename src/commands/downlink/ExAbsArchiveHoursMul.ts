@@ -1,5 +1,5 @@
 /**
- * [[include:commands/downlink/GetArchiveHoursMul.md]]
+ * [[include:commands/downlink/ExAbsArchiveHoursMul.md]]
  *
  * @packageDocumentation
  */
@@ -11,13 +11,13 @@ import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
 
 /**
- * GetArchiveHoursMul command parameters
+ * ExAbsArchiveHoursMul command parameters
  *
  * @example
  * // request for 2 hours archive values from channel #1 from 2023-12-23T12:00:00.000Z or 756648000 seconds since 2000 year
  * {channels: [0], hourAmount: 2, time: 756648000}
  */
-interface IDownlinkGetArchiveHoursMulParameters {
+interface IDownlinkExAbsArchiveHoursMulParameters {
     /** amount of hours to retrieve */
     hourAmount: number,
 
@@ -28,8 +28,9 @@ interface IDownlinkGetArchiveHoursMulParameters {
 }
 
 
-const COMMAND_ID = 0x1a;
-const COMMAND_TITLE = 'GET_ARCHIVE_HOURS_MUL';
+// TODO: rework extended headers detection
+const COMMAND_ID = 0x0c1f;
+const COMMAND_TITLE = 'EX_ABS_ARCH_HOUR_MUL';
 const COMMAND_BODY_SIZE = 4;
 
 
@@ -38,19 +39,19 @@ const COMMAND_BODY_SIZE = 4;
  *
  * @example
  * ```js
- * import GetArchiveHoursMul from 'jooby-codec/commands/downlink/GetArchiveHoursMul';
+ * import ExAbsArchiveHoursMul from 'jooby-codec/commands/downlink/ExAbsArchiveHoursMul';
  *
  * const parameters = {channels: [0], hourAmount: 0, time: 756648000};
- * const command = new GetArchiveHoursMul(parameters);
+ * const command = new ExAbsArchiveHoursMul(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 1a 04 2f 97 0c 01
+ * // 1f 0c 04 2f 97 0c 01
  * ```
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveHoursMul.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/ExAbsArchiveHoursMul.md#request)
  */
-class GetArchiveHoursMul extends Command {
-    constructor ( public parameters: IDownlinkGetArchiveHoursMulParameters ) {
+class ExAbsArchiveHoursMul extends Command {
+    constructor ( public parameters: IDownlinkExAbsArchiveHoursMulParameters ) {
         super();
 
         this.parameters.channels = this.parameters.channels.sort((a, b) => a - b);
@@ -80,7 +81,7 @@ class GetArchiveHoursMul extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new GetArchiveHoursMul({channels, hourAmount, time: getSecondsFromDate(date)});
+        return new ExAbsArchiveHoursMul({channels, hourAmount, time: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
@@ -100,4 +101,4 @@ class GetArchiveHoursMul extends Command {
 }
 
 
-export default GetArchiveHoursMul;
+export default ExAbsArchiveHoursMul;
