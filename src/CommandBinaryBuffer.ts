@@ -2,12 +2,6 @@ import BinaryBuffer from './BinaryBuffer.js';
 import {getDateFromSeconds, getSecondsFromDate} from './utils/time.js';
 
 
-/**
- * Time from UTC 2000-01-01 00:00:00 in seconds.
- */
-export type Seconds = number;
-
-
 export interface IBatteryVoltage {
     /**
      * battery voltage value at low consumption, in mV;
@@ -31,7 +25,7 @@ export interface IBatteryVoltage {
 export interface IHourDiff {
     value: number,
     hour: number,
-    time: Seconds,
+    seconds: number,
     date: Date
 }
 
@@ -51,12 +45,10 @@ export interface IChannel {
      */
     diff: Array<IHourDiff>,
 
-
     /**
-     * Value time.
+     * time
      */
-    time: Seconds | undefined,
-
+    seconds: number | undefined,
 
     /**
      * Normal date in UTC.
@@ -318,7 +310,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 value,
                 diff,
                 index: channelIndex,
-                time: getSecondsFromDate(counterDate),
+                seconds: getSecondsFromDate(counterDate),
                 date: new Date(counterDate)
             });
 
@@ -327,7 +319,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
                 counterDate.setUTCHours(counterDate.getUTCHours() + diffHour);
 
-                diff.push({value, hour: diffHour, date: new Date(counterDate), time: getSecondsFromDate(counterDate)});
+                diff.push({value, hour: diffHour, date: new Date(counterDate), seconds: getSecondsFromDate(counterDate)});
             }
         }
 
