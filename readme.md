@@ -106,7 +106,7 @@ Prepare command and get encoded data:
 ```js
 import SetTime2000 from 'jooby-codec/commands/downlink/SetTime2000';
 
-const command = new SetTime2000({sequenceNumber: 5, time: 9462957});
+const command = new SetTime2000({sequenceNumber: 5, seconds: 9462957});
 
 // output command binary in hex representation
 // 02 05 05 00 90 64 ad
@@ -119,7 +119,7 @@ Combine a message from commands:
 
 ```js
 const messageBytes = message.toBytes([
-    new SetTime2000({sequenceNumber: 78, time: 123456}),
+    new SetTime2000({sequenceNumber: 78, seconds: 123456}),
     new GetCurrent()
 ]);
 ```
@@ -136,7 +136,7 @@ const commandInstancesArray = [
             {value: 10, index: 2},
             {value: 12, index: 3}
         ],
-        time: 75660480
+        seconds: 75660480
     })
 ];
 
