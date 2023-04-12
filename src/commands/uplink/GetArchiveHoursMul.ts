@@ -39,10 +39,10 @@ class GetArchiveHoursMul extends Command {
 
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if ( date === undefined ) {
-            const [{time}] = channels;
+            const [{seconds}] = channels;
 
-            if ( time ) {
-                this.parameters.date = getDateFromSeconds(time);
+            if ( seconds ) {
+                this.parameters.date = getDateFromSeconds(seconds);
             } else {
                 throw new Error(`${GetArchiveHoursMul.getName()} can't recognize time`);
             }

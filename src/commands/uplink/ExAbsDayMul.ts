@@ -50,7 +50,7 @@ class ExAbsDayMul extends GetCurrentMul {
                 value,
                 pulseCoefficient,
                 index: channelIndex,
-                time: getSecondsFromDate(date),
+                seconds: getSecondsFromDate(date),
                 meterValue: roundNumber(value / pulseCoefficient)
             });
         }
@@ -62,9 +62,9 @@ class ExAbsDayMul extends GetCurrentMul {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channels} = this.parameters;
 
-        const {time} = channels[0];
+        const {seconds} = channels[0];
 
-        buffer.setDate(time);
+        buffer.setDate(seconds);
         buffer.setChannels(channels);
 
         for ( const {value, pulseCoefficient} of channels ) {

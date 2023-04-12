@@ -5,7 +5,7 @@
  */
 
 import Command from '../../Command.js';
-import CommandBinaryBuffer, {Seconds} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directionTypes.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
@@ -15,13 +15,14 @@ import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
  *
  * @example
  * // request for 1 days archive values from channel #1 from 2023-12-24T00:00:00.000Z or 756691200 seconds since 2000 year
- * {channels: [0], dayAmount: 1, time: 756691200}
+ * {channels: [0], dayAmount: 1, seconds: 756691200}
  */
 interface IDownlinkGetArchiveDaysMulParameters {
     /** amount of days to retrieve */
     dayAmount: number,
 
-    time: Seconds,
+    /** time */
+    seconds: number,
 
     /** array of channels indexes */
     channels: Array<number>
@@ -40,7 +41,7 @@ const COMMAND_BODY_SIZE = 4;
  * ```js
  * import GetArchiveDaysMul from 'jooby-codec/commands/downlink/GetArchiveDaysMul';
  *
- * const parameters = {channels: [0], dayAmount: 1, time: 756691200};
+ * const parameters = {channels: [0], dayAmount: 1, seconds: 756691200};
  * const command = new GetArchiveDaysMul(parameters);
  *
  * // output command binary in hex representation
@@ -78,15 +79,15 @@ class GetArchiveDaysMul extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new GetArchiveDaysMul({channels, dayAmount, time: getSecondsFromDate(date)});
+        return new GetArchiveDaysMul({channels, dayAmount, seconds: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {channels, dayAmount, time} = this.parameters;
+        const {channels, dayAmount, seconds} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
-        const date = getDateFromSeconds(time);
+        const date = getDateFromSeconds(seconds);
 
         buffer.setDate(date);
         buffer.setChannels(channels);

@@ -1,5 +1,5 @@
 import Command from '../../Command.js';
-import CommandBinaryBuffer, {Seconds} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 import {getDateFromSeconds, getSecondsFromDate} from '../../utils/time.js';
 
@@ -27,7 +27,7 @@ interface IUplinkGetArchiveDaysMulParameters {
 export interface IArchiveDayValue {
     value: number,
     day: number,
-    time: Seconds,
+    seconds: number,
     date: Date
 }
 
@@ -42,17 +42,13 @@ interface IArchiveChannel {
      */
     days: Array<IArchiveDayValue>,
 
-
-    /**
-     * value time
-     */
-    time: Seconds,
-
+    /** time */
+    seconds: number,
 
     /**
      * Normal date in UTC.
      */
-    date: Date,
+    date: Date
 }
 
 
@@ -94,10 +90,10 @@ class GetArchiveDaysMul extends Command {
         const {date, dayAmount, channels} = this.parameters;
 
         if ( date === undefined ) {
-            const [{time}] = channels;
+            const [{seconds}] = channels;
 
-            if ( time ) {
-                this.parameters.date = getDateFromSeconds(time);
+            if ( seconds ) {
+                this.parameters.date = getDateFromSeconds(seconds);
             } else {
                 throw new Error(`${GetArchiveDaysMul.getName()} can't recognize time`);
             }
@@ -135,7 +131,7 @@ class GetArchiveDaysMul extends Command {
             channels.push({
                 days,
                 index: channelIndex,
-                time: getSecondsFromDate(counterDate),
+                seconds: getSecondsFromDate(counterDate),
                 date: new Date(counterDate)
             });
 
@@ -145,7 +141,7 @@ class GetArchiveDaysMul extends Command {
                 counterDate.setTime(date.getTime());
                 counterDate.setUTCHours(counterDate.getUTCHours() + (day * 24));
 
-                days.push({value, day, date: new Date(counterDate), time: getSecondsFromDate(counterDate)});
+                days.push({value, day, date: new Date(counterDate), seconds: getSecondsFromDate(counterDate)});
             }
         }
 

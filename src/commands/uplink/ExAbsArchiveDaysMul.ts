@@ -1,5 +1,5 @@
 import Command from '../../Command.js';
-import CommandBinaryBuffer, {Seconds} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import roundNumber from '../../utils/roundNumber.js';
 import {getSecondsFromDate} from '../../utils/time.js';
 import {UPLINK} from '../../constants/directionTypes.js';
@@ -12,7 +12,7 @@ interface IArchiveChannelDayAbsoluteValue {
     value: number,
     meterValue: number,
     day: number,
-    time: Seconds,
+    seconds: number,
     date: Date,
 }
 
@@ -32,17 +32,13 @@ interface IArchiveChannelDayAbsolute {
      */
     pulseCoefficient: number
 
-
-    /**
-     * value time
-     */
-    time: Seconds,
-
+    /** time */
+    seconds: number,
 
     /**
      * Normal date in UTC.
      */
-    date: Date,
+    date: Date
 }
 
 interface IUplinkExAbsArchiveDayMulParameters {
@@ -97,7 +93,7 @@ class ExAbsArchiveDayMul extends Command {
                 days,
                 pulseCoefficient,
                 index: channelIndex,
-                time: getSecondsFromDate(counterDate),
+                seconds: getSecondsFromDate(counterDate),
                 date: new Date(counterDate)
             });
 
@@ -112,7 +108,7 @@ class ExAbsArchiveDayMul extends Command {
                     day,
                     meterValue: roundNumber(value / pulseCoefficient),
                     date: new Date(counterDate),
-                    time: getSecondsFromDate(counterDate)
+                    seconds: getSecondsFromDate(counterDate)
                 });
             }
         }

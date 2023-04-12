@@ -68,7 +68,7 @@ class ExAbsHourMul extends GetCurrentMul {
                 diff.push({
                     value,
                     pulseCoefficient,
-                    time: getSecondsFromDate(counterDate),
+                    seconds: getSecondsFromDate(counterDate),
                     meterValue: roundNumber((value + pulseValue) / pulseCoefficient)
                 });
             }
@@ -78,7 +78,7 @@ class ExAbsHourMul extends GetCurrentMul {
                 pulseCoefficient,
                 index: channelIndex,
                 value: pulseValue,
-                time: getSecondsFromDate(date),
+                seconds: getSecondsFromDate(date),
                 meterValue: roundNumber(pulseValue / pulseCoefficient)
             });
         }
@@ -90,8 +90,8 @@ class ExAbsHourMul extends GetCurrentMul {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channels} = this.parameters;
 
-        const {time} = channels[0];
-        const realDate = getDateFromSeconds(time);
+        const {seconds} = channels[0];
+        const realDate = getDateFromSeconds(seconds);
         const hour = realDate.getUTCHours();
         let hourAmount = channels[0].diff.length;
 
@@ -100,7 +100,7 @@ class ExAbsHourMul extends GetCurrentMul {
             hourAmount = 0;
         }
 
-        buffer.setDate(time);
+        buffer.setDate(seconds);
         buffer.setHours(hour, hourAmount);
         buffer.setChannels(channels);
 

@@ -57,7 +57,7 @@ class DataHourMul extends GetCurrentMul {
             counterDate.setTime(date.getTime());
 
             const diff: Array<any> = [];
-            const channel = {value, index: channelIndex, time: getSecondsFromDate(counterDate), diff};
+            const channel = {value, index: channelIndex, seconds: getSecondsFromDate(counterDate), diff};
 
             channels.push(channel);
 
@@ -66,7 +66,7 @@ class DataHourMul extends GetCurrentMul {
 
                 counterDate.setUTCHours(counterDate.getUTCHours() + hourIndex);
 
-                diff.push({value, time: getSecondsFromDate(counterDate)});
+                diff.push({value, seconds: getSecondsFromDate(counterDate)});
             }
         }
 
@@ -77,8 +77,8 @@ class DataHourMul extends GetCurrentMul {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channels} = this.parameters;
 
-        const {time} = channels[0];
-        const realDate = getDateFromSeconds(time);
+        const {seconds} = channels[0];
+        const realDate = getDateFromSeconds(seconds);
         const hour = realDate.getUTCHours();
         let hourAmount = channels[0].diff.length;
 
@@ -86,7 +86,7 @@ class DataHourMul extends GetCurrentMul {
             hourAmount = 0;
         }
 
-        buffer.setDate(time);
+        buffer.setDate(seconds);
         buffer.setHours(hour, hourAmount);
         buffer.setChannels(channels);
 

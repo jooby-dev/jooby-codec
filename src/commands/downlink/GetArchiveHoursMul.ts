@@ -5,7 +5,7 @@
  */
 
 import Command from '../../Command.js';
-import CommandBinaryBuffer, {Seconds} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directionTypes.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
@@ -15,13 +15,14 @@ import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
  *
  * @example
  * // request for 2 hours archive values from channel #1 from 2023-12-23T12:00:00.000Z or 756648000 seconds since 2000 year
- * {channels: [0], hourAmount: 2, time: 756648000}
+ * {channels: [0], hourAmount: 2, seconds: 756648000}
  */
 interface IDownlinkGetArchiveHoursMulParameters {
     /** amount of hours to retrieve */
     hourAmount: number,
 
-    time: Seconds,
+    /** time */
+    seconds: number,
 
     /** array of channels indexes */
     channels: Array<number>
@@ -40,7 +41,7 @@ const COMMAND_BODY_SIZE = 4;
  * ```js
  * import GetArchiveHoursMul from 'jooby-codec/commands/downlink/GetArchiveHoursMul';
  *
- * const parameters = {channels: [0], hourAmount: 0, time: 756648000};
+ * const parameters = {channels: [0], hourAmount: 0, seconds: 756648000};
  * const command = new GetArchiveHoursMul(parameters);
  *
  * // output command binary in hex representation
@@ -80,15 +81,15 @@ class GetArchiveHoursMul extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new GetArchiveHoursMul({channels, hourAmount, time: getSecondsFromDate(date)});
+        return new GetArchiveHoursMul({channels, hourAmount, seconds: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {channels, hourAmount, time} = this.parameters;
+        const {channels, hourAmount, seconds} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
-        const date = getDateFromSeconds(time);
+        const date = getDateFromSeconds(seconds);
         const hour = date.getUTCHours();
 
         buffer.setDate(date);
