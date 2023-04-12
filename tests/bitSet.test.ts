@@ -4,8 +4,8 @@ import * as bitSet from '../src/utils/bitSet.js';
 
 
 interface ITestCase {
-    mask: bitSet.TBitSetMask,
-    object: bitSet.TBooleanObject,
+    mask?: bitSet.TBitSetMask,
+    object?: bitSet.TBooleanObject,
     bits: string
 }
 
@@ -22,6 +22,11 @@ const bitMask: bitSet.TBitSetMask = {
 };
 
 const fromObjectTestCases: TTestCases = [
+    {
+        mask: undefined,
+        object: undefined,
+        bits: '0'
+    },
     {
         mask: {},
         object: {},
@@ -55,6 +60,11 @@ const fromObjectTestCases: TTestCases = [
 ];
 
 const toObjectTestCases: TTestCases = [
+    {
+        mask: undefined,
+        object: {},
+        bits: '0'
+    },
     {
         mask: {},
         object: {},
