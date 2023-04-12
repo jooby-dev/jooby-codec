@@ -25,7 +25,6 @@ jobs:
 
           - run: npm ci
           - run: npm run build:js:clean
-          - run: cat package.json
 
           - run: npm run publish:dev
             env:

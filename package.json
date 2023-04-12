@@ -52,7 +52,7 @@
         "test:watch": "jest --watch",
         "preinstall": "git config core.hooksPath .githooks",
         "publish": "clean-publish",
-        "publish:dev": "ts-node ./.bin/npm-develop.ts && clean-publish --access=public"
+        "publish:dev": "ts-node ./.bin/npm-develop.ts && clean-publish --access public"
     },
     "devDependencies": {
         "@types/jest": "^29.5.0",
