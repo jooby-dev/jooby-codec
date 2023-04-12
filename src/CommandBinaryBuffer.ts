@@ -309,12 +309,11 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
+            const diff: Array<IHourDiff> = [];
+
             // decode hour value for channel
             value = this.getExtendedValue();
             counterDate.setTime(date.getTime());
-
-            const diff: Array<IHourDiff> = [];
-
             channels.push({
                 value,
                 diff,

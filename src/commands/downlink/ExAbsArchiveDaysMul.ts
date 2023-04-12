@@ -35,7 +35,7 @@ const COMMAND_BODY_SIZE = 4;
 
 
 /**
- * Downlink command.
+ * Downlink command
  *
  * @example
  * ```js

@@ -22,7 +22,7 @@ interface IUplinkGetArchiveDaysMulParameters {
 }
 
 /**
- * Channel value by day
+ * channel value by day
  */
 export interface IArchiveDayValue {
     value: number,
@@ -33,18 +33,18 @@ export interface IArchiveDayValue {
 
 interface IArchiveChannel {
     /**
-     * Channel number.
+     * channel number
      */
     index: number,
 
     /**
-     * Values by days
+     * values by days
      */
     days: Array<IArchiveDayValue>,
 
 
     /**
-     * Value time.
+     * value time
      */
     time: Seconds,
 
@@ -65,7 +65,7 @@ const COMMAND_BODY_MAX_SIZE = 5104;
 
 
 /**
- * Uplink command.
+ * Uplink command
  *
  * @example
  * ```js
@@ -128,9 +128,9 @@ class GetArchiveDaysMul extends Command {
         let value;
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
-            counterDate.setTime(date.getTime());
-
             const days: Array<IArchiveDayValue> = [];
+
+            counterDate.setTime(date.getTime());
 
             channels.push({
                 days,

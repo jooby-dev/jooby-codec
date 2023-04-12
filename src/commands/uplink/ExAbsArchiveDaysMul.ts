@@ -6,7 +6,7 @@ import {UPLINK} from '../../constants/directionTypes.js';
 
 
 /**
- * Channel absolute value by day
+ * Channel absolute value by day.
  */
 interface IArchiveChannelDayAbsoluteValue {
     value: number,
@@ -18,23 +18,23 @@ interface IArchiveChannelDayAbsoluteValue {
 
 interface IArchiveChannelDayAbsolute {
     /**
-     * Channel number.
+     * channel number
      */
     index: number,
 
     /**
-     * Values by days
+     * values by days
      */
     days: Array<IArchiveChannelDayAbsoluteValue>,
 
     /**
-     * Channel pulse coefficient - IPK in bytes
+     * Channel pulse coefficient - IPK in bytes.
      */
     pulseCoefficient: number
 
 
     /**
-     * Value time.
+     * value time
      */
     time: Seconds,
 
@@ -89,9 +89,9 @@ class ExAbsArchiveDayMul extends Command {
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
             // IPK_${channelIndex}
             const pulseCoefficient = buffer.getUint8();
-            counterDate.setTime(date.getTime());
-
             const days: Array<IArchiveChannelDayAbsoluteValue> = [];
+
+            counterDate.setTime(date.getTime());
 
             channels.push({
                 days,

@@ -57,9 +57,9 @@ class ExAbsArchiveHourMul extends GetCurrentMul {
             const pulseCoefficient = buffer.getUint8();
             // decode hour value for channel
             const pulseValue = buffer.getExtendedValue();
-            counterDate.setTime(date.getTime());
-
             const diff: Array<any> = [];
+
+            counterDate.setTime(date.getTime());
 
             for ( let hourIndex = 0; hourIndex < hourAmount; ++hourIndex ) {
                 const value = buffer.getExtendedValue();
