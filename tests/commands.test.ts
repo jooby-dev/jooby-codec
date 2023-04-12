@@ -71,7 +71,10 @@ const downlinkCommands: TCommandList = [
     {
         constructor: downlink.SetParameter,
         name: 'downlink command 0x03:SET_PARAMETER',
-        parameters: {id: deviceParameters.INITIAL_DATA, data: {value: 2023, meterValue: 204, pulseCoefficient: 100}},
+        parameters: {
+            id: deviceParameters.INITIAL_DATA,
+            data: {value: 2023, meterValue: 204, pulseCoefficient: 100}
+        },
         hex: {
             header: '03 0a',
             body: '17 00 00 00 cc 82 00 00 07 e7',
