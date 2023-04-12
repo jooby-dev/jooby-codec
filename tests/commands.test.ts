@@ -28,36 +28,36 @@ const {uplink, downlink} = commands;
 const {events} = constants;
 
 const downlinkCommands: TCommandList = [
-    // {
-    //     constructor: downlink.CorrectTime2000,
-    //     name: 'downlink command 0x0c:CORRECT_TIME_2000',
-    //     parameters: {sequenceNumber: 45, time: -120},
-    //     hex: {
-    //         header: '0c 02',
-    //         body: '2d 88',
-    //         lrc: 'fe'
-    //     }
-    // },
-    // {
-    //     constructor: downlink.GetArchiveHoursMul,
-    //     name: 'downlink command 0x1a:GET_ARCHIVE_HOURS_MUL',
-    //     parameters: {channels: [0], hourAmount: 0, time: 756648000},
-    //     hex: {
-    //         header: '1a 04',
-    //         body: '2f 97 0c 01',
-    //         lrc: 'fe'
-    //     }
-    // },
-    // {
-    //     constructor: downlink.NewStatus,
-    //     name: 'downlink command 0x14:NEW_STATUS',
-    //     parameters: undefined,
-    //     hex: {
-    //         header: '14 00',
-    //         body: '',
-    //         lrc: '41'
-    //     }
-    // },
+    {
+        constructor: downlink.CorrectTime2000,
+        name: 'downlink command 0x0c:CORRECT_TIME_2000',
+        parameters: {sequenceNumber: 45, time: -120},
+        hex: {
+            header: '0c 02',
+            body: '2d 88',
+            lrc: 'fe'
+        }
+    },
+    {
+        constructor: downlink.GetArchiveHoursMul,
+        name: 'downlink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        parameters: {channels: [0], hourAmount: 0, time: 756648000},
+        hex: {
+            header: '1a 04',
+            body: '2f 97 0c 01',
+            lrc: 'fe'
+        }
+    },
+    {
+        constructor: downlink.NewStatus,
+        name: 'downlink command 0x14:NEW_STATUS',
+        parameters: undefined,
+        hex: {
+            header: '14 00',
+            body: '',
+            lrc: '41'
+        }
+    },
     {
         constructor: downlink.SetParameter,
         name: 'downlink command 0x03:SET_PARAMETER',
@@ -91,26 +91,26 @@ const downlinkCommands: TCommandList = [
             lrc: 'a5'
         }
     },
-    // {
-    //     constructor: downlink.SetTime2000,
-    //     name: 'downlink command 0x02:SET_TIME_2000',
-    //     parameters: {sequenceNumber: 78, time: 123456},
-    //     hex: {
-    //         header: '02 05',
-    //         body: '4e 00 01 e2 40',
-    //         lrc: 'bf'
-    //     }
-    // },
-    // {
-    //     constructor: downlink.SoftRestart,
-    //     name: 'downlink command 0x19:SOFT_RESTART',
-    //     parameters: undefined,
-    //     hex: {
-    //         header: '19 00',
-    //         body: '',
-    //         lrc: '4c'
-    //     }
-    // }
+    {
+        constructor: downlink.SetTime2000,
+        name: 'downlink command 0x02:SET_TIME_2000',
+        parameters: {sequenceNumber: 78, time: 123456},
+        hex: {
+            header: '02 05',
+            body: '4e 00 01 e2 40',
+            lrc: 'bf'
+        }
+    },
+    {
+        constructor: downlink.SoftRestart,
+        name: 'downlink command 0x19:SOFT_RESTART',
+        parameters: undefined,
+        hex: {
+            header: '19 00',
+            body: '',
+            lrc: '4c'
+        }
+    }
 ];
 
 const uplinkCommands: TCommandList = [
@@ -579,7 +579,7 @@ describe('general tests', () => {
         downlinkCommands.forEach(checkCommand);
     });
 
-    // test('uplink commands', () => {
-    //     uplinkCommands.forEach(checkCommand);
-    // });
+    test('uplink commands', () => {
+        uplinkCommands.forEach(checkCommand);
+    });
 });
