@@ -7,8 +7,11 @@
 export {default as CorrectTime2000} from './CorrectTime2000.js';
 export {default as DataDayMul} from './DataDayMul.js';
 export {default as DataHourMul} from './DataHourMul.js';
+export {default as ExAbsArchiveDaysMul} from './ExAbsArchiveDaysMul.js';
+export {default as ExAbsArchiveHoursMul} from './ExAbsArchiveHoursMul.js';
 export {default as ExAbsDayMul} from './ExAbsDayMul.js';
 export {default as ExAbsHourMul} from './ExAbsHourMul.js';
+export {default as GetArchiveDaysMul} from './GetArchiveDaysMul.js';
 export {default as GetArchiveHoursMul} from './GetArchiveHoursMul.js';
 export {default as GetCurrentMul} from './GetCurrentMul.js';
 export {default as LastEvent} from './LastEvent.js';

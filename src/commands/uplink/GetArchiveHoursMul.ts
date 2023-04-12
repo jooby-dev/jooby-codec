@@ -1,5 +1,4 @@
 import Command from '../../Command.js';
-import GetCurrentMul from './GetCurrentMul.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 import {getDateFromSeconds} from '../../utils/time.js';
@@ -32,9 +31,9 @@ const COMMAND_TITLE = 'GET_ARCHIVE_HOURS_MUL';
 const COMMAND_BODY_MAX_SIZE = 164;
 
 
-class GetArchiveHoursMul extends GetCurrentMul {
+class GetArchiveHoursMul extends Command {
     constructor ( public parameters: IUplinkGetArchiveHoursMulParameters ) {
-        super(parameters);
+        super();
 
         const {date, hourAmount, channels} = this.parameters;
 
@@ -55,6 +54,8 @@ class GetArchiveHoursMul extends GetCurrentMul {
         if ( hourAmount === undefined ) {
             this.parameters.hourAmount = channels[0].diff.length;
         }
+
+        this.parameters.channels = this.parameters.channels.sort((a, b) => a.index - b.index);
     }
 
     static readonly id = COMMAND_ID;
