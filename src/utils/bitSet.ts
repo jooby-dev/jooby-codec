@@ -59,6 +59,5 @@ export const toObject = ( bitMask: TBitSetMask, value: number ): TBooleanObject 
         result[name] = (value & position) !== 0;
     }
 
-    console.log('result:', result);
     return result;
 };

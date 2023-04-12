@@ -39,13 +39,43 @@ const downlinkCommands: TCommandList = [
         }
     },
     {
-        constructor: downlink.GetArchiveHoursMul,
-        name: 'downlink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        constructor: downlink.ExAbsArchiveDaysMul,
+        name: 'downlink command 0xd1f:EX_ABS_ARCHIVE_DAYS_MUL',
+        parameters: {channels: [0], dayAmount: 1, time: 731721600},
+        hex: {
+            header: '1f 0d 04',
+            body: '2e 6a 01 01',
+            lrc: '07'
+        }
+    },
+    {
+        constructor: downlink.ExAbsArchiveHoursMul,
+        name: 'downlink command 0xc1f:EX_ABS_ARCHIVE_HOUR_MUL',
         parameters: {channels: [0], hourAmount: 0, time: 756648000},
         hex: {
-            header: '1a 04',
+            header: '1f 0c 04',
             body: '2f 97 0c 01',
-            lrc: 'fe'
+            lrc: 'f7'
+        }
+    },
+    {
+        constructor: downlink.GetArchiveDaysMul,
+        name: 'downlink command 0x1b:GET_ARCHIVE_DAYS_MUL',
+        parameters: {channels: [0], dayAmount: 1, time: 731721600},
+        hex: {
+            header: '1b 04',
+            body: '2e 6a 01 01',
+            lrc: '0e'
+        }
+    },
+    {
+        constructor: downlink.GetArchiveHoursMul,
+        name: 'downlink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        parameters: {channels: [0], hourAmount: 2, time: 756648000},
+        hex: {
+            header: '1a 04',
+            body: '2f 97 4c 01',
+            lrc: 'be'
         }
     },
     {
