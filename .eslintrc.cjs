@@ -70,6 +70,7 @@ module.exports = {
         'no-console': 'off',
         'no-multiple-empty-lines': ['error', {max: 2, maxEOF: 0, maxBOF: 0}],
         'no-plusplus': 'off',
+        'no-restricted-syntax': 'off',
         'space-in-parens': 'off',
         'spaced-comment': 'off',
 
