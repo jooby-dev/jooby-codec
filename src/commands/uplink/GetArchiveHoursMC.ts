@@ -23,7 +23,7 @@ interface IUplinkGetArchiveHoursMCParameters {
 
 
 const COMMAND_ID = 0x1a;
-const COMMAND_TITLE = 'GET_ARCHIVE_HOURS_MUL';
+const COMMAND_TITLE = 'GET_ARCHIVE_HOURS_MC';
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
 // max hours diff - 7 (3 bit value)

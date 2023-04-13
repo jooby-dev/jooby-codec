@@ -19,7 +19,7 @@ interface IDataDayMCParameters extends IGetCurrentMCParameters {
 
 
 const COMMAND_ID = 0x16;
-const COMMAND_TITLE = 'DATA_DAY_MUL';
+const COMMAND_TITLE = 'DATA_DAY_MC';
 
 // 2 byte for date + 2 for channels (max channels: 7)
 // 4 + (7 * 4)

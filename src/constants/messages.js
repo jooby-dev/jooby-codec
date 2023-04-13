@@ -14,9 +14,9 @@ export const meterCommandIds = {
     GET_VERSION: 0x11,
     NEW_STATUS: 0x14, // GET_NEW_STATUS
     NEW_EVENT: 0x15,
-    DATA_DAY_MUL: 0x16,
-    DATA_HOURS_MUL: 0x17,
-    GET_CURRENT_MUL: 0x18,
+    DATA_DAY_MC: 0x16,
+    DATA_HOURS_MC: 0x17,
+    GET_CURRENT_MC: 0x18,
     MTX_CMD: 0x1E
 };
 
@@ -35,8 +35,8 @@ export const downlinkCommandIds = {
     CORRECT_TIME2000: 0x0C,
     GET_NEW_STATUS: 0x14, // NEW_STATUS
     SOFT_RESTART: 0x19,
-    GET_ARCHIVE_HOURS_MUL: 0x1A,
-    GET_ARCHIVE_DAYS_MUL: 0x1B,
+    GET_ARCHIVE_HOURS_MC: 0x1A,
+    GET_ARCHIVE_DAYS_MC: 0x1B,
     CLEAR_ACTIVE_CHANNEL: 0x1C,
     CLEAR_PARAMETERS: 0x1D,
     CMD_EX_GET_KEY: 0x011F,
@@ -47,12 +47,12 @@ export const downlinkCommandIds = {
     GO_DEPASS_BATTERY: 0x061F,
     WATER_CMD: 0x071F,
     GET_COMPILE_TIME: 0x081F,
-    ABS_HOURS_MUL: 0x0A1F,
-    ABS_DAY_MUL: 0x0B1F,
-    ABS_ARX_HOURS_MUL: 0x0C1F,
-    ABS_ARX_DAY_MUL: 0x0D1F,
+    ABS_HOURS_MC: 0x0A1F,
+    ABS_DAY_MC: 0x0B1F,
+    ABS_ARX_HOURS_MC: 0x0C1F,
+    ABS_ARX_DAY_MC: 0x0D1F,
     ABS_CURRENT: 0x0E1F,
-    ABS_CURRENT_MUL: 0x0F1F
+    ABS_CURRENT_MC: 0x0F1F
 };
 
 export const downlinkCommandNames = invertObject(downlinkCommandIds);

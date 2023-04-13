@@ -12,7 +12,7 @@ import {UPLINK} from '../../constants/directionTypes.js';
 
 
 const COMMAND_ID = 0x0a1f;
-const COMMAND_TITLE = 'EX_ABS_HOUR_MUL';
+const COMMAND_TITLE = 'EX_ABS_HOUR_MC';
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte (max channelList: 4)
 // max hours diff - 7 (3 bit value)
