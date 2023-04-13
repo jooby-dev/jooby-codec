@@ -27,7 +27,7 @@ interface IParameterInitialData {
     pulseCoefficient: number,
 }
 
-interface IParameterInitialDataMCtiChannel extends IParameterInitialData {
+interface IParameterInitialDataMC extends IParameterInitialData {
     /**
      * Channel that accept initial values.
      */
@@ -41,7 +41,7 @@ interface IParameterAbsoluteDataStatus {
 
 type TParameter =
     IParameterInitialData |
-    IParameterInitialDataMCtiChannel |
+    IParameterInitialDataMC |
     IParameterAbsoluteDataStatus;
 
 /**
@@ -200,7 +200,7 @@ class SetParameter extends Command {
                 break;
 
             case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
-                parameterData = data as IParameterInitialDataMCtiChannel;
+                parameterData = data as IParameterInitialDataMC;
 
                 buffer.setUint8(parameterData.channel);
                 buffer.setUint32(parameterData.meterValue, false);
