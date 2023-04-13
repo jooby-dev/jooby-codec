@@ -15,4 +15,4 @@ export const ABSOLUTE_DATA_STATUS = 24;
 /**
  * same as INITIAL_DATA but with channel number
  */
-export const INITIAL_DATA_MULTI_CHANNEL = 29;
+export const INITIAL_DATA_MCTI_CHANNEL = 29;

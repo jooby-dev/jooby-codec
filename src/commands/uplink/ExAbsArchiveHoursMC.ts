@@ -13,7 +13,7 @@ import {UPLINK} from '../../constants/directionTypes.js';
 
 // TODO: rework extended headers detection
 const COMMAND_ID = 0x0c1f;
-const COMMAND_TITLE = 'EX_ABS_ARCH_HOUR_MUL';
+const COMMAND_TITLE = 'EX_ABS_ARCH_HOUR_MC';
 
 // date 2 bytes, hour 1 byte (max hours: 7), channelList 1 byte (max channelList: 4)
 // 4 + (4 channelList * 1 byte pulse coefficient) + (4 channelList * 5 bytes of hour values) + (4 * 5 bytes of diff * 7 max hours diff)

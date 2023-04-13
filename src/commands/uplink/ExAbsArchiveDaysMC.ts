@@ -49,7 +49,7 @@ interface IUplinkExAbsArchiveDayMCParameters {
 
 
 const COMMAND_ID = 0x0d1f;
-const COMMAND_TITLE = 'EX_ABS_ARCH_DAYS_MUL';
+const COMMAND_TITLE = 'EX_ABS_ARCH_DAYS_MC';
 
 // date 2 bytes, channelList 1 byte (max channelList: 4), days 1 byte (max days - 255)
 // 4 + (4 channelList * (1 byte pulse coefficient + 5 bytes of day values) * 255 max days)

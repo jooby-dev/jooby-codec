@@ -53,7 +53,7 @@ interface IArchiveChannel {
 
 
 const COMMAND_ID = 0x1b;
-const COMMAND_TITLE = 'GET_ARCHIVE_DAYS_MUL';
+const COMMAND_TITLE = 'GET_ARCHIVE_DAYS_MC';
 
 // date 2 bytes, channelList 1 byte (max channelList: 4), days 1 byte (max days - 255)
 // 4 + (4 channelList * 5 bytes of day values * 255 max days)

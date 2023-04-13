@@ -20,7 +20,7 @@ export interface IGetCurrentMCParameters {
 
 
 const COMMAND_ID = 0x18;
-const COMMAND_TITLE = 'GET_CURRENT_MUL';
+const COMMAND_TITLE = 'GET_CURRENT_MC';
 
 // 2 bytes for 7 channelList + (7 channelList * 5 byte for current value of channel)
 const COMMAND_BODY_MAX_SIZE = 37;

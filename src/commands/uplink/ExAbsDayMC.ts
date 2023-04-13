@@ -12,7 +12,7 @@ import {UPLINK} from '../../constants/directionTypes.js';
 
 
 const COMMAND_ID = 0x0b1f;
-const COMMAND_TITLE = 'EX_ABS_DAY_MUL';
+const COMMAND_TITLE = 'EX_ABS_DAY_MC';
 
 // date 2 bytes, channelList - 1 byte (max channelList: 4)
 // 3 + (4 channelList * (1 byte IPK + 5 bytes of day values))
