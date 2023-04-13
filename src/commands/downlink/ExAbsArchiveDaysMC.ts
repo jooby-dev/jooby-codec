@@ -1,5 +1,5 @@
 /**
- * [[include:commands/downlink/ExAbsArchiveDaysMul.md]]
+ * [[include:commands/downlink/ExAbsArchiveDaysMC.md]]
  *
  * @packageDocumentation
  */
@@ -11,21 +11,21 @@ import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
 
 /**
- * ExAbsArchiveDaysMul command parameters
+ * ExAbsArchiveDaysMC command parameters
  *
  * @example
  * // request for 1 days archive values from channel #1 from 2023-12-24T00:00:00.000Z or 756691200 seconds since 2000 year
- * {channels: [0], dayAmount: 1, seconds: 756691200}
+ * {channelList: [0], days: 1, seconds: 756691200}
  */
-interface IDownlinkExAbsArchiveDaysMulParameters {
+interface IDownlinkExAbsArchiveDaysMCParameters {
     /** amount of days to retrieve */
-    dayAmount: number,
+    days: number,
 
     /** time */
     seconds: number,
 
-    /** array of channels indexes */
-    channels: Array<number>
+    /** array of channelList indexes */
+    channelList: Array<number>
 }
 
 
@@ -40,22 +40,22 @@ const COMMAND_BODY_SIZE = 4;
  *
  * @example
  * ```js
- * import ExAbsArchiveDaysMul from 'jooby-codec/commands/downlink/ExAbsArchiveDaysMul';
+ * import ExAbsArchiveDaysMC from 'jooby-codec/commands/downlink/ExAbsArchiveDaysMC';
  *
- * const parameters = {channels: [0], dayAmount: 1, seconds: 756691200};
- * const command = new ExAbsArchiveDaysMul(parameters);
+ * const parameters = {channelList: [0], days: 1, seconds: 756691200};
+ * const command = new ExAbsArchiveDaysMC(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 1f 0c 04 2f 98 01 01
  * ```
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/ExAbsArchiveDaysMul.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/ExAbsArchiveDaysMC.md#request)
  */
-class ExAbsArchiveDaysMul extends Command {
-    constructor ( public parameters: IDownlinkExAbsArchiveDaysMulParameters ) {
+class ExAbsArchiveDaysMC extends Command {
+    constructor ( public parameters: IDownlinkExAbsArchiveDaysMCParameters ) {
         super();
 
-        this.parameters.channels = this.parameters.channels.sort((a, b) => a - b);
+        this.parameters.channelList = this.parameters.channelList.sort((a, b) => a - b);
     }
 
     static readonly id = COMMAND_ID;
@@ -73,30 +73,30 @@ class ExAbsArchiveDaysMul extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         const date = buffer.getDate();
-        const channels = buffer.getChannels(true);
-        const dayAmount = buffer.getUint8();
+        const channelList = buffer.getChannels(true);
+        const days = buffer.getUint8();
 
         if ( !buffer.isEmpty ) {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new ExAbsArchiveDaysMul({channels, dayAmount, seconds: getSecondsFromDate(date)});
+        return new ExAbsArchiveDaysMC({channelList, days, seconds: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {channels, dayAmount, seconds} = this.parameters;
+        const {channelList, days, seconds} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
         const date = getDateFromSeconds(seconds);
 
         buffer.setDate(date);
-        buffer.setChannels(channels);
-        buffer.setUint8(dayAmount);
+        buffer.setChannels(channelList);
+        buffer.setUint8(days);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
 
-export default ExAbsArchiveDaysMul;
+export default ExAbsArchiveDaysMC;
