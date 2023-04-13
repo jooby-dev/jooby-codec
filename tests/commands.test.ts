@@ -115,7 +115,7 @@ const downlinkCommands: TCommandList = [
         constructor: downlink.SetParameter,
         name: 'downlink command 0x03:SET_PARAMETER',
         parameters: {
-            id: deviceParameters.INITIAL_DATA_MCTI_CHANNEL,
+            id: deviceParameters.INITIAL_DATA_MULTI_CHANNEL,
             data: {value: 2032, meterValue: 402, pulseCoefficient: 1000, channel: 1}
         },
         hex: {

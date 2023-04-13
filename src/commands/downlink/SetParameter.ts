@@ -159,7 +159,7 @@ class SetParameter extends Command {
                 } as IParameterInitialData;
                 break;
 
-            case deviceParameters.INITIAL_DATA_MCTI_CHANNEL:
+            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
                 parameterData = {
                     channel: buffer.getUint8(),
                     meterValue: buffer.getUint32(false),
@@ -199,7 +199,7 @@ class SetParameter extends Command {
                 buffer.setUint32(parameterData.value, false);
                 break;
 
-            case deviceParameters.INITIAL_DATA_MCTI_CHANNEL:
+            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
                 parameterData = data as IParameterInitialDataMC;
 
                 buffer.setUint8(parameterData.channel);
