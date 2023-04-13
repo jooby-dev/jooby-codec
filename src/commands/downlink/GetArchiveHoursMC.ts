@@ -1,5 +1,5 @@
 /**
- * [[include:commands/downlink/GetArchiveHoursMul.md]]
+ * [[include:commands/downlink/GetArchiveHoursMC.md]]
  *
  * @packageDocumentation
  */
@@ -11,21 +11,21 @@ import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
 
 /**
- * GetArchiveHoursMul command parameters
+ * GetArchiveHoursMC command parameters
  *
  * @example
  * // request for 2 hours archive values from channel #1 from 2023-12-23T12:00:00.000Z or 756648000 seconds since 2000 year
- * {channels: [0], hourAmount: 2, seconds: 756648000}
+ * {channelList: [0], hours: 2, seconds: 756648000}
  */
-interface IDownlinkGetArchiveHoursMulParameters {
+interface IDownlinkGetArchiveHoursMCParameters {
     /** amount of hours to retrieve */
-    hourAmount: number,
+    hours: number,
 
     /** time */
     seconds: number,
 
-    /** array of channels indexes */
-    channels: Array<number>
+    /** array of channelList indexes */
+    channelList: Array<number>
 }
 
 
@@ -39,22 +39,22 @@ const COMMAND_BODY_SIZE = 4;
  *
  * @example
  * ```js
- * import GetArchiveHoursMul from 'jooby-codec/commands/downlink/GetArchiveHoursMul';
+ * import GetArchiveHoursMC from 'jooby-codec/commands/downlink/GetArchiveHoursMC';
  *
- * const parameters = {channels: [0], hourAmount: 0, seconds: 756648000};
- * const command = new GetArchiveHoursMul(parameters);
+ * const parameters = {channelList: [0], hours: 0, seconds: 756648000};
+ * const command = new GetArchiveHoursMC(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 1a 04 2f 97 0c 01
  * ```
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveHoursMul.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveHoursMC.md#request)
  */
-class GetArchiveHoursMul extends Command {
-    constructor ( public parameters: IDownlinkGetArchiveHoursMulParameters ) {
+class GetArchiveHoursMC extends Command {
+    constructor ( public parameters: IDownlinkGetArchiveHoursMCParameters ) {
         super();
 
-        this.parameters.channels = this.parameters.channels.sort((a, b) => a - b);
+        this.parameters.channelList = this.parameters.channelList.sort((a, b) => a - b);
     }
 
     static readonly id = COMMAND_ID;
@@ -72,8 +72,8 @@ class GetArchiveHoursMul extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         const date = buffer.getDate();
-        const {hour, hours: hourAmount} = buffer.getHours();
-        const channels = buffer.getChannels(true);
+        const {hour, hours} = buffer.getHours();
+        const channelList = buffer.getChannels(true);
 
         date.setUTCHours(hour);
 
@@ -81,24 +81,24 @@ class GetArchiveHoursMul extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new GetArchiveHoursMul({channels, hourAmount, seconds: getSecondsFromDate(date)});
+        return new GetArchiveHoursMC({channelList, hours, seconds: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {channels, hourAmount, seconds} = this.parameters;
+        const {channelList, hours, seconds} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
         const date = getDateFromSeconds(seconds);
         const hour = date.getUTCHours();
 
         buffer.setDate(date);
-        buffer.setHours(hour, hourAmount);
-        buffer.setChannels(channels);
+        buffer.setHours(hour, hours);
+        buffer.setChannels(channelList);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
 
-export default GetArchiveHoursMul;
+export default GetArchiveHoursMC;

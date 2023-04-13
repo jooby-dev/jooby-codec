@@ -3,14 +3,14 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {getSecondsFromDate} from '../../utils/time.js';
-import GetCurrentMul, {IGetCurrentMulParameters} from './GetCurrentMul.js';
+import GetCurrentMC, {IGetCurrentMCParameters} from './GetCurrentMC.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 
 
 /**
- * DataDayMul command parameters.
+ * DataDayMC command parameters.
  */
-interface IDataDayMulParameters extends IGetCurrentMulParameters {
+interface IDataDayMCParameters extends IGetCurrentMCParameters {
     /**
      * Seconds since year 2000, i.e. timestamp (in seconds) - 946684800
      */
@@ -26,8 +26,8 @@ const COMMAND_TITLE = 'DATA_DAY_MUL';
 const COMMAND_BODY_MAX_SIZE = 32;
 
 
-class DataDayMul extends GetCurrentMul {
-    constructor ( public parameters: IDataDayMulParameters ) {
+class DataDayMC extends GetCurrentMC {
+    constructor ( public parameters: IDataDayMCParameters ) {
         super(parameters);
     }
 
@@ -37,35 +37,35 @@ class DataDayMul extends GetCurrentMul {
 
     static readonly title = COMMAND_TITLE;
 
-    static fromBytes ( data: Uint8Array ): DataDayMul {
-        const parameters: IDataDayMulParameters = {channels: [], seconds: 0};
+    static fromBytes ( data: Uint8Array ): DataDayMC {
+        const parameters: IDataDayMCParameters = {channelList: [], seconds: 0};
 
         const buffer = new CommandBinaryBuffer(data);
 
         const date = buffer.getDate();
         const channelArray = buffer.getChannels(false);
 
-        parameters.channels = channelArray.map(channelIndex => ({
+        parameters.channelList = channelArray.map(channelIndex => ({
             value: buffer.getExtendedValue(),
             index: channelIndex
         }));
 
         parameters.seconds = getSecondsFromDate(date);
 
-        return new DataDayMul(parameters);
+        return new DataDayMC(parameters);
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channels, seconds} = this.parameters;
+        const {channelList, seconds} = this.parameters;
 
         buffer.setDate(seconds);
-        buffer.setChannels(channels.map(({index}) => index));
-        channels.forEach(({value}) => buffer.setExtendedValue(value));
+        buffer.setChannels(channelList.map(({index}) => index));
+        channelList.forEach(({value}) => buffer.setExtendedValue(value));
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 
 
-export default DataDayMul;
+export default DataDayMC;

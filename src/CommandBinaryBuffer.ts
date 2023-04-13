@@ -115,10 +115,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
     /**
      * Get array of channel indexes.
      *
-     * @param short - get 4 channels or more
+     * @param short - get 4 channelList or more
      */
     getChannels ( short: boolean ): Array<number> {
-        const channels = [];
+        const channelList = [];
 
         let extended = 1;
         let channelIndex = 0;
@@ -131,14 +131,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
             for ( let index = 0; index < MASK.length; index++ ) {
                 if ( byte & MASK[index] ) {
-                    channels.push((channelIndex * 7) + index);
+                    channelList.push((channelIndex * 7) + index);
                 }
             }
 
             ++channelIndex;
         }
 
-        return channels.sort((a, b) => a - b);
+        return channelList.sort((a, b) => a - b);
     }
 
 
@@ -147,14 +147,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
      *
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setChannels ( channels: Array<any> ) {
+    setChannels ( channelList: Array<any> ) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return
-        const maxChannel = Math.max(...channels.map(({index}) => index));
+        const maxChannel = Math.max(...channelList.map(({index}) => index));
 
         const size = (Math.ceil(maxChannel / 7) + (maxChannel % 7)) ? 1 : 0;
         const data = Array(size).fill(0x80);
 
-        channels.forEach((_, channelIndex) => {
+        channelList.forEach((_, channelIndex) => {
             data[Math.floor(channelIndex / 7)] |= CHANNELS_FULL_MASK[channelIndex % 7];
         });
 
@@ -282,13 +282,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
         [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
     }
 
-    getChannelsValuesWithHourDiff (): {hourAmount: number, channels: Array<IChannel>, date: Date} {
+    getChannelsValuesWithHourDiff (): {hours: number, channelList: Array<IChannel>, date: Date} {
         const date = this.getDate();
-        const {hour, hours} = this.getHours();
+        const {hour, hours: hourAmount} = this.getHours();
         const channelArray = this.getChannels(true);
         const maxChannel = Math.max.apply(null, channelArray);
-        const channels: Array<IChannel> = [];
-        let hourAmount = hours;
+        const channelList: Array<IChannel> = [];
+        let hours = hourAmount;
         let value;
 
         date.setUTCHours(hour);
@@ -296,8 +296,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
         const counterDate = new Date(date);
 
         // TODO: add link to doc
-        if ( hourAmount === 0 ) {
-            hourAmount = 1;
+        if ( hours === 0 ) {
+            hours = 1;
         }
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
@@ -306,7 +306,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             // decode hour value for channel
             value = this.getExtendedValue();
             counterDate.setTime(date.getTime());
-            channels.push({
+            channelList.push({
                 value,
                 diff,
                 index: channelIndex,
@@ -314,7 +314,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 date: new Date(counterDate)
             });
 
-            for ( let diffHour = 0; diffHour < hourAmount; ++diffHour ) {
+            for ( let diffHour = 0; diffHour < hours; ++diffHour ) {
                 value = this.getExtendedValue();
 
                 counterDate.setUTCHours(counterDate.getUTCHours() + diffHour);
@@ -323,17 +323,17 @@ class CommandBinaryBuffer extends BinaryBuffer {
             }
         }
 
-        return {channels, date, hourAmount};
+        return {channelList, date, hours};
     }
 
-    setChannelsValuesWithHourDiff ( hourAmount: number, date: Date, channels: Array<IChannel> ): void {
+    setChannelsValuesWithHourDiff ( hours: number, date: Date, channelList: Array<IChannel> ): void {
         const hour = date.getUTCHours();
 
         this.setDate(date);
-        this.setHours(hour, hourAmount);
-        this.setChannels(channels);
+        this.setHours(hour, hours);
+        this.setChannels(channelList);
 
-        channels.forEach(({value, diff}) => {
+        channelList.forEach(({value, diff}) => {
             this.setExtendedValue(value);
 
             diff.forEach(({value: diffValue}) => this.setExtendedValue(diffValue));
