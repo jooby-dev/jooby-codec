@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -9,6 +8,7 @@ import GetCurrentMul from './GetCurrentMul.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import roundNumber from '../../utils/roundNumber.js';
 import {getSecondsFromDate} from '../../utils/time.js';
+import {UPLINK} from '../../constants/directionTypes.js';
 
 
 const COMMAND_ID = 0x0b1f;
@@ -26,7 +26,7 @@ class ExAbsDayMul extends GetCurrentMul {
 
     static id = COMMAND_ID;
 
-    static readonly isUplink = true;
+    static readonly directionType = UPLINK;
 
     static title = COMMAND_TITLE;
 
@@ -50,7 +50,7 @@ class ExAbsDayMul extends GetCurrentMul {
                 value,
                 pulseCoefficient,
                 index: channelIndex,
-                time: getSecondsFromDate(date),
+                seconds: getSecondsFromDate(date),
                 meterValue: roundNumber(value / pulseCoefficient)
             });
         }
@@ -62,9 +62,9 @@ class ExAbsDayMul extends GetCurrentMul {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channels} = this.parameters;
 
-        const {time} = channels[0];
+        const {seconds} = channels[0];
 
-        buffer.setDate(time);
+        buffer.setDate(seconds);
         buffer.setChannels(channels);
 
         for ( const {value, pulseCoefficient} of channels ) {

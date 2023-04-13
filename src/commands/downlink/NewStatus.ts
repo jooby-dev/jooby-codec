@@ -1,4 +1,5 @@
 import Command from '../../Command.js';
+import {DOWNLINK} from '../../constants/directionTypes.js';
 
 
 const COMMAND_ID = 0x14;
@@ -27,7 +28,7 @@ class NewStatus extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly isUplink = false;
+    static readonly directionType = DOWNLINK;
 
     static readonly title = COMMAND_TITLE;
 

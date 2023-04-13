@@ -1,25 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import Command from '../../Command.js';
 import GetCurrentMul from './GetCurrentMul.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import roundNumber from '../../utils/roundNumber.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 
 
-const COMMAND_ID = 0x17;
-const COMMAND_TITLE = 'DATA_HOUR_MUL';
+// TODO: rework extended headers detection
+const COMMAND_ID = 0x0c1f;
+const COMMAND_TITLE = 'EX_ABS_ARCH_HOUR_MUL';
 
-// date 2 bytes, hour 1 byte, channels - 1 byte, so max channels = 4
-// max hours diff - 7 (3 bit value)
-// 4 + (4 channels * 5 bytes of hour values) + (4 * 5 bytes of diff * 7 max hours diff)
-const COMMAND_BODY_MAX_SIZE = 164;
+// date 2 bytes, hour 1 byte (max hours: 7), channels 1 byte (max channels: 4)
+// 4 + (4 channels * 1 byte pulse coefficient) + (4 channels * 5 bytes of hour values) + (4 * 5 bytes of diff * 7 max hours diff)
+const COMMAND_BODY_MAX_SIZE = 168;
 
 
-class DataHourMul extends GetCurrentMul {
+class ExAbsArchiveHourMul extends GetCurrentMul {
+    // TODO: add interface for parameters
     constructor ( public parameters: any ) {
         super(parameters);
     }
@@ -42,7 +44,6 @@ class DataHourMul extends GetCurrentMul {
 
         const counterDate = new Date(date);
         let hourAmount = hours;
-        let value;
 
         const channels: Array<any> = [];
 
@@ -52,25 +53,38 @@ class DataHourMul extends GetCurrentMul {
         }
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
+            // IPK_${channelIndex}
+            const pulseCoefficient = buffer.getUint8();
             // decode hour value for channel
-            value = buffer.getExtendedValue();
+            const pulseValue = buffer.getExtendedValue();
+            const diff: Array<any> = [];
+
             counterDate.setTime(date.getTime());
 
-            const diff: Array<any> = [];
-            const channel = {value, index: channelIndex, seconds: getSecondsFromDate(counterDate), diff};
-
-            channels.push(channel);
-
             for ( let hourIndex = 0; hourIndex < hourAmount; ++hourIndex ) {
-                value = buffer.getExtendedValue();
+                const value = buffer.getExtendedValue();
 
                 counterDate.setUTCHours(counterDate.getUTCHours() + hourIndex);
 
-                diff.push({value, seconds: getSecondsFromDate(counterDate)});
+                diff.push({
+                    value,
+                    pulseCoefficient,
+                    seconds: getSecondsFromDate(counterDate),
+                    meterValue: roundNumber((value + pulseValue) / pulseCoefficient)
+                });
             }
+
+            channels.push({
+                diff,
+                pulseCoefficient,
+                index: channelIndex,
+                value: pulseValue,
+                seconds: getSecondsFromDate(date),
+                meterValue: roundNumber(pulseValue / pulseCoefficient)
+            });
         }
 
-        return new DataHourMul({channels});
+        return new ExAbsArchiveHourMul({channels, date});
     }
 
     toBytes (): Uint8Array {
@@ -82,6 +96,7 @@ class DataHourMul extends GetCurrentMul {
         const hour = realDate.getUTCHours();
         let hourAmount = channels[0].diff.length;
 
+        // TODO: add link to doc
         if ( hourAmount === 1 ) {
             hourAmount = 0;
         }
@@ -90,7 +105,8 @@ class DataHourMul extends GetCurrentMul {
         buffer.setHours(hour, hourAmount);
         buffer.setChannels(channels);
 
-        for ( const {value, diff} of channels ) {
+        for ( const {value, diff, pulseCoefficient} of channels ) {
+            buffer.setUint8(pulseCoefficient);
             buffer.setExtendedValue(value);
 
             for ( const {value: diffValue} of diff ) {
@@ -103,4 +119,4 @@ class DataHourMul extends GetCurrentMul {
 }
 
 
-export default DataHourMul;
+export default ExAbsArchiveHourMul;

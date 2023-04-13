@@ -6,6 +6,7 @@
 
 import Command from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
+import {DOWNLINK} from '../../constants/directionTypes.js';
 
 
 /**
@@ -13,13 +14,13 @@ import BinaryBuffer from '../../BinaryBuffer.js';
  *
  * @example
  * // time: 2023-04-03T14:01:17.000Z
- * {sequenceNumber: 77, time: 733845677}
+ * {sequenceNumber: 77, seconds: 733845677}
  */
 interface IDownlinkSetTime2000Parameters {
-    /** sequence Number */
+    /** unique time manipulation operation number */
     sequenceNumber: number,
     /** seconds */
-    time: number
+    seconds: number
 }
 
 
@@ -35,7 +36,7 @@ const COMMAND_BODY_SIZE = 5;
  * ```js
  * import SetTime2000 from 'jooby-codec/commands/downlink/SetTime2000';
  *
- * const parameters = {sequenceNumber: 78, time: 123456};
+ * const parameters = {sequenceNumber: 78, seconds: 123456};
  * const command = new SetTime2000(parameters);
  *
  * // output command binary in hex representation
@@ -51,7 +52,7 @@ class SetTime2000 extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly isUplink = false;
+    static readonly directionType = DOWNLINK;
 
     static readonly title = COMMAND_TITLE;
 
@@ -64,7 +65,7 @@ class SetTime2000 extends Command {
         const buffer = new BinaryBuffer(data, false);
         const parameters = {
             sequenceNumber: buffer.getUint8(),
-            time: buffer.getInt32()
+            seconds: buffer.getInt32()
         };
 
         if ( !buffer.isEmpty ) {
@@ -76,11 +77,11 @@ class SetTime2000 extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {sequenceNumber, time} = this.parameters;
+        const {sequenceNumber, seconds} = this.parameters;
         const buffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
         buffer.setUint8(sequenceNumber);
-        buffer.setInt32(time);
+        buffer.setInt32(seconds);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

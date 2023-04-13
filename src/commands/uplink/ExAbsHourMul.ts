@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-syntax */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -9,6 +8,8 @@ import GetCurrentMul from './GetCurrentMul.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import roundNumber from '../../utils/roundNumber.js';
+import {UPLINK} from '../../constants/directionTypes.js';
+
 
 const COMMAND_ID = 0x0a1f;
 const COMMAND_TITLE = 'EX_ABS_HOUR_MUL';
@@ -26,7 +27,7 @@ class ExAbsHourMul extends GetCurrentMul {
 
     static readonly id = COMMAND_ID;
 
-    static readonly isUplink = true;
+    static readonly directionType = UPLINK;
 
     static readonly title = COMMAND_TITLE;
 
@@ -67,7 +68,7 @@ class ExAbsHourMul extends GetCurrentMul {
                 diff.push({
                     value,
                     pulseCoefficient,
-                    time: getSecondsFromDate(counterDate),
+                    seconds: getSecondsFromDate(counterDate),
                     meterValue: roundNumber((value + pulseValue) / pulseCoefficient)
                 });
             }
@@ -77,7 +78,7 @@ class ExAbsHourMul extends GetCurrentMul {
                 pulseCoefficient,
                 index: channelIndex,
                 value: pulseValue,
-                time: getSecondsFromDate(date),
+                seconds: getSecondsFromDate(date),
                 meterValue: roundNumber(pulseValue / pulseCoefficient)
             });
         }
@@ -89,8 +90,8 @@ class ExAbsHourMul extends GetCurrentMul {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channels} = this.parameters;
 
-        const {time} = channels[0];
-        const realDate = getDateFromSeconds(time);
+        const {seconds} = channels[0];
+        const realDate = getDateFromSeconds(seconds);
         const hour = realDate.getUTCHours();
         let hourAmount = channels[0].diff.length;
 
@@ -99,7 +100,7 @@ class ExAbsHourMul extends GetCurrentMul {
             hourAmount = 0;
         }
 
-        buffer.setDate(time);
+        buffer.setDate(seconds);
         buffer.setHours(hour, hourAmount);
         buffer.setChannels(channels);
 

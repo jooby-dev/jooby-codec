@@ -1,6 +1,6 @@
 import Command from '../../Command.js';
-
 import BinaryBuffer from '../../BinaryBuffer.js';
+import {UPLINK} from '../../constants/directionTypes.js';
 
 
 /**
@@ -43,7 +43,7 @@ class SetTime2000 extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly isUplink = true;
+    static readonly directionType = UPLINK;
 
     static readonly title = COMMAND_TITLE;
 

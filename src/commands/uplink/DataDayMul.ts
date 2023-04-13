@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+
 import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {getSecondsFromDate} from '../../utils/time.js';
 import GetCurrentMul, {IGetCurrentMulParameters} from './GetCurrentMul.js';
+import {UPLINK} from '../../constants/directionTypes.js';
 
 
 /**
@@ -12,7 +14,7 @@ interface IDataDayMulParameters extends IGetCurrentMulParameters {
     /**
      * Seconds since year 2000, i.e. timestamp (in seconds) - 946684800
      */
-    time: number
+    seconds: number
 }
 
 
@@ -31,12 +33,12 @@ class DataDayMul extends GetCurrentMul {
 
     static readonly id = COMMAND_ID;
 
-    static readonly isUplink = true;
+    static readonly directionType = UPLINK;
 
     static readonly title = COMMAND_TITLE;
 
     static fromBytes ( data: Uint8Array ): DataDayMul {
-        const parameters: IDataDayMulParameters = {channels: [], time: 0};
+        const parameters: IDataDayMulParameters = {channels: [], seconds: 0};
 
         const buffer = new CommandBinaryBuffer(data);
 
@@ -48,16 +50,16 @@ class DataDayMul extends GetCurrentMul {
             index: channelIndex
         }));
 
-        parameters.time = getSecondsFromDate(date);
+        parameters.seconds = getSecondsFromDate(date);
 
         return new DataDayMul(parameters);
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channels, time} = this.parameters;
+        const {channels, seconds} = this.parameters;
 
-        buffer.setDate(time);
+        buffer.setDate(seconds);
         buffer.setChannels(channels.map(({index}) => index));
         channels.forEach(({value}) => buffer.setExtendedValue(value));
 

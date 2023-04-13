@@ -34,6 +34,11 @@ const uplinkMessages: TMessageList = [
         hex: '02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 0f 83 01 08 0a 0c  ef',
         commands: []
     }
+    // {
+    //     // DataHourMul + UnknownCommand + LRC
+    //     hex: '17 0c 00 66 f1 01 44 00 00 00 00 00 00 00  5f 3b 00  fe',
+    //     commands: []
+    // }
 ];
 
 

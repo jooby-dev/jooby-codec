@@ -1,15 +1,16 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
-import * as events from '../../constants/events.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
+import * as events from '../../constants/events.js';
+import {UPLINK} from '../../constants/directionTypes.js';
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface IEventBase {}
 
 interface IEventTime extends IEventBase {
-    time: number
+    seconds: number
 }
 
 interface IEventBatteryAlarm extends IEventBase {
@@ -46,7 +47,7 @@ interface IEventMtx extends IEventBase {
  * import {constants} from 'jooby-codec'
  *
  * // `Magnet On` event at 2023-04-05 13:17:20 GMT
- * {id: constants.events.MAGNET_ON, sequenceNumber: 1, data: {time: 734015840}}
+ * {id: constants.events.MAGNET_ON, sequenceNumber: 1, data: {seconds: 734015840}}
  */
 interface INewEventParameters {
     id: number,
@@ -90,7 +91,7 @@ const setDeviceId = ( buffer: CommandBinaryBuffer, value: string ): void => {
  * import NewEvent from 'jooby-codec/commands/uplink/NewEvent';
  *
  * // `Magnet On` event at 2023-04-05 13:17:20 GMT
- * const parameters = {id: constants.events.MAGNET_ON, sequenceNumber: 3, data: {time: 734015840}}
+ * const parameters = {id: constants.events.MAGNET_ON, sequenceNumber: 3, data: {seconds: 734015840}}
  * const command = new NewEvent(parameters);
  *
  * // output command binary in hex representation
@@ -107,7 +108,7 @@ class NewEvent extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly isUplink = true;
+    static readonly directionType = UPLINK;
 
     static readonly title = COMMAND_TITLE;
 
@@ -129,7 +130,7 @@ class NewEvent extends Command {
             case events.EV_OPTOLOW:
             case events.EV_OPTOFLASH:
             case events.EV_REJOIN:
-                eventData = {time: buffer.getTime()} as IEventTime;
+                eventData = {seconds: buffer.getTime()} as IEventTime;
                 break;
 
             case events.BATTERY_ALARM:
@@ -137,7 +138,7 @@ class NewEvent extends Command {
                 break;
 
             case events.ACTIVATE_MTX:
-                eventData = {time: buffer.getTime(), deviceId: getDeviceId(buffer)} as IEventActivateMtx;
+                eventData = {seconds: buffer.getTime(), deviceId: getDeviceId(buffer)} as IEventActivateMtx;
                 break;
 
             case events.CONNECT:
@@ -177,7 +178,7 @@ class NewEvent extends Command {
             case events.EV_OPTOFLASH:
             case events.EV_REJOIN:
                 eventData = data as IEventTime;
-                buffer.setTime(eventData.time);
+                buffer.setTime(eventData.seconds);
                 break;
 
             case events.BATTERY_ALARM:
@@ -187,7 +188,7 @@ class NewEvent extends Command {
 
             case events.ACTIVATE_MTX:
                 eventData = data as IEventActivateMtx;
-                buffer.setTime(eventData.time);
+                buffer.setTime(eventData.seconds);
                 setDeviceId(buffer, eventData.deviceId);
                 break;
 

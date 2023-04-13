@@ -5,12 +5,15 @@ import {commands, constants} from '../src/index.js';
 import * as message from '../src/utils/message.js';
 import getBytesFromHex from '../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../src/utils/getHexFromBytes.js';
+import * as hardwareTypes from '../src/constants/hardwareTypes.js';
+import * as deviceParameters from '../src/constants/deviceParameters.js';
 
 
 interface ICommand {
     constructor: any,
     name: string,
-    parameters: any
+    parameters: any,
+    hardwareType?: number,
     hex: {
         header: string,
         body: string,
@@ -28,11 +31,51 @@ const downlinkCommands: TCommandList = [
     {
         constructor: downlink.CorrectTime2000,
         name: 'downlink command 0x0c:CORRECT_TIME_2000',
-        parameters: {sequenceNumber: 45, time: -120},
+        parameters: {sequenceNumber: 45, seconds: -120},
         hex: {
             header: '0c 02',
             body: '2d 88',
             lrc: 'fe'
+        }
+    },
+    {
+        constructor: downlink.ExAbsArchiveDaysMul,
+        name: 'downlink command 0xd1f:EX_ABS_ARCHIVE_DAYS_MUL',
+        parameters: {channels: [0], dayAmount: 1, seconds: 731721600},
+        hex: {
+            header: '1f 0d 04',
+            body: '2e 6a 01 01',
+            lrc: '07'
+        }
+    },
+    {
+        constructor: downlink.ExAbsArchiveHoursMul,
+        name: 'downlink command 0xc1f:EX_ABS_ARCHIVE_HOUR_MUL',
+        parameters: {channels: [0], hourAmount: 0, seconds: 756648000},
+        hex: {
+            header: '1f 0c 04',
+            body: '2f 97 0c 01',
+            lrc: 'f7'
+        }
+    },
+    {
+        constructor: downlink.GetArchiveDaysMul,
+        name: 'downlink command 0x1b:GET_ARCHIVE_DAYS_MUL',
+        parameters: {channels: [0], dayAmount: 1, seconds: 731721600},
+        hex: {
+            header: '1b 04',
+            body: '2e 6a 01 01',
+            lrc: '0e'
+        }
+    },
+    {
+        constructor: downlink.GetArchiveHoursMul,
+        name: 'downlink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        parameters: {channels: [0], hourAmount: 2, seconds: 756648000},
+        hex: {
+            header: '1a 04',
+            body: '2f 97 4c 01',
+            lrc: 'be'
         }
     },
     {
@@ -46,9 +89,45 @@ const downlinkCommands: TCommandList = [
         }
     },
     {
+        constructor: downlink.SetParameter,
+        name: 'downlink command 0x03:SET_PARAMETER',
+        parameters: {id: deviceParameters.ABSOLUTE_DATA_STATUS, data: {status: 1}},
+        hex: {
+            header: '03 02',
+            body: '18 01',
+            lrc: '4d'
+        }
+    },
+    {
+        constructor: downlink.SetParameter,
+        name: 'downlink command 0x03:SET_PARAMETER',
+        parameters: {
+            id: deviceParameters.INITIAL_DATA,
+            data: {value: 2023, meterValue: 204, pulseCoefficient: 100}
+        },
+        hex: {
+            header: '03 0a',
+            body: '17 00 00 00 cc 82 00 00 07 e7',
+            lrc: 'e5'
+        }
+    },
+    {
+        constructor: downlink.SetParameter,
+        name: 'downlink command 0x03:SET_PARAMETER',
+        parameters: {
+            id: deviceParameters.INITIAL_DATA_MULTI_CHANNEL,
+            data: {value: 2032, meterValue: 402, pulseCoefficient: 1000, channel: 1}
+        },
+        hex: {
+            header: '03 0b',
+            body: '1d 01 00 00 01 92 80 00 00 07 f0',
+            lrc: 'a5'
+        }
+    },
+    {
         constructor: downlink.SetTime2000,
         name: 'downlink command 0x02:SET_TIME_2000',
-        parameters: {sequenceNumber: 78, time: 123456},
+        parameters: {sequenceNumber: 78, seconds: 123456},
         hex: {
             header: '02 05',
             body: '4e 00 01 e2 40',
@@ -88,7 +167,7 @@ const uplinkCommands: TCommandList = [
                 {value: 10, index: 2},
                 {value: 12, index: 3}
             ],
-            time: 756604800
+            seconds: 756604800
         },
         hex: {
             header: '16 08',
@@ -104,26 +183,26 @@ const uplinkCommands: TCommandList = [
                 {
                     value: 131,
                     index: 0,
-                    time: 756648000,
-                    diff: [{value: 10, time: 756648000}]
+                    seconds: 756648000,
+                    diff: [{value: 10, seconds: 756648000}]
                 },
                 {
                     value: 8,
                     index: 1,
-                    time: 756648000,
-                    diff: [{value: 10, time: 756648000}]
+                    seconds: 756648000,
+                    diff: [{value: 10, seconds: 756648000}]
                 },
                 {
                     value: 8,
                     index: 2,
-                    time: 756648000,
-                    diff: [{value: 10, time: 756648000}]
+                    seconds: 756648000,
+                    diff: [{value: 10, seconds: 756648000}]
                 },
                 {
                     value: 12,
                     index: 3,
-                    time: 756648000,
-                    diff: [{value: 10, time: 756648000}]
+                    seconds: 756648000,
+                    diff: [{value: 10, seconds: 756648000}]
                 }
             ]
         },
@@ -143,7 +222,7 @@ const uplinkCommands: TCommandList = [
                     index: 0,
                     value: 342457,
                     meterValue: 3424.57,
-                    time: 731721600
+                    seconds: 731721600
                 }
             ],
             date: new Date('2023-03-10T00:00:00.000Z')
@@ -164,43 +243,43 @@ const uplinkCommands: TCommandList = [
                         {
                             value: 128,
                             pulseCoefficient: 100,
-                            time: 731764800,
+                            seconds: 731764800,
                             meterValue: 3425.85
                         },
                         {
                             value: 100,
                             pulseCoefficient: 100,
-                            time: 731768400,
+                            seconds: 731768400,
                             meterValue: 3425.57
                         },
                         {
                             value: 32,
                             pulseCoefficient: 100,
-                            time: 731775600,
+                            seconds: 731775600,
                             meterValue: 3424.89
                         },
                         {
                             value: 50,
                             pulseCoefficient: 100,
-                            time: 731786400,
+                            seconds: 731786400,
                             meterValue: 3425.07
                         },
                         {
                             value: 0,
                             pulseCoefficient: 100,
-                            time: 731800800,
+                            seconds: 731800800,
                             meterValue: 3424.57
                         },
                         {
                             value: 2,
                             pulseCoefficient: 100,
-                            time: 731818800,
+                            seconds: 731818800,
                             meterValue: 3424.59
                         },
                         {
                         value: 5,
                             pulseCoefficient: 100,
-                            time: 731840400,
+                            seconds: 731840400,
                             meterValue: 3424.62
                         }
                     ],
@@ -208,7 +287,7 @@ const uplinkCommands: TCommandList = [
                     index: 0,
                     value: 342457,
                     meterValue: 3424.57,
-                    time: 731764800
+                    seconds: 731764800
                 }
             ],
             date: new Date('2023-03-10T12:00:00.000Z')
@@ -217,6 +296,49 @@ const uplinkCommands: TCommandList = [
             header: '1f 0a 10',
             body: '2e 6a ec 01 64 b9 f3 14 80 01 64 20 32 00 02 05',
             lrc: '33'
+        }
+    },
+    {
+        constructor: uplink.GetArchiveHoursMul,
+        name: 'uplink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        parameters: {
+            channels: [
+                {
+                    value: 131,
+                    index: 0,
+                    seconds: 756648000,
+                    date: new Date('2023-12-23T12:00:00.000Z'),
+                    diff: [{value: 10, hour: 0, seconds: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                },
+                {
+                    value: 8,
+                    index: 1,
+                    seconds: 756648000,
+                    date: new Date('2023-12-23T12:00:00.000Z'),
+                    diff: [{value: 10, hour: 0, seconds: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                },
+                {
+                    value: 8,
+                    index: 2,
+                    seconds: 756648000,
+                    date: new Date('2023-12-23T12:00:00.000Z'),
+                    diff: [{value: 10, hour: 0, seconds: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                },
+                {
+                    value: 12,
+                    index: 3,
+                    seconds: 756648000,
+                    date: new Date('2023-12-23T12:00:00.000Z'),
+                    diff: [{value: 10, hour: 0, seconds: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                }
+            ],
+            date: new Date('2023-12-23T12:00:00.000Z'),
+            hourAmount: 1
+        },
+        hex: {
+            header: '1a 0d',
+            body: '2f 97 0c 0f 83 01 0a 08 0a 08 0a 0c 0a',
+            lrc: '77'
         }
     },
     {
@@ -237,9 +359,85 @@ const uplinkCommands: TCommandList = [
         }
     },
     {
+        constructor: uplink.LastEvent,
+        name: 'uplink command 0x60:LAST_EVENT',
+        parameters: {
+            sequenceNumber: 32,
+            status: {
+                isBatteryLow: true,
+                isButtonReleased: false,
+                isConnectionLost: true,
+                isMagneticInfluence: false
+            }
+        },
+        hardwareType: hardwareTypes.GAZM0NEW,
+        hex: {
+            header: '62',
+            body: '20 09',
+            lrc: '1e'
+        }
+    },
+    {
+        constructor: uplink.LastEvent,
+        name: 'uplink command 0x60:LAST_EVENT',
+        parameters: {
+            sequenceNumber: 16,
+            status: {
+                // first byte: 11100001 = e1 (225)
+                isBatteryLow: true,
+                isConnectionLost: false,
+                isFirstChannelInactive: false,
+                isSecondChannelInactive: true,
+                isThirdChannelInactive: true,
+                // second byte: 00000001 = 01
+                isForthChannelInactive: true
+            }
+        },
+        hardwareType: hardwareTypes.IMP4EU,
+        hex: {
+            header: '63',
+            body: '10 e1 01',
+            lrc: 'c6'
+        }
+    },
+    {
+        constructor: uplink.LastEvent,
+        name: 'uplink command 0x60:LAST_EVENT',
+        parameters: {
+            sequenceNumber: 48,
+            status: {
+                // first byte: 10000011 = 83 (131)
+                isMeterCaseOpen: true,
+                isMagneticInfluence: true,
+                isParametersSetRemotely: false,
+                isParametersSetLocally: false,
+                isMeterProgramRestarted: false,
+                isLockedOut: false,
+                isTimeSet: false,
+                isTimeCorrected: true,
+                // second byte: 00001010 = 0a (10)
+                isMeterFailure: false,
+                isMeterTerminalBoxOpen: true,
+                isModuleCompartmentOpen: false,
+                isTariffPlanChanged: true,
+                isNewTariffPlanReceived: false
+            }
+        },
+        hardwareType: hardwareTypes.MTXLORA,
+        hex: {
+            header: '63',
+            body: '30 83 0a',
+            lrc: '8f'
+        }
+    },
+    {
         constructor: uplink.NewEvent,
         name: 'uplink command 0x15:NEW_EVENT',
-        parameters: {id: events.BATTERY_ALARM, sequenceNumber: 2, data: {voltage: 3308}},
+        parameters: {
+            id: events.BATTERY_ALARM,
+            sequenceNumber: 2,
+            data: {voltage: 3308}
+        },
         hex: {
             header: '15 04',
             body: '05 02 0c ec',
@@ -252,7 +450,7 @@ const uplinkCommands: TCommandList = [
         parameters: {
             id: events.ACTIVATE_MTX,
             sequenceNumber: 2,
-            data: {time: 734015840, deviceId: '00 1a 79 88 17 01 23 56'}
+            data: {seconds: 734015840, deviceId: '00 1a 79 88 17 01 23 56'}
         },
         hex: {
             header: '15 0e',
@@ -309,10 +507,7 @@ const uplinkCommands: TCommandList = [
             software: {type: 4, version: 10},
             hardware: {type: 1, version: 1},
             data: {
-                voltage: {
-                    low: 63,
-                    high: 144
-                },
+                voltage: {low: 63, high: 144},
                 internalResistance: 10034,
                 temperature: 14,
                 remindedBatteryCapacity: 41,
@@ -349,7 +544,7 @@ const uplinkCommands: TCommandList = [
         constructor: uplink.Time2000,
         name: 'uplink command 0x09:TIME_2000',
         // time: 2023-04-03T14:01:17.000Z
-        parameters: {sequenceNumber: 77, time: 733845677},
+        parameters: {sequenceNumber: 77, seconds: 733845677},
         hex: {
             header: '09 05',
             body: '4d 2b bd 98 ad',
@@ -359,11 +554,11 @@ const uplinkCommands: TCommandList = [
 ];
 
 
-const checkCommand = ( {constructor, name, parameters, hex:{header, body, lrc} }: ICommand ) => {
+const checkCommand = ( {constructor, name, parameters, hardwareType, hex:{header, body, lrc} }: ICommand ) => {
     const commandHex = (`${header} ${body}`).trim();
     const messageHex = `${commandHex} ${lrc}`;
-    const command = new constructor(parameters);
-    const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null);
+    const command = new constructor(parameters, hardwareType);
+    const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null, hardwareType);
 
     expect(constructor.getName()).toBe(name);
 
@@ -380,7 +575,7 @@ const checkCommand = ( {constructor, name, parameters, hex:{header, body, lrc} }
     expect(commandFromHex.getParameters()).toStrictEqual(parameters);
 
     if ( lrc ) {
-        const messageData = message.fromHex(messageHex, constructor.isUplink ? message.TYPE_UPLINK : message.TYPE_DOWNLINK);
+        const messageData = message.fromHex(messageHex, constructor.directionType, hardwareType);
         const [{command: messageCommand, data: commandData}] = messageData.commands;
 
         expect(messageCommand).toStrictEqual(command);
@@ -403,7 +598,7 @@ const checkCommand = ( {constructor, name, parameters, hex:{header, body, lrc} }
         constructor: uplink.NewEvent,
         name: 'uplink command 0x15:NEW_EVENT',
         // magnet on
-        parameters: {id, sequenceNumber: 2, data: {time: 734015840}},
+        parameters: {id, sequenceNumber: 2, data: {seconds: 734015840}},
         hex: {
             header: '15 06',
             body: `${hexId} 02 2b c0 31 60`

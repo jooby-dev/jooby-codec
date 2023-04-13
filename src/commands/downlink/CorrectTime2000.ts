@@ -6,6 +6,7 @@
 
 import Command from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
+import {DOWNLINK} from '../../constants/directionTypes.js';
 
 
 const COMMAND_ID = 0x0c;
@@ -18,16 +19,16 @@ const COMMAND_BODY_SIZE = 2;
  *
  * @example
  * // 120 seconds to the past
- * {sequenceNumber: 45, time: -120}
+ * {sequenceNumber: 45, seconds: -120}
  */
 interface IDownlinkCorrectTime2000Parameters {
-    /** sequence Number */
+    /** unique time manipulation operation number */
     sequenceNumber: number,
     /**
      * seconds
      * range: [-127..+127]
      */
-    time: number
+    seconds: number
 }
 
 
@@ -39,7 +40,7 @@ interface IDownlinkCorrectTime2000Parameters {
  * import CorrectTime2000 from 'jooby-codec/commands/downlink/CorrectTime2000';
  *
  * // 120 seconds to the past
- * const parameters = {sequenceNumber: 45, time: -120};
+ * const parameters = {sequenceNumber: 45, seconds: -120};
  * const command = new CorrectTime2000(parameters);
  *
  * // output command binary in hex representation
@@ -55,7 +56,7 @@ class CorrectTime2000 extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly isUplink = false;
+    static readonly directionType = DOWNLINK;
 
     static readonly title = COMMAND_TITLE;
 
@@ -68,7 +69,7 @@ class CorrectTime2000 extends Command {
         const buffer = new BinaryBuffer(data, false);
         const parameters = {
             sequenceNumber: buffer.getUint8(),
-            time: buffer.getInt8()
+            seconds: buffer.getInt8()
         };
 
         if ( !buffer.isEmpty ) {
@@ -80,11 +81,11 @@ class CorrectTime2000 extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {sequenceNumber, time} = this.parameters;
+        const {sequenceNumber, seconds} = this.parameters;
         const buffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
         buffer.setUint8(sequenceNumber);
-        buffer.setInt8(time);
+        buffer.setInt8(seconds);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

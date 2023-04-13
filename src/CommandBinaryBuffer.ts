@@ -1,5 +1,5 @@
 import BinaryBuffer from './BinaryBuffer.js';
-import {getDateFromSeconds} from './utils/time.js';
+import {getDateFromSeconds, getSecondsFromDate} from './utils/time.js';
 
 
 export interface IBatteryVoltage {
@@ -8,7 +8,7 @@ export interface IBatteryVoltage {
      *
      * 4095 === undefined
      */
-    low: number | undefined
+    low: number | undefined,
 
     /**
      * battery voltage value at hight consumption, in mV;
@@ -16,6 +16,44 @@ export interface IBatteryVoltage {
      * 4095 === undefined
      */
     high: number | undefined
+}
+
+
+/**
+ * Channel value hour diff
+ */
+export interface IHourDiff {
+    value: number,
+    hour: number,
+    seconds: number,
+    date: Date
+}
+
+export interface IChannel {
+    /**
+     * Channel number.
+     */
+    index: number,
+
+    /**
+     * Pulse counter or absolute value of device channel.
+     */
+    value: number,
+
+    /**
+     * Values differences between hours.
+     */
+    diff: Array<IHourDiff>,
+
+    /**
+     * time
+     */
+    seconds: number | undefined,
+
+    /**
+     * Normal date in UTC.
+     */
+    date: Date | undefined,
 }
 
 
@@ -184,7 +222,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     setHours ( hour: number, hours: number ): void {
-        this.setUint8(((hours & 0x07) << 5) | (hour & 0x1f));
+        let hourAmount = hours;
+
+        // TODO: add link to doc
+        if ( hourAmount === 1 ) {
+            hourAmount = 0;
+        }
+
+        this.setUint8(((hourAmount & 0x07) << 5) | (hour & 0x1f));
     }
 
     getTime (): number {
@@ -235,6 +280,64 @@ class CommandBinaryBuffer extends BinaryBuffer {
         const highVoltageByte = high & 0xff;
 
         [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
+    }
+
+    getChannelsValuesWithHourDiff (): {hourAmount: number, channels: Array<IChannel>, date: Date} {
+        const date = this.getDate();
+        const {hour, hours} = this.getHours();
+        const channelArray = this.getChannels(true);
+        const maxChannel = Math.max.apply(null, channelArray);
+        const channels: Array<IChannel> = [];
+        let hourAmount = hours;
+        let value;
+
+        date.setUTCHours(hour);
+
+        const counterDate = new Date(date);
+
+        // TODO: add link to doc
+        if ( hourAmount === 0 ) {
+            hourAmount = 1;
+        }
+
+        for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
+            const diff: Array<IHourDiff> = [];
+
+            // decode hour value for channel
+            value = this.getExtendedValue();
+            counterDate.setTime(date.getTime());
+            channels.push({
+                value,
+                diff,
+                index: channelIndex,
+                seconds: getSecondsFromDate(counterDate),
+                date: new Date(counterDate)
+            });
+
+            for ( let diffHour = 0; diffHour < hourAmount; ++diffHour ) {
+                value = this.getExtendedValue();
+
+                counterDate.setUTCHours(counterDate.getUTCHours() + diffHour);
+
+                diff.push({value, hour: diffHour, date: new Date(counterDate), seconds: getSecondsFromDate(counterDate)});
+            }
+        }
+
+        return {channels, date, hourAmount};
+    }
+
+    setChannelsValuesWithHourDiff ( hourAmount: number, date: Date, channels: Array<IChannel> ): void {
+        const hour = date.getUTCHours();
+
+        this.setDate(date);
+        this.setHours(hour, hourAmount);
+        this.setChannels(channels);
+
+        channels.forEach(({value, diff}) => {
+            this.setExtendedValue(value);
+
+            diff.forEach(({value: diffValue}) => this.setExtendedValue(diffValue));
+        });
     }
 }
 
