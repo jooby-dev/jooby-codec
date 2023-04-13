@@ -31,7 +31,7 @@ interface IDownlinkExAbsArchiveHoursMCParameters {
 
 // TODO: rework extended headers detection
 const COMMAND_ID = 0x0c1f;
-const COMMAND_TITLE = 'EX_ABS_ARCHIVE_HOUR_MUL';
+const COMMAND_TITLE = 'EX_ABS_ARCHIVE_HOUR_MC';
 const COMMAND_BODY_SIZE = 4;
 
 

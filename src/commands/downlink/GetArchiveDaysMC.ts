@@ -30,7 +30,7 @@ interface IDownlinkGetArchiveDaysMCParameters {
 
 
 const COMMAND_ID = 0x1b;
-const COMMAND_TITLE = 'GET_ARCHIVE_DAYS_MUL';
+const COMMAND_TITLE = 'GET_ARCHIVE_DAYS_MC';
 const COMMAND_BODY_SIZE = 4;
 
 

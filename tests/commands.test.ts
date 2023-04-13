@@ -40,7 +40,7 @@ const downlinkCommands: TCommandList = [
     },
     {
         constructor: downlink.ExAbsArchiveDaysMC,
-        name: 'downlink command 0xd1f:EX_ABS_ARCHIVE_DAYS_MUL',
+        name: 'downlink command 0xd1f:EX_ABS_ARCHIVE_DAYS_MC',
         parameters: {channelList: [0], days: 1, seconds: 731721600},
         hex: {
             header: '1f 0d 04',
@@ -50,7 +50,7 @@ const downlinkCommands: TCommandList = [
     },
     {
         constructor: downlink.ExAbsArchiveHoursMC,
-        name: 'downlink command 0xc1f:EX_ABS_ARCHIVE_HOUR_MUL',
+        name: 'downlink command 0xc1f:EX_ABS_ARCHIVE_HOUR_MC',
         parameters: {channelList: [0], hours: 0, seconds: 756648000},
         hex: {
             header: '1f 0c 04',
@@ -60,7 +60,7 @@ const downlinkCommands: TCommandList = [
     },
     {
         constructor: downlink.GetArchiveDaysMC,
-        name: 'downlink command 0x1b:GET_ARCHIVE_DAYS_MUL',
+        name: 'downlink command 0x1b:GET_ARCHIVE_DAYS_MC',
         parameters: {channelList: [0], days: 1, seconds: 731721600},
         hex: {
             header: '1b 04',
@@ -70,7 +70,7 @@ const downlinkCommands: TCommandList = [
     },
     {
         constructor: downlink.GetArchiveHoursMC,
-        name: 'downlink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        name: 'downlink command 0x1a:GET_ARCHIVE_HOURS_MC',
         parameters: {channelList: [0], hours: 2, seconds: 756648000},
         hex: {
             header: '1a 04',
@@ -159,7 +159,7 @@ const uplinkCommands: TCommandList = [
     },
     {
         constructor: uplink.DataDayMC,
-        name: 'uplink command 0x16:DATA_DAY_MUL',
+        name: 'uplink command 0x16:DATA_DAY_MC',
         parameters: {
             channelList: [
                 {value: 131, index: 0},
@@ -177,7 +177,7 @@ const uplinkCommands: TCommandList = [
     },
     {
         constructor: uplink.DataHourMC,
-        name: 'uplink command 0x17:DATA_HOUR_MUL',
+        name: 'uplink command 0x17:DATA_HOUR_MC',
         parameters: {
             channelList: [
                 {
@@ -214,7 +214,7 @@ const uplinkCommands: TCommandList = [
     },
     {
         constructor: uplink.ExAbsDayMC,
-        name: 'uplink command 0xb1f:EX_ABS_DAY_MUL',
+        name: 'uplink command 0xb1f:EX_ABS_DAY_MC',
         parameters: {
             channelList: [
                 {
@@ -235,7 +235,7 @@ const uplinkCommands: TCommandList = [
     },
     {
         constructor: uplink.ExAbsHourMC,
-        name: 'uplink command 0xa1f:EX_ABS_HOUR_MUL',
+        name: 'uplink command 0xa1f:EX_ABS_HOUR_MC',
         parameters: {
             channelList: [
                 {
@@ -300,7 +300,7 @@ const uplinkCommands: TCommandList = [
     },
     {
         constructor: uplink.GetArchiveHoursMC,
-        name: 'uplink command 0x1a:GET_ARCHIVE_HOURS_MUL',
+        name: 'uplink command 0x1a:GET_ARCHIVE_HOURS_MC',
         parameters: {
             channelList: [
                 {
@@ -343,7 +343,7 @@ const uplinkCommands: TCommandList = [
     },
     {
         constructor: uplink.GetCurrentMC,
-        name: 'uplink command 0x18:GET_CURRENT_MUL',
+        name: 'uplink command 0x18:GET_CURRENT_MC',
         parameters: {
             channelList: [
                 {index: 0, value: 131},

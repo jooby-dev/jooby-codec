@@ -30,7 +30,7 @@ interface IDownlinkGetArchiveHoursMCParameters {
 
 
 const COMMAND_ID = 0x1a;
-const COMMAND_TITLE = 'GET_ARCHIVE_HOURS_MUL';
+const COMMAND_TITLE = 'GET_ARCHIVE_HOURS_MC';
 const COMMAND_BODY_SIZE = 4;
 
 
