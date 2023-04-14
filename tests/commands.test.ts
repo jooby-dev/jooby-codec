@@ -101,16 +101,6 @@ const downlinkCommands: TCommandList = [
     {
         constructor: downlink.SetParameter,
         name: 'downlink command 0x03:SET_PARAMETER',
-        parameters: {id: deviceParameters.ABSOLUTE_DATA_STATUS, data: {status: 1}},
-        hex: {
-            header: '03 02',
-            body: '18 01',
-            lrc: '4d'
-        }
-    },
-    {
-        constructor: downlink.SetParameter,
-        name: 'downlink command 0x03:SET_PARAMETER',
         parameters: {
             id: deviceParameters.INITIAL_DATA,
             data: {value: 2023, meterValue: 204, pulseCoefficient: 100}
@@ -124,6 +114,16 @@ const downlinkCommands: TCommandList = [
     {
         constructor: downlink.SetParameter,
         name: 'downlink command 0x03:SET_PARAMETER',
+        parameters: {id: deviceParameters.ABSOLUTE_DATA_STATUS, data: {status: 1}},
+        hex: {
+            header: '03 02',
+            body: '18 01',
+            lrc: '4d'
+        }
+    },
+    {
+        constructor: downlink.SetParameter,
+        name: 'downlink command 0x03:SET_PARAMETER',
         parameters: {
             id: deviceParameters.INITIAL_DATA_MULTI_CHANNEL,
             data: {value: 2032, meterValue: 402, pulseCoefficient: 1000, channel: 1}
@@ -132,6 +132,19 @@ const downlinkCommands: TCommandList = [
             header: '03 0b',
             body: '1d 01 00 00 01 92 80 00 00 07 f0',
             lrc: 'a5'
+        }
+    },
+    {
+        constructor: downlink.SetParameter,
+        name: 'downlink command 0x03:SET_PARAMETER',
+        parameters: {
+            id: deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL,
+            data: {status: 0, channel: 2}
+        },
+        hex: {
+            header: '03 03',
+            body: '1e 02 00',
+            lrc: '49'
         }
     },
     {

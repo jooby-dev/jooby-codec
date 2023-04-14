@@ -13,6 +13,11 @@ export const INITIAL_DATA = 23;
 export const ABSOLUTE_DATA_STATUS = 24;
 
 /**
- * same as INITIAL_DATA but with channel number
+ * same as INITIAL_DATA for concrete channel
  */
 export const INITIAL_DATA_MULTI_CHANNEL = 29;
+
+/**
+ * Status of device data sending, absolute value or pulse counter for concrete channel
+ */
+export const ABSOLUTE_DATA_STATUS_MULTI_CHANNEL = 30;

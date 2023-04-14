@@ -39,10 +39,18 @@ interface IParameterAbsoluteDataStatus {
     status: number
 }
 
+interface IParameterAbsoluteDataStatusMC extends IParameterAbsoluteDataStatus {
+    /**
+     * Channel that accept status changing.
+     */
+    channel: number
+}
+
 type TParameter =
     IParameterInitialData |
     IParameterInitialDataMC |
-    IParameterAbsoluteDataStatus;
+    IParameterAbsoluteDataStatus |
+    IParameterAbsoluteDataStatusMC;
 
 /**
  * SetParameter command parameters
@@ -174,6 +182,13 @@ class SetParameter extends Command {
                 } as IParameterAbsoluteDataStatus;
                 break;
 
+            case deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL:
+                parameterData = {
+                    channel: buffer.getUint8(),
+                    status: buffer.getUint8()
+                } as IParameterAbsoluteDataStatusMC;
+                break;
+
             default:
                 throw new Error(`${SetParameter.getId()}: parameter ${id} is not supported`);
         }
@@ -211,6 +226,13 @@ class SetParameter extends Command {
             case deviceParameters.ABSOLUTE_DATA_STATUS:
                 parameterData = data as IParameterAbsoluteDataStatus;
 
+                buffer.setUint8(parameterData.status);
+                break;
+
+            case deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL:
+                parameterData = data as IParameterAbsoluteDataStatusMC;
+
+                buffer.setUint8(parameterData.channel);
                 buffer.setUint8(parameterData.status);
                 break;
 
