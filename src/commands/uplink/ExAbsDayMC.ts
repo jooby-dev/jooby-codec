@@ -34,7 +34,7 @@ class ExAbsDayMC extends GetCurrentMC {
         const buffer = new CommandBinaryBuffer(data);
 
         const date = buffer.getDate();
-        const channelArray = buffer.getChannels(true);
+        const channelArray = buffer.getChannels();
         const maxChannel = Math.max.apply(null, channelArray);
 
         let value;
@@ -50,19 +50,16 @@ class ExAbsDayMC extends GetCurrentMC {
                 value,
                 pulseCoefficient,
                 index: channelIndex,
-                seconds: getSecondsFromDate(date),
                 meterValue: roundNumber(value / pulseCoefficient)
             });
         }
 
-        return new ExAbsDayMC({channelList, date});
+        return new ExAbsDayMC({channelList, seconds: getSecondsFromDate(date)});
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channelList} = this.parameters;
-
-        const {seconds} = channelList[0];
+        const {channelList, seconds} = this.parameters;
 
         buffer.setDate(seconds);
         buffer.setChannels(channelList);

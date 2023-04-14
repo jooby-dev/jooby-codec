@@ -5,7 +5,7 @@
  */
 
 import Command from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directionTypes.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
@@ -73,7 +73,7 @@ class ExAbsArchiveDaysMC extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         const date = buffer.getDate();
-        const channelList = buffer.getChannels(true);
+        const channelList = buffer.getChannels();
         const days = buffer.getUint8();
 
         if ( !buffer.isEmpty ) {
@@ -91,7 +91,7 @@ class ExAbsArchiveDaysMC extends Command {
         const date = getDateFromSeconds(seconds);
 
         buffer.setDate(date);
-        buffer.setChannels(channelList);
+        buffer.setChannels(channelList.map(index => ({index} as IChannel)));
         buffer.setUint8(days);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

@@ -1,7 +1,6 @@
 import Command from '../../Command.js';
-import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
-import {getDateFromSeconds} from '../../utils/time.js';
 
 
 /**
@@ -11,19 +10,19 @@ import {getDateFromSeconds} from '../../utils/time.js';
  * // archive hours values from 001-03-10T12:00:00.000Z with 1-hour diff
  * {
  *     channelList: [{value: 101, index: 0, diff: [value: 1]}],
- *     date: '2001-03-10T12:00:00.000Z',
+ *     seconds: 756648000,
  *     hours: 1
  * }
  */
 interface IUplinkGetArchiveHoursMCParameters {
-    channelList: Array<IChannel>,
-    date: Date | undefined | string,
-    hours: number | undefined
+    channelList: Array<IChannelHours>,
+    seconds: number
+    hours: number
 }
 
 
 const COMMAND_ID = 0x1a;
-const COMMAND_TITLE = 'GET_ARCHIVE_HOURS_MC';
+const COMMAND_TITLE = 'GET_ARCHIVE_HOURS';
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
 // max hours diff - 7 (3 bit value)
@@ -31,29 +30,49 @@ const COMMAND_TITLE = 'GET_ARCHIVE_HOURS_MC';
 const COMMAND_BODY_MAX_SIZE = 164;
 
 
+/**
+ * Uplink command
+ *
+ * @example
+ * ```js
+ * import GetArchiveHoursMC from 'jooby-codec/commands/uplink/GetArchiveHoursMC';
+ *
+ * const command = new GetArchiveHoursMC(
+ *     seconds: 756648000,
+ *     hours: 1,
+ *     channelList: [
+ *         {
+ *             value: 131,
+ *             index: 0,
+ *             diff: [{value: 10, hour: 0, seconds: 756648000}]
+ *         },
+ *         {
+ *             value: 8,
+ *             index: 1,
+ *             diff: [{value: 10, hour: 0, seconds: 756648000}]
+ *         },
+ *         {
+ *             value: 8,
+ *             index: 2,
+ *             diff: [{value: 10, hour: 0, seconds: 756648000}]
+ *         },
+ *         {
+ *             value: 12,
+ *             index: 3,
+ *             diff: [{value: 10, hour: 0, seconds: 756648000}]
+ *         }
+ *     ]
+ * );
+ *
+ * // output command binary in hex representation
+ * console.log(command.toHex());
+ * // 1a 0d 2f 97 0c 0f 83 01 0a 08 0a 08 0a 0c 0a
+ * ```
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveHoursMC.md#response)
+ */
 class GetArchiveHoursMC extends Command {
     constructor ( public parameters: IUplinkGetArchiveHoursMCParameters ) {
         super();
-
-        const {date, hours, channelList} = this.parameters;
-
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if ( date === undefined ) {
-            const [{seconds}] = channelList;
-
-            if ( seconds ) {
-                this.parameters.date = getDateFromSeconds(seconds);
-            } else {
-                throw new Error(`${GetArchiveHoursMC.getName()} can't recognize time`);
-            }
-        } else if ( typeof date === 'string' ) {
-            this.parameters.date = new Date(date);
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if ( hours === undefined ) {
-            this.parameters.hours = channelList[0].diff.length;
-        }
 
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a.index - b.index);
     }
@@ -72,10 +91,9 @@ class GetArchiveHoursMC extends Command {
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {hours, date, channelList} = this.parameters;
+        const {hours, seconds, channelList} = this.parameters;
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        buffer.setChannelsValuesWithHourDiff(hours!, date as Date, channelList);
+        buffer.setChannelsValuesWithHourDiff(hours, seconds, channelList);
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }

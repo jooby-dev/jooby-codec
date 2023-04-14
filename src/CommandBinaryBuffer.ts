@@ -18,42 +18,77 @@ export interface IBatteryVoltage {
     high: number | undefined
 }
 
-
-/**
- * Channel value hour diff
- */
-export interface IHourDiff {
-    value: number,
-    hour: number,
-    seconds: number,
-    date: Date
-}
-
 export interface IChannel {
     /**
      * Channel number.
      */
-    index: number,
+    index: number
+}
 
+export interface IChannelValue extends IChannel {
     /**
      * Pulse counter or absolute value of device channel.
      */
+    value: number
+}
+
+/**
+ * Channel hour value diff.
+ */
+export interface IHourDiff {
     value: number,
+    seconds: number
+}
+
+export interface IChannelHours extends IChannelValue {
+    /**
+     * values differences between hours
+     */
+    diff: Array<IHourDiff>
+}
+
+export interface IChannelHourAbsoluteValue extends IChannelHours {
+    /**
+     * Channel pulse coefficient - IPK in bytes.
+     */
+    pulseCoefficient: number,
+
+    meterValue: number
+}
+
+/**
+ * Channel day value.
+ */
+export interface IDayValue {
+    value: number,
+    day: number,
+    seconds: number
+}
+
+export interface IChannelDays extends IChannel {
+    daysList: Array<IDayValue>
+}
+
+/**
+ * Channel absolute value by day.
+ */
+export interface IArchiveChannelDayAbsoluteValue {
+    value: number,
+    meterValue: number,
+    day: number,
+    seconds: number
+}
+
+export interface IChannelArchiveDaysAbsolute extends IChannel {
+    /**
+     * values by days
+     */
+    dayList: Array<IArchiveChannelDayAbsoluteValue>,
 
     /**
-     * Values differences between hours.
+     * Channel pulse coefficient - IPK in bytes.
      */
-    diff: Array<IHourDiff>,
-
-    /**
-     * time
-     */
-    seconds: number | undefined,
-
-    /**
-     * Normal date in UTC.
-     */
-    date: Date | undefined,
+    pulseCoefficient: number
 }
 
 
@@ -61,9 +96,9 @@ const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
 const DATE_BIT_SIZE = 5;
 const YEAR_START_INDEX = 1;
-const CHANNELS_FULL_MASK = [0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40];
-const CHANNELS_SHORT_MASK = [0x01, 0x02, 0x04, 0x08];
 const UNKNOWN_BATTER_VOLTAGE = 4095;
+const EXTENDED_BIT_MASK = 0x80;
+const LAST_BIT_INDEX = 7;
 
 
 /**
@@ -79,7 +114,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         while ( extended && this.offset <= this.data.byteLength ) {
             const byte = this.getUint8();
 
-            extended = byte & 0x80;
+            extended = byte & EXTENDED_BIT_MASK;
             value += (byte & 0x7f) << (7 * position);
             ++position;
         }
@@ -98,7 +133,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         let encodedValue = value;
 
         while ( encodedValue ) {
-            data.push(0x80 | (encodedValue & 0x7f));
+            data.push(EXTENDED_BIT_MASK | (encodedValue & 0x7f));
             encodedValue >>= 7;
         }
 
@@ -114,53 +149,82 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     /**
      * Get array of channel indexes.
-     *
-     * @param short - get 4 channelList or more
      */
-    getChannels ( short: boolean ): Array<number> {
-        const channelList = [];
+    getChannels (): Array<number> {
+        const channelList: Array<number> = [];
 
-        let extended = 1;
+        let extended = true;
         let channelIndex = 0;
-        const MASK = short ? CHANNELS_SHORT_MASK : CHANNELS_FULL_MASK;
 
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         while ( extended ) {
             const byte = this.getUint8();
 
-            extended = byte & 0x80;
+            // original 0b00000001, reverse it to get first - `1`
+            const bits = byte.toString(2).padStart(LAST_BIT_INDEX + 1, '0').split('').reverse();
 
-            for ( let index = 0; index < MASK.length; index++ ) {
-                if ( byte & MASK[index] ) {
-                    channelList.push((channelIndex * 7) + index);
+            // eslint-disable-next-line @typescript-eslint/no-loop-func
+            bits.forEach((bit, index) => {
+                const value = Number(bit);
+
+                if ( index === LAST_BIT_INDEX ) {
+                    // highest bit in byte
+                    extended = !!value;
+                } else {
+                    if ( value ) {
+                        channelList.push(channelIndex);
+                    }
+
+                    ++channelIndex;
                 }
-            }
-
-            ++channelIndex;
+            });
         }
 
-        return channelList.sort((a, b) => a - b);
+        return channelList;
     }
 
 
     /**
      * Set array of channel indexes.
-     *
      */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setChannels ( channelList: Array<any> ) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return
+    setChannels ( channelList: Array<IChannel> ) {
+        // sort to correct order of channels
+        channelList.sort((a, b) => a.index - b.index);
+
+        // find max channel to detect amount of bytes
         const maxChannel = Math.max(...channelList.map(({index}) => index));
+        const size = (maxChannel - (maxChannel % LAST_BIT_INDEX)) / LAST_BIT_INDEX;
+        const data = new Array(size + 1).fill(0);
 
-        const size = (Math.ceil(maxChannel / 7) + (maxChannel % 7)) ? 1 : 0;
-        const data = Array(size).fill(0x80);
+        let byte = 0;
 
-        channelList.forEach((_, channelIndex) => {
-            data[Math.floor(channelIndex / 7)] |= CHANNELS_FULL_MASK[channelIndex % 7];
+        data.forEach((_, byteIndex) => {
+            // max channel index in one byte - 6
+            let channelIndex = byteIndex * LAST_BIT_INDEX;
+            const maxChannelIndex = channelIndex + LAST_BIT_INDEX;
+
+            while ( channelIndex < maxChannelIndex ) {
+                // eslint-disable-next-line @typescript-eslint/no-loop-func
+                const channel = channelList.find((item => item.index === channelIndex));
+
+                if ( channel !== undefined ) {
+                    // set channel bit
+                    byte |= 1 << (channel.index % LAST_BIT_INDEX);
+                }
+
+                ++channelIndex;
+            }
+
+            // set extended bit if next byte exist
+            if ( data[byteIndex + 1] !== undefined ) {
+                byte |= 1 << LAST_BIT_INDEX;
+            }
+
+            data[byteIndex] = byte;
+            byte = 0;
         });
 
-        data[data.length - 1] &= 0x7f;
-
-        data.forEach((byte: number) => this.setUint8(byte));
+        data.forEach((value: number) => this.setUint8(value));
     }
 
     /**
@@ -282,12 +346,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
         [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
     }
 
-    getChannelsValuesWithHourDiff (): {hours: number, channelList: Array<IChannel>, date: Date} {
+    getChannelsValuesWithHourDiff (): {hours: number, seconds: number, channelList: Array<IChannelHours>} {
         const date = this.getDate();
         const {hour, hours: hourAmount} = this.getHours();
-        const channelArray = this.getChannels(true);
+        const channelArray = this.getChannels();
         const maxChannel = Math.max.apply(null, channelArray);
-        const channelList: Array<IChannel> = [];
+        const channelList: Array<IChannelHours> = [];
         let hours = hourAmount;
         let value;
 
@@ -309,9 +373,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             channelList.push({
                 value,
                 diff,
-                index: channelIndex,
-                seconds: getSecondsFromDate(counterDate),
-                date: new Date(counterDate)
+                index: channelIndex
             });
 
             for ( let diffHour = 0; diffHour < hours; ++diffHour ) {
@@ -319,14 +381,15 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
                 counterDate.setUTCHours(counterDate.getUTCHours() + diffHour);
 
-                diff.push({value, hour: diffHour, date: new Date(counterDate), seconds: getSecondsFromDate(counterDate)});
+                diff.push({value, seconds: getSecondsFromDate(counterDate)});
             }
         }
 
-        return {channelList, date, hours};
+        return {channelList, hours, seconds: getSecondsFromDate(date)};
     }
 
-    setChannelsValuesWithHourDiff ( hours: number, date: Date, channelList: Array<IChannel> ): void {
+    setChannelsValuesWithHourDiff ( hours: number, seconds: number, channelList: Array<IChannelHours> ): void {
+        const date = getDateFromSeconds(seconds);
         const hour = date.getUTCHours();
 
         this.setDate(date);

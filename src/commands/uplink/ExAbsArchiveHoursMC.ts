@@ -37,7 +37,7 @@ class ExAbsArchiveHourMC extends GetCurrentMC {
 
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
-        const channelArray = buffer.getChannels(true);
+        const channelArray = buffer.getChannels();
         const maxChannel = Math.max.apply(null, channelArray);
 
         date.setUTCHours(hour);

@@ -162,46 +162,44 @@ const uplinkCommands: TCommandList = [
         name: 'uplink command 0x16:DATA_DAY_MC',
         parameters: {
             channelList: [
-                {value: 131, index: 0},
-                {value: 8, index: 1},
-                {value: 10, index: 2},
-                {value: 12, index: 3}
+                {value: 131, index: 3},
+                {value: 8, index: 5},
+                {value: 10, index: 7},
+                {value: 12, index: 1}
             ],
             seconds: 756604800
         },
         hex: {
-            header: '16 08',
-            body: '2f 97 0f 83 01 08 0a 0c',
-            lrc: '70'
+            header: '16 09',
+            body: '2f 97 aa 01 0c 83 01 08 0a',
+            lrc: 'd5'
         }
     },
     {
         constructor: uplink.DataHourMC,
         name: 'uplink command 0x17:DATA_HOUR_MC',
         parameters: {
+            seconds: 756648000,
+            hours: 1,
             channelList: [
                 {
                     value: 131,
                     index: 0,
-                    seconds: 756648000,
                     diff: [{value: 10, seconds: 756648000}]
                 },
                 {
                     value: 8,
                     index: 1,
-                    seconds: 756648000,
                     diff: [{value: 10, seconds: 756648000}]
                 },
                 {
                     value: 8,
                     index: 2,
-                    seconds: 756648000,
                     diff: [{value: 10, seconds: 756648000}]
                 },
                 {
                     value: 12,
                     index: 3,
-                    seconds: 756648000,
                     diff: [{value: 10, seconds: 756648000}]
                 }
             ]
@@ -216,124 +214,78 @@ const uplinkCommands: TCommandList = [
         constructor: uplink.ExAbsDayMC,
         name: 'uplink command 0xb1f:EX_ABS_DAY_MC',
         parameters: {
+            seconds: 731721600,
             channelList: [
                 {
                     pulseCoefficient: 100,
                     index: 0,
-                    value: 342457,
-                    meterValue: 3424.57,
-                    seconds: 731721600
+                    value: 342,
+                    meterValue: 3.42
                 }
-            ],
-            date: new Date('2023-03-10T00:00:00.000Z')
+            ]
         },
         hex: {
-            header: '1f 0b 07',
-            body: '2e 6a 01 64 b9 f3 14',
-            lrc: '39'
+            header: '1f 0b 06',
+            body: '2e 6a 01 64 d6 02',
+            lrc: 'b2'
         }
     },
     {
         constructor: uplink.ExAbsHourMC,
         name: 'uplink command 0xa1f:EX_ABS_HOUR_MC',
         parameters: {
+            seconds: 731764800,
+            hours: 0,
             channelList: [
                 {
-                    diff: [
-                        {
-                            value: 128,
-                            pulseCoefficient: 100,
-                            seconds: 731764800,
-                            meterValue: 3425.85
-                        },
-                        {
-                            value: 100,
-                            pulseCoefficient: 100,
-                            seconds: 731768400,
-                            meterValue: 3425.57
-                        },
-                        {
-                            value: 32,
-                            pulseCoefficient: 100,
-                            seconds: 731775600,
-                            meterValue: 3424.89
-                        },
-                        {
-                            value: 50,
-                            pulseCoefficient: 100,
-                            seconds: 731786400,
-                            meterValue: 3425.07
-                        },
-                        {
-                            value: 0,
-                            pulseCoefficient: 100,
-                            seconds: 731800800,
-                            meterValue: 3424.57
-                        },
-                        {
-                            value: 2,
-                            pulseCoefficient: 100,
-                            seconds: 731818800,
-                            meterValue: 3424.59
-                        },
-                        {
-                        value: 5,
-                            pulseCoefficient: 100,
-                            seconds: 731840400,
-                            meterValue: 3424.62
-                        }
-                    ],
                     pulseCoefficient: 100,
                     index: 0,
                     value: 342457,
                     meterValue: 3424.57,
-                    seconds: 731764800
+                    diff: [
+                        {
+                            value: 128,
+                            seconds: 731764800,
+                            meterValue: 3425.85
+                        }
+                    ]
                 }
-            ],
-            date: new Date('2023-03-10T12:00:00.000Z')
+            ]
         },
         hex: {
-            header: '1f 0a 10',
-            body: '2e 6a ec 01 64 b9 f3 14 80 01 64 20 32 00 02 05',
-            lrc: '33'
+            header: '1f 0a 0a',
+            body: '2e 6a 0c 01 64 b9 f3 14 80 01',
+            lrc: 'b8'
         }
     },
     {
         constructor: uplink.GetArchiveHoursMC,
-        name: 'uplink command 0x1a:GET_ARCHIVE_HOURS_MC',
+        name: 'uplink command 0x1a:GET_ARCHIVE_HOURS',
         parameters: {
+            seconds: 756648000,
+            hours: 1,
             channelList: [
                 {
                     value: 131,
                     index: 0,
-                    seconds: 756648000,
-                    date: new Date('2023-12-23T12:00:00.000Z'),
-                    diff: [{value: 10, hour: 0, seconds: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                    diff: [{value: 10, seconds: 756648000}]
                 },
                 {
                     value: 8,
                     index: 1,
-                    seconds: 756648000,
-                    date: new Date('2023-12-23T12:00:00.000Z'),
-                    diff: [{value: 10, hour: 0, seconds: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                    diff: [{value: 10, seconds: 756648000}]
                 },
                 {
                     value: 8,
                     index: 2,
-                    seconds: 756648000,
-                    date: new Date('2023-12-23T12:00:00.000Z'),
-                    diff: [{value: 10, hour: 0, seconds: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                    diff: [{value: 10, seconds: 756648000}]
                 },
                 {
                     value: 12,
                     index: 3,
-                    seconds: 756648000,
-                    date: new Date('2023-12-23T12:00:00.000Z'),
-                    diff: [{value: 10, hour: 0, seconds: 756648000, date: new Date('2023-12-23T12:00:00.000Z')}]
+                    diff: [{value: 10, seconds: 756648000}]
                 }
-            ],
-            date: new Date('2023-12-23T12:00:00.000Z'),
-            hours: 1
+            ]
         },
         hex: {
             header: '1a 0d',
@@ -597,7 +549,6 @@ const checkCommand = ( {constructor, name, parameters, hardwareType, hex:{header
     uplinkCommands.push({
         constructor: uplink.NewEvent,
         name: 'uplink command 0x15:NEW_EVENT',
-        // magnet on
         parameters: {id, sequenceNumber: 2, data: {seconds: 734015840}},
         hex: {
             header: '15 06',

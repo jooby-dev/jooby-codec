@@ -35,7 +35,7 @@ class DataHourMC extends GetCurrentMC {
 
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
-        const channelArray = buffer.getChannels(true);
+        const channelArray = buffer.getChannels();
         const maxChannel = Math.max.apply(null, channelArray);
 
         date.setUTCHours(hour);
@@ -57,37 +57,36 @@ class DataHourMC extends GetCurrentMC {
             counterDate.setTime(date.getTime());
 
             const diff: Array<any> = [];
-            const channel = {value, index: channelIndex, seconds: getSecondsFromDate(counterDate), diff};
+            const channel = {value, index: channelIndex, diff};
 
             channelList.push(channel);
 
-            for ( let hourIndex = 0; hourIndex < hourAmount; ++hourIndex ) {
+            for ( let diffHour = 0; diffHour < hourAmount; ++diffHour ) {
                 value = buffer.getExtendedValue();
 
-                counterDate.setUTCHours(counterDate.getUTCHours() + hourIndex);
+                counterDate.setUTCHours(counterDate.getUTCHours() + diffHour);
 
                 diff.push({value, seconds: getSecondsFromDate(counterDate)});
             }
         }
 
-        return new DataHourMC({channelList});
+        return new DataHourMC({channelList, hours: hourAmount, seconds: getSecondsFromDate(date)});
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channelList} = this.parameters;
+        const {channelList, seconds, hours} = this.parameters;
 
-        const {seconds} = channelList[0];
         const realDate = getDateFromSeconds(seconds);
         const hour = realDate.getUTCHours();
-        let hours = channelList[0].diff.length;
+        let hourAmount = hours;
 
-        if ( hours === 1 ) {
-            hours = 0;
+        if ( hourAmount === 1 ) {
+            hourAmount = 0;
         }
 
         buffer.setDate(seconds);
-        buffer.setHours(hour, hours);
+        buffer.setHours(hour, hourAmount);
         buffer.setChannels(channelList);
 
         for ( const {value, diff} of channelList ) {

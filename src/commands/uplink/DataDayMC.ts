@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import Command from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannelValue} from '../../CommandBinaryBuffer.js';
 import {getSecondsFromDate} from '../../utils/time.js';
 import GetCurrentMC, {IGetCurrentMCParameters} from './GetCurrentMC.js';
 import {UPLINK} from '../../constants/directionTypes.js';
@@ -43,12 +43,12 @@ class DataDayMC extends GetCurrentMC {
         const buffer = new CommandBinaryBuffer(data);
 
         const date = buffer.getDate();
-        const channelArray = buffer.getChannels(false);
+        const channelArray = buffer.getChannels();
 
         parameters.channelList = channelArray.map(channelIndex => ({
             value: buffer.getExtendedValue(),
             index: channelIndex
-        }));
+        }) as IChannelValue);
 
         parameters.seconds = getSecondsFromDate(date);
 
@@ -60,7 +60,7 @@ class DataDayMC extends GetCurrentMC {
         const {channelList, seconds} = this.parameters;
 
         buffer.setDate(seconds);
-        buffer.setChannels(channelList.map(({index}) => index));
+        buffer.setChannels(channelList);
         channelList.forEach(({value}) => buffer.setExtendedValue(value));
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());

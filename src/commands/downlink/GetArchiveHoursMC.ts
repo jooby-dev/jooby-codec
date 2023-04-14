@@ -5,7 +5,7 @@
  */
 
 import Command from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directionTypes.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
@@ -73,7 +73,7 @@ class GetArchiveHoursMC extends Command {
 
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
-        const channelList = buffer.getChannels(true);
+        const channelList = buffer.getChannels();
 
         date.setUTCHours(hour);
 
@@ -94,7 +94,7 @@ class GetArchiveHoursMC extends Command {
 
         buffer.setDate(date);
         buffer.setHours(hour, hours);
-        buffer.setChannels(channelList);
+        buffer.setChannels(channelList.map(index => ({index} as IChannel)));
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
