@@ -64,14 +64,18 @@ const checkMessage = ( {hex}: IMessage ) => {
 };
 
 
-describe('encode/decode messages', () => {
-    describe('positive cases', () => {
-        test('downlink messages', () => {
-            downlinkMessages.forEach(checkMessage);
+describe('downlink messages', () => {
+    downlinkMessages.forEach((command, index) => {
+        test(`test case #${index}`, () => {
+            checkMessage(command);
         });
+    });
+});
 
-        test('uplink messages', () => {
-            uplinkMessages.forEach(checkMessage);
+describe('uplink messages', () => {
+    uplinkMessages.forEach((command, index) => {
+        test(`test case #${index}`, () => {
+            checkMessage(command);
         });
     });
 });

@@ -607,12 +607,18 @@ const checkCommand = ( {constructor, name, parameters, hardwareType, hex:{header
 });
 
 
-describe('general tests', () => {
-    test('downlink commands', () => {
-        downlinkCommands.forEach(checkCommand);
+describe('downlink commands', () => {
+    downlinkCommands.forEach(command => {
+        test(command.constructor.name, () => {
+            checkCommand(command);
+        });
     });
+});
 
-    test('uplink commands', () => {
-        uplinkCommands.forEach(checkCommand);
+describe('uplink commands', () => {
+    uplinkCommands.forEach(command => {
+        test(command.constructor.name, () => {
+            checkCommand(command);
+        });
     });
 });
