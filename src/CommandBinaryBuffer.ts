@@ -76,7 +76,7 @@ const MONTH_BIT_SIZE = 4;
 const DATE_BIT_SIZE = 5;
 const YEAR_START_INDEX = 1;
 const UNKNOWN_BATTERY_VOLTAGE = 4095;
-const EXTENDED_BIT_MASK = 0x80;
+const EXTEND_BIT_MASK = 0x80;
 const LAST_BIT_INDEX = 7;
 
 
@@ -93,7 +93,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         while ( isByteExtended && this.offset <= this.data.byteLength ) {
             const byte = this.getUint8();
 
-            isByteExtended = !!(byte & EXTENDED_BIT_MASK);
+            isByteExtended = !!(byte & EXTEND_BIT_MASK);
             value += (byte & 0x7f) << (7 * position);
             ++position;
         }
@@ -112,7 +112,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         let encodedValue = value;
 
         while ( encodedValue ) {
-            data.push(EXTENDED_BIT_MASK | (encodedValue & 0x7f));
+            data.push(EXTEND_BIT_MASK | (encodedValue & 0x7f));
             encodedValue >>= 7;
         }
 
