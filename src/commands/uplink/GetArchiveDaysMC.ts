@@ -1,7 +1,7 @@
 import Command from '../../Command.js';
-import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannelDays} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
-import {getDateFromSeconds, getSecondsFromDate} from '../../utils/time.js';
+import {getSecondsFromDate} from '../../utils/time.js';
 
 
 /**
@@ -16,39 +16,9 @@ import {getDateFromSeconds, getSecondsFromDate} from '../../utils/time.js';
  * }
  */
 interface IUplinkGetArchiveDaysMCParameters {
-    channelList: Array<IArchiveChannel>,
-    date: Date | undefined | string,
-    days: number | undefined
-}
-
-/**
- * channel value by day
- */
-export interface IArchiveDayValue {
-    value: number,
-    day: number,
-    seconds: number,
-    date: Date
-}
-
-interface IArchiveChannel extends IChannel {
-    /**
-     * channel number
-     */
-    index: number,
-
-    /**
-     * values by days
-     */
-    dayList: Array<IArchiveDayValue>,
-
-    /** time */
-    seconds: number,
-
-    /**
-     * Normal date in UTC.
-     */
-    date: Date
+    channelList: Array<IChannelDays>,
+    startTime: number,
+    days: number
 }
 
 
@@ -86,24 +56,6 @@ class GetArchiveDaysMC extends Command {
         super();
 
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a.index - b.index);
-
-        const {date, days, channelList} = this.parameters;
-
-        if ( date === undefined ) {
-            const [{seconds}] = channelList;
-
-            if ( seconds ) {
-                this.parameters.date = getDateFromSeconds(seconds);
-            } else {
-                throw new Error(`${GetArchiveDaysMC.getName()} can't recognize time`);
-            }
-        } else if ( typeof date === 'string' ) {
-            this.parameters.date = new Date(date);
-        }
-
-        if ( days === undefined ) {
-            this.parameters.days = channelList[0].dayList.length;
-        }
     }
 
     static readonly id = COMMAND_ID;
@@ -117,48 +69,34 @@ class GetArchiveDaysMC extends Command {
         const date = buffer.getDate();
         const channels = buffer.getChannels();
         const days = buffer.getUint8();
-        const maxChannel = Math.max.apply(null, channels);
-        const channelList: Array<IArchiveChannel> = [];
-        const counterDate = new Date(date);
+        const channelList: Array<IChannelDays> = [];
 
-        let value;
-
-        for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
-            const dayList: Array<IArchiveDayValue> = [];
-
-            counterDate.setTime(date.getTime());
+        channels.forEach(channelIndex => {
+            const dayList: Array<number> = [];
 
             channelList.push({
                 dayList,
-                index: channelIndex,
-                seconds: getSecondsFromDate(counterDate),
-                date: new Date(counterDate)
+                index: channelIndex
             });
 
             for ( let day = 0; day < days; ++day ) {
-                value = buffer.getExtendedValue();
-
-                counterDate.setTime(date.getTime());
-                counterDate.setUTCHours(counterDate.getUTCHours() + (day * 24));
-
-                dayList.push({value, day, date: new Date(counterDate), seconds: getSecondsFromDate(counterDate)});
+                dayList.push(buffer.getExtendedValue());
             }
-        }
+        });
 
-        return new GetArchiveDaysMC({channelList, date, days});
+        return new GetArchiveDaysMC({channelList, days, startTime: getSecondsFromDate(date)});
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {days, date, channelList} = this.parameters;
+        const {days, startTime, channelList} = this.parameters;
 
-        buffer.setDate(date as Date);
+        buffer.setDate(startTime);
         buffer.setChannels(channelList);
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        buffer.setUint8(days!);
+        buffer.setUint8(days);
 
         channelList.forEach(({dayList}) => {
-            dayList.forEach(({value}) => buffer.setExtendedValue(value));
+            dayList.forEach(value => buffer.setExtendedValue(value));
         });
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
