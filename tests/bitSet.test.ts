@@ -107,12 +107,18 @@ const checkToObject = ( {mask, object, bits}: ITestCase ) => {
 };
 
 
-describe('bitSet conversions', () => {
-    test('number from object', () => {
-        fromObjectTestCases.forEach(checkFromObject);
+describe('number from object', () => {
+    fromObjectTestCases.forEach((testCase, index) => {
+        test(`test case #${index}`, () => {
+            checkFromObject(testCase);
+        });
     });
+});
 
-    test('object from number', () => {
-        toObjectTestCases.forEach(checkToObject);
+describe('object from number', () => {
+    toObjectTestCases.forEach((testCase, index) => {
+        test(`test case #${index}`, () => {
+            checkToObject(testCase);
+        });
     });
 });
