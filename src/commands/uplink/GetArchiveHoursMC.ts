@@ -9,14 +9,14 @@ import {UPLINK} from '../../constants/directionTypes.js';
  * @example
  * // archive hours values from 001-03-10T12:00:00.000Z with 1-hour diff
  * {
- *     channelList: [{value: 101, index: 0, diff: [value: 1]}],
- *     seconds: 756648000,
+ *     channelList: [{value: 101, index: 0, diff: [1]}],
+ *     startTime: 756648000,
  *     hours: 1
  * }
  */
 interface IUplinkGetArchiveHoursMCParameters {
     channelList: Array<IChannelHours>,
-    seconds: number
+    startTime: number
     hours: number
 }
 
@@ -38,28 +38,28 @@ const COMMAND_BODY_MAX_SIZE = 164;
  * import GetArchiveHoursMC from 'jooby-codec/commands/uplink/GetArchiveHoursMC';
  *
  * const command = new GetArchiveHoursMC(
- *     seconds: 756648000,
+ *     startTime: 756648000,
  *     hours: 1,
  *     channelList: [
  *         {
  *             value: 131,
  *             index: 0,
- *             diff: [{value: 10, hour: 0, seconds: 756648000}]
+ *             diff: [10]
  *         },
  *         {
  *             value: 8,
  *             index: 1,
- *             diff: [{value: 10, hour: 0, seconds: 756648000}]
+ *             diff: [10]
  *         },
  *         {
  *             value: 8,
  *             index: 2,
- *             diff: [{value: 10, hour: 0, seconds: 756648000}]
+ *             diff: [10]
  *         },
  *         {
  *             value: 12,
  *             index: 3,
- *             diff: [{value: 10, hour: 0, seconds: 756648000}]
+ *             diff: [10]
  *         }
  *     ]
  * );
@@ -91,9 +91,9 @@ class GetArchiveHoursMC extends Command {
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {hours, seconds, channelList} = this.parameters;
+        const {hours, startTime, channelList} = this.parameters;
 
-        buffer.setChannelsValuesWithHourDiff(hours, seconds, channelList);
+        buffer.setChannelsValuesWithHourDiff(hours, startTime, channelList);
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }

@@ -1,12 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-
 import Command from '../../Command.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHourAbsoluteValue} from '../../CommandBinaryBuffer.js';
-import roundNumber from '../../utils/roundNumber.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 
 
@@ -17,21 +11,14 @@ import {UPLINK} from '../../constants/directionTypes.js';
  * // archive hours values from 001-03-10T12:00:00.000Z with 1-hour diff
  *
  * {
- *     seconds: 731764800,
+ *     startTime: 731764800,
  *     hours: 1,
  *     channelList: [
  *         {
  *             pulseCoefficient: 100,
  *             index: 0,
  *             value: 342457,
- *             meterValue: 3424.57,
- *             diff: [
- *                 {
- *                     value: 128,
- *                     seconds: 731764800,
- *                     meterValue: 3425.85
- *                 }
- *             ]
+ *             diff: [128]
  *         }
  *     ]
  * }
@@ -39,7 +26,7 @@ import {UPLINK} from '../../constants/directionTypes.js';
  */
 interface IUplinkExAbsHourMCParameters {
     channelList: Array<IChannelHourAbsoluteValue>,
-    seconds: number
+    startTime: number
     hours: number
 }
 
@@ -61,21 +48,14 @@ const COMMAND_BODY_MAX_SIZE = 84;
  * import ExAbsHourMC from 'jooby-codec/commands/uplink/GetArchiveHoursMC';
  *
  * const command = new ExAbsHourMC({
- *     seconds: 731764800,
+ *     startTime: 731764800,
  *     hours: 1,
  *     channelList: [
  *         {
  *             pulseCoefficient: 100,
  *             index: 0,
  *             value: 342457,
- *             meterValue: 3424.57,
- *             diff: [
- *                 {
- *                     value: 128,
- *                     seconds: 731764800,
- *                     meterValue: 3425.85
- *                 }
- *             ]
+ *             diff: [128]
  *         }
  *     ]
  * });
@@ -99,83 +79,54 @@ class ExAbsHourMC extends Command {
 
     static readonly title = COMMAND_TITLE;
 
-    static fromBytes ( data: Uint8Array ): any {
+    static fromBytes ( data: Uint8Array ): ExAbsHourMC {
         const buffer = new CommandBinaryBuffer(data);
 
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
         const channelArray = buffer.getChannels();
         const maxChannel = Math.max.apply(null, channelArray);
+        const channelList: Array<IChannelHourAbsoluteValue> = [];
+        const hourAmount = hours === 0 ? 1 : hours;
 
         date.setUTCHours(hour);
-
-        const counterDate = new Date(date);
-        let hourAmount = hours;
-
-        const channelList: Array<any> = [];
-
-        if ( hourAmount === 0 ) {
-            // one hour
-            hourAmount = 1;
-        }
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
             // IPK_${channelIndex}
             const pulseCoefficient = buffer.getUint8();
-            // decode hour value for channel
-            const pulseValue = buffer.getExtendedValue();
-            const diff: Array<any> = [];
-
-            counterDate.setTime(date.getTime());
+            const value = buffer.getExtendedValue();
+            const diff: Array<number> = [];
 
             for ( let hourIndex = 0; hourIndex < hourAmount; ++hourIndex ) {
-                const value = buffer.getExtendedValue();
-
-                counterDate.setUTCHours(counterDate.getUTCHours() + hourIndex);
-
-                diff.push({
-                    value,
-                    seconds: getSecondsFromDate(counterDate),
-                    meterValue: roundNumber((value + pulseValue) / pulseCoefficient)
-                });
+                diff.push(buffer.getExtendedValue());
             }
 
             channelList.push({
                 diff,
+                value,
                 pulseCoefficient,
-                index: channelIndex,
-                value: pulseValue,
-                meterValue: roundNumber(pulseValue / pulseCoefficient)
+                index: channelIndex
             });
         }
 
-        return new ExAbsHourMC({channelList, hours, seconds: getSecondsFromDate(date)});
+        return new ExAbsHourMC({channelList, hours: hourAmount, startTime: getSecondsFromDate(date)});
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {hours, seconds, channelList} = this.parameters;
+        const {hours, startTime, channelList} = this.parameters;
 
-        const realDate = getDateFromSeconds(seconds);
-        const hour = realDate.getUTCHours();
-        let hourAmount = hours;
+        const date = getDateFromSeconds(startTime);
+        const hour = date.getUTCHours();
 
-        // TODO: add link to doc
-        if ( hourAmount === 1 ) {
-            hourAmount = 0;
-        }
-
-        buffer.setDate(seconds);
-        buffer.setHours(hour, hourAmount);
+        buffer.setDate(startTime);
+        buffer.setHours(hour, hours);
         buffer.setChannels(channelList);
 
         for ( const {value, diff, pulseCoefficient} of channelList ) {
             buffer.setUint8(pulseCoefficient);
             buffer.setExtendedValue(value);
-
-            for ( const {value: diffValue} of diff ) {
-                buffer.setExtendedValue(diffValue);
-            }
+            diff.forEach(diffValue => buffer.setExtendedValue(diffValue));
         }
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());

@@ -32,58 +32,37 @@ export interface IChannelValue extends IChannel {
     value: number
 }
 
-/**
- * Channel hour value diff.
- */
-export interface IHourDiff {
-    value: number,
-    seconds: number
-}
-
 export interface IChannelHours extends IChannelValue {
     /**
      * values differences between hours
      */
-    diff: Array<IHourDiff>
+    diff: Array<number>
 }
 
 export interface IChannelHourAbsoluteValue extends IChannelHours {
     /**
      * Channel pulse coefficient - IPK in bytes.
      */
-    pulseCoefficient: number,
-
-    meterValue: number
-}
-
-/**
- * Channel day value.
- */
-export interface IDayValue {
-    value: number,
-    day: number,
-    seconds: number
+    pulseCoefficient: number
 }
 
 export interface IChannelDays extends IChannel {
-    daysList: Array<IDayValue>
+    daysList: Array<number>
 }
 
-/**
- * Channel absolute value by day.
- */
-export interface IArchiveChannelDayAbsoluteValue {
-    value: number,
-    meterValue: number,
-    day: number,
-    seconds: number
+export interface IChannelArchiveDaysAbsoluteValue extends IChannelValue {
+
+    /**
+     * Channel pulse coefficient - IPK in bytes.
+     */
+    pulseCoefficient: number
 }
 
 export interface IChannelArchiveDaysAbsolute extends IChannel {
     /**
      * values by days
      */
-    dayList: Array<IArchiveChannelDayAbsoluteValue>,
+    dayList: Array<number>,
 
     /**
      * Channel pulse coefficient - IPK in bytes.
@@ -96,7 +75,7 @@ const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
 const DATE_BIT_SIZE = 5;
 const YEAR_START_INDEX = 1;
-const UNKNOWN_BATTER_VOLTAGE = 4095;
+const UNKNOWN_BATTERY_VOLTAGE = 4095;
 const EXTENDED_BIT_MASK = 0x80;
 const LAST_BIT_INDEX = 7;
 
@@ -107,14 +86,14 @@ const LAST_BIT_INDEX = 7;
 class CommandBinaryBuffer extends BinaryBuffer {
     getExtendedValue (): number {
         let value = 0;
-        let extended = 1;
+        let isByteExtended = true;
         // byte offset
         let position = 0;
 
-        while ( extended && this.offset <= this.data.byteLength ) {
+        while ( isByteExtended && this.offset <= this.data.byteLength ) {
             const byte = this.getUint8();
 
-            extended = byte & EXTENDED_BIT_MASK;
+            isByteExtended = !!(byte & EXTENDED_BIT_MASK);
             value += (byte & 0x7f) << (7 * position);
             ++position;
         }
@@ -188,7 +167,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
      * Set array of channel indexes.
      */
     setChannels ( channelList: Array<IChannel> ) {
-        // sort to correct order of channels
+        // sort channels by index
         channelList.sort((a, b) => a.index - b.index);
 
         // find max channel to detect amount of bytes
@@ -279,8 +258,11 @@ class CommandBinaryBuffer extends BinaryBuffer {
     getHours () {
         const byte = this.getUint8();
 
-        const hours = (byte & 0xe0) >> 5;
+        let hours = (byte & 0xe0) >> 5;
         const hour = byte & 0x1f;
+
+        // TODO: add link to doc
+        hours = hours === 0 ? 1 : hours;
 
         return {hours, hour};
     }
@@ -317,11 +299,11 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         high = ((lowAndHightVoltageByte & 0x0f) << 8) | highVoltageByte;
 
-        if ( high === UNKNOWN_BATTER_VOLTAGE ) {
+        if ( high === UNKNOWN_BATTERY_VOLTAGE ) {
             high = undefined;
         }
 
-        if ( low === UNKNOWN_BATTER_VOLTAGE ) {
+        if ( low === UNKNOWN_BATTERY_VOLTAGE ) {
             low = undefined;
         }
 
@@ -332,11 +314,11 @@ class CommandBinaryBuffer extends BinaryBuffer {
         let {low, high} = batteryVoltage;
 
         if ( low === undefined ) {
-            low = UNKNOWN_BATTER_VOLTAGE;
+            low = UNKNOWN_BATTERY_VOLTAGE;
         }
 
         if ( high === undefined ) {
-            high = UNKNOWN_BATTER_VOLTAGE;
+            high = UNKNOWN_BATTERY_VOLTAGE;
         }
 
         const lowVoltageByte = (low >> 4) & 0xff;
@@ -346,50 +328,37 @@ class CommandBinaryBuffer extends BinaryBuffer {
         [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
     }
 
-    getChannelsValuesWithHourDiff (): {hours: number, seconds: number, channelList: Array<IChannelHours>} {
+    getChannelsValuesWithHourDiff (): {hours: number, startTime: number, channelList: Array<IChannelHours>} {
         const date = this.getDate();
-        const {hour, hours: hourAmount} = this.getHours();
+        const {hour, hours} = this.getHours();
         const channelArray = this.getChannels();
         const maxChannel = Math.max.apply(null, channelArray);
         const channelList: Array<IChannelHours> = [];
-        let hours = hourAmount;
-        let value;
 
         date.setUTCHours(hour);
 
-        const counterDate = new Date(date);
-
-        // TODO: add link to doc
-        if ( hours === 0 ) {
-            hours = 1;
-        }
-
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
-            const diff: Array<IHourDiff> = [];
+            const diff: Array<number> = [];
 
             // decode hour value for channel
-            value = this.getExtendedValue();
-            counterDate.setTime(date.getTime());
+            const value = this.getExtendedValue();
+
+            for ( let diffHour = 0; diffHour < hours; ++diffHour ) {
+                diff.push(this.getExtendedValue());
+            }
+
             channelList.push({
                 value,
                 diff,
                 index: channelIndex
             });
-
-            for ( let diffHour = 0; diffHour < hours; ++diffHour ) {
-                value = this.getExtendedValue();
-
-                counterDate.setUTCHours(counterDate.getUTCHours() + diffHour);
-
-                diff.push({value, seconds: getSecondsFromDate(counterDate)});
-            }
         }
 
-        return {channelList, hours, seconds: getSecondsFromDate(date)};
+        return {channelList, hours, startTime: getSecondsFromDate(date)};
     }
 
-    setChannelsValuesWithHourDiff ( hours: number, seconds: number, channelList: Array<IChannelHours> ): void {
-        const date = getDateFromSeconds(seconds);
+    setChannelsValuesWithHourDiff ( hours: number, startTime: number, channelList: Array<IChannelHours> ): void {
+        const date = getDateFromSeconds(startTime);
         const hour = date.getUTCHours();
 
         this.setDate(date);
@@ -398,8 +367,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         channelList.forEach(({value, diff}) => {
             this.setExtendedValue(value);
-
-            diff.forEach(({value: diffValue}) => this.setExtendedValue(diffValue));
+            diff.forEach(diffValue => this.setExtendedValue(diffValue));
         });
     }
 }

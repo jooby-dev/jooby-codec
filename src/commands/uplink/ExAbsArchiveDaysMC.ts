@@ -1,16 +1,12 @@
 import Command from '../../Command.js';
-import
-CommandBinaryBuffer,
-{IChannelArchiveDaysAbsolute, IArchiveChannelDayAbsoluteValue} from '../../CommandBinaryBuffer.js';
-
-import roundNumber from '../../utils/roundNumber.js';
+import CommandBinaryBuffer, {IChannelArchiveDaysAbsolute} from '../../CommandBinaryBuffer.js';
 import {getSecondsFromDate} from '../../utils/time.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 
 
 interface IUplinkExAbsArchiveDayMCParameters {
     channelList: Array<IChannelArchiveDaysAbsolute>,
-    seconds: number,
+    startTime: number,
     days: number
 }
 
@@ -38,23 +34,16 @@ class ExAbsArchiveDayMC extends Command {
 
     static fromBytes ( data: Uint8Array ): ExAbsArchiveDayMC {
         const buffer = new CommandBinaryBuffer(data);
-
         const date = buffer.getDate();
         const channelArray = buffer.getChannels();
         const days = buffer.getUint8();
         const maxChannel = Math.max.apply(null, channelArray);
-        const counterDate = new Date(date);
-
-        let value;
-
         const channelList: Array<IChannelArchiveDaysAbsolute> = [];
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
             // IPK_${channelIndex}
             const pulseCoefficient = buffer.getUint8();
-            const dayList: Array<IArchiveChannelDayAbsoluteValue> = [];
-
-            counterDate.setTime(date.getTime());
+            const dayList: Array<number> = [];
 
             channelList.push({
                 dayList,
@@ -63,37 +52,24 @@ class ExAbsArchiveDayMC extends Command {
             });
 
             for ( let day = 0; day < days; ++day ) {
-                value = buffer.getExtendedValue();
-
-                counterDate.setTime(date.getTime());
-                counterDate.setUTCHours(counterDate.getUTCHours() + (day * 24));
-
-                dayList.push({
-                    value,
-                    day,
-                    meterValue: roundNumber(value / pulseCoefficient),
-                    seconds: getSecondsFromDate(counterDate)
-                });
+                dayList.push(buffer.getExtendedValue());
             }
         }
 
-        return new ExAbsArchiveDayMC({channelList, seconds: getSecondsFromDate(date), days});
+        return new ExAbsArchiveDayMC({channelList, days, startTime: getSecondsFromDate(date)});
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channelList, seconds, days} = this.parameters;
+        const {channelList, startTime, days} = this.parameters;
 
-        buffer.setDate(seconds);
+        buffer.setDate(startTime);
         buffer.setChannels(channelList);
         buffer.setUint8(days);
 
         channelList.forEach(({dayList, pulseCoefficient}) => {
             buffer.setUint8(pulseCoefficient);
-
-            dayList.forEach(({value}) => {
-                buffer.setExtendedValue(value);
-            });
+            dayList.forEach(value => buffer.setExtendedValue(value));
         });
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());

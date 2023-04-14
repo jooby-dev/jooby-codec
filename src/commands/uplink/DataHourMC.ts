@@ -1,13 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-
 import Command from '../../Command.js';
 import GetCurrentMC from './GetCurrentMC.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
+
+
+interface IDataHourMCParameters {
+    channelList: Array<IChannelHours>,
+    startTime: number
+    hours: number
+}
 
 
 const COMMAND_ID = 0x17;
@@ -20,7 +22,7 @@ const COMMAND_BODY_MAX_SIZE = 164;
 
 
 class DataHourMC extends GetCurrentMC {
-    constructor ( public parameters: any ) {
+    constructor ( public parameters: IDataHourMCParameters ) {
         super(parameters);
     }
 
@@ -30,7 +32,7 @@ class DataHourMC extends GetCurrentMC {
 
     static readonly title = COMMAND_TITLE;
 
-    static fromBytes ( data: Uint8Array ): any {
+    static fromBytes ( data: Uint8Array ): DataHourMC {
         const buffer = new CommandBinaryBuffer(data);
 
         const date = buffer.getDate();
@@ -41,60 +43,41 @@ class DataHourMC extends GetCurrentMC {
         date.setUTCHours(hour);
 
         const counterDate = new Date(date);
-        let hourAmount = hours;
         let value;
 
-        const channelList: Array<any> = [];
-
-        if ( hourAmount === 0 ) {
-            // one hour
-            hourAmount = 1;
-        }
+        const channelList: Array<IChannelHours> = [];
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
             // decode hour value for channel
             value = buffer.getExtendedValue();
             counterDate.setTime(date.getTime());
 
-            const diff: Array<any> = [];
-            const channel = {value, index: channelIndex, diff};
+            const diff: Array<number> = [];
 
-            channelList.push(channel);
-
-            for ( let diffHour = 0; diffHour < hourAmount; ++diffHour ) {
-                value = buffer.getExtendedValue();
-
-                counterDate.setUTCHours(counterDate.getUTCHours() + diffHour);
-
-                diff.push({value, seconds: getSecondsFromDate(counterDate)});
+            for ( let diffHour = 0; diffHour < hours; ++diffHour ) {
+                diff.push(buffer.getExtendedValue());
             }
+
+            channelList.push({value, index: channelIndex, diff});
         }
 
-        return new DataHourMC({channelList, hours: hourAmount, seconds: getSecondsFromDate(date)});
+        return new DataHourMC({channelList, hours, startTime: getSecondsFromDate(date)});
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channelList, seconds, hours} = this.parameters;
+        const {channelList, startTime, hours} = this.parameters;
 
-        const realDate = getDateFromSeconds(seconds);
-        const hour = realDate.getUTCHours();
-        let hourAmount = hours;
+        const date = getDateFromSeconds(startTime);
+        const hour = date.getUTCHours();
 
-        if ( hourAmount === 1 ) {
-            hourAmount = 0;
-        }
-
-        buffer.setDate(seconds);
-        buffer.setHours(hour, hourAmount);
+        buffer.setDate(date);
+        buffer.setHours(hour, hours);
         buffer.setChannels(channelList);
 
         for ( const {value, diff} of channelList ) {
             buffer.setExtendedValue(value);
-
-            for ( const {value: diffValue} of diff ) {
-                buffer.setExtendedValue(diffValue);
-            }
+            diff.forEach(diffValue => buffer.setExtendedValue(diffValue));
         }
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());

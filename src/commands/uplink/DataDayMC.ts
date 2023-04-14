@@ -14,7 +14,7 @@ interface IDataDayMCParameters extends IGetCurrentMCParameters {
     /**
      * Seconds since year 2000, i.e. timestamp (in seconds) - 946684800
      */
-    seconds: number
+    startTime: number
 }
 
 
@@ -38,7 +38,7 @@ class DataDayMC extends GetCurrentMC {
     static readonly title = COMMAND_TITLE;
 
     static fromBytes ( data: Uint8Array ): DataDayMC {
-        const parameters: IDataDayMCParameters = {channelList: [], seconds: 0};
+        const parameters: IDataDayMCParameters = {channelList: [], startTime: 0};
 
         const buffer = new CommandBinaryBuffer(data);
 
@@ -50,16 +50,16 @@ class DataDayMC extends GetCurrentMC {
             index: channelIndex
         }) as IChannelValue);
 
-        parameters.seconds = getSecondsFromDate(date);
+        parameters.startTime = getSecondsFromDate(date);
 
         return new DataDayMC(parameters);
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channelList, seconds} = this.parameters;
+        const {channelList, startTime} = this.parameters;
 
-        buffer.setDate(seconds);
+        buffer.setDate(startTime);
         buffer.setChannels(channelList);
         channelList.forEach(({value}) => buffer.setExtendedValue(value));
 

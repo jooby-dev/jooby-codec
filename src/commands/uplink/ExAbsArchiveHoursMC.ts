@@ -1,14 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-
 import Command from '../../Command.js';
 import GetCurrentMC from './GetCurrentMC.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
-import roundNumber from '../../utils/roundNumber.js';
+import CommandBinaryBuffer, {IChannelHourAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
+
+
+interface IUplinkExAbsArchiveHoursMCParameters {
+    channelList: Array<IChannelHourAbsoluteValue>,
+    startTime: number
+    hours: number
+}
 
 
 // TODO: rework extended headers detection
@@ -20,9 +21,9 @@ const COMMAND_TITLE = 'EX_ABS_ARCH_HOUR_MC';
 const COMMAND_BODY_MAX_SIZE = 168;
 
 
-class ExAbsArchiveHourMC extends GetCurrentMC {
+class ExAbsArchiveHoursMC extends GetCurrentMC {
     // TODO: add interface for parameters
-    constructor ( public parameters: any ) {
+    constructor ( public parameters: IUplinkExAbsArchiveHoursMCParameters ) {
         super(parameters);
     }
 
@@ -32,86 +33,52 @@ class ExAbsArchiveHourMC extends GetCurrentMC {
 
     static readonly title = COMMAND_TITLE;
 
-    static fromBytes ( data: Uint8Array ): any {
+    static fromBytes ( data: Uint8Array ): ExAbsArchiveHoursMC {
         const buffer = new CommandBinaryBuffer(data);
-
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
         const channelArray = buffer.getChannels();
         const maxChannel = Math.max.apply(null, channelArray);
+        const channelList: Array<IChannelHourAbsoluteValue> = [];
 
         date.setUTCHours(hour);
-
-        const counterDate = new Date(date);
-        let hourAmount = hours;
-
-        const channelList: Array<any> = [];
-
-        if ( hourAmount === 0 ) {
-            // one hour
-            hourAmount = 1;
-        }
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
             // IPK_${channelIndex}
             const pulseCoefficient = buffer.getUint8();
-            // decode hour value for channel
             const pulseValue = buffer.getExtendedValue();
-            const diff: Array<any> = [];
+            const diff: Array<number> = [];
 
-            counterDate.setTime(date.getTime());
-
-            for ( let hourIndex = 0; hourIndex < hourAmount; ++hourIndex ) {
-                const value = buffer.getExtendedValue();
-
-                counterDate.setUTCHours(counterDate.getUTCHours() + hourIndex);
-
-                diff.push({
-                    value,
-                    pulseCoefficient,
-                    seconds: getSecondsFromDate(counterDate),
-                    meterValue: roundNumber((value + pulseValue) / pulseCoefficient)
-                });
+            for ( let hourIndex = 0; hourIndex < hours; ++hourIndex ) {
+                diff.push(buffer.getExtendedValue());
             }
 
             channelList.push({
                 diff,
                 pulseCoefficient,
                 index: channelIndex,
-                value: pulseValue,
-                seconds: getSecondsFromDate(date),
-                meterValue: roundNumber(pulseValue / pulseCoefficient)
+                value: pulseValue
             });
         }
 
-        return new ExAbsArchiveHourMC({channelList, date});
+        return new ExAbsArchiveHoursMC({channelList, hours, startTime: getSecondsFromDate(date)});
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channelList} = this.parameters;
+        const {channelList, startTime, hours} = this.parameters;
 
-        const {seconds} = channelList[0];
-        const realDate = getDateFromSeconds(seconds);
+        const realDate = getDateFromSeconds(startTime);
         const hour = realDate.getUTCHours();
-        let hours = channelList[0].diff.length;
 
-        // TODO: add link to doc
-        if ( hours === 1 ) {
-            hours = 0;
-        }
-
-        buffer.setDate(seconds);
+        buffer.setDate(realDate);
         buffer.setHours(hour, hours);
         buffer.setChannels(channelList);
 
         for ( const {value, diff, pulseCoefficient} of channelList ) {
             buffer.setUint8(pulseCoefficient);
             buffer.setExtendedValue(value);
-
-            for ( const {value: diffValue} of diff ) {
-                buffer.setExtendedValue(diffValue);
-            }
+            diff.forEach(diffValue => buffer.setExtendedValue(diffValue));
         }
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
@@ -119,4 +86,4 @@ class ExAbsArchiveHourMC extends GetCurrentMC {
 }
 
 
-export default ExAbsArchiveHourMC;
+export default ExAbsArchiveHoursMC;

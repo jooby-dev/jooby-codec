@@ -22,7 +22,7 @@ interface IDownlinkGetArchiveDaysMCParameters {
     days: number,
 
     /** time */
-    seconds: number,
+    startTime: number,
 
     /** array of channelList indexes */
     channelList: Array<number>
@@ -79,15 +79,15 @@ class GetArchiveDaysMC extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new GetArchiveDaysMC({channelList, days, seconds: getSecondsFromDate(date)});
+        return new GetArchiveDaysMC({channelList, days, startTime: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {channelList, days, seconds} = this.parameters;
+        const {channelList, days, startTime} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
-        const date = getDateFromSeconds(seconds);
+        const date = getDateFromSeconds(startTime);
 
         buffer.setDate(date);
         buffer.setChannels(channelList.map(index => ({index} as IChannel)));
