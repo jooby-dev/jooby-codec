@@ -84,15 +84,13 @@ class ExAbsHourMC extends Command {
 
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
-        const channelArray = buffer.getChannels();
-        const maxChannel = Math.max.apply(null, channelArray);
+        const channels = buffer.getChannels();
         const channelList: Array<IChannelHourAbsoluteValue> = [];
         const hourAmount = hours === 0 ? 1 : hours;
 
         date.setUTCHours(hour);
 
-        for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
-            // IPK_${channelIndex}
+        channels.forEach(channelIndex => {
             const pulseCoefficient = buffer.getUint8();
             const value = buffer.getExtendedValue();
             const diff: Array<number> = [];
@@ -107,7 +105,7 @@ class ExAbsHourMC extends Command {
                 pulseCoefficient,
                 index: channelIndex
             });
-        }
+        });
 
         return new ExAbsHourMC({channelList, hours: hourAmount, startTime: getSecondsFromDate(date)});
     }

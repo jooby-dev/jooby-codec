@@ -59,6 +59,16 @@ const downlinkCommands: TCommandList = [
         }
     },
     {
+        constructor: downlink.ExAbsCurrentMC,
+        name: 'downlink command 0xf1f:EX_ABS_CURRENT_MC',
+        parameters: undefined,
+        hex: {
+            header: '1f 0f 00',
+            body: '',
+            lrc: '45'
+        }
+    },
+    {
         constructor: downlink.GetArchiveDaysMC,
         name: 'downlink command 0x1b:GET_ARCHIVE_DAYS_MC',
         parameters: {channelList: [0], days: 1, startTime: 731721600},
@@ -208,6 +218,63 @@ const uplinkCommands: TCommandList = [
             header: '17 0f',
             body: '2f 97 0c 0f 83 01 0a c0 06 0c 26 08 ea 01 0b',
             lrc: '7a'
+        }
+    },
+    {
+        constructor: uplink.ExAbsArchiveDaysMC,
+        name: 'uplink command 0xd1f:EX_ABS_ARCHIVE_DAYS_MC',
+        parameters: {
+            startTime: 731721600,
+            days: 2,
+            channelList: [
+                {
+                    index: 4,
+                    dayList: [5524, 5674]
+                }
+            ]
+        },
+        hex: {
+            header: '1f 0d 08',
+            body: '2e 6a 10 02 94 2b aa 2c',
+            lrc: '20'
+        }
+    },
+    {
+        constructor: uplink.ExAbsArchiveHoursMC,
+        name: 'uplink command 0xc1f:EX_ABS_ARCHIVE_HOUR_MC',
+        parameters: {
+            startTime: 756648000,
+            hours: 1,
+            channelList: [
+                {
+                    value: 234,
+                    index: 2,
+                    diff: [2]
+                }
+            ]
+        },
+        hex: {
+            header: '1f 0c 07',
+            body: '2f 97 0c 04 ea 01 02',
+            lrc: '18'
+        }
+    },
+    {
+        constructor: uplink.ExAbsCurrentMC,
+        name: 'uplink command 0xf1f:EX_ABS_CURRENT_MC',
+        parameters: {
+            channelList: [
+                {
+                    pulseCoefficient: 100,
+                    index: 3,
+                    value: 342
+                }
+            ]
+        },
+        hex: {
+            header: '1f 0f 04',
+            body: '08 64 d6 02',
+            lrc: 'f9'
         }
     },
     {

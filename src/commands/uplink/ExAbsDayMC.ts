@@ -1,12 +1,12 @@
 import Command from '../../Command.js';
 import GetCurrentMC from './GetCurrentMC.js';
-import CommandBinaryBuffer, {IChannelArchiveDaysAbsoluteValue} from '../../CommandBinaryBuffer.js';
-import {getSecondsFromDate} from '../../utils/time.js';
+import CommandBinaryBuffer, {IChannelAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
+import {getSecondsFromDate} from '../../utils/time.js';
 
 
 interface IExAbsDayMCParameters {
-    channelList: Array<IChannelArchiveDaysAbsoluteValue>,
+    channelList: Array<IChannelAbsoluteValue>,
     startTime: number
 }
 
@@ -14,9 +14,9 @@ interface IExAbsDayMCParameters {
 const COMMAND_ID = 0x0b1f;
 const COMMAND_TITLE = 'EX_ABS_DAY_MC';
 
-// date 2 bytes, channelList - 1 byte (max channelList: 4)
-// 3 + (4 channelList * (1 byte IPK + 5 bytes of day values))
-const COMMAND_BODY_MAX_SIZE = 27;
+// date 2 bytes, channelList 3 bytes (max channelList: 14)
+// 5 + (14 channelList * (1 byte IPK + 5 bytes of day values))
+const COMMAND_BODY_MAX_SIZE = 89;
 
 
 class ExAbsDayMC extends GetCurrentMC {
@@ -32,20 +32,9 @@ class ExAbsDayMC extends GetCurrentMC {
 
     static fromBytes ( data: Uint8Array ): ExAbsDayMC {
         const buffer = new CommandBinaryBuffer(data);
-        const date = buffer.getDate();
-        const channelArray = buffer.getChannels();
-        const maxChannel = Math.max.apply(null, channelArray);
-        const channelList: Array<IChannelArchiveDaysAbsoluteValue> = [];
 
-        for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
-            channelList.push({
-                // IPK_${channelIndex}
-                pulseCoefficient: buffer.getUint8(),
-                // day value
-                value: buffer.getExtendedValue(),
-                index: channelIndex
-            });
-        }
+        const date = buffer.getDate();
+        const channelList = buffer.getChannelsWithAbsoluteValues();
 
         return new ExAbsDayMC({channelList, startTime: getSecondsFromDate(date)});
     }
@@ -55,12 +44,7 @@ class ExAbsDayMC extends GetCurrentMC {
         const {channelList, startTime} = this.parameters;
 
         buffer.setDate(startTime);
-        buffer.setChannels(channelList);
-
-        for ( const {value, pulseCoefficient} of channelList ) {
-            buffer.setUint8(pulseCoefficient);
-            buffer.setExtendedValue(value);
-        }
+        buffer.setChannelsWithAbsoluteValues(channelList);
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }

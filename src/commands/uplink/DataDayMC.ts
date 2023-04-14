@@ -43,9 +43,9 @@ class DataDayMC extends GetCurrentMC {
         const buffer = new CommandBinaryBuffer(data);
 
         const date = buffer.getDate();
-        const channelArray = buffer.getChannels();
+        const channels = buffer.getChannels();
 
-        parameters.channelList = channelArray.map(channelIndex => ({
+        parameters.channelList = channels.map(channelIndex => ({
             value: buffer.getExtendedValue(),
             index: channelIndex
         }) as IChannelValue);

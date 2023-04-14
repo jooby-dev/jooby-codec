@@ -37,20 +37,17 @@ class DataHourMC extends GetCurrentMC {
 
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
-        const channelArray = buffer.getChannels();
-        const maxChannel = Math.max.apply(null, channelArray);
+        const channels = buffer.getChannels();
 
         date.setUTCHours(hour);
 
-        const counterDate = new Date(date);
         let value;
 
         const channelList: Array<IChannelHours> = [];
 
-        for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
+        channels.forEach(channelIndex => {
             // decode hour value for channel
             value = buffer.getExtendedValue();
-            counterDate.setTime(date.getTime());
 
             const diff: Array<number> = [];
 
@@ -59,7 +56,7 @@ class DataHourMC extends GetCurrentMC {
             }
 
             channelList.push({value, index: channelIndex, diff});
-        }
+        });
 
         return new DataHourMC({channelList, hours, startTime: getSecondsFromDate(date)});
     }

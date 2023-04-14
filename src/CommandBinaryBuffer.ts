@@ -50,7 +50,7 @@ export interface IChannelDays extends IChannel {
     dayList: Array<number>
 }
 
-export interface IChannelArchiveDaysAbsoluteValue extends IChannelValue {
+export interface IChannelAbsoluteValue extends IChannelValue {
 
     /**
      * Channel pulse coefficient - IPK in bytes.
@@ -68,6 +68,13 @@ export interface IChannelArchiveDaysAbsolute extends IChannel {
      * Channel pulse coefficient - IPK in bytes.
      */
     pulseCoefficient: number
+}
+
+export interface IChannelArchiveDays extends IChannel {
+    /**
+     * values by days
+     */
+    dayList: Array<number>
 }
 
 
@@ -331,13 +338,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
     getChannelsValuesWithHourDiff (): {hours: number, startTime: number, channelList: Array<IChannelHours>} {
         const date = this.getDate();
         const {hour, hours} = this.getHours();
-        const channelArray = this.getChannels();
-        const maxChannel = Math.max.apply(null, channelArray);
+        const channels = this.getChannels();
         const channelList: Array<IChannelHours> = [];
 
         date.setUTCHours(hour);
 
-        for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
+        channels.forEach(channelIndex => {
             const diff: Array<number> = [];
 
             // decode hour value for channel
@@ -352,7 +358,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 diff,
                 index: channelIndex
             });
-        }
+        });
 
         return {channelList, hours, startTime: getSecondsFromDate(date)};
     }
@@ -369,6 +375,32 @@ class CommandBinaryBuffer extends BinaryBuffer {
             this.setExtendedValue(value);
             diff.forEach(diffValue => this.setExtendedValue(diffValue));
         });
+    }
+
+    getChannelsWithAbsoluteValues (): Array<IChannelAbsoluteValue> {
+        const channels = this.getChannels();
+        const channelList: Array<IChannelAbsoluteValue> = [];
+
+        channels.forEach(channelIndex => {
+            channelList.push({
+                // IPK_${channelIndex}
+                pulseCoefficient: this.getUint8(),
+                // day value
+                value: this.getExtendedValue(),
+                index: channelIndex
+            });
+        });
+
+        return channelList;
+    }
+
+    setChannelsWithAbsoluteValues ( channelList: Array<IChannelAbsoluteValue> ): void {
+        this.setChannels(channelList);
+
+        for ( const {value, pulseCoefficient} of channelList ) {
+            this.setUint8(pulseCoefficient);
+            this.setExtendedValue(value);
+        }
     }
 }
 
