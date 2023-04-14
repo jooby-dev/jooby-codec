@@ -11,6 +11,12 @@ interface IExAbsDayMCParameters {
 }
 
 
+interface IExAbsDayMCParameters {
+    channelList: Array<IChannelArchiveDaysAbsoluteValue>,
+    startTime: number
+}
+
+
 const COMMAND_ID = 0x0b1f;
 const COMMAND_TITLE = 'EX_ABS_DAY_MC';
 
@@ -32,7 +38,6 @@ class ExAbsDayMC extends GetCurrentMC {
 
     static fromBytes ( data: Uint8Array ): ExAbsDayMC {
         const buffer = new CommandBinaryBuffer(data);
-
         const date = buffer.getDate();
         const channelList = buffer.getChannelsWithAbsoluteValues();
 
