@@ -1,5 +1,5 @@
 import Command from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 import {getDateFromSeconds, getSecondsFromDate} from '../../utils/time.js';
 
@@ -31,7 +31,7 @@ export interface IArchiveDayValue {
     date: Date
 }
 
-interface IArchiveChannel {
+interface IArchiveChannel extends IChannel {
     /**
      * channel number
      */
@@ -115,9 +115,9 @@ class GetArchiveDaysMC extends Command {
     static fromBytes ( data: Uint8Array ): GetArchiveDaysMC {
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
-        const channelArray = buffer.getChannels(true);
+        const channels = buffer.getChannels();
         const days = buffer.getUint8();
-        const maxChannel = Math.max.apply(null, channelArray);
+        const maxChannel = Math.max.apply(null, channels);
         const channelList: Array<IArchiveChannel> = [];
         const counterDate = new Date(date);
 

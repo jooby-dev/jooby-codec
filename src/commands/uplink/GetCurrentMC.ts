@@ -1,21 +1,12 @@
 import Command from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannelValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
-
-
-/**
- * GetCurrentMC command channel.
- */
-export interface IChannel {
-    index: number,
-    value: number
-}
 
 /**
  * GetCurrentMC command parameters.
  */
 export interface IGetCurrentMCParameters {
-    channelList: Array<IChannel>
+    channelList: Array<IChannelValue>
 }
 
 
@@ -44,12 +35,12 @@ class GetCurrentMC extends Command {
 
         const buffer = new CommandBinaryBuffer(data);
 
-        const channelList = buffer.getChannels(false);
+        const channelList = buffer.getChannels();
 
         parameters.channelList = channelList.map(channelIndex => ({
             value: buffer.getExtendedValue(),
             index: channelIndex
-        }));
+        }) as IChannelValue);
 
         return new GetCurrentMC(parameters);
     }
@@ -58,7 +49,7 @@ class GetCurrentMC extends Command {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList} = this.parameters;
 
-        buffer.setChannels(channelList.map(({index}) => index));
+        buffer.setChannels(channelList);
         channelList.forEach(({value}) => buffer.setExtendedValue(value));
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());

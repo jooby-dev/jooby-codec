@@ -5,7 +5,7 @@
  */
 
 import Command from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directionTypes.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
@@ -22,7 +22,7 @@ interface IDownlinkGetArchiveHoursMCParameters {
     hours: number,
 
     /** time */
-    seconds: number,
+    startTime: number,
 
     /** array of channelList indexes */
     channelList: Array<number>
@@ -73,7 +73,7 @@ class GetArchiveHoursMC extends Command {
 
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
-        const channelList = buffer.getChannels(true);
+        const channelList = buffer.getChannels();
 
         date.setUTCHours(hour);
 
@@ -81,20 +81,20 @@ class GetArchiveHoursMC extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new GetArchiveHoursMC({channelList, hours, seconds: getSecondsFromDate(date)});
+        return new GetArchiveHoursMC({channelList, hours, startTime: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {channelList, hours, seconds} = this.parameters;
+        const {channelList, hours, startTime} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
-        const date = getDateFromSeconds(seconds);
+        const date = getDateFromSeconds(startTime);
         const hour = date.getUTCHours();
 
         buffer.setDate(date);
         buffer.setHours(hour, hours);
-        buffer.setChannels(channelList);
+        buffer.setChannels(channelList.map(index => ({index} as IChannel)));
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

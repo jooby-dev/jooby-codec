@@ -5,7 +5,7 @@
  */
 
 import Command from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directionTypes.js';
 import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
 
@@ -22,7 +22,7 @@ interface IDownlinkExAbsArchiveDaysMCParameters {
     days: number,
 
     /** time */
-    seconds: number,
+    startTime: number,
 
     /** array of channelList indexes */
     channelList: Array<number>
@@ -73,25 +73,25 @@ class ExAbsArchiveDaysMC extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         const date = buffer.getDate();
-        const channelList = buffer.getChannels(true);
+        const channelList = buffer.getChannels();
         const days = buffer.getUint8();
 
         if ( !buffer.isEmpty ) {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new ExAbsArchiveDaysMC({channelList, days, seconds: getSecondsFromDate(date)});
+        return new ExAbsArchiveDaysMC({channelList, days, startTime: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {channelList, days, seconds} = this.parameters;
+        const {channelList, days, startTime} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
-        const date = getDateFromSeconds(seconds);
+        const date = getDateFromSeconds(startTime);
 
         buffer.setDate(date);
-        buffer.setChannels(channelList);
+        buffer.setChannels(channelList.map(index => ({index} as IChannel)));
         buffer.setUint8(days);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

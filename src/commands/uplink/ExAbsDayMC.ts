@@ -1,14 +1,14 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-
 import Command from '../../Command.js';
 import GetCurrentMC from './GetCurrentMC.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
-import roundNumber from '../../utils/roundNumber.js';
+import CommandBinaryBuffer, {IChannelArchiveDaysAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {getSecondsFromDate} from '../../utils/time.js';
 import {UPLINK} from '../../constants/directionTypes.js';
+
+
+interface IExAbsDayMCParameters {
+    channelList: Array<IChannelArchiveDaysAbsoluteValue>,
+    startTime: number
+}
 
 
 const COMMAND_ID = 0x0b1f;
@@ -20,7 +20,7 @@ const COMMAND_BODY_MAX_SIZE = 27;
 
 
 class ExAbsDayMC extends GetCurrentMC {
-    constructor ( public parameters: any ) {
+    constructor ( public parameters: IExAbsDayMCParameters ) {
         super(parameters);
     }
 
@@ -30,41 +30,31 @@ class ExAbsDayMC extends GetCurrentMC {
 
     static title = COMMAND_TITLE;
 
-    static fromBytes ( data: Uint8Array ): any {
+    static fromBytes ( data: Uint8Array ): ExAbsDayMC {
         const buffer = new CommandBinaryBuffer(data);
-
         const date = buffer.getDate();
-        const channelArray = buffer.getChannels(true);
+        const channelArray = buffer.getChannels();
         const maxChannel = Math.max.apply(null, channelArray);
-
-        let value;
-
-        const channelList: Array<any> = [];
+        const channelList: Array<IChannelArchiveDaysAbsoluteValue> = [];
 
         for ( let channelIndex = 0; channelIndex <= maxChannel; ++channelIndex ) {
-            // IPK_${channelIndex}
-            const pulseCoefficient = buffer.getUint8();
-            // day value
-            value = buffer.getExtendedValue();
             channelList.push({
-                value,
-                pulseCoefficient,
-                index: channelIndex,
-                seconds: getSecondsFromDate(date),
-                meterValue: roundNumber(value / pulseCoefficient)
+                // IPK_${channelIndex}
+                pulseCoefficient: buffer.getUint8(),
+                // day value
+                value: buffer.getExtendedValue(),
+                index: channelIndex
             });
         }
 
-        return new ExAbsDayMC({channelList, date});
+        return new ExAbsDayMC({channelList, startTime: getSecondsFromDate(date)});
     }
 
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channelList} = this.parameters;
+        const {channelList, startTime} = this.parameters;
 
-        const {seconds} = channelList[0];
-
-        buffer.setDate(seconds);
+        buffer.setDate(startTime);
         buffer.setChannels(channelList);
 
         for ( const {value, pulseCoefficient} of channelList ) {
