@@ -246,11 +246,7 @@ const uplinkCommands: TCommandList = [
             startTime: 756648000,
             hours: 1,
             channelList: [
-                {
-                    value: 234,
-                    index: 2,
-                    diff: [2]
-                }
+                {value: 234, index: 2, diff: [2]}
             ]
         },
         hex: {
