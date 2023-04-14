@@ -58,12 +58,18 @@ const checkHeader = ( {id, size, hex}: ICommand ) => {
 };
 
 
-describe('encode/decode command headers', () => {
-    test('downlink commands', () => {
-        downlinkCommands.forEach(checkHeader);
+describe('downlink commands', () => {
+    downlinkCommands.forEach((command, index) => {
+        test(`test case #${index}`, () => {
+            checkHeader(command);
+        });
     });
+});
 
-    test('uplink commands', () => {
-        uplinkCommands.forEach(checkHeader);
+describe('uplink commands', () => {
+    uplinkCommands.forEach((command, index) => {
+        test(`test case #${index}`, () => {
+            checkHeader(command);
+        });
     });
 });
