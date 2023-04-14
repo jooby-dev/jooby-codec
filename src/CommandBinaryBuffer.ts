@@ -47,7 +47,7 @@ export interface IChannelHourAbsoluteValue extends IChannelHours {
 }
 
 export interface IChannelDays extends IChannel {
-    daysList: Array<number>
+    dayList: Array<number>
 }
 
 export interface IChannelArchiveDaysAbsoluteValue extends IChannelValue {
