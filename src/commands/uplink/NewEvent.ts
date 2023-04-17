@@ -91,7 +91,7 @@ const setDeviceId = ( buffer: CommandBinaryBuffer, value: string ): void => {
  * import NewEvent from 'jooby-codec/commands/uplink/NewEvent';
  *
  * // `Magnet On` event at 2023-04-05 13:17:20 GMT
- * const parameters = {id: constants.events.MAGNET_ON, sequenceNumber: 3, data: {seconds: 734015840}}
+ * const parameters = {id: constants.events.MAGNET_ON, sequenceNumber: 3, data: {seconds: 734015840}};
  * const command = new NewEvent(parameters);
  *
  * // output command binary in hex representation

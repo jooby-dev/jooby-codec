@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import Command from '../src/Command.js';
+import Command, {ICommandExample, TCommandExampleList} from '../src/Command.js';
 import {commands, constants} from '../src/index.js';
 import * as message from '../src/utils/message.js';
 import getBytesFromHex from '../src/utils/getBytesFromHex.js';
@@ -574,7 +574,7 @@ const uplinkCommands: TCommandList = [
 ];
 
 
-const checkCommand = ( {constructor, name, parameters, hardwareType, hex:{header, body, lrc} }: ICommand ) => {
+const checkCommand = ( {constructor, name, parameters, hardwareType, hex: {header, body, lrc} }: ICommand ) => {
     const commandHex = (`${header} ${body}`).trim();
     const messageHex = `${commandHex} ${lrc}`;
     const command = new constructor(parameters, hardwareType);
@@ -606,6 +606,45 @@ const checkCommand = ( {constructor, name, parameters, hardwareType, hex:{header
     }
 };
 
+const checkExample = ( constructor: any, {parameters, hardwareType, hex: {header, body} }: ICommandExample ) => {
+    const commandHex = getHexFromBytes(getBytesFromHex(`${header} ${body}`));
+    const commandBytes = getBytesFromHex(commandHex);
+    const messageHex = `${commandHex} ${message.calculateLrc(commandBytes)}`;
+    const command = new constructor(parameters, hardwareType);
+    const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null, hardwareType);
+
+    expect(command).toBeInstanceOf(constructor);
+    expect(command).toBeInstanceOf(Command);
+    expect(command.parameters).toBe(parameters);
+    expect(command.getParameters()).toBe(parameters);
+    expect(command.toHex()).toBe(commandHex);
+    expect(command.toJson()).toBe(JSON.stringify(command.getParameters()));
+
+    expect(commandFromHex).toStrictEqual(command);
+    expect(commandFromHex.toHex()).toBe(commandHex);
+    expect(commandFromHex.parameters).toStrictEqual(parameters);
+    expect(commandFromHex.getParameters()).toStrictEqual(parameters);
+};
+
+const processExamples = ( commands: Record<string, any> ) => {
+    for ( const [name, constructor] of Object.entries(commands) ) {
+        // some commands may inherit examples from another commands
+        const parentExamples = Object.getPrototypeOf(constructor).examples;
+
+        // skip inherited examples
+        // @todo: remove parentExamples when all command tests will be in classes
+        if ( constructor.examples && constructor.examples !== parentExamples ) {
+            describe(constructor.name, () => {
+                constructor.examples.forEach((example: ICommandExample) => {
+                    test(example.name, () => {
+                        checkExample(constructor, example);
+                    });
+                });
+            });
+        }
+    }
+};
+
 
 [
     events.MAGNET_ON, events.MAGNET_OFF, events.ACTIVATE, events.DEACTIVATE,
@@ -625,19 +664,26 @@ const checkCommand = ( {constructor, name, parameters, hardwareType, hex:{header
     });
 });
 
-
 describe('downlink commands', () => {
+    // legacy
     downlinkCommands.forEach(command => {
         test(command.constructor.name, () => {
             checkCommand(command);
         });
     });
+
+    // new approach
+    processExamples(downlink);
 });
 
 describe('uplink commands', () => {
+    // legacy
     uplinkCommands.forEach(command => {
         test(command.constructor.name, () => {
             checkCommand(command);
         });
     });
+
+    // new approach
+    processExamples(uplink);
 });

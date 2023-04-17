@@ -54,7 +54,7 @@ const uplinkCommandsById = Object.fromEntries(
  *
  * @return LRC
  */
-const calculateLrc = ( data: Uint8Array, initialLrc = 0x55 ) => {
+export const calculateLrc = ( data: Uint8Array, initialLrc = 0x55 ) => {
     let lrc = initialLrc;
 
     data.forEach(item => {
