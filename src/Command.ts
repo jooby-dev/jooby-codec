@@ -1,17 +1,33 @@
 import * as header from './utils/header.js';
 import getHexFromBytes, {IHexFormatOptions} from './utils/getHexFromBytes.js';
 import {UPLINK} from './constants/directionTypes.js';
+//import getBytesFromHex from './utils/getBytesFromHex.js';
+
+
+export interface ICommandExample {
+    name: string,
+    parameters?: object,
+    hardwareType?: number,
+    hex: {
+        header: string,
+        body: string
+    }
+}
+
+export type TCommandExampleList = Array<ICommandExample>;
 
 
 /**
  * private
  */
-class Command {
+abstract class Command {
     static id: number;
 
     static directionType: unknown;
 
     static title: string;
+
+    static examples: TCommandExampleList;
 
     parameters: unknown;
 
@@ -28,14 +44,20 @@ class Command {
 
 
     /**
-     * Parse header with body.
-     * Should not be used directly, only from Command child.
+     * Parse body without header.
      *
      * @param data command in binary form
-     * @param commandsById
      *
      * @returns command instance
      */
+    // static fromBytes ( data: Uint8Array ): Command {
+    //     throw new Error('not implemented!');
+    // }
+
+    // static fromHex ( data: string ): Command {
+    //     return this.fromBytes(getBytesFromHex(data));
+    // }
+
     // static fromBytes ( data: Uint8Array, commandsById: any ): any {
     //     const headerData = header.fromBytes(data);
 

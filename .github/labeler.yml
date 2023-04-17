@@ -1,0 +1,2 @@
+tests:
+  - any: ['tests/**/*', 'jest.config.json']
