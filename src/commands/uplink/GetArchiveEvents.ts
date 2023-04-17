@@ -94,6 +94,7 @@ const setEvent = ( buffer: CommandBinaryBuffer, event: IArchiveEvent ): void => 
  * @example
  * ```js
  * import GetArchiveEvents from 'jooby-codec/commands/uplink/GetArchiveEvents';
+ * import {constants} from 'jooby-codec';
  *
  * const parameters = [eventList: {id: constants.events.MAGNET_ON, sequenceNumber: 1, seconds: 734015840}];
  * const command = new GetArchiveEvents(parameters);
