@@ -91,6 +91,26 @@ const LAST_BIT_INDEX = 7;
  * Command specific byte array manipulation.
  */
 class CommandBinaryBuffer extends BinaryBuffer {
+    /**
+     * Get amount of bytes necessary to store an extended value.
+     *
+     * @param bits - amount of bits of original value
+     *
+     * @example
+     * ```js
+     * const bits = (16384).toString(2).length;
+     * const bytes = CommandBinaryBuffer.getExtendedValueSize(bits);
+     * // 16384 normally is stored in 2 bytes but for extended value 3 bytes are required
+     * ```
+     */
+    static getExtendedValueSize ( bits: number ) {
+        const extBits = Math.ceil(bits / 7);
+        const totalBits = bits + extBits;
+        const extBytes = Math.ceil(totalBits / 8);
+
+        return extBytes;
+    }
+
     getExtendedValue (): number {
         let value = 0;
         let isByteExtended = true;
