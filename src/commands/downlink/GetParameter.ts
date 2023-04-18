@@ -33,7 +33,7 @@ const examples: TCommandExampleList = [
         }
     },
     {
-        name: 'request status of data type sending, absolute or another',
+        name: 'request for data type sending from device',
         parameters: {id: deviceParameters.ABSOLUTE_DATA_STATUS},
         hex: {
             header: '04 01',
