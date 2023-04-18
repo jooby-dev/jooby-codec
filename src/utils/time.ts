@@ -4,11 +4,10 @@
  * Seconds since year 2000.
  *
  * @example
+ * Time `2023-04-03T14:01:17.000Z` is `1680530477` in Unix time representation.
+ * Unix time for year `2000` is `946684800` so seconds since year `2000` is `1680530477` - `946684800` = `733845677`.
  *
- * Time 2023-04-03T14:01:17.000Z is 1680530477 in Unix time representation.
- * Unix time for year 2000 is 946684800 so seconds since year 2000 is 1680530477 - 946684800 = 733845677.
- *
- * [Full documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetParameter.md#response)
+ * [Full documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/types.md#time-2000)
  */
 export type TTime2000 = number;
 
