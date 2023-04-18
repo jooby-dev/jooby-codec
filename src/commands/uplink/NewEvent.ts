@@ -1,10 +1,11 @@
-import Command from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import Command, {TCommandExampleList} from '../../Command.js';
+import CommandBinaryBuffer, {IEventMtxStatus} from '../../CommandBinaryBuffer.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
+import {TTime2000} from '../../utils/time.js';
 import * as events from '../../constants/events.js';
 import {UPLINK} from '../../constants/directionTypes.js';
-import {TTime2000} from '../../utils/time.js';
+import * as hardwareTypes from '../../constants/hardwareTypes.js';
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -36,9 +37,16 @@ interface IEventConnection extends IEventBase {
 }
 
 interface IEventMtx extends IEventBase {
-    status1: number,
-    status2: number
+    status: IEventMtxStatus
 }
+
+type TEventData =
+    IEventTime |
+    IEventBatteryAlarm |
+    IEventActivateMtx |
+    IEventConnection |
+    IEventMtx;
+
 
 /**
  * NewEvent command parameters
@@ -47,13 +55,13 @@ interface IEventMtx extends IEventBase {
  * ```js
  * import {constants} from 'jooby-codec'
  *
- * // `Magnet On` event at 2023-04-05 13:17:20 GMT
+ * // `MAGNET_ON` event at 2023-04-05 13:17:20 GMT
  * {id: constants.events.MAGNET_ON, sequenceNumber: 1, data: {time: 734015840}}
  */
 interface INewEventParameters {
     id: number,
     sequenceNumber: number,
-    data: IEventBase
+    data: TEventData
 }
 
 
@@ -62,6 +70,81 @@ const COMMAND_TITLE = 'NEW_EVENT';
 // ACTIVATE_MTX are biggest,1 byte event id, 1 byte sequence number, 4 bytes time, 8 bytes mtx address
 const COMMAND_BODY_MAX_SIZE = 14;
 const MTX_ADDRESS_SIZE = 8;
+
+const examples: TCommandExampleList = [
+    {
+        name: 'event for MAGNET_ON',
+        parameters: {
+            id: events.MAGNET_ON,
+            sequenceNumber: 2,
+            data: {time: 734015840}
+        },
+        hex: {header: '15 06', body: '01 02 2b c0 31 60'}
+    },
+    {
+        name: 'event for BATTERY_ALARM',
+        parameters: {
+            id: events.BATTERY_ALARM,
+            sequenceNumber: 2,
+            data: {voltage: 3308}
+        },
+        hex: {header: '15 04', body: '05 02 0c ec'}
+    },
+    {
+        name: 'event for ACTIVATE_MTX',
+        parameters: {
+            id: events.ACTIVATE_MTX,
+            sequenceNumber: 2,
+            data: {time: 734015840, deviceId: '00 1a 79 88 17 01 23 56'}
+        },
+        hex: {header: '15 0e', body: '0b 02 2b c0 31 60 00 1a 79 88 17 01 23 56'}
+    },
+    {
+        name: 'event for CONNECT',
+        parameters: {
+            id: events.CONNECT,
+            sequenceNumber: 2,
+            data: {channel: 0, value: 131}
+        },
+        hex: {header: '15 05', body: '0c 02 00 83 01'}
+    },
+    {
+        name: 'event for DISCONNECT',
+        parameters: {
+            id: events.DISCONNECT,
+            sequenceNumber: 2,
+            data: {channel: 0, value: 131}
+        },
+        hex: {header: '15 05', body: '0d 02 00 83 01'}
+    },
+    {
+        name: 'event for EV_MTX',
+        parameters: {
+            id: events.EV_MTX,
+            sequenceNumber: 2,
+            data: {
+                status: {
+                    // first byte: 10000011 = 83 (131)
+                    isMeterCaseOpen: true,
+                    isMagneticInfluence: true,
+                    isParametersSetRemotely: false,
+                    isParametersSetLocally: false,
+                    isMeterProgramRestarted: false,
+                    isLockedOut: false,
+                    isTimeSet: false,
+                    isTimeCorrected: true,
+                    // second byte: 00001010 = 0a (10)
+                    isMeterFailure: false,
+                    isMeterTerminalBoxOpen: true,
+                    isModuleCompartmentOpen: false,
+                    isTariffPlanChanged: true,
+                    isNewTariffPlanReceived: false
+                }
+            }
+        },
+        hex: {header: '15 04', body: '11 02 83 0a'}
+    }
+];
 
 const getVoltage = ( buffer: CommandBinaryBuffer ): number => buffer.getUint16(false);
 const setVoltage = ( buffer: CommandBinaryBuffer, value: number ): void => buffer.setUint16(value, false);
@@ -91,7 +174,7 @@ const setDeviceId = ( buffer: CommandBinaryBuffer, value: string ): void => {
  * import {constants} from 'jooby-codec'
  * import NewEvent from 'jooby-codec/commands/uplink/NewEvent';
  *
- * // `Magnet On` event at 2023-04-05 13:17:20 GMT
+ * // `MAGNET_ON` event at 2023-04-05 13:17:20 GMT
  * const parameters = {id: constants.events.MAGNET_ON, sequenceNumber: 3, data: {time: 734015840}};
  * const command = new NewEvent(parameters);
  *
@@ -112,6 +195,8 @@ class NewEvent extends Command {
     static readonly directionType = UPLINK;
 
     static readonly title = COMMAND_TITLE;
+
+    static readonly examples = examples;
 
     static fromBytes ( data: Uint8Array ): NewEvent {
         const buffer = new CommandBinaryBuffer(data);
@@ -148,7 +233,7 @@ class NewEvent extends Command {
                 break;
 
             case events.EV_MTX:
-                eventData = {status1: buffer.getUint8(), status2: buffer.getUint8()} as IEventMtx;
+                eventData = {status: buffer.getEventStatus(hardwareTypes.MTXLORA)} as IEventMtx;
                 break;
 
             default:
@@ -202,8 +287,7 @@ class NewEvent extends Command {
 
             case events.EV_MTX:
                 eventData = data as IEventMtx;
-                buffer.setUint8(eventData.status1);
-                buffer.setUint8(eventData.status2);
+                buffer.setEventStatus(hardwareTypes.MTXLORA, eventData.status);
                 break;
 
             default:

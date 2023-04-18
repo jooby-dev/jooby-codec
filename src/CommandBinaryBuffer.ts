@@ -1,5 +1,7 @@
 import BinaryBuffer from './BinaryBuffer.js';
+import * as bitSet from './utils/bitSet.js';
 import {getDateFromSeconds, getSecondsFromDate, TTime2000} from './utils/time.js';
+import * as hardwareTypes from './constants/hardwareTypes.js';
 
 
 export interface IBatteryVoltage {
@@ -78,6 +80,93 @@ export interface IChannelArchiveDays extends IChannel {
 }
 
 
+export interface IEventGasStatus {
+    /** the battery voltage has dropped below the set threshold */
+    isBatteryLow?: boolean,
+    /** there is a magnetic field influence */
+    isMagneticInfluence?: boolean,
+    /** button is release (device is unmounted) */
+    isButtonReleased?: boolean,
+    /** the device has detected a loss of connection to the server */
+    isConnectionLost?: boolean
+}
+
+export interface IEvent2ChannelStatus {
+    /** the battery voltage has dropped below the set threshold */
+    isBatteryLow?: boolean,
+    /** the device has detected a loss of connection to the server */
+    isConnectionLost?: boolean,
+    /** the first channel is not active */
+    isFirstChannelInactive?: boolean,
+    /** the second channel is not active */
+    isSecondChannelInactive?: boolean
+}
+
+export interface IEventElimpStatus {
+    /** the device has detected a loss of connection to the server */
+    isConnectionLost?: boolean
+}
+
+export interface IEventWaterStatus {
+    /** the battery voltage has dropped below the set threshold */
+    isBatteryLow?: boolean,
+    /** the device has detected a loss of connection to the server */
+    isConnectionLost?: boolean
+}
+
+export interface IEvent4ChannelStatus {
+    /** the battery voltage has dropped below the set threshold */
+    isBatteryLow?: boolean,
+    /** the device has detected a loss of connection to the server */
+    isConnectionLost?: boolean,
+    /** the first channel is not active */
+    isFirstChannelInactive?: boolean,
+    /** the second channel is not active */
+    isSecondChannelInactive?: boolean,
+    /** the third channel is not active */
+    isThirdChannelInactive?: boolean,
+    /** the forth channel is not active */
+    isForthChannelInactive?: boolean
+}
+
+export interface IEventMtxStatus {
+    /** meter case is open */
+    isMeterCaseOpen?: boolean,
+    /** there is a magnetic field influence */
+    isMagneticInfluence?: boolean,
+    /** parameters set remotely */
+    isParametersSetRemotely?: boolean,
+    /** parameters set locally */
+    isParametersSetLocally?: boolean,
+    /** meter program restart */
+    isMeterProgramRestarted?: boolean,
+    /** incorrect password and lockout */
+    isLockedOut?: boolean,
+    /** time set */
+    isTimeSet?: boolean,
+    /** time correction */
+    isTimeCorrected?: boolean,
+    /** meter failure */
+    isMeterFailure?: boolean,
+    /** meter terminal box is open */
+    isMeterTerminalBoxOpen?: boolean,
+    /** meter module compartment is open */
+    isModuleCompartmentOpen?: boolean,
+    /** tariff plan changed */
+    isTariffPlanChanged?: boolean,
+    /** new tariff plan received */
+    isNewTariffPlanReceived?: boolean
+}
+
+export type TEventStatus =
+    IEventGasStatus |
+    IEvent2ChannelStatus |
+    IEventElimpStatus |
+    IEventWaterStatus |
+    IEvent4ChannelStatus |
+    IEventMtxStatus;
+
+
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
 const DATE_BIT_SIZE = 5;
@@ -85,6 +174,77 @@ const YEAR_START_INDEX = 1;
 const UNKNOWN_BATTERY_VOLTAGE = 4095;
 const EXTEND_BIT_MASK = 0x80;
 const LAST_BIT_INDEX = 7;
+
+const GAS_HARDWARE_TYPES = [
+    hardwareTypes.GAZM0,
+    hardwareTypes.GAZM0NEW,
+    hardwareTypes.GAZM3,
+    hardwareTypes.GAZWLE
+];
+const TWO_CHANNELS_HARDWARE_TYPES = [
+    hardwareTypes.IMP2AS,
+    hardwareTypes.IMP2EU,
+    hardwareTypes.IMP2IN,
+    hardwareTypes.NOVATOR
+];
+const ELIMP_HARDWARE_TYPES = [
+    hardwareTypes.ELIMP
+];
+const WATER_HARDWARE_TYPES = [
+    hardwareTypes.WATER
+];
+const FOUR_CHANNELS_HARDWARE_TYPES = [
+    hardwareTypes.IMP4EU,
+    hardwareTypes.IMP4IN
+];
+const MTX_HARDWARE_TYPES = [
+    hardwareTypes.MTXLORA
+];
+
+const TWO_BYTES_HARDWARE_TYPES = [...FOUR_CHANNELS_HARDWARE_TYPES, ...MTX_HARDWARE_TYPES];
+
+const gasBitMask = {
+    isBatteryLow: 2 ** 0,
+    isMagneticInfluence: 2 ** 1,
+    isButtonReleased: 2 ** 2,
+    isConnectionLost: 2 ** 3
+};
+const twoChannelBitMask = {
+    isBatteryLow: 2 ** 0,
+    isConnectionLost: 2 ** 3,
+    isFirstChannelInactive: 2 ** 4,
+    isSecondChannelInactive: 2 ** 5
+};
+const elimpBitMask = {
+    isConnectionLost: 2 ** 3
+};
+const waterBitMask = {
+    isBatteryLow: 2 ** 0,
+    isConnectionLost: 2 ** 3
+};
+const fourChannelBitMask = {
+    isBatteryLow: 2 ** 0,
+    isConnectionLost: 2 ** 3,
+    isFirstChannelInactive: 2 ** 4,
+    isSecondChannelInactive: 2 ** 5,
+    isThirdChannelInactive: 2 ** 6,
+    isForthChannelInactive: 2 ** 7
+};
+const mtxBitMask = {
+    isMeterCaseOpen: 2 ** 0,
+    isMagneticInfluence: 2 ** 1,
+    isParametersSetRemotely: 2 ** 2,
+    isParametersSetLocally: 2 ** 3,
+    isMeterProgramRestarted: 2 ** 4,
+    isLockedOut: 2 ** 5,
+    isTimeSet: 2 ** 6,
+    isTimeCorrected: 2 ** 7,
+    isMeterFailure: 2 ** 8,
+    isMeterTerminalBoxOpen: 2 ** 9,
+    isModuleCompartmentOpen: 2 ** 10,
+    isTariffPlanChanged: 2 ** 11,
+    isNewTariffPlanReceived: 2 ** 12
+};
 
 
 /**
@@ -188,7 +348,6 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         return channelList;
     }
-
 
     /**
      * Set array of channel indexes.
@@ -420,6 +579,50 @@ class CommandBinaryBuffer extends BinaryBuffer {
         for ( const {value, pulseCoefficient} of channelList ) {
             this.setUint8(pulseCoefficient);
             this.setExtendedValue(value);
+        }
+    }
+
+    static getEventStatusSize ( hardwareType: number ): number {
+        return TWO_BYTES_HARDWARE_TYPES.includes(hardwareType) ? 2 : 1;
+    }
+
+    getEventStatus ( hardwareType: number ): TEventStatus {
+        let status: TEventStatus;
+
+        if ( GAS_HARDWARE_TYPES.includes(hardwareType) ) {
+            status = bitSet.toObject(gasBitMask, this.getUint8());
+        } else if ( TWO_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
+            status = bitSet.toObject(twoChannelBitMask, this.getUint8());
+        } else if ( ELIMP_HARDWARE_TYPES.includes(hardwareType) ) {
+            status = bitSet.toObject(elimpBitMask, this.getUint8());
+        } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
+            status = bitSet.toObject(waterBitMask, this.getUint8());
+        } else if ( FOUR_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
+            status = bitSet.toObject(fourChannelBitMask, this.getExtendedValue());
+        } else if ( MTX_HARDWARE_TYPES.includes(hardwareType) ) {
+            status = bitSet.toObject(mtxBitMask, this.getUint16());
+        } else {
+            throw new Error('wrong hardwareType');
+        }
+
+        return status;
+    }
+
+    setEventStatus ( hardwareType: number, status: TEventStatus ): void {
+        if ( GAS_HARDWARE_TYPES.includes(hardwareType) ) {
+            this.setUint8(bitSet.fromObject(gasBitMask, status as bitSet.TBooleanObject));
+        } else if ( TWO_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
+            this.setUint8(bitSet.fromObject(twoChannelBitMask, status as bitSet.TBooleanObject));
+        } else if ( ELIMP_HARDWARE_TYPES.includes(hardwareType) ) {
+            this.setUint8(bitSet.fromObject(elimpBitMask, status as bitSet.TBooleanObject));
+        } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
+            this.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
+        } else if ( FOUR_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
+            this.setExtendedValue(bitSet.fromObject(fourChannelBitMask, status as bitSet.TBooleanObject));
+        } else if ( MTX_HARDWARE_TYPES.includes(hardwareType) ) {
+            this.setUint16(bitSet.fromObject(mtxBitMask, status as bitSet.TBooleanObject));
+        } else {
+            throw new Error('wrong hardwareType');
         }
     }
 }
