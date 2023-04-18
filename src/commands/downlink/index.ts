@@ -9,6 +9,7 @@ export {default as ExAbsArchiveDaysMC} from './ExAbsArchiveDaysMC.js';
 export {default as ExAbsArchiveHoursMC} from './ExAbsArchiveHoursMC.js';
 export {default as ExAbsCurrentMC} from './ExAbsCurrentMC.js';
 export {default as GetArchiveDaysMC} from './GetArchiveDaysMC.js';
+export {default as GetArchiveEvents} from './GetArchiveEvents.js';
 export {default as GetArchiveHoursMC} from './GetArchiveHoursMC.js';
 export {default as GetCurrentMC} from './GetCurrentMC.js';
 export {default as NewStatus} from './NewStatus.js';
