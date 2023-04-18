@@ -18,7 +18,7 @@ interface IArchiveEvent {
  * ```js
  * import {constants} from 'jooby-codec';
  *
- * // one `Magnet On` event at 2023-04-05 13:17:20 GMT
+ * // one `MAGNET_ON` event at 2023-04-05 13:17:20 GMT
  * [events: {id: constants.events.MAGNET_ON, sequenceNumber: 1, time: 734015840}]
  */
 interface IUplinkGetArchiveEventsParameters {
