@@ -2,12 +2,12 @@ import Command from '../../Command.js';
 import GetCurrentMC from './GetCurrentMC.js';
 import CommandBinaryBuffer, {IChannelAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
-import {getSecondsFromDate} from '../../utils/time.js';
+import {getSecondsFromDate, TTime2000} from '../../utils/time.js';
 
 
 interface IExAbsDayMCParameters {
     channelList: Array<IChannelAbsoluteValue>,
-    startTime: number
+    startTime: TTime2000
 }
 
 

@@ -1,6 +1,7 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directionTypes.js';
+import {TTime2000} from '../../utils/time.js';
 
 
 /**
@@ -8,10 +9,10 @@ import {DOWNLINK} from '../../constants/directionTypes.js';
  *
  * @example
  * // request 4 events from 2023-04-03T14:01:17.000Z
- * {seconds: 733845677, events: 4}
+ * {startTime: 733845677, events: 4}
  */
 interface IDownlinkGetArchiveEventsParameters {
-    seconds: number,
+    startTime: TTime2000,
     events: number
 }
 
@@ -23,7 +24,7 @@ const COMMAND_BODY_SIZE = 5;
 const examples: TCommandExampleList = [
     {
         name: 'request 4 events from 2023-04-03T14:01:17.000Z',
-        parameters: {seconds: 733845677, events: 4},
+        parameters: {startTime: 733845677, events: 4},
         hex: {
             header: '0b 05',
             body: '2b bd 98 ad 04'
@@ -39,7 +40,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetArchiveEvents from 'jooby-codec/commands/downlink/GetArchiveEvents';
  *
- * const command = new GetArchiveEvents({seconds: 733845677, events: 4});
+ * const command = new GetArchiveEvents({startTime: 733845677, events: 4});
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
@@ -62,18 +63,18 @@ class GetArchiveEvents extends Command {
 
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-        const seconds = buffer.getTime();
+        const startTime = buffer.getTime();
         const events = buffer.getUint8();
 
-        return new GetArchiveEvents({events, seconds});
+        return new GetArchiveEvents({events, startTime});
     }
 
     // eslint-disable-next-line class-methods-use-this
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
-        const {seconds, events} = this.parameters;
+        const {startTime, events} = this.parameters;
 
-        buffer.setTime(seconds);
+        buffer.setTime(startTime);
         buffer.setUint8(events);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

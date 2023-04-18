@@ -1,12 +1,12 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer, {IChannelArchiveDays} from '../../CommandBinaryBuffer.js';
-import {getSecondsFromDate} from '../../utils/time.js';
+import {getSecondsFromDate, TTime2000} from '../../utils/time.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 
 
 interface IUplinkExAbsArchiveDaysMCParameters {
     channelList: Array<IChannelArchiveDays>,
-    startTime: number,
+    startTime: TTime2000,
     days: number
 }
 
