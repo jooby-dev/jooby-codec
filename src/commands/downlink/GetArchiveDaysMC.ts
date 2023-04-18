@@ -7,7 +7,7 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directionTypes.js';
-import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
+import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/time.js';
 
 
 /**
@@ -15,15 +15,12 @@ import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
  *
  * @example
  * // request for 1 days archive values from channel #1 from 2023-12-24T00:00:00.000Z or 756691200 seconds since 2000 year
- * {channelList: [0], days: 1, seconds: 756691200}
+ * {channelList: [0], days: 1, startTime: 756691200}
  */
 interface IDownlinkGetArchiveDaysMCParameters {
     /** amount of days to retrieve */
     days: number,
-
-    /** time */
-    startTime: number,
-
+    startTime: TTime2000,
     /** array of channelList indexes */
     channelList: Array<number>
 }
@@ -41,7 +38,7 @@ const COMMAND_BODY_SIZE = 4;
  * ```js
  * import GetArchiveDaysMC from 'jooby-codec/commands/downlink/GetArchiveDaysMC';
  *
- * const parameters = {channelList: [0], days: 1, seconds: 756691200};
+ * const parameters = {channelList: [0], days: 1, startTime: 756691200};
  * const command = new GetArchiveDaysMC(parameters);
  *
  * // output command binary in hex representation
