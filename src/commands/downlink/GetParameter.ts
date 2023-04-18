@@ -5,11 +5,11 @@ import * as deviceParameters from '../../constants/deviceParameters.js';
 
 
 /**
- *GetParameter command parameters
+ * GetParameter command parameters
  *
  * @example
  * import {constants} from 'jooby-codec';
- * {id: constants.deviceParameters.INITIAL_DATA, data: {value: 2023, meterValue: 204, pulseCoefficient: 100}}
+ * {id: constants.deviceParameters.INITIAL_DATA}
  */
 interface IDownlinkGetParameterParameters {
     /**
@@ -48,9 +48,10 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
+ * import {constants} from 'jooby-codec';
  * import GetParameter from 'jooby-codec/commands/downlink/GetParameter';
  *
- * const command = new GetParameter({id: 733845677, events: 4});
+ * const command = new GetParameter({id: constants.deviceParameters.INITIAL_DATA});
  *
  * // output command binary in hex representation
  * console.log(command.toHex());

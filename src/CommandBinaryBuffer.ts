@@ -163,7 +163,7 @@ export interface IEventMtxStatus {
 /**
  * Initial values for pulse devices.
  */
-export interface IParameterInitialData {
+interface IParameterInitialData {
     /**
      * 4 byte int BE
      */
@@ -177,19 +177,19 @@ export interface IParameterInitialData {
     pulseCoefficient: number,
 }
 
-export interface IParameterInitialDataMC extends IParameterInitialData {
+interface IParameterInitialDataMC extends IParameterInitialData {
     /**
      * Channel that accept initial values.
      */
     channel: number
 }
 
-export interface IParameterAbsoluteDataStatus {
+interface IParameterAbsoluteDataStatus {
     /* 1 - absolute data sending enabled, 0 - disabled, device send pulse counter  */
     status: number
 }
 
-export interface IParameterAbsoluteDataStatusMC extends IParameterAbsoluteDataStatus {
+interface IParameterAbsoluteDataStatusMC extends IParameterAbsoluteDataStatus {
     /**
      * Channel that accept status changing.
      */
@@ -198,10 +198,7 @@ export interface IParameterAbsoluteDataStatusMC extends IParameterAbsoluteDataSt
 
 export interface IParameter {
     id: number,
-    data: IParameterInitialData |
-    IParameterInitialDataMC |
-    IParameterAbsoluteDataStatus |
-    IParameterAbsoluteDataStatusMC
+    data: TParameterData
 }
 
 export type TEventStatus =
@@ -211,6 +208,12 @@ export type TEventStatus =
     IEventWaterStatus |
     IEvent4ChannelStatus |
     IEventMtxStatus;
+
+type TParameterData =
+    IParameterInitialData |
+    IParameterInitialDataMC |
+    IParameterAbsoluteDataStatus |
+    IParameterAbsoluteDataStatusMC;
 
 
 const INITIAL_YEAR = 2000;
