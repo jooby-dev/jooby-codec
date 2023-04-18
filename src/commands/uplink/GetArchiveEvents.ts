@@ -2,10 +2,11 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 import * as events from '../../constants/events.js';
+import {TTime2000} from '../../utils/time.js';
 
 
 interface IArchiveEvent {
-    seconds: number,
+    time: TTime2000,
     id: number,
     sequenceNumber: number,
 }
@@ -18,7 +19,7 @@ interface IArchiveEvent {
  * import {constants} from 'jooby-codec';
  *
  * // one `Magnet On` event at 2023-04-05 13:17:20 GMT
- * [events: {id: constants.events.MAGNET_ON, sequenceNumber: 1, seconds: 734015840}]
+ * [events: {id: constants.events.MAGNET_ON, sequenceNumber: 1, time: 734015840}]
  */
 interface IUplinkGetArchiveEventsParameters {
     eventList: Array<IArchiveEvent>
@@ -36,7 +37,7 @@ const examples: TCommandExampleList = [
         parameters: {
             eventList: [
                 {
-                    seconds: 734015840,
+                    time: 734015840,
                     id: events.MAGNET_ON,
                     sequenceNumber: 1
                 }
@@ -49,22 +50,22 @@ const examples: TCommandExampleList = [
         parameters: {
             eventList: [
                 {
-                    seconds: 734015840,
+                    time: 734015840,
                     id: events.MAGNET_OFF,
                     sequenceNumber: 1
                 },
                 {
-                    seconds: 734025840,
+                    time: 734025840,
                     id: events.MAGNET_ON,
                     sequenceNumber: 2
                 },
                 {
-                    seconds: 734035840,
+                    time: 734035840,
                     id: events.ACTIVATE,
                     sequenceNumber: 3
                 },
                 {
-                    seconds: 734045840,
+                    time: 734045840,
                     id: events.DEACTIVATE,
                     sequenceNumber: 4
                 }
@@ -76,13 +77,13 @@ const examples: TCommandExampleList = [
 
 
 const getEvent = ( buffer: CommandBinaryBuffer ): IArchiveEvent => ({
-    seconds: buffer.getTime(),
+    time: buffer.getTime(),
     id: buffer.getUint8(),
     sequenceNumber: buffer.getUint8()
 });
 
 const setEvent = ( buffer: CommandBinaryBuffer, event: IArchiveEvent ): void => {
-    buffer.setTime(event.seconds);
+    buffer.setTime(event.time);
     buffer.setUint8(event.id);
     buffer.setUint8(event.sequenceNumber);
 };
@@ -96,7 +97,7 @@ const setEvent = ( buffer: CommandBinaryBuffer, event: IArchiveEvent ): void => 
  * import GetArchiveEvents from 'jooby-codec/commands/uplink/GetArchiveEvents';
  * import {constants} from 'jooby-codec';
  *
- * const parameters = [eventList: {id: constants.events.MAGNET_ON, sequenceNumber: 1, seconds: 734015840}];
+ * const parameters = [eventList: {id: constants.events.MAGNET_ON, sequenceNumber: 1, time: 734015840}];
  * const command = new GetArchiveEvents(parameters);
  *
  * // output command binary in hex representation

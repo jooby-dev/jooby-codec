@@ -470,7 +470,7 @@ const uplinkCommands: TCommandList = [
         parameters: {
             id: events.ACTIVATE_MTX,
             sequenceNumber: 2,
-            data: {seconds: 734015840, deviceId: '00 1a 79 88 17 01 23 56'}
+            data: {time: 734015840, deviceId: '00 1a 79 88 17 01 23 56'}
         },
         hex: {
             header: '15 0e',
@@ -564,7 +564,7 @@ const uplinkCommands: TCommandList = [
         constructor: uplink.Time2000,
         name: 'uplink command 0x09:TIME_2000',
         // time: 2023-04-03T14:01:17.000Z
-        parameters: {sequenceNumber: 77, seconds: 733845677},
+        parameters: {sequenceNumber: 77, time: 733845677},
         hex: {
             header: '09 05',
             body: '4d 2b bd 98 ad',
@@ -656,7 +656,7 @@ const processExamples = ( commands: Record<string, any> ) => {
     uplinkCommands.push({
         constructor: uplink.NewEvent,
         name: 'uplink command 0x15:NEW_EVENT',
-        parameters: {id, sequenceNumber: 2, data: {seconds: 734015840}},
+        parameters: {id, sequenceNumber: 2, data: {time: 734015840}},
         hex: {
             header: '15 06',
             body: `${hexId} 02 2b c0 31 60`

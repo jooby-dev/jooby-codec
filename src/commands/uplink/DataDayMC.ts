@@ -2,7 +2,7 @@
 
 import Command from '../../Command.js';
 import CommandBinaryBuffer, {IChannelValue} from '../../CommandBinaryBuffer.js';
-import {getSecondsFromDate} from '../../utils/time.js';
+import {getSecondsFromDate, TTime2000} from '../../utils/time.js';
 import GetCurrentMC, {IGetCurrentMCParameters} from './GetCurrentMC.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 
@@ -11,10 +11,7 @@ import {UPLINK} from '../../constants/directionTypes.js';
  * DataDayMC command parameters.
  */
 interface IDataDayMCParameters extends IGetCurrentMCParameters {
-    /**
-     * Seconds since year 2000, i.e. timestamp (in seconds) - 946684800
-     */
-    startTime: number
+    startTime: TTime2000
 }
 
 

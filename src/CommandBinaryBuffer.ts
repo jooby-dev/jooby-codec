@@ -1,5 +1,5 @@
 import BinaryBuffer from './BinaryBuffer.js';
-import {getDateFromSeconds, getSecondsFromDate} from './utils/time.js';
+import {getDateFromSeconds, getSecondsFromDate, TTime2000} from './utils/time.js';
 
 
 export interface IBatteryVoltage {
@@ -256,7 +256,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
      * Convert date or seconds to bytes.
      * '2023-12-23' will be 0010111-1100-10111, so bytes: ['00101111', '10010111'] -> [47, 151]
      */
-    setDate ( dateOrTime: Date | number ): void {
+    setDate ( dateOrTime: Date | TTime2000 ): void {
         let date;
 
         if ( dateOrTime instanceof Date ) {
@@ -305,11 +305,11 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(((hourAmount & 0x07) << 5) | (hour & 0x1f));
     }
 
-    getTime (): number {
+    getTime (): TTime2000 {
         return this.getUint32(false);
     }
 
-    setTime ( value: number ): void {
+    setTime ( value: TTime2000 ): void {
         return this.setUint32(value, false);
     }
 
@@ -355,7 +355,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
     }
 
-    getChannelsValuesWithHourDiff (): {hours: number, startTime: number, channelList: Array<IChannelHours>} {
+    getChannelsValuesWithHourDiff (): {hours: number, startTime: TTime2000, channelList: Array<IChannelHours>} {
         const date = this.getDate();
         const {hour, hours} = this.getHours();
         const channels = this.getChannels();
@@ -383,7 +383,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return {channelList, hours, startTime: getSecondsFromDate(date)};
     }
 
-    setChannelsValuesWithHourDiff ( hours: number, startTime: number, channelList: Array<IChannelHours> ): void {
+    setChannelsValuesWithHourDiff ( hours: number, startTime: TTime2000, channelList: Array<IChannelHours> ): void {
         const date = getDateFromSeconds(startTime);
         const hour = date.getUTCHours();
 

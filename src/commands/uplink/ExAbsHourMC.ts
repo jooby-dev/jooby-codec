@@ -1,5 +1,5 @@
 import Command from '../../Command.js';
-import {getSecondsFromDate, getDateFromSeconds} from '../../utils/time.js';
+import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHourAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directionTypes.js';
 
@@ -26,7 +26,7 @@ import {UPLINK} from '../../constants/directionTypes.js';
  */
 interface IUplinkExAbsHourMCParameters {
     channelList: Array<IChannelHourAbsoluteValue>,
-    startTime: number
+    startTime: TTime2000
     hours: number
 }
 
