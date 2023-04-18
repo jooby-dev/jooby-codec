@@ -32,7 +32,7 @@ const COMMAND_BODY_MIN_SIZE = 4 + 1 + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: '1 event - "Magnet on"',
+        name: '1 event - "MAGNET_ON" at 2023-04-05 13:17:20 GMT',
         parameters: {
             eventList: [
                 {
@@ -45,7 +45,7 @@ const examples: TCommandExampleList = [
         hex: {header: '0b 06', body: '2b c0 31 60 01 01'}
     },
     {
-        name: '4 events - "Magnet on"',
+        name: '4 events example',
         parameters: {
             eventList: [
                 {
