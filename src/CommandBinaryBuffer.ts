@@ -2,6 +2,7 @@ import BinaryBuffer from './BinaryBuffer.js';
 import * as bitSet from './utils/bitSet.js';
 import {getDateFromSeconds, getSecondsFromDate, TTime2000} from './utils/time.js';
 import * as hardwareTypes from './constants/hardwareTypes.js';
+import * as deviceParameters from './constants/deviceParameters.js';
 
 
 export interface IBatteryVoltage {
@@ -158,6 +159,48 @@ export interface IEventMtxStatus {
     isNewTariffPlanReceived?: boolean
 }
 
+
+/**
+ * Initial values for pulse devices.
+ */
+interface IParameterInitialData {
+    /**
+     * 4 byte int BE
+     */
+    value: number
+
+    /**
+     * 4 byte int BE
+     */
+    meterValue: number,
+
+    pulseCoefficient: number,
+}
+
+interface IParameterInitialDataMC extends IParameterInitialData {
+    /**
+     * Channel that accept initial values.
+     */
+    channel: number
+}
+
+interface IParameterAbsoluteDataStatus {
+    /* 1 - absolute data sending enabled, 0 - disabled, device send pulse counter  */
+    status: number
+}
+
+interface IParameterAbsoluteDataStatusMC extends IParameterAbsoluteDataStatus {
+    /**
+     * Channel that accept status changing.
+     */
+    channel: number
+}
+
+export interface IParameter {
+    id: number,
+    data: TParameterData
+}
+
 export type TEventStatus =
     IEventGasStatus |
     IEvent2ChannelStatus |
@@ -165,6 +208,12 @@ export type TEventStatus =
     IEventWaterStatus |
     IEvent4ChannelStatus |
     IEventMtxStatus;
+
+type TParameterData =
+    IParameterInitialData |
+    IParameterInitialDataMC |
+    IParameterAbsoluteDataStatus |
+    IParameterAbsoluteDataStatusMC;
 
 
 const INITIAL_YEAR = 2000;
@@ -248,6 +297,33 @@ const mtxBitMask = {
 
 
 /**
+ * device parameter data size + byte for parameter id
+ */
+const parametersSizeMap = new Map([
+    [deviceParameters.INITIAL_DATA, 9 + 1],
+    [deviceParameters.ABSOLUTE_DATA_STATUS, 1 + 1],
+    [deviceParameters.INITIAL_DATA_MULTI_CHANNEL, 10 + 1],
+    [deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL, 2 + 1]
+]);
+
+const byteToPulseCoefficientMap = new Map([
+    [0x80, 1000],
+    [0x81, 5000],
+    [0x82, 100],
+    [0x83, 10],
+    [0x84, 1],
+    [0x85, 0.1],
+    [0x86, 0.01]
+]);
+
+const pulseCoefficientToByteMap = new Map(
+    [...byteToPulseCoefficientMap.entries()].map(([key, value]) => [value, key])
+);
+
+const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
+
+
+/**
  * Command specific byte array manipulation.
  */
 class CommandBinaryBuffer extends BinaryBuffer {
@@ -269,6 +345,16 @@ class CommandBinaryBuffer extends BinaryBuffer {
         const extBytes = Math.ceil(totalBits / 8);
 
         return extBytes;
+    }
+
+    static getParameterSize ( parameter: IParameter ): number {
+        const size = parametersSizeMap.get(parameter.id);
+
+        if ( size === undefined ) {
+            throw new Error('unknown parameter id');
+        }
+
+        return size;
     }
 
     getExtendedValue (): number {
@@ -623,6 +709,141 @@ class CommandBinaryBuffer extends BinaryBuffer {
             this.setUint16(bitSet.fromObject(mtxBitMask, status as bitSet.TBooleanObject));
         } else {
             throw new Error('wrong hardwareType');
+        }
+    }
+
+    private getPulseCoefficient (): number {
+        const pulseCoefficient = this.getUint8();
+
+        if ( isMSBSet(pulseCoefficient) ) {
+            const value = byteToPulseCoefficientMap.get(pulseCoefficient);
+
+            if ( value ) {
+                return value;
+            }
+
+            throw new Error('pulseCoefficient MSB is set, but value unknown');
+        }
+
+        return pulseCoefficient;
+    }
+
+    private setPulseCoefficient ( value: number ): void {
+        if ( pulseCoefficientToByteMap.has(value) ) {
+            const byte = pulseCoefficientToByteMap.get(value);
+
+            if ( byte ) {
+                this.setUint8(byte);
+            } else {
+                throw new Error('pulseCoefficient MSB is set, but value unknown');
+            }
+        } else {
+            this.setUint8(value);
+        }
+    }
+
+    private getParameterInitialData (): IParameterInitialData {
+        return {
+            meterValue: this.getUint32(false),
+            pulseCoefficient: this.getPulseCoefficient(),
+            value: this.getUint32(false)
+        };
+    }
+
+    private setParameterInitialData ( parameter: IParameterInitialData ): void {
+        this.setUint32(parameter.meterValue, false);
+        this.setPulseCoefficient(parameter.pulseCoefficient);
+        this.setUint32(parameter.value, false);
+    }
+
+    private getParameterInitialDataMC (): IParameterInitialDataMC {
+        return {
+            channel: this.getUint8(),
+            meterValue: this.getUint32(false),
+            pulseCoefficient: this.getPulseCoefficient(),
+            value: this.getUint32(false)
+        };
+    }
+
+    private setParameterInitialDataMC ( parameter: IParameterInitialDataMC ): void {
+        this.setUint8(parameter.channel);
+        this.setUint32(parameter.meterValue, false);
+        this.setPulseCoefficient(parameter.pulseCoefficient);
+        this.setUint32(parameter.value, false);
+    }
+
+    private getParameterAbsoluteDataStatus (): IParameterAbsoluteDataStatus {
+        return {status: this.getUint8()};
+    }
+
+    private setParameterAbsoluteDataStatus ( parameter: IParameterAbsoluteDataStatus ): void {
+        this.setUint8(parameter.status);
+    }
+
+    private getParameterAbsoluteDataStatusMC (): IParameterAbsoluteDataStatusMC {
+        return {
+            channel: this.getUint8(),
+            status: this.getUint8()
+        };
+    }
+
+    private setParameterAbsoluteDataStatusMC ( parameter: IParameterAbsoluteDataStatusMC ): void {
+        this.setUint8(parameter.channel);
+        this.setUint8(parameter.status);
+    }
+
+    getParameter (): IParameter {
+        const id = this.getUint8();
+        let data;
+
+        switch ( id ) {
+            case deviceParameters.INITIAL_DATA:
+                data = this.getParameterInitialData();
+                break;
+
+            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
+                data = this.getParameterInitialDataMC();
+                break;
+
+            case deviceParameters.ABSOLUTE_DATA_STATUS:
+                data = this.getParameterAbsoluteDataStatus();
+                break;
+
+            case deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL:
+                data = this.getParameterAbsoluteDataStatusMC();
+                break;
+
+            default:
+                throw new Error(`parameter ${id} is not supported`);
+        }
+
+        return {id, data};
+    }
+
+    setParameter ( parameter: IParameter ): void {
+        const {id, data} = parameter;
+
+        this.setUint8(id);
+
+        switch ( id ) {
+            case deviceParameters.INITIAL_DATA:
+                this.setParameterInitialData(data as IParameterInitialData);
+                break;
+
+            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
+                this.setParameterInitialDataMC(data as IParameterInitialDataMC);
+                break;
+
+            case deviceParameters.ABSOLUTE_DATA_STATUS:
+                this.setParameterAbsoluteDataStatus(data as IParameterAbsoluteDataStatus);
+                break;
+
+            case deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL:
+                this.setParameterAbsoluteDataStatusMC(data as IParameterAbsoluteDataStatusMC);
+                break;
+
+            default:
+                throw new Error(`parameter ${id} is not supported`);
         }
     }
 }

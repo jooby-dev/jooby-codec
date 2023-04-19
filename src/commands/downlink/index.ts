@@ -12,6 +12,7 @@ export {default as GetArchiveDaysMC} from './GetArchiveDaysMC.js';
 export {default as GetArchiveEvents} from './GetArchiveEvents.js';
 export {default as GetArchiveHoursMC} from './GetArchiveHoursMC.js';
 export {default as GetCurrentMC} from './GetCurrentMC.js';
+export {default as GetParameter} from './GetParameter.js';
 export {default as NewStatus} from './NewStatus.js';
 export {default as SetParameter} from './SetParameter.js';
 export {default as SetTime2000} from './SetTime2000.js';
