@@ -4,7 +4,7 @@ import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
 import {TTime2000} from '../../utils/time.js';
 import * as events from '../../constants/events.js';
-import {UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directions.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 
 
@@ -120,7 +120,7 @@ const examples: TCommandExampleList = [
     {
         name: 'event for EV_MTX',
         parameters: {
-            id: events.EV_MTX,
+            id: events.MTX,
             sequenceNumber: 2,
             data: {
                 status: {
@@ -213,9 +213,9 @@ class NewEvent extends Command {
             case events.INSERT:
             case events.REMOVE:
             case events.COUNTER_OVER:
-            case events.EV_OPTOLOW:
-            case events.EV_OPTOFLASH:
-            case events.EV_REJOIN:
+            case events.OPTOLOW:
+            case events.OPTOFLASH:
+            case events.JOIN_ACCEPT:
                 eventData = {time: buffer.getTime()} as IEventTime;
                 break;
 
@@ -232,7 +232,7 @@ class NewEvent extends Command {
                 eventData = {channel: buffer.getUint8(), value: buffer.getExtendedValue()} as IEventConnection;
                 break;
 
-            case events.EV_MTX:
+            case events.MTX:
                 eventData = {status: buffer.getEventStatus(hardwareTypes.MTXLORA)} as IEventMtx;
                 break;
 
@@ -260,9 +260,9 @@ class NewEvent extends Command {
             case events.INSERT:
             case events.REMOVE:
             case events.COUNTER_OVER:
-            case events.EV_OPTOLOW:
-            case events.EV_OPTOFLASH:
-            case events.EV_REJOIN:
+            case events.OPTOLOW:
+            case events.OPTOFLASH:
+            case events.JOIN_ACCEPT:
                 eventData = data as IEventTime;
                 buffer.setTime(eventData.time);
                 break;
@@ -285,7 +285,7 @@ class NewEvent extends Command {
                 buffer.setExtendedValue(eventData.value);
                 break;
 
-            case events.EV_MTX:
+            case events.MTX:
                 eventData = data as IEventMtx;
                 buffer.setEventStatus(hardwareTypes.MTXLORA, eventData.status);
                 break;

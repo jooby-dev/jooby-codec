@@ -5,7 +5,7 @@
  */
 
 import Command from '../../Command.js';
-import {DOWNLINK} from '../../constants/directionTypes.js';
+import {DOWNLINK} from '../../constants/directions.js';
 
 
 // TODO: rework extended headers detection

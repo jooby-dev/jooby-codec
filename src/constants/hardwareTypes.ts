@@ -1,10 +1,10 @@
 /**
- * GAS RM on cpu STM32L15x - no longer in production, over 10,000 were produced.
+ * GAS RM on cpu STM32L15x - no longer in production.
  */
 export const GAZM3 = 1;
 
 /**
- * GAS RM on cpu STM32L05x - no longer in production, several thousand produced.
+ * GAS RM on cpu STM32L05x - no longer in production.
  */
 export const GAZM0 = 2;
 

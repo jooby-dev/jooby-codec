@@ -1,6 +1,6 @@
 import Command from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
-import {UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directions.js';
 
 
 /**

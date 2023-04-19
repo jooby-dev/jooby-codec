@@ -1,6 +1,6 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer, {IChannelDays} from '../../CommandBinaryBuffer.js';
-import {UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directions.js';
 import {getSecondsFromDate, TTime2000} from '../../utils/time.js';
 
 

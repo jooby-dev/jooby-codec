@@ -1,5 +1,5 @@
 import Command from '../../Command.js';
-import {DOWNLINK} from '../../constants/directionTypes.js';
+import {DOWNLINK} from '../../constants/directions.js';
 
 
 const COMMAND_ID = 0x14;

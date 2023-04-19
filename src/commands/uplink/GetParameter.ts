@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IParameter} from '../../CommandBinaryBuffer.js';
-import {UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directions.js';
 import * as deviceParameters from '../../constants/deviceParameters.js';
 
 
