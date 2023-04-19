@@ -24,7 +24,7 @@ const COMMAND_ID = 0x021f;
 const COMMAND_TITLE = 'GET_LMIC_VERSION';
 const COMMAND_BODY_SIZE = 2;
 
-const lmicStatusBitMask = {
+const lmicCapabilitiesBitMask = {
     isMulticastSupported: 2 ** 0,
     isFragmentedDataSupported: 2 ** 1
 };
@@ -100,7 +100,7 @@ class GetLmicVersion extends Command {
 
         const buffer = new BinaryBuffer(data);
 
-        const capabilities = bitSet.toObject(lmicStatusBitMask, buffer.getUint8()) as ILmicCapabilities;
+        const capabilities = bitSet.toObject(lmicCapabilitiesBitMask, buffer.getUint8()) as ILmicCapabilities;
         const version = buffer.getUint8();
 
         if ( !buffer.isEmpty ) {
@@ -114,7 +114,7 @@ class GetLmicVersion extends Command {
         const {capabilities, version} = this.parameters;
         const buffer = new BinaryBuffer(COMMAND_BODY_SIZE);
 
-        buffer.setUint8(bitSet.fromObject(lmicStatusBitMask, capabilities));
+        buffer.setUint8(bitSet.fromObject(lmicCapabilitiesBitMask, capabilities));
         buffer.setUint8(version);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
