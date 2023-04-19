@@ -23,9 +23,7 @@ const examples: TCommandExampleList = [
         name: 'device sending absolute data',
         parameters: {
             id: deviceParameters.ABSOLUTE_DATA_STATUS,
-            data: {
-                status: 1
-            }
+            data: {status: 1}
         },
         hex: {
             header: '04 02',
