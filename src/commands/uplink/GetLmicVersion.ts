@@ -4,18 +4,18 @@ import * as bitSet from '../../utils/bitSet.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
-interface ILmicStatus extends bitSet.TBooleanObject {
-    multicastSupport: boolean,
+interface ILmicCapabilities extends bitSet.TBooleanObject {
+    isMulticastSupported: boolean,
     /* LoRaWAN Fragmented Data Block Transport  */
-    fragmentedDataSupport: boolean
+    isFragmentedDataSupported: boolean
 }
 
 /**
  * GetLmicVersion command parameters
  */
 interface IUplinkGetLmicVersionParameters {
-    /* status of supported features */
-    status: ILmicStatus,
+    /* device supported features */
+    capabilities: ILmicCapabilities,
     version: number
 }
 
@@ -25,8 +25,8 @@ const COMMAND_TITLE = 'GET_LMIC_VERSION';
 const COMMAND_BODY_SIZE = 2;
 
 const lmicStatusBitMask = {
-    multicastSupport: 2 ** 0,
-    fragmentedDataSupport: 2 ** 1
+    isMulticastSupported: 2 ** 0,
+    isFragmentedDataSupported: 2 ** 1
 };
 
 const examples: TCommandExampleList = [
@@ -34,9 +34,9 @@ const examples: TCommandExampleList = [
         name: 'version: 12, support only multicast',
         parameters: {
             version: 12,
-            status: {
-                multicastSupport: true,
-                fragmentedDataSupport: false
+            capabilities: {
+                isMulticastSupported: true,
+                isFragmentedDataSupported: false
             }
         },
         hex: {header: '1f 02 02', body: '01 0c'}
@@ -45,9 +45,9 @@ const examples: TCommandExampleList = [
         name: 'version: 34, support multicast and fragmented data',
         parameters: {
             version: 34,
-            status: {
-                multicastSupport: true,
-                fragmentedDataSupport: true
+            capabilities: {
+                isMulticastSupported: true,
+                isFragmentedDataSupported: true
             }
         },
         hex: {header: '1f 02 02', body: '03 22'}
@@ -64,9 +64,9 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     version: 34,
- *     status: {
- *         multicastSupport: true,
- *         fragmentedDataSupport: true
+ *     capabilities: {
+ *         isMulticastSupported: true,
+ *         isFragmentedDataSupported: true
  *     }
  * };
  * const command = new GetLmicVersion(parameters);
@@ -84,7 +84,7 @@ class GetLmicVersion extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly directionType = UPLINK;
+    static readonly direction = UPLINK;
 
     static readonly title = COMMAND_TITLE;
 
@@ -100,21 +100,21 @@ class GetLmicVersion extends Command {
 
         const buffer = new BinaryBuffer(data);
 
-        const status = bitSet.toObject(lmicStatusBitMask, buffer.getUint8()) as ILmicStatus;
+        const capabilities = bitSet.toObject(lmicStatusBitMask, buffer.getUint8()) as ILmicCapabilities;
         const version = buffer.getUint8();
 
         if ( !buffer.isEmpty ) {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new GetLmicVersion({status, version});
+        return new GetLmicVersion({capabilities, version});
     }
 
     toBytes (): Uint8Array {
-        const {status, version} = this.parameters;
+        const {capabilities, version} = this.parameters;
         const buffer = new BinaryBuffer(COMMAND_BODY_SIZE);
 
-        buffer.setUint8(bitSet.fromObject(lmicStatusBitMask, status));
+        buffer.setUint8(bitSet.fromObject(lmicStatusBitMask, capabilities));
         buffer.setUint8(version);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
 class GetLmicVersion extends Command {
     static readonly id = COMMAND_ID;
 
-    static readonly directionType = DOWNLINK;
+    static readonly direction = DOWNLINK;
 
     static readonly title = COMMAND_TITLE;
 
