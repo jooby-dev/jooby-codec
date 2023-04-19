@@ -1,6 +1,6 @@
 import Command from '../../Command.js';
 import CommandBinaryBuffer, {IChannelAbsoluteValue} from '../../CommandBinaryBuffer.js';
-import {UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directions.js';
 
 
 interface IUplinkExAbsCurrentMCParameters {

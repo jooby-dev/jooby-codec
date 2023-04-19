@@ -2,7 +2,7 @@ import Command from '../../Command.js';
 import GetCurrentMC from './GetCurrentMC.js';
 import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
-import {UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directions.js';
 
 
 interface IDataHourMCParameters {

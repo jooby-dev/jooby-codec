@@ -6,7 +6,7 @@
 
 import Command from '../../Command.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
-import {DOWNLINK} from '../../constants/directionTypes.js';
+import {DOWNLINK} from '../../constants/directions.js';
 import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/time.js';
 
 

@@ -1,6 +1,6 @@
 import * as header from './utils/header.js';
 import getHexFromBytes, {IHexFormatOptions} from './utils/getHexFromBytes.js';
-import {UPLINK} from './constants/directionTypes.js';
+import {UPLINK} from './constants/directions.js';
 //import getBytesFromHex from './utils/getBytesFromHex.js';
 
 

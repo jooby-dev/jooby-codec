@@ -2,7 +2,7 @@ import Command from '../../Command.js';
 import CommandBinaryBuffer, {IBatteryVoltage} from '../../CommandBinaryBuffer.js';
 import roundNumber from '../../utils/roundNumber.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
-import {UPLINK} from '../../constants/directionTypes.js';
+import {UPLINK} from '../../constants/directions.js';
 
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
