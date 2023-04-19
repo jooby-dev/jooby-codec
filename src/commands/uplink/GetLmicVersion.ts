@@ -84,7 +84,7 @@ class GetLmicVersion extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly direction = UPLINK;
+    static readonly directionType = UPLINK;
 
     static readonly examples = examples;
 
