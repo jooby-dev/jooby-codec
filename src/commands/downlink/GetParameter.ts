@@ -6,10 +6,6 @@ import * as deviceParameters from '../../constants/deviceParameters.js';
 
 /**
  * GetParameter command parameters
- *
- * @example
- * import {constants} from 'jooby-codec';
- * {id: constants.deviceParameters.INITIAL_DATA}
  */
 interface IDownlinkGetParameterParameters {
     /**
