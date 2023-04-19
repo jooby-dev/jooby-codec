@@ -18,7 +18,6 @@ interface IDownlinkGetArchiveEventsParameters {
 
 
 const COMMAND_ID = 0x0b;
-const COMMAND_TITLE = 'GET_ARCHIVE_EVENTS';
 const COMMAND_BODY_SIZE = 5;
 
 const examples: TCommandExampleList = [
@@ -53,14 +52,17 @@ class GetArchiveEvents extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
 
-    static readonly title = COMMAND_TITLE;
-
     static readonly examples = examples;
 
+    static readonly hasParameters = true;
+
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
         const startTime = buffer.getTime();
@@ -69,6 +71,7 @@ class GetArchiveEvents extends Command {
         return new GetArchiveEvents({events, startTime});
     }
 
+    // returns full message - header with body
     // eslint-disable-next-line class-methods-use-this
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);

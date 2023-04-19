@@ -47,7 +47,6 @@ interface INewStatusParameters {
 
 
 const COMMAND_ID = 0x14;
-const COMMAND_TITLE = 'NEW_STATUS';
 const COMMAND_BODY_MAX_SIZE = 20;
 const UNKNOWN_RESISTANT = 65535;
 
@@ -91,12 +90,15 @@ class NewStatus extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
 
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ): NewStatus {
         const buffer = new CommandBinaryBuffer(data);
         const software = {type: buffer.getUint8(), version: buffer.getUint8()};
@@ -146,6 +148,7 @@ class NewStatus extends Command {
         return new NewStatus({software, hardware, data: statusData});
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const {software, hardware, data} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);

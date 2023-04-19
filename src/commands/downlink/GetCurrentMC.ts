@@ -3,7 +3,6 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 const COMMAND_ID = 0x18;
-const COMMAND_TITLE = 'GET_CURRENT_MC';
 
 const examples: TCommandExampleList = [
     {
@@ -33,15 +32,17 @@ class GetCurrentMC extends Command {
 
     static readonly directionType = DOWNLINK;
 
-    static readonly title = COMMAND_TITLE;
-
     static readonly examples = examples;
+
+    static readonly hasParameters = false;
+
 
     // data - only body (without header)
     static fromBytes () {
         return new GetCurrentMC();
     }
 
+    // returns full message - header with body
     // eslint-disable-next-line class-methods-use-this
     toBytes (): Uint8Array {
         return Command.toBytes(COMMAND_ID);

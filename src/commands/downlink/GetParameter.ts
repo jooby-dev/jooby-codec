@@ -16,7 +16,6 @@ interface IDownlinkGetParameterParameters {
 
 
 const COMMAND_ID = 0x04;
-const COMMAND_TITLE = 'GET_PARAMETER';
 const COMMAND_BODY_SIZE = 1;
 
 const examples: TCommandExampleList = [
@@ -60,20 +59,24 @@ class GetParameter extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
 
-    static readonly title = COMMAND_TITLE;
-
     static readonly examples = examples;
 
+    static readonly hasParameters = true;
+
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
         return new GetParameter({id: buffer.getUint8()});
     }
 
+    // returns full message - header with body
     // eslint-disable-next-line class-methods-use-this
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);

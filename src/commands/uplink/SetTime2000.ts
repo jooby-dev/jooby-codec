@@ -15,7 +15,6 @@ interface IUplinkSetTime2000Parameters {
 
 
 const COMMAND_ID = 0x02;
-const COMMAND_TITLE = 'SET_TIME_2000';
 const COMMAND_BODY_SIZE = 1;
 
 
@@ -41,11 +40,13 @@ class SetTime2000 extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
@@ -66,6 +67,7 @@ class SetTime2000 extends Command {
         return new SetTime2000(parameters);
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const {status} = this.parameters;
         const buffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);

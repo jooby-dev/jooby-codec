@@ -1,9 +1,3 @@
-/**
- * [[include:commands/downlink/GetArchiveHoursMC.md]]
- *
- * @packageDocumentation
- */
-
 import Command from '../../Command.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
@@ -27,7 +21,6 @@ interface IDownlinkGetArchiveHoursMCParameters {
 
 
 const COMMAND_ID = 0x1a;
-const COMMAND_TITLE = 'GET_ARCHIVE_HOURS_MC';
 const COMMAND_BODY_SIZE = 4;
 
 
@@ -54,11 +47,13 @@ class GetArchiveHoursMC extends Command {
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a - b);
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
