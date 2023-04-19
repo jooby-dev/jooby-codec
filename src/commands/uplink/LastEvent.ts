@@ -19,7 +19,6 @@ interface ILastEventParameters {
 
 
 const COMMAND_ID = 0x60;
-const COMMAND_TITLE = 'LAST_EVENT';
 
 const examples: TCommandExampleList = [
     {
@@ -106,13 +105,15 @@ class LastEvent extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
-
     static readonly examples = examples;
+
+    static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array, hardwareType?: number ) {

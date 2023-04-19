@@ -16,7 +16,6 @@ interface IDataDayMCParameters extends IGetCurrentMCParameters {
 
 
 const COMMAND_ID = 0x16;
-const COMMAND_TITLE = 'DATA_DAY_MC';
 
 // 2 byte for date + 2 for channels (max channels: 7)
 // 4 + (7 * 4)
@@ -28,12 +27,15 @@ class DataDayMC extends GetCurrentMC {
         super(parameters);
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
 
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ): DataDayMC {
         const parameters: IDataDayMCParameters = {channelList: [], startTime: 0};
 
@@ -52,6 +54,7 @@ class DataDayMC extends GetCurrentMC {
         return new DataDayMC(parameters);
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList, startTime} = this.parameters;

@@ -66,7 +66,7 @@ interface INewEventParameters {
 
 
 const COMMAND_ID = 0x15;
-const COMMAND_TITLE = 'NEW_EVENT';
+
 // ACTIVATE_MTX are biggest,1 byte event id, 1 byte sequence number, 4 bytes time, 8 bytes mtx address
 const COMMAND_BODY_MAX_SIZE = 14;
 const MTX_ADDRESS_SIZE = 8;
@@ -190,14 +190,17 @@ class NewEvent extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
-
     static readonly examples = examples;
 
+    static readonly hasParameters = true;
+
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ): NewEvent {
         const buffer = new CommandBinaryBuffer(data);
         const id = buffer.getUint8();
@@ -243,6 +246,7 @@ class NewEvent extends Command {
         return new NewEvent({id, sequenceNumber, data: eventData});
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const {id, sequenceNumber, data} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);

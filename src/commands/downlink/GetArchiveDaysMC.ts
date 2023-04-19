@@ -27,7 +27,6 @@ interface IDownlinkGetArchiveDaysMCParameters {
 
 
 const COMMAND_ID = 0x1b;
-const COMMAND_TITLE = 'GET_ARCHIVE_DAYS_MC';
 const COMMAND_BODY_SIZE = 4;
 
 
@@ -54,11 +53,13 @@ class GetArchiveDaysMC extends Command {
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a - b);
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

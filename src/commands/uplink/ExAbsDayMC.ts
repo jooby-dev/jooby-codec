@@ -12,7 +12,6 @@ interface IExAbsDayMCParameters {
 
 
 const COMMAND_ID = 0x0b1f;
-const COMMAND_TITLE = 'EX_ABS_DAY_MC';
 
 // date 2 bytes, channelList 3 bytes (max channelList: 14)
 // 5 + (14 channelList * (1 byte IPK + 5 bytes of day values))
@@ -24,12 +23,15 @@ class ExAbsDayMC extends GetCurrentMC {
         super(parameters);
     }
 
+
     static id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static title = COMMAND_TITLE;
+    static readonly hasParameters = true;
 
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ): ExAbsDayMC {
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
@@ -38,6 +40,7 @@ class ExAbsDayMC extends GetCurrentMC {
         return new ExAbsDayMC({channelList, startTime: getSecondsFromDate(date)});
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList, startTime} = this.parameters;

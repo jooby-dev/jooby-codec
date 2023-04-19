@@ -13,7 +13,6 @@ interface IDataHourMCParameters {
 
 
 const COMMAND_ID = 0x17;
-const COMMAND_TITLE = 'DATA_HOUR_MC';
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
 // max hours diff - 7 (3 bit value)
@@ -26,12 +25,15 @@ class DataHourMC extends GetCurrentMC {
         super(parameters);
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
 
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ): DataHourMC {
         const buffer = new CommandBinaryBuffer(data);
 
@@ -61,6 +63,7 @@ class DataHourMC extends GetCurrentMC {
         return new DataHourMC({channelList, hours, startTime: getSecondsFromDate(date)});
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList, startTime, hours} = this.parameters;

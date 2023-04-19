@@ -5,7 +5,6 @@ import * as deviceParameters from '../../constants/deviceParameters.js';
 
 
 const COMMAND_ID = 0x03;
-const COMMAND_TITLE = 'SET_PARAMETER';
 
 const examples: TCommandExampleList = [
     {
@@ -73,13 +72,15 @@ class SetParameter extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
 
-    static readonly title = COMMAND_TITLE;
-
     static readonly examples = examples;
+
+    static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

@@ -27,7 +27,7 @@ interface IUplinkGetArchiveEventsParameters {
 
 
 const COMMAND_ID = 0x0b;
-const COMMAND_TITLE = 'GET_ARCHIVE_EVENTS';
+
 // 4 bytes for event seconds, 1 byte for event id, 1 byte for sequence number
 const COMMAND_BODY_MIN_SIZE = 4 + 1 + 1;
 
@@ -111,13 +111,15 @@ class GetArchiveEvents extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
-
     static readonly examples = examples;
+
+    static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

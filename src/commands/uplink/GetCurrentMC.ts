@@ -11,7 +11,6 @@ export interface IGetCurrentMCParameters {
 
 
 const COMMAND_ID = 0x18;
-const COMMAND_TITLE = 'GET_CURRENT_MC';
 
 // 2 bytes for 7 channelList + (7 channelList * 5 byte for current value of channel)
 const COMMAND_BODY_MAX_SIZE = 37;
@@ -80,14 +79,17 @@ class GetCurrentMC extends Command {
         this.parameters.channelList = this.parameters.channelList.sort((a: IChannelValue, b: IChannelValue) => a.index - b.index);
     }
 
+
     static id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static title = COMMAND_TITLE;
-
     static readonly examples = examples;
 
+    static readonly hasParameters = true;
+
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ): GetCurrentMC {
         const parameters: IGetCurrentMCParameters = {channelList: []};
 
@@ -103,6 +105,7 @@ class GetCurrentMC extends Command {
         return new GetCurrentMC(parameters);
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList} = this.parameters;

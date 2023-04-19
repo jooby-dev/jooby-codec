@@ -19,7 +19,6 @@ interface ITime2000Parameters {
 
 
 const COMMAND_ID = 0x09;
-const COMMAND_TITLE = 'TIME_2000';
 const COMMAND_BODY_SIZE = 5;
 
 
@@ -45,11 +44,13 @@ class Time2000 extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

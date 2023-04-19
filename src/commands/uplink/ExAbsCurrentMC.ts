@@ -9,7 +9,6 @@ interface IUplinkExAbsCurrentMCParameters {
 
 
 const COMMAND_ID = 0x0f1f;
-const COMMAND_TITLE = 'EX_ABS_CURRENT_MC';
 
 // channelList 3 byte (max channelList: 14)
 // 3 + (14 * (1 byte IPK + 5 bytes of day values))
@@ -23,18 +22,22 @@ class ExAbsCurrentMC extends Command {
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a.index - b.index);
     }
 
+
     static id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static title = COMMAND_TITLE;
+    static readonly hasParameters = true;
 
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ): ExAbsCurrentMC {
         const buffer = new CommandBinaryBuffer(data);
 
         return new ExAbsCurrentMC({channelList: buffer.getChannelsWithAbsoluteValues()});
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList} = this.parameters;

@@ -32,7 +32,6 @@ interface IUplinkExAbsHourMCParameters {
 
 
 const COMMAND_ID = 0x0a1f;
-const COMMAND_TITLE = 'EX_ABS_HOUR_MC';
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte (max channelList: 4)
 // max hours diff - 7 (3 bit value)
@@ -73,12 +72,15 @@ class ExAbsHourMC extends Command {
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a.index - b.index);
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
 
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ): ExAbsHourMC {
         const buffer = new CommandBinaryBuffer(data);
 
@@ -110,6 +112,7 @@ class ExAbsHourMC extends Command {
         return new ExAbsHourMC({channelList, hours: hourAmount, startTime: getSecondsFromDate(date)});
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {hours, startTime, channelList} = this.parameters;

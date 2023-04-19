@@ -1,16 +1,9 @@
-/**
- * [[include:commands/downlink/CorrectTime2000.md]]
- *
- * @packageDocumentation
- */
-
 import Command from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
 const COMMAND_ID = 0x0c;
-const COMMAND_TITLE = 'CORRECT_TIME_2000';
 const COMMAND_BODY_SIZE = 2;
 
 
@@ -54,11 +47,13 @@ class CorrectTime2000 extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

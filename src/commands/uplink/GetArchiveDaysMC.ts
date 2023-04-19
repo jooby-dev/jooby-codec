@@ -23,7 +23,6 @@ interface IUplinkGetArchiveDaysMCParameters {
 
 
 const COMMAND_ID = 0x1b;
-const COMMAND_TITLE = 'GET_ARCHIVE_DAYS_MC';
 
 // date 2 bytes, channelList 1 byte (max channelList: 4), days 1 byte (max days - 255)
 // 4 + (4 channelList * 5 bytes of day values * 255 max days)
@@ -58,12 +57,15 @@ class GetArchiveDaysMC extends Command {
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a.index - b.index);
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
 
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ): GetArchiveDaysMC {
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
@@ -87,6 +89,7 @@ class GetArchiveDaysMC extends Command {
         return new GetArchiveDaysMC({channelList, days, startTime: getSecondsFromDate(date)});
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {days, startTime, channelList} = this.parameters;

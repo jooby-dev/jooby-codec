@@ -1,9 +1,3 @@
-/**
- * [[include:commands/downlink/SetTime2000.md]]
- *
- * @packageDocumentation
- */
-
 import Command from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
@@ -25,7 +19,6 @@ interface IDownlinkSetTime2000Parameters {
 
 
 const COMMAND_ID = 0x02;
-const COMMAND_TITLE = 'SET_TIME_2000';
 const COMMAND_BODY_SIZE = 5;
 
 
@@ -50,11 +43,13 @@ class SetTime2000 extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

@@ -29,7 +29,11 @@ abstract class Command {
 
     static examples: TCommandExampleList;
 
+    static hasParameters = false;
+
+
     parameters: unknown;
+
 
     /** Get command ID in hex format. */
     static getId () {
@@ -39,9 +43,8 @@ abstract class Command {
     /** Get command ID and title. */
     static getName () {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        return `${this.directionType === UPLINK ? 'uplink' : 'downlink'} command ${this.getId()}:${this.title}`;
+        return `${this.directionType === UPLINK ? 'uplink' : 'downlink'} command ${this.getId()}:${this.name}`;
     }
-
 
     /**
      * Parse body without header.
@@ -80,7 +83,6 @@ abstract class Command {
     //         data.slice(headerData.headerSize, headerData.headerSize + headerData.commandSize)
     //     );
     // }
-
 
     /**
      * Build header with body.

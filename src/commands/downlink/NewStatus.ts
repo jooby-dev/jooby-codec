@@ -3,7 +3,6 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 const COMMAND_ID = 0x14;
-const COMMAND_TITLE = 'NEW_STATUS';
 
 
 /**
@@ -26,17 +25,20 @@ class NewStatus extends Command {
         super();
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = false;
+
 
     // data - only body (without header)
     static fromBytes () {
         return new NewStatus();
     }
 
+    // returns full message - header with body
     // eslint-disable-next-line class-methods-use-this
     toBytes (): Uint8Array {
         return Command.toBytes(COMMAND_ID);

@@ -23,7 +23,6 @@ interface IUplinkGetArchiveHoursMCParameters {
 
 
 const COMMAND_ID = 0x1a;
-const COMMAND_TITLE = 'GET_ARCHIVE_HOURS';
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
 // max hours diff - 7 (3 bit value)
@@ -78,18 +77,22 @@ class GetArchiveHoursMC extends Command {
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a.index - b.index);
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
 
-    static readonly title = COMMAND_TITLE;
+    static readonly hasParameters = true;
 
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ): GetArchiveHoursMC {
         const buffer = new CommandBinaryBuffer(data);
 
         return new GetArchiveHoursMC(buffer.getChannelsValuesWithHourDiff());
     }
 
+    // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {hours, startTime, channelList} = this.parameters;
