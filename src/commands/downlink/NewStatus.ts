@@ -1,8 +1,16 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
 const COMMAND_ID = 0x14;
+
+const examples: TCommandExampleList = [
+    {
+        name: 'simple request',
+        parameters: undefined,
+        hex: {header: '14 00', body: ''}
+    }
+];
 
 
 /**
@@ -29,6 +37,8 @@ class NewStatus extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = false;
 
