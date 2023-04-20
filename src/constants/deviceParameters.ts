@@ -3,6 +3,26 @@
  */
 
 /**
+ * Interval of data sending from device.
+ */
+export const DATA_SENDING_INTERVAL = 1;
+
+/**
+ * The parameter defines the hour of the day by which the daily consumption is calculated.
+ */
+export const DAY_CHECKOUT_HOUR = 4;
+
+/**
+ * Type of device data sending.
+ */
+export const OUTPUT_DATA_TYPE = 5;
+
+/**
+ * Device activation method.
+ */
+export const ACTIVATION_METHOD = 9;
+
+/**
  * Setup initial data for device, pulse counter, pulse coefficient, meter value
  */
 export const INITIAL_DATA = 23;

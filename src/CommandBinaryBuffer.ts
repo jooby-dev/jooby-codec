@@ -161,7 +161,57 @@ export interface IEventMtxStatus {
 
 
 /**
+ * Device send data periodically using this interval.
+ * TODO:
+ */
+// interface IParameterDataSendingInterval {
+//     seconds: number
+// }
+
+/**
+ * The parameter defines the hour of the day by which the daily consumption is calculated.
+ * deviceParameters.DAY_CHECKOUT_HOUR = `4`.
+ */
+interface IParameterDayCheckoutHour {
+    value: number
+}
+
+/**
+ * Type of data from device.
+ * deviceParameters.OUTPUT_DATA_TYPE = `5`.
+ */
+interface IParameterOutputDataType {
+    /**
+     * | value | type              |
+     * |-------|-------------------|
+     * | 0     | hour (by default) |
+     * | 1     | day               |
+     * | 2     | current           |
+     * | 3     | hour + day        |
+     *
+     */
+    type: number
+}
+
+/**
+ * Device activation method in LoRaWAN network.
+ * deviceParameters.ACTIVATION_METHOD = `9`.
+ */
+interface IParameterActivationMethod {
+    /**
+     * `0` (by default) - OTAA, `1` - ABP
+     * | value | type               |
+     * |-------|--------------------|
+     * | 0     | OTAA ( by default) |
+     * | 1     | ABP                |
+     *
+     */
+    type: number
+}
+
+/**
  * Initial values for pulse devices.
+ * deviceParameters.INITIAL_DATA = `23`.
  */
 interface IParameterInitialData {
     /**
@@ -174,9 +224,22 @@ interface IParameterInitialData {
      */
     meterValue: number,
 
-    pulseCoefficient: number,
+    pulseCoefficient: number
 }
 
+/**
+ * Data type sending from device - absolute or not.
+ * deviceParameters.ABSOLUTE_DATA_STATUS = `24`
+ */
+interface IParameterAbsoluteDataStatus {
+    /* 1 - absolute data sending enabled, 0 - disabled, device send pulse counter  */
+    status: number
+}
+
+/**
+ * Initial values for multi-channel devices.
+ * deviceParameters.INITIAL_DATA_MULTI_CHANNEL = `29`.
+ */
 interface IParameterInitialDataMC extends IParameterInitialData {
     /**
      * Channel that accept initial values.
@@ -184,11 +247,10 @@ interface IParameterInitialDataMC extends IParameterInitialData {
     channel: number
 }
 
-interface IParameterAbsoluteDataStatus {
-    /* 1 - absolute data sending enabled, 0 - disabled, device send pulse counter  */
-    status: number
-}
-
+/**
+ * Data type sending from device - absolute or not, multi-channel devices.
+ * deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL = `30`
+ */
 interface IParameterAbsoluteDataStatusMC extends IParameterAbsoluteDataStatus {
     /**
      * Channel that accept status changing.
@@ -209,10 +271,14 @@ export type TEventStatus =
     IEvent4ChannelStatus |
     IEventMtxStatus;
 
+/* sorted by parameter id */
 type TParameterData =
+    IParameterOutputDataType |
+    IParameterDayCheckoutHour |
+    IParameterActivationMethod |
     IParameterInitialData |
-    IParameterInitialDataMC |
     IParameterAbsoluteDataStatus |
+    IParameterInitialDataMC |
     IParameterAbsoluteDataStatusMC;
 
 
@@ -792,11 +858,53 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(parameter.status);
     }
 
+    private getParameterActivationMethod (): IParameterActivationMethod {
+        return {
+            type: this.getUint8()
+        };
+    }
+
+    private setParameterActivationMethod ( parameter: IParameterActivationMethod ): void {
+        this.setUint8(parameter.type);
+    }
+
+    private getOutputDataType (): IParameterOutputDataType {
+        return {
+            type: this.getUint8()
+        };
+    }
+
+    private setOutputDataType ( parameter: IParameterOutputDataType ): void {
+        this.setUint8(parameter.type);
+    }
+
+    private getParameterDayCheckoutHour (): IParameterDayCheckoutHour {
+        return {
+            value: this.getUint8()
+        };
+    }
+
+    private setParameterDayCheckoutHour ( parameter: IParameterDayCheckoutHour ) {
+        this.setUint8(parameter.value);
+    }
+
     getParameter (): IParameter {
         const id = this.getUint8();
         let data;
 
         switch ( id ) {
+            case deviceParameters.OUTPUT_DATA_TYPE:
+                data = this.getOutputDataType();
+                break;
+
+            case deviceParameters.DAY_CHECKOUT_HOUR:
+                data = this.getParameterDayCheckoutHour();
+                break;
+
+            case deviceParameters.ACTIVATION_METHOD:
+                data = this.getParameterActivationMethod();
+                break;
+
             case deviceParameters.INITIAL_DATA:
                 data = this.getParameterInitialData();
                 break;
@@ -826,6 +934,18 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(id);
 
         switch ( id ) {
+            case deviceParameters.OUTPUT_DATA_TYPE:
+                this.setOutputDataType(data as IParameterOutputDataType);
+                break;
+
+            case deviceParameters.DAY_CHECKOUT_HOUR:
+                this.setParameterDayCheckoutHour(data as IParameterDayCheckoutHour);
+                break;
+
+            case deviceParameters.ACTIVATION_METHOD:
+                this.setParameterActivationMethod(data as IParameterActivationMethod);
+                break;
+
             case deviceParameters.INITIAL_DATA:
                 this.setParameterInitialData(data as IParameterInitialData);
                 break;
