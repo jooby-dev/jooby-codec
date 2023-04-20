@@ -191,7 +191,7 @@ interface IParameterActivationMethod {
  */
 interface IParameterInitialData {
     /** 4 byte int BE */
-    value: number
+    value: number,
 
     /** 4 byte int BE */
     meterValue: number,
