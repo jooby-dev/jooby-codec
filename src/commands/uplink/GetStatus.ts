@@ -37,9 +37,9 @@ interface IGasStatus extends IStatusBase {
 }
 
 /**
- * NewStatus command parameters
+ * GetStatus command parameters
  */
-interface INewStatusParameters {
+interface IGetStatusParameters {
     software: IProduct,
     hardware: IProduct,
     data: IStatusBase
@@ -77,7 +77,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import NewStatus from 'jooby-codec/commands/uplink/NewStatus';
+ * import GetStatus from 'jooby-codec/commands/uplink/GetStatus';
  *
  * const parameters = {
  *     software: {type: 2, version: 10},
@@ -94,17 +94,17 @@ const examples: TCommandExampleList = [
  *     }
  * };
  *
- * const command = new NewStatus(parameters);
+ * const command = new GetStatus(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 14 0c 02 0a 03 01 c5 6d c2 27 32 0e 68 22
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/NewStatus.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetStatus.md#response)
  */
-class NewStatus extends Command {
-    constructor ( public parameters: INewStatusParameters ) {
+class GetStatus extends Command {
+    constructor ( public parameters: IGetStatusParameters ) {
         super();
     }
 
@@ -119,7 +119,7 @@ class NewStatus extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ): NewStatus {
+    static fromBytes ( data: Uint8Array ): GetStatus {
         const buffer = new CommandBinaryBuffer(data);
         const software = {type: buffer.getUint8(), version: buffer.getUint8()};
         const hardware = {type: buffer.getUint8(), version: buffer.getUint8()};
@@ -168,7 +168,7 @@ class NewStatus extends Command {
                 throw new Error(`${this.getId()}: hardware type ${hardware.type} is not supported`);
         }
 
-        return new NewStatus({software, hardware, data: statusData});
+        return new GetStatus({software, hardware, data: statusData});
     }
 
     // returns full message - header with body
@@ -219,7 +219,7 @@ class NewStatus extends Command {
             case hardwareTypes.MTXLORA:
             case hardwareTypes.ELIMP:
             default:
-                throw new Error(`${NewStatus.getId()}: hardware type ${hardware.type} is not supported`);
+                throw new Error(`${GetStatus.getId()}: hardware type ${hardware.type} is not supported`);
         }
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
@@ -227,4 +227,4 @@ class NewStatus extends Command {
 }
 
 
-export default NewStatus;
+export default GetStatus;
