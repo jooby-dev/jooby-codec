@@ -9,14 +9,14 @@ export interface IBatteryVoltage {
     /**
      * battery voltage value at low consumption, in mV
      *
-     * `4095` - unknown value
+     * `4095` - unknown value and becomes `undefined`
      */
     low: number | undefined,
 
     /**
      * battery voltage value at hight consumption, in mV
      *
-     * `4095` - unknown value
+     * `4095` - unknown value and becomes `undefined`
      */
     high: number | undefined
 }

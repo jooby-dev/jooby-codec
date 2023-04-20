@@ -19,7 +19,7 @@ interface IGasStatus extends IStatusBase {
     /**
      * battery internal resistance, in mΩ
      *
-     * `65535` - unknown value
+     * `65535` - unknown value and becomes `undefined`
      */
     batteryInternalResistance: number | undefined,
 
