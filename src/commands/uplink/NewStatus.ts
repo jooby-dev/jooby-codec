@@ -1,4 +1,4 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IBatteryVoltage} from '../../CommandBinaryBuffer.js';
 import roundNumber from '../../utils/roundNumber.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
@@ -13,25 +13,25 @@ interface IProduct {
     type: number
 }
 
-
 interface IGasStatus extends IStatusBase {
-    voltage: IBatteryVoltage
+    batteryVoltage: IBatteryVoltage,
 
     /**
      * battery internal resistance, in mΩ
      *
-     * 65535 === undefined
+     * `65535` - unknown value
      */
-    internalResistance: number | undefined
+    batteryInternalResistance: number | undefined,
 
-    temperature: number
+    /** signed value in degrees Celsius */
+    temperature: number,
 
     /**
-     * Remaining battery capacity in percents.
-     * undefined - unknown capacity
+     * remaining battery capacity in percents
      *
+     * `undefined` - unknown value
      */
-    remindedBatteryCapacity: number | undefined
+    remainingBatteryCapacity: number | undefined,
 
     lastEventSequenceNumber: number
 }
@@ -48,10 +48,28 @@ interface INewStatusParameters {
 
 const COMMAND_ID = 0x14;
 const COMMAND_BODY_MAX_SIZE = 20;
-const UNKNOWN_RESISTANT = 65535;
+const UNKNOWN_BATTERY_RESISTANCE = 65535;
 
 // max battery capacity, 254 - 100%
 const UNKNOWN_BATTERY_CAPACITY = 255;
+
+const examples: TCommandExampleList = [
+    {
+        name: 'status for GAZM0NEW',
+        parameters: {
+            software: {type: 2, version: 10},
+            hardware: {type: hardwareTypes.GAZM0NEW, version: 1},
+            data: {
+                batteryVoltage: {low: 3158, high: 3522},
+                batteryInternalResistance: 10034,
+                temperature: 14,
+                remainingBatteryCapacity: 41,
+                lastEventSequenceNumber: 34
+            }
+        },
+        hex: {header: '14 0c', body: '02 0a 03 01 c5 6d c2 27 32 0e 68 22'}
+    }
+];
 
 
 /**
@@ -62,16 +80,16 @@ const UNKNOWN_BATTERY_CAPACITY = 255;
  * import NewStatus from 'jooby-codec/commands/uplink/NewStatus';
  *
  * const parameters = {
- *     software: {type: 4, version: 10},
- *     hardware: {type: 1, version: 1},
+ *     software: {type: 2, version: 10},
+ *     hardware: {type: 3, version: 1},
  *     data: {
- *         voltage: {
- *             low: 63,
- *             high: 144
+ *         batteryVoltage: {
+ *             low: 3158,
+ *             high: 3522
  *         },
- *         internalResistance: 10034,
+ *         batteryInternalResistance: 10034,
  *         temperature: 14,
- *         remindedBatteryCapacity: 41,
+ *         remainingBatteryCapacity: 41,
  *         lastEventSequenceNumber: 34
  *     }
  * };
@@ -80,7 +98,7 @@ const UNKNOWN_BATTERY_CAPACITY = 255;
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 14 0c 04 0a 01 01 03 f0 90 27 32 0e 68 22
+ * // 14 0c 02 0a 03 01 c5 6d c2 27 32 0e 68 22
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/NewStatus.md#response)
@@ -94,6 +112,8 @@ class NewStatus extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = true;
 
@@ -120,21 +140,24 @@ class NewStatus extends Command {
             case hardwareTypes.WATER:
             case hardwareTypes.PLC2LORA:
                 statusData = {
-                    voltage: buffer.getBatterVoltage(),
-                    internalResistance: buffer.getUint16(false),
+                    batteryVoltage: buffer.getBatteryVoltage(),
+                    batteryInternalResistance: buffer.getUint16(false),
                     temperature: buffer.getUint8(),
-                    remindedBatteryCapacity: buffer.getUint8(),
+                    remainingBatteryCapacity: buffer.getUint8(),
                     lastEventSequenceNumber: buffer.getUint8()
                 } as IGasStatus;
 
-                if ( statusData.internalResistance === UNKNOWN_RESISTANT ) {
-                    statusData.internalResistance = undefined;
+                if ( statusData.batteryInternalResistance === UNKNOWN_BATTERY_RESISTANCE ) {
+                    statusData.batteryInternalResistance = undefined;
                 }
 
-                if ( statusData.remindedBatteryCapacity === UNKNOWN_BATTERY_CAPACITY ) {
-                    statusData.remindedBatteryCapacity = undefined;
-                } else if ( statusData.remindedBatteryCapacity !== undefined ) {
-                    statusData.remindedBatteryCapacity = roundNumber((statusData.remindedBatteryCapacity * 100) / (UNKNOWN_BATTERY_CAPACITY - 1), 0);
+                if ( statusData.remainingBatteryCapacity === UNKNOWN_BATTERY_CAPACITY ) {
+                    statusData.remainingBatteryCapacity = undefined;
+                } else if ( statusData.remainingBatteryCapacity !== undefined ) {
+                    statusData.remainingBatteryCapacity = roundNumber(
+                        (statusData.remainingBatteryCapacity * 100) / (UNKNOWN_BATTERY_CAPACITY - 1),
+                        0
+                    );
                 }
 
                 break;
@@ -173,20 +196,20 @@ class NewStatus extends Command {
             case hardwareTypes.WATER:
             case hardwareTypes.PLC2LORA:
                 statusData = data as IGasStatus;
-                buffer.setBatterVoltage(statusData.voltage);
+                buffer.setBatteryVoltage(statusData.batteryVoltage);
 
-                if ( statusData.internalResistance === undefined ) {
-                    buffer.setUint16(UNKNOWN_RESISTANT, false);
+                if ( statusData.batteryInternalResistance === undefined ) {
+                    buffer.setUint16(UNKNOWN_BATTERY_RESISTANCE, false);
                 } else {
-                    buffer.setUint16(statusData.internalResistance, false);
+                    buffer.setUint16(statusData.batteryInternalResistance, false);
                 }
 
                 buffer.setUint8(statusData.temperature);
 
-                if ( statusData.remindedBatteryCapacity === undefined ) {
+                if ( statusData.remainingBatteryCapacity === undefined ) {
                     buffer.setUint8(UNKNOWN_BATTERY_CAPACITY);
                 } else {
-                    buffer.setUint8((UNKNOWN_BATTERY_CAPACITY - 1) * (statusData.remindedBatteryCapacity / 100));
+                    buffer.setUint8((UNKNOWN_BATTERY_CAPACITY - 1) * (statusData.remainingBatteryCapacity / 100));
                 }
 
                 buffer.setUint8(statusData.lastEventSequenceNumber);
