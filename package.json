@@ -11,6 +11,7 @@
         "./commands/downlink/*": "./dist/commands/downlink/*.js",
         "./commands/uplink": "./dist/commands/uplink/index.js",
         "./commands/uplink/*": "./dist/commands/uplink/*.js",
+        "./constants": "./dist/constants/index.js",
         "./constants/*": "./dist/constants/*.js",
         "./utils/*": "./dist/utils/*.js"
     },

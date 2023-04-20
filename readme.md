@@ -26,7 +26,7 @@ console.log(commands);
 // all uplink commands
 console.log(commands.uplink);
 // one particular command
-console.log(commands.uplink.getCurrentMul.default);
+console.log(commands.uplink.GetCurrentMC);
 
 // output main namespace for work with messages
 console.log(message);
@@ -51,6 +51,8 @@ It's possible to parse messages either from raw [Uint8Array](https://developer.m
 Parse downlink message:
 
 ```js
+import {directions, hardwareTypes} from 'jooby-codec/constants';
+
 // from byte array
 const messageData = message.fromBytes(
     new Uint8Array([
@@ -58,12 +60,12 @@ const messageData = message.fromBytes(
         0x02, 0x05, 0x4e, 0x00, 0x01, 0xe2, 0x40,
         0x55
     ]),
-    message.TYPE_DOWNLINK
+    directions.DOWNLINK
 );
 // or from hex string
 const messageData = message.fromHex(
     '02 05 4e 00 01 e2 40  02 05 4e 00 01 e2 40  55',
-    message.TYPE_DOWNLINK
+    directions.DOWNLINK
 );
 
 // decoded data with commands and checksum
@@ -83,7 +85,7 @@ Parse uplink message:
 ```js
 const messageData = message.fromHex(
     '02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 0f 83 01 08 0a 0c  ef',
-    message.TYPE_UPLINK
+    directions.UPLINK
 );
 ```
 
@@ -92,7 +94,7 @@ It's possible to parse message with autodetect direction:
 ```js
 const messageData = message.fromHex(
     '02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 0f 83 01 08 0a 0c  ef',
-    message.TYPE_AUTO
+    directions.AUTO
 );
 // or even shorter as message.TYPE_AUTO is default behavior
 const messageData = message.fromHex(
@@ -104,6 +106,7 @@ It's best to avoid using message.TYPE_AUTO due to performance penalty.
 Prepare command and get encoded data:
 
 ```js
+import SoftRestart from 'jooby-codec/commands/downlink/SoftRestart';
 import SetTime2000 from 'jooby-codec/commands/downlink/SetTime2000';
 
 const command = new SetTime2000({sequenceNumber: 5, seconds: 9462957});
@@ -120,26 +123,40 @@ Combine a message from commands:
 ```js
 const messageBytes = message.toBytes([
     new SetTime2000({sequenceNumber: 78, seconds: 123456}),
-    new GetCurrent()
+    new SoftRestart()
 ]);
 ```
 
 or to get in a hex format:
 
 ```js
+import DataDayMC from 'jooby-codec/commands/uplink/DataDayMC';
+import LastEvent from 'jooby-codec/commands/uplink/LastEvent';
+
 const commandInstancesArray = [
-    new SetTime2000({status: 1}),
-    new DataDayMul({
-        channels: [
-            {value: 131, index: 0},
-            {value: 8, index: 1},
-            {value: 10, index: 2},
-            {value: 12, index: 3}
-        ],
-        seconds: 75660480
+    new LastEvent(
+        {
+            sequenceNumber: 32,
+            status: {
+                isBatteryLow: true,
+                isButtonReleased: false,
+                isConnectionLost: true,
+                isMagneticInfluence: false
+            }
+        },
+        hardwareTypes.GAZM0NEW
+    ),
+    new DataDayMC({
+        startTime: 756604800,
+        channelList: [
+            {value: 131, index: 3},
+            {value: 8, index: 5},
+            {value: 10, index: 7},
+            {value: 12, index: 1}
+        ]
     })
 ];
 
 const messageBytes = message.toHex(commandInstancesArray, {prefix: '0x'});
-// 0x02 0x05 0x05 0x00 0x90 ...
+// 0x62 0x20 0x09 0x16 0x09 0x2f 0x97 0xaa 0x01 0x0c 0x83 0x01 0x08 0x0a 0x9e
 ```

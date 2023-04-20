@@ -7,45 +7,37 @@ import * as deviceParameters from './constants/deviceParameters.js';
 
 export interface IBatteryVoltage {
     /**
-     * battery voltage value at low consumption, in mV;
+     * battery voltage value at low consumption, in mV
      *
-     * 4095 === undefined
+     * `4095` - unknown value and becomes `undefined`
      */
     low: number | undefined,
 
     /**
-     * battery voltage value at hight consumption, in mV;
+     * battery voltage value at hight consumption, in mV
      *
-     * 4095 === undefined
+     * `4095` - unknown value and becomes `undefined`
      */
     high: number | undefined
 }
 
 export interface IChannel {
-    /**
-     * Channel number.
-     */
+    /** channel number */
     index: number
 }
 
 export interface IChannelValue extends IChannel {
-    /**
-     * Pulse counter or absolute value of device channel.
-     */
+    /** pulse counter or absolute value of device channel */
     value: number
 }
 
 export interface IChannelHours extends IChannelValue {
-    /**
-     * values differences between hours
-     */
+    /** values differences between hours */
     diff: Array<number>
 }
 
 export interface IChannelHourAbsoluteValue extends IChannelHours {
-    /**
-     * Channel pulse coefficient - IPK in bytes.
-     */
+    /** channel pulse coefficient - IPK in bytes */
     pulseCoefficient: number
 }
 
@@ -54,29 +46,20 @@ export interface IChannelDays extends IChannel {
 }
 
 export interface IChannelAbsoluteValue extends IChannelValue {
-
-    /**
-     * Channel pulse coefficient - IPK in bytes.
-     */
+    /** channel pulse coefficient - IPK in bytes */
     pulseCoefficient: number
 }
 
 export interface IChannelArchiveDaysAbsolute extends IChannel {
-    /**
-     * values by days
-     */
+    /** values by days */
     dayList: Array<number>,
 
-    /**
-     * Channel pulse coefficient - IPK in bytes.
-     */
+    /** Channel pulse coefficient - IPK in bytes */
     pulseCoefficient: number
 }
 
 export interface IChannelArchiveDays extends IChannel {
-    /**
-     * values by days
-     */
+    /** values by days */
     dayList: Array<number>
 }
 
@@ -182,13 +165,10 @@ interface IParameterDayCheckoutHour {
  */
 interface IParameterOutputDataType {
     /**
-     * | value | type              |
-     * |-------|-------------------|
-     * | 0     | hour (by default) |
-     * | 1     | day               |
-     * | 2     | current           |
-     * | 3     | hour + day        |
-     *
+     * `0` - hour, by default
+     * `1` - day
+     * `2` - current
+     * `3` - hour + day
      */
     type: number
 }
@@ -199,12 +179,8 @@ interface IParameterOutputDataType {
  */
 interface IParameterActivationMethod {
     /**
-     * `0` (by default) - OTAA, `1` - ABP
-     * | value | type               |
-     * |-------|--------------------|
-     * | 0     | OTAA ( by default) |
-     * | 1     | ABP                |
-     *
+     * `0` - OTAA, by default
+     * `1` - ABP
      */
     type: number
 }
@@ -214,16 +190,11 @@ interface IParameterActivationMethod {
  * deviceParameters.INITIAL_DATA = `23`.
  */
 interface IParameterInitialData {
-    /**
-     * 4 byte int BE
-     */
+    /** 4 byte int BE */
     value: number
 
-    /**
-     * 4 byte int BE
-     */
+    /** 4 byte int BE */
     meterValue: number,
-
     pulseCoefficient: number
 }
 
@@ -232,7 +203,10 @@ interface IParameterInitialData {
  * deviceParameters.ABSOLUTE_DATA_STATUS = `24`
  */
 interface IParameterAbsoluteDataStatus {
-    /* 1 - absolute data sending enabled, 0 - disabled, device send pulse counter  */
+    /**
+     * `1` - absolute data sending enabled
+     * `0` - disabled, device send pulse counter
+     */
     status: number
 }
 
@@ -241,9 +215,7 @@ interface IParameterAbsoluteDataStatus {
  * deviceParameters.INITIAL_DATA_MULTI_CHANNEL = `29`.
  */
 interface IParameterInitialDataMC extends IParameterInitialData {
-    /**
-     * Channel that accept initial values.
-     */
+    /** channel that accept initial values */
     channel: number
 }
 
@@ -252,9 +224,7 @@ interface IParameterInitialDataMC extends IParameterInitialData {
  * deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL = `30`
  */
 interface IParameterAbsoluteDataStatusMC extends IParameterAbsoluteDataStatus {
-    /**
-     * Channel that accept status changing.
-     */
+    /** channel that accept status changing */
     channel: number
 }
 
@@ -624,7 +594,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return this.setUint32(value, false);
     }
 
-    getBatterVoltage (): IBatteryVoltage {
+    getBatteryVoltage (): IBatteryVoltage {
         let high;
         let low;
 
@@ -648,7 +618,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return {low, high};
     }
 
-    setBatterVoltage ( batteryVoltage: IBatteryVoltage ): void {
+    setBatteryVoltage ( batteryVoltage: IBatteryVoltage ): void {
         let {low, high} = batteryVoltage;
 
         if ( low === undefined ) {
