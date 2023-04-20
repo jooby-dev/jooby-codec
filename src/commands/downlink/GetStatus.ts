@@ -18,17 +18,17 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import NewStatus from 'jooby-codec/commands/downlink/NewStatus';
+ * import GetStatus from 'jooby-codec/commands/downlink/GetStatus';
  *
- * const command = new NewStatus();
+ * const command = new GetStatus();
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 14 00
  * ```
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/NewStatus.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetStatus.md#request)
  */
-class NewStatus extends Command {
+class GetStatus extends Command {
     constructor () {
         super();
     }
@@ -45,7 +45,7 @@ class NewStatus extends Command {
 
     // data - only body (without header)
     static fromBytes () {
-        return new NewStatus();
+        return new GetStatus();
     }
 
     // returns full message - header with body
@@ -56,4 +56,4 @@ class NewStatus extends Command {
 }
 
 
-export default NewStatus;
+export default GetStatus;
