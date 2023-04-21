@@ -12,7 +12,7 @@ import * as deviceParameters from '../src/constants/deviceParameters.js';
 interface ICommand {
     constructor: any,
     name: string,
-    parameters: any,
+    parameters?: any,
     hardwareType?: number,
     hex: {
         header: string,
@@ -61,7 +61,6 @@ const downlinkCommands: TCommandList = [
     {
         constructor: downlink.GetExAbsCurrentMC,
         name: 'downlink command 0xf1f:GetExAbsCurrentMC',
-        parameters: undefined,
         hex: {
             header: '1f 0f 00',
             body: '',
@@ -101,7 +100,6 @@ const downlinkCommands: TCommandList = [
     {
         constructor: downlink.SoftRestart,
         name: 'downlink command 0x19:SoftRestart',
-        parameters: undefined,
         hex: {
             header: '19 00',
             body: '',
@@ -332,7 +330,6 @@ const uplinkCommands: TCommandList = [
     {
         constructor: uplink.SoftRestart,
         name: 'uplink command 0x19:SoftRestart',
-        parameters: undefined,
         hex: {
             header: '19 00',
             body: '',

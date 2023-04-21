@@ -16,17 +16,17 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetLmicVersion from 'jooby-codec/commands/downlink/GetLMICVersion';
+ * import GetLmicInfo from 'jooby-codec/commands/downlink/GetLmicInfo';
  *
- * const command = new GetLmicVersion();
+ * const command = new GetLmicInfo();
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 1f 02 00
  * ```
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetLmicVersion.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetLmicInfo.md#request)
  */
-class GetLmicVersion extends Command {
+class GetLmicInfo extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
@@ -38,7 +38,7 @@ class GetLmicVersion extends Command {
 
     // data - only body (without header)
     static fromBytes () {
-        return new GetLmicVersion();
+        return new GetLmicInfo();
     }
 
     // returns full message - header with body
@@ -49,4 +49,4 @@ class GetLmicVersion extends Command {
 }
 
 
-export default GetLmicVersion;
+export default GetLmicInfo;
