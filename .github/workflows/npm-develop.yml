@@ -1,9 +1,9 @@
 name: npm-develop
 
 on:
-    push:
-        branches:
-          - main
+    # push:
+    #     branches:
+    #       - main
     # allow to run manually
     workflow_dispatch:
 
@@ -13,6 +13,10 @@ concurrency: "npm-develop"
 jobs:
     build:
         runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+            id-token: write
 
         steps:
           - uses: actions/checkout@v3
@@ -29,3 +33,4 @@ jobs:
           - run: npm run publish:dev
             env:
                 NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                NPM_CONFIG_PROVENANCE: true
