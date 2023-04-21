@@ -7,7 +7,6 @@ const COMMAND_ID = 0x14;
 const examples: TCommandExampleList = [
     {
         name: 'simple request',
-        parameters: undefined,
         hex: {header: '14 00', body: ''}
     }
 ];

@@ -7,6 +7,7 @@ import {UPLINK} from '../../constants/directions.js';
 interface ILmicCapabilities extends bitSet.TBooleanObject {
     /** @see https://lora-alliance.org/resource_hub/lorawan-remote-multicast-setup-specification-v1-0-0/ */
     isMulticastSupported: boolean,
+
     /**
      * LoRaWAN Fragmented Data Block Transport
      * @see https://lora-alliance.org/resource_hub/lorawan-fragmented-data-block-transport-specification-v1-0-0/
@@ -15,9 +16,9 @@ interface ILmicCapabilities extends bitSet.TBooleanObject {
 }
 
 /**
- * GetLmicVersion command parameters
+ * GetLmicInfo command parameters
  */
-interface IUplinkGetLmicVersionParameters {
+interface IUplinkGetLmicInfoParameters {
     /* device supported features */
     capabilities: ILmicCapabilities,
     version: number
@@ -34,26 +35,26 @@ const lmicCapabilitiesBitMask = {
 
 const examples: TCommandExampleList = [
     {
-        name: 'version: 12, support only multicast',
+        name: 'version: 5, support only multicast',
         parameters: {
-            version: 12,
+            version: 5,
             capabilities: {
                 isMulticastSupported: true,
                 isFragmentedDataSupported: false
             }
         },
-        hex: {header: '1f 02 02', body: '01 0c'}
+        hex: {header: '1f 02 02', body: '01 05'}
     },
     {
-        name: 'version: 34, support multicast and fragmented data',
+        name: 'version: 8, support multicast and fragmented data',
         parameters: {
-            version: 34,
+            version: 8,
             capabilities: {
                 isMulticastSupported: true,
                 isFragmentedDataSupported: true
             }
         },
-        hex: {header: '1f 02 02', body: '03 22'}
+        hex: {header: '1f 02 02', body: '03 08'}
     }
 ];
 
@@ -63,25 +64,25 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetLmicVersion from 'jooby-codec/commands/uplink/GetLmicVersion';
+ * import GetLmicInfo from 'jooby-codec/commands/uplink/GetLmicInfo';
  *
  * const parameters = {
- *     version: 34,
+ *     version: 8,
  *     capabilities: {
- *         isMulticastSupported: true,
+ *         isMulticastSupported: false,
  *         isFragmentedDataSupported: true
  *     }
  * };
- * const command = new GetLmicVersion(parameters);
+ * const command = new GetLmicInfo(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 1f 02 02 03 22
+ * // 1f 02 02 02 08
  * ```
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetLmicVersion.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetLmicInfo.md#response)
  */
-class GetLmicVersion extends Command {
-    constructor ( public parameters: IUplinkGetLmicVersionParameters ) {
+class GetLmicInfo extends Command {
+    constructor ( public parameters: IUplinkGetLmicInfoParameters ) {
         super();
     }
 
@@ -112,7 +113,7 @@ class GetLmicVersion extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new GetLmicVersion({capabilities, version});
+        return new GetLmicInfo({capabilities, version});
     }
 
     // returns full message - header with body
@@ -128,4 +129,4 @@ class GetLmicVersion extends Command {
 }
 
 
-export default GetLmicVersion;
+export default GetLmicInfo;
