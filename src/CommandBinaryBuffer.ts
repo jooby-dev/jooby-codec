@@ -149,8 +149,8 @@ export interface IEventMtxStatus {
  */
 interface IParameterDataSendingInterval {
     /**
-     * Minimal interval for data sending from device in seconds.
-     * Real value = value + pseudo-random value which not more than `255` * `4`.
+     * Minimal interval for data sending from device (in seconds).
+     * Real value = value + pseudo-random value which is not more than `255` * `4`.
      */
     value: number
 }
@@ -185,6 +185,8 @@ interface IParameterActivationMethod {
     /**
      * `0` - OTAA, by default
      * `1` - ABP
+     *
+     * @see https://www.thethingsindustries.com/docs/devices/abp-vs-otaa/
      */
     type: number
 }
@@ -878,8 +880,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     private setParameterDataSendingInterval ( parameter: IParameterDataSendingInterval ) {
-        // set 'reserved' parameter to 0
-        this.setUint16(0);
+        // skip 'reserved' parameter
+        this.seek(this.offset + 2);
 
         this.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
     }

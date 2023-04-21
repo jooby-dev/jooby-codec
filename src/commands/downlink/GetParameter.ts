@@ -22,18 +22,12 @@ const examples: TCommandExampleList = [
     {
         name: 'request initial data from device',
         parameters: {id: deviceParameters.INITIAL_DATA},
-        hex: {
-            header: '04 01',
-            body: '17'
-        }
+        hex: {header: '04 01', body: '17'}
     },
     {
         name: 'request for data type sending from device',
         parameters: {id: deviceParameters.ABSOLUTE_DATA_STATUS},
-        hex: {
-            header: '04 01',
-            body: '18'
-        }
+        hex: {header: '04 01', body: '18'}
     }
 ];
 
