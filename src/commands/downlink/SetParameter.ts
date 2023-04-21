@@ -8,6 +8,50 @@ const COMMAND_ID = 0x03;
 
 const examples: TCommandExampleList = [
     {
+        name: 'set minimal interval for data sending to 1 hour',
+        parameters: {
+            id: deviceParameters.DATA_SENDING_INTERVAL,
+            data: {value: 3600}
+        },
+        hex: {
+            header: '03 04',
+            body: '01 00 00 06'
+        }
+    },
+    {
+        name: 'set day checkout hour to 12:00',
+        parameters: {
+            id: deviceParameters.DAY_CHECKOUT_HOUR,
+            data: {value: 12}
+        },
+        hex: {
+            header: '03 02',
+            body: '04 0c'
+        }
+    },
+    {
+        name: 'set output data type to "day"',
+        parameters: {
+            id: deviceParameters.OUTPUT_DATA_TYPE,
+            data: {type: 1}
+        },
+        hex: {
+            header: '03 02',
+            body: '05 01'
+        }
+    },
+    {
+        name: 'set activation method to "ABP"',
+        parameters: {
+            id: deviceParameters.ACTIVATION_METHOD,
+            data: {type: 1}
+        },
+        hex: {
+            header: '03 02',
+            body: '09 01'
+        }
+    },
+    {
         name: 'initial data setup',
         parameters: {
             id: deviceParameters.INITIAL_DATA,

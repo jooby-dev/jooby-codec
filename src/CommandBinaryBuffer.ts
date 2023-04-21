@@ -145,11 +145,15 @@ export interface IEventMtxStatus {
 
 /**
  * Device send data periodically using this interval.
- * TODO:
+ * deviceParameters.DATA_SENDING_INTERVAL = `1`.
  */
-// interface IParameterDataSendingInterval {
-//     seconds: number
-// }
+interface IParameterDataSendingInterval {
+    /**
+     * Minimal interval for data sending from device in seconds.
+     * Real value = value + pseudo-random value which not more than `255` * `4`.
+     */
+    value: number
+}
 
 /**
  * The parameter defines the hour of the day by which the daily consumption is calculated.
@@ -243,6 +247,7 @@ export type TEventStatus =
 
 /* sorted by parameter id */
 type TParameterData =
+    IParameterDataSendingInterval |
     IParameterOutputDataType |
     IParameterDayCheckoutHour |
     IParameterActivationMethod |
@@ -259,6 +264,7 @@ const YEAR_START_INDEX = 1;
 const UNKNOWN_BATTERY_VOLTAGE = 4095;
 const EXTEND_BIT_MASK = 0x80;
 const LAST_BIT_INDEX = 7;
+const DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT = 600;
 
 const GAS_HARDWARE_TYPES = [
     hardwareTypes.GAZM0,
@@ -336,6 +342,10 @@ const mtxBitMask = {
  * device parameter data size + byte for parameter id
  */
 const parametersSizeMap = new Map([
+    [deviceParameters.DATA_SENDING_INTERVAL, 3 + 1],
+    [deviceParameters.DAY_CHECKOUT_HOUR, 1 + 1],
+    [deviceParameters.OUTPUT_DATA_TYPE, 1 + 1],
+    [deviceParameters.ACTIVATION_METHOD, 1 + 1],
     [deviceParameters.INITIAL_DATA, 9 + 1],
     [deviceParameters.ABSOLUTE_DATA_STATUS, 1 + 1],
     [deviceParameters.INITIAL_DATA_MULTI_CHANNEL, 10 + 1],
@@ -858,11 +868,31 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(parameter.value);
     }
 
+    private getParameterDataSendingInterval (): IParameterDataSendingInterval {
+        // skip 'reserved' parameter which not used
+        this.seek(this.offset + 2);
+
+        return {
+            value: this.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
+        };
+    }
+
+    private setParameterDataSendingInterval ( parameter: IParameterDataSendingInterval ) {
+        // set 'reserved' parameter to 0
+        this.setUint16(0);
+
+        this.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
+    }
+
     getParameter (): IParameter {
         const id = this.getUint8();
         let data;
 
         switch ( id ) {
+            case deviceParameters.DATA_SENDING_INTERVAL:
+                data = this.getParameterDataSendingInterval();
+                break;
+
             case deviceParameters.OUTPUT_DATA_TYPE:
                 data = this.getOutputDataType();
                 break;
@@ -904,6 +934,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(id);
 
         switch ( id ) {
+            case deviceParameters.DATA_SENDING_INTERVAL:
+                this.setParameterDataSendingInterval(data as IParameterDataSendingInterval);
+                break;
+
             case deviceParameters.OUTPUT_DATA_TYPE:
                 this.setOutputDataType(data as IParameterOutputDataType);
                 break;
