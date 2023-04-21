@@ -5,8 +5,12 @@ import {UPLINK} from '../../constants/directions.js';
 
 
 interface ILmicCapabilities extends bitSet.TBooleanObject {
+    /** @see https://lora-alliance.org/resource_hub/lorawan-remote-multicast-setup-specification-v1-0-0/ */
     isMulticastSupported: boolean,
-    /* LoRaWAN Fragmented Data Block Transport  */
+    /**
+     * LoRaWAN Fragmented Data Block Transport
+     * @see https://lora-alliance.org/resource_hub/lorawan-fragmented-data-block-transport-specification-v1-0-0/
+     */
     isFragmentedDataSupported: boolean
 }
 
