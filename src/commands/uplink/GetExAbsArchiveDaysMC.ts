@@ -4,7 +4,7 @@ import {getSecondsFromDate, TTime2000} from '../../utils/time.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
-interface IUplinkExAbsArchiveDaysMCParameters {
+interface IUplinkGetExAbsArchiveDaysMCParameters {
     channelList: Array<IChannelArchiveDays>,
     startTime: TTime2000,
     days: number
@@ -18,8 +18,8 @@ const COMMAND_ID = 0x0d1f;
 const COMMAND_BODY_MAX_SIZE = 6124;
 
 
-class ExAbsArchiveDaysMC extends Command {
-    constructor ( public parameters: IUplinkExAbsArchiveDaysMCParameters ) {
+class GetExAbsArchiveDaysMC extends Command {
+    constructor ( public parameters: IUplinkGetExAbsArchiveDaysMCParameters ) {
         super();
 
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a.index - b.index);
@@ -34,7 +34,7 @@ class ExAbsArchiveDaysMC extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ): ExAbsArchiveDaysMC {
+    static fromBytes ( data: Uint8Array ): GetExAbsArchiveDaysMC {
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
         const channels = buffer.getChannels();
@@ -54,7 +54,7 @@ class ExAbsArchiveDaysMC extends Command {
             }
         });
 
-        return new ExAbsArchiveDaysMC({channelList, days, startTime: getSecondsFromDate(date)});
+        return new GetExAbsArchiveDaysMC({channelList, days, startTime: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
@@ -75,4 +75,4 @@ class ExAbsArchiveDaysMC extends Command {
 }
 
 
-export default ExAbsArchiveDaysMC;
+export default GetExAbsArchiveDaysMC;

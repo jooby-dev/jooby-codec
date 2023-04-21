@@ -39,8 +39,8 @@ const downlinkCommands: TCommandList = [
         }
     },
     {
-        constructor: downlink.ExAbsArchiveDaysMC,
-        name: 'downlink command 0xd1f:ExAbsArchiveDaysMC',
+        constructor: downlink.GetExAbsArchiveDaysMC,
+        name: 'downlink command 0xd1f:GetExAbsArchiveDaysMC',
         parameters: {channelList: [0], days: 1, startTime: 731721600},
         hex: {
             header: '1f 0d 04',
@@ -49,8 +49,8 @@ const downlinkCommands: TCommandList = [
         }
     },
     {
-        constructor: downlink.ExAbsArchiveHoursMC,
-        name: 'downlink command 0xc1f:ExAbsArchiveHoursMC',
+        constructor: downlink.GetExAbsArchiveHoursMC,
+        name: 'downlink command 0xc1f:GetExAbsArchiveHoursMC',
         parameters: {channelList: [0], hours: 1, startTime: 756648000},
         hex: {
             header: '1f 0c 04',
@@ -59,8 +59,8 @@ const downlinkCommands: TCommandList = [
         }
     },
     {
-        constructor: downlink.ExAbsCurrentMC,
-        name: 'downlink command 0xf1f:ExAbsCurrentMC',
+        constructor: downlink.GetExAbsCurrentMC,
+        name: 'downlink command 0xf1f:GetExAbsCurrentMC',
         parameters: undefined,
         hex: {
             header: '1f 0f 00',
@@ -175,8 +175,8 @@ const uplinkCommands: TCommandList = [
         }
     },
     {
-        constructor: uplink.ExAbsArchiveDaysMC,
-        name: 'uplink command 0xd1f:ExAbsArchiveDaysMC',
+        constructor: uplink.GetExAbsArchiveDaysMC,
+        name: 'uplink command 0xd1f:GetExAbsArchiveDaysMC',
         parameters: {
             startTime: 731721600,
             days: 2,
@@ -194,8 +194,8 @@ const uplinkCommands: TCommandList = [
         }
     },
     {
-        constructor: uplink.ExAbsArchiveHoursMC,
-        name: 'uplink command 0xc1f:ExAbsArchiveHoursMC',
+        constructor: uplink.GetExAbsArchiveHoursMC,
+        name: 'uplink command 0xc1f:GetExAbsArchiveHoursMC',
         parameters: {
             startTime: 756648000,
             hours: 1,
@@ -210,8 +210,8 @@ const uplinkCommands: TCommandList = [
         }
     },
     {
-        constructor: uplink.ExAbsCurrentMC,
-        name: 'uplink command 0xf1f:ExAbsCurrentMC',
+        constructor: uplink.GetExAbsCurrentMC,
+        name: 'uplink command 0xf1f:GetExAbsCurrentMC',
         parameters: {
             channelList: [
                 {

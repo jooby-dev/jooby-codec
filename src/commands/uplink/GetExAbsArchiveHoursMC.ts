@@ -4,7 +4,7 @@ import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
-interface IUplinkExAbsArchiveHoursMCParameters {
+interface IUplinkGetExAbsArchiveHoursMCParameters {
     channelList: Array<IChannelHours>,
     startTime: TTime2000
     hours: number
@@ -19,8 +19,8 @@ const COMMAND_ID = 0x0c1f;
 const COMMAND_BODY_MAX_SIZE = 168;
 
 
-class ExAbsArchiveHoursMC extends Command {
-    constructor ( public parameters: IUplinkExAbsArchiveHoursMCParameters ) {
+class GetExAbsArchiveHoursMC extends Command {
+    constructor ( public parameters: IUplinkGetExAbsArchiveHoursMCParameters ) {
         super();
 
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a.index - b.index);
@@ -35,7 +35,7 @@ class ExAbsArchiveHoursMC extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ): ExAbsArchiveHoursMC {
+    static fromBytes ( data: Uint8Array ): GetExAbsArchiveHoursMC {
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
@@ -59,7 +59,7 @@ class ExAbsArchiveHoursMC extends Command {
             });
         });
 
-        return new ExAbsArchiveHoursMC({channelList, hours, startTime: getSecondsFromDate(date)});
+        return new GetExAbsArchiveHoursMC({channelList, hours, startTime: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
@@ -84,4 +84,4 @@ class ExAbsArchiveHoursMC extends Command {
 }
 
 
-export default ExAbsArchiveHoursMC;
+export default GetExAbsArchiveHoursMC;

@@ -5,13 +5,13 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/tim
 
 
 /**
- * ExAbsArchiveHoursMC command parameters
+ * GetExAbsArchiveHoursMC command parameters
  *
  * @example
  * // request for 2 hours archive values from channel #1 from 2023-12-23T12:00:00.000Z or 756648000 seconds since 2000 year
  * {channelList: [0], hours: 2, startTime: 756648000}
  */
-interface IDownlinkExAbsArchiveHoursMCParameters {
+interface IDownlinkGetExAbsArchiveHoursMCParameters {
     /** amount of hours to retrieve */
     hours: number,
     startTime: TTime2000,
@@ -30,19 +30,19 @@ const COMMAND_BODY_SIZE = 4;
  *
  * @example
  * ```js
- * import ExAbsArchiveHoursMC from 'jooby-codec/commands/downlink/ExAbsArchiveHoursMC';
+ * import GetExAbsArchiveHoursMC from 'jooby-codec/commands/downlink/GetExAbsArchiveHoursMC';
  *
  * const parameters = {channelList: [0], hours: 0, startTime: 756648000};
- * const command = new ExAbsArchiveHoursMC(parameters);
+ * const command = new GetExAbsArchiveHoursMC(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 1f 0c 04 2f 97 0c 01
  * ```
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/ExAbsArchiveHoursMC.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsArchiveHoursMC.md#request)
  */
-class ExAbsArchiveHoursMC extends Command {
-    constructor ( public parameters: IDownlinkExAbsArchiveHoursMCParameters ) {
+class GetExAbsArchiveHoursMC extends Command {
+    constructor ( public parameters: IDownlinkGetExAbsArchiveHoursMCParameters ) {
         super();
 
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a - b);
@@ -74,7 +74,7 @@ class ExAbsArchiveHoursMC extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new ExAbsArchiveHoursMC({channelList, hours, startTime: getSecondsFromDate(date)});
+        return new GetExAbsArchiveHoursMC({channelList, hours, startTime: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
@@ -94,4 +94,4 @@ class ExAbsArchiveHoursMC extends Command {
 }
 
 
-export default ExAbsArchiveHoursMC;
+export default GetExAbsArchiveHoursMC;
