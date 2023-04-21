@@ -5,13 +5,13 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/tim
 
 
 /**
- * ExAbsArchiveDaysMC command parameters
+ * GetExAbsArchiveDaysMC command parameters
  *
  * @example
  * // request for 1 days archive values from channel #1 from 2023-12-24T00:00:00.000Z or 756691200 seconds since 2000 year
  * {channelList: [0], days: 1, startTime: 756691200}
  */
-interface IDownlinkExAbsArchiveDaysMCParameters {
+interface IDownlinkGetExAbsArchiveDaysMCParameters {
     /** amount of days to retrieve */
     days: number,
     startTime: TTime2000,
@@ -30,19 +30,19 @@ const COMMAND_BODY_SIZE = 4;
  *
  * @example
  * ```js
- * import ExAbsArchiveDaysMC from 'jooby-codec/commands/downlink/ExAbsArchiveDaysMC';
+ * import GetExAbsArchiveDaysMC from 'jooby-codec/commands/downlink/GetExAbsArchiveDaysMC';
  *
  * const parameters = {channelList: [0], days: 1, startTime: 756691200};
- * const command = new ExAbsArchiveDaysMC(parameters);
+ * const command = new GetExAbsArchiveDaysMC(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 1f 0c 04 2f 98 01 01
  * ```
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/ExAbsArchiveDaysMC.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsArchiveDaysMC.md#request)
  */
-class ExAbsArchiveDaysMC extends Command {
-    constructor ( public parameters: IDownlinkExAbsArchiveDaysMCParameters ) {
+class GetExAbsArchiveDaysMC extends Command {
+    constructor ( public parameters: IDownlinkGetExAbsArchiveDaysMCParameters ) {
         super();
 
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a - b);
@@ -72,7 +72,7 @@ class ExAbsArchiveDaysMC extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new ExAbsArchiveDaysMC({channelList, days, startTime: getSecondsFromDate(date)});
+        return new GetExAbsArchiveDaysMC({channelList, days, startTime: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
@@ -91,4 +91,4 @@ class ExAbsArchiveDaysMC extends Command {
 }
 
 
-export default ExAbsArchiveDaysMC;
+export default GetExAbsArchiveDaysMC;

@@ -11,17 +11,17 @@ const COMMAND_ID = 0x0f1f;
  *
  * @example
  * ```js
- * import ExAbsCurrentMC from 'jooby-codec/commands/downlink/ExAbsCurrentMC';
+ * import GetExAbsCurrentMC from 'jooby-codec/commands/downlink/GetExAbsCurrentMC';
  *
- * const command = new ExAbsCurrentMC();
+ * const command = new GetExAbsCurrentMC();
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 1f 0f 00
  * ```
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/ExAbsCurrentMC.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsCurrentMC.md#request)
  */
-class ExAbsCurrentMC extends Command {
+class GetExAbsCurrentMC extends Command {
     constructor () {
         super();
     }
@@ -36,7 +36,7 @@ class ExAbsCurrentMC extends Command {
 
     // data - only body (without header)
     static fromBytes () {
-        return new ExAbsCurrentMC();
+        return new GetExAbsCurrentMC();
     }
 
     // returns full message - header with body
@@ -47,4 +47,4 @@ class ExAbsCurrentMC extends Command {
 }
 
 
-export default ExAbsCurrentMC;
+export default GetExAbsCurrentMC;
