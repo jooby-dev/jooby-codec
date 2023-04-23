@@ -1,10 +1,7 @@
 name: npm-develop
 
 on:
-    # push:
-    #     branches:
-    #       - main
-    # allow to run manually
+    # run only manually
     workflow_dispatch:
 
 # allow only one concurrent run
@@ -28,6 +25,7 @@ jobs:
                 registry-url: https://registry.npmjs.org
 
           - run: npm ci
+          - run: npm test
           - run: npm run build:js:clean
 
           - run: npm run publish:dev

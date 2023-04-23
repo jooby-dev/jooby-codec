@@ -1,4 +1,4 @@
-name: npm-release
+name: release
 
 on:
     release:
@@ -8,7 +8,7 @@ on:
     workflow_dispatch:
 
 # allow only one concurrent run
-concurrency: "npm-release"
+concurrency: "release"
 
 jobs:
     build:
@@ -28,9 +28,34 @@ jobs:
                 registry-url: https://registry.npmjs.org
 
           - run: npm ci
-          - run: npm run build:js:clean
+          - run: npm test
 
+          - run: npm run build:docs
+          - name: upload artifact
+            uses: actions/upload-pages-artifact@v1
+            with:
+                path: "./docs"
+
+          - run: npm run build:js:clean
           - run: npm run publish
             env:
                 NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
                 NPM_CONFIG_PROVENANCE: true
+
+    deploy:
+        needs: build
+
+        permissions:
+            pages: write
+            id-token: write
+
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v2
