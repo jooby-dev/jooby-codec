@@ -212,7 +212,7 @@ interface IParameterActivationMethod {
  */
 interface IParameterRx2Config {
     /**
-     * The transmission speed or Data Rate of a LoRaWAN message, ranging from SF7 (highest Data Rate) to SF12 (lowest Data Rate).
+     * The transmission speed or Data Rate of a LoRaWAN message, ranging from `SF7` (highest Data Rate) to `SF12` (lowest Data Rate).
      * Making the spreading factor 1 step lower (from SF10 to SF9) allows you to roughly send the same amount of data use half the time on air.
      * Lowering the spreading factor makes it more difficult for the gateway to receive a transmission, as it will be more sensitive to noise.
      *
@@ -277,8 +277,10 @@ interface IParameterAbsoluteDataStatus {
  */
 interface IParameterExtraFrameInterval {
     /**
-     * If value = `0` EXTRA FRAME disabled.
-     * Minimal value = `90`.
+     * If value is `0` EXTRA FRAME disabled.
+     *
+     * minimal: `90`
+     * maximum: `65535`, i.e. two byte unsigned int
      */
     value: number
 }
@@ -521,13 +523,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
             return value - (1 << 24);
         }
 
-
         return value;
     }
 
     setUint12 ( value: number, isLittleEndian = this.isLittleEndian ): void {
-        console.log('setUint12', value);
-
         const view = new DataView(this.data, this.offset, INT12_SIZE);
 
         if ( isLittleEndian ) {

@@ -2,7 +2,7 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IParameter} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 import * as deviceParameters from '../../constants/deviceParameters.js';
-import * as rx2SpreadFactors from '../../constants/deviceParameters/rx2SpreadFactors.js';
+import * as rx2SpreadFactors from '../../constants/rx2SpreadFactors.js';
 
 
 const COMMAND_ID = 0x03;
@@ -49,7 +49,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 02', body: '09 01'}
     },
     {
-        name: 'set spread factor and frequency for RX_2 window',
+        name: 'set spread factor and frequency for RX2 window',
         parameters: {
             id: deviceParameters.RX_2_CONFIG,
             data: {spreadFactor: rx2SpreadFactors.SF7B125, frequency: 20000}
