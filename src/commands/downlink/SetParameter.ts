@@ -2,6 +2,7 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IParameter} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 import * as deviceParameters from '../../constants/deviceParameters.js';
+import * as rx2SpreadFactors from '../../constants/rx2SpreadFactors.js';
 
 
 const COMMAND_ID = 0x03;
@@ -32,12 +33,28 @@ const examples: TCommandExampleList = [
         hex: {header: '03 02', body: '05 01'}
     },
     {
+        name: 'set "with confirmation" for delivery of priority data',
+        parameters: {
+            id: deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA,
+            data: {value: 0}
+        },
+        hex: {header: '03 02', body: '08 00'}
+    },
+    {
         name: 'set activation method to "ABP"',
         parameters: {
             id: deviceParameters.ACTIVATION_METHOD,
             data: {type: 1}
         },
         hex: {header: '03 02', body: '09 01'}
+    },
+    {
+        name: 'set spread factor and frequency for RX2 window',
+        parameters: {
+            id: deviceParameters.RX2_CONFIG,
+            data: {spreadFactor: rx2SpreadFactors.SF7B125, frequency: 20000}
+        },
+        hex: {header: '03 05', body: '12 05 00 00 c8'}
     },
     {
         name: 'initial data setup',
@@ -51,6 +68,14 @@ const examples: TCommandExampleList = [
         name: 'enable sending absolute data',
         parameters: {id: deviceParameters.ABSOLUTE_DATA_STATUS, data: {status: 1}},
         hex: {header: '03 02', body: '18 01'}
+    },
+    {
+        name: 'set interval to send EXTRA FRAME',
+        parameters: {
+            id: deviceParameters.EXTRA_FRAME_INTERVAL,
+            data: {value: 3600}
+        },
+        hex: {header: '03 03', body: '1c 10 0e'}
     },
     {
         name: 'initial data setup for 1 channel',

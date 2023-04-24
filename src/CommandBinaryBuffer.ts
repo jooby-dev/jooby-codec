@@ -178,6 +178,61 @@ interface IParameterOutputDataType {
 }
 
 /**
+ * Delivery type of priority data, with or without acknowledgment.
+ * Priority data - frames from uplink/NewEvent command.
+ * deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA = `8`.
+ */
+interface IParameterDeliveryTypeOfPriorityData {
+    /**
+     * `0` - delivery with confirmation
+     * `1` - delivery without confirmation
+     */
+    value: number
+}
+
+/**
+ * Device activation method in LoRaWAN network.
+ * deviceParameters.ACTIVATION_METHOD = `9`.
+ */
+interface IParameterActivationMethod {
+    /**
+     * `0` - OTAA, by default
+     * `1` - ABP
+     *
+     * @see https://www.thethingsindustries.com/docs/devices/abp-vs-otaa/
+     */
+    type: number
+}
+
+/**
+ * RX2 configuration.
+ * deviceParameters.RX2_CONFIG = `18`.
+ *
+ * @see https://www.thethingsindustries.com/docs/reference/glossary/
+ */
+interface IParameterRx2Config {
+    /**
+     * The transmission speed or Data Rate of a LoRaWAN message, ranging from `SF7` (highest Data Rate) to `SF12` (lowest Data Rate).
+     * Making the spreading factor `1` step lower (from `SF10` to `SF9`) allows you to roughly send the same amount of data use half the time on air.
+     * Lowering the spreading factor makes it more difficult for the gateway to receive a transmission, as it will be more sensitive to noise.
+     *
+     * `0` - delivery with confirmation
+     * `1` - delivery without confirmation
+     *
+     * @see https://www.thethingsnetwork.org/docs/lorawan/spreading-factors/
+     */
+    spreadFactor: number
+
+    /**
+     * RX2 data rate frequency.
+     * The second receive window (RX2) uses a fixed frequency and data rate.
+     * This value configures the frequency to use in RX2.
+     * Changing the desired value makes the Network Server transmit the RXParamSetupReq MAC command.
+     */
+    frequency: number
+}
+
+/**
  * Device activation method in LoRaWAN network.
  * deviceParameters.ACTIVATION_METHOD = `9`.
  */
@@ -217,6 +272,20 @@ interface IParameterAbsoluteDataStatus {
 }
 
 /**
+ * Interval in seconds when device send EXTRA FRAME.
+ * deviceParameters.EXTRA_FRAME_INTERVAL = `28`.
+ */
+interface IParameterExtraFrameInterval {
+    /**
+     * If value is `0` EXTRA FRAME disabled.
+     *
+     * minimal: `90`
+     * maximum: `65535`, i.e. two byte unsigned int
+     */
+    value: number
+}
+
+/**
  * Initial values for multi-channel devices.
  * deviceParameters.INITIAL_DATA_MULTI_CHANNEL = `29`.
  */
@@ -252,7 +321,9 @@ type TParameterData =
     IParameterDataSendingInterval |
     IParameterOutputDataType |
     IParameterDayCheckoutHour |
+    IParameterDeliveryTypeOfPriorityData |
     IParameterActivationMethod |
+    IParameterRx2Config |
     IParameterInitialData |
     IParameterAbsoluteDataStatus |
     IParameterInitialDataMC |
@@ -267,6 +338,8 @@ const UNKNOWN_BATTERY_VOLTAGE = 4095;
 const EXTEND_BIT_MASK = 0x80;
 const LAST_BIT_INDEX = 7;
 const DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT = 600;
+const PARAMETER_RX2_FREQUENCY_COEFFICIENT = 100;
+const INT12_SIZE = 3;
 
 const GAS_HARDWARE_TYPES = [
     hardwareTypes.GAZM0,
@@ -347,9 +420,12 @@ const parametersSizeMap = new Map([
     [deviceParameters.DATA_SENDING_INTERVAL, 3 + 1],
     [deviceParameters.DAY_CHECKOUT_HOUR, 1 + 1],
     [deviceParameters.OUTPUT_DATA_TYPE, 1 + 1],
+    [deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA, 1 + 1],
     [deviceParameters.ACTIVATION_METHOD, 1 + 1],
+    [deviceParameters.RX2_CONFIG, 1 + 4],
     [deviceParameters.INITIAL_DATA, 9 + 1],
     [deviceParameters.ABSOLUTE_DATA_STATUS, 1 + 1],
+    [deviceParameters.EXTRA_FRAME_INTERVAL, 1 + 2],
     [deviceParameters.INITIAL_DATA_MULTI_CHANNEL, 10 + 1],
     [deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL, 2 + 1]
 ]);
@@ -403,6 +479,82 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
 
         return size;
+    }
+
+    setInt12 ( value: number, isLittleEndian = this.isLittleEndian ): void {
+        const view = new DataView(this.data, this.offset, INT12_SIZE);
+
+        // set first byte as signed value
+        if ( isLittleEndian ) {
+            view.setInt8(2, (value >> 16) & 0xFF);
+            view.setUint8(1, (value >> 8) & 0xFF);
+            view.setUint8(0, value & 0xFF);
+        } else {
+            view.setInt8(0, (value >> 16) & 0xFF);
+            view.setUint8(1, (value >> 8) & 0xFF);
+            view.setUint8(2, value & 0xFF);
+        }
+
+        this.offset += INT12_SIZE;
+    }
+
+    getInt12 ( isLittleEndian = this.isLittleEndian ): number {
+        const view = new DataView(this.data, this.offset, INT12_SIZE);
+        let byte0;
+        let byte1;
+        let byte2;
+
+        this.offset += INT12_SIZE;
+
+        if ( isLittleEndian ) {
+            byte0 = view.getInt8(2);
+            byte1 = view.getUint8(1);
+            byte2 = view.getUint8(0);
+        } else {
+            byte0 = view.getInt8(0);
+            byte1 = view.getUint8(1);
+            byte2 = view.getUint8(2);
+        }
+
+        const value = (byte0 << 16) | (byte1 << 8) | byte2;
+
+        // setup sign if value negative
+        if ( byte0 & 0x80 ) {
+            return value - (1 << 24);
+        }
+
+        return value;
+    }
+
+    setUint12 ( value: number, isLittleEndian = this.isLittleEndian ): void {
+        const view = new DataView(this.data, this.offset, INT12_SIZE);
+
+        if ( isLittleEndian ) {
+            view.setUint8(2, (value >> 16) & 0xFF);
+            view.setUint8(1, (value >> 8) & 0xFF);
+            view.setUint8(0, value & 0xFF);
+        } else {
+            view.setUint8(0, (value >> 16) & 0xFF);
+            view.setUint8(1, (value >> 8) & 0xFF);
+            view.setUint8(2, value & 0xFF);
+        }
+
+        this.offset += INT12_SIZE;
+    }
+
+    getUint12 ( isLittleEndian = this.isLittleEndian ): number {
+        const view = new DataView(this.data, this.offset, INT12_SIZE);
+        const byte0 = view.getUint8(0);
+        const byte1 = view.getUint8(1);
+        const byte2 = view.getUint8(2);
+
+        this.offset += INT12_SIZE;
+
+        if ( isLittleEndian ) {
+            return byte0 + (byte1 << 8) + (byte2 << 16);
+        }
+
+        return (byte0 << 16) + (byte1 << 8) + byte2;
     }
 
     getExtendedValue (): number {
@@ -886,6 +1038,34 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
     }
 
+    private getParameterDeliveryTypeOfPriorityData (): IParameterDeliveryTypeOfPriorityData {
+        return {value: this.getUint8()};
+    }
+
+    private setParameterDeliveryTypeOfPriorityData ( parameter: IParameterDeliveryTypeOfPriorityData ): void {
+        this.setUint8(parameter.value);
+    }
+
+    private getParameterRx2Config (): IParameterRx2Config {
+        return {
+            spreadFactor: this.getUint8(),
+            frequency: this.getUint12(false) * PARAMETER_RX2_FREQUENCY_COEFFICIENT
+        };
+    }
+
+    private setParameterRx2Config ( parameter: IParameterRx2Config ): void {
+        this.setUint8(parameter.spreadFactor);
+        this.setUint12(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT, false);
+    }
+
+    private getParameterExtraFrameInterval (): IParameterExtraFrameInterval {
+        return {value: this.getUint16()};
+    }
+
+    private setParameterExtraFrameInterval ( parameter: IParameterExtraFrameInterval ): void {
+        this.setUint16(parameter.value);
+    }
+
     getParameter (): IParameter {
         const id = this.getUint8();
         let data;
@@ -903,20 +1083,32 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterDayCheckoutHour();
                 break;
 
+            case deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA:
+                data = this.getParameterDeliveryTypeOfPriorityData();
+                break;
+
             case deviceParameters.ACTIVATION_METHOD:
                 data = this.getParameterActivationMethod();
+                break;
+
+            case deviceParameters.RX2_CONFIG:
+                data = this.getParameterRx2Config();
                 break;
 
             case deviceParameters.INITIAL_DATA:
                 data = this.getParameterInitialData();
                 break;
 
-            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
-                data = this.getParameterInitialDataMC();
-                break;
-
             case deviceParameters.ABSOLUTE_DATA_STATUS:
                 data = this.getParameterAbsoluteDataStatus();
+                break;
+
+            case deviceParameters.EXTRA_FRAME_INTERVAL:
+                data = this.getParameterExtraFrameInterval();
+                break;
+
+            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
+                data = this.getParameterInitialDataMC();
                 break;
 
             case deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL:
@@ -948,20 +1140,32 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 this.setParameterDayCheckoutHour(data as IParameterDayCheckoutHour);
                 break;
 
+            case deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA:
+                this.setParameterDeliveryTypeOfPriorityData(data as IParameterDeliveryTypeOfPriorityData);
+                break;
+
             case deviceParameters.ACTIVATION_METHOD:
                 this.setParameterActivationMethod(data as IParameterActivationMethod);
+                break;
+
+            case deviceParameters.RX2_CONFIG:
+                this.setParameterRx2Config(data as IParameterRx2Config);
                 break;
 
             case deviceParameters.INITIAL_DATA:
                 this.setParameterInitialData(data as IParameterInitialData);
                 break;
 
-            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
-                this.setParameterInitialDataMC(data as IParameterInitialDataMC);
-                break;
-
             case deviceParameters.ABSOLUTE_DATA_STATUS:
                 this.setParameterAbsoluteDataStatus(data as IParameterAbsoluteDataStatus);
+                break;
+
+            case deviceParameters.EXTRA_FRAME_INTERVAL:
+                this.setParameterExtraFrameInterval(data as IParameterExtraFrameInterval);
+                break;
+
+            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
+                this.setParameterInitialDataMC(data as IParameterInitialDataMC);
                 break;
 
             case deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL:
