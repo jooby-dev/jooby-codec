@@ -1,6 +1,8 @@
 import BinaryBuffer from './BinaryBuffer.js';
 import * as bitSet from './utils/bitSet.js';
 import {getDateFromSeconds, getSecondsFromDate, TTime2000} from './utils/time.js';
+import getHexFromBytes from './utils/getHexFromBytes.js';
+import getBytesFromHex from './utils/getBytesFromHex.js';
 import * as hardwareTypes from './constants/hardwareTypes.js';
 import * as deviceParameters from './constants/deviceParameters.js';
 
@@ -247,6 +249,27 @@ interface IParameterActivationMethod {
 }
 
 /**
+ * Device battery depassivation information.
+ * deviceParameters.BATTERY_DEPASSIVATION_INFO = `10`.
+ */
+interface IParameterBatteryDepassivationInfo {
+    /** battery load time in milliseconds */
+    loadTime: number,
+    /** battery internal resistance, in mΩ */
+    internalResistance: number,
+    /** batter low voltage, in mV  */
+    lowVoltage: number
+}
+
+/**
+ * Device activation method in LoRaWAN network.
+ * deviceParameters.BATTERY_MINIMAL_LOAD_TIME = `11`.
+ */
+interface IParameterBatteryMinimalLoadTime {
+    value: number
+}
+
+/**
  * Initial values for pulse devices.
  * deviceParameters.INITIAL_DATA = `23`.
  */
@@ -269,6 +292,27 @@ interface IParameterAbsoluteDataStatus {
      * `0` - disabled, device send pulse counter
      */
     status: number
+}
+
+/**
+ * Device serial number.
+ * deviceParameters.SERIAL_NUMBER = `25`
+ */
+interface IParameterSerialNumber {
+    /**
+     * hex string, 6 bytes
+     */
+    value: string
+}
+
+/**
+ * Device geolocation.
+ * deviceParameters.GEOLOCATION = `26`
+ */
+interface IParameterGeolocation {
+    latitude: number,
+    longitude: number,
+    attitude: number
 }
 
 /**
@@ -323,9 +367,13 @@ type TParameterData =
     IParameterDayCheckoutHour |
     IParameterDeliveryTypeOfPriorityData |
     IParameterActivationMethod |
+    IParameterBatteryDepassivationInfo |
+    IParameterBatteryMinimalLoadTime |
     IParameterRx2Config |
     IParameterInitialData |
     IParameterAbsoluteDataStatus |
+    IParameterSerialNumber |
+    IParameterGeolocation |
     IParameterInitialDataMC |
     IParameterAbsoluteDataStatusMC;
 
@@ -340,6 +388,7 @@ const LAST_BIT_INDEX = 7;
 const DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT = 600;
 const PARAMETER_RX2_FREQUENCY_COEFFICIENT = 100;
 const INT12_SIZE = 3;
+const SERIAL_NUMBER_SIZE = 6;
 
 const GAS_HARDWARE_TYPES = [
     hardwareTypes.GAZM0,
@@ -417,17 +466,22 @@ const mtxBitMask = {
  * device parameter data size + byte for parameter id
  */
 const parametersSizeMap = new Map([
-    [deviceParameters.DATA_SENDING_INTERVAL, 3 + 1],
+    /* size: 1 byte of parameter id + parameter data*/
+    [deviceParameters.DATA_SENDING_INTERVAL, 1 + 3],
     [deviceParameters.DAY_CHECKOUT_HOUR, 1 + 1],
     [deviceParameters.OUTPUT_DATA_TYPE, 1 + 1],
     [deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA, 1 + 1],
     [deviceParameters.ACTIVATION_METHOD, 1 + 1],
+    [deviceParameters.BATTERY_DEPASSIVATION_INFO, 1 + 6],
+    [deviceParameters.BATTERY_MINIMAL_LOAD_TIME, 1 + 4],
     [deviceParameters.RX2_CONFIG, 1 + 4],
-    [deviceParameters.INITIAL_DATA, 9 + 1],
+    [deviceParameters.INITIAL_DATA, 1 + 9],
     [deviceParameters.ABSOLUTE_DATA_STATUS, 1 + 1],
+    [deviceParameters.SERIAL_NUMBER, 1 + 6],
+    [deviceParameters.GEOLOCATION, 1 + 10],
     [deviceParameters.EXTRA_FRAME_INTERVAL, 1 + 2],
-    [deviceParameters.INITIAL_DATA_MULTI_CHANNEL, 10 + 1],
-    [deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL, 2 + 1]
+    [deviceParameters.INITIAL_DATA_MULTI_CHANNEL, 1 + 10],
+    [deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL, 1 + 2]
 ]);
 
 const byteToPulseCoefficientMap = new Map([
@@ -1066,6 +1120,62 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint16(parameter.value);
     }
 
+    private getParameterBatteryDepassivationInfo (): IParameterBatteryDepassivationInfo {
+        return {
+            loadTime: this.getUint16(false),
+            internalResistance: this.getUint16(false),
+            lowVoltage: this.getUint16(false)
+        };
+    }
+
+    private setParameterBatteryDepassivationInfo ( parameter: IParameterBatteryDepassivationInfo ): void {
+        this.setUint16(parameter.loadTime);
+        this.setUint16(parameter.internalResistance);
+        this.setUint16(parameter.lowVoltage);
+    }
+
+    private getParameterBatteryMinimalLoadTime (): IParameterBatteryMinimalLoadTime {
+        return {
+            value: this.getUint32(false)
+        };
+    }
+
+    private setParameterBatteryMinimalLoadTime ( parameter: IParameterBatteryMinimalLoadTime ): void {
+        this.setUint32(parameter.value);
+    }
+
+    private getParameterSerialNumber (): IParameterSerialNumber {
+        const bytes = [];
+
+        for ( let i = 0; i < SERIAL_NUMBER_SIZE; ++i ) {
+            bytes.push(this.getUint8());
+        }
+
+        return {
+            value: getHexFromBytes(new Uint8Array(bytes))
+        };
+    }
+
+    private setParameterSerialNumber ( parameter: IParameterSerialNumber ): void {
+        const bytes = getBytesFromHex(parameter.value);
+
+        bytes.forEach(byte => this.setUint8(byte));
+    }
+
+    private getParameterGeolocation (): IParameterGeolocation {
+        return {
+            latitude: this.getUint32(),
+            longitude: this.getUint32(),
+            attitude: this.getUint16()
+        };
+    }
+
+    private setParameterGeolocation ( parameter: IParameterGeolocation ): void {
+        this.setUint32(parameter.latitude);
+        this.setUint32(parameter.longitude);
+        this.setUint16(parameter.attitude);
+    }
+
     getParameter (): IParameter {
         const id = this.getUint8();
         let data;
@@ -1091,6 +1201,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterActivationMethod();
                 break;
 
+            case deviceParameters.BATTERY_DEPASSIVATION_INFO:
+                data = this.getParameterBatteryDepassivationInfo();
+                break;
+
+            case deviceParameters.BATTERY_MINIMAL_LOAD_TIME:
+                data = this.getParameterBatteryMinimalLoadTime();
+                break;
+
             case deviceParameters.RX2_CONFIG:
                 data = this.getParameterRx2Config();
                 break;
@@ -1101,6 +1219,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
             case deviceParameters.ABSOLUTE_DATA_STATUS:
                 data = this.getParameterAbsoluteDataStatus();
+                break;
+
+            case deviceParameters.SERIAL_NUMBER:
+                data = this.getParameterSerialNumber();
+                break;
+
+            case deviceParameters.GEOLOCATION:
+                data = this.getParameterGeolocation();
                 break;
 
             case deviceParameters.EXTRA_FRAME_INTERVAL:
@@ -1148,6 +1274,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 this.setParameterActivationMethod(data as IParameterActivationMethod);
                 break;
 
+            case deviceParameters.BATTERY_DEPASSIVATION_INFO:
+                this.setParameterBatteryDepassivationInfo(data as IParameterBatteryDepassivationInfo);
+                break;
+
+            case deviceParameters.BATTERY_MINIMAL_LOAD_TIME:
+                this.setParameterBatteryMinimalLoadTime(data as IParameterBatteryMinimalLoadTime);
+                break;
+
             case deviceParameters.RX2_CONFIG:
                 this.setParameterRx2Config(data as IParameterRx2Config);
                 break;
@@ -1158,6 +1292,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
             case deviceParameters.ABSOLUTE_DATA_STATUS:
                 this.setParameterAbsoluteDataStatus(data as IParameterAbsoluteDataStatus);
+                break;
+
+            case deviceParameters.SERIAL_NUMBER:
+                this.setParameterSerialNumber(data as IParameterSerialNumber);
+                break;
+
+            case deviceParameters.GEOLOCATION:
+                this.setParameterGeolocation(data as IParameterGeolocation);
                 break;
 
             case deviceParameters.EXTRA_FRAME_INTERVAL:

@@ -17,6 +17,12 @@ export const DELIVERY_TYPE_OF_PRIORITY_DATA = 8;
 /** device activation method */
 export const ACTIVATION_METHOD = 9;
 
+/** device battery depassivation information */
+export const BATTERY_DEPASSIVATION_INFO = 10;
+
+/** device battery minimum required battery load time per day to prevent passivation */
+export const BATTERY_MINIMAL_LOAD_TIME = 11;
+
 /** setup parameters for RX2 window config */
 export const RX2_CONFIG = 18;
 
@@ -25,6 +31,12 @@ export const INITIAL_DATA = 23;
 
 /** status of device data sending, absolute value or pulse counter */
 export const ABSOLUTE_DATA_STATUS = 24;
+
+/** device serial number */
+export const SERIAL_NUMBER = 25;
+
+/** device geolocation */
+export const GEOLOCATION = 26;
 
 /** interval in seconds when device send EXTRA FRAME */
 export const EXTRA_FRAME_INTERVAL = 28;
