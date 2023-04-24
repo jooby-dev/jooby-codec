@@ -1,5 +1,7 @@
 /**
  * Possible values of RX2 spread factor
+ *
+ * @packageDocumentation
  */
 
 export const SF12B125 = 0;

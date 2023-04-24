@@ -206,14 +206,14 @@ interface IParameterActivationMethod {
 
 /**
  * RX2 configuration.
- * deviceParameters.RX_2_CONFIG = `18`.
+ * deviceParameters.RX2_CONFIG = `18`.
  *
  * @see https://www.thethingsindustries.com/docs/reference/glossary/
  */
 interface IParameterRx2Config {
     /**
      * The transmission speed or Data Rate of a LoRaWAN message, ranging from `SF7` (highest Data Rate) to `SF12` (lowest Data Rate).
-     * Making the spreading factor 1 step lower (from SF10 to SF9) allows you to roughly send the same amount of data use half the time on air.
+     * Making the spreading factor `1` step lower (from `SF10` to `SF9`) allows you to roughly send the same amount of data use half the time on air.
      * Lowering the spreading factor makes it more difficult for the gateway to receive a transmission, as it will be more sensitive to noise.
      *
      * `0` - delivery with confirmation
@@ -422,7 +422,7 @@ const parametersSizeMap = new Map([
     [deviceParameters.OUTPUT_DATA_TYPE, 1 + 1],
     [deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA, 1 + 1],
     [deviceParameters.ACTIVATION_METHOD, 1 + 1],
-    [deviceParameters.RX_2_CONFIG, 1 + 4],
+    [deviceParameters.RX2_CONFIG, 1 + 4],
     [deviceParameters.INITIAL_DATA, 9 + 1],
     [deviceParameters.ABSOLUTE_DATA_STATUS, 1 + 1],
     [deviceParameters.EXTRA_FRAME_INTERVAL, 1 + 2],
@@ -1091,7 +1091,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterActivationMethod();
                 break;
 
-            case deviceParameters.RX_2_CONFIG:
+            case deviceParameters.RX2_CONFIG:
                 data = this.getParameterRx2Config();
                 break;
 
@@ -1148,7 +1148,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 this.setParameterActivationMethod(data as IParameterActivationMethod);
                 break;
 
-            case deviceParameters.RX_2_CONFIG:
+            case deviceParameters.RX2_CONFIG:
                 this.setParameterRx2Config(data as IParameterRx2Config);
                 break;
 

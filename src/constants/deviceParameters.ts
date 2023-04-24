@@ -18,7 +18,7 @@ export const DELIVERY_TYPE_OF_PRIORITY_DATA = 8;
 export const ACTIVATION_METHOD = 9;
 
 /** setup parameters for RX2 window config */
-export const RX_2_CONFIG = 18;
+export const RX2_CONFIG = 18;
 
 /** setup initial data for device, pulse counter, pulse coefficient, meter value */
 export const INITIAL_DATA = 23;

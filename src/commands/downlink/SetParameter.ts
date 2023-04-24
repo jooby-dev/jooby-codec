@@ -51,7 +51,7 @@ const examples: TCommandExampleList = [
     {
         name: 'set spread factor and frequency for RX2 window',
         parameters: {
-            id: deviceParameters.RX_2_CONFIG,
+            id: deviceParameters.RX2_CONFIG,
             data: {spreadFactor: rx2SpreadFactors.SF7B125, frequency: 20000}
         },
         hex: {header: '03 05', body: '12 05 00 00 c8'}
