@@ -24,6 +24,7 @@ const examples: TCommandExampleList = [
  * console.log(command.toHex());
  * // 1f 02 00
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetLmicInfo.md#request)
  */
 class GetLmicInfo extends Command {

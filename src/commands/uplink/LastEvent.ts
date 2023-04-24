@@ -84,20 +84,29 @@ const examples: TCommandExampleList = [
 /**
  * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import LastEvent from 'jooby-codec/commands/downlink/LastEvent';
- * import hardwareTypes from 'jooby-codec/constants/hardwareTypes';
+ * import LastEvent from 'jooby-codec/commands/uplink/LastEvent';
+ * import * as hardwareTypes from 'jooby-codec/constants/hardwareTypes.js';
  *
- * const command = new LastEvent(
- *     {sequenceNumber: 8, status: {isBatteryLow: true}},
- *     hardwareTypes.IMP2EU
- * );
+ * const commandBody = new Uint8Array([0x10, 0xe1, 0x01]);
+ * const command = LastEvent.fromBytes(commandBody, hardwareTypes.IMP4EU);
  *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 62 08 01
+ * console.log(command.parameters);
+ * // output:
+ * {
+ *     sequenceNumber: 16,
+ *     status: {
+ *         isBatteryLow: true,
+ *         isConnectionLost: false,
+ *         isFirstChannelInactive: false,
+ *         isSecondChannelInactive: true,
+ *         isThirdChannelInactive: true,
+ *         isForthChannelInactive: true
+ *     }
+ * }
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/LastEvent.md)
  */
 class LastEvent extends Command {

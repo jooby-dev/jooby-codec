@@ -1,10 +1,10 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
-interface IUplinkGetExAbsArchiveHoursMCParameters {
+interface IGetExAbsArchiveHoursMCResponseParameters {
     channelList: Array<IChannelHours>,
     startTime: TTime2000
     hours: number
@@ -18,9 +18,48 @@ const COMMAND_ID = 0x0c1f;
 // 4 + (4 channelList * 1 byte pulse coefficient) + (4 channelList * 5 bytes of hour values) + (4 * 5 bytes of diff * 7 max hours diff)
 const COMMAND_BODY_MAX_SIZE = 168;
 
+const examples: TCommandExampleList = [
+    {
+        name: '1 channel at 2023.12.23 12:00:00 GMT',
+        parameters: {
+            startTime: 756648000,
+            hours: 1,
+            channelList: [
+                {value: 234, index: 2, diff: [2]}
+            ]
+        },
+        hex: {header: '1f 0c 07', body: '2f 97 0c 04 ea 01 02'}
+    }
+];
 
-class GetExAbsArchiveHoursMC extends Command {
-    constructor ( public parameters: IUplinkGetExAbsArchiveHoursMCParameters ) {
+
+/**
+ * Uplink command.
+ *
+ * @example create command instance from command body hex dump
+ * ```js
+ * import GetExAbsArchiveHoursMCResponse from 'jooby-codec/commands/uplink/GetExAbsArchiveHoursMCResponse';
+ *
+ * const commandBody = new Uint8Array([
+ *     0x2f, 0x97, 0x0c, 0x04, 0xea, 0x01, 0x02
+ * ]);
+ * const command = GetExAbsArchiveHoursMCResponse.fromBytes(commandBody);
+ *
+ * console.log(command.parameters);
+ * // output:
+ * {
+ *     startTime: 756648000,
+ *     hours: 1,
+ *     channelList: [
+ *         {value: 234, index: 2, diff: [2]}
+ *     ]
+ * }
+ * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsArchiveHoursMC.md#response)
+ */
+class GetExAbsArchiveHoursMCResponse extends Command {
+    constructor ( public parameters: IGetExAbsArchiveHoursMCResponseParameters ) {
         super();
 
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a.index - b.index);
@@ -31,11 +70,13 @@ class GetExAbsArchiveHoursMC extends Command {
 
     static readonly directionType = UPLINK;
 
+    static readonly examples = examples;
+
     static readonly hasParameters = true;
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ): GetExAbsArchiveHoursMC {
+    static fromBytes ( data: Uint8Array ): GetExAbsArchiveHoursMCResponse {
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
@@ -59,14 +100,13 @@ class GetExAbsArchiveHoursMC extends Command {
             });
         });
 
-        return new GetExAbsArchiveHoursMC({channelList, hours, startTime: getSecondsFromDate(date)});
+        return new GetExAbsArchiveHoursMCResponse({channelList, hours, startTime: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList, startTime, hours} = this.parameters;
-
         const date = getDateFromSeconds(startTime);
         const hour = date.getUTCHours();
 
@@ -84,4 +124,4 @@ class GetExAbsArchiveHoursMC extends Command {
 }
 
 
-export default GetExAbsArchiveHoursMC;
+export default GetExAbsArchiveHoursMCResponse;

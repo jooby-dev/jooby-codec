@@ -11,7 +11,7 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/tim
  * // request for 1 days archive values from channel #1 from 2023-12-24T00:00:00.000Z or 756691200 seconds since 2000 year
  * {channelList: [0], days: 1, startTime: 756691200}
  */
-interface IDownlinkGetExAbsArchiveDaysMCParameters {
+interface IGetExAbsArchiveDaysMCParameters {
     /** amount of days to retrieve */
     days: number,
     startTime: TTime2000,
@@ -26,7 +26,7 @@ const COMMAND_BODY_SIZE = 4;
 
 
 /**
- * Downlink command
+ * Downlink command.
  *
  * @example
  * ```js
@@ -39,10 +39,11 @@ const COMMAND_BODY_SIZE = 4;
  * console.log(command.toHex());
  * // 1f 0c 04 2f 98 01 01
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsArchiveDaysMC.md#request)
  */
 class GetExAbsArchiveDaysMC extends Command {
-    constructor ( public parameters: IDownlinkGetExAbsArchiveDaysMCParameters ) {
+    constructor ( public parameters: IGetExAbsArchiveDaysMCParameters ) {
         super();
 
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a - b);
@@ -63,7 +64,6 @@ class GetExAbsArchiveDaysMC extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(data);
-
         const date = buffer.getDate();
         const channelList = buffer.getChannels();
         const days = buffer.getUint8();

@@ -3,7 +3,7 @@ import CommandBinaryBuffer, {IChannelAbsoluteValue} from '../../CommandBinaryBuf
 import {UPLINK} from '../../constants/directions.js';
 
 
-interface IUplinkGetExAbsCurrentMCParameters {
+interface IExAbsCurrentMCParameters {
     channelList: Array<IChannelAbsoluteValue>
 }
 
@@ -15,8 +15,8 @@ const COMMAND_ID = 0x0f1f;
 const COMMAND_BODY_MAX_SIZE = 87;
 
 
-class GetExAbsCurrentMC extends Command {
-    constructor ( public parameters: IUplinkGetExAbsCurrentMCParameters ) {
+class ExAbsCurrentMC extends Command {
+    constructor ( public parameters: IExAbsCurrentMCParameters ) {
         super();
 
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a.index - b.index);
@@ -31,10 +31,10 @@ class GetExAbsCurrentMC extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ): GetExAbsCurrentMC {
+    static fromBytes ( data: Uint8Array ): ExAbsCurrentMC {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetExAbsCurrentMC({channelList: buffer.getChannelsWithAbsoluteValues()});
+        return new ExAbsCurrentMC({channelList: buffer.getChannelsWithAbsoluteValues()});
     }
 
     // returns full message - header with body
@@ -49,4 +49,4 @@ class GetExAbsCurrentMC extends Command {
 }
 
 
-export default GetExAbsCurrentMC;
+export default ExAbsCurrentMC;

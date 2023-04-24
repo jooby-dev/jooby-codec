@@ -1,5 +1,5 @@
-import Command from '../../Command.js';
-import GetCurrentMC from './GetCurrentMC.js';
+import Command, {TCommandExampleList} from '../../Command.js';
+import CurrentMC from './CurrentMC.js';
 import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
@@ -19,8 +19,53 @@ const COMMAND_ID = 0x17;
 // 4 + (4 channelList * 5 bytes of hour values) + (4 * 5 bytes of diff * 7 max hours diff)
 const COMMAND_BODY_MAX_SIZE = 164;
 
+const examples: TCommandExampleList = [
+    {
+        name: '4 first channels at 2023.12.23 12:00:00 GMT',
+        parameters: {
+            startTime: 756648000,
+            hours: 1,
+            channelList: [
+                {index: 0, value: 131, diff: [10]},
+                {index: 1, value: 832, diff: [12]},
+                {index: 2, value: 38, diff: [8]},
+                {index: 3, value: 234, diff: [11]}
+            ]
+        },
+        hex: {header: '17 0f', body: '2f 97 0c 0f 83 01 0a c0 06 0c 26 08 ea 01 0b'}
+    }
+];
 
-class DataHourMC extends GetCurrentMC {
+
+/**
+ * Uplink command.
+ *
+ * @example create command instance from command body hex dump
+ * ```js
+ * import DataHourMC from 'jooby-codec/commands/uplink/DataHourMC';
+ *
+ * const commandBody = new Uint8Array([
+ *    0x2f, 0x97, 0x0c, 0x0f, 0x83, 0x01, 0x0a, 0xc0, 0x06, 0x0c, 0x26, 0x08, 0xea, 0x01, 0x0b
+ * ]);
+ * const command = DataHourMC.fromBytes(commandBody);
+ *
+ * console.log(command.parameters);
+ * // output:
+ * {
+ *     startTime: 756648000,
+ *     hours: 1,
+ *     channelList: [
+ *         {value: 131, index: 0, diff: [10]},
+ *         {value: 832, index: 1, diff: [12]},
+ *         {value: 38, index: 2, diff: [8]},
+ *         {value: 234, index: 3, diff: [11]}
+ *     ]
+ * }
+ * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/CorrectTime2000.md#response)
+ */
+class DataHourMC extends CurrentMC {
     constructor ( public parameters: IDataHourMCParameters ) {
         super(parameters);
     }
@@ -30,22 +75,21 @@ class DataHourMC extends GetCurrentMC {
 
     static readonly directionType = UPLINK;
 
+    static readonly examples = examples;
+
     static readonly hasParameters = true;
 
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ): DataHourMC {
         const buffer = new CommandBinaryBuffer(data);
-
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
         const channels = buffer.getChannels();
-
-        date.setUTCHours(hour);
-
+        const channelList: Array<IChannelHours> = [];
         let value;
 
-        const channelList: Array<IChannelHours> = [];
+        date.setUTCHours(hour);
 
         channels.forEach(channelIndex => {
             // decode hour value for channel

@@ -1,15 +1,15 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
 /**
- * SetTime2000 command parameters
+ * SetTime2000Response command parameters
  *
  * @example
  * {status: 1}
  */
-interface IUplinkSetTime2000Parameters {
+interface ISetTime2000ResponseParameters {
     status: number
 }
 
@@ -17,26 +17,34 @@ interface IUplinkSetTime2000Parameters {
 const COMMAND_ID = 0x02;
 const COMMAND_BODY_SIZE = 1;
 
+const examples: TCommandExampleList = [
+    {
+        name: 'success',
+        parameters: {status: 1},
+        hex: {header: '02 01', body: '01'}
+    }
+];
+
 
 /**
  * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import SetTime2000 from 'jooby-codec/commands/uplink/SetTime2000';
+ * import SetTime2000Response from 'jooby-codec/commands/uplink/SetTime2000Response';
  *
- * // success
- * const parameters = {status: 1};
- * const command = new SetTime2000(parameters);
+ * const commandBody = new Uint8Array([0x01]);
+ * const command = SetTime2000Response.fromBytes(commandBody);
  *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 02 01 01
+ * console.log(command.parameters);
+ * // output:
+ * {status: 1}
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/SetTime2000.md#response)
  */
-class SetTime2000 extends Command {
-    constructor ( public parameters: IUplinkSetTime2000Parameters ) {
+class SetTime2000Response extends Command {
+    constructor ( public parameters: ISetTime2000ResponseParameters ) {
         super();
     }
 
@@ -44,6 +52,8 @@ class SetTime2000 extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = true;
 
@@ -55,7 +65,6 @@ class SetTime2000 extends Command {
         }
 
         const buffer = new BinaryBuffer(data, false);
-
         const parameters = {
             status: buffer.getUint8()
         };
@@ -64,7 +73,7 @@ class SetTime2000 extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new SetTime2000(parameters);
+        return new SetTime2000Response(parameters);
     }
 
     // returns full message - header with body
@@ -79,4 +88,4 @@ class SetTime2000 extends Command {
 }
 
 
-export default SetTime2000;
+export default SetTime2000Response;

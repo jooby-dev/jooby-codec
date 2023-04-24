@@ -1,11 +1,11 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHourAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
 /**
- * GetArchiveHoursMC command parameters
+ * ExAbsHourMC command parameters
  *
  * @example
  * // archive hours values from 001-03-10T12:00:00.000Z with 1-hour diff
@@ -38,15 +38,41 @@ const COMMAND_ID = 0x0a1f;
 // 4 + (4 channelList * (1 byte IPK + 5 bytes of hour value)) + (4 * 2 bytes of diff * 7 max hours diff)
 const COMMAND_BODY_MAX_SIZE = 84;
 
+const examples: TCommandExampleList = [
+    {
+        name: '1 channel at 2023.03.10 12:00:00 GMT',
+        parameters: {
+            startTime: 731764800,
+            hours: 1,
+            channelList: [
+                {
+                    pulseCoefficient: 100,
+                    index: 0,
+                    value: 342457,
+                    diff: [128]
+                }
+            ]
+        },
+        hex: {header: '1f 0a 0a', body: '2e 6a 0c 01 64 b9 f3 14 80 01'}
+    }
+];
+
 
 /**
- * Uplink command
+ * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import ExAbsHourMC from 'jooby-codec/commands/uplink/GetArchiveHoursMC';
+ * import ExAbsHourMC from 'jooby-codec/commands/uplink/ExAbsHourMC';
  *
- * const command = new ExAbsHourMC({
+ * const commandBody = new Uint8Array([
+ *     0x2e, 0x6a, 0x0c, 0x01, 0x64, 0xb9, 0xf3, 0x14, 0x80, 0x01
+ * ]);
+ * const command = ExAbsHourMC.fromBytes(commandBody);
+ *
+ * console.log(command.parameters);
+ * // output:
+ * {
  *     startTime: 731764800,
  *     hours: 1,
  *     channelList: [
@@ -57,12 +83,9 @@ const COMMAND_BODY_MAX_SIZE = 84;
  *             diff: [128]
  *         }
  *     ]
- * });
- *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 1a 0d 2f 97 0c 0f 83 01 0a 08 0a 08 0a 0c 0a
+ * }
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/ExAbsHourMC.md)
  */
 class ExAbsHourMC extends Command {
@@ -77,13 +100,14 @@ class ExAbsHourMC extends Command {
 
     static readonly directionType = UPLINK;
 
+    static readonly examples = examples;
+
     static readonly hasParameters = true;
 
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ): ExAbsHourMC {
         const buffer = new CommandBinaryBuffer(data);
-
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
         const channels = buffer.getChannels();

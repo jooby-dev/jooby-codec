@@ -11,7 +11,7 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/tim
  * // request for 2 hours archive values from channel #1 from 2023-12-23T12:00:00.000Z or 756648000 seconds since 2000 year
  * {channelList: [0], hours: 2, startTime: 756648000}
  */
-interface IDownlinkGetArchiveHoursMCParameters {
+interface IGetArchiveHoursMCParameters {
     /** amount of hours to retrieve */
     hours: number,
     startTime: TTime2000,
@@ -25,7 +25,7 @@ const COMMAND_BODY_SIZE = 4;
 
 
 /**
- * Downlink command
+ * Downlink command.
  *
  * @example
  * ```js
@@ -38,10 +38,11 @@ const COMMAND_BODY_SIZE = 4;
  * console.log(command.toHex());
  * // 1a 04 2f 97 0c 01
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveHoursMC.md#request)
  */
 class GetArchiveHoursMC extends Command {
-    constructor ( public parameters: IDownlinkGetArchiveHoursMCParameters ) {
+    constructor ( public parameters: IGetArchiveHoursMCParameters ) {
         super();
 
         this.parameters.channelList = this.parameters.channelList.sort((a, b) => a - b);
@@ -62,7 +63,6 @@ class GetArchiveHoursMC extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(data);
-
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
         const channelList = buffer.getChannels();
