@@ -55,10 +55,10 @@ const UNKNOWN_BATTERY_CAPACITY = 255;
 
 const examples: TCommandExampleList = [
     {
-        name: 'status for GAZM0NEW',
+        name: 'status for GASI3',
         parameters: {
             software: {type: 2, version: 10},
-            hardware: {type: hardwareTypes.GAZM0NEW, version: 1},
+            hardware: {type: hardwareTypes.GASI3, version: 1},
             data: {
                 batteryVoltage: {low: 3158, high: 3522},
                 batteryInternalResistance: 10034,
@@ -124,18 +124,16 @@ class Status extends Command {
         let statusData;
 
         switch ( hardware.type ) {
-            case hardwareTypes.GAZM3:
-            case hardwareTypes.GAZM0:
-            case hardwareTypes.GAZM0NEW:
+            case hardwareTypes.GASI1:
+            case hardwareTypes.GASI2:
+            case hardwareTypes.GASI3:
             case hardwareTypes.NOVATOR:
             case hardwareTypes.IMP2EU:
             case hardwareTypes.IMP4EU:
             case hardwareTypes.IMP2AS:
             case hardwareTypes.IMP2IN:
             case hardwareTypes.IMP4IN:
-            case hardwareTypes.GAZWLE:
-            case hardwareTypes.WATER:
-            case hardwareTypes.PLC2LORA:
+            case hardwareTypes.GASIC:
                 statusData = {
                     batteryVoltage: buffer.getBatteryVoltage(),
                     batteryInternalResistance: buffer.getUint16(false),
@@ -180,18 +178,16 @@ class Status extends Command {
         buffer.setUint8(hardware.version);
 
         switch ( hardware.type ) {
-            case hardwareTypes.GAZM3:
-            case hardwareTypes.GAZM0:
-            case hardwareTypes.GAZM0NEW:
+            case hardwareTypes.GASI1:
+            case hardwareTypes.GASI2:
+            case hardwareTypes.GASI3:
             case hardwareTypes.NOVATOR:
             case hardwareTypes.IMP2EU:
             case hardwareTypes.IMP4EU:
             case hardwareTypes.IMP2AS:
             case hardwareTypes.IMP2IN:
             case hardwareTypes.IMP4IN:
-            case hardwareTypes.GAZWLE:
-            case hardwareTypes.WATER:
-            case hardwareTypes.PLC2LORA:
+            case hardwareTypes.GASIC:
                 statusData = data as IGasStatus;
                 buffer.setBatteryVoltage(statusData.batteryVoltage);
 

@@ -144,7 +144,7 @@ const commandInstancesArray = [
                 isMagneticInfluence: false
             }
         },
-        hardwareTypes.GAZM0NEW
+        hardwareTypes.GASI3
     ),
     new DataDayMC({
         startTime: 756604800,
