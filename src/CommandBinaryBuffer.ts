@@ -3,6 +3,7 @@ import * as bitSet from './utils/bitSet.js';
 import {getDateFromSeconds, getSecondsFromDate, TTime2000} from './utils/time.js';
 import getHexFromBytes from './utils/getHexFromBytes.js';
 import getBytesFromHex from './utils/getBytesFromHex.js';
+import roundNumber from './utils/roundNumber.js';
 import * as hardwareTypes from './constants/hardwareTypes.js';
 import * as deviceParameters from './constants/deviceParameters.js';
 
@@ -1107,6 +1108,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     private getParameterBatteryDepassivationInfo (): IParameterBatteryDepassivationInfo {
+        console.log(this.data, this.offset);
         return {
             loadTime: this.getUint16(false),
             internalResistance: this.getUint16(false),
@@ -1115,9 +1117,9 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     private setParameterBatteryDepassivationInfo ( parameter: IParameterBatteryDepassivationInfo ): void {
-        this.setUint16(parameter.loadTime);
-        this.setUint16(parameter.internalResistance);
-        this.setUint16(parameter.lowVoltage);
+        this.setUint16(parameter.loadTime, false);
+        this.setUint16(parameter.internalResistance, false);
+        this.setUint16(parameter.lowVoltage, false);
     }
 
     private getParameterBatteryMinimalLoadTime (): IParameterBatteryMinimalLoadTime {
@@ -1127,7 +1129,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     private setParameterBatteryMinimalLoadTime ( parameter: IParameterBatteryMinimalLoadTime ): void {
-        this.setUint32(parameter.value);
+        this.setUint32(parameter.value, false);
     }
 
     private getParameterSerialNumber (): IParameterSerialNumber {
@@ -1150,16 +1152,16 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     private getParameterGeolocation (): IParameterGeolocation {
         return {
-            latitude: this.getUint32(),
-            longitude: this.getUint32(),
-            attitude: this.getUint16()
+            latitude: roundNumber(this.getFloat32()),
+            longitude: roundNumber(this.getFloat32()),
+            attitude: roundNumber(this.getUint16())
         };
     }
 
     private setParameterGeolocation ( parameter: IParameterGeolocation ): void {
-        this.setUint32(parameter.latitude);
-        this.setUint32(parameter.longitude);
-        this.setUint16(parameter.attitude);
+        this.setFloat32(roundNumber(parameter.latitude));
+        this.setFloat32(roundNumber(parameter.longitude));
+        this.setUint16(roundNumber(parameter.attitude));
     }
 
     getParameter (): IParameter {

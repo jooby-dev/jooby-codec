@@ -49,6 +49,22 @@ const examples: TCommandExampleList = [
         hex: {header: '03 02', body: '09 01'}
     },
     {
+        name: 'set battery depassivation info',
+        parameters: {
+            id: deviceParameters.BATTERY_DEPASSIVATION_INFO,
+            data: {loadTime: 100, internalResistance: 3222, lowVoltage: 233}
+        },
+        hex: {header: '03 07', body: '0a 00 64 0c 96 00 e9'}
+    },
+    {
+        name: 'set battery minimal load time to "100"',
+        parameters: {
+            id: deviceParameters.BATTERY_MINIMAL_LOAD_TIME,
+            data: {value: 100}
+        },
+        hex: {header: '03 05', body: '0b 00 00 00 64'}
+    },
+    {
         name: 'set spread factor and frequency for RX2 window',
         parameters: {
             id: deviceParameters.RX2_CONFIG,
@@ -68,6 +84,22 @@ const examples: TCommandExampleList = [
         name: 'enable sending absolute data',
         parameters: {id: deviceParameters.ABSOLUTE_DATA_STATUS, data: {status: 1}},
         hex: {header: '03 02', body: '18 01'}
+    },
+    {
+        name: 'set activation method to "ABP"',
+        parameters: {
+            id: deviceParameters.SERIAL_NUMBER,
+            data: {value: '1b 0a 3e dc 3e 22'}
+        },
+        hex: {header: '03 07', body: '19 1b 0a 3e dc 3e 22'}
+    },
+    {
+        name: 'set device geolocation',
+        parameters: {
+            id: deviceParameters.GEOLOCATION,
+            data: {latitude: 34.43, longitude: 43.43, attitude: 23}
+        },
+        hex: {header: '03 0b', body: '1a 52 b8 09 42 52 b8 2d 42 17 00'}
     },
     {
         name: 'set interval to send EXTRA FRAME',
