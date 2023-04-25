@@ -248,7 +248,7 @@ interface IParameterBatteryDepassivationInfo {
 }
 
 /**
- * Device activation method in LoRaWAN network.
+ * Device battery minimum required battery load time per day to prevent passivation.
  * deviceParameters.BATTERY_MINIMAL_LOAD_TIME = `11`.
  */
 interface IParameterBatteryMinimalLoadTime {
