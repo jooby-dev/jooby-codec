@@ -110,43 +110,6 @@ const downlinkCommands: TCommandList = [
 
 const uplinkCommands: TCommandList = [
     {
-        constructor: uplink.ExAbsCurrentMC,
-        name: 'uplink command 0xf1f:ExAbsCurrentMC',
-        parameters: {
-            channelList: [
-                {
-                    pulseCoefficient: 100,
-                    index: 3,
-                    value: 342
-                }
-            ]
-        },
-        hex: {
-            header: '1f 0f 04',
-            body: '08 64 d6 02',
-            lrc: 'f9'
-        }
-    },
-    {
-        constructor: uplink.ExAbsDayMC,
-        name: 'uplink command 0xb1f:ExAbsDayMC',
-        parameters: {
-            startTime: 731721600,
-            channelList: [
-                {
-                    pulseCoefficient: 100,
-                    index: 0,
-                    value: 342
-                }
-            ]
-        },
-        hex: {
-            header: '1f 0b 06',
-            body: '2e 6a 01 64 d6 02',
-            lrc: 'b2'
-        }
-    },
-    {
         constructor: uplink.CurrentMC,
         name: 'uplink command 0x18:CurrentMC',
         parameters: {
