@@ -29,24 +29,20 @@ const COMMAND_ID = 0x1b;
 const COMMAND_BODY_MAX_SIZE = 5104;
 
 const examples: TCommandExampleList = [
-    // todo: fix
-    // {
-    //     name: '1 channel at ???',
-    //     parameters: {
-    //         channelList: [
-    //             {
-    //                 index: 0,
-    //                 days: [
-    //                     {value: 234, day: 0},
-    //                     {value: 332, day: 1}
-    //                 ]
-    //             }
-    //         ],
-    //         date: '2001-03-10T12:00:00.000Z',
-    //         days: 2
-    //     },
-    //     hex: {header: '1b 04', body: '2f 97 0c 01 00 00'}
-    // }
+    {
+        name: 'get day values from 2001.03.10 12:00:00 GMT for 0 channel',
+        parameters: {
+            startTime: 2678227200,
+            days: 2,
+            channelList: [
+                {
+                    index: 0,
+                    dayList: [234, 332]
+                }
+            ]
+        },
+        hex: {header: '1b 08', body: 'a9 6d 01 02 ea 01 cc 02'}
+    }
 ];
 
 
@@ -58,13 +54,22 @@ const examples: TCommandExampleList = [
  * import GetArchiveDaysMCResponse from 'jooby-codec/commands/uplink/GetArchiveDaysMCResponse';
  *
  * const commandBody = new Uint8Array([
- *     ...
+ *     0xa9, 0x6d, 0x01, 0x02, 0xea, 0x01, 0xcc, 0x02
  * ]);
  * const command = GetArchiveDaysMCResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
- * ???
+ * {
+ *     startTime: 2678227200,
+ *     days: 2,
+ *     channelList: [
+ *         {
+ *             index: 0,
+ *             dayList: [234, 332]
+ *         }
+ *     ]
+ * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveDaysMC.md#response)
