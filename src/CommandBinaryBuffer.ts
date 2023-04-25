@@ -94,12 +94,12 @@ export interface IEventElimpStatus {
     isConnectionLost?: boolean
 }
 
-export interface IEventWaterStatus {
-    /** the battery voltage has dropped below the set threshold */
-    isBatteryLow?: boolean,
-    /** the device has detected a loss of connection to the server */
-    isConnectionLost?: boolean
-}
+// export interface IEventWaterStatus {
+//     /** the battery voltage has dropped below the set threshold */
+//     isBatteryLow?: boolean,
+//     /** the device has detected a loss of connection to the server */
+//     isConnectionLost?: boolean
+// }
 
 export interface IEvent4ChannelStatus {
     /** the battery voltage has dropped below the set threshold */
@@ -343,7 +343,7 @@ export type TEventStatus =
     IEventGasStatus |
     IEvent2ChannelStatus |
     IEventElimpStatus |
-    IEventWaterStatus |
+    //IEventWaterStatus |
     IEvent4ChannelStatus |
     IEventMtxStatus;
 
@@ -378,10 +378,10 @@ const INT12_SIZE = 3;
 const SERIAL_NUMBER_SIZE = 6;
 
 const GAS_HARDWARE_TYPES = [
-    hardwareTypes.GAZM0,
-    hardwareTypes.GAZM0NEW,
-    hardwareTypes.GAZM3,
-    hardwareTypes.GAZWLE
+    hardwareTypes.GASI2,
+    hardwareTypes.GASI3,
+    hardwareTypes.GASI1,
+    hardwareTypes.GASIC
 ];
 const TWO_CHANNELS_HARDWARE_TYPES = [
     hardwareTypes.IMP2AS,
@@ -392,9 +392,9 @@ const TWO_CHANNELS_HARDWARE_TYPES = [
 const ELIMP_HARDWARE_TYPES = [
     hardwareTypes.ELIMP
 ];
-const WATER_HARDWARE_TYPES = [
-    hardwareTypes.WATER
-];
+// const WATER_HARDWARE_TYPES = [
+//     hardwareTypes.WATER
+// ];
 const FOUR_CHANNELS_HARDWARE_TYPES = [
     hardwareTypes.IMP4EU,
     hardwareTypes.IMP4IN
@@ -420,10 +420,10 @@ const twoChannelBitMask = {
 const elimpBitMask = {
     isConnectionLost: 2 ** 3
 };
-const waterBitMask = {
-    isBatteryLow: 2 ** 0,
-    isConnectionLost: 2 ** 3
-};
+// const waterBitMask = {
+//     isBatteryLow: 2 ** 0,
+//     isConnectionLost: 2 ** 3
+// };
 const fourChannelBitMask = {
     isBatteryLow: 2 ** 0,
     isConnectionLost: 2 ** 3,
@@ -922,8 +922,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
             status = bitSet.toObject(twoChannelBitMask, this.getUint8());
         } else if ( ELIMP_HARDWARE_TYPES.includes(hardwareType) ) {
             status = bitSet.toObject(elimpBitMask, this.getUint8());
-        } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
-            status = bitSet.toObject(waterBitMask, this.getUint8());
+        // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
+        //     status = bitSet.toObject(waterBitMask, this.getUint8());
         } else if ( FOUR_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
             status = bitSet.toObject(fourChannelBitMask, this.getExtendedValue());
         } else if ( MTX_HARDWARE_TYPES.includes(hardwareType) ) {
@@ -942,8 +942,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
             this.setUint8(bitSet.fromObject(twoChannelBitMask, status as bitSet.TBooleanObject));
         } else if ( ELIMP_HARDWARE_TYPES.includes(hardwareType) ) {
             this.setUint8(bitSet.fromObject(elimpBitMask, status as bitSet.TBooleanObject));
-        } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
-            this.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
+        // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
+        //     this.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
         } else if ( FOUR_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
             this.setExtendedValue(bitSet.fromObject(fourChannelBitMask, status as bitSet.TBooleanObject));
         } else if ( MTX_HARDWARE_TYPES.includes(hardwareType) ) {

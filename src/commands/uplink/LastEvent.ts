@@ -22,7 +22,7 @@ const COMMAND_ID = 0x60;
 
 const examples: TCommandExampleList = [
     {
-        name: 'status for GAZM0NEW',
+        name: 'status for GASI3',
         parameters: {
             sequenceNumber: 32,
             status: {
@@ -32,7 +32,7 @@ const examples: TCommandExampleList = [
                 isMagneticInfluence: false
             }
         },
-        hardwareType: hardwareTypes.GAZM0NEW,
+        hardwareType: hardwareTypes.GASI3,
         hex: {header: '62', body: '20 09'}
     },
     {
