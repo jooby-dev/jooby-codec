@@ -235,20 +235,6 @@ interface IParameterRx2Config {
 }
 
 /**
- * Device activation method in LoRaWAN network.
- * deviceParameters.ACTIVATION_METHOD = `9`.
- */
-interface IParameterActivationMethod {
-    /**
-     * `0` - OTAA, by default
-     * `1` - ABP
-     *
-     * @see https://www.thethingsindustries.com/docs/devices/abp-vs-otaa/
-     */
-    type: number
-}
-
-/**
  * Device battery depassivation information.
  * deviceParameters.BATTERY_DEPASSIVATION_INFO = `10`.
  */
