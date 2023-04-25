@@ -37,10 +37,7 @@ const examples: TCommandExampleList = [
             channelList: [
                 {
                     index: 0,
-                    dayList: [
-                        234,
-                        332
-                    ]
+                    dayList: [234, 332]
                 }
             ]
         },
@@ -69,10 +66,7 @@ const examples: TCommandExampleList = [
  *     channelList: [
  *         {
  *             index: 0,
- *             dayList: [
- *                 234,
- *                 332
- *             ]
+ *             dayList: [234, 332]
  *         }
  *     ]
  * }
