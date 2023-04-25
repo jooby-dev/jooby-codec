@@ -158,6 +158,19 @@ class BinaryBuffer {
         return result;
     }
 
+    setFloat32 ( value: number, isLittleEndian = this.isLittleEndian ): void {
+        createView(this, INT32_SIZE).setFloat32(0, value, isLittleEndian);
+        this.offset += INT32_SIZE;
+    }
+
+    getFloat32 ( isLittleEndian = this.isLittleEndian ): number {
+        const result = createView(this, INT32_SIZE).getFloat32(0, isLittleEndian);
+
+        this.offset += INT32_SIZE;
+
+        return result;
+    }
+
     /**
      * Get bytes from start to offset.
      *
