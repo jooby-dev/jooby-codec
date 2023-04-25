@@ -244,7 +244,7 @@ interface IParameterBatteryDepassivationInfo {
     loadTime: number,
     /** battery internal resistance, in mΩ */
     internalResistance: number,
-    /** batter low voltage, in mV  */
+    /** battery low voltage, in mV  */
     lowVoltage: number
 }
 
@@ -1108,7 +1108,6 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     private getParameterBatteryDepassivationInfo (): IParameterBatteryDepassivationInfo {
-        console.log(this.data, this.offset);
         return {
             loadTime: this.getUint16(false),
             internalResistance: this.getUint16(false),
@@ -1133,21 +1132,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     private getParameterSerialNumber (): IParameterSerialNumber {
-        const bytes = [];
-
-        for ( let i = 0; i < SERIAL_NUMBER_SIZE; ++i ) {
-            bytes.push(this.getUint8());
-        }
-
         return {
-            value: getHexFromBytes(new Uint8Array(bytes))
+            value: getHexFromBytes(this.toUint8Array().slice(this.offset, this.offset + SERIAL_NUMBER_SIZE))
         };
     }
 
     private setParameterSerialNumber ( parameter: IParameterSerialNumber ): void {
-        const bytes = getBytesFromHex(parameter.value);
-
-        bytes.forEach(byte => this.setUint8(byte));
+        getBytesFromHex(parameter.value).forEach(byte => this.setUint8(byte));
     }
 
     private getParameterGeolocation (): IParameterGeolocation {
