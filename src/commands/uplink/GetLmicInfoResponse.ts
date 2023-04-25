@@ -16,9 +16,9 @@ interface ILmicCapabilities extends bitSet.TBooleanObject {
 }
 
 /**
- * GetLmicInfo command parameters
+ * GetLmicInfoResponse command parameters
  */
-interface IUplinkGetLmicInfoParameters {
+interface IGetLmicInfoResponseParameters {
     /* device supported features */
     capabilities: ILmicCapabilities,
     version: number
@@ -62,27 +62,28 @@ const examples: TCommandExampleList = [
 /**
  * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import GetLmicInfo from 'jooby-codec/commands/uplink/GetLmicInfo';
+ * import GetLmicInfoResponse from 'jooby-codec/commands/uplink/GetLmicInfoResponse';
  *
- * const parameters = {
- *     version: 8,
+ * const commandBody = new Uint8Array([0x01, 0x05]);
+ * const command = GetLmicInfoResponse.fromBytes(commandBody);
+ *
+ * console.log(command.parameters);
+ * // output:
+ * {
+ *     version: 5,
  *     capabilities: {
- *         isMulticastSupported: false,
- *         isFragmentedDataSupported: true
+ *         isMulticastSupported: true,
+ *         isFragmentedDataSupported: false
  *     }
- * };
- * const command = new GetLmicInfo(parameters);
- *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 1f 02 02 02 08
+ * }
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetLmicInfo.md#response)
  */
-class GetLmicInfo extends Command {
-    constructor ( public parameters: IUplinkGetLmicInfoParameters ) {
+class GetLmicInfoResponse extends Command {
+    constructor ( public parameters: IGetLmicInfoResponseParameters ) {
         super();
     }
 
@@ -98,8 +99,6 @@ class GetLmicInfo extends Command {
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
-        console.log({data});
-
         if ( data.byteLength !== COMMAND_BODY_SIZE ) {
             throw new Error(`${this.getName()}. Wrong buffer size: ${data.byteLength}.`);
         }
@@ -113,7 +112,7 @@ class GetLmicInfo extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new GetLmicInfo({capabilities, version});
+        return new GetLmicInfoResponse({capabilities, version});
     }
 
     // returns full message - header with body
@@ -129,4 +128,4 @@ class GetLmicInfo extends Command {
 }
 
 
-export default GetLmicInfo;
+export default GetLmicInfoResponse;

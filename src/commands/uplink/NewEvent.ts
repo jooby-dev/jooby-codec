@@ -169,18 +169,22 @@ const setDeviceId = ( buffer: CommandBinaryBuffer, value: string ): void => {
 /**
  * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import {constants} from 'jooby-codec'
  * import NewEvent from 'jooby-codec/commands/uplink/NewEvent';
  *
- * // `MAGNET_ON` event at 2023-04-05 13:17:20 GMT
- * const parameters = {id: constants.events.MAGNET_ON, sequenceNumber: 3, data: {time: 734015840}};
- * const command = new NewEvent(parameters);
+ * const commandBody = new Uint8Array([
+ *     0x05, 0x02, 0x0c, 0xec
+ * ]);
+ * const command = NewEvent.fromBytes(commandBody);
  *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 15 06 01 03 2b c0 31 60
+ * console.log(command.parameters);
+ * // output:
+ * {
+ *     id: 5,
+ *     sequenceNumber: 2,
+ *     data: {voltage: 3308}
+ * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/NewEvent.md)

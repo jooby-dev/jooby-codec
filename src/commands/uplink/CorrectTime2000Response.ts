@@ -1,15 +1,15 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
 /**
- * CorrectTime2000 command parameters
+ * CorrectTime2000Response command parameters
  *
  * @example
  * {status: 1}
  */
-interface IUplinkCorrectTime2000Parameters {
+interface ICorrectTime2000ResponseParameters {
     status: number
 }
 
@@ -17,26 +17,34 @@ interface IUplinkCorrectTime2000Parameters {
 const COMMAND_ID = 0x0c;
 const COMMAND_BODY_SIZE = 1;
 
+const examples: TCommandExampleList = [
+    {
+        name: 'failure',
+        parameters: {status: 0},
+        hex: {header: '0c 01', body: '00'}
+    }
+];
 
 /**
  * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import CorrectTime2000 from 'jooby-codec/commands/uplink/CorrectTime2000';
+ * import CorrectTime2000Response from 'jooby-codec/commands/uplink/CorrectTime2000Response';
  *
  * // failure
- * const parameters = {status: 0};
- * const command = new CorrectTime2000(parameters);
+ * const commandBody = new Uint8Array([0x00]);
+ * const command = CorrectTime2000Response.fromBytes(commandBody);
  *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 0c 01 00
+ * console.log(command.parameters);
+ * // output:
+ * {status: 0}
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/CorrectTime2000.md#response)
  */
-class CorrectTime2000 extends Command {
-    constructor ( public parameters: IUplinkCorrectTime2000Parameters ) {
+class CorrectTime2000Response extends Command {
+    constructor ( public parameters: ICorrectTime2000ResponseParameters ) {
         super();
     }
 
@@ -44,6 +52,8 @@ class CorrectTime2000 extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = true;
 
@@ -55,7 +65,6 @@ class CorrectTime2000 extends Command {
         }
 
         const buffer = new BinaryBuffer(data, false);
-
         const parameters = {
             status: buffer.getUint8()
         };
@@ -64,7 +73,7 @@ class CorrectTime2000 extends Command {
             throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
         }
 
-        return new CorrectTime2000(parameters);
+        return new CorrectTime2000Response(parameters);
     }
 
     // returns full message - header with body
@@ -79,4 +88,4 @@ class CorrectTime2000 extends Command {
 }
 
 
-export default CorrectTime2000;
+export default CorrectTime2000Response;

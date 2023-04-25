@@ -7,7 +7,7 @@ const COMMAND_ID = 0x0f1f;
 
 
 /**
- * Downlink command
+ * Downlink command.
  *
  * @example
  * ```js
@@ -19,6 +19,7 @@ const COMMAND_ID = 0x0f1f;
  * console.log(command.toHex());
  * // 1f 0f 00
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsCurrentMC.md#request)
  */
 class GetExAbsCurrentMC extends Command {

@@ -7,7 +7,7 @@ import * as deviceParameters from '../../constants/deviceParameters.js';
 /**
  * GetParameter command parameters
  */
-interface IDownlinkGetParameterParameters {
+interface IGetParameterParameters {
     /**
      * Parameter id - one of `constants/deviceParameters`.
      */
@@ -46,10 +46,11 @@ const examples: TCommandExampleList = [
  * console.log(command.toHex());
  * // 04 01 17
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetParameter.md#request)
  */
 class GetParameter extends Command {
-    constructor ( public parameters: IDownlinkGetParameterParameters ) {
+    constructor ( public parameters: IGetParameterParameters ) {
         super();
     }
 

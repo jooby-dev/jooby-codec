@@ -37,9 +37,9 @@ interface IGasStatus extends IStatusBase {
 }
 
 /**
- * GetStatus command parameters
+ * Status command parameters
  */
-interface IGetStatusParameters {
+interface IStatusParameters {
     software: IProduct,
     hardware: IProduct,
     data: IStatusBase
@@ -75,36 +75,34 @@ const examples: TCommandExampleList = [
 /**
  * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import GetStatus from 'jooby-codec/commands/uplink/GetStatus';
+ * import Status from 'jooby-codec/commands/uplink/Status';
  *
- * const parameters = {
+ * const commandBody = new Uint8Array([
+ *     0x02, 0x0a, 0x03, 0x01, 0xc5, 0x6d, 0xc2, 0x27, 0x32, 0x0e, 0x68, 0x22
+ * ]);
+ * const command = Status.fromBytes(commandBody);
+ *
+ * console.log(command.parameters);
+ * // output:
+ * {
  *     software: {type: 2, version: 10},
  *     hardware: {type: 3, version: 1},
  *     data: {
- *         batteryVoltage: {
- *             low: 3158,
- *             high: 3522
- *         },
+ *         batteryVoltage: {low: 3158, high: 3522},
  *         batteryInternalResistance: 10034,
  *         temperature: 14,
  *         remainingBatteryCapacity: 41,
  *         lastEventSequenceNumber: 34
  *     }
- * };
- *
- * const command = new GetStatus(parameters);
- *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 14 0c 02 0a 03 01 c5 6d c2 27 32 0e 68 22
+ * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetStatus.md#response)
  */
-class GetStatus extends Command {
-    constructor ( public parameters: IGetStatusParameters ) {
+class Status extends Command {
+    constructor ( public parameters: IStatusParameters ) {
         super();
     }
 
@@ -119,11 +117,10 @@ class GetStatus extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ): GetStatus {
+    static fromBytes ( data: Uint8Array ): Status {
         const buffer = new CommandBinaryBuffer(data);
         const software = {type: buffer.getUint8(), version: buffer.getUint8()};
         const hardware = {type: buffer.getUint8(), version: buffer.getUint8()};
-
         let statusData;
 
         switch ( hardware.type ) {
@@ -168,7 +165,7 @@ class GetStatus extends Command {
                 throw new Error(`${this.getId()}: hardware type ${hardware.type} is not supported`);
         }
 
-        return new GetStatus({software, hardware, data: statusData});
+        return new Status({software, hardware, data: statusData});
     }
 
     // returns full message - header with body
@@ -219,7 +216,7 @@ class GetStatus extends Command {
             case hardwareTypes.MTXLORA:
             case hardwareTypes.ELIMP:
             default:
-                throw new Error(`${GetStatus.getId()}: hardware type ${hardware.type} is not supported`);
+                throw new Error(`${Status.getId()}: hardware type ${hardware.type} is not supported`);
         }
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
@@ -227,4 +224,4 @@ class GetStatus extends Command {
 }
 
 
-export default GetStatus;
+export default Status;

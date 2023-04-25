@@ -25,6 +25,7 @@ const examples: TCommandExampleList = [
  * console.log(command.toHex());
  * // 18 00
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetCurrentMC.md#request)
  */
 class GetCurrentMC extends Command {

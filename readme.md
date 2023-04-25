@@ -26,7 +26,7 @@ console.log(commands);
 // all uplink commands
 console.log(commands.uplink);
 // one particular command
-console.log(commands.uplink.GetCurrentMC);
+console.log(commands.uplink.CurrentMC);
 
 // output main namespace for work with messages
 console.log(message);

@@ -11,7 +11,7 @@ import {TTime2000} from '../../utils/time.js';
  * // request 4 events from 2023-04-03T14:01:17.000Z
  * {startTime: 733845677, events: 4}
  */
-interface IDownlinkGetArchiveEventsParameters {
+interface IGetArchiveEventsParameters {
     startTime: TTime2000,
     events: number
 }
@@ -22,7 +22,7 @@ const COMMAND_BODY_SIZE = 5;
 
 const examples: TCommandExampleList = [
     {
-        name: 'request 4 events from 2023-04-03T14:01:17.000Z',
+        name: 'request 4 events from 2023.04.03 14:01:17 GMT',
         parameters: {startTime: 733845677, events: 4},
         hex: {header: '0b 05', body: '2b bd 98 ad 04'}
     }
@@ -42,10 +42,11 @@ const examples: TCommandExampleList = [
  * console.log(command.toHex());
  * // 0b 05 2b bd 98 ad 04
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveEvents.md#request)
  */
 class GetArchiveEvents extends Command {
-    constructor ( public parameters: IDownlinkGetArchiveEventsParameters ) {
+    constructor ( public parameters: IGetArchiveEventsParameters ) {
         super();
     }
 

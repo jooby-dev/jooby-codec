@@ -30,7 +30,7 @@ const downlinkMessages: TMessageList = [
 
 const uplinkMessages: TMessageList = [
     {
-        // SetTime2000 + GetCurrentMC + DataDayMC + LRC
+        // SetTime2000Response + CurrentMC + DataDayMC + LRC
         hex: '02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 0f 83 01 08 0a 0c  ef',
         commands: []
     }

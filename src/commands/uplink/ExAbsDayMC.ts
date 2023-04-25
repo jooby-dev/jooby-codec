@@ -1,5 +1,5 @@
 import Command from '../../Command.js';
-import GetCurrentMC from './GetCurrentMC.js';
+import CurrentMC from './CurrentMC.js';
 import CommandBinaryBuffer, {IChannelAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {getSecondsFromDate, TTime2000} from '../../utils/time.js';
@@ -18,7 +18,7 @@ const COMMAND_ID = 0x0b1f;
 const COMMAND_BODY_MAX_SIZE = 89;
 
 
-class ExAbsDayMC extends GetCurrentMC {
+class ExAbsDayMC extends CurrentMC {
     constructor ( public parameters: IExAbsDayMCParameters ) {
         super(parameters);
     }

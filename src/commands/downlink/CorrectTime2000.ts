@@ -14,7 +14,7 @@ const COMMAND_BODY_SIZE = 2;
  * // 120 seconds to the past
  * {sequenceNumber: 45, seconds: -120}
  */
-interface IDownlinkCorrectTime2000Parameters {
+interface ICorrectTime2000Parameters {
     /** unique time manipulation operation number */
     sequenceNumber: number,
     /**
@@ -40,10 +40,11 @@ interface IDownlinkCorrectTime2000Parameters {
  * console.log(command.toHex());
  * // 0c 02 2d 88
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/CorrectTime2000.md#request)
  */
 class CorrectTime2000 extends Command {
-    constructor ( public parameters: IDownlinkCorrectTime2000Parameters ) {
+    constructor ( public parameters: ICorrectTime2000Parameters ) {
         super();
     }
 
