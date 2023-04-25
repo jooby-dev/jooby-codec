@@ -1132,8 +1132,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     private getParameterSerialNumber (): IParameterSerialNumber {
+        const {offset} = this;
+
+        this.offset += SERIAL_NUMBER_SIZE;
+
         return {
-            value: getHexFromBytes(this.toUint8Array().slice(this.offset, this.offset + SERIAL_NUMBER_SIZE))
+            value: getHexFromBytes(this.toUint8Array().slice(offset, this.offset))
         };
     }
 
