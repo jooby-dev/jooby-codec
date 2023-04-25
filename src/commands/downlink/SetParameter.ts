@@ -110,6 +110,7 @@ const examples: TCommandExampleList = [
  * console.log(command.toHex());
  * // 03 0a 17 00 00 00 cc 82 00 00 07 e7
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/downlink/SetParameter.md)
  */
 class SetParameter extends Command {

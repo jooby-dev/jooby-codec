@@ -45,21 +45,26 @@ const examples: TCommandExampleList = [
 /**
  * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import GetParameter from 'jooby-codec/commands/uplink/GetParameter';
- * import {constants} from 'jooby-codec';
+ * import GetParameterResponse from 'jooby-codec/commands/uplink/GetParameterResponse';
  *
- * const parameters = [eventList: {id: constants.events.MAGNET_ON, sequenceNumber: 1, seconds: 734015840}];
- * const command = new GetParameter(parameters);
+ * const commandBody = new Uint8Array([
+ *     0x1d, 0x01, 0x00, 0x00, 0x01, 0x92, 0x80, 0x00, 0x00, 0x07, 0xf0
+ * ]);
+ * const command = GetParameterResponse.fromBytes(commandBody);
  *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 0b 06 2b c0 31 60 01 01
+ * console.log(command.parameters);
+ * // output:
+ * {
+ *     id: 29,
+ *     data: {value: 2032, meterValue: 402, pulseCoefficient: 1000, channel: 1}
+ * }
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetParameter.md#response)
  */
-class GetParameter extends Command {
+class GetParameterResponse extends Command {
     constructor ( public parameters: IParameter ) {
         super();
     }
@@ -78,7 +83,7 @@ class GetParameter extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetParameter(buffer.getParameter());
+        return new GetParameterResponse(buffer.getParameter());
     }
 
     // returns full message - header with body
@@ -92,4 +97,4 @@ class GetParameter extends Command {
 }
 
 
-export default GetParameter;
+export default GetParameterResponse;

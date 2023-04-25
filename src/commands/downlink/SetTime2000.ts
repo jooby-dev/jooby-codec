@@ -10,7 +10,7 @@ import {DOWNLINK} from '../../constants/directions.js';
  * // time: 2023-04-03T14:01:17.000Z
  * {sequenceNumber: 77, seconds: 733845677}
  */
-interface IDownlinkSetTime2000Parameters {
+interface ISetTime2000Parameters {
     /** unique time manipulation operation number */
     sequenceNumber: number,
     /** seconds */
@@ -36,10 +36,11 @@ const COMMAND_BODY_SIZE = 5;
  * console.log(command.toHex());
  * // 02 05 4e 00 01 e2 40
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/SetTime2000.md#request)
  */
 class SetTime2000 extends Command {
-    constructor ( public parameters: IDownlinkSetTime2000Parameters ) {
+    constructor ( public parameters: ISetTime2000Parameters ) {
         super();
     }
 

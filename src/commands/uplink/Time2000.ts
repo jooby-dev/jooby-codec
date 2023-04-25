@@ -1,4 +1,4 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {TTime2000} from '../../utils/time.js';
@@ -21,22 +21,32 @@ interface ITime2000Parameters {
 const COMMAND_ID = 0x09;
 const COMMAND_BODY_SIZE = 5;
 
+const examples: TCommandExampleList = [
+    {
+        name: '',
+        // time: 2023-04-03T14:01:17.000Z
+        parameters: {sequenceNumber: 77, time: 733845677},
+        hex: {header: '09 05', body: '4d 2b bd 98 ad'}
+    }
+];
+
 
 /**
  * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import Time2000 from 'jooby-codec/commands/uplink/Time2000';
+ * import CorrectTime2000Response from 'jooby-codec/commands/uplink/CorrectTime2000Response';
  *
- * // time: 2023-04-03T14:01:17.000Z
- * const parameters = {sequenceNumber: 77, time: 733845677};
- * const command = new Time2000(parameters);
+ * // failure
+ * const commandBody = new Uint8Array([0x4d, 0x2b, 0xbd, 0x98, 0xad]);
+ * const command = CorrectTime2000Response.fromBytes(commandBody);
  *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 09 05 4d 2b bd 98 ad
+ * console.log(command.parameters);
+ * // output:
+ * {sequenceNumber: 77, time: 733845677}
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/Time2000.md)
  */
 class Time2000 extends Command {
@@ -48,6 +58,8 @@ class Time2000 extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = true;
 

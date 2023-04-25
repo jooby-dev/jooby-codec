@@ -18,6 +18,7 @@ const COMMAND_ID = 0x19;
  * console.log(command.toHex());
  * // 19 00
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/SoftRestart.md#request)
  */
 class SoftRestart extends Command {

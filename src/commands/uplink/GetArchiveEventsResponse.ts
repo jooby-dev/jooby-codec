@@ -12,7 +12,7 @@ interface IArchiveEvent {
 }
 
 /**
- * GetArchiveEvents command parameters
+ * GetArchiveEventsResponse command parameters
  *
  * @example
  * ```js
@@ -21,7 +21,7 @@ interface IArchiveEvent {
  * // one `MAGNET_ON` event at 2023-04-05 13:17:20 GMT
  * [events: {id: constants.events.MAGNET_ON, sequenceNumber: 1, time: 734015840}]
  */
-interface IUplinkGetArchiveEventsParameters {
+interface IGetArchiveEventsResponseParameters {
     eventList: Array<IArchiveEvent>
 }
 
@@ -33,7 +33,7 @@ const COMMAND_BODY_MIN_SIZE = 4 + 1 + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: '1 event - "MAGNET_ON" at 2023-04-05 13:17:20 GMT',
+        name: '1 event "MAGNET_ON" at 2023.04.05 13:17:20 GMT',
         parameters: {
             eventList: [
                 {
@@ -46,7 +46,7 @@ const examples: TCommandExampleList = [
         hex: {header: '0b 06', body: '2b c0 31 60 01 01'}
     },
     {
-        name: '4 events example',
+        name: '4 events',
         parameters: {
             eventList: [
                 {
@@ -92,22 +92,28 @@ const setEvent = ( buffer: CommandBinaryBuffer, event: IArchiveEvent ): void => 
 /**
  * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import GetArchiveEvents from 'jooby-codec/commands/uplink/GetArchiveEvents';
- * import {constants} from 'jooby-codec';
+ * import GetArchiveEventsResponse from 'jooby-codec/commands/uplink/GetArchiveEventsResponse';
  *
- * const parameters = [eventList: {id: constants.events.MAGNET_ON, sequenceNumber: 1, time: 734015840}];
- * const command = new GetArchiveEvents(parameters);
+ * const commandBody = new Uint8Array([
+ *     0x2b, 0xc0, 0x31, 0x60, 0x01, 0x01
+ * ]);
+ * const command = GetArchiveEventsResponse.fromBytes(commandBody);
  *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 0b 06 2b c0 31 60 01 01
+ * console.log(command.parameters);
+ * // output:
+ * {
+ *     eventList: [
+ *         {time: 734015840, id: 1, sequenceNumber: 1}
+ *     ]
+ * }
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveEvents.md#response)
  */
-class GetArchiveEvents extends Command {
-    constructor ( public parameters: IUplinkGetArchiveEventsParameters ) {
+class GetArchiveEventsResponse extends Command {
+    constructor ( public parameters: IGetArchiveEventsResponseParameters ) {
         super();
     }
 
@@ -130,7 +136,7 @@ class GetArchiveEvents extends Command {
             eventList.push(getEvent(buffer));
         }
 
-        return new GetArchiveEvents({eventList});
+        return new GetArchiveEventsResponse({eventList});
     }
 
     // returns full message - header with body
@@ -145,4 +151,4 @@ class GetArchiveEvents extends Command {
 }
 
 
-export default GetArchiveEvents;
+export default GetArchiveEventsResponse;

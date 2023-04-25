@@ -3,9 +3,9 @@ import CommandBinaryBuffer, {IChannelValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 /**
- * GetCurrentMC command parameters.
+ * CurrentMC command parameters.
  */
-export interface IGetCurrentMCParameters {
+export interface ICurrentMCParameters {
     channelList: Array<IChannelValue>
 }
 
@@ -52,28 +52,29 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command
+ * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import GetCurrentMC from 'jooby-codec/commands/uplink/GetCurrentMC';
+ * import CurrentMC from 'jooby-codec/commands/uplink/CurrentMC';
  *
- * const parameters = {
+ * // failure
+ * const commandBody = new Uint8Array([0x01, 0x32]);
+ * const command = CurrentMC.fromBytes(commandBody);
+ *
+ * console.log(command.parameters);
+ * // output:
+ * {
  *     channelList: [
  *         {index: 1, value: 50}
  *     ]
- * };
- * const command = new GetCurrentMC(parameters);
- *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 18 02 01 32
+ * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetCurrentMC.md#response)
  */
-class GetCurrentMC extends Command {
-    constructor ( public parameters: IGetCurrentMCParameters ) {
+class CurrentMC extends Command {
+    constructor ( public parameters: ICurrentMCParameters ) {
         super();
 
         this.parameters.channelList = this.parameters.channelList.sort((a: IChannelValue, b: IChannelValue) => a.index - b.index);
@@ -90,11 +91,9 @@ class GetCurrentMC extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ): GetCurrentMC {
-        const parameters: IGetCurrentMCParameters = {channelList: []};
-
+    static fromBytes ( data: Uint8Array ): CurrentMC {
+        const parameters: ICurrentMCParameters = {channelList: []};
         const buffer = new CommandBinaryBuffer(data);
-
         const channelList = buffer.getChannels();
 
         parameters.channelList = channelList.map(channelIndex => ({
@@ -102,7 +101,7 @@ class GetCurrentMC extends Command {
             index: channelIndex
         }) as IChannelValue);
 
-        return new GetCurrentMC(parameters);
+        return new CurrentMC(parameters);
     }
 
     // returns full message - header with body
@@ -118,4 +117,4 @@ class GetCurrentMC extends Command {
 }
 
 
-export default GetCurrentMC;
+export default CurrentMC;
