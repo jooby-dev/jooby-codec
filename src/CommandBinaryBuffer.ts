@@ -647,7 +647,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         const channelList: Array<number> = [];
 
         let extended = true;
-        let channelIndex = 0;
+        let channelIndex = 1;
 
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         while ( extended ) {
@@ -683,16 +683,17 @@ class CommandBinaryBuffer extends BinaryBuffer {
         // sort channels by index
         channelList.sort((a, b) => a.index - b.index);
 
-        // find max channel to detect amount of bytes
+        // find max channel index from 0 to detect amount of bytes
         const maxChannel = Math.max(...channelList.map(({index}) => index));
-        const size = (maxChannel - (maxChannel % LAST_BIT_INDEX)) / LAST_BIT_INDEX;
+        const size = (maxChannel - (maxChannel % 8)) / 8;
         const data = new Array(size + 1).fill(0);
 
         let byte = 0;
 
         data.forEach((_, byteIndex) => {
             // max channel index in one byte - 6
-            let channelIndex = byteIndex * LAST_BIT_INDEX;
+
+            let channelIndex = (byteIndex * LAST_BIT_INDEX) + 1;
             const maxChannelIndex = channelIndex + LAST_BIT_INDEX;
 
             while ( channelIndex < maxChannelIndex ) {
@@ -701,7 +702,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
                 if ( channel !== undefined ) {
                     // set channel bit
-                    byte |= 1 << (channel.index % LAST_BIT_INDEX);
+                    byte |= 1 << ((channel.index - 1) % LAST_BIT_INDEX);
                 }
 
                 ++channelIndex;

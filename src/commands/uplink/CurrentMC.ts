@@ -20,25 +20,25 @@ const examples: TCommandExampleList = [
         name: '4 first channels',
         parameters: {
             channelList: [
-                {index: 0, value: 131},
-                {index: 1, value: 8},
-                {index: 2, value: 10},
-                {index: 3, value: 12}
+                {index: 1, value: 131},
+                {index: 2, value: 8},
+                {index: 3, value: 10},
+                {index: 4, value: 12}
             ]
         },
-        hex: {header: '18 06', body: '0f 8301 08 0a 0c'}
+        hex: {header: '18 06', body: '0f 83 01 08 0a 0c'}
     },
     {
-        name: 'single channel #2',
+        name: 'single channel 2',
         parameters: {
             channelList: [
                 {index: 2, value: 50}
             ]
         },
-        hex: {header: '18 02', body: '04 32'}
+        hex: {header: '18 02', body: '02 32'}
     },
     {
-        name: 'channels #5 #6 #12',
+        name: 'channels 5, 6, 12',
         parameters: {
             channelList: [
                 {index: 5, value: 8146},
@@ -46,7 +46,7 @@ const examples: TCommandExampleList = [
                 {index: 12, value: 75}
             ]
         },
-        hex: {header: '18 07', body: 'e020 d23f a401 4b'}
+        hex: {header: '18 07', body: 'b0 10 d2 3f a4 01 4b'}
     }
 ];
 
@@ -58,7 +58,6 @@ const examples: TCommandExampleList = [
  * ```js
  * import CurrentMC from 'jooby-codec/commands/uplink/CurrentMC';
  *
- * // failure
  * const commandBody = new Uint8Array([0x01, 0x32]);
  * const command = CurrentMC.fromBytes(commandBody);
  *

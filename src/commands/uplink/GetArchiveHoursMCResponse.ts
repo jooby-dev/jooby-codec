@@ -6,14 +6,6 @@ import {TTime2000} from '../../utils/time.js';
 
 /**
  * GetArchiveHoursMCResponse command parameters
- *
- * @example
- * // archive hours values from 001-03-10T12:00:00.000Z with 1-hour diff
- * {
- *     channelList: [{value: 101, index: 0, diff: [1]}],
- *     startTime: 756648000,
- *     hours: 1
- * }
  */
 interface IGetArchiveHoursMCResponseParameters {
     channelList: Array<IChannelHours>,
@@ -36,10 +28,10 @@ const examples: TCommandExampleList = [
             startTime: 756648000,
             hours: 1,
             channelList: [
-                {index: 0, value: 131, diff: [10]},
-                {index: 1, value: 8, diff: [10]},
+                {index: 1, value: 131, diff: [10]},
                 {index: 2, value: 8, diff: [10]},
-                {index: 3, value: 12, diff: [10]}
+                {index: 3, value: 8, diff: [10]},
+                {index: 4, value: 12, diff: [10]}
             ]
         },
         hex: {header: '1a 0d', body: '2f 97 0c 0f 83 01 0a 08 0a 08 0a 0c 0a'}
@@ -65,10 +57,10 @@ const examples: TCommandExampleList = [
  *     startTime: 756648000,
  *     hours: 1,
  *     channelList: [
- *         {index: 0, value: 131, diff: [10]},
- *         {index: 1, value: 8, diff: [10]},
+ *         {index: 1, value: 131, diff: [10]},
  *         {index: 2, value: 8, diff: [10]},
- *         {index: 3, value: 12, diff: [10]}
+ *         {index: 3, value: 8, diff: [10]},
+ *         {index: 4, value: 12, diff: [10]}
  *     ]
  * }
  * ```

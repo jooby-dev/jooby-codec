@@ -26,10 +26,10 @@ const examples: TCommandExampleList = [
             startTime: 756648000,
             hours: 1,
             channelList: [
-                {index: 0, value: 131, diff: [10]},
-                {index: 1, value: 832, diff: [12]},
-                {index: 2, value: 38, diff: [8]},
-                {index: 3, value: 234, diff: [11]}
+                {index: 1, value: 131, diff: [10]},
+                {index: 2, value: 832, diff: [12]},
+                {index: 3, value: 38, diff: [8]},
+                {index: 4, value: 234, diff: [11]}
             ]
         },
         hex: {header: '17 0f', body: '2f 97 0c 0f 83 01 0a c0 06 0c 26 08 ea 01 0b'}
@@ -55,10 +55,10 @@ const examples: TCommandExampleList = [
  *     startTime: 756648000,
  *     hours: 1,
  *     channelList: [
- *         {value: 131, index: 0, diff: [10]},
- *         {value: 832, index: 1, diff: [12]},
- *         {value: 38, index: 2, diff: [8]},
- *         {value: 234, index: 3, diff: [11]}
+ *         {value: 131, index: 1, diff: [10]},
+ *         {value: 832, index: 2, diff: [12]},
+ *         {value: 38, index: 3, diff: [8]},
+ *         {value: 234, index: 4, diff: [11]}
  *     ]
  * }
  * ```

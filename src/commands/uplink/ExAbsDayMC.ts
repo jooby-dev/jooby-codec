@@ -1,4 +1,4 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import CurrentMC from './CurrentMC.js';
 import CommandBinaryBuffer, {IChannelAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
@@ -17,7 +17,53 @@ const COMMAND_ID = 0x0b1f;
 // 5 + (14 channelList * (1 byte IPK + 5 bytes of day values))
 const COMMAND_BODY_MAX_SIZE = 89;
 
+const examples: TCommandExampleList = [
+    {
+        name: 'absolute day value from 2023.03.10 00:00:00 GMT',
+        parameters: {
+            startTime: 731721600,
+            channelList: [
+                {
+                    pulseCoefficient: 100,
+                    index: 1,
+                    value: 342
+                }
+            ]
+        },
+        hex: {
+            header: '1f 0b 06',
+            body: '2e 6a 01 64 d6 02'
+        }
+    }
+];
 
+
+/**
+ * Uplink command.
+ *
+ * @example create command instance from command body hex dump
+ * ```js
+ * import ExAbsDayMC from 'jooby-codec/commands/uplink/ExAbsDayMC';
+ *
+ * const commandBody = new Uint8Array([0x2e, 0x6a, 0x01, 0x64, 0xd6, 0x02']);
+ * const command = ExAbsDayMC.fromBytes(commandBody);
+ *
+ * console.log(command.parameters);
+ * // output:
+ * {
+ *     startTime: 731721600,
+ *     channelList: [
+ *         {
+ *             pulseCoefficient: 100,
+ *             index: 1,
+ *             value: 342
+ *         }
+ *     ]
+ * }
+ * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplonk/ExAbsDayMC.md#response)
+ */
 class ExAbsDayMC extends CurrentMC {
     constructor ( public parameters: IExAbsDayMCParameters ) {
         super(parameters);
@@ -27,6 +73,8 @@ class ExAbsDayMC extends CurrentMC {
     static id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = true;
 

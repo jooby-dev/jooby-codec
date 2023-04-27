@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
                 {value: 234, index: 2, diff: [2]}
             ]
         },
-        hex: {header: '1f 0c 07', body: '2f 97 0c 04 ea 01 02'}
+        hex: {header: '1f 0c 07', body: '2f 97 0c 02 ea 01 02'}
     }
 ];
 

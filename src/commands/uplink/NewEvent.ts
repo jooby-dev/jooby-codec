@@ -104,18 +104,18 @@ const examples: TCommandExampleList = [
         parameters: {
             id: events.CONNECT,
             sequenceNumber: 2,
-            data: {channel: 0, value: 131}
+            data: {channel: 1, value: 131}
         },
-        hex: {header: '15 05', body: '0c 02 00 83 01'}
+        hex: {header: '15 05', body: '0c 02 01 83 01'}
     },
     {
         name: 'event for DISCONNECT',
         parameters: {
             id: events.DISCONNECT,
             sequenceNumber: 2,
-            data: {channel: 0, value: 131}
+            data: {channel: 1, value: 131}
         },
-        hex: {header: '15 05', body: '0d 02 00 83 01'}
+        hex: {header: '15 05', body: '0d 02 01 83 01'}
     },
     {
         name: 'event for EV_MTX',

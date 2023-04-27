@@ -33,7 +33,7 @@ const examples: TCommandExampleList = [
                 {index: 1, value: 12}
             ]
         },
-        hex: {header: '16 09', body: '2f 97 aa 01 0c 83 01 08 0a'}
+        hex: {header: '16 08', body: '2f 97 55 0c 83 01 08 0a'}
     }
 ];
 
@@ -46,7 +46,7 @@ const examples: TCommandExampleList = [
  * import DataDayMC from 'jooby-codec/commands/uplink/DataDayMC';
  *
  * const commandBody = new Uint8Array([
- *     0x2f, 0x97, 0xaa, 0x01, 0x0c, 0x83, 0x01, 0x08, 0x0a
+ *     0x2f, 0x97, 0x55, 0x0c, 0x83, 0x01, 0x08, 0x0a
  * ]);
  * const command = DataDayMC.fromBytes(commandBody);
  *
@@ -54,11 +54,11 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     startTime: 756604800,
- *     channelList: [
+ *     channelList: [,
+ *         {value: 12, index: 1}
  *         {value: 131, index: 3},
  *         {value: 8, index: 5},
- *         {value: 10, index: 7},
- *         {value: 12, index: 1}
+ *         {value: 10, index: 7}
  *     ]
  * }
  * ```

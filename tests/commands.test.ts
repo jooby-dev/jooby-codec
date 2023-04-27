@@ -25,7 +25,6 @@ type TCommandList = Array<ICommand>;
 
 
 const {uplink, downlink} = commands;
-const {events} = constants;
 
 const downlinkCommands: TCommandList = [
     {
@@ -39,52 +38,12 @@ const downlinkCommands: TCommandList = [
         }
     },
     {
-        constructor: downlink.GetExAbsArchiveDaysMC,
-        name: 'downlink command 0xd1f:GetExAbsArchiveDaysMC',
-        parameters: {channelList: [0], days: 1, startTime: 731721600},
-        hex: {
-            header: '1f 0d 04',
-            body: '2e 6a 01 01',
-            lrc: '07'
-        }
-    },
-    {
-        constructor: downlink.GetExAbsArchiveHoursMC,
-        name: 'downlink command 0xc1f:GetExAbsArchiveHoursMC',
-        parameters: {channelList: [0], hours: 1, startTime: 756648000},
-        hex: {
-            header: '1f 0c 04',
-            body: '2f 97 0c 01',
-            lrc: 'f7'
-        }
-    },
-    {
         constructor: downlink.GetExAbsCurrentMC,
         name: 'downlink command 0xf1f:GetExAbsCurrentMC',
         hex: {
             header: '1f 0f 00',
             body: '',
             lrc: '45'
-        }
-    },
-    {
-        constructor: downlink.GetArchiveDaysMC,
-        name: 'downlink command 0x1b:GetArchiveDaysMC',
-        parameters: {channelList: [0], days: 1, startTime: 731721600},
-        hex: {
-            header: '1b 04',
-            body: '2e 6a 01 01',
-            lrc: '0e'
-        }
-    },
-    {
-        constructor: downlink.GetArchiveHoursMC,
-        name: 'downlink command 0x1a:GetArchiveHoursMC',
-        parameters: {channelList: [0], hours: 2, startTime: 756648000},
-        hex: {
-            header: '1a 04',
-            body: '2f 97 4c 01',
-            lrc: 'be'
         }
     },
     {
@@ -108,62 +67,7 @@ const downlinkCommands: TCommandList = [
     }
 ];
 
-const uplinkCommands: TCommandList = [
-    {
-        constructor: uplink.ExAbsCurrentMC,
-        name: 'uplink command 0xf1f:ExAbsCurrentMC',
-        parameters: {
-            channelList: [
-                {
-                    pulseCoefficient: 100,
-                    index: 3,
-                    value: 342
-                }
-            ]
-        },
-        hex: {
-            header: '1f 0f 04',
-            body: '08 64 d6 02',
-            lrc: 'f9'
-        }
-    },
-    {
-        constructor: uplink.ExAbsDayMC,
-        name: 'uplink command 0xb1f:ExAbsDayMC',
-        parameters: {
-            startTime: 731721600,
-            channelList: [
-                {
-                    pulseCoefficient: 100,
-                    index: 0,
-                    value: 342
-                }
-            ]
-        },
-        hex: {
-            header: '1f 0b 06',
-            body: '2e 6a 01 64 d6 02',
-            lrc: 'b2'
-        }
-    },
-    {
-        constructor: uplink.CurrentMC,
-        name: 'uplink command 0x18:CurrentMC',
-        parameters: {
-            channelList: [
-                {index: 0, value: 131},
-                {index: 1, value: 8},
-                {index: 2, value: 10},
-                {index: 3, value: 12}
-            ]
-        },
-        hex: {
-            header: '18 06',
-            body: '0f 83 01 08 0a 0c',
-            lrc: 'c8'
-        }
-    }
-];
+const uplinkCommands: TCommandList = [];
 
 
 const checkCommand = ( {constructor, name, parameters, hardwareType, hex: {header, body, lrc} }: ICommand ) => {

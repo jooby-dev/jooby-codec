@@ -19,7 +19,7 @@ const COMMAND_BODY_MAX_SIZE = 6124;
 
 const examples: TCommandExampleList = [
     {
-        name: '1 channel at 2023.03.10 00:00:00 GMT',
+        name: 'archive days values at 4 channel from 2023.03.10 00:00:00 GMT',
         parameters: {
             startTime: 731721600,
             days: 2,
@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
                 }
             ]
         },
-        hex: {header: '1f 0d 08', body: '2e 6a 10 02 94 2b aa 2c'}
+        hex: {header: '1f 0d 08', body: '2e 6a 08 02 94 2b aa 2c'}
     }
 ];
 
@@ -43,7 +43,7 @@ const examples: TCommandExampleList = [
  * import GetExAbsArchiveDaysMCResponse from 'jooby-codec/commands/uplink/GetExAbsArchiveDaysMCResponse';
  *
  * const commandBody = new Uint8Array([
- *     0x2e, 0x6a, 0x10, 0x02, 0x94, 0x2b, 0xaa, 0x2c
+ *     0x2e, 0x6a, 0x08, 0x02, 0x94, 0x2b, 0xaa, 0x2c
  * ]);
  * const command = GetExAbsArchiveDaysMCResponse.fromBytes(commandBody);
  *
