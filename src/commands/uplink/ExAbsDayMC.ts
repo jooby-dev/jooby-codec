@@ -19,7 +19,7 @@ const COMMAND_BODY_MAX_SIZE = 89;
 
 const examples: TCommandExampleList = [
     {
-        name: 'absolute day value from 2023.03.10 00:00:00 GMT',
+        name: 'absolute day value for 2023.03.10 00:00:00 GMT',
         parameters: {
             startTime: 731721600,
             channelList: [
@@ -62,7 +62,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplonk/ExAbsDayMC.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/ExAbsDayMC.md)
  */
 class ExAbsDayMC extends CurrentMC {
     constructor ( public parameters: IExAbsDayMCParameters ) {

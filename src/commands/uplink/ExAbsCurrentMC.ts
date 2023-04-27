@@ -7,7 +7,6 @@ interface IExAbsCurrentMCParameters {
     channelList: Array<IChannelAbsoluteValue>
 }
 
-
 const COMMAND_ID = 0x0f1f;
 
 // channelList 3 byte (max channelList: 14)
@@ -57,7 +56,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsCurrentMC.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/ExAbsCurrentMC.md)
  */
 class ExAbsCurrentMC extends Command {
     constructor ( public parameters: IExAbsCurrentMCParameters ) {
