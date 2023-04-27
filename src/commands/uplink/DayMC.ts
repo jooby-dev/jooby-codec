@@ -8,9 +8,9 @@ import {UPLINK} from '../../constants/directions.js';
 
 
 /**
- * DataDayMC command parameters.
+ * DayMC command parameters.
  */
-interface IDataDayMCParameters extends ICurrentMCParameters {
+interface IDayMCParameters extends ICurrentMCParameters {
     startTime: TTime2000
 }
 
@@ -43,12 +43,12 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import DataDayMC from 'jooby-codec/commands/uplink/DataDayMC';
+ * import DayMC from 'jooby-codec/commands/uplink/DayMC';
  *
  * const commandBody = new Uint8Array([
  *     0x2f, 0x97, 0x55, 0x0c, 0x83, 0x01, 0x08, 0x0a
  * ]);
- * const command = DataDayMC.fromBytes(commandBody);
+ * const command = DayMC.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -63,10 +63,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/DataDayMC.md#event)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/DayMC.md)
  */
-class DataDayMC extends CurrentMC {
-    constructor ( public parameters: IDataDayMCParameters ) {
+class DayMC extends CurrentMC {
+    constructor ( public parameters: IDayMCParameters ) {
         super(parameters);
     }
 
@@ -81,8 +81,8 @@ class DataDayMC extends CurrentMC {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ): DataDayMC {
-        const parameters: IDataDayMCParameters = {channelList: [], startTime: 0};
+    static fromBytes ( data: Uint8Array ): DayMC {
+        const parameters: IDayMCParameters = {channelList: [], startTime: 0};
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
         const channelList = buffer.getChannels();
@@ -94,7 +94,7 @@ class DataDayMC extends CurrentMC {
 
         parameters.startTime = getSecondsFromDate(date);
 
-        return new DataDayMC(parameters);
+        return new DayMC(parameters);
     }
 
     // returns full message - header with body
@@ -111,4 +111,4 @@ class DataDayMC extends CurrentMC {
 }
 
 
-export default DataDayMC;
+export default DayMC;

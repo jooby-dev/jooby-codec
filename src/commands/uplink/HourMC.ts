@@ -5,7 +5,7 @@ import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
-interface IDataHourMCParameters {
+interface IHourMCParameters {
     channelList: Array<IChannelHours>,
     startTime: TTime2000
     hours: number
@@ -42,12 +42,12 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import DataHourMC from 'jooby-codec/commands/uplink/DataHourMC';
+ * import HourMC from 'jooby-codec/commands/uplink/HourMC';
  *
  * const commandBody = new Uint8Array([
  *    0x2f, 0x97, 0x0c, 0x0f, 0x83, 0x01, 0x0a, 0xc0, 0x06, 0x0c, 0x26, 0x08, 0xea, 0x01, 0x0b
  * ]);
- * const command = DataHourMC.fromBytes(commandBody);
+ * const command = HourMC.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -63,10 +63,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/CorrectTime2000.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/HourMC.md)
  */
-class DataHourMC extends CurrentMC {
-    constructor ( public parameters: IDataHourMCParameters ) {
+class HourMC extends CurrentMC {
+    constructor ( public parameters: IHourMCParameters ) {
         super(parameters);
     }
 
@@ -81,7 +81,7 @@ class DataHourMC extends CurrentMC {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ): DataHourMC {
+    static fromBytes ( data: Uint8Array ): HourMC {
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
@@ -104,7 +104,7 @@ class DataHourMC extends CurrentMC {
             channelList.push({value, index: channelIndex, diff});
         });
 
-        return new DataHourMC({channelList, hours, startTime: getSecondsFromDate(date)});
+        return new HourMC({channelList, hours, startTime: getSecondsFromDate(date)});
     }
 
     // returns full message - header with body
@@ -129,4 +129,4 @@ class DataHourMC extends CurrentMC {
 }
 
 
-export default DataHourMC;
+export default HourMC;
