@@ -4,7 +4,7 @@
  * @packageDocumentation
  */
 
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/time.js';
@@ -12,22 +12,30 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/tim
 
 /**
  * GetArchiveDaysMC command parameters
- *
- * @example
- * // request for 1 days archive values from channel #1 from 2023-12-24T00:00:00.000Z or 756691200 seconds since 2000 year
- * {channelList: [0], days: 1, startTime: 756691200}
  */
 interface IGetArchiveDaysMCParameters {
     /** amount of days to retrieve */
     days: number,
     startTime: TTime2000,
-    /** array of channelList indexes */
+    /** array of channelList index numbers */
     channelList: Array<number>
 }
 
 
 const COMMAND_ID = 0x1b;
 const COMMAND_BODY_SIZE = 4;
+
+
+const examples: TCommandExampleList = [
+    {
+        name: '1 day pulse counter for 1 channel from 2023.03.10 00:00:00 GMT',
+        parameters: {channelList: [1], days: 1, startTime: 731721600},
+        hex: {
+            header: '1b 04',
+            body: '2e 6a 01 01'
+        }
+    }
+];
 
 
 /**
@@ -37,12 +45,12 @@ const COMMAND_BODY_SIZE = 4;
  * ```js
  * import GetArchiveDaysMC from 'jooby-codec/commands/downlink/GetArchiveDaysMC';
  *
- * const parameters = {channelList: [0], days: 1, startTime: 756691200};
+ * const parameters = {channelList: [1], days: 1, startTime: 731721600};
  * const command = new GetArchiveDaysMC(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 1b 04 2f 98 01 01
+ * // 1b 04 2e 6a 01 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveDaysMC.md#request)
@@ -58,6 +66,8 @@ class GetArchiveDaysMC extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = true;
 

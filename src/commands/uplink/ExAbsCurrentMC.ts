@@ -15,7 +15,7 @@ const COMMAND_BODY_MAX_SIZE = 87;
 
 const examples: TCommandExampleList = [
     {
-        name: 'absolute current values from channel #3',
+        name: 'absolute current value from 3 channel',
         parameters: {
             channelList: [
                 {
@@ -27,7 +27,7 @@ const examples: TCommandExampleList = [
         },
         hex: {
             header: '1f 0f 04',
-            body: '08 64 d6 02'
+            body: '04 64 d6 02'
         }
     }
 ];
@@ -40,9 +40,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import ExAbsCurrentMC from 'jooby-codec/commands/uplink/ExAbsCurrentMC';
  *
- * const commandBody = new Uint8Array([
- *     0x1f, 0x0f, 0x04, 0x08, 0x64, 0xd6, 0x02
- * ]);
+ * const commandBody = new Uint8Array([0x04, 0x64, 0xd6, 0x02']);
  * const command = ExAbsCurrentMC.fromBytes(commandBody);
  *
  * console.log(command.parameters);

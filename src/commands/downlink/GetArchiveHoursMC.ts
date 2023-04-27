@@ -1,4 +1,4 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/time.js';
@@ -8,20 +8,31 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/tim
  * GetArchiveHoursMC command parameters
  *
  * @example
- * // request for 2 hours archive values from channel #1 from 2023-12-23T12:00:00.000Z or 756648000 seconds since 2000 year
- * {channelList: [0], hours: 2, startTime: 756648000}
+ * // request for 2 hours archive values for channel `1` from 2023-12-23T12:00:00.000Z or 756648000 seconds since 2000 year
+ * {channelList: [1], hours: 2, startTime: 756648000}
  */
 interface IGetArchiveHoursMCParameters {
     /** amount of hours to retrieve */
     hours: number,
     startTime: TTime2000,
-    /** array of channelList indexes */
+    /** array of channelList index numbers */
     channelList: Array<number>
 }
 
 
 const COMMAND_ID = 0x1a;
 const COMMAND_BODY_SIZE = 4;
+
+const examples: TCommandExampleList = [
+    {
+        name: '2 hours pulse counter for 1 channel from 2023.12.23 12:00:00 GMT',
+        parameters: {channelList: [1], hours: 2, startTime: 756648000},
+        hex: {
+            header: '1a 04',
+            body: '2f 97 4c 01'
+        }
+    }
+];
 
 
 /**
@@ -31,12 +42,12 @@ const COMMAND_BODY_SIZE = 4;
  * ```js
  * import GetArchiveHoursMC from 'jooby-codec/commands/downlink/GetArchiveHoursMC';
  *
- * const parameters = {channelList: [0], hours: 0, startTime: 756648000};
+ * const parameters = {channelList: [1], hours: 2, startTime: 756648000};
  * const command = new GetArchiveHoursMC(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 1a 04 2f 97 0c 01
+ * // 1a 04 2f 97 4c 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveHoursMC.md#request)
@@ -52,6 +63,8 @@ class GetArchiveHoursMC extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = true;
 

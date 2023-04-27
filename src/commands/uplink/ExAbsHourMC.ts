@@ -47,7 +47,7 @@ const examples: TCommandExampleList = [
             channelList: [
                 {
                     pulseCoefficient: 100,
-                    index: 0,
+                    index: 1,
                     value: 342457,
                     diff: [128]
                 }
@@ -78,7 +78,7 @@ const examples: TCommandExampleList = [
  *     channelList: [
  *         {
  *             pulseCoefficient: 100,
- *             index: 0,
+ *             index: 1,
  *             value: 342457,
  *             diff: [128]
  *         }

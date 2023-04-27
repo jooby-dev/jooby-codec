@@ -130,7 +130,7 @@ const messageBytes = message.toBytes([
 or to get in a hex format:
 
 ```js
-import DataDayMC from 'jooby-codec/commands/uplink/DataDayMC';
+import DayMC from 'jooby-codec/commands/uplink/DayMC';
 import LastEvent from 'jooby-codec/commands/uplink/LastEvent';
 
 const commandInstancesArray = [
@@ -146,7 +146,7 @@ const commandInstancesArray = [
         },
         hardwareTypes.GASI3
     ),
-    new DataDayMC({
+    new DayMC({
         startTime: 756604800,
         channelList: [
             {value: 131, index: 3},
