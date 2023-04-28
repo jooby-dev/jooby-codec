@@ -106,7 +106,7 @@ const examples: TCommandExampleList = [
             sequenceNumber: 2,
             data: {channel: 1, value: 131}
         },
-        hex: {header: '15 05', body: '0c 02 01 83 01'}
+        hex: {header: '15 05', body: '0c 02 00 83 01'}
     },
     {
         name: 'event for DISCONNECT',
@@ -115,7 +115,7 @@ const examples: TCommandExampleList = [
             sequenceNumber: 2,
             data: {channel: 1, value: 131}
         },
-        hex: {header: '15 05', body: '0d 02 01 83 01'}
+        hex: {header: '15 05', body: '0d 02 00 83 01'}
     },
     {
         name: 'event for EV_MTX',
@@ -236,7 +236,8 @@ class NewEvent extends Command {
 
             case events.CONNECT:
             case events.DISCONNECT:
-                eventData = {channel: buffer.getUint8(), value: buffer.getExtendedValue()} as IEventConnection;
+                // 0 logical channel - 1 real channel
+                eventData = {channel: buffer.getUint8() + 1, value: buffer.getExtendedValue()} as IEventConnection;
                 break;
 
             case events.MTX:
@@ -289,7 +290,8 @@ class NewEvent extends Command {
             case events.CONNECT:
             case events.DISCONNECT:
                 eventData = data as IEventConnection;
-                buffer.setUint8(eventData.channel);
+                // 1 real channel - 0 logical channel
+                buffer.setUint8(eventData.channel - 1);
                 buffer.setExtendedValue(eventData.value);
                 break;
 
