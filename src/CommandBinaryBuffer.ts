@@ -40,7 +40,7 @@ export interface IChannelHours extends IChannelValue {
 }
 
 export interface IChannelHourAbsoluteValue extends IChannelHours {
-    /** channel pulse coefficient - IPK in bytes */
+    /** channel pulse coefficient */
     pulseCoefficient: number
 }
 
@@ -49,7 +49,7 @@ export interface IChannelDays extends IChannel {
 }
 
 export interface IChannelAbsoluteValue extends IChannelValue {
-    /** channel pulse coefficient - IPK in bytes */
+    /** channel pulse coefficient */
     pulseCoefficient: number
 }
 
@@ -57,7 +57,7 @@ export interface IChannelArchiveDaysAbsolute extends IChannel {
     /** values by days */
     dayList: Array<number>,
 
-    /** Channel pulse coefficient - IPK in bytes */
+    /** Channel pulse coefficient */
     pulseCoefficient: number
 }
 
@@ -454,7 +454,7 @@ const mtxBitMask = {
  */
 const parametersSizeMap = new Map([
     /* size: 1 byte of parameter id + parameter data*/
-    [deviceParameters.DATA_SENDING_INTERVAL, 1 + 3],
+    [deviceParameters.DATA_SENDING_INTERVAL, 1 + 4],
     [deviceParameters.DAY_CHECKOUT_HOUR, 1 + 1],
     [deviceParameters.OUTPUT_DATA_TYPE, 1 + 1],
     [deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA, 1 + 1],
@@ -890,7 +890,6 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         channels.forEach(channelIndex => {
             channelList.push({
-                // IPK_${channelIndex}
                 pulseCoefficient: this.getUint8(),
                 // day value
                 value: this.getExtendedValue(),
@@ -1069,7 +1068,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.seek(this.offset + 2);
 
         return {
-            value: this.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
+            value: this.getUint16(false) * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
         };
     }
 
@@ -1077,7 +1076,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         // skip 'reserved' parameter
         this.seek(this.offset + 2);
 
-        this.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
+        this.setUint16(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT, false);
     }
 
     private getParameterDeliveryTypeOfPriorityData (): IParameterDeliveryTypeOfPriorityData {

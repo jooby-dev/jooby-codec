@@ -14,7 +14,7 @@ interface IExAbsDayMCParameters {
 const COMMAND_ID = 0x0b1f;
 
 // date 2 bytes, channelList 3 bytes (max channelList: 14)
-// 5 + (14 channelList * (1 byte IPK + 5 bytes of day values))
+// 5 + (14 channelList * (1 byte pulse coefficient + 5 bytes of day values))
 const COMMAND_BODY_MAX_SIZE = 89;
 
 const examples: TCommandExampleList = [
