@@ -27,7 +27,7 @@ const examples: TCommandExampleList = [
         },
         hex: {
             header: '1f 0f 04',
-            body: '04 82 d6 02'
+            body: '04 83 d6 02'
         }
     }
 ];

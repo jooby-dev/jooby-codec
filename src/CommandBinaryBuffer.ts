@@ -474,13 +474,13 @@ const parametersSizeMap = new Map([
 ]);
 
 const byteToPulseCoefficientMap = new Map([
-    [0x80, 1000],
-    [0x81, 5000],
-    [0x82, 100],
-    [0x83, 10],
-    [0x84, 1],
-    [0x85, 0.1],
-    [0x86, 0.01]
+    [0x80, 1],
+    [0x81, 5],
+    [0x82, 10],
+    [0x83, 100],
+    [0x84, 1000],
+    [0x85, 10000],
+    [0x86, 100000]
 ]);
 
 const pulseCoefficientToByteMap = new Map(

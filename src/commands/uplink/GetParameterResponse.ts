@@ -13,7 +13,7 @@ const examples: TCommandExampleList = [
             id: deviceParameters.INITIAL_DATA,
             data: {value: 2023, meterValue: 204, pulseCoefficient: 100}
         },
-        hex: {header: '04 0a', body: '17 00 00 00 cc 82 00 00 07 e7'}
+        hex: {header: '04 0a', body: '17 00 00 00 cc 83 00 00 07 e7'}
     },
     {
         name: 'device sending absolute data',
@@ -29,7 +29,7 @@ const examples: TCommandExampleList = [
             id: deviceParameters.INITIAL_DATA_MULTI_CHANNEL,
             data: {value: 2032, meterValue: 402, pulseCoefficient: 1000, channel: 1}
         },
-        hex: {header: '04 0b', body: '1d 00 00 00 01 92 80 00 00 07 f0'}
+        hex: {header: '04 0b', body: '1d 00 00 00 01 92 84 00 00 07 f0'}
     },
     {
         name: 'absolute data sending is disabled for 2 channel',
