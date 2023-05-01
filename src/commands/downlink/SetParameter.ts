@@ -14,7 +14,7 @@ const examples: TCommandExampleList = [
             id: deviceParameters.DATA_SENDING_INTERVAL,
             data: {value: 3600}
         },
-        hex: {header: '03 04', body: '01 00 00 06'}
+        hex: {header: '03 05', body: '01 00 00 00 06'}
     },
     {
         name: 'set day checkout hour to 12:00',
@@ -86,7 +86,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 02', body: '18 01'}
     },
     {
-        name: 'set activation method to "ABP"',
+        name: 'set device serial number',
         parameters: {
             id: deviceParameters.SERIAL_NUMBER,
             data: {value: '1b 0a 3e dc 3e 22'}

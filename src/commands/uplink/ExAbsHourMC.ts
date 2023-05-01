@@ -35,7 +35,7 @@ const COMMAND_ID = 0x0a1f;
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte (max channelList: 4)
 // max hours diff - 7 (3 bit value)
-// 4 + (4 channelList * (1 byte IPK + 5 bytes of hour value)) + (4 * 2 bytes of diff * 7 max hours diff)
+// 4 + (4 channelList * (1 byte pulse coefficient + 5 bytes of hour value)) + (4 * 2 bytes of diff * 7 max hours diff)
 const COMMAND_BODY_MAX_SIZE = 84;
 
 const examples: TCommandExampleList = [

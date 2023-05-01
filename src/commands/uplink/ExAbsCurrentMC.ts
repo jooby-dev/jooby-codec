@@ -10,7 +10,7 @@ interface IExAbsCurrentMCParameters {
 const COMMAND_ID = 0x0f1f;
 
 // channelList 3 byte (max channelList: 14)
-// 3 + (14 * (1 byte IPK + 5 bytes of day values))
+// 3 + (14 * (1 byte pulse coefficient + 5 bytes of day values))
 const COMMAND_BODY_MAX_SIZE = 87;
 
 const examples: TCommandExampleList = [
