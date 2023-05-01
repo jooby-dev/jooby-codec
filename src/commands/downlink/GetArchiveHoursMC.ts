@@ -6,10 +6,6 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/tim
 
 /**
  * GetArchiveHoursMC command parameters
- *
- * @example
- * // request for 2 hours archive values for channel `1` from 2023-12-23T12:00:00.000Z or 756648000 seconds since 2000 year
- * {channelList: [1], hours: 2, startTime: 756648000}
  */
 interface IGetArchiveHoursMCParameters {
     /** amount of hours to retrieve */
