@@ -53,7 +53,7 @@ const examples: TCommandExampleList = [
                 }
             ]
         },
-        hex: {header: '1f 0a 0a', body: '2e 6a 0c 01 64 b9 f3 14 80 01'}
+        hex: {header: '1f 0a 0a', body: '2e 6a 0c 01 82 b9 f3 14 80 01'}
     }
 ];
 
@@ -66,7 +66,7 @@ const examples: TCommandExampleList = [
  * import ExAbsHourMC from 'jooby-codec/commands/uplink/ExAbsHourMC';
  *
  * const commandBody = new Uint8Array([
- *     0x2e, 0x6a, 0x0c, 0x01, 0x64, 0xb9, 0xf3, 0x14, 0x80, 0x01
+ *     0x2e, 0x6a, 0x0c, 0x01, 0x82, 0xb9, 0xf3, 0x14, 0x80, 0x01
  * ]);
  * const command = ExAbsHourMC.fromBytes(commandBody);
  *
@@ -117,7 +117,7 @@ class ExAbsHourMC extends Command {
         date.setUTCHours(hour);
 
         channels.forEach(channelIndex => {
-            const pulseCoefficient = buffer.getUint8();
+            const pulseCoefficient = buffer.getPulseCoefficient();
             const value = buffer.getExtendedValue();
             const diff: Array<number> = [];
 
@@ -149,7 +149,7 @@ class ExAbsHourMC extends Command {
         buffer.setChannels(channelList);
 
         for ( const {value, diff, pulseCoefficient} of channelList ) {
-            buffer.setUint8(pulseCoefficient);
+            buffer.setPulseCoefficient(pulseCoefficient);
             buffer.setExtendedValue(value);
             diff.forEach(diffValue => buffer.setExtendedValue(diffValue));
         }
