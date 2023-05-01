@@ -32,7 +32,7 @@ const examples: TCommandExampleList = [
         },
         hex: {
             header: '1f 0b 06',
-            body: '2e 6a 01 82 d6 02'
+            body: '2e 6a 01 83 d6 02'
         }
     }
 ];
