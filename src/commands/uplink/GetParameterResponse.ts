@@ -18,7 +18,7 @@ const examples: TCommandExampleList = [
     {
         name: 'device sending absolute data',
         parameters: {
-            id: deviceParameters.ABSOLUTE_DATA_STATUS,
+            id: deviceParameters.ABSOLUTE_DATA_ENABLE,
             data: {status: 1}
         },
         hex: {header: '04 02', body: '18 01'}
@@ -29,15 +29,15 @@ const examples: TCommandExampleList = [
             id: deviceParameters.INITIAL_DATA_MULTI_CHANNEL,
             data: {value: 2032, meterValue: 402, pulseCoefficient: 1000, channel: 1}
         },
-        hex: {header: '04 0b', body: '1d 01 00 00 01 92 80 00 00 07 f0'}
+        hex: {header: '04 0b', body: '1d 00 00 00 01 92 80 00 00 07 f0'}
     },
     {
         name: 'absolute data sending is disabled for 2 channel',
         parameters: {
-            id: deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL,
+            id: deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL,
             data: {status: 0, channel: 2}
         },
-        hex: {header: '04 03', body: '1e 02 00'}
+        hex: {header: '04 03', body: '1e 01 00'}
     }
 ];
 

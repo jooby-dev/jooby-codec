@@ -373,6 +373,8 @@ const UNKNOWN_BATTERY_VOLTAGE = 4095;
 const EXTEND_BIT_MASK = 0x80;
 const LAST_BIT_INDEX = 7;
 const DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT = 600;
+/** 'reserved' bytes which not used */
+const DATA_SENDING_INTERVAL_RESERVED_BYTES = 3;
 const PARAMETER_RX2_FREQUENCY_COEFFICIENT = 100;
 const INT12_SIZE = 3;
 const SERIAL_NUMBER_SIZE = 6;
@@ -463,12 +465,12 @@ const parametersSizeMap = new Map([
     [deviceParameters.BATTERY_MINIMAL_LOAD_TIME, 1 + 4],
     [deviceParameters.RX2_CONFIG, 1 + 4],
     [deviceParameters.INITIAL_DATA, 1 + 9],
-    [deviceParameters.ABSOLUTE_DATA_STATUS, 1 + 1],
+    [deviceParameters.ABSOLUTE_DATA_ENABLE, 1 + 1],
     [deviceParameters.SERIAL_NUMBER, 1 + 6],
     [deviceParameters.GEOLOCATION, 1 + 10],
     [deviceParameters.EXTRA_FRAME_INTERVAL, 1 + 2],
     [deviceParameters.INITIAL_DATA_MULTI_CHANNEL, 1 + 10],
-    [deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL, 1 + 2]
+    [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL, 1 + 2]
 ]);
 
 const byteToPulseCoefficientMap = new Map([
@@ -890,7 +892,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         channels.forEach(channelIndex => {
             channelList.push({
-                pulseCoefficient: this.getUint8(),
+                pulseCoefficient: this.getPulseCoefficient(),
                 // day value
                 value: this.getExtendedValue(),
                 index: channelIndex
@@ -904,7 +906,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setChannels(channelList);
 
         for ( const {value, pulseCoefficient} of channelList ) {
-            this.setUint8(pulseCoefficient);
+            this.setPulseCoefficient(pulseCoefficient);
             this.setExtendedValue(value);
         }
     }
@@ -953,7 +955,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
     }
 
-    private getPulseCoefficient (): number {
+    getPulseCoefficient (): number {
         const pulseCoefficient = this.getUint8();
 
         if ( isMSBSet(pulseCoefficient) ) {
@@ -969,7 +971,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return pulseCoefficient;
     }
 
-    private setPulseCoefficient ( value: number ): void {
+    setPulseCoefficient ( value: number ): void {
         if ( pulseCoefficientToByteMap.has(value) ) {
             const byte = pulseCoefficientToByteMap.get(value);
 
@@ -997,9 +999,21 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint32(parameter.value, false);
     }
 
+    private getChannelValue (): number {
+        return this.getUint8() + 1;
+    }
+
+    private setChannelValue ( value: number ): void {
+        if ( value < 1 ) {
+            throw new Error('channel must be 1 or greater');
+        }
+
+        this.setUint8(value - 1);
+    }
+
     private getParameterInitialDataMC (): IParameterInitialDataMC {
         return {
-            channel: this.getUint8(),
+            channel: this.getChannelValue(),
             meterValue: this.getUint32(false),
             pulseCoefficient: this.getPulseCoefficient(),
             value: this.getUint32(false)
@@ -1007,7 +1021,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     private setParameterInitialDataMC ( parameter: IParameterInitialDataMC ): void {
-        this.setUint8(parameter.channel);
+        this.setChannelValue(parameter.channel);
         this.setUint32(parameter.meterValue, false);
         this.setPulseCoefficient(parameter.pulseCoefficient);
         this.setUint32(parameter.value, false);
@@ -1023,13 +1037,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     private getParameterAbsoluteDataStatusMC (): IParameterAbsoluteDataStatusMC {
         return {
-            channel: this.getUint8(),
+            channel: this.getChannelValue(),
             status: this.getUint8()
         };
     }
 
     private setParameterAbsoluteDataStatusMC ( parameter: IParameterAbsoluteDataStatusMC ): void {
-        this.setUint8(parameter.channel);
+        this.setChannelValue(parameter.channel);
         this.setUint8(parameter.status);
     }
 
@@ -1064,19 +1078,17 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     private getParameterDataSendingInterval (): IParameterDataSendingInterval {
-        // skip 'reserved' parameter which not used
-        this.seek(this.offset + 2);
+        this.seek(this.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
 
         return {
-            value: this.getUint16(false) * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
+            value: this.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
         };
     }
 
     private setParameterDataSendingInterval ( parameter: IParameterDataSendingInterval ) {
-        // skip 'reserved' parameter
-        this.seek(this.offset + 2);
+        this.seek(this.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
 
-        this.setUint16(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT, false);
+        this.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
     }
 
     private getParameterDeliveryTypeOfPriorityData (): IParameterDeliveryTypeOfPriorityData {
@@ -1200,7 +1212,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterInitialData();
                 break;
 
-            case deviceParameters.ABSOLUTE_DATA_STATUS:
+            case deviceParameters.ABSOLUTE_DATA_ENABLE:
                 data = this.getParameterAbsoluteDataStatus();
                 break;
 
@@ -1220,7 +1232,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterInitialDataMC();
                 break;
 
-            case deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL:
+            case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
                 data = this.getParameterAbsoluteDataStatusMC();
                 break;
 
@@ -1273,7 +1285,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 this.setParameterInitialData(data as IParameterInitialData);
                 break;
 
-            case deviceParameters.ABSOLUTE_DATA_STATUS:
+            case deviceParameters.ABSOLUTE_DATA_ENABLE:
                 this.setParameterAbsoluteDataStatus(data as IParameterAbsoluteDataStatus);
                 break;
 
@@ -1293,7 +1305,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 this.setParameterInitialDataMC(data as IParameterInitialDataMC);
                 break;
 
-            case deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL:
+            case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
                 this.setParameterAbsoluteDataStatusMC(data as IParameterAbsoluteDataStatusMC);
                 break;
 

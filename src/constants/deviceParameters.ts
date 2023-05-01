@@ -29,8 +29,8 @@ export const RX2_CONFIG = 18;
 /** setup initial data for device, pulse counter, pulse coefficient, meter value */
 export const INITIAL_DATA = 23;
 
-/** status of device data sending, absolute value or pulse counter */
-export const ABSOLUTE_DATA_STATUS = 24;
+/** enable absolute value sending */
+export const ABSOLUTE_DATA_ENABLE = 24;
 
 /** device serial number */
 export const SERIAL_NUMBER = 25;
@@ -44,5 +44,5 @@ export const EXTRA_FRAME_INTERVAL = 28;
 /** same as INITIAL_DATA for a specific channel */
 export const INITIAL_DATA_MULTI_CHANNEL = 29;
 
-/** status of device data sending, absolute value or pulse counter for a specific channel */
-export const ABSOLUTE_DATA_STATUS_MULTI_CHANNEL = 30;
+/** enable absolute value sending for a specific channel */
+export const ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL = 30;

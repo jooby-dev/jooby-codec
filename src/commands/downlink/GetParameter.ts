@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
     },
     {
         name: 'request for data type sending from device',
-        parameters: {id: deviceParameters.ABSOLUTE_DATA_STATUS},
+        parameters: {id: deviceParameters.ABSOLUTE_DATA_ENABLE},
         hex: {header: '04 01', body: '18'}
     }
 ];

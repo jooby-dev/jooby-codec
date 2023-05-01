@@ -32,7 +32,7 @@ const examples: TCommandExampleList = [
         },
         hex: {
             header: '1f 0b 06',
-            body: '2e 6a 01 64 d6 02'
+            body: '2e 6a 01 82 d6 02'
         }
     }
 ];
@@ -45,7 +45,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import ExAbsDayMC from 'jooby-codec/commands/uplink/ExAbsDayMC';
  *
- * const commandBody = new Uint8Array([0x2e, 0x6a, 0x01, 0x64, 0xd6, 0x02']);
+ * const commandBody = new Uint8Array([0x2e, 0x6a, 0x01, 0x82, 0xd6, 0x02']);
  * const command = ExAbsDayMC.fromBytes(commandBody);
  *
  * console.log(command.parameters);
