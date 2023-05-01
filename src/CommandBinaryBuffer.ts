@@ -999,11 +999,11 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint32(parameter.value, false);
     }
 
-    private getChannelValue (): number {
+    getChannelValue (): number {
         return this.getUint8() + 1;
     }
 
-    private setChannelValue ( value: number ): void {
+    setChannelValue ( value: number ): void {
         if ( value < 1 ) {
             throw new Error('channel must be 1 or greater');
         }
