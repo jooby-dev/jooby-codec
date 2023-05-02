@@ -20,12 +20,12 @@ const COMMAND_BODY_SIZE = 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'request absolute data (not multi channel device)',
+        name: 'request absolute data (not multichannel device)',
         parameters: {id: deviceParameters.ABSOLUTE_DATA},
         hex: {header: '04 01', body: '17'}
     },
     {
-        name: 'request for state of absolute data (not multi channel device)',
+        name: 'request for state of absolute data (not multichannel device)',
         parameters: {id: deviceParameters.ABSOLUTE_DATA_ENABLE},
         hex: {header: '04 01', body: '18'}
     }
