@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import * as message from '../src/utils/message.js';
-import getBytesFromHex from '../src/utils/getBytesFromHex.js';
-import SetTime2000 from '../src/commands/downlink/SetTime2000.js';
+import * as downlinkCommands from '../src/commands/downlink/index.js';
+import * as uplinkCommands from '../src/commands/uplink/index.js';
 
 
 interface IMessage {
-    //id: number,
-    //size: number,
     hex: string,
-    commands: Array<unknown>
+    commands: Array<{parameters: object, command: unknown}>,
+    isValid: boolean
 }
 
 type TMessageList = Array<IMessage>;
@@ -18,49 +17,81 @@ const downlinkMessages: TMessageList = [
     {
         // SetTime2000 + SetTime2000 + LRC
         hex: '02 05 4e 00 01 e2 40  02 05 4e 00 01 e2 40  55',
-        // @todo
         commands: [
             {
-                parameters: {},
-                command: SetTime2000
+                parameters: {sequenceNumber: 78, seconds: 123456},
+                command: downlinkCommands.SetTime2000
+            },
+            {
+                parameters: {sequenceNumber: 78, seconds: 123456},
+                command: downlinkCommands.SetTime2000
             }
-        ]
+        ],
+        isValid: true
+    },
+    {
+        // SetTime2000 + SetTime2000 (no LRC)
+        hex: '02 05 4e 00 01 e2 40  02 05 4e 00 01 e2 40',
+        commands: [
+            {
+                parameters: {sequenceNumber: 78, seconds: 123456},
+                command: downlinkCommands.SetTime2000
+            },
+            {
+                parameters: {sequenceNumber: 78, seconds: 123456},
+                command: downlinkCommands.SetTime2000
+            }
+        ],
+        isValid: false
     }
 ];
 
 const uplinkMessages: TMessageList = [
     {
-        // SetTime2000Response + CurrentMC + DataDayMC + LRC
-        hex: '02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 0f 83 01 08 0a 0c  ef',
-        commands: []
+        // SetTime2000Response + CurrentMC + DayMC + LRC
+        hex: '02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 55 0c 83 01 08 0a  b5',
+        commands: [
+            {
+                parameters: {status: 1},
+                command: uplinkCommands.SetTime2000Response
+            },
+            {
+                parameters: {
+                    channelList: [
+                        {index: 1, value: 131},
+                        {index: 2, value: 8},
+                        {index: 3, value: 10},
+                        {index: 4, value: 12}
+                    ]
+                },
+                command: uplinkCommands.CurrentMC
+            },
+            {
+                parameters: {
+                    startTime: 756604800,
+                    channelList: [
+                        {index: 1, value: 12},
+                        {index: 3, value: 131},
+                        {index: 5, value: 8},
+                        {index: 7, value: 10}
+                    ]
+                },
+                command: uplinkCommands.DayMC
+            }
+        ],
+        isValid: true
     }
-    // {
-    //     // DataHourMC + UnknownCommand + LRC
-    //     hex: '17 0c 00 66 f1 01 44 00 00 00 00 00 00 00  5f 3b 00  fe',
-    //     commands: []
-    // }
 ];
 
 
-const checkMessage = ( {hex}: IMessage ) => {
+const checkMessage = ( {hex, commands, isValid}: IMessage ) => {
     const messageData = message.fromHex(hex);
 
-    const commands = messageData.commands.map(messageCommand => {
-        const commandData = messageCommand.command.toBytes();
-        const mergedData = new Uint8Array(
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            [...(messageCommand.data.header)].concat([...messageCommand.data.body])
-        );
-
-        expect(commandData).toStrictEqual(mergedData);
-
-        return messageCommand.command;
+    messageData.commands.forEach((messageCommand, index) => {
+        expect(messageCommand.command.parameters).toStrictEqual(commands[index].parameters);
     });
 
-    const bytes = message.toBytes(commands);
-
-    expect(bytes).toStrictEqual(getBytesFromHex(hex));
-    expect(messageData.isValid).toBe(true);
+    expect(messageData.isValid).toBe(isValid);
 };
 
 

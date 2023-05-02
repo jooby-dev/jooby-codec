@@ -26,7 +26,7 @@ interface IMessageCommand {
 interface IMessage {
     commands: Array<IMessageCommand>,
     lrc: {
-        expected: number,
+        expected: number | undefined,
         actual: number
     },
     isValid: boolean
@@ -100,28 +100,43 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareTyp
 
 export const fromBytes = ( data: Uint8Array, direction = AUTO, hardwareType?: number ) => {
     const commandsData = data.slice(0, -1);
-    const expectedLrc = data.at(-1) ?? 0;
-    const actualLrc = calculateLrc(commandsData);
     const commands: Array<IMessageCommand> = [];
     const result: IMessage = {
         commands,
-        lrc: {expected: 0, actual: 0},
+        lrc: {expected: undefined, actual: 0},
         isValid: false
     };
+    let expectedLrc = data.at(-1);
+    let actualLrc = calculateLrc(commandsData);
     let position = 0;
 
     do {
         const headerInfo = header.fromBytes(commandsData.slice(position, position + HEADER_MAX_SIZE));
         const headerData = commandsData.slice(position, position + headerInfo.headerSize);
         const bodyData = commandsData.slice(position + headerInfo.headerSize, position + headerInfo.headerSize + headerInfo.commandSize);
-
-        commands.push({
-            data: {header: headerData, body: bodyData},
-            command: getCommand(headerInfo.commandId, bodyData, direction, hardwareType)
-        });
+        let command: Command;
 
         // shift
         position = position + headerInfo.headerSize + headerInfo.commandSize;
+
+        try {
+            command = getCommand(headerInfo.commandId, bodyData, direction, hardwareType);
+        } catch ( error ) {
+            // the last command in the message
+            if ( position >= commandsData.length ) {
+                // LRC may be missing so try to add one
+                command = getCommand(headerInfo.commandId, new Uint8Array([...bodyData, ...data.slice(-1)]), direction, hardwareType);
+                actualLrc = calculateLrc(data);
+                expectedLrc = undefined;
+            } else {
+                throw error;
+            }
+        }
+
+        commands.push({
+            data: {header: headerData, body: bodyData},
+            command
+        });
     } while ( position < commandsData.length );
 
     result.lrc.actual = actualLrc;
