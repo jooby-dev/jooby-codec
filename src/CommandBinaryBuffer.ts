@@ -148,9 +148,9 @@ export interface IEventMtxStatus {
 
 /**
  * Device send data periodically using this interval.
- * deviceParameters.DATA_SENDING_INTERVAL = `1`.
+ * deviceParameters.REPORTING_DATA_INTERVAL = `1`.
  */
-interface IParameterDataSendingInterval {
+interface IParameterReportingDataInterval {
     /**
      * Minimal interval for data sending from device (in seconds).
      * Real value = value + pseudo-random value which is not more than `255` * `4`.
@@ -168,9 +168,9 @@ interface IParameterDayCheckoutHour {
 
 /**
  * Type of data from device.
- * deviceParameters.OUTPUT_DATA_TYPE = `5`.
+ * deviceParameters.REPORTING_DATA_TYPE = `5`.
  */
-interface IParameterOutputDataType {
+interface IParameterReportingDataType {
     /**
      * `0` - hour, by default
      * `1` - day
@@ -257,10 +257,10 @@ interface IParameterBatteryMinimalLoadTime {
 }
 
 /**
- * Initial values for pulse devices.
- * deviceParameters.INITIAL_DATA = `23`.
+ * Absolute data for pulse devices.
+ * deviceParameters.ABSOLUTE_DATA = `23`.
  */
-interface IParameterInitialData {
+interface IParameterAbsoluteData {
     /** 4 byte int BE */
     value: number,
 
@@ -271,14 +271,14 @@ interface IParameterInitialData {
 
 /**
  * Data type sending from device - absolute or not.
- * deviceParameters.ABSOLUTE_DATA_STATUS = `24`
+ * deviceParameters.ABSOLUTE_DATA_ENABLE = `24`
  */
-interface IParameterAbsoluteDataStatus {
+interface IParameterAbsoluteDataEnable {
     /**
-     * `1` - absolute data sending enabled
-     * `0` - disabled, device send pulse counter
+     * `1` - absolute data enabled
+     * `0` - absolute data disabled, device send pulse counter
      */
-    status: number
+    state: number
 }
 
 /**
@@ -317,11 +317,11 @@ interface IParameterExtraFrameInterval {
 }
 
 /**
- * Initial values for multi-channel devices.
- * deviceParameters.INITIAL_DATA_MULTI_CHANNEL = `29`.
+ * Absolute data for multi-channel devices.
+ * deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL = `29`.
  */
-interface IParameterInitialDataMC extends IParameterInitialData {
-    /** channel that accept initial values */
+interface IParameterAbsoluteDataMC extends IParameterAbsoluteData {
+    /** set data for specific channel */
     channel: number
 }
 
@@ -329,7 +329,7 @@ interface IParameterInitialDataMC extends IParameterInitialData {
  * Data type sending from device - absolute or not, multi-channel devices.
  * deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL = `30`
  */
-interface IParameterAbsoluteDataStatusMC extends IParameterAbsoluteDataStatus {
+interface IParameterAbsoluteDataEnableMC extends IParameterAbsoluteDataEnable {
     /** channel that accept status changing */
     channel: number
 }
@@ -349,20 +349,20 @@ export type TEventStatus =
 
 /* sorted by parameter id */
 type TParameterData =
-    IParameterDataSendingInterval |
-    IParameterOutputDataType |
+    IParameterReportingDataInterval |
+    IParameterReportingDataType |
     IParameterDayCheckoutHour |
     IParameterDeliveryTypeOfPriorityData |
     IParameterActivationMethod |
     IParameterBatteryDepassivationInfo |
     IParameterBatteryMinimalLoadTime |
     IParameterRx2Config |
-    IParameterInitialData |
-    IParameterAbsoluteDataStatus |
+    IParameterAbsoluteData |
+    IParameterAbsoluteDataEnable |
     IParameterSerialNumber |
     IParameterGeolocation |
-    IParameterInitialDataMC |
-    IParameterAbsoluteDataStatusMC;
+    IParameterAbsoluteDataMC |
+    IParameterAbsoluteDataEnableMC;
 
 
 const INITIAL_YEAR = 2000;
@@ -456,20 +456,20 @@ const mtxBitMask = {
  */
 const parametersSizeMap = new Map([
     /* size: 1 byte of parameter id + parameter data*/
-    [deviceParameters.DATA_SENDING_INTERVAL, 1 + 4],
+    [deviceParameters.REPORTING_DATA_INTERVAL, 1 + 4],
     [deviceParameters.DAY_CHECKOUT_HOUR, 1 + 1],
-    [deviceParameters.OUTPUT_DATA_TYPE, 1 + 1],
+    [deviceParameters.REPORTING_DATA_TYPE, 1 + 1],
     [deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA, 1 + 1],
     [deviceParameters.ACTIVATION_METHOD, 1 + 1],
     [deviceParameters.BATTERY_DEPASSIVATION_INFO, 1 + 6],
     [deviceParameters.BATTERY_MINIMAL_LOAD_TIME, 1 + 4],
     [deviceParameters.RX2_CONFIG, 1 + 4],
-    [deviceParameters.INITIAL_DATA, 1 + 9],
+    [deviceParameters.ABSOLUTE_DATA, 1 + 9],
     [deviceParameters.ABSOLUTE_DATA_ENABLE, 1 + 1],
     [deviceParameters.SERIAL_NUMBER, 1 + 6],
     [deviceParameters.GEOLOCATION, 1 + 10],
     [deviceParameters.EXTRA_FRAME_INTERVAL, 1 + 2],
-    [deviceParameters.INITIAL_DATA_MULTI_CHANNEL, 1 + 10],
+    [deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL, 1 + 10],
     [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL, 1 + 2]
 ]);
 
@@ -985,7 +985,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
     }
 
-    private getParameterInitialData (): IParameterInitialData {
+    private getParameterAbsoluteData (): IParameterAbsoluteData {
         return {
             meterValue: this.getUint32(false),
             pulseCoefficient: this.getPulseCoefficient(),
@@ -993,7 +993,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         };
     }
 
-    private setParameterInitialData ( parameter: IParameterInitialData ): void {
+    private setParameterAbsoluteData ( parameter: IParameterAbsoluteData ): void {
         this.setUint32(parameter.meterValue, false);
         this.setPulseCoefficient(parameter.pulseCoefficient);
         this.setUint32(parameter.value, false);
@@ -1011,7 +1011,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(value - 1);
     }
 
-    private getParameterInitialDataMC (): IParameterInitialDataMC {
+    private getParameterAbsoluteDataMC (): IParameterAbsoluteDataMC {
         return {
             channel: this.getChannelValue(),
             meterValue: this.getUint32(false),
@@ -1020,31 +1020,31 @@ class CommandBinaryBuffer extends BinaryBuffer {
         };
     }
 
-    private setParameterInitialDataMC ( parameter: IParameterInitialDataMC ): void {
+    private setParameterAbsoluteDataMC ( parameter: IParameterAbsoluteDataMC ): void {
         this.setChannelValue(parameter.channel);
         this.setUint32(parameter.meterValue, false);
         this.setPulseCoefficient(parameter.pulseCoefficient);
         this.setUint32(parameter.value, false);
     }
 
-    private getParameterAbsoluteDataStatus (): IParameterAbsoluteDataStatus {
-        return {status: this.getUint8()};
+    private getParameterAbsoluteDataEnable (): IParameterAbsoluteDataEnable {
+        return {state: this.getUint8()};
     }
 
-    private setParameterAbsoluteDataStatus ( parameter: IParameterAbsoluteDataStatus ): void {
-        this.setUint8(parameter.status);
+    private setParameterAbsoluteDataEnable ( parameter: IParameterAbsoluteDataEnable ): void {
+        this.setUint8(parameter.state);
     }
 
-    private getParameterAbsoluteDataStatusMC (): IParameterAbsoluteDataStatusMC {
+    private getParameterAbsoluteDataEnableMC (): IParameterAbsoluteDataEnableMC {
         return {
             channel: this.getChannelValue(),
-            status: this.getUint8()
+            state: this.getUint8()
         };
     }
 
-    private setParameterAbsoluteDataStatusMC ( parameter: IParameterAbsoluteDataStatusMC ): void {
+    private setParameterAbsoluteDataEnableMC ( parameter: IParameterAbsoluteDataEnableMC ): void {
         this.setChannelValue(parameter.channel);
-        this.setUint8(parameter.status);
+        this.setUint8(parameter.state);
     }
 
     private getParameterActivationMethod (): IParameterActivationMethod {
@@ -1057,13 +1057,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(parameter.type);
     }
 
-    private getOutputDataType (): IParameterOutputDataType {
+    private getParameterReportingDataType (): IParameterReportingDataType {
         return {
             type: this.getUint8()
         };
     }
 
-    private setOutputDataType ( parameter: IParameterOutputDataType ): void {
+    private setParameterReportingDataType ( parameter: IParameterReportingDataType ): void {
         this.setUint8(parameter.type);
     }
 
@@ -1077,7 +1077,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(parameter.value);
     }
 
-    private getParameterDataSendingInterval (): IParameterDataSendingInterval {
+    private getParameterReportingDataInterval (): IParameterReportingDataInterval {
         this.seek(this.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
 
         return {
@@ -1085,7 +1085,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         };
     }
 
-    private setParameterDataSendingInterval ( parameter: IParameterDataSendingInterval ) {
+    private setParameterReportingDataInterval ( parameter: IParameterReportingDataInterval ) {
         this.seek(this.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
 
         this.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
@@ -1176,12 +1176,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
         let data;
 
         switch ( id ) {
-            case deviceParameters.DATA_SENDING_INTERVAL:
-                data = this.getParameterDataSendingInterval();
+            case deviceParameters.REPORTING_DATA_INTERVAL:
+                data = this.getParameterReportingDataInterval();
                 break;
 
-            case deviceParameters.OUTPUT_DATA_TYPE:
-                data = this.getOutputDataType();
+            case deviceParameters.REPORTING_DATA_TYPE:
+                data = this.getParameterReportingDataType();
                 break;
 
             case deviceParameters.DAY_CHECKOUT_HOUR:
@@ -1208,12 +1208,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterRx2Config();
                 break;
 
-            case deviceParameters.INITIAL_DATA:
-                data = this.getParameterInitialData();
+            case deviceParameters.ABSOLUTE_DATA:
+                data = this.getParameterAbsoluteData();
                 break;
 
             case deviceParameters.ABSOLUTE_DATA_ENABLE:
-                data = this.getParameterAbsoluteDataStatus();
+                data = this.getParameterAbsoluteDataEnable();
                 break;
 
             case deviceParameters.SERIAL_NUMBER:
@@ -1228,12 +1228,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterExtraFrameInterval();
                 break;
 
-            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
-                data = this.getParameterInitialDataMC();
+            case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
+                data = this.getParameterAbsoluteDataMC();
                 break;
 
             case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
-                data = this.getParameterAbsoluteDataStatusMC();
+                data = this.getParameterAbsoluteDataEnableMC();
                 break;
 
             default:
@@ -1249,12 +1249,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(id);
 
         switch ( id ) {
-            case deviceParameters.DATA_SENDING_INTERVAL:
-                this.setParameterDataSendingInterval(data as IParameterDataSendingInterval);
+            case deviceParameters.REPORTING_DATA_INTERVAL:
+                this.setParameterReportingDataInterval(data as IParameterReportingDataInterval);
                 break;
 
-            case deviceParameters.OUTPUT_DATA_TYPE:
-                this.setOutputDataType(data as IParameterOutputDataType);
+            case deviceParameters.REPORTING_DATA_TYPE:
+                this.setParameterReportingDataType(data as IParameterReportingDataType);
                 break;
 
             case deviceParameters.DAY_CHECKOUT_HOUR:
@@ -1281,12 +1281,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 this.setParameterRx2Config(data as IParameterRx2Config);
                 break;
 
-            case deviceParameters.INITIAL_DATA:
-                this.setParameterInitialData(data as IParameterInitialData);
+            case deviceParameters.ABSOLUTE_DATA:
+                this.setParameterAbsoluteData(data as IParameterAbsoluteData);
                 break;
 
             case deviceParameters.ABSOLUTE_DATA_ENABLE:
-                this.setParameterAbsoluteDataStatus(data as IParameterAbsoluteDataStatus);
+                this.setParameterAbsoluteDataEnable(data as IParameterAbsoluteDataEnable);
                 break;
 
             case deviceParameters.SERIAL_NUMBER:
@@ -1301,12 +1301,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 this.setParameterExtraFrameInterval(data as IParameterExtraFrameInterval);
                 break;
 
-            case deviceParameters.INITIAL_DATA_MULTI_CHANNEL:
-                this.setParameterInitialDataMC(data as IParameterInitialDataMC);
+            case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
+                this.setParameterAbsoluteDataMC(data as IParameterAbsoluteDataMC);
                 break;
 
             case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
-                this.setParameterAbsoluteDataStatusMC(data as IParameterAbsoluteDataStatusMC);
+                this.setParameterAbsoluteDataEnableMC(data as IParameterAbsoluteDataEnableMC);
                 break;
 
             default:
