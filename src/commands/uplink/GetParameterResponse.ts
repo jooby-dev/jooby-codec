@@ -8,36 +8,36 @@ const COMMAND_ID = 0x04;
 
 const examples: TCommandExampleList = [
     {
-        name: 'initial data response',
+        name: 'absolute data (not multi channel device)',
         parameters: {
-            id: deviceParameters.INITIAL_DATA,
+            id: deviceParameters.ABSOLUTE_DATA,
             data: {value: 2023, meterValue: 204, pulseCoefficient: 100}
         },
         hex: {header: '04 0a', body: '17 00 00 00 cc 83 00 00 07 e7'}
     },
     {
-        name: 'device sending absolute data',
+        name: 'absolute data enabled',
         parameters: {
             id: deviceParameters.ABSOLUTE_DATA_ENABLE,
-            data: {status: 1}
+            data: {state: 1}
         },
         hex: {header: '04 02', body: '18 01'}
     },
     {
-        name: 'initial data from 1 channel',
+        name: 'absolute data for multi channel device (1 channel)',
         parameters: {
-            id: deviceParameters.INITIAL_DATA_MULTI_CHANNEL,
+            id: deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL,
             data: {value: 2032, meterValue: 402, pulseCoefficient: 1000, channel: 1}
         },
         hex: {header: '04 0b', body: '1d 00 00 00 01 92 84 00 00 07 f0'}
     },
     {
-        name: 'absolute data sending is disabled for 2 channel',
+        name: 'absolute data enabled for multi channel device (1 channel)',
         parameters: {
             id: deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL,
-            data: {status: 0, channel: 2}
+            data: {state: 1, channel: 2}
         },
-        hex: {header: '04 03', body: '1e 01 00'}
+        hex: {header: '04 03', body: '1e 01 01'}
     }
 ];
 
@@ -58,7 +58,7 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     id: 29,
- *     data: {value: 2032, meterValue: 402, pulseCoefficient: 1000, channel: 1}
+ *     data: { channel: 2, meterValue: 402, pulseCoefficient: 1, value: 2032 }
  * }
  * ```
  *

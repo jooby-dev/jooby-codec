@@ -20,12 +20,12 @@ const COMMAND_BODY_SIZE = 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'request initial data from device',
-        parameters: {id: deviceParameters.INITIAL_DATA},
+        name: 'request absolute data (not multi channel device)',
+        parameters: {id: deviceParameters.ABSOLUTE_DATA},
         hex: {header: '04 01', body: '17'}
     },
     {
-        name: 'request for data type sending from device',
+        name: 'request for state of absolute data (not multi channel device)',
         parameters: {id: deviceParameters.ABSOLUTE_DATA_ENABLE},
         hex: {header: '04 01', body: '18'}
     }
@@ -40,7 +40,7 @@ const examples: TCommandExampleList = [
  * import {constants} from 'jooby-codec';
  * import GetParameter from 'jooby-codec/commands/downlink/GetParameter';
  *
- * const command = new GetParameter({id: constants.deviceParameters.INITIAL_DATA});
+ * const command = new GetParameter({id: constants.deviceParameters.ABSOLUTE_DATA});
  *
  * // output command binary in hex representation
  * console.log(command.toHex());

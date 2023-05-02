@@ -9,9 +9,9 @@ const COMMAND_ID = 0x03;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set minimal interval for data sending to 1 hour',
+        name: 'set minimal reporting data interval to 1 hour',
         parameters: {
-            id: deviceParameters.DATA_SENDING_INTERVAL,
+            id: deviceParameters.REPORTING_DATA_INTERVAL,
             data: {value: 3600}
         },
         hex: {header: '03 05', body: '01 00 00 00 06'}
@@ -25,9 +25,9 @@ const examples: TCommandExampleList = [
         hex: {header: '03 02', body: '04 0c'}
     },
     {
-        name: 'set output data type to "day"',
+        name: 'set reporting data type to "day"',
         parameters: {
-            id: deviceParameters.OUTPUT_DATA_TYPE,
+            id: deviceParameters.REPORTING_DATA_TYPE,
             data: {type: 1}
         },
         hex: {header: '03 02', body: '05 01'}
@@ -73,16 +73,16 @@ const examples: TCommandExampleList = [
         hex: {header: '03 05', body: '12 05 00 00 c8'}
     },
     {
-        name: 'initial data setup',
+        name: 'set absolute data (not multi channel device)',
         parameters: {
-            id: deviceParameters.INITIAL_DATA,
+            id: deviceParameters.ABSOLUTE_DATA,
             data: {value: 2023, meterValue: 204, pulseCoefficient: 100}
         },
         hex: {header: '03 0a', body: '17 00 00 00 cc 83 00 00 07 e7'}
     },
     {
-        name: 'enable sending absolute data',
-        parameters: {id: deviceParameters.ABSOLUTE_DATA_ENABLE, data: {status: 1}},
+        name: 'enable absolute data (not multi channel device)',
+        parameters: {id: deviceParameters.ABSOLUTE_DATA_ENABLE, data: {state: 1}},
         hex: {header: '03 02', body: '18 01'}
     },
     {
@@ -110,20 +110,20 @@ const examples: TCommandExampleList = [
         hex: {header: '03 03', body: '1c 10 0e'}
     },
     {
-        name: 'initial data setup for 1 channel',
+        name: 'set absolute data for multi channel device (1 channel)',
         parameters: {
-            id: deviceParameters.INITIAL_DATA_MULTI_CHANNEL,
+            id: deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL,
             data: {value: 2032, meterValue: 402, pulseCoefficient: 1000, channel: 1}
         },
         hex: {header: '03 0b', body: '1d 00 00 00 01 92 84 00 00 07 f0'}
     },
     {
-        name: 'disable sending absolute data from 2 channel',
+        name: 'enable absolute data for multi channel device (2 channel)',
         parameters: {
             id: deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL,
-            data: {status: 0, channel: 2}
+            data: {state: 1, channel: 2}
         },
-        hex: {header: '03 03', body: '1e 01 00'}
+        hex: {header: '03 03', body: '1e 01 01'}
     }
 ];
 
@@ -135,12 +135,12 @@ const examples: TCommandExampleList = [
  * ```js
  * import SetParameter from 'jooby-codec/commands/downlink/SetParameter';
  *
- * const parameters = {id: constants.deviceParameters.INITIAL_DATA, data: {value: 2023, meterValue: 204, pulseCoefficient: 100}};
+ * const parameters = {id: constants.deviceParameters.ABSOLUTE_DATA, data: {value: 2023, meterValue: 204, pulseCoefficient: 100}};
  * const command = new SetParameter(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 03 0a 17 00 00 00 cc 82 00 00 07 e7
+ * // 03 0a 17 00 00 00 cc 83 00 00 07 e7
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/downlink/SetParameter.md)
