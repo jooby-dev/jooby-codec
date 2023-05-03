@@ -23,6 +23,13 @@ export const BATTERY_DEPASSIVATION_INFO = 10;
 /** device battery minimum required battery load time per day to prevent passivation */
 export const BATTERY_MINIMAL_LOAD_TIME = 11;
 
+/**
+ * Setup channels config, only for universal 4-channels devices.
+ *
+ * [Values description](https://github.com/jooby-dev/jooby-docs/blob/main/docs/parameter-types.md#channels-config)
+ */
+export const CHANNELS_CONFIG = 13;
+
 /** setup parameters for RX2 window config */
 export const RX2_CONFIG = 18;
 

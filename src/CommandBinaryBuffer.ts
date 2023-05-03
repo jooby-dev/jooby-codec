@@ -208,6 +208,17 @@ interface IParameterActivationMethod {
 }
 
 /**
+ * Channels config, only for universal 4-channels devices
+ * deviceParameters.CHANNELS_CONFIG = `13`.
+ */
+interface IParameterChannelsConfig {
+    /**
+     * value from 0 to 18, [values description](https://github.com/jooby-dev/jooby-docs/blob/main/docs/parameter-types.md#channels-config)
+     */
+    value: number
+}
+
+/**
  * RX2 configuration.
  * deviceParameters.RX2_CONFIG = `18`.
  *
@@ -356,6 +367,7 @@ type TParameterData =
     IParameterActivationMethod |
     IParameterBatteryDepassivationInfo |
     IParameterBatteryMinimalLoadTime |
+    IParameterChannelsConfig |
     IParameterRx2Config |
     IParameterAbsoluteData |
     IParameterAbsoluteDataEnable |
@@ -463,6 +475,7 @@ const parametersSizeMap = new Map([
     [deviceParameters.ACTIVATION_METHOD, 1 + 1],
     [deviceParameters.BATTERY_DEPASSIVATION_INFO, 1 + 6],
     [deviceParameters.BATTERY_MINIMAL_LOAD_TIME, 1 + 4],
+    [deviceParameters.CHANNELS_CONFIG, 1 + 1],
     [deviceParameters.RX2_CONFIG, 1 + 4],
     [deviceParameters.ABSOLUTE_DATA, 1 + 9],
     [deviceParameters.ABSOLUTE_DATA_ENABLE, 1 + 1],
@@ -1099,6 +1112,18 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(parameter.value);
     }
 
+    private getParameterChannelsConfig (): IParameterChannelsConfig {
+        return {value: this.getUint8()};
+    }
+
+    private setParameterChannelsConfig ( parameter: IParameterChannelsConfig ): void {
+        if ( parameter.value < 0 || parameter.value > 18 ) {
+            throw new Error('channels config must be between 0-18');
+        }
+
+        this.setUint8(parameter.value);
+    }
+
     private getParameterRx2Config (): IParameterRx2Config {
         return {
             spreadFactor: this.getUint8(),
@@ -1204,6 +1229,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterBatteryMinimalLoadTime();
                 break;
 
+            case deviceParameters.CHANNELS_CONFIG:
+                data = this.getParameterChannelsConfig();
+                break;
+
             case deviceParameters.RX2_CONFIG:
                 data = this.getParameterRx2Config();
                 break;
@@ -1275,6 +1304,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
             case deviceParameters.BATTERY_MINIMAL_LOAD_TIME:
                 this.setParameterBatteryMinimalLoadTime(data as IParameterBatteryMinimalLoadTime);
+                break;
+
+            case deviceParameters.CHANNELS_CONFIG:
+                this.setParameterChannelsConfig(data as IParameterChannelsConfig);
                 break;
 
             case deviceParameters.RX2_CONFIG:
