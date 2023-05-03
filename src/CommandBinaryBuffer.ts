@@ -230,9 +230,6 @@ interface IParameterRx2Config {
      * Making the spreading factor `1` step lower (from `SF10` to `SF9`) allows you to roughly send the same amount of data use half the time on air.
      * Lowering the spreading factor makes it more difficult for the gateway to receive a transmission, as it will be more sensitive to noise.
      *
-     * `0` - delivery with confirmation
-     * `1` - delivery without confirmation
-     *
      * @see https://www.thethingsnetwork.org/docs/lorawan/spreading-factors/
      */
     spreadFactor: number
