@@ -1,12 +1,10 @@
 /* eslint-disable */
 
-import Command, {ICommandExample, TCommandExampleList} from '../src/Command.js';
-import {commands, constants} from '../src/index.js';
+import Command, {ICommandExample} from '../src/Command.js';
+import {commands} from '../src/index.js';
 import * as message from '../src/utils/message.js';
 import getBytesFromHex from '../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../src/utils/getHexFromBytes.js';
-import * as hardwareTypes from '../src/constants/hardwareTypes.js';
-import * as deviceParameters from '../src/constants/deviceParameters.js';
 
 
 interface ICommand {

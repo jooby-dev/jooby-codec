@@ -65,6 +65,14 @@ const examples: TCommandExampleList = [
         hex: {header: '03 05', body: '0b 00 00 00 64'}
     },
     {
+        name: 'enable 1-4 channels, and disable serial channel for device',
+        parameters: {
+            id: deviceParameters.CHANNELS_CONFIG,
+            data: {value: 0}
+        },
+        hex: {header: '03 02', body: '0d 00'}
+    },
+    {
         name: 'set spread factor and frequency for RX2 window',
         parameters: {
             id: deviceParameters.RX2_CONFIG,
