@@ -12,7 +12,7 @@ export const DAY_CHECKOUT_HOUR = 4;
 export const REPORTING_DATA_TYPE = 5;
 
 /** type of priority data delivery, with confirmation or not */
-export const DELIVERY_TYPE_OF_PRIORITY_DATA = 8;
+export const PRIORITY_DATA_DELIVERY_TYPE = 8;
 
 /** device activation method */
 export const ACTIVATION_METHOD = 9;

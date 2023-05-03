@@ -183,7 +183,7 @@ interface IParameterReportingDataType {
 /**
  * Delivery type of priority data, with or without acknowledgment.
  * Priority data - frames from uplink/NewEvent command.
- * deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA = `8`.
+ * deviceParameters.PRIORITY_DATA_DELIVERY_TYPE = `8`.
  */
 interface IParameterDeliveryTypeOfPriorityData {
     /**
@@ -459,7 +459,7 @@ const parametersSizeMap = new Map([
     [deviceParameters.REPORTING_DATA_INTERVAL, 1 + 4],
     [deviceParameters.DAY_CHECKOUT_HOUR, 1 + 1],
     [deviceParameters.REPORTING_DATA_TYPE, 1 + 1],
-    [deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA, 1 + 1],
+    [deviceParameters.PRIORITY_DATA_DELIVERY_TYPE, 1 + 1],
     [deviceParameters.ACTIVATION_METHOD, 1 + 1],
     [deviceParameters.BATTERY_DEPASSIVATION_INFO, 1 + 6],
     [deviceParameters.BATTERY_MINIMAL_LOAD_TIME, 1 + 4],
@@ -1188,7 +1188,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterDayCheckoutHour();
                 break;
 
-            case deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA:
+            case deviceParameters.PRIORITY_DATA_DELIVERY_TYPE:
                 data = this.getParameterDeliveryTypeOfPriorityData();
                 break;
 
@@ -1261,7 +1261,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 this.setParameterDayCheckoutHour(data as IParameterDayCheckoutHour);
                 break;
 
-            case deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA:
+            case deviceParameters.PRIORITY_DATA_DELIVERY_TYPE:
                 this.setParameterDeliveryTypeOfPriorityData(data as IParameterDeliveryTypeOfPriorityData);
                 break;
 

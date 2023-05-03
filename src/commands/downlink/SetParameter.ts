@@ -35,7 +35,7 @@ const examples: TCommandExampleList = [
     {
         name: 'set "with confirmation" for delivery of priority data',
         parameters: {
-            id: deviceParameters.DELIVERY_TYPE_OF_PRIORITY_DATA,
+            id: deviceParameters.PRIORITY_DATA_DELIVERY_TYPE,
             data: {value: 0}
         },
         hex: {header: '03 02', body: '08 00'}
