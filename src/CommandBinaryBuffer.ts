@@ -307,7 +307,7 @@ interface IParameterSerialNumber {
 interface IParameterGeolocation {
     latitude: number,
     longitude: number,
-    attitude: number
+    altitude: number
 }
 
 /**
@@ -1183,14 +1183,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return {
             latitude: roundNumber(this.getFloat32()),
             longitude: roundNumber(this.getFloat32()),
-            attitude: roundNumber(this.getUint16())
+            altitude: roundNumber(this.getUint16())
         };
     }
 
     private setParameterGeolocation ( parameter: IParameterGeolocation ): void {
         this.setFloat32(roundNumber(parameter.latitude));
         this.setFloat32(roundNumber(parameter.longitude));
-        this.setUint16(roundNumber(parameter.attitude));
+        this.setUint16(roundNumber(parameter.altitude));
     }
 
     getParameter (): IParameter {
