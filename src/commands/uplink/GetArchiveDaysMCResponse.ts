@@ -30,7 +30,7 @@ const COMMAND_BODY_MAX_SIZE = 5104;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get day values from 2001.03.10 12:00:00 GMT for 1 channel',
+        name: 'get day values from 2001.03.10 12:00:00 GMT for channel 1',
         parameters: {
             startTime: 2678227200,
             days: 2,
