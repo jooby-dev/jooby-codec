@@ -105,7 +105,7 @@ const examples: TCommandExampleList = [
         name: 'set device geolocation',
         parameters: {
             id: deviceParameters.GEOLOCATION,
-            data: {latitude: 34.43, longitude: 43.43, attitude: 23}
+            data: {latitude: 34.43, longitude: 43.43, altitude: 23}
         },
         hex: {header: '03 0b', body: '1a 52 b8 09 42 52 b8 2d 42 17 00'}
     },
