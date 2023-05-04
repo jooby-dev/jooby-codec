@@ -25,15 +25,11 @@ interface IGetArchiveDaysMCParameters {
 const COMMAND_ID = 0x1b;
 const COMMAND_BODY_SIZE = 4;
 
-
 const examples: TCommandExampleList = [
     {
         name: '1 day pulse counter for 1 channel from 2023.03.10 00:00:00 GMT',
         parameters: {channelList: [1], days: 1, startTime: 731721600},
-        hex: {
-            header: '1b 04',
-            body: '2e 6a 01 01'
-        }
+        hex: {header: '1b 04', body: '2e 6a 01 01'}
     }
 ];
 

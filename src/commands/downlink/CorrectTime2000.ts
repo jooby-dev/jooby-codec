@@ -1,10 +1,6 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
-
-
-const COMMAND_ID = 0x0c;
-const COMMAND_BODY_SIZE = 2;
 
 
 /**
@@ -23,6 +19,18 @@ interface ICorrectTime2000Parameters {
      */
     seconds: number
 }
+
+
+const COMMAND_ID = 0x0c;
+const COMMAND_BODY_SIZE = 2;
+
+const examples: TCommandExampleList = [
+    {
+        name: 'correct time to 120 seconds to the past',
+        parameters: {sequenceNumber: 45, seconds: -120},
+        hex: {header: '0c 02', body: '2d 88'}
+    }
+];
 
 
 /**
@@ -52,6 +60,8 @@ class CorrectTime2000 extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = true;
 

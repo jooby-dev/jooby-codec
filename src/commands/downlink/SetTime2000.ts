@@ -1,4 +1,4 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import BinaryBuffer from '../../BinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
@@ -20,6 +20,14 @@ interface ISetTime2000Parameters {
 
 const COMMAND_ID = 0x02;
 const COMMAND_BODY_SIZE = 5;
+
+const examples: TCommandExampleList = [
+    {
+        name: 'set time to 2023.04.03 14:01:17 GMT',
+        parameters: {sequenceNumber: 78, seconds: 733845677},
+        hex: {header: '02 05', body: '4e 2b bd 98 ad'}
+    }
+];
 
 
 /**
@@ -48,6 +56,8 @@ class SetTime2000 extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = true;
 

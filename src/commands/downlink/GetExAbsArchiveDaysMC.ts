@@ -24,10 +24,7 @@ const examples: TCommandExampleList = [
     {
         name: '1 day absolute value for 1 channel from 2023.12.24 00:00:00 GMT',
         parameters: {channelList: [1], days: 1, startTime: 756691200},
-        hex: {
-            header: '1f 0d 04',
-            body: '2f 98 01 01'
-        }
+        hex: {header: '1f 0d 04', body: '2f 98 01 01'}
     }
 ];
 

@@ -23,10 +23,7 @@ const examples: TCommandExampleList = [
     {
         name: '2 hours pulse counter for 1 channel from 2023.12.23 12:00:00 GMT',
         parameters: {channelList: [1], hours: 2, startTime: 756648000},
-        hex: {
-            header: '1a 04',
-            body: '2f 97 4c 01'
-        }
+        hex: {header: '1a 04', body: '2f 97 4c 01'}
     }
 ];
 

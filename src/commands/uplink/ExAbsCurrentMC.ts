@@ -15,20 +15,13 @@ const COMMAND_BODY_MAX_SIZE = 87;
 
 const examples: TCommandExampleList = [
     {
-        name: 'absolute current value from 3 channel',
+        name: 'absolute current value from channel 3',
         parameters: {
             channelList: [
-                {
-                    pulseCoefficient: 100,
-                    index: 3,
-                    value: 342
-                }
+                {pulseCoefficient: 100, index: 3, value: 342}
             ]
         },
-        hex: {
-            header: '1f 0f 04',
-            body: '04 83 d6 02'
-        }
+        hex: {header: '1f 0f 04', body: '04 83 d6 02'}
     }
 ];
 

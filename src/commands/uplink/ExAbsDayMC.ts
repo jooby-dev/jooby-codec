@@ -23,17 +23,10 @@ const examples: TCommandExampleList = [
         parameters: {
             startTime: 731721600,
             channelList: [
-                {
-                    pulseCoefficient: 100,
-                    index: 1,
-                    value: 342
-                }
+                {pulseCoefficient: 100, index: 1, value: 342}
             ]
         },
-        hex: {
-            header: '1f 0b 06',
-            body: '2e 6a 01 83 d6 02'
-        }
+        hex: {header: '1f 0b 06', body: '2e 6a 01 83 d6 02'}
     }
 ];
 

@@ -1,9 +1,16 @@
-import Command from '../../Command.js';
+import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
 // TODO: rework extended headers detection
 const COMMAND_ID = 0x0f1f;
+
+const examples: TCommandExampleList = [
+    {
+        name: 'simple request',
+        hex: {header: '1f 0f 00', body: ''}
+    }
+];
 
 
 /**
@@ -31,6 +38,8 @@ class GetExAbsCurrentMC extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
+
+    static readonly examples = examples;
 
     static readonly hasParameters = false;
 

@@ -23,8 +23,7 @@ const COMMAND_BODY_SIZE = 5;
 
 const examples: TCommandExampleList = [
     {
-        name: '',
-        // time: 2023-04-03T14:01:17.000Z
+        name: 'time is 2023.04.03 14:01:17 GMT',
         parameters: {sequenceNumber: 77, time: 733845677},
         hex: {header: '09 05', body: '4d 2b bd 98 ad'}
     }
