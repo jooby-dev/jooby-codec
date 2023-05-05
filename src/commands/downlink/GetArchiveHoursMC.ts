@@ -8,7 +8,7 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/tim
  * GetArchiveHoursMC command parameters
  */
 interface IGetArchiveHoursMCParameters {
-    /** amount of hours to retrieve */
+    /** the number of hours to retrieve */
     hours: number,
     startTime: TTime2000,
     /** array of channelList index numbers */
