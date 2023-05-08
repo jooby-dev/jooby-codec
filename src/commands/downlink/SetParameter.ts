@@ -132,6 +132,22 @@ const examples: TCommandExampleList = [
             data: {state: 1, channel: 2}
         },
         hex: {header: '03 03', body: '1e 01 01'}
+    },
+    {
+        name: 'set pulse channels config',
+        parameters: {
+            id: deviceParameters.PULSE_CHANNELS_SCAN_CONFIG,
+            data: {pullUpTime: 18, scanTime: 23}
+        },
+        hex: {header: '03 03', body: '1f 12 17'}
+    },
+    {
+        name: 'enable channels: 1, 2, disable channels: 3, 4, for pulse device',
+        parameters: {
+            id: deviceParameters.PULSE_CHANNELS_SET_CONFIG,
+            data: {channel1: true, channel2: true, channel3: false, channel4: false}
+        },
+        hex: {header: '03 02', body: '20 03'}
     }
 ];
 

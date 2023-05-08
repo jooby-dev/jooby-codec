@@ -107,3 +107,14 @@ export const ELIMP = 11;
  * Jooby EPHIR RMS LoRaWAN GMME10 107 EU
  */
 export const GASIC = 12;
+
+/**
+ * RM with 4 ports for the Asian region, AS923.
+ * 4 channels
+ *
+ * Models:
+ * Jooby RM 4PI
+ * Jooby OMNI RM LoRaWAN 4PI 200 AS
+ * Jooby OMNI RM LoRaWAN 4PI 202 AS
+ */
+export const IMP4AS = 15;
