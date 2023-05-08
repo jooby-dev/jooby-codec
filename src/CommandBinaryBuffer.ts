@@ -347,12 +347,12 @@ interface IParameterAbsoluteDataEnableMC extends IParameterAbsoluteDataEnable {
  * deviceParameters.PULSE_CHANNELS_SCAN_CONFIG = `31`
  */
 interface IParameterPulseChannelsScanConfig {
-    timePullUp: number,
-    timeScan: number,
+    pullUpTime: number,
+    scanTime: number
 }
 
 /**
- * Set channels for pulse devices,
+ * Set channels for pulse devices.
  * deviceParameters.PULSE_CHANNELS_SET_CONFIG = `32`
  */
 interface IParameterPulseChannelsSetConfig {
@@ -1227,22 +1227,22 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     private getParameterPulseChannelsScanConfig (): IParameterPulseChannelsScanConfig {
         return {
-            timePullUp: this.getUint8(),
-            timeScan: this.getUint8()
+            pullUpTime: this.getUint8(),
+            scanTime: this.getUint8()
         };
     }
 
     private setParameterPulseChannelsScanConfig ( parameter: IParameterPulseChannelsScanConfig ): void {
-        if ( parameter.timePullUp < 17 ) {
-            throw new Error('minimal value for timePullUp - 17');
+        if ( parameter.pullUpTime < 17 ) {
+            throw new Error('minimal value for pullUpTime - 17');
         }
 
-        if ( parameter.timeScan < 15 ) {
-            throw new Error('minimal value for timeScan - 15');
+        if ( parameter.scanTime < 15 ) {
+            throw new Error('minimal value for scanTime - 15');
         }
 
-        this.setUint8(parameter.timePullUp);
-        this.setUint8(parameter.timeScan);
+        this.setUint8(parameter.pullUpTime);
+        this.setUint8(parameter.scanTime);
     }
 
     private getParameterPulseChannelsEnableConfig (): IParameterPulseChannelsSetConfig {

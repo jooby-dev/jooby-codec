@@ -137,7 +137,7 @@ const examples: TCommandExampleList = [
         name: 'set pulse channels config',
         parameters: {
             id: deviceParameters.PULSE_CHANNELS_SCAN_CONFIG,
-            data: {timePullUp: 18, timeScan: 23}
+            data: {pullUpTime: 18, scanTime: 23}
         },
         hex: {header: '03 03', body: '1f 12 17'}
     },
