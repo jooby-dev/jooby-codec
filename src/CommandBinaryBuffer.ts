@@ -342,6 +342,27 @@ interface IParameterAbsoluteDataEnableMC extends IParameterAbsoluteDataEnable {
     channel: number
 }
 
+/**
+ * Scan config for pulse devices.
+ * deviceParameters.PULSE_CHANNELS_SCAN_CONFIG = `31`
+ */
+interface IParameterPulseChannelsScanConfig {
+    timePullUp: number,
+    timeScan: number,
+}
+
+/**
+ * Set channels for pulse devices,
+ * deviceParameters.PULSE_CHANNELS_SET_CONFIG = `32`
+ */
+interface IParameterPulseChannelsSetConfig {
+    channel1: boolean,
+    channel2: boolean,
+    channel3: boolean,
+    channel4: boolean
+}
+
+
 export interface IParameter {
     id: number,
     data: TParameterData
@@ -371,7 +392,9 @@ type TParameterData =
     IParameterSerialNumber |
     IParameterGeolocation |
     IParameterAbsoluteDataMC |
-    IParameterAbsoluteDataEnableMC;
+    IParameterAbsoluteDataEnableMC |
+    IParameterPulseChannelsScanConfig |
+    IParameterPulseChannelsSetConfig;
 
 
 const INITIAL_YEAR = 2000;
@@ -480,8 +503,17 @@ const parametersSizeMap = new Map([
     [deviceParameters.GEOLOCATION, 1 + 10],
     [deviceParameters.EXTRA_FRAME_INTERVAL, 1 + 2],
     [deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL, 1 + 10],
-    [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL, 1 + 2]
+    [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL, 1 + 2],
+    [deviceParameters.PULSE_CHANNELS_SCAN_CONFIG, 1 + 3],
+    [deviceParameters.PULSE_CHANNELS_SET_CONFIG, 1 + 1]
 ]);
+
+const fourChannelsBitMask = {
+    channel1: 2 ** 0,
+    channel2: 2 ** 1,
+    channel3: 2 ** 2,
+    channel4: 2 ** 3
+};
 
 const byteToPulseCoefficientMap = new Map([
     [0x80, 1],
@@ -1193,6 +1225,53 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint16(roundNumber(parameter.altitude));
     }
 
+    private getParameterPulseChannelsScanConfig (): IParameterPulseChannelsScanConfig {
+        return {
+            timePullUp: this.getUint8(),
+            timeScan: this.getUint8()
+        };
+    }
+
+    private setParameterPulseChannelsScanConfig ( parameter: IParameterPulseChannelsScanConfig ): void {
+        if ( parameter.timePullUp < 17 ) {
+            throw new Error('minimal value for timePullUp - 17');
+        }
+
+        if ( parameter.timeScan < 15 ) {
+            throw new Error('minimal value for timeScan - 15');
+        }
+
+        this.setUint8(parameter.timePullUp);
+        this.setUint8(parameter.timeScan);
+    }
+
+    private getParameterPulseChannelsEnableConfig (): IParameterPulseChannelsSetConfig {
+        const object = bitSet.toObject(fourChannelsBitMask, this.getUint8());
+
+        return {
+            channel1: object.channel1,
+            channel2: object.channel2,
+            channel3: object.channel3,
+            channel4: object.channel4
+        };
+    }
+
+    private setParameterPulseChannelsEnableConfig ( parameter: IParameterPulseChannelsSetConfig ): void {
+        const {
+            channel1,
+            channel2,
+            channel3,
+            channel4
+        } = parameter;
+
+        this.setUint8(bitSet.fromObject(fourChannelsBitMask, {
+            channel1,
+            channel2,
+            channel3,
+            channel4
+        }));
+    }
+
     getParameter (): IParameter {
         const id = this.getUint8();
         let data;
@@ -1260,6 +1339,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
             case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
                 data = this.getParameterAbsoluteDataEnableMC();
+                break;
+
+            case deviceParameters.PULSE_CHANNELS_SCAN_CONFIG:
+                data = this.getParameterPulseChannelsScanConfig();
+                break;
+
+            case deviceParameters.PULSE_CHANNELS_SET_CONFIG:
+                data = this.getParameterPulseChannelsEnableConfig();
                 break;
 
             default:
@@ -1337,6 +1424,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
             case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
                 this.setParameterAbsoluteDataEnableMC(data as IParameterAbsoluteDataEnableMC);
+                break;
+
+            case deviceParameters.PULSE_CHANNELS_SCAN_CONFIG:
+                this.setParameterPulseChannelsScanConfig(data as IParameterPulseChannelsScanConfig);
+                break;
+
+            case deviceParameters.PULSE_CHANNELS_SET_CONFIG:
+                this.setParameterPulseChannelsEnableConfig(data as IParameterPulseChannelsSetConfig);
                 break;
 
             default:

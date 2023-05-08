@@ -53,3 +53,19 @@ export const ABSOLUTE_DATA_MULTI_CHANNEL = 29;
 
 /** enable absolute value sending for a specific channel */
 export const ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL = 30;
+
+/**
+ * Scan config for pulse devices.
+ *
+ * Parameter available from SOFTWARE_VERSION = 0x6C for
+ * HARDWARE_TYPE - 15 HARDWARE_VERSION - 2 and HARDWARE_TYPE - 6 HARDWARE_VERSION - 10
+ */
+export const PULSE_CHANNELS_SCAN_CONFIG = 31;
+
+/**
+ * Set channels for pulse devices,
+ *
+ * Parameter available from SOFTWARE_VERSION = 0x6C for
+ * HARDWARE_TYPE - 15 HARDWARE_VERSION - 2 and HARDWARE_TYPE - 6 HARDWARE_VERSION - 10
+ */
+export const PULSE_CHANNELS_SET_CONFIG = 32;
