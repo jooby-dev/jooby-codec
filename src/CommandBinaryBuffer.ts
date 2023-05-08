@@ -505,9 +505,9 @@ const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
  */
 class CommandBinaryBuffer extends BinaryBuffer {
     /**
-     * Get amount of bytes necessary to store an extended value.
+     * Get the number of bytes necessary to store an extended value.
      *
-     * @param bits - amount of bits of original value
+     * @param bits - the number of bits of original value
      *
      * @example
      * ```js
@@ -695,7 +695,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         // sort channels by index
         channelList.sort((a, b) => a.index - b.index);
 
-        // find max channel index from 0 to detect amount of bytes
+        // find max channel index from 0 to detect the number of bytes
         const maxChannel = Math.max(...channelList.map(({index}) => index));
         const size = (maxChannel - (maxChannel % 8)) / 8;
         const data = new Array(size + 1).fill(0);

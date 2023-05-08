@@ -8,7 +8,7 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/tim
  * GetExAbsArchiveDaysMC command parameters
  */
 interface IGetExAbsArchiveDaysMCParameters {
-    /** amount of days to retrieve */
+    /** the number of days to retrieve */
     days: number,
     startTime: TTime2000,
     /** array of channelList index numbers */

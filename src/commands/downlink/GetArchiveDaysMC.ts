@@ -14,7 +14,7 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../utils/tim
  * GetArchiveDaysMC command parameters
  */
 interface IGetArchiveDaysMCParameters {
-    /** amount of days to retrieve */
+    /** the number of days to retrieve */
     days: number,
     startTime: TTime2000,
     /** array of channelList index numbers */
