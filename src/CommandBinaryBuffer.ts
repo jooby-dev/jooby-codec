@@ -343,11 +343,15 @@ interface IParameterAbsoluteDataEnableMC extends IParameterAbsoluteDataEnable {
 }
 
 /**
- * Scan config for pulse devices.
+ * Channels scan config for pulse devices.
  * deviceParameters.PULSE_CHANNELS_SCAN_CONFIG = `31`
  */
 interface IParameterPulseChannelsScanConfig {
+    /** channels to set configuration */
+    channelList: Array<number>,
+    /** channel pull up time in microseconds */
     pullUpTime: number,
+    /** channel scan time in microseconds */
     scanTime: number
 }
 
@@ -1227,6 +1231,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     private getParameterPulseChannelsScanConfig (): IParameterPulseChannelsScanConfig {
         return {
+            channelList: this.getChannels(),
             pullUpTime: this.getUint8(),
             scanTime: this.getUint8()
         };
@@ -1241,6 +1246,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             throw new Error('minimal value for scanTime - 15');
         }
 
+        this.setChannels(parameter.channelList.map(index => ({index} as IChannel)));
         this.setUint8(parameter.pullUpTime);
         this.setUint8(parameter.scanTime);
     }
