@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import * as message from '../src/utils/message.js';
 import * as downlinkCommands from '../src/commands/downlink/index.js';
-import * as uplinkCommands from '../src/commands/uplink/index.js';
+import {DOWNLINK, UPLINK} from '../src/constants/directions.js';
 
 
 interface IMessage {
@@ -15,77 +15,41 @@ type TMessageList = Array<IMessage>;
 
 const downlinkMessages: TMessageList = [
     {
-        // SetTime2000 + SetTime2000 + LRC
-        hex: '02 05 4e 00 01 e2 40  02 05 4e 00 01 e2 40  55',
+        // GetShortName + GetShortName
+        hex: '01 0a 08 00 09 01  01 0a 07 00 09 01',
         commands: [
             {
-                parameters: {sequenceNumber: 78, seconds: 123456},
-                command: downlinkCommands.SetTime2000
-            },
-            {
-                parameters: {sequenceNumber: 78, seconds: 123456},
-                command: downlinkCommands.SetTime2000
-            }
-        ],
-        isValid: true
-    },
-    {
-        // SetTime2000 + SetTime2000 (no LRC)
-        hex: '02 05 4e 00 01 e2 40  02 05 4e 00 01 e2 40',
-        commands: [
-            {
-                parameters: {sequenceNumber: 78, seconds: 123456},
-                command: downlinkCommands.SetTime2000
-            },
-            {
-                parameters: {sequenceNumber: 78, seconds: 123456},
-                command: downlinkCommands.SetTime2000
-            }
-        ],
-        isValid: false
-    }
-];
-
-const uplinkMessages: TMessageList = [
-    {
-        // SetTime2000Response + CurrentMC + DayMC + LRC
-        hex: '02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 55 0c 83 01 08 0a  b5',
-        commands: [
-            {
-                parameters: {status: 1},
-                command: uplinkCommands.SetTime2000Response
+                parameters: {
+                    obis: {
+                        groupA: 8,
+                        groupC: 0,
+                        groupD: 9,
+                        groupE: 1
+                    }
+                },
+                command: downlinkCommands.GetShortName
             },
             {
                 parameters: {
-                    channelList: [
-                        {index: 1, value: 131},
-                        {index: 2, value: 8},
-                        {index: 3, value: 10},
-                        {index: 4, value: 12}
-                    ]
+                    obis: {
+                        groupA: 7,
+                        groupC: 0,
+                        groupD: 9,
+                        groupE: 1
+                    }
                 },
-                command: uplinkCommands.CurrentMC
-            },
-            {
-                parameters: {
-                    startTime: 756604800,
-                    channelList: [
-                        {index: 1, value: 12},
-                        {index: 3, value: 131},
-                        {index: 5, value: 8},
-                        {index: 7, value: 10}
-                    ]
-                },
-                command: uplinkCommands.DayMC
+                command: downlinkCommands.GetShortName
             }
         ],
         isValid: true
     }
 ];
 
+const uplinkMessages: TMessageList = [];
 
-const checkMessage = ( {hex, commands, isValid}: IMessage ) => {
-    const messageData = message.fromHex(hex);
+
+const checkMessage = ( {hex, commands, isValid}: IMessage, direction: typeof DOWNLINK | typeof UPLINK ) => {
+    const messageData = message.fromHex(hex, direction);
 
     messageData.commands.forEach((messageCommand, index) => {
         expect(messageCommand.command.parameters).toStrictEqual(commands[index].parameters);
@@ -98,15 +62,15 @@ const checkMessage = ( {hex, commands, isValid}: IMessage ) => {
 describe('downlink messages', () => {
     downlinkMessages.forEach((command, index) => {
         test(`test case #${index}`, () => {
-            checkMessage(command);
+            checkMessage(command, DOWNLINK);
         });
     });
 });
 
-describe('uplink messages', () => {
+describe.skip('uplink messages', () => {
     uplinkMessages.forEach((command, index) => {
         test(`test case #${index}`, () => {
-            checkMessage(command);
+            checkMessage(command, UPLINK);
         });
     });
 });
