@@ -1,4 +1,4 @@
-import BinaryBuffer from '../src/BinaryBuffer.js';
+import BinaryBuffer from '../src/utils/BinaryBuffer.js';
 import getBytesFromHex from '../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../src/utils/getHexFromBytes.js';
 

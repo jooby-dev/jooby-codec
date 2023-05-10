@@ -1,6 +1,6 @@
 {
     "name": "jooby-codec",
-    "version": "1.15.0",
+    "version": "2.0.0",
     "description": "Jooby message encoders/decoders",
     "type": "module",
     "main": "./dist/index.js",
@@ -9,14 +9,18 @@
     },
     "exports": {
         ".": "./dist/index.js",
-        "./commands": "./dist/commands/index.js",
-        "./commands/downlink": "./dist/commands/downlink/index.js",
-        "./commands/downlink/*": "./dist/commands/downlink/*.js",
-        "./commands/uplink": "./dist/commands/uplink/index.js",
-        "./commands/uplink/*": "./dist/commands/uplink/*.js",
-        "./constants": "./dist/constants/index.js",
-        "./constants/*": "./dist/constants/*.js",
-        "./utils/*": "./dist/utils/*.js"
+        "./analog": "./dist/analog/index.js",
+        "./analog/commands": "./dist/analog/commands/index.js",
+        "./analog/commands/downlink": "./dist/analog/commands/downlink/index.js",
+        "./analog/commands/uplink": "./dist/analog/commands/uplink/index.js",
+        "./analog/constants": "./dist/analog/constants/index.js",
+        "./obis-observer": "./dist/obis-observer/index.js",
+        "./obis-observer/commands": "./dist/obis-observer/commands/index.js",
+        "./obis-observer/commands/downlink": "./dist/obis-observer/commands/downlink/index.js",
+        "./obis-observer/commands/uplink": "./dist/obis-observer/commands/uplink/index.js",
+        "./obis-observer/constants": "./dist/obis-observer/constants/index.js",
+        "./utils": "./dist/utils/index.js",
+        "./*": "./dist/*"
     },
     "types": "./dist/index.d.ts",
     "typesVersions": {
