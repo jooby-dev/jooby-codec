@@ -1,5 +1,6 @@
+import {IHexFormatOptions} from '../config.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
-import getHexFromBytes, {IHexFormatOptions} from '../utils/getHexFromBytes.js';
+import getHexFromBytes from '../utils/getHexFromBytes.js';
 
 
 const shortCommandMask = 0xe0;

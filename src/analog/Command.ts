@@ -1,7 +1,7 @@
 import * as header from './header.js';
-import getHexFromBytes, {IHexFormatOptions} from '../utils/getHexFromBytes.js';
-import {UPLINK} from './constants/directions.js';
-//import getBytesFromHex from './utils/getBytesFromHex.js';
+import {IHexFormatOptions} from '../config.js';
+import getHexFromBytes from '../utils/getHexFromBytes.js';
+import getHexFromNumber from '../utils/getHexFromNumber.js';
 
 
 export interface ICommandExample {
@@ -37,13 +37,7 @@ abstract class Command {
 
     /** Get command ID in hex format. */
     static getId () {
-        return `0x${this.id.toString(16).padStart(2, '0')}`;
-    }
-
-    /** Get command ID and title. */
-    static getName () {
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        return `${this.directionType === UPLINK ? 'uplink' : 'downlink'} command ${this.getId()}:${this.name}`;
+        return getHexFromNumber(this.id);
     }
 
     /**

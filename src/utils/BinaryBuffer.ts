@@ -1,5 +1,6 @@
+import {IHexFormatOptions} from '../config.js';
 import getBytesFromHex from './getBytesFromHex.js';
-import getHexFromBytes, {IHexFormatOptions} from './getHexFromBytes.js';
+import getHexFromBytes from './getHexFromBytes.js';
 
 
 // the number of bytes

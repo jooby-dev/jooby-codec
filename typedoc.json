@@ -1,4 +1,5 @@
-// https://typedoc.org/guides/options/
+// https://typedoc.org/options/
+
 {
     "entryPoints": [
         "./src/index.ts",
@@ -6,7 +7,7 @@
     "out": "docs",
     "includes": "./src",
     "readme": "./readme.md",
-    "sort": "source-order",
+    "sort": ["static-first", "alphabetical"],
     "disableSources": false,
     "plugin": ["typedoc-plugin-missing-exports", "typedoc-theme-yaf"],
 	"theme": "yaf"

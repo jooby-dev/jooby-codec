@@ -9,8 +9,9 @@ import * as directionTypes from './constants/directions.js';
 import {AUTO, DOWNLINK, UPLINK} from './constants/directions.js';
 
 import * as header from './header.js';
+import {IHexFormatOptions} from '../config.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
-import getHexFromBytes, {IHexFormatOptions} from '../utils/getHexFromBytes.js';
+import getHexFromBytes from '../utils/getHexFromBytes.js';
 
 
 interface IMessageCommand {
