@@ -1,2 +1,5 @@
 tests:
   - any: ['tests/**/*', 'jest.config.json']
+
+documentation:
+  - any: ['docs/**/*', 'typedoc.json']
