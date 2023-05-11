@@ -1,5 +1,4 @@
-Jooby message encoders/decoders
-===============================
+# Jooby message encoders/decoders
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/jooby-dev/jooby-codec/test.yml?label=test&style=flat-square)](https://github.com/jooby-dev/jooby-codec/actions)
 [![npm version](https://img.shields.io/npm/v/jooby-codec.svg?style=flat-square)](https://www.npmjs.com/package/jooby-codec)
@@ -8,7 +7,7 @@ Jooby message encoders/decoders
 This library contains message encoders and decoders for [Jooby](https://jooby.eu) LoRaWAN devices.
 
 
-## Usage
+## Installation
 
 Install required dependencies:
 
@@ -16,10 +15,18 @@ Install required dependencies:
 npm install jooby-codec
 ```
 
+This will provide 2 classes of codecs:
+
+- analog
+- OBIS observer
+
+
+## Usage of analog codecs
+
 Add to the project:
 
 ```js
-import {commands, message} from 'jooby-codec';
+import {commands, message} from 'jooby-codec/analog';
 
 // output all available commands tree
 console.log(commands);
@@ -36,12 +43,12 @@ But it's better to add only necessary commands to the project:
 
 ```js
 // to get only downlink commands
-import {downlink} from 'jooby-codec/commands';
+import {downlink} from 'jooby-codec/analog/commands';
 // or slightly more efficient
-import * as downlink from 'jooby-codec/commands/downlink';
+import * as downlink from 'jooby-codec/analog/commands/downlink';
 
 // to get one particular command
-import SetTime2000 from 'jooby-codec/commands/downlink/SetTime2000';
+import SetTime2000 from 'jooby-codec/analog/commands/downlink/SetTime2000.js';
 ```
 
 The last approach is preferred as it is more efficient and will init only a necessary commands.
@@ -51,7 +58,7 @@ It's possible to parse messages either from raw [Uint8Array](https://developer.m
 Parse downlink message:
 
 ```js
-import {directions, hardwareTypes} from 'jooby-codec/constants';
+import {directions, hardwareTypes} from 'jooby-codec/analog/constants';
 
 // from byte array
 const messageData = message.fromBytes(
@@ -106,8 +113,8 @@ It's best to avoid using message.TYPE_AUTO due to performance penalty.
 Prepare command and get encoded data:
 
 ```js
-import SoftRestart from 'jooby-codec/commands/downlink/SoftRestart';
-import SetTime2000 from 'jooby-codec/commands/downlink/SetTime2000';
+import SoftRestart from 'jooby-codec/analog/commands/downlink/SoftRestart.js';
+import SetTime2000 from 'jooby-codec/analog/commands/downlink/SetTime2000.js';
 
 const command = new SetTime2000({sequenceNumber: 5, seconds: 9462957});
 
@@ -130,8 +137,8 @@ const messageBytes = message.toBytes([
 or to get in a hex format:
 
 ```js
-import DayMC from 'jooby-codec/commands/uplink/DayMC';
-import LastEvent from 'jooby-codec/commands/uplink/LastEvent';
+import DayMC from 'jooby-codec/analog/commands/uplink/DayMC.js';
+import LastEvent from 'jooby-codec/analog/commands/uplink/LastEvent.js';
 
 const commandInstancesArray = [
     new LastEvent(
