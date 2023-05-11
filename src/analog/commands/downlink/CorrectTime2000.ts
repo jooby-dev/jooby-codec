@@ -69,7 +69,7 @@ class CorrectTime2000 extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         if ( data.byteLength !== COMMAND_BODY_SIZE ) {
-            throw new Error(`${this.getName()}. Wrong buffer size: ${data.byteLength}.`);
+            throw new Error(`Wrong buffer size: ${data.byteLength}.`);
         }
 
         const buffer = new BinaryBuffer(data, false);
@@ -79,7 +79,7 @@ class CorrectTime2000 extends Command {
         };
 
         if ( !buffer.isEmpty ) {
-            throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
+            throw new Error('BinaryBuffer is not empty.');
         }
 
         return new CorrectTime2000(parameters);

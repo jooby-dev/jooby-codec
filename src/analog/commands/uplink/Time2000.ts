@@ -66,7 +66,7 @@ class Time2000 extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         if ( data.byteLength !== COMMAND_BODY_SIZE ) {
-            throw new Error(`${this.getName()}. Wrong buffer size: ${data.byteLength}.`);
+            throw new Error(`Wrong buffer size: ${data.byteLength}.`);
         }
 
         const buffer = new CommandBinaryBuffer(data);
@@ -76,7 +76,7 @@ class Time2000 extends Command {
         };
 
         if ( !buffer.isEmpty ) {
-            throw new Error(`${this.getName()}. BinaryBuffer is not empty.`);
+            throw new Error('BinaryBuffer is not empty.');
         }
 
         return new Time2000(parameters);
