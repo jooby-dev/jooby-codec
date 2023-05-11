@@ -16,15 +16,14 @@ type TMessageList = Array<IMessage>;
 const downlinkMessages: TMessageList = [
     {
         // GetShortName + GetShortName
-        hex: '01 0a 08 00 09 01  01 0a 07 00 09 01',
+        hex: '01 02 00 09 01  01 02 00 09 01',
         commands: [
             {
                 parameters: {
                     obis: {
-                        groupA: 8,
-                        groupC: 0,
-                        groupD: 9,
-                        groupE: 1
+                        c: 0,
+                        d: 9,
+                        e: 1
                     }
                 },
                 command: downlinkCommands.GetShortName
@@ -32,10 +31,9 @@ const downlinkMessages: TMessageList = [
             {
                 parameters: {
                     obis: {
-                        groupA: 7,
-                        groupC: 0,
-                        groupD: 9,
-                        groupE: 1
+                        c: 0,
+                        d: 9,
+                        e: 1
                     }
                 },
                 command: downlinkCommands.GetShortName

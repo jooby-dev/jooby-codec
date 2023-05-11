@@ -15,17 +15,16 @@ const COMMAND_ID = 0x01;
 
 const examples: TCommandExampleList = [
     {
-        name: 'two short names for OBIS code 8.0.9.1 - local time',
+        name: 'two short names for OBIS code 0.9.1 - local time',
         parameters: {
             obis: {
-                groupA: 8,
-                groupC: 0,
-                groupD: 9,
-                groupE: 1
+                c: 0,
+                d: 9,
+                e: 1
             },
             shortNameList: [197, 198]
         },
-        hex: {header: '01', body: '07 0a 08 00 09 01 c5 c6'}
+        hex: {header: '01', body: '06 02 00 09 01 c5 c6'}
     }
 ];
 
@@ -38,17 +37,16 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetShortNameResponse from 'jooby-codec/commands/uplink/GetShortNameResponse';
  *
- * const commandBody = new Uint8Array([0x07, 0x0a, 0x08, 0x00, 0x09, 0x01, 0xc5, 0xc6]);
+ * const commandBody = new Uint8Array([0x07, 0x02, 0x00, 0x09, 0x01, 0xc5, 0xc6]);
  * const command = GetShortNameResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
  *     obis: {
- *         groupA: 8,
- *         groupC: 0,
- *         groupD: 9,
- *         groupE: 1
+ *         c: 0,
+ *         d: 9,
+ *         e: 1
  *     },
  *     shortNameList: [197, 198]
  * }
@@ -57,7 +55,7 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNameResponse.md#response)
  */
 class GetShortNameResponse extends Command {
-    constructor ( public parameters: IGetShortNameResponseParameters, size?:number ) {
+    constructor ( public parameters: IGetShortNameResponseParameters, size?: number ) {
         super();
 
         // body size = size byte + obis code 3-7 byte + short names 0-n bytes

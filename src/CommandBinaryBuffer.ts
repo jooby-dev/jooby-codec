@@ -3,20 +3,20 @@ import * as bitSet from './utils/bitSet.js';
 
 
 export interface IObis {
-    groupA?: number,
-    groupB?: number,
-    groupC: number,
-    groupD: number,
-    groupE?: number,
-    groupF?: number
+    a?: number,
+    b?: number,
+    c: number,
+    d: number,
+    e?: number,
+    f?: number
 }
 
 
 const obisBitMask = {
-    groupF: 2 ** 0,
-    groupE: 2 ** 1,
-    groupB: 2 ** 2,
-    groupA: 2 ** 3
+    f: 2 ** 0,
+    e: 2 ** 1,
+    b: 2 ** 2,
+    a: 2 ** 3
 };
 
 
@@ -32,29 +32,29 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     getObis (): IObis {
         const obis = {
-            groupC: 0,
-            groupD: 0
+            c: 0,
+            d: 0
         } as IObis;
 
         const flags = bitSet.toObject(obisBitMask, this.getUint8());
 
-        if ( flags.groupA ) {
-            obis.groupA = this.getUint8();
+        if ( flags.a ) {
+            obis.a = this.getUint8();
         }
 
-        if ( flags.groupB ) {
-            obis.groupB = this.getUint8();
+        if ( flags.b ) {
+            obis.b = this.getUint8();
         }
 
-        obis.groupC = this.getUint8();
-        obis.groupD = this.getUint8();
+        obis.c = this.getUint8();
+        obis.d = this.getUint8();
 
-        if ( flags.groupE ) {
-            obis.groupE = this.getUint8();
+        if ( flags.e ) {
+            obis.e = this.getUint8();
         }
 
-        if ( flags.groupF ) {
-            obis.groupF = this.getUint8();
+        if ( flags.f ) {
+            obis.f = this.getUint8();
         }
 
         return obis;
@@ -62,31 +62,31 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     setObis ( obis: IObis ): void {
         const flags = {
-            groupA: obis.groupA !== undefined,
-            groupB: obis.groupB !== undefined,
-            groupE: obis.groupE !== undefined,
-            groupF: obis.groupF !== undefined
+            a: obis.a !== undefined,
+            b: obis.b !== undefined,
+            e: obis.e !== undefined,
+            f: obis.f !== undefined
         };
 
         this.setUint8(bitSet.fromObject(obisBitMask, flags));
 
-        if ( obis.groupA ) {
-            this.setUint8(obis.groupA);
+        if ( obis.a ) {
+            this.setUint8(obis.a);
         }
 
-        if ( obis.groupB ) {
-            this.setUint8(obis.groupB);
+        if ( obis.b ) {
+            this.setUint8(obis.b);
         }
 
-        this.setUint8(obis.groupC);
-        this.setUint8(obis.groupD);
+        this.setUint8(obis.c);
+        this.setUint8(obis.d);
 
-        if ( obis.groupE ) {
-            this.setUint8(obis.groupE);
+        if ( obis.e ) {
+            this.setUint8(obis.e);
         }
 
-        if ( obis.groupF ) {
-            this.setUint8(obis.groupF);
+        if ( obis.f ) {
+            this.setUint8(obis.f);
         }
     }
 }

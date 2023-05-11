@@ -15,16 +15,15 @@ const COMMAND_ID = 0x01;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get short name for OBIS code 8.0.9.1 - local time',
+        name: 'get short name for OBIS code 0.9.1 - local time',
         parameters: {
             obis: {
-                groupA: 8,
-                groupC: 0,
-                groupD: 9,
-                groupE: 1
+                c: 0,
+                d: 9,
+                e: 1
             }
         },
-        hex: {header: '01', body: '0a 08 00 09 01'}
+        hex: {header: '01', body: '02 00 09 01'}
     }
 ];
 
@@ -39,17 +38,16 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     obis: {
- *         groupA: 8,
- *         groupC: 0,
- *         groupD: 9,
- *         groupE: 1
+ *         c: 0,
+ *         d: 9,
+ *         e: 1
  *     }
  * };
  * const command = new GetShortName(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 01 0a 08 00 09 01
+ * // 01 02 00 09 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortName.md#request)
