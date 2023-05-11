@@ -1,4 +1,3 @@
-import * as header from './utils/header.js';
 import getHexFromBytes, {IHexFormatOptions} from './utils/getHexFromBytes.js';
 import {UPLINK} from './constants/directions.js';
 //import getBytesFromHex from './utils/getBytesFromHex.js';
@@ -33,6 +32,8 @@ abstract class Command {
 
 
     parameters: unknown;
+
+    size: unknown;
 
 
     /** Get command ID in hex format. */
@@ -93,10 +94,10 @@ abstract class Command {
      */
     static toBytes ( id: number, commandData?: Uint8Array ): Uint8Array {
         const commandLength = commandData?.length ?? 0;
-        const headerData = header.toBytes(id, commandLength);
+        const headerData = new Uint8Array([id]);
 
         if ( commandData && commandLength ) {
-            const resultData = new Uint8Array(headerData.length + commandLength);
+            const resultData = new Uint8Array(commandLength + headerData.length);
 
             resultData.set(headerData);
             resultData.set(commandData, headerData.length);
