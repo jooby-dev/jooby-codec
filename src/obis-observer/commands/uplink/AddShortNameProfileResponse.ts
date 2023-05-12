@@ -46,7 +46,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddShortNameProfileResponse.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddShortNameProfile.md#response)
  */
 class AddShortNameProfileResponse extends Command {
     constructor ( public parameters: IAddShortNameProfileResponseParameters ) {
