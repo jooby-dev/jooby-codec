@@ -65,7 +65,7 @@ module.exports = {
         'import/prefer-default-export': 'off',
 
         'arrow-parens': ['warn', 'as-needed'],
-        'max-len': ['warn', {code: 150}],
+        'max-len': ['warn', {code: 160}],
         'no-bitwise': 'off',
         'no-console': 'off',
         'no-multiple-empty-lines': ['error', {max: 2, maxEOF: 0, maxBOF: 0}],
