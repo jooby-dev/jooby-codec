@@ -87,7 +87,7 @@ export const extractBits = (
  * // 15 i.e. 0b1111
  * ```
  */
-export const fillBits = ( value: number, bitsNumber: number, startIndex: number, valueToSet:number ) => {
+export const fillBits = ( value: number, bitsNumber: number, startIndex: number, valueToSet: number ) => {
     const mask = ((1 << bitsNumber) - 1) << (startIndex - 1);
     let newValueToSet = valueToSet;
     let result = value;
