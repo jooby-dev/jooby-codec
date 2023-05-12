@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import CorrectTime2000Response from 'jooby-codec/analog/commands/uplink/CorrectTime2000Response';
+ * import CorrectTime2000Response from 'jooby-codec/analog/commands/uplink/CorrectTime2000Response.js';
  *
  * // failure
  * const commandBody = new Uint8Array([0x00]);

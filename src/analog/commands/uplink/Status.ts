@@ -77,7 +77,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import Status from 'jooby-codec/analog/commands/uplink/Status';
+ * import Status from 'jooby-codec/analog/commands/uplink/Status.js';
  *
  * const commandBody = new Uint8Array([
  *     0x02, 0x0a, 0x03, 0x01, 0xc5, 0x6d, 0xc2, 0x27, 0x32, 0x0e, 0x68, 0x22

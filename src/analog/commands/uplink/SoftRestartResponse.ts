@@ -17,7 +17,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import SoftRestartResponse from 'jooby-codec/analog/commands/uplink/SoftRestartResponse';
+ * import SoftRestartResponse from 'jooby-codec/analog/commands/uplink/SoftRestartResponse.js';
  *
  * const commandBody = new Uint8Array([]);
  * const command = SoftRestartResponse.fromBytes(commandBody);

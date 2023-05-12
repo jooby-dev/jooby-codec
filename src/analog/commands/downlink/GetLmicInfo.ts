@@ -17,7 +17,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetLmicInfo from 'jooby-codec/analog/commands/downlink/GetLmicInfo';
+ * import GetLmicInfo from 'jooby-codec/analog/commands/downlink/GetLmicInfo.js';
  *
  * const command = new GetLmicInfo();
  *

@@ -38,7 +38,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import CorrectTime2000 from 'jooby-codec/analog/commands/downlink/CorrectTime2000';
+ * import CorrectTime2000 from 'jooby-codec/analog/commands/downlink/CorrectTime2000.js';
  *
  * // 120 seconds to the past
  * const parameters = {sequenceNumber: 45, seconds: -120};

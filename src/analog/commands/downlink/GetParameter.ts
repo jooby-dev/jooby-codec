@@ -38,7 +38,7 @@ const examples: TCommandExampleList = [
  * @example
  * ```js
  * import {constants} from 'jooby-codec';
- * import GetParameter from 'jooby-codec/analog/commands/downlink/GetParameter';
+ * import GetParameter from 'jooby-codec/analog/commands/downlink/GetParameter.js';
  *
  * const command = new GetParameter({id: constants.deviceParameters.ABSOLUTE_DATA});
  *

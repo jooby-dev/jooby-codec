@@ -17,7 +17,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetCurrentMC from 'jooby-codec/analog/commands/downlink/GetCurrentMC';
+ * import GetCurrentMC from 'jooby-codec/analog/commands/downlink/GetCurrentMC.js';
  *
  * const command = new GetCurrentMC();
  *

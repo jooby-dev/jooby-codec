@@ -157,7 +157,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import SetParameter from 'jooby-codec/analog/commands/downlink/SetParameter';
+ * import SetParameter from 'jooby-codec/analog/commands/downlink/SetParameter.js';
  *
  * const parameters = {id: constants.deviceParameters.ABSOLUTE_DATA, data: {value: 2023, meterValue: 204, pulseCoefficient: 100}};
  * const command = new SetParameter(parameters);

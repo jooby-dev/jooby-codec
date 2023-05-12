@@ -56,7 +56,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import CurrentMC from 'jooby-codec/analog/commands/uplink/CurrentMC';
+ * import CurrentMC from 'jooby-codec/analog/commands/uplink/CurrentMC.js';
  *
  * const commandBody = new Uint8Array([0x01, 0x32]);
  * const command = CurrentMC.fromBytes(commandBody);

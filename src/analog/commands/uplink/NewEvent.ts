@@ -171,7 +171,7 @@ const setDeviceId = ( buffer: CommandBinaryBuffer, value: string ): void => {
  *
  * @example create command instance from command body hex dump
  * ```js
- * import NewEvent from 'jooby-codec/analog/commands/uplink/NewEvent';
+ * import NewEvent from 'jooby-codec/analog/commands/uplink/NewEvent.js';
  *
  * const commandBody = new Uint8Array([
  *     0x05, 0x02, 0x0c, 0xec

@@ -94,7 +94,7 @@ const setEvent = ( buffer: CommandBinaryBuffer, event: IArchiveEvent ): void => 
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetArchiveEventsResponse from 'jooby-codec/analog/commands/uplink/GetArchiveEventsResponse';
+ * import GetArchiveEventsResponse from 'jooby-codec/analog/commands/uplink/GetArchiveEventsResponse.js';
  *
  * const commandBody = new Uint8Array([
  *     0x2b, 0xc0, 0x31, 0x60, 0x01, 0x01
