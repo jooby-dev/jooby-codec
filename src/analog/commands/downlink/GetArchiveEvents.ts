@@ -34,7 +34,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetArchiveEvents from 'jooby-codec/analog/commands/downlink/GetArchiveEvents';
+ * import GetArchiveEvents from 'jooby-codec/analog/commands/downlink/GetArchiveEvents.js';
  *
  * const command = new GetArchiveEvents({startTime: 733845677, events: 4});
  *

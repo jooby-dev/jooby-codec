@@ -64,7 +64,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetLmicInfoResponse from 'jooby-codec/analog/commands/uplink/GetLmicInfoResponse';
+ * import GetLmicInfoResponse from 'jooby-codec/analog/commands/uplink/GetLmicInfoResponse.js';
  *
  * const commandBody = new Uint8Array([0x01, 0x05]);
  * const command = GetLmicInfoResponse.fromBytes(commandBody);

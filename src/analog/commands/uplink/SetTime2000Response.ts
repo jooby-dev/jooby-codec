@@ -31,7 +31,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import SetTime2000Response from 'jooby-codec/analog/commands/uplink/SetTime2000Response';
+ * import SetTime2000Response from 'jooby-codec/analog/commands/uplink/SetTime2000Response.js';
  *
  * const commandBody = new Uint8Array([0x01]);
  * const command = SetTime2000Response.fromBytes(commandBody);

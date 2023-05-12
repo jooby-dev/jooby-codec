@@ -17,7 +17,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import SoftRestart from 'jooby-codec/analog/commands/downlink/SoftRestart';
+ * import SoftRestart from 'jooby-codec/analog/commands/downlink/SoftRestart.js';
  *
  * const command = new SoftRestart();
  *

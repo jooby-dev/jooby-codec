@@ -35,7 +35,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import SetTime2000 from 'jooby-codec/analog/commands/downlink/SetTime2000';
+ * import SetTime2000 from 'jooby-codec/analog/commands/downlink/SetTime2000.js';
  *
  * const parameters = {sequenceNumber: 78, seconds: 123456};
  * const command = new SetTime2000(parameters);

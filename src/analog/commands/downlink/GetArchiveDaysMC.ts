@@ -39,7 +39,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetArchiveDaysMC from 'jooby-codec/analog/commands/downlink/GetArchiveDaysMC';
+ * import GetArchiveDaysMC from 'jooby-codec/analog/commands/downlink/GetArchiveDaysMC.js';
  *
  * const parameters = {channelList: [1], days: 1, startTime: 731721600};
  * const command = new GetArchiveDaysMC(parameters);

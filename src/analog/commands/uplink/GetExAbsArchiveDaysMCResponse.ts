@@ -40,7 +40,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetExAbsArchiveDaysMCResponse from 'jooby-codec/analog/commands/uplink/GetExAbsArchiveDaysMCResponse';
+ * import GetExAbsArchiveDaysMCResponse from 'jooby-codec/analog/commands/uplink/GetExAbsArchiveDaysMCResponse.js';
  *
  * const commandBody = new Uint8Array([
  *     0x2e, 0x6a, 0x08, 0x02, 0x94, 0x2b, 0xaa, 0x2c

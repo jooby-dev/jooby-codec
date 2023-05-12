@@ -43,7 +43,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import DayMC from 'jooby-codec/analog/commands/uplink/DayMC';
+ * import DayMC from 'jooby-codec/analog/commands/uplink/DayMC.js';
  *
  * const commandBody = new Uint8Array([
  *     0x2f, 0x97, 0x55, 0x0c, 0x83, 0x01, 0x08, 0x0a
