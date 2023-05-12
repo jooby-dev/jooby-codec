@@ -19,8 +19,8 @@ const checkExample = ( constructor: any, {parameters, hardwareType, hex: {header
 
     expect(command).toBeInstanceOf(constructor);
     expect(command).toBeInstanceOf(Command);
-    expect(command.parameters).toBe(parameters);
-    expect(command.getParameters()).toBe(parameters);
+    expect(command.parameters).toStrictEqual(parameters);
+    expect(command.getParameters()).toStrictEqual(parameters);
     expect(command.toHex()).toBe(commandHex);
     expect(command.toJson()).toBe(JSON.stringify(command.getParameters()));
 

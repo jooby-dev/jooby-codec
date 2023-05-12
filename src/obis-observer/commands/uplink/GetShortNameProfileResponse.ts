@@ -96,7 +96,6 @@ class GetShortNameProfileResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-
         const {shortName, obisProfile} = this.parameters;
 
         buffer.setUint8(shortName);
