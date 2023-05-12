@@ -51,7 +51,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNameResponse.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortName.md#response)
  */
 class GetShortNameResponse extends Command {
     constructor ( public parameters: IGetShortNameResponseParameters, size?: number ) {
