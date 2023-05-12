@@ -33,7 +33,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import AddShortNameProfileResponse from 'jooby-codec/obis-observer/commands/downlink/AddShortNameProfileResponse';
+ * import AddShortNameProfileResponse from 'jooby-codec/obis-observer/commands/downlink/AddShortNameProfileResponse.js';
  *
  * const parameters = {
  *      shortName: 32,

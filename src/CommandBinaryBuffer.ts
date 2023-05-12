@@ -13,7 +13,7 @@ export interface IObis {
 
 export interface IObisProfileFlags {
     contentType: number,
-    sendingOnlyIfChange: number,
+    sendOnlyOnChange: number,
     archiveType: number
 }
 
@@ -124,7 +124,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             sendingCounter: this.getUint8(),
             flags: {
                 contentType: 0,
-                sendingOnlyIfChange: 0,
+                sendOnlyOnChange: 0,
                 archiveType: 0
             }
         } as IObisProfile;
@@ -140,9 +140,9 @@ class CommandBinaryBuffer extends BinaryBuffer {
             archiveTypeBitStartIndex
         } = obisProfileFlags;
 
-        profile.flags.contentType = bitSet.extractBitsFromNumber(flags, contentTypeBitsNumber, contentTypeBitStartIndex);
-        profile.flags.sendingOnlyIfChange = bitSet.extractBitsFromNumber(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex);
-        profile.flags.archiveType = bitSet.extractBitsFromNumber(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex);
+        profile.flags.contentType = bitSet.extractBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex);
+        profile.flags.sendOnlyOnChange = bitSet.extractBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex);
+        profile.flags.archiveType = bitSet.extractBits(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex);
 
         return profile;
     }
@@ -163,9 +163,9 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         let flags = 0;
 
-        flags = bitSet.setBitsToNumber(flags, contentTypeBitsNumber, contentTypeBitStartIndex, profile.flags.contentType );
-        flags = bitSet.setBitsToNumber(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex, profile.flags.sendingOnlyIfChange);
-        flags = bitSet.setBitsToNumber(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex, profile.flags.archiveType);
+        flags = bitSet.fillBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex, profile.flags.contentType );
+        flags = bitSet.fillBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex, profile.flags.sendOnlyOnChange);
+        flags = bitSet.fillBits(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex, profile.flags.archiveType);
 
         this.setUint8(flags);
     }

@@ -34,7 +34,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetShortNameResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNameResponse';
+ * import GetShortNameResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNameResponse.js';
  *
  * const commandBody = new Uint8Array([0x07, 0x02, 0x00, 0x09, 0x01, 0xc5, 0xc6]);
  * const command = GetShortNameResponse.fromBytes(commandBody);
@@ -67,7 +67,7 @@ class GetShortNameResponse extends Command {
 
     static readonly examples = examples;
 
-    static readonly hasParameters = false;
+    static readonly hasParameters = true;
 
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);

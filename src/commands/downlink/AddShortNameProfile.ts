@@ -27,7 +27,7 @@ const examples: TCommandExampleList = [
                 sendingCounter: 38,
                 flags: {
                     contentType: contentTypes.AUTO,
-                    sendingOnlyIfChange: 1,
+                    sendOnlyOnChange: 1,
                     archiveType: archiveTypes.NONE
                 }
             }
@@ -42,7 +42,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import AddShortNameProfile from 'jooby-codec/obis-observer/commands/downlink/AddShortNameProfile';
+ * import AddShortNameProfile from 'jooby-codec/obis-observer/commands/downlink/AddShortNameProfile.js';
  *
  * const parameters = {
  *     shortName: 32,
@@ -52,7 +52,7 @@ const examples: TCommandExampleList = [
  *         sendingCounter: 38,
  *         flags: {
  *             contentType: 0,
- *             sendingOnlyIfChange: 1,
+ *             sendOnlyOnChange: 1,
  *             archiveType: 0
  *         }
  *     }

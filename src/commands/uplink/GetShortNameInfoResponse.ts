@@ -31,7 +31,7 @@ const examples: TCommandExampleList = [
                 sendingCounter: 61,
                 flags: {
                     contentType: contentTypes.STRING,
-                    sendingOnlyIfChange: 0,
+                    sendOnlyOnChange: 0,
                     archiveType: archiveTypes.DETAILED
                 }
             }
@@ -46,7 +46,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetShortNameInfoResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNameInfoResponse';
+ * import GetShortNameInfoResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNameInfoResponse.js';
  *
  * const commandBody = new Uint8Array([0x06, 0x0b, 0x79, 0x02, 0x00, 0x09, 0x01, 0x58, 0x01, 0x14, 0x02, 0x3d, 0x0a]);
  * const command = GetShortNameInfoResponse.fromBytes(commandBody);
@@ -66,7 +66,7 @@ const examples: TCommandExampleList = [
  *         sendingCounter: 61,
  *         flags: {
  *             contentType: 2,
- *             sendingOnlyIfChange: 0,
+ *             sendOnlyOnChange: 0,
  *             archiveType: 1
  *         }
  *     }
@@ -89,7 +89,7 @@ class GetShortNameInfoResponse extends Command {
 
     static readonly examples = examples;
 
-    static readonly hasParameters = false;
+    static readonly hasParameters = true;
 
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);

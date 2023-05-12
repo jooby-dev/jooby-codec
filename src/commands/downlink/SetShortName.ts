@@ -35,7 +35,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import SetShortName from 'jooby-codec/commands/obis-observer/downlink/SetShortName';
+ * import SetShortName from 'jooby-codec/commands/obis-observer/downlink/SetShortName.js';
  * const parameters = {
  *     shortName: 44,
  *     obis: {
