@@ -11,12 +11,39 @@ export interface IObis {
     f?: number
 }
 
+export interface IObisProfileFlags {
+    contentType: number,
+    sendingOnlyIfChange: number,
+    archiveType: number
+}
+
+export interface IObisProfile {
+    /**
+     * Capture period in minutes.
+     * This determines how often the OBIS observer will read the value of the OBIS code from the metering device.
+     */
+    capturePeriod: number,
+    /** sending period in minutes */
+    sendingPeriod: number,
+    sendingCounter: number,
+    flags: IObisProfileFlags
+}
+
 
 const obisBitMask = {
     f: 2 ** 0,
     e: 2 ** 1,
     b: 2 ** 2,
     a: 2 ** 3
+};
+
+const obisProfileFlags = {
+    contentTypeBitsNumber: 2,
+    contentTypeBitStartIndex: 1,
+    sendingOnlyIfChangeBitsNumber: 1,
+    sendingOnlyIfChangeBitStartIndex: 3,
+    archiveTypeBitsNumber: 2,
+    archiveTypeBitStartIndex: 4
 };
 
 
@@ -88,6 +115,59 @@ class CommandBinaryBuffer extends BinaryBuffer {
         if ( obis.f ) {
             this.setUint8(obis.f);
         }
+    }
+
+    getObisProfile (): IObisProfile {
+        const profile = {
+            capturePeriod: this.getUint16(),
+            sendingPeriod: this.getUint16(),
+            sendingCounter: this.getUint8(),
+            flags: {
+                contentType: 0,
+                sendingOnlyIfChange: 0,
+                archiveType: 0
+            }
+        } as IObisProfile;
+
+        const flags = this.getUint8();
+
+        const {
+            contentTypeBitsNumber,
+            contentTypeBitStartIndex,
+            sendingOnlyIfChangeBitsNumber,
+            sendingOnlyIfChangeBitStartIndex,
+            archiveTypeBitsNumber,
+            archiveTypeBitStartIndex
+        } = obisProfileFlags;
+
+        profile.flags.contentType = bitSet.extractBitsFromNumber(flags, contentTypeBitsNumber, contentTypeBitStartIndex);
+        profile.flags.sendingOnlyIfChange = bitSet.extractBitsFromNumber(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex);
+        profile.flags.archiveType = bitSet.extractBitsFromNumber(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex);
+
+        return profile;
+    }
+
+    setObisProfile ( profile: IObisProfile ): void {
+        this.setUint16(profile.capturePeriod);
+        this.setUint16(profile.sendingPeriod);
+        this.setUint8(profile.sendingCounter);
+
+        const {
+            contentTypeBitsNumber,
+            contentTypeBitStartIndex,
+            sendingOnlyIfChangeBitsNumber,
+            sendingOnlyIfChangeBitStartIndex,
+            archiveTypeBitsNumber,
+            archiveTypeBitStartIndex
+        } = obisProfileFlags;
+
+        let flags = 0;
+
+        flags = bitSet.setBitsToNumber(flags, contentTypeBitsNumber, contentTypeBitStartIndex, profile.flags.contentType );
+        flags = bitSet.setBitsToNumber(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex, profile.flags.sendingOnlyIfChange);
+        flags = bitSet.setBitsToNumber(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex, profile.flags.archiveType);
+
+        this.setUint8(flags);
     }
 }
 

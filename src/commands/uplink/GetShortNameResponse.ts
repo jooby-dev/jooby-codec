@@ -31,11 +31,10 @@ const examples: TCommandExampleList = [
 
 /**
  * Uplink command.
- * TODO: rework example, it works only for current branch
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetShortNameResponse from 'jooby-codec/commands/uplink/GetShortNameResponse';
+ * import GetShortNameResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNameResponse';
  *
  * const commandBody = new Uint8Array([0x07, 0x02, 0x00, 0x09, 0x01, 0xc5, 0xc6]);
  * const command = GetShortNameResponse.fromBytes(commandBody);

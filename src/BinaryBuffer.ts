@@ -171,6 +171,26 @@ class BinaryBuffer {
         return result;
     }
 
+    setString ( value: string ): void {
+        this.setUint8(value.length);
+
+        for ( let index = 0; index < value.length; ++index ) {
+            this.setUint8(value.charCodeAt(index));
+        }
+    }
+
+    getString (): string {
+        const size = this.getUint8();
+        const endIndex = this.offset + size;
+        const chars = [];
+
+        while ( this.offset < endIndex ) {
+            chars.push(String.fromCharCode(this.getUint8()));
+        }
+
+        return chars.join('');
+    }
+
     /**
      * Get bytes from start to offset.
      *

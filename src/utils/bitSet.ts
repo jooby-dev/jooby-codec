@@ -61,3 +61,46 @@ export const toObject = ( bitMask: TBitSetMask = {}, value = 0 ): TBooleanObject
 
     return result;
 };
+
+/**
+ * Extract number of bits from number from given position.
+ *
+ * @example
+ * ```js
+ * const value = 7; // 0b111
+ *
+ * console.log(extractBitsFromNumber(value, 2, 1));
+ * // 3
+ * // i.e. 0b011
+ * ```
+ */
+export const extractBitsFromNumber = (
+    value: number,
+    bitsNumber: number,
+    startIndex: number
+): number => (((1 << bitsNumber) - 1) & (value >> (startIndex - 1)));
+
+
+/**
+ * Set number to given bits in number from given position.
+ *
+ * @example
+ * ```js
+ * const value = 7; // 0b111
+ *
+ * console.log(extractBitsFromNumber(value, 2, 1));
+ * // 3
+ * // i.e. 0b011
+ * ```
+ */
+export const setBitsToNumber = ( value: number, bitsNumber: number, startIndex: number, valueToSet:number ) => {
+    const mask = ((1 << bitsNumber) - 1) << (startIndex - 1);
+    let newValueToSet = valueToSet;
+    let result = value;
+
+    result &= ~mask;
+    newValueToSet <<= (startIndex - 1);
+    result |= newValueToSet;
+
+    return result;
+};
