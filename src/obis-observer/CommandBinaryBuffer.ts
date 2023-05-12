@@ -1,5 +1,6 @@
 import BinaryBuffer from '../utils/BinaryBuffer.js';
 import * as bitSet from '../utils/bitSet.js';
+import roundNumber from '../utils/roundNumber.js';
 
 
 export interface IObis {
@@ -199,6 +200,15 @@ class CommandBinaryBuffer extends BinaryBuffer {
     setShortNameString ( shortName: IShortNameString ) {
         this.setUint8(shortName.code);
         this.setString(shortName.content);
+    }
+
+    getShortNameFloat (): IShortNameFloat {
+        return {code: this.getUint8(), content: roundNumber(this.getFloat32())};
+    }
+
+    setShortNameFloat ( shortName: IShortNameFloat ) {
+        this.setUint8(shortName.code);
+        this.setFloat32(roundNumber(shortName.content));
     }
 }
 
