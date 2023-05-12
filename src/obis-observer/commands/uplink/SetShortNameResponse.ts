@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
-import {DOWNLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../constants/directions.js';
 import {resultCodes} from '../../constants/index.js';
 
 
@@ -29,21 +29,21 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Uplink command.
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import SetShortNameResponse from 'jooby-codec/obis-observer/commands/downlink/SetShortNameResponse.js';
+ * import SetShortNameResponse from 'jooby-codec/obis-observer/commands/uplink/SetShortNameResponse.js';
  *
- * const parameters = {
- *      shortName: 32,
- *      resultCode: resultCodes.OK
- * };
- * const command = new SetShortNameResponse(parameters);
+ * const commandBody = new Uint8Array([0x2c, 0x00]);
+ * const command = SetShortNameResponse.fromBytes(commandBody);
  *
- * // output command binary in hex representation
- * console.log(command.toHex());
- * // 02 2c 00
+ * console.log(command.parameters);
+ * // output:
+ * {
+ *     shortName: 32,
+ *     resultCode: 0
+ * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetShortNameResponse.md#request)
@@ -57,7 +57,7 @@ class SetShortNameResponse extends Command {
 
     static readonly id = COMMAND_ID;
 
-    static readonly directionType = DOWNLINK;
+    static readonly directionType = UPLINK;
 
     static readonly examples = examples;
 

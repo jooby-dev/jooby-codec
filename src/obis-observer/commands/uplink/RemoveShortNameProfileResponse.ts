@@ -5,25 +5,25 @@ import {resultCodes} from '../../constants/index.js';
 
 
 /**
- * IAddShortNameProfileResponseParameters command parameters
+ * IRemoveShortNameProfileResponseParameters command parameters
  */
-interface IAddShortNameProfileResponseParameters {
+interface IRemoveShortNameProfileResponseParameters {
     shortName: number,
     resultCode: number
 }
 
 
-const COMMAND_ID = 0x03;
+const COMMAND_ID = 0x04;
 const COMMAND_SIZE = 2;
 
 const examples: TCommandExampleList = [
     {
-        name: 'add short name profile - succeed',
+        name: 'remove short name profile - not found',
         parameters: {
-            shortName: 32,
-            resultCode: resultCodes.OK
+            shortName: 28,
+            resultCode: resultCodes.PROFILE_NOT_FOUND
         },
-        hex: {header: '03', body: '20 00'}
+        hex: {header: '04', body: '1c 04'}
     }
 ];
 
@@ -33,23 +33,23 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import AddShortNameProfileResponse from 'jooby-codec/obis-observer/commands/uplink/AddShortNameProfileResponse.js';
+ * import RemoveShortNameProfileResponse from 'jooby-codec/obis-observer/commands/uplink/RemoveShortNameProfileResponse.js';
  *
- * const commandBody = new Uint8Array([0x20 , 0x00]);
- * const command = AddShortNameProfileResponse.fromBytes(commandBody);
+ * const commandBody = new Uint8Array([0x1c, 0x04]);
+ * const command = RemoveShortNameProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     shortName: 32,
- *     resultCode: 0
+ *     shortName: 28,
+ *     resultCode: 4
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddShortNameProfileResponse.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveShortNameProfileResponse.md#request)
  */
-class AddShortNameProfileResponse extends Command {
-    constructor ( public parameters: IAddShortNameProfileResponseParameters ) {
+class RemoveShortNameProfileResponse extends Command {
+    constructor ( public parameters: IRemoveShortNameProfileResponseParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -67,7 +67,7 @@ class AddShortNameProfileResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new AddShortNameProfileResponse({shortName: buffer.getUint8(), resultCode: buffer.getUint8()});
+        return new RemoveShortNameProfileResponse({shortName: buffer.getUint8(), resultCode: buffer.getUint8()});
     }
 
     // returns full message - header with body
@@ -83,4 +83,4 @@ class AddShortNameProfileResponse extends Command {
 }
 
 
-export default AddShortNameProfileResponse;
+export default RemoveShortNameProfileResponse;
