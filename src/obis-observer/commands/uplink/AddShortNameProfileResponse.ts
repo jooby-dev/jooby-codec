@@ -35,7 +35,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import AddShortNameProfileResponse from 'jooby-codec/obis-observer/commands/uplink/AddShortNameProfileResponse.js';
  *
- * const commandBody = new Uint8Array([0x20 , 0x00]);
+ * const commandBody = new Uint8Array([0x20, 0x00]);
  * const command = AddShortNameProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);

@@ -93,7 +93,6 @@ class GetShortNameResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-
         const {obis, shortNameList} = this.parameters;
 
         buffer.setUint8(this.size - 1);
