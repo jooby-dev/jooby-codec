@@ -113,8 +113,7 @@ export const toBytes = ( commands: Array<Command> ): Uint8Array => {
     const arrays = commands.map(command => command.toBytes());
     const totalLength = arrays.reduce((accumulator, item) => (accumulator + item.length), 0);
 
-    // 1 additional byte at the end is for LRC
-    const result = new Uint8Array(totalLength + 1);
+    const result = new Uint8Array(totalLength);
     let offset = 0;
 
     // fill result with all chunks
