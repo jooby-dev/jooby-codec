@@ -1,5 +1,6 @@
 import BinaryBuffer from '../utils/BinaryBuffer.js';
 import * as bitSet from '../utils/bitSet.js';
+import roundNumber from '../utils/roundNumber.js';
 
 
 export interface IObis {
@@ -29,6 +30,18 @@ export interface IObisProfile {
     flags: IObisProfileFlags
 }
 
+export interface IShortNameFloat {
+    code: number,
+    content: number
+}
+
+export interface IShortNameString {
+    code: number,
+    content: string
+}
+
+export const DATE_TIME_SIZE = 4;
+
 
 const obisBitMask = {
     f: 2 ** 0,
@@ -55,6 +68,16 @@ class CommandBinaryBuffer extends BinaryBuffer {
         const keys = Object.keys(obis) as Array<keyof IObis>;
 
         return keys.filter(key => obis[key] !== undefined).length + 1;
+    }
+
+    static getShortNameContentSize ( shortName: IShortNameFloat | IShortNameString ) {
+        if ( typeof shortName.content === 'number' ) {
+            // IShortNameFloat, 1 byte short name code + 4 byte float value
+            return 5;
+        }
+
+        // 1 byte for short name code + 1 byte of string size + string bytes
+        return 1 + shortName.content.length + 1;
     }
 
     getObis (): IObis {
@@ -168,6 +191,24 @@ class CommandBinaryBuffer extends BinaryBuffer {
         flags = bitSet.fillBits(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex, profile.flags.archiveType);
 
         this.setUint8(flags);
+    }
+
+    getShortNameString (): IShortNameString {
+        return {code: this.getUint8(), content: this.getString()};
+    }
+
+    setShortNameString ( shortName: IShortNameString ) {
+        this.setUint8(shortName.code);
+        this.setString(shortName.content);
+    }
+
+    getShortNameFloat (): IShortNameFloat {
+        return {code: this.getUint8(), content: roundNumber(this.getFloat32())};
+    }
+
+    setShortNameFloat ( shortName: IShortNameFloat ) {
+        this.setUint8(shortName.code);
+        this.setFloat32(roundNumber(shortName.content));
     }
 }
 
