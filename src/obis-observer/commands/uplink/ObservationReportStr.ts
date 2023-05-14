@@ -8,7 +8,7 @@ import {UPLINK} from '../../constants/directions.js';
  */
 interface IObservationReportStrParameters {
     /** number of seconds that have elapsed since the year 2000 */
-    dateTime: number,
+    time: number,
     shortNameList: Array<IShortNameString>
 }
 
@@ -19,16 +19,10 @@ const examples: TCommandExampleList = [
     {
         name: 'get observation report from 2023-12-22 23:40:00 GMT',
         parameters: {
-            dateTime: 756604800,
+            time: 756604800,
             shortNameList: [
-                {
-                    code: 50,
-                    content: 'reactive power QI, average'
-                },
-                {
-                    code: 56,
-                    content: 'reactive power QI, total'
-                }
+                {code: 50, content: 'reactive power QI, average'},
+                {code: 56, content: 'reactive power QI, total'}
             ]
         },
         hex: {
@@ -59,16 +53,10 @@ const examples: TCommandExampleList = [
  * console.log(command.parameters);
  * // output:
  * {
- *     dateTime: 756604800,
+ *     time: 756604800,
  *     shortNameList: [
- *         {
- *             code: 50,
- *             content: 'reactive power QI, average'
- *         },
- *         {
- *             code: 56,
- *             content: 'reactive power QI, total'
- *         }
+ *         {code: 50, content: 'reactive power QI, average'},
+ *         {code: 56, content: 'reactive power QI, total'}
  *     ]
  * }
  * ```
@@ -101,7 +89,7 @@ class ObservationReportStr extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         let size = buffer.getUint8() - DATE_TIME_SIZE - 1;
-        const dateTime = buffer.getUint32();
+        const time = buffer.getUint32();
         const shortNameList = [];
 
         while ( size > 0 ) {
@@ -111,7 +99,7 @@ class ObservationReportStr extends Command {
             shortNameList.push(shortName);
         }
 
-        return new ObservationReportStr({dateTime, shortNameList});
+        return new ObservationReportStr({time, shortNameList});
     }
 
     // returns full message - header with body
@@ -121,10 +109,10 @@ class ObservationReportStr extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {dateTime, shortNameList} = this.parameters;
+        const {time, shortNameList} = this.parameters;
 
         buffer.setUint8(this.size);
-        buffer.setUint32(dateTime);
+        buffer.setUint32(time);
         shortNameList.forEach(shortName => buffer.setShortNameString(shortName));
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
