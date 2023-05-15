@@ -12,7 +12,7 @@ interface IGetArchiveProfileResponseParameters {
 }
 
 
-const COMMAND_ID = 0x07;
+const COMMAND_ID = 0x0e;
 const COMMAND_SIZE = 4;
 
 const examples: TCommandExampleList = [
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             summaryArchivePeriod: 600,
             detailedArchivePeriod: 45
         },
-        hex: {header: '07', body: '02 58 00 2d'}
+        hex: {header: '0e', body: '02 58 00 2d'}
     }
 ];
 
@@ -67,8 +67,8 @@ class GetArchiveProfileResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         return new GetArchiveProfileResponse({
-            summaryArchivePeriod: buffer.getUint16(false),
-            detailedArchivePeriod: buffer.getUint16(false)
+            summaryArchivePeriod: buffer.getUint16(),
+            detailedArchivePeriod: buffer.getUint16()
         });
     }
 
@@ -77,8 +77,8 @@ class GetArchiveProfileResponse extends Command {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
         const {summaryArchivePeriod, detailedArchivePeriod} = this.parameters;
 
-        buffer.setUint16(summaryArchivePeriod ?? 0, false);
-        buffer.setUint16(detailedArchivePeriod ?? 0, false);
+        buffer.setUint16(summaryArchivePeriod ?? 0);
+        buffer.setUint16(detailedArchivePeriod ?? 0);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

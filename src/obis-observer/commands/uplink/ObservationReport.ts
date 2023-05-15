@@ -13,7 +13,7 @@ interface IObservationReportParameters {
 }
 
 
-const COMMAND_ID = 0x0b;
+const COMMAND_ID = 0x18;
 
 const examples: TCommandExampleList = [
     {
@@ -26,8 +26,8 @@ const examples: TCommandExampleList = [
             ]
         },
         hex: {
-            header: '0b',
-            body: '0f 80 df 18 2d 32 ec 51 09 42 38 ec 51 35 42'
+            header: '18',
+            body: '0f 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec'
         }
     }
 ];
@@ -40,7 +40,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import ObservationReport from 'jooby-codec/obis-observer/commands/uplink/ObservationReport.js';
  *
- * const commandBody = new Uint8Array([0x0f, 0x80, 0xdf, 0x18, 0x2d, 0x32, 0xec, 0x51, 0x09, 0x42, 0x38, 0xec, 0x51, 0x35, 0x42]);
+ * const commandBody = new Uint8Array([0x0f, 0x2d, 0x18, 0xdf, 0x80, 0x32, 0x42, 0x09, 0x51, 0xec, 0x38, 0x42, 0x35, 0x51, 0xec]);
  * const command = ObservationReport.fromBytes(commandBody);
  *
  * console.log(command.parameters);

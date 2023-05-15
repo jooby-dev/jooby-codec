@@ -13,7 +13,7 @@ interface ISetShortNameResponseParameters {
 }
 
 
-const COMMAND_ID = 0x02;
+const COMMAND_ID = 0x04;
 const COMMAND_SIZE = 2;
 
 const examples: TCommandExampleList = [
@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
             shortName: 44,
             resultCode: resultCodes.OK
         },
-        hex: {header: '02', body: '2c 00'}
+        hex: {header: '04', body: '2c 00'}
     }
 ];
 

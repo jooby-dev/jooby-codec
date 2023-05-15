@@ -11,7 +11,7 @@ interface IGetShortNameResponseParameters {
     shortNameList: Array<number>
 }
 
-const COMMAND_ID = 0x01;
+const COMMAND_ID = 0x02;
 
 const examples: TCommandExampleList = [
     {
@@ -24,7 +24,7 @@ const examples: TCommandExampleList = [
             },
             shortNameList: [197, 198]
         },
-        hex: {header: '01', body: '06 02 00 09 01 c5 c6'}
+        hex: {header: '02', body: '06 02 00 09 01 c5 c6'}
     }
 ];
 

@@ -13,7 +13,7 @@ interface IGetShortNameInfoResponseParameters {
     obisProfile: IObisProfile,
 }
 
-const COMMAND_ID = 0x06;
+const COMMAND_ID = 0x0c;
 
 const examples: TCommandExampleList = [
     {
@@ -36,7 +36,7 @@ const examples: TCommandExampleList = [
                 }
             }
         },
-        hex: {header: '06', body: '0b 79 02 00 09 01 58 01 14 02 3d 0a'}
+        hex: {header: '0c', body: '0b 79 02 00 09 01 01 58 02 14 3d 0a'}
     }
 ];
 
@@ -48,7 +48,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetShortNameInfoResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNameInfoResponse.js';
  *
- * const commandBody = new Uint8Array([0x06, 0x0b, 0x79, 0x02, 0x00, 0x09, 0x01, 0x58, 0x01, 0x14, 0x02, 0x3d, 0x0a]);
+ * const commandBody = new Uint8Array([0x0b, 0x79, 0x02, 0x00, 0x09, 0x01, 0x01, 0x58, 0x02, 0x14, 0x3d, 0x0a]);
  * const command = GetShortNameInfoResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);

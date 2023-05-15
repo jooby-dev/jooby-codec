@@ -4,15 +4,15 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetShortNameInfoParameters command parameters
+ * ISetShortNameParameters command parameters
  */
-interface IGetShortNameInfoParameters {
+interface ISetShortNameParameters {
     shortName: number,
     obis: IObis
 }
 
 
-const COMMAND_ID = 0x02;
+const COMMAND_ID = 0x03;
 
 const examples: TCommandExampleList = [
     {
@@ -25,7 +25,7 @@ const examples: TCommandExampleList = [
                 e: 1
             }
         },
-        hex: {header: '02', body: '2c 02 00 09 01'}
+        hex: {header: '03', body: '2c 02 00 09 01'}
     }
 ];
 
@@ -48,13 +48,13 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 02 2c 02 00 09 01
+ * // 03 2c 02 00 09 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetShortName.md#request)
  */
 class SetShortName extends Command {
-    constructor ( public parameters: IGetShortNameInfoParameters ) {
+    constructor ( public parameters: ISetShortNameParameters ) {
         super();
 
         // obis size + short code 1 byte

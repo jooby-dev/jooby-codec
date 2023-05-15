@@ -64,6 +64,11 @@ const obisProfileFlags = {
  * Command specific byte array manipulation.
  */
 class CommandBinaryBuffer extends BinaryBuffer {
+    constructor ( dataOrLength: Uint8Array | number | string ) {
+        // force BE for all numbers
+        super(dataOrLength, false);
+    }
+
     static getObisSize ( obis: IObis ) {
         const keys = Object.keys(obis) as Array<keyof IObis>;
 
