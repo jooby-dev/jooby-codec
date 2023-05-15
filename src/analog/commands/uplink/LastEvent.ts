@@ -17,6 +17,10 @@ interface ILastEventParameters {
     status: TEventStatus
 }
 
+interface ILastEventConfig {
+    hardwareType?: number
+}
+
 
 const COMMAND_ID = 0x60;
 
@@ -32,7 +36,9 @@ const examples: TCommandExampleList = [
                 isMagneticInfluence: false
             }
         },
-        hardwareType: hardwareTypes.GASI3,
+        config: {
+            hardwareType: hardwareTypes.GASI3
+        },
         hex: {header: '62', body: '20 09'}
     },
     {
@@ -50,7 +56,9 @@ const examples: TCommandExampleList = [
                 isForthChannelInactive: true
             }
         },
-        hardwareType: hardwareTypes.IMP4EU,
+        config: {
+            hardwareType: hardwareTypes.IMP4EU
+        },
         hex: {header: '63', body: '10 e1 01'}
     },
     {
@@ -75,7 +83,9 @@ const examples: TCommandExampleList = [
                 isNewTariffPlanReceived: false
             }
         },
-        hardwareType: hardwareTypes.MTXLORA,
+        config: {
+            hardwareType: hardwareTypes.MTXLORA
+        },
         hex: {header: '63', body: '30 83 0a'}
     }
 ];
@@ -110,7 +120,11 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/LastEvent.md)
  */
 class LastEvent extends Command {
-    constructor ( public parameters: ILastEventParameters, public hardwareType: number ) {
+    constructor ( public parameters: ILastEventParameters, public config: ILastEventConfig ) {
+        if ( !config.hardwareType ) {
+            throw new Error('hardwareType in config is mandatory');
+        }
+
         super();
     }
 
@@ -125,28 +139,29 @@ class LastEvent extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array, hardwareType?: number ) {
-        if ( !hardwareType ) {
-            throw new Error('hardwareType argument is mandatory');
+    static fromBytes ( data: Uint8Array, config: ILastEventConfig ) {
+        if ( !config.hardwareType ) {
+            throw new Error('hardwareType in config is mandatory');
         }
 
         const buffer = new CommandBinaryBuffer(data);
         const sequenceNumber = buffer.getUint8();
-        const status = buffer.getEventStatus(hardwareType);
+        const status = buffer.getEventStatus(config.hardwareType);
 
-        return new LastEvent({sequenceNumber, status}, hardwareType);
+        return new LastEvent({sequenceNumber, status}, config);
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const {sequenceNumber, status} = this.parameters;
+        const {hardwareType} = this.config;
         const buffer = new CommandBinaryBuffer(
             // sequenceNumber size + status size
-            1 + CommandBinaryBuffer.getEventStatusSize(this.hardwareType)
+            1 + CommandBinaryBuffer.getEventStatusSize(hardwareType!)
         );
 
         buffer.setUint8(sequenceNumber);
-        buffer.setEventStatus(this.hardwareType, status);
+        buffer.setEventStatus(hardwareType!, status);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

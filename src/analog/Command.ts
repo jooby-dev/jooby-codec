@@ -7,7 +7,9 @@ import getHexFromNumber from '../utils/getHexFromNumber.js';
 export interface ICommandExample {
     name: string,
     parameters?: object,
-    hardwareType?: number,
+    config?: {
+        hardwareType?: number
+    },
     hex: {
         header: string,
         body: string
@@ -32,7 +34,11 @@ abstract class Command {
     static hasParameters = false;
 
 
+    /** base command parameters */
     parameters: unknown;
+
+    /** additional/environment parameters */
+    config: unknown;
 
 
     /** Get command ID in hex format. */

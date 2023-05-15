@@ -10,12 +10,12 @@ import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 const {uplink, downlink} = commands;
 
 
-const checkExample = ( constructor: any, {parameters, hardwareType, hex: {header, body} }: ICommandExample ) => {
+const checkExample = ( constructor: any, {parameters, config, hex: {header, body} }: ICommandExample ) => {
     const commandHex = getHexFromBytes(getBytesFromHex(`${header} ${body}`));
     const commandBytes = getBytesFromHex(commandHex);
     const messageHex = `${commandHex} ${message.calculateLrc(commandBytes)}`;
-    const command = new constructor(parameters, hardwareType);
-    const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null, hardwareType);
+    const command = new constructor(parameters, config);
+    const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null, config);
 
     expect(command).toBeInstanceOf(constructor);
     expect(command).toBeInstanceOf(Command);

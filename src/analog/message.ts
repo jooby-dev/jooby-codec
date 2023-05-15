@@ -33,6 +33,11 @@ interface IMessage {
     isValid: boolean
 }
 
+interface IMessageConfig {
+    direction?: number,
+    hardwareType?: number
+}
+
 
 const HEADER_MAX_SIZE = 3;
 
@@ -87,19 +92,21 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareTyp
     if ( direction === DOWNLINK || direction === UPLINK ) {
         const command = direction === UPLINK ? uplinkCommand : downlinkCommand;
 
-        return command.fromBytes(data, hardwareType) as Command;
+        return command.fromBytes(data, {hardwareType}) as Command;
     }
 
     // direction autodetect
     try {
         // uplink should be more often
-        return uplinkCommand.fromBytes(data, hardwareType) as Command;
+        return uplinkCommand.fromBytes(data, {hardwareType}) as Command;
     } catch {
         return downlinkCommand.fromBytes(data) as Command;
     }
 };
 
-export const fromBytes = ( data: Uint8Array, direction = AUTO, hardwareType?: number ) => {
+export const fromBytes = ( data: Uint8Array, config?: IMessageConfig ) => {
+    const direction = config?.direction ?? AUTO;
+    const hardwareType = config?.hardwareType;
     const commandsData = data.slice(0, -1);
     const commands: Array<IMessageCommand> = [];
     const result: IMessage = {
@@ -147,8 +154,8 @@ export const fromBytes = ( data: Uint8Array, direction = AUTO, hardwareType?: nu
     return result;
 };
 
-export const fromHex = ( data: string, direction = AUTO, hardwareType?: number ) => (
-    fromBytes(getBytesFromHex(data), direction, hardwareType)
+export const fromHex = ( data: string, config?: IMessageConfig ) => (
+    fromBytes(getBytesFromHex(data), config)
 );
 
 export const toBytes = ( commands: Array<Command> ): Uint8Array => {
