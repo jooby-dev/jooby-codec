@@ -2,13 +2,13 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x07;
+const COMMAND_ID = 0x0d;
 const COMMAND_SIZE = 0;
 
 const examples: TCommandExampleList = [
     {
         name: 'simple request',
-        hex: {header: '07', body: ''}
+        hex: {header: '0d', body: ''}
     }
 ];
 
@@ -24,7 +24,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 07
+ * // 0d
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveProfile.md#request)

@@ -12,7 +12,7 @@ interface IGetShortNameInfoParameters {
 }
 
 
-const COMMAND_ID = 0x06;
+const COMMAND_ID = 0x0b;
 
 const examples: TCommandExampleList = [
     {
@@ -25,7 +25,7 @@ const examples: TCommandExampleList = [
                 e: 1
             }
         },
-        hex: {header: '06', body: '2c 02 00 09 01'}
+        hex: {header: '0b', body: '2c 02 00 09 01'}
     }
 ];
 
@@ -49,7 +49,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 06 2c 02 00 09 01
+ * // 0b 2c 02 00 09 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNameInfo.md#request)

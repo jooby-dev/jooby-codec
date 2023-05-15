@@ -13,7 +13,7 @@ interface IRemoveShortNameProfileResponseParameters {
 }
 
 
-const COMMAND_ID = 0x04;
+const COMMAND_ID = 0x08;
 const COMMAND_SIZE = 2;
 
 const examples: TCommandExampleList = [
@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
             shortName: 28,
             resultCode: resultCodes.PROFILE_NOT_FOUND
         },
-        hex: {header: '04', body: '1c 04'}
+        hex: {header: '08', body: '1c 04'}
     }
 ];
 

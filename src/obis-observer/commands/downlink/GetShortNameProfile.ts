@@ -11,7 +11,7 @@ interface IGetShortNameProfileParameters {
 }
 
 
-const COMMAND_ID = 0x05;
+const COMMAND_ID = 0x09;
 const COMMAND_SIZE = 1;
 
 const examples: TCommandExampleList = [
@@ -20,7 +20,7 @@ const examples: TCommandExampleList = [
         parameters: {
             shortName: 128
         },
-        hex: {header: '05', body: '80'}
+        hex: {header: '09', body: '80'}
     }
 ];
 
@@ -39,7 +39,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 05 80
+ * // 09 80
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNameProfile.md#request)

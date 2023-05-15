@@ -13,7 +13,7 @@ interface IAddShortNameProfileResponseParameters {
 }
 
 
-const COMMAND_ID = 0x03;
+const COMMAND_ID = 0x06;
 const COMMAND_SIZE = 2;
 
 const examples: TCommandExampleList = [
@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
             shortName: 32,
             resultCode: resultCodes.OK
         },
-        hex: {header: '03', body: '20 00'}
+        hex: {header: '06', body: '20 00'}
     }
 ];
 

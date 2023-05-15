@@ -11,7 +11,7 @@ interface IRemoveShortNameProfileParameters {
 }
 
 
-const COMMAND_ID = 0x04;
+const COMMAND_ID = 0x07;
 const COMMAND_SIZE = 1;
 
 const examples: TCommandExampleList = [
@@ -20,7 +20,7 @@ const examples: TCommandExampleList = [
         parameters: {
             shortName: 28
         },
-        hex: {header: '04', body: '1c'}
+        hex: {header: '07', body: '1c'}
     }
 ];
 
@@ -39,7 +39,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 04 1c
+ * // 07 1c
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveShortNameProfile.md#request)

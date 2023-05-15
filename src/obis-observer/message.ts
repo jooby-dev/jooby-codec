@@ -5,10 +5,6 @@ import UnknownCommand from './UnknownCommand.js';
 import * as downlinkCommands from './commands/downlink/index.js';
 import * as uplinkCommands from './commands/uplink/index.js';
 
-import * as directionTypes from './constants/directions.js';
-import {DOWNLINK, UPLINK} from './constants/directions.js';
-
-
 import {IHexFormatOptions} from '../config.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
@@ -32,9 +28,6 @@ interface IMessage {
 
 const HEADER_SIZE = 1;
 
-// all allowed types
-const directionTypeIds: Set<number> = new Set<number>(Object.values(directionTypes));
-
 // convert export namespace to dictionary {commandId: commandConstructor}
 const downlinkCommandsById = Object.fromEntries(
     Object.values(downlinkCommands).map(item => [item.id, item])
@@ -44,21 +37,9 @@ const uplinkCommandsById = Object.fromEntries(
     Object.values(uplinkCommands).map(item => [item.id, item])
 );
 
-const getCommand = ( id: number, data: Uint8Array, direction: typeof DOWNLINK | typeof UPLINK ): Command => {
-    if ( !directionTypeIds.has(direction) ) {
-        throw new Error('wrong direction type');
-    }
-
-    let command;
-
-    // ths specific direction
-    if ( direction === DOWNLINK && downlinkCommandsById[id] ) {
-        command = downlinkCommandsById[id];
-    }
-
-    if ( direction === UPLINK && uplinkCommandsById[id] ) {
-        command = uplinkCommandsById[id];
-    }
+const getCommand = ( id: number, data: Uint8Array ): Command => {
+    // id is unique for all commands
+    const command = downlinkCommandsById[id] || uplinkCommandsById[id];
 
     if ( command ) {
         return command.fromBytes(data) as Command;
@@ -68,7 +49,7 @@ const getCommand = ( id: number, data: Uint8Array, direction: typeof DOWNLINK | 
     return new UnknownCommand({id, data});
 };
 
-export const fromBytes = ( commandsData: Uint8Array, direction: typeof DOWNLINK | typeof UPLINK ) => {
+export const fromBytes = ( commandsData: Uint8Array ) => {
     const commands: Array<IMessageCommand> = [];
     const result: IMessage = {
         commands,
@@ -83,7 +64,7 @@ export const fromBytes = ( commandsData: Uint8Array, direction: typeof DOWNLINK 
 
         position += HEADER_SIZE;
 
-        const command = getCommand(headerData[0], bodyData, direction);
+        const command = getCommand(headerData[0], bodyData);
 
         commands.push({
             data: {header: headerData, body: bodyData},
@@ -105,8 +86,8 @@ export const fromBytes = ( commandsData: Uint8Array, direction: typeof DOWNLINK 
     return result;
 };
 
-export const fromHex = ( data: string, direction: typeof DOWNLINK | typeof UPLINK ) => (
-    fromBytes(getBytesFromHex(data), direction)
+export const fromHex = ( data: string ) => (
+    fromBytes(getBytesFromHex(data))
 );
 
 export const toBytes = ( commands: Array<Command> ): Uint8Array => {

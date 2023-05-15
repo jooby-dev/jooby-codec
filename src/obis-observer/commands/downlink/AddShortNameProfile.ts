@@ -13,7 +13,7 @@ interface IAddShortNameProfileParameters {
 }
 
 
-const COMMAND_ID = 0x03;
+const COMMAND_ID = 0x05;
 const COMMAND_SIZE = 7;
 
 const examples: TCommandExampleList = [
@@ -32,7 +32,7 @@ const examples: TCommandExampleList = [
                 }
             }
         },
-        hex: {header: '03', body: '20 f4 00 84 00 26 04'}
+        hex: {header: '05', body: '20 00 f4 00 84 26 04'}
     }
 ];
 
@@ -61,7 +61,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 03 20 f4 00 84 00 26 04
+ * // 05 20 00 f4 00 84 26 04
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddShortNameProfile.md#request)
