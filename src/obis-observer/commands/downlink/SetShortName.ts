@@ -1,12 +1,12 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {IObis} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IObis} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
  * ISetShortNameParameters command parameters
  */
-interface ISetShortNameParameters {
+interface ISetShortNameParameters extends ICommandParameters {
     shortName: number,
     obis: IObis
 }
@@ -18,6 +18,7 @@ const examples: TCommandExampleList = [
     {
         name: 'set short name 44 for OBIS code 0.9.1',
         parameters: {
+            requestId: 3,
             shortName: 44,
             obis: {
                 c: 0,
@@ -25,7 +26,7 @@ const examples: TCommandExampleList = [
                 e: 1
             }
         },
-        hex: {header: '03', body: '2c 02 00 09 01'}
+        hex: {header: '03', body: '03 2c 02 00 09 01'}
     }
 ];
 
@@ -57,8 +58,8 @@ class SetShortName extends Command {
     constructor ( public parameters: ISetShortNameParameters ) {
         super();
 
-        // obis size + short code 1 byte
-        this.size = CommandBinaryBuffer.getObisSize(parameters.obis) + 1;
+        // request id 1 byte + short name 1 byte + obis size
+        this.size = REQUEST_ID_SIZE + 1 + CommandBinaryBuffer.getObisSize(parameters.obis);
     }
 
     static readonly id = COMMAND_ID;
@@ -73,7 +74,7 @@ class SetShortName extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new SetShortName({shortName: buffer.getUint8(), obis: buffer.getObis()});
+        return new SetShortName({requestId: buffer.getUint8(), shortName: buffer.getUint8(), obis: buffer.getObis()});
     }
 
     // returns full message - header with body
@@ -83,8 +84,9 @@ class SetShortName extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {shortName, obis} = this.parameters;
+        const {requestId, shortName, obis} = this.parameters;
 
+        buffer.setUint8(requestId);
         buffer.setUint8(shortName);
         buffer.setObis(obis);
 

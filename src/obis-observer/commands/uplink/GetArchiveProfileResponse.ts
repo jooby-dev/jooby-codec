@@ -1,28 +1,29 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
 /**
  * IGetArchiveProfileResponseParameters command parameters
  */
-interface IGetArchiveProfileResponseParameters {
+interface IGetArchiveProfileResponseParameters extends ICommandParameters {
     summaryArchivePeriod?: number,
     detailedArchivePeriod?: number
 }
 
 
 const COMMAND_ID = 0x0e;
-const COMMAND_SIZE = 4;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 4;
 
 const examples: TCommandExampleList = [
     {
         name: 'default periods',
         parameters: {
+            requestId: 3,
             summaryArchivePeriod: 600,
             detailedArchivePeriod: 45
         },
-        hex: {header: '0e', body: '02 58 00 2d'}
+        hex: {header: '0e', body: '03 02 58 00 2d'}
     }
 ];
 
@@ -34,12 +35,13 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetArchiveProfileResponse from 'jooby-codec/obis-observer/commands/uplink/GetArchiveProfileResponse.js';
  *
- * const commandBody = new Uint8Array([0x02, 0x58, 0x00, 0x2d]);
+ * const commandBody = new Uint8Array([0x03, 0x02, 0x58, 0x00, 0x2d]);
  * const command = GetArchiveProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
+ *     requestId: 3,
  *     summaryArchivePeriod: 600,
  *     detailedArchivePeriod: 45
  * }
@@ -67,6 +69,7 @@ class GetArchiveProfileResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         return new GetArchiveProfileResponse({
+            requestId: buffer.getUint8(),
             summaryArchivePeriod: buffer.getUint16(),
             detailedArchivePeriod: buffer.getUint16()
         });
@@ -75,8 +78,9 @@ class GetArchiveProfileResponse extends Command {
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {summaryArchivePeriod, detailedArchivePeriod} = this.parameters;
+        const {requestId, summaryArchivePeriod, detailedArchivePeriod} = this.parameters;
 
+        buffer.setUint8(requestId);
         buffer.setUint16(summaryArchivePeriod ?? 0);
         buffer.setUint16(detailedArchivePeriod ?? 0);
 

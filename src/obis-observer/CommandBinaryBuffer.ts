@@ -2,6 +2,9 @@ import BinaryBuffer from '../utils/BinaryBuffer.js';
 import * as bitSet from '../utils/bitSet.js';
 import roundNumber from '../utils/roundNumber.js';
 
+export interface ICommandParameters {
+    requestId: number
+}
 
 export interface IObis {
     a?: number,
@@ -40,6 +43,8 @@ export interface IShortNameString {
     content: string
 }
 
+export const REQUEST_ID_SIZE = 1;
+export const OBIS_PROFILE_SIZE = 6;
 export const DATE_TIME_SIZE = 4;
 
 

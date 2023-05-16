@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {resultCodes} from '../../constants/index.js';
 
@@ -7,23 +7,22 @@ import {resultCodes} from '../../constants/index.js';
 /**
  * ISetShortNameResponseParameters command parameters
  */
-interface ISetShortNameResponseParameters {
-    shortName: number,
+interface ISetShortNameResponseParameters extends ICommandParameters {
     resultCode: number
 }
 
 
 const COMMAND_ID = 0x04;
-const COMMAND_SIZE = 2;
+const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
     {
         name: 'set short name - succeed',
         parameters: {
-            shortName: 44,
+            requestId: 2,
             resultCode: resultCodes.OK
         },
-        hex: {header: '04', body: '2c 00'}
+        hex: {header: '04', body: '02 00'}
     }
 ];
 
@@ -35,13 +34,13 @@ const examples: TCommandExampleList = [
  * ```js
  * import SetShortNameResponse from 'jooby-codec/obis-observer/commands/uplink/SetShortNameResponse.js';
  *
- * const commandBody = new Uint8Array([0x2c, 0x00]);
+ * const commandBody = new Uint8Array([0x02, 0x00]);
  * const command = SetShortNameResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     shortName: 32,
+ *     requestId: 2,
  *     resultCode: 0
  * }
  * ```
@@ -67,15 +66,15 @@ class SetShortNameResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new SetShortNameResponse({shortName: buffer.getUint8(), resultCode: buffer.getUint8()});
+        return new SetShortNameResponse({requestId: buffer.getUint8(), resultCode: buffer.getUint8()});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {shortName, resultCode} = this.parameters;
+        const {requestId, resultCode} = this.parameters;
 
-        buffer.setUint8(shortName);
+        buffer.setUint8(requestId);
         buffer.setUint8(resultCode);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

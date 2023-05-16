@@ -13,7 +13,7 @@ interface IObservationReportParameters {
 }
 
 
-const COMMAND_ID = 0x18;
+const COMMAND_ID = 0x1a;
 
 const examples: TCommandExampleList = [
     {
@@ -26,8 +26,8 @@ const examples: TCommandExampleList = [
             ]
         },
         hex: {
-            header: '18',
-            body: '0f 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec'
+            header: '1a',
+            body: '0e 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec'
         }
     }
 ];
@@ -40,7 +40,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import ObservationReport from 'jooby-codec/obis-observer/commands/uplink/ObservationReport.js';
  *
- * const commandBody = new Uint8Array([0x0f, 0x2d, 0x18, 0xdf, 0x80, 0x32, 0x42, 0x09, 0x51, 0xec, 0x38, 0x42, 0x35, 0x51, 0xec]);
+ * const commandBody = new Uint8Array([0x0e, 0x2d, 0x18, 0xdf, 0x80, 0x32, 0x42, 0x09, 0x51, 0xec, 0x38, 0x42, 0x35, 0x51, 0xec]);
  * const command = ObservationReport.fromBytes(commandBody);
  *
  * console.log(command.parameters);
@@ -60,7 +60,8 @@ class ObservationReport extends Command {
     constructor ( public parameters: IObservationReportParameters ) {
         super();
 
-        let size = DATE_TIME_SIZE + 1;
+        // real size - 1 size byte + others
+        let size = 1 + DATE_TIME_SIZE;
 
         this.parameters.shortNameList.forEach(shortName => {
             size += CommandBinaryBuffer.getShortNameContentSize(shortName);
@@ -81,7 +82,7 @@ class ObservationReport extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        let size = buffer.getUint8() - DATE_TIME_SIZE - 1;
+        let size = buffer.getUint8() - DATE_TIME_SIZE;
         const time = buffer.getUint32();
         const shortNameList = [];
 
@@ -104,7 +105,8 @@ class ObservationReport extends Command {
         const buffer = new CommandBinaryBuffer(this.size);
         const {time, shortNameList} = this.parameters;
 
-        buffer.setUint8(this.size);
+        // subtract size byte
+        buffer.setUint8(this.size - 1);
         buffer.setUint32(time);
         shortNameList.forEach(shortName => buffer.setShortNameFloat(shortName));
 

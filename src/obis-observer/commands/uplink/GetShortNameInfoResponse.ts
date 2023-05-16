@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {IObis, IObisProfile} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, OBIS_PROFILE_SIZE, ICommandParameters, IObisProfile, IObis} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {archiveTypes, contentTypes} from '../../constants/index.js';
 
@@ -7,10 +7,9 @@ import {archiveTypes, contentTypes} from '../../constants/index.js';
 /**
  * IGetShortNameInfoResponseParameters command parameters
  */
-interface IGetShortNameInfoResponseParameters {
-    shortName: number,
-    obis: IObis,
-    obisProfile: IObisProfile,
+interface IGetShortNameInfoResponseParameters extends ICommandParameters {
+    obis?: IObis,
+    obisProfile?: IObisProfile,
 }
 
 const COMMAND_ID = 0x0c;
@@ -19,7 +18,7 @@ const examples: TCommandExampleList = [
     {
         name: 'info for short name 121 and obis 0.9.1',
         parameters: {
-            shortName: 121,
+            requestId: 3,
             obis: {
                 c: 0,
                 d: 9,
@@ -36,7 +35,7 @@ const examples: TCommandExampleList = [
                 }
             }
         },
-        hex: {header: '0c', body: '0b 79 02 00 09 01 01 58 02 14 3d 0a'}
+        hex: {header: '0c', body: '0b 03 02 00 09 01 01 58 02 14 3d 0a'}
     }
 ];
 
@@ -48,13 +47,13 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetShortNameInfoResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNameInfoResponse.js';
  *
- * const commandBody = new Uint8Array([0x0b, 0x79, 0x02, 0x00, 0x09, 0x01, 0x01, 0x58, 0x02, 0x14, 0x3d, 0x0a]);
+ * const commandBody = new Uint8Array([0x0b, 0x03, 0x02, 0x00, 0x09, 0x01, 0x01, 0x58, 0x02, 0x14, 0x3d, 0x0a]);
  * const command = GetShortNameInfoResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     shortName: 121,
+ *     requestId: 3,
  *     obis: {
  *         c: 0,
  *         d: 9,
@@ -76,11 +75,17 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNameInfo.md#response)
  */
 class GetShortNameInfoResponse extends Command {
-    constructor ( public parameters: IGetShortNameInfoResponseParameters, size?: number ) {
+    constructor ( public parameters: IGetShortNameInfoResponseParameters ) {
         super();
 
-        // body size = size byte + obis code 3-7 byte + short name 1 byte + obis profile 6 byte
-        this.size = (size ?? CommandBinaryBuffer.getObisSize(parameters.obis) + 7) + 1;
+        // real size - 1 size byte + others
+        let size = 1 + REQUEST_ID_SIZE;
+
+        if ( parameters.obis ) {
+            size += CommandBinaryBuffer.getObisSize(parameters.obis) + OBIS_PROFILE_SIZE;
+        }
+
+        this.size = size;
     }
 
     static readonly id = COMMAND_ID;
@@ -95,11 +100,17 @@ class GetShortNameInfoResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         const size = buffer.getUint8();
-        const shortName = buffer.getUint8();
-        const obis = buffer.getObis();
-        const obisProfile = buffer.getObisProfile();
+        const requestId = buffer.getUint8();
+        let obis;
+        let obisProfile;
 
-        return new GetShortNameInfoResponse({shortName, obis, obisProfile}, size);
+        // obis code + profile exists
+        if ( size > REQUEST_ID_SIZE ) {
+            obis = buffer.getObis();
+            obisProfile = buffer.getObisProfile();
+        }
+
+        return new GetShortNameInfoResponse({requestId, obis, obisProfile});
     }
 
     // returns full message - header with body
@@ -109,12 +120,19 @@ class GetShortNameInfoResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {shortName, obis, obisProfile} = this.parameters;
+        const {requestId, obis, obisProfile} = this.parameters;
 
+        // subtract size byte
         buffer.setUint8(this.size - 1);
-        buffer.setUint8(shortName);
-        buffer.setObis(obis);
-        buffer.setObisProfile(obisProfile);
+        buffer.setUint8(requestId);
+
+        if ( obis ) {
+            buffer.setObis(obis);
+        }
+
+        if ( obisProfile ) {
+            buffer.setObisProfile(obisProfile);
+        }
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

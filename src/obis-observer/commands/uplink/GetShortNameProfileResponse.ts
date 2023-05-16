@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {IObisProfile} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, OBIS_PROFILE_SIZE, ICommandParameters, IObisProfile} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {archiveTypes, contentTypes} from '../../constants/index.js';
 
@@ -7,19 +7,18 @@ import {archiveTypes, contentTypes} from '../../constants/index.js';
 /**
  * IGetShortNameProfileResponseParameters command parameters
  */
-interface IGetShortNameProfileResponseParameters {
-    shortName: number,
+interface IGetShortNameProfileResponseParameters extends ICommandParameters {
     obisProfile: IObisProfile,
 }
 
 const COMMAND_ID = 0x0a;
-const COMMAND_SIZE = 7;
+const COMMAND_SIZE = REQUEST_ID_SIZE + OBIS_PROFILE_SIZE;
 
 const examples: TCommandExampleList = [
     {
         name: 'profile for short name 121',
         parameters: {
-            shortName: 121,
+            requestId: 3,
             obisProfile: {
                 capturePeriod: 344,
                 sendingPeriod: 532,
@@ -31,7 +30,7 @@ const examples: TCommandExampleList = [
                 }
             }
         },
-        hex: {header: '0a', body: '79 01 58 02 14 3d 0a'}
+        hex: {header: '0a', body: '03 01 58 02 14 3d 0a'}
     }
 ];
 
@@ -43,13 +42,13 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetShortNameProfileResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNameProfileResponse.js';
  *
- * const commandBody = new Uint8Array([0x79, 0x01, 0x58, 0x02, 0x14, 0x3d, 0x0a]);
+ * const commandBody = new Uint8Array([0x03, 0x01, 0x58, 0x02, 0x14, 0x3d, 0x0a]);
  * const command = GetShortNameProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     shortName: 121,
+ *     requestId: 3,
  *     obisProfile: {
  *         capturePeriod: 344,
  *         sendingPeriod: 532,
@@ -83,10 +82,10 @@ class GetShortNameProfileResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        const shortName = buffer.getUint8();
+        const requestId = buffer.getUint8();
         const obisProfile = buffer.getObisProfile();
 
-        return new GetShortNameProfileResponse({shortName, obisProfile});
+        return new GetShortNameProfileResponse({requestId, obisProfile});
     }
 
     // returns full message - header with body
@@ -96,9 +95,9 @@ class GetShortNameProfileResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {shortName, obisProfile} = this.parameters;
+        const {requestId, obisProfile} = this.parameters;
 
-        buffer.setUint8(shortName);
+        buffer.setUint8(requestId);
         buffer.setObisProfile(obisProfile);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
