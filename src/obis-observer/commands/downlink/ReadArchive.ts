@@ -44,10 +44,11 @@ const examples: TCommandExampleList = [
  * @example
  * ```js
  * import ReadArchive from 'jooby-codec/obis-observer/commands/downlink/ReadArchive.js';
+ * import archiveTypes from 'jooby-codec/obis-observer/constants/archiveTypes.js';
  *
  * const parameters = {
  *     requestId: 34,
- *     archiveType: 2,
+ *     archiveType: archiveTypes.SUMMARY,
  *     time: 756619200
  * };
  * const command = new ReadArchive(parameters);
@@ -92,7 +93,6 @@ class ReadArchive extends Command {
         }
 
         const {requestId, archiveType, time} = this.parameters;
-
         const buffer = new CommandBinaryBuffer(this.size);
 
         buffer.setUint8(requestId);
