@@ -5,24 +5,32 @@ import {resultCodes} from '../../constants/index.js';
 
 
 /**
- * IRemoveShortNameProfileResponseParameters command parameters
+ * ISetArchiveProfileResponseParameters command parameters
  */
-interface IRemoveShortNameProfileResponseParameters extends ICommandParameters {
+interface ISetArchiveProfileResponseParameters extends ICommandParameters {
     resultCode: number
 }
 
 
-const COMMAND_ID = 0x08;
-const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
+const COMMAND_ID = 0x10;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'remove short name profile - not found',
+        name: 'successful request',
         parameters: {
-            requestId: 5,
+            requestId: 156,
+            resultCode: resultCodes.OK
+        },
+        hex: {header: '10', body: '9c 00'}
+    },
+    {
+        name: 'failed request',
+        parameters: {
+            requestId: 49,
             resultCode: resultCodes.PROFILE_NOT_FOUND
         },
-        hex: {header: '08', body: '05 05'}
+        hex: {header: '10', body: '31 05'}
     }
 ];
 
@@ -32,23 +40,23 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import RemoveShortNameProfileResponse from 'jooby-codec/obis-observer/commands/uplink/RemoveShortNameProfileResponse.js';
+ * import SetArchiveProfileResponse from 'jooby-codec/obis-observer/commands/uplink/SetArchiveProfileResponse.js';
  *
- * const commandBody = new Uint8Array([0x05, 0x04]);
- * const command = RemoveShortNameProfileResponse.fromBytes(commandBody);
+ * const commandBody = new Uint8Array([0x9c, 0x00]);
+ * const command = SetArchiveProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 5,
- *     resultCode: 4
+ *     requestId: 156,
+ *     resultCode: 0
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveShortNameProfileResponse.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetArchiveProfile.md#response)
  */
-class RemoveShortNameProfileResponse extends Command {
-    constructor ( public parameters: IRemoveShortNameProfileResponseParameters ) {
+class SetArchiveProfileResponse extends Command {
+    constructor ( public parameters: ISetArchiveProfileResponseParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -66,7 +74,10 @@ class RemoveShortNameProfileResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new RemoveShortNameProfileResponse({requestId: buffer.getUint8(), resultCode: buffer.getUint8()});
+        return new SetArchiveProfileResponse({
+            requestId: buffer.getUint8(),
+            resultCode: buffer.getUint8()
+        });
     }
 
     // returns full message - header with body
@@ -82,4 +93,4 @@ class RemoveShortNameProfileResponse extends Command {
 }
 
 
-export default RemoveShortNameProfileResponse;
+export default SetArchiveProfileResponse;
