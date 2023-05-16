@@ -1,14 +1,18 @@
 import Command, {TCommandExampleList} from '../../Command.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
 const COMMAND_ID = 0x0d;
-const COMMAND_SIZE = 0;
+const COMMAND_SIZE = REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
     {
         name: 'simple request',
-        hex: {header: '0d', body: ''}
+        parameters: {
+            requestId: 3
+        },
+        hex: {header: '0d', body: '03'}
     }
 ];
 
@@ -20,17 +24,17 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetArchiveProfile from 'jooby-codec/obis-observer/commands/downlink/GetArchiveProfile.js';
  *
- * const command = new GetArchiveProfile();
+ * const command = new GetArchiveProfile({requestId: 3});
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 0d
+ * // 0d 03
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveProfile.md#request)
  */
 class GetArchiveProfile extends Command {
-    constructor () {
+    constructor ( public parameters: ICommandParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -42,17 +46,21 @@ class GetArchiveProfile extends Command {
 
     static readonly examples = examples;
 
-    static readonly hasParameters = false;
+    static readonly hasParameters = true;
 
-    // data - only body (without header)
-    static fromBytes () {
-        return new GetArchiveProfile();
+    static fromBytes ( data: Uint8Array ) {
+        const buffer = new CommandBinaryBuffer(data);
+
+        return new GetArchiveProfile({requestId: buffer.getUint8()});
     }
 
-    // returns full message - header with body
     // eslint-disable-next-line class-methods-use-this
     toBytes (): Uint8Array {
-        return Command.toBytes(COMMAND_ID);
+        const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
+
+        buffer.setUint8(this.parameters.requestId);
+
+        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
