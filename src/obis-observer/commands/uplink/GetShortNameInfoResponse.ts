@@ -88,6 +88,7 @@ class GetShortNameInfoResponse extends Command {
         this.size = size;
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
@@ -95,6 +96,7 @@ class GetShortNameInfoResponse extends Command {
     static readonly examples = examples;
 
     static readonly hasParameters = true;
+
 
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);

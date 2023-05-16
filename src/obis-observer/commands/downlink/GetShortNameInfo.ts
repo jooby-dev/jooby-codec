@@ -54,6 +54,7 @@ class GetShortNameInfo extends Command {
         this.size = REQUEST_ID_SIZE + 1;
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
@@ -62,11 +63,15 @@ class GetShortNameInfo extends Command {
 
     static readonly hasParameters = true;
 
+
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetShortNameInfo({requestId: buffer.getUint8(), shortName: buffer.getUint8()});
+        return new GetShortNameInfo({
+            requestId: buffer.getUint8(),
+            shortName: buffer.getUint8()
+        });
     }
 
     // returns full message - header with body

@@ -63,6 +63,7 @@ class GetShortNameResponse extends Command {
         this.size = 1 + REQUEST_ID_SIZE + CommandBinaryBuffer.getObisSize(parameters.obis) + parameters.shortNameList.length;
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
@@ -70,6 +71,7 @@ class GetShortNameResponse extends Command {
     static readonly examples = examples;
 
     static readonly hasParameters = true;
+
 
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);

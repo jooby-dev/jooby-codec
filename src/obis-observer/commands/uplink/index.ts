@@ -6,6 +6,7 @@
 
 export {default as AddShortNameProfileResponse} from './AddShortNameProfileResponse.js';
 export {default as GetArchiveProfileResponse} from './GetArchiveProfileResponse.js';
+export {default as GetContentByObisResponse} from './GetContentByObisResponse.js';
 export {default as GetContentByShortNameResponse} from './GetContentByShortNameResponse.js';
 export {default as GetContentByShortNameResponseStr} from './GetContentByShortNameResponseStr.js';
 export {default as GetShortNameInfoResponse} from './GetShortNameInfoResponse.js';

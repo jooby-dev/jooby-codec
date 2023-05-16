@@ -54,6 +54,7 @@ class RemoveShortNameProfileResponse extends Command {
         this.size = COMMAND_SIZE;
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
@@ -62,11 +63,15 @@ class RemoveShortNameProfileResponse extends Command {
 
     static readonly hasParameters = true;
 
+
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new RemoveShortNameProfileResponse({requestId: buffer.getUint8(), resultCode: buffer.getUint8()});
+        return new RemoveShortNameProfileResponse({
+            requestId: buffer.getUint8(),
+            resultCode: buffer.getUint8()
+        });
     }
 
     // returns full message - header with body

@@ -40,6 +40,7 @@ class GetArchiveProfile extends Command {
         this.size = COMMAND_SIZE;
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
@@ -47,6 +48,7 @@ class GetArchiveProfile extends Command {
     static readonly examples = examples;
 
     static readonly hasParameters = true;
+
 
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);

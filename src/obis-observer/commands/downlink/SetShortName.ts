@@ -62,6 +62,7 @@ class SetShortName extends Command {
         this.size = REQUEST_ID_SIZE + 1 + CommandBinaryBuffer.getObisSize(parameters.obis);
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
@@ -70,11 +71,16 @@ class SetShortName extends Command {
 
     static readonly hasParameters = true;
 
+
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new SetShortName({requestId: buffer.getUint8(), shortName: buffer.getUint8(), obis: buffer.getObis()});
+        return new SetShortName({
+            requestId: buffer.getUint8(),
+            shortName: buffer.getUint8(),
+            obis: buffer.getObis()
+        });
     }
 
     // returns full message - header with body
