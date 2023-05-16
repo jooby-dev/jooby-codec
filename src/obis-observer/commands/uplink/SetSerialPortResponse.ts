@@ -5,24 +5,32 @@ import {resultCodes} from '../../constants/index.js';
 
 
 /**
- * IRemoveShortNameProfileResponseParameters command parameters
+ * ISetSerialPortResponseParameters command parameters
  */
-interface IRemoveShortNameProfileResponseParameters extends ICommandParameters {
+interface ISetSerialPortResponseParameters extends ICommandParameters {
     resultCode: number
 }
 
 
-const COMMAND_ID = 0x08;
-const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
+const COMMAND_ID = 0x14;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'remove short name profile - not found',
+        name: 'set serial port settings - succeed',
         parameters: {
-            requestId: 5,
-            resultCode: resultCodes.PROFILE_NOT_FOUND
+            requestId: 32,
+            resultCode: resultCodes.OK
         },
-        hex: {header: '08', body: '05 05'}
+        hex: {header: '14', body: '20 00'}
+    },
+    {
+        name: 'set serial port settings - failed',
+        parameters: {
+            requestId: 32,
+            resultCode: resultCodes.FAILURE
+        },
+        hex: {header: '14', body: '20 01'}
     }
 ];
 
@@ -32,23 +40,23 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import RemoveShortNameProfileResponse from 'jooby-codec/obis-observer/commands/uplink/RemoveShortNameProfileResponse.js';
+ * import SetSerialPortResponse from 'jooby-codec/obis-observer/commands/uplink/SetSerialPortResponse.js';
  *
- * const commandBody = new Uint8Array([0x05, 0x04]);
- * const command = RemoveShortNameProfileResponse.fromBytes(commandBody);
+ * const commandBody = new Uint8Array([0x20, 0x00]);
+ * const command = SetSerialPortResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 5,
- *     resultCode: 4
+ *     requestId: 32,
+ *     resultCode: 0
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveShortNameProfileResponse.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetSerialPort.md#response)
  */
-class RemoveShortNameProfileResponse extends Command {
-    constructor ( public parameters: IRemoveShortNameProfileResponseParameters ) {
+class SetSerialPortResponse extends Command {
+    constructor ( public parameters: ISetSerialPortResponseParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -66,7 +74,10 @@ class RemoveShortNameProfileResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new RemoveShortNameProfileResponse({requestId: buffer.getUint8(), resultCode: buffer.getUint8()});
+        return new SetSerialPortResponse({
+            requestId: buffer.getUint8(),
+            resultCode: buffer.getUint8()
+        });
     }
 
     // returns full message - header with body
@@ -82,4 +93,4 @@ class RemoveShortNameProfileResponse extends Command {
 }
 
 
-export default RemoveShortNameProfileResponse;
+export default SetSerialPortResponse;
