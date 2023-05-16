@@ -7,6 +7,7 @@
 export {default as AddShortNameProfile} from './AddShortNameProfile.js';
 export {default as GetArchiveProfile} from './GetArchiveProfile.js';
 export {default as GetContentByObis} from './GetContentByObis.js';
+export {default as GetContentByShortName} from './GetContentByShortName.js';
 export {default as GetShortName} from './GetShortName.js';
 export {default as GetShortNameInfo} from './GetShortNameInfo.js';
 export {default as GetShortNameProfile} from './GetShortNameProfile.js';

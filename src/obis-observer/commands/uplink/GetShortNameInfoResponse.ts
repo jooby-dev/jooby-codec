@@ -16,7 +16,7 @@ const COMMAND_ID = 0x0c;
 
 const examples: TCommandExampleList = [
     {
-        name: 'info for short name 121 and obis 0.9.1',
+        name: 'short name info with obis code 0.9.1 and obis profile',
         parameters: {
             requestId: 3,
             obis: {
