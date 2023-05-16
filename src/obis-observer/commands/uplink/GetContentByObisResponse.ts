@@ -62,6 +62,7 @@ class GetContentByObisResponse extends Command {
         this.size = REQUEST_ID_SIZE + 1 + 1 + this.parameters.content.length;
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
@@ -69,6 +70,7 @@ class GetContentByObisResponse extends Command {
     static readonly examples = examples;
 
     static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

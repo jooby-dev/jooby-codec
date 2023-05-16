@@ -60,6 +60,7 @@ class GetContentByObis extends Command {
         this.size = REQUEST_ID_SIZE + CommandBinaryBuffer.getObisSize(parameters.obis);
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
@@ -67,6 +68,7 @@ class GetContentByObis extends Command {
     static readonly examples = examples;
 
     static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

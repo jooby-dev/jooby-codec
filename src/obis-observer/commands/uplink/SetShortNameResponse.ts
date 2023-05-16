@@ -54,6 +54,7 @@ class SetShortNameResponse extends Command {
         this.size = COMMAND_SIZE;
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = UPLINK;
@@ -61,6 +62,7 @@ class SetShortNameResponse extends Command {
     static readonly examples = examples;
 
     static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

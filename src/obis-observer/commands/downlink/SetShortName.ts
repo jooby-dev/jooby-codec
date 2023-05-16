@@ -62,6 +62,7 @@ class SetShortName extends Command {
         this.size = REQUEST_ID_SIZE + 1 + CommandBinaryBuffer.getObisSize(parameters.obis);
     }
 
+
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
@@ -69,6 +70,7 @@ class SetShortName extends Command {
     static readonly examples = examples;
 
     static readonly hasParameters = true;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
