@@ -76,7 +76,11 @@ class SetShortName extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new SetShortName({requestId: buffer.getUint8(), shortName: buffer.getUint8(), obis: buffer.getObis()});
+        return new SetShortName({
+            requestId: buffer.getUint8(),
+            shortName: buffer.getUint8(),
+            obis: buffer.getObis()
+        });
     }
 
     // returns full message - header with body

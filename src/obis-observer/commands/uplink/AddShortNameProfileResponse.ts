@@ -68,7 +68,10 @@ class AddShortNameProfileResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new AddShortNameProfileResponse({requestId: buffer.getUint8(), resultCode: buffer.getUint8()});
+        return new AddShortNameProfileResponse({
+            requestId: buffer.getUint8(),
+            resultCode: buffer.getUint8()
+        });
     }
 
     // returns full message - header with body
