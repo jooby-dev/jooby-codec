@@ -32,9 +32,3 @@ jobs:
             env:
                 NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
                 NPM_CONFIG_PROVENANCE: true
-
-          - name: send notification
-            uses: EverythingSuckz/github-telegram-notify@main
-            with:
-                bot_token: '${{ secrets.TELEGRAM_BOT_TOKEN }}'
-                chat_id: '${{ secrets.TELEGRAM_CHAT_ID }}'
