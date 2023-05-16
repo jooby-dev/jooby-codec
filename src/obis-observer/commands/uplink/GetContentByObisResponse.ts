@@ -32,23 +32,14 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetContentByObisResponse from 'jooby-codec/obis-observer/commands/uplink/GetContentByObisResponse.js';
  *
- * const commandBody = new Uint8Array([
- *     0x3a, 0x2d, 0x18, 0xdf, 0x80, 0x32, 0x1a, 0x72, 0x65, 0x61, 0x63, 0x74, 0x69,
- *     0x76, 0x65, 0x20, 0x70, 0x6f, 0x77, 0x65, 0x72, 0x20, 0x51, 0x49, 0x2c, 0x20,
- *     0x61, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x38, 0x18, 0x72, 0x65, 0x61, 0x63,
- *     0x74, 0x69, 0x76, 0x65, 0x20, 0x70, 0x6f, 0x77, 0x65, 0x72, 0x20, 0x51, 0x49,
- *     0x2c, 0x20, 0x74, 0x6f, 0x74, 0x61, 0x6c
- * ]);
+ * const commandBody = new Uint8Array([0x0a, 0x02, 0x08, 0x35, 0x37, 0x39, 0x30, 0x36, 0x36, 0x33, 0x35]);
  * const command = GetContentByObisResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     time: 756604800,
- *     shortNameList: [
- *         {code: 50, content: 'reactive power QI, average'},
- *         {code: 56, content: 'reactive power QI, total'}
- *     ]
+ *     requestId: 2,
+ *     content: '57906635'
  * }
  * ```
  *
@@ -77,7 +68,7 @@ class GetContentByObisResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         // need to skip 1 byte as size is not used
-        buffer.getUint8();
+        buffer.seek(buffer.offset + 1);
 
         const requestId = buffer.getUint8();
         const content = buffer.getString();
