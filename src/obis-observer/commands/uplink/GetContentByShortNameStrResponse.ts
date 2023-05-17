@@ -4,9 +4,9 @@ import {UPLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetContentByShortNameStrParameters command parameters
+ * IGetContentByShortNameStrResponseParameters command parameters
  */
-interface IGetContentByShortNameStrParameters extends ICommandParameters {
+interface IGetContentByShortNameStrResponseParameters extends ICommandParameters {
     /** obis code content from the metering device */
     content: string
 }
@@ -30,10 +30,10 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetContentByShortNameStr from 'jooby-codec/obis-observer/commands/uplink/GetContentByShortNameStr.js';
+ * import GetContentByShortNameStrResponse from 'jooby-codec/obis-observer/commands/uplink/GetContentByShortNameStrResponse.js';
  *
  * const commandBody = new Uint8Array([0x79, 0x0c, 0x54, 0x6f, 0x74, 0x61, 0x6c, 0x20, 0x65, 0x6e, 0x65, 0x72, 0x67, 0x79]);
- * const command = GetContentByShortNameStr.fromBytes(commandBody);
+ * const command = GetContentByShortNameStrResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -43,10 +43,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNameInfo.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetContentByShortNameStr.md#response)
  */
-class GetContentByShortNameStr extends Command {
-    constructor ( public parameters: IGetContentByShortNameStrParameters ) {
+class GetContentByShortNameStrResponse extends Command {
+    constructor ( public parameters: IGetContentByShortNameStrResponseParameters ) {
         super();
 
         // request id byte + command size byte + obis string content 2-n bytes
@@ -70,7 +70,7 @@ class GetContentByShortNameStr extends Command {
         const requestId = buffer.getUint8();
         const content = buffer.getString();
 
-        return new GetContentByShortNameStr({requestId, content});
+        return new GetContentByShortNameStrResponse({requestId, content});
     }
 
     // returns full message - header with body
@@ -92,4 +92,4 @@ class GetContentByShortNameStr extends Command {
 }
 
 
-export default GetContentByShortNameStr;
+export default GetContentByShortNameStrResponse;
