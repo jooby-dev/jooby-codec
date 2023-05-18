@@ -15,7 +15,7 @@ type TMessageList = Array<IMessage>;
 
 const downlinkMessages: TMessageList = [
     {
-        // GetShortName + GetShortName
+        // GetShortNames + GetShortNames
         hex: '01 03 02 00 09 01  01 04 02 00 09 01',
         commands: [
             {
@@ -27,7 +27,7 @@ const downlinkMessages: TMessageList = [
                         e: 1
                     }
                 },
-                command: downlinkCommands.GetShortName
+                command: downlinkCommands.GetShortNames
             },
             {
                 parameters: {
@@ -38,7 +38,7 @@ const downlinkMessages: TMessageList = [
                         e: 1
                     }
                 },
-                command: downlinkCommands.GetShortName
+                command: downlinkCommands.GetShortNames
             }
         ],
         isValid: true
@@ -74,8 +74,8 @@ const uplinkMessages: TMessageList = [
 
 const mixedMessages: TMessageList = [
     {
-        // GetShortName + GetShortNameResponse
-        hex: '01 07 02 00 09 01  02 07 07 02 00 09 01 c5 c6',
+        // GetShortNames + GetShortNamesResponse
+        hex: '01 07 02 00 09 01  02 03 07 c5 c6',
         commands: [
             {
                 parameters: {
@@ -86,19 +86,14 @@ const mixedMessages: TMessageList = [
                         e: 1
                     }
                 },
-                command: downlinkCommands.GetShortName
+                command: downlinkCommands.GetShortNames
             },
             {
                 parameters: {
                     requestId: 7,
-                    obis: {
-                        c: 0,
-                        d: 9,
-                        e: 1
-                    },
                     shortNameList: [197, 198]
                 },
-                command: uplinkCommands.GetShortNameResponse
+                command: uplinkCommands.GetShortNamesResponse
             }
         ],
         isValid: true
