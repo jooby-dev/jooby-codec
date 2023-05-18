@@ -4,9 +4,9 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetShortNameParameters command parameters
+ * IGetShortNamesParameters command parameters
  */
-interface IGetShortNameParameters extends ICommandParameters {
+interface IGetShortNamesParameters extends ICommandParameters {
     obis: IObis
 }
 
@@ -34,7 +34,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetShortName from 'jooby-codec/obis-observer/commands/downlink/GetShortName.js';
+ * import GetShortNames from 'jooby-codec/obis-observer/commands/downlink/GetShortNames.js';
  *
  * const parameters = {
  *     requestId: 3,
@@ -44,17 +44,17 @@ const examples: TCommandExampleList = [
  *         e: 1
  *     }
  * };
- * const command = new GetShortName(parameters);
+ * const command = new GetShortNames(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 01 03 02 00 09 01
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortName.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNames.md#request)
  */
-class GetShortName extends Command {
-    constructor ( public parameters: IGetShortNameParameters ) {
+class GetShortNames extends Command {
+    constructor ( public parameters: IGetShortNamesParameters ) {
         super();
 
         this.size = REQUEST_ID_SIZE + CommandBinaryBuffer.getObisSize(parameters.obis);
@@ -74,7 +74,7 @@ class GetShortName extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetShortName({
+        return new GetShortNames({
             requestId: buffer.getUint8(),
             obis: buffer.getObis()
         });
@@ -97,4 +97,4 @@ class GetShortName extends Command {
 }
 
 
-export default GetShortName;
+export default GetShortNames;
