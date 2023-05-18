@@ -74,8 +74,8 @@ const uplinkMessages: TMessageList = [
 
 const mixedMessages: TMessageList = [
     {
-        // GetShortName + GetShortNameResponse
-        hex: '01 07 02 00 09 01  02 07 07 02 00 09 01 c5 c6',
+        // GetShortName + GetShortNamesResponse
+        hex: '01 07 02 00 09 01  02 03 07 c5 c6',
         commands: [
             {
                 parameters: {
@@ -91,14 +91,9 @@ const mixedMessages: TMessageList = [
             {
                 parameters: {
                     requestId: 7,
-                    obis: {
-                        c: 0,
-                        d: 9,
-                        e: 1
-                    },
                     shortNameList: [197, 198]
                 },
-                command: uplinkCommands.GetShortNameResponse
+                command: uplinkCommands.GetShortNamesResponse
             }
         ],
         isValid: true

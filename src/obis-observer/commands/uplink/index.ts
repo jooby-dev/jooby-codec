@@ -11,7 +11,7 @@ export {default as GetContentByShortNameResponse} from './GetContentByShortNameR
 export {default as GetContentByShortNameResponseStr} from './GetContentByShortNameStrResponse.js';
 export {default as GetShortNameInfoResponse} from './GetShortNameInfoResponse.js';
 export {default as GetShortNameProfileResponse} from './GetShortNameProfileResponse.js';
-export {default as GetShortNameResponse} from './GetShortNameResponse.js';
+export {default as GetShortNamesResponse} from './GetShortNamesResponse.js';
 export {default as ObservationReport} from './ObservationReport.js';
 export {default as ObservationReportStr} from './ObservationReportStr.js';
 export {default as ReadArchiveResponse} from './ReadArchiveResponse.js';
