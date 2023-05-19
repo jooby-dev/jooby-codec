@@ -22,12 +22,12 @@ const examples: TCommandExampleList = [
         name: 'set fixed settings: 9600, 8, odd',
         parameters: {
             requestId: 52,
-            fixed: 0,
+            fixed: 1,
             baudRate: 5,
             dataBits: 8,
             parity: 1
         },
-        hex: {header: '13', body: '34 00 05 08 01'}
+        hex: {header: '13', body: '34 01 05 08 01'}
     }
 ];
 
