@@ -1,35 +1,32 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IShortNameFloat, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {archiveTypes} from '../../constants/index.js';
 
 
 /**
  * IReadArchiveResponseParameters command parameters
  */
 interface IReadArchiveResponseParameters extends ICommandParameters {
-    archiveType: number,
     time: number,
     shortNameList: Array<IShortNameFloat>
 }
 
 const COMMAND_ID = 0x12;
-// request id byte + archive type id byte + DateTime 4 bytes
-const COMMAND_MIN_SIZE = REQUEST_ID_SIZE + 1 + DATE_TIME_SIZE;
+// request id byte + DateTime 4 bytes
+const COMMAND_HEADER_SIZE = REQUEST_ID_SIZE + DATE_TIME_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'summary archive from 2023-12-22 23:40:00 GMT',
+        name: 'summary archive from 2023-12-23 04:00:00 GMT',
         parameters: {
             requestId: 34,
-            archiveType: archiveTypes.SUMMARY,
             time: 756619200,
             shortNameList: [
                 {code: 50, content: 22.27},
                 {code: 56, content: 89.33}
             ]
         },
-        hex: {header: '12', body: '10 22 02 2d 19 17 c0 32 41 b2 28 f6 38 42 b2 a8 f6'}
+        hex: {header: '12', body: '0f 22 2d 19 17 c0 32 41 b2 28 f6 38 42 b2 a8 f6'}
     }
 ];
 
@@ -65,8 +62,8 @@ class ReadArchiveResponse extends Command {
     constructor ( public parameters: IReadArchiveResponseParameters ) {
         super();
 
-        // size byte + minimal parameters size
-        let size = 1 + COMMAND_MIN_SIZE;
+        // size byte + header
+        let size = 1 + COMMAND_HEADER_SIZE;
 
         // + short name list of code 1 byte with float content 4 bytes
         this.parameters.shortNameList.forEach(shortName => {
@@ -89,9 +86,8 @@ class ReadArchiveResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        let size = buffer.getUint8() - COMMAND_MIN_SIZE;
+        let size = buffer.getUint8() - COMMAND_HEADER_SIZE;
         const requestId = buffer.getUint8();
-        const archiveType = buffer.getUint8();
         const time = buffer.getUint32();
         const shortNameList = [];
 
@@ -102,7 +98,7 @@ class ReadArchiveResponse extends Command {
             shortNameList.push(shortName);
         }
 
-        return new ReadArchiveResponse({requestId, archiveType, time, shortNameList});
+        return new ReadArchiveResponse({requestId, time, shortNameList});
     }
 
     // returns full message - header with body
@@ -112,12 +108,11 @@ class ReadArchiveResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, archiveType, time, shortNameList} = this.parameters;
+        const {requestId, time, shortNameList} = this.parameters;
 
         // subtract size byte
         buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
-        buffer.setUint8(archiveType);
         buffer.setUint32(time);
         shortNameList.forEach(shortName => buffer.setShortNameFloat(shortName));
 
