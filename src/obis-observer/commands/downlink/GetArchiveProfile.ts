@@ -24,7 +24,10 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetArchiveProfile from 'jooby-codec/obis-observer/commands/downlink/GetArchiveProfile.js';
  *
- * const command = new GetArchiveProfile({requestId: 3});
+ * const parameters = {
+ *     requestId: 3
+ * };
+ * const command = new GetArchiveProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
@@ -50,15 +53,20 @@ class GetArchiveProfile extends Command {
     static readonly hasParameters = true;
 
 
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
         return new GetArchiveProfile({requestId: buffer.getUint8()});
     }
 
-    // eslint-disable-next-line class-methods-use-this
+    // returns full message - header with body
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
+        if ( typeof this.size !== 'number' ) {
+            throw new Error('unknown or invalid size');
+        }
+
+        const buffer = new CommandBinaryBuffer(this.size);
 
         buffer.setUint8(this.parameters.requestId);
 
