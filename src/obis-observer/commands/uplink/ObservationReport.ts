@@ -25,10 +25,7 @@ const examples: TCommandExampleList = [
                 {code: 56, content: 45.33}
             ]
         },
-        hex: {
-            header: '1a',
-            body: '0e 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec'
-        }
+        hex: {header: '1a', body: '0e 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec'}
     }
 ];
 
@@ -54,7 +51,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/uplink/ObservationReport.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/uplink/ObservationReport.md#event-with-float-content)
  */
 class ObservationReport extends Command {
     constructor ( public parameters: IObservationReportParameters ) {
