@@ -17,7 +17,7 @@ const COMMAND_ID = 0x1a;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get observation report from 2023-12-22 23:40:00 GMT',
+        name: 'get observation report from 2023.12.23 00:00:00 GMT',
         parameters: {
             time: 756604800,
             shortNameList: [

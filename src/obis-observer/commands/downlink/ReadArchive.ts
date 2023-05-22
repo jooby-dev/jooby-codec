@@ -18,7 +18,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 5;
 
 const examples: TCommandExampleList = [
     {
-        name: 'request detailed archive from 2023-12-22 23:40:00 GMT',
+        name: 'request detailed archive from 2023.12.23 00:00:00 GMT',
         parameters: {
             requestId: 33,
             archiveType: archiveTypes.DETAILED,
@@ -27,7 +27,7 @@ const examples: TCommandExampleList = [
         hex: {header: '11', body: '21 01 2d 18 df 80'}
     },
     {
-        name: 'request summary archive from 2023-12-22 23:40:00 GMT',
+        name: 'request summary archive from 2023-12-23 04:00:00 GMT',
         parameters: {
             requestId: 34,
             archiveType: archiveTypes.SUMMARY,
