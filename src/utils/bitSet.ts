@@ -62,8 +62,10 @@ export const toObject = ( bitMask: TBitSetMask = {}, value = 0 ): TBooleanObject
     return result;
 };
 
+
 /**
  * Extract number of bits from position as number.
+ * startIndex starts from 1.
  *
  * @example
  * ```js
@@ -80,6 +82,7 @@ export const extractBits = (
 
 /**
  * Fill number of bits from position with number.
+ * startIndex starts from 1.
  *
  * @example
  * ```js

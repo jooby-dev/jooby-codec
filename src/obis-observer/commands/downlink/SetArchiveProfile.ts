@@ -33,7 +33,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import SetArchiveProfile from 'jooby-codec/commands/obis-observer/downlink/SetArchiveProfile.js';
+ * import SetArchiveProfile from 'jooby-codec/obis-observer/commands/downlink/SetArchiveProfile.js';
  * const parameters = {
  *     requestId: 68,
  *     summaryArchivePeriod: 2880,

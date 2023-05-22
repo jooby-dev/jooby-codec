@@ -61,6 +61,8 @@ class GetContentByShortNameStringResponse extends Command {
 
     static readonly hasParameters = true;
 
+
+    // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
