@@ -49,19 +49,20 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import SetSerialPort from 'jooby-codec/commands/obis-observer/downlink/SetSerialPort.js';
+ * import SetSerialPort from 'jooby-codec/obis-observer/commands/downlink/SetSerialPort.js';
+ * import * as parityTypes from 'jooby-codec/obis-observer/constants/parityTypes.js';
  * const parameters = {
  *     requestId: 52,
- *     fixed: 0,
  *     baudRate: 5,
  *     dataBits: 8,
- *     parity: 1
+ *     parity: parityTypes.ODD,
+ *     fixed: 1
  * };
  * const command = new SetSerialPort(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 13 34 00 05 08 01
+ * // 13 34 05 08 05
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetSerialPort.md#request)
