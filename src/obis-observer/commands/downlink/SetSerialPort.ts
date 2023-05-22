@@ -1,33 +1,45 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
+import * as parityTypes from '../../constants/parityTypes.js';
 
 
 /**
  * ISetSerialPortParameters command parameters
  */
 interface ISetSerialPortParameters extends ICommandParameters {
-    fixed: number,
     baudRate: number,
     dataBits: number,
     parity: number,
+    fixed: number
 }
 
 
 const COMMAND_ID = 0x13;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 4;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 3;
 
 const examples: TCommandExampleList = [
     {
         name: 'set fixed settings: 9600, 8, odd',
         parameters: {
             requestId: 52,
-            fixed: 1,
             baudRate: 5,
             dataBits: 8,
-            parity: 1
+            parity: parityTypes.ODD,
+            fixed: 1
         },
-        hex: {header: '13', body: '34 01 05 08 01'}
+        hex: {header: '13', body: '34 05 08 05'}
+    },
+    {
+        name: 'set settings: 115200, 7, none',
+        parameters: {
+            requestId: 52,
+            baudRate: 12,
+            dataBits: 7,
+            parity: parityTypes.NONE,
+            fixed: 0
+        },
+        hex: {header: '13', body: '34 0c 07 00'}
     }
 ];
 
@@ -77,10 +89,10 @@ class SetSerialPort extends Command {
 
         return new SetSerialPort({
             requestId: buffer.getUint8(),
-            fixed: buffer.getUint8(),
             baudRate: buffer.getUint8(),
             dataBits: buffer.getUint8(),
-            parity: buffer.getUint8()
+            // extend with parity and fixed flags
+            ...buffer.getSerialPortFlags()
         });
     }
 
@@ -89,17 +101,16 @@ class SetSerialPort extends Command {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
         const {
             requestId,
-            fixed,
             baudRate,
             dataBits,
-            parity
+            parity,
+            fixed
         } = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint8(fixed);
         buffer.setUint8(baudRate);
         buffer.setUint8(dataBits);
-        buffer.setUint8(parity);
+        buffer.setSerialPortFlags({parity, fixed});
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
