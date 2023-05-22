@@ -4,9 +4,9 @@ import {UPLINK} from '../../constants/directions.js';
 
 
 /**
- * IObservationReportStrParameters command parameters
+ * IObservationReportStringParameters command parameters
  */
-interface IObservationReportStrParameters {
+interface IObservationReportStringParameters {
     /** number of seconds that have elapsed since the year 2000 */
     time: number,
     shortNameList: Array<IShortNameString>
@@ -40,7 +40,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import ObservationReportStr from 'jooby-codec/obis-observer/commands/uplink/ObservationReportStr.js';
+ * import ObservationReportString from 'jooby-codec/obis-observer/commands/uplink/ObservationReportString.js';
  *
  * const commandBody = new Uint8Array([
  *     0x3a, 0x2d, 0x18, 0xdf, 0x80, 0x32, 0x1a, 0x72, 0x65, 0x61, 0x63, 0x74, 0x69,
@@ -49,7 +49,7 @@ const examples: TCommandExampleList = [
  *     0x74, 0x69, 0x76, 0x65, 0x20, 0x70, 0x6f, 0x77, 0x65, 0x72, 0x20, 0x51, 0x49,
  *     0x2c, 0x20, 0x74, 0x6f, 0x74, 0x61, 0x6c
  * ]);
- * const command = ObservationReportStr.fromBytes(commandBody);
+ * const command = ObservationReportString.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -62,10 +62,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/uplink/ObservationReportStr.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/uplink/ObservationReport.md#event-with-string-content)
  */
-class ObservationReportStr extends Command {
-    constructor ( public parameters: IObservationReportStrParameters ) {
+class ObservationReportString extends Command {
+    constructor ( public parameters: IObservationReportStringParameters ) {
         super();
 
         // real size - 1 size byte + others
@@ -103,7 +103,7 @@ class ObservationReportStr extends Command {
             shortNameList.push(shortName);
         }
 
-        return new ObservationReportStr({time, shortNameList});
+        return new ObservationReportString({time, shortNameList});
     }
 
     // returns full message - header with body
@@ -125,4 +125,4 @@ class ObservationReportStr extends Command {
 }
 
 
-export default ObservationReportStr;
+export default ObservationReportString;
