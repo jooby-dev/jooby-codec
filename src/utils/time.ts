@@ -22,10 +22,10 @@ const MILLISECONDS_IN_SECONDS = 1000;
 /**
  * Get date object from UTC seconds since 2000 year.
  *
- * @param time - seconds since 2000 year
+ * @param time2000 - seconds since 2000 year
  * @returns Date object instance
  */
-export const getDateFromSeconds = ( time: TTime2000 ): Date => new Date(INITIAL_YEAR_TIMESTAMP + (time * MILLISECONDS_IN_SECONDS));
+export const getDateFromTime2000 = ( time2000: TTime2000 ): Date => new Date(INITIAL_YEAR_TIMESTAMP + (time2000 * MILLISECONDS_IN_SECONDS));
 
 /**
  * Get UTC seconds since 2000 year from Date object.
@@ -33,10 +33,4 @@ export const getDateFromSeconds = ( time: TTime2000 ): Date => new Date(INITIAL_
  * @param date - Date object
  * @returns seconds since 2000 year
  */
-export const getSecondsFromDate = ( date: Date ): TTime2000 => (date.getTime() - INITIAL_YEAR_TIMESTAMP) / MILLISECONDS_IN_SECONDS;
-
-
-// export default {
-//     getDateFromSeconds,
-//     getSecondsFromDate
-// };
+export const getTime2000FromDate = ( date: Date ): TTime2000 => (date.getTime() - INITIAL_YEAR_TIMESTAMP) / MILLISECONDS_IN_SECONDS;

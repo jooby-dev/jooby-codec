@@ -1,7 +1,7 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
-import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../../utils/time.js';
+import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../utils/time.js';
 
 
 /**
@@ -10,7 +10,7 @@ import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../../utils/
 interface IGetExAbsArchiveHoursMCParameters {
     /** the number of hours to retrieve */
     hours: number,
-    startTime: TTime2000,
+    startTime2000: TTime2000,
     /** array of channelList index numbers */
     channelList: Array<number>
 }
@@ -23,7 +23,7 @@ const COMMAND_BODY_SIZE = 4;
 const examples: TCommandExampleList = [
     {
         name: '1 hour absolute values for 1 channel from 2023.12.23 12:00:00 GMT',
-        parameters: {channelList: [1], hours: 1, startTime: 756648000},
+        parameters: {channelList: [1], hours: 1, startTime2000: 756648000},
         hex: {header: '1f 0c 04', body: '2f 97 0c 01'}
     }
 ];
@@ -36,7 +36,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetExAbsArchiveHoursMC from 'jooby-codec/analog/commands/downlink/GetExAbsArchiveHoursMC.js';
  *
- * const parameters = {channelList: [1], hours: 1, startTime: 756648000};
+ * const parameters = {channelList: [1], hours: 1, startTime2000: 756648000};
  * const command = new GetExAbsArchiveHoursMC(parameters);
  *
  * // output command binary in hex representation
@@ -80,15 +80,15 @@ class GetExAbsArchiveHoursMC extends Command {
             throw new Error('BinaryBuffer is not empty.');
         }
 
-        return new GetExAbsArchiveHoursMC({channelList, hours, startTime: getSecondsFromDate(date)});
+        return new GetExAbsArchiveHoursMC({channelList, hours, startTime2000: getTime2000FromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {channelList, hours, startTime} = this.parameters;
+        const {channelList, hours, startTime2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
-        const date = getDateFromSeconds(startTime);
+        const date = getDateFromTime2000(startTime2000);
         const hour = date.getUTCHours();
 
         buffer.setDate(date);

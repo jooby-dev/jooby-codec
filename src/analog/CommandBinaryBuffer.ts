@@ -1,6 +1,6 @@
 import BinaryBuffer from '../utils/BinaryBuffer.js';
 import * as bitSet from '../utils/bitSet.js';
-import {getDateFromSeconds, getSecondsFromDate, TTime2000} from '../utils/time.js';
+import {getDateFromTime2000, getTime2000FromDate, TTime2000} from '../utils/time.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
 import roundNumber from '../utils/roundNumber.js';
@@ -797,7 +797,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         if ( dateOrTime instanceof Date ) {
             date = dateOrTime;
         } else {
-            date = getDateFromSeconds(dateOrTime);
+            date = getDateFromTime2000(dateOrTime);
         }
 
         const year = date.getUTCFullYear() - INITIAL_YEAR;
@@ -890,7 +890,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
     }
 
-    getChannelsValuesWithHourDiff (): {hours: number, startTime: TTime2000, channelList: Array<IChannelHours>} {
+    getChannelsValuesWithHourDiff (): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>} {
         const date = this.getDate();
         const {hour, hours} = this.getHours();
         const channels = this.getChannels();
@@ -915,11 +915,11 @@ class CommandBinaryBuffer extends BinaryBuffer {
             });
         });
 
-        return {channelList, hours, startTime: getSecondsFromDate(date)};
+        return {channelList, hours, startTime2000: getTime2000FromDate(date)};
     }
 
-    setChannelsValuesWithHourDiff ( hours: number, startTime: TTime2000, channelList: Array<IChannelHours> ): void {
-        const date = getDateFromSeconds(startTime);
+    setChannelsValuesWithHourDiff ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours> ): void {
+        const date = getDateFromTime2000(startTime2000);
         const hour = date.getUTCHours();
 
         this.setDate(date);

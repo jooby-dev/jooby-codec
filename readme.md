@@ -154,7 +154,7 @@ const commandInstancesArray = [
         hardwareTypes.GASI3
     ),
     new DayMC({
-        startTime: 756604800,
+        startTime2000: 756604800,
         channelList: [
             {value: 131, index: 3},
             {value: 8, index: 5},

@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../../utils/time.js';
+import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHourAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
@@ -11,7 +11,7 @@ import {UPLINK} from '../../constants/directions.js';
  * // archive hours values from 001-03-10T12:00:00.000Z with 1-hour diff
  *
  * {
- *     startTime: 731764800,
+ *     startTime2000: 731764800,
  *     hours: 1,
  *     channelList: [
  *         {
@@ -26,7 +26,7 @@ import {UPLINK} from '../../constants/directions.js';
  */
 interface IUplinkExAbsHourMCParameters {
     channelList: Array<IChannelHourAbsoluteValue>,
-    startTime: TTime2000
+    startTime2000: TTime2000
     hours: number
 }
 
@@ -42,7 +42,7 @@ const examples: TCommandExampleList = [
     {
         name: '1 channel at 2023.03.10 12:00:00 GMT',
         parameters: {
-            startTime: 731764800,
+            startTime2000: 731764800,
             hours: 1,
             channelList: [
                 {
@@ -73,7 +73,7 @@ const examples: TCommandExampleList = [
  * console.log(command.parameters);
  * // output:
  * {
- *     startTime: 731764800,
+ *     startTime2000: 731764800,
  *     hours: 1,
  *     channelList: [
  *         {
@@ -133,18 +133,18 @@ class ExAbsHourMC extends Command {
             });
         });
 
-        return new ExAbsHourMC({channelList, hours: hourAmount, startTime: getSecondsFromDate(date)});
+        return new ExAbsHourMC({channelList, hours: hourAmount, startTime2000: getTime2000FromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {hours, startTime, channelList} = this.parameters;
+        const {hours, startTime2000, channelList} = this.parameters;
 
-        const date = getDateFromSeconds(startTime);
+        const date = getDateFromTime2000(startTime2000);
         const hour = date.getUTCHours();
 
-        buffer.setDate(startTime);
+        buffer.setDate(startTime2000);
         buffer.setHours(hour, hours);
         buffer.setChannels(channelList);
 

@@ -1,12 +1,12 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import {getSecondsFromDate, getDateFromSeconds, TTime2000} from '../../../utils/time.js';
+import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
 interface IGetExAbsArchiveHoursMCResponseParameters {
     channelList: Array<IChannelHours>,
-    startTime: TTime2000
+    startTime2000: TTime2000
     hours: number
 }
 
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
     {
         name: '1 channel at 2023.12.23 12:00:00 GMT',
         parameters: {
-            startTime: 756648000,
+            startTime2000: 756648000,
             hours: 1,
             channelList: [
                 {value: 234, index: 2, diff: [2]}
@@ -48,7 +48,7 @@ const examples: TCommandExampleList = [
  * console.log(command.parameters);
  * // output:
  * {
- *     startTime: 756648000,
+ *     startTime2000: 756648000,
  *     hours: 1,
  *     channelList: [
  *         {value: 234, index: 2, diff: [2]}
@@ -100,14 +100,14 @@ class GetExAbsArchiveHoursMCResponse extends Command {
             });
         });
 
-        return new GetExAbsArchiveHoursMCResponse({channelList, hours, startTime: getSecondsFromDate(date)});
+        return new GetExAbsArchiveHoursMCResponse({channelList, hours, startTime2000: getTime2000FromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channelList, startTime, hours} = this.parameters;
-        const date = getDateFromSeconds(startTime);
+        const {channelList, startTime2000, hours} = this.parameters;
+        const date = getDateFromTime2000(startTime2000);
         const hour = date.getUTCHours();
 
         buffer.setDate(date);

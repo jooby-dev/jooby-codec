@@ -68,7 +68,7 @@ const uplinkMessages: TMessageList = [
             },
             {
                 parameters: {
-                    startTime: 756604800,
+                    startTime2000: 756604800,
                     channelList: [
                         {index: 1, value: 12},
                         {index: 3, value: 131},

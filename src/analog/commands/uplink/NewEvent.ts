@@ -12,7 +12,7 @@ import * as hardwareTypes from '../../constants/hardwareTypes.js';
 interface IEventBase {}
 
 interface IEventTime extends IEventBase {
-    time: TTime2000
+    time2000: TTime2000
 }
 
 interface IEventBatteryAlarm extends IEventBase {
@@ -56,7 +56,7 @@ type TEventData =
  * import {constants} from 'jooby-codec'
  *
  * // `MAGNET_ON` event at 2023-04-05 13:17:20 GMT
- * {id: constants.events.MAGNET_ON, sequenceNumber: 1, data: {time: 734015840}}
+ * {id: constants.events.MAGNET_ON, sequenceNumber: 1, data: {time2000: 734015840}}
  */
 interface INewEventParameters {
     id: number,
@@ -77,7 +77,7 @@ const examples: TCommandExampleList = [
         parameters: {
             id: events.MAGNET_ON,
             sequenceNumber: 2,
-            data: {time: 734015840}
+            data: {time2000: 734015840}
         },
         hex: {header: '15 06', body: '01 02 2b c0 31 60'}
     },
@@ -95,7 +95,7 @@ const examples: TCommandExampleList = [
         parameters: {
             id: events.ACTIVATE_MTX,
             sequenceNumber: 2,
-            data: {time: 734015840, deviceId: '00 1a 79 88 17 01 23 56'}
+            data: {time2000: 734015840, deviceId: '00 1a 79 88 17 01 23 56'}
         },
         hex: {header: '15 0e', body: '0b 02 2b c0 31 60 00 1a 79 88 17 01 23 56'}
     },
@@ -223,7 +223,7 @@ class NewEvent extends Command {
             case events.OPTOLOW:
             case events.OPTOFLASH:
             case events.JOIN_ACCEPT:
-                eventData = {time: buffer.getTime()} as IEventTime;
+                eventData = {time2000: buffer.getTime()} as IEventTime;
                 break;
 
             case events.BATTERY_ALARM:
@@ -231,7 +231,7 @@ class NewEvent extends Command {
                 break;
 
             case events.ACTIVATE_MTX:
-                eventData = {time: buffer.getTime(), deviceId: getDeviceId(buffer)} as IEventActivateMtx;
+                eventData = {time2000: buffer.getTime(), deviceId: getDeviceId(buffer)} as IEventActivateMtx;
                 break;
 
             case events.CONNECT:
@@ -273,7 +273,7 @@ class NewEvent extends Command {
             case events.OPTOFLASH:
             case events.JOIN_ACCEPT:
                 eventData = data as IEventTime;
-                buffer.setTime(eventData.time);
+                buffer.setTime(eventData.time2000);
                 break;
 
             case events.BATTERY_ALARM:
@@ -283,7 +283,7 @@ class NewEvent extends Command {
 
             case events.ACTIVATE_MTX:
                 eventData = data as IEventActivateMtx;
-                buffer.setTime(eventData.time);
+                buffer.setTime(eventData.time2000);
                 setDeviceId(buffer, eventData.deviceId);
                 break;
 
