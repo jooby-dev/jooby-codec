@@ -15,6 +15,7 @@ export {default as GetShortNamesResponse} from './GetShortNamesResponse.js';
 export {default as ObservationReport} from './ObservationReport.js';
 export {default as ObservationReportString} from './ObservationReportString.js';
 export {default as ReadArchiveResponse} from './ReadArchiveResponse.js';
+export {default as RebootResponse} from './RebootResponse.js';
 export {default as RemoveShortNameProfileResponse} from './RemoveShortNameProfileResponse.js';
 export {default as SetArchiveProfileResponse} from './SetArchiveProfileResponse.js';
 export {default as SetSerialPortResponse} from './SetSerialPortResponse.js';
