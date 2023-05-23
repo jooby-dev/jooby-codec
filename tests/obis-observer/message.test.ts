@@ -59,7 +59,7 @@ const uplinkMessages: TMessageList = [
             },
             {
                 parameters: {
-                    time: 756604800,
+                    time2000: 756604800,
                     shortNameList: [
                         {code: 50, content: 34.33},
                         {code: 56, content: 45.33}

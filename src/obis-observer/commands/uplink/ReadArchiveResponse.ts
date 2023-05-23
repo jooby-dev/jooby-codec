@@ -1,13 +1,14 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IShortNameFloat, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
+import {TTime2000} from '../../../utils/time.js';
 
 
 /**
  * IReadArchiveResponseParameters command parameters
  */
 interface IReadArchiveResponseParameters extends ICommandParameters {
-    time: number,
+    time2000: TTime2000,
     shortNameList: Array<IShortNameFloat>
 }
 
@@ -20,7 +21,7 @@ const examples: TCommandExampleList = [
         name: 'summary archive from 2023-12-23 04:00:00 GMT',
         parameters: {
             requestId: 34,
-            time: 756619200,
+            time2000: 756619200,
             shortNameList: [
                 {code: 50, content: 22.27},
                 {code: 56, content: 89.33}
@@ -48,7 +49,7 @@ const examples: TCommandExampleList = [
  * {
  *     requestId: 34,
  *     archiveType: 2,
- *     time: 756619200,
+ *     time2000: 756619200,
  *     shortNameList: [
  *         {code: 50, content: 22.27},
  *         {code: 56, content: 89.33}
@@ -89,7 +90,7 @@ class ReadArchiveResponse extends Command {
 
         let size = buffer.getUint8() - COMMAND_HEADER_SIZE;
         const requestId = buffer.getUint8();
-        const time = buffer.getUint32();
+        const time2000 = buffer.getUint32();
         const shortNameList = [];
 
         while ( size ) {
@@ -99,7 +100,7 @@ class ReadArchiveResponse extends Command {
             shortNameList.push(shortName);
         }
 
-        return new ReadArchiveResponse({requestId, time, shortNameList});
+        return new ReadArchiveResponse({requestId, time2000, shortNameList});
     }
 
     // returns full message - header with body
@@ -109,12 +110,12 @@ class ReadArchiveResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, time, shortNameList} = this.parameters;
+        const {requestId, time2000, shortNameList} = this.parameters;
 
         // subtract size byte
         buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
-        buffer.setUint32(time);
+        buffer.setUint32(time2000);
         shortNameList.forEach(shortName => buffer.setShortNameFloat(shortName));
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

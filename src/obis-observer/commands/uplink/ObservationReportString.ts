@@ -1,6 +1,7 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IShortNameString, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
+import {TTime2000} from '../../../utils/time.js';
 
 
 /**
@@ -8,7 +9,7 @@ import {UPLINK} from '../../constants/directions.js';
  */
 interface IObservationReportStringParameters {
     /** number of seconds that have elapsed since the year 2000 */
-    time: number,
+    time2000: TTime2000,
     shortNameList: Array<IShortNameString>
 }
 
@@ -19,7 +20,7 @@ const examples: TCommandExampleList = [
     {
         name: 'get observation report from 2023.12.23 00:00:00 GMT',
         parameters: {
-            time: 756604800,
+            time2000: 756604800,
             shortNameList: [
                 {code: 50, content: 'reactive power QI, average'},
                 {code: 56, content: 'reactive power QI, total'}
@@ -54,7 +55,7 @@ const examples: TCommandExampleList = [
  * console.log(command.parameters);
  * // output:
  * {
- *     time: 756604800,
+ *     time2000: 756604800,
  *     shortNameList: [
  *         {code: 50, content: 'reactive power QI, average'},
  *         {code: 56, content: 'reactive power QI, total'}
@@ -93,7 +94,7 @@ class ObservationReportString extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         let size = buffer.getUint8() - DATE_TIME_SIZE;
-        const time = buffer.getUint32();
+        const time2000 = buffer.getUint32();
         const shortNameList = [];
 
         while ( size > 0 ) {
@@ -103,7 +104,7 @@ class ObservationReportString extends Command {
             shortNameList.push(shortName);
         }
 
-        return new ObservationReportString({time, shortNameList});
+        return new ObservationReportString({time2000, shortNameList});
     }
 
     // returns full message - header with body
@@ -113,11 +114,11 @@ class ObservationReportString extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {time, shortNameList} = this.parameters;
+        const {time2000, shortNameList} = this.parameters;
 
         // subtract size byte
         buffer.setUint8(this.size - 1);
-        buffer.setUint32(time);
+        buffer.setUint32(time2000);
         shortNameList.forEach(shortName => buffer.setShortNameString(shortName));
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
