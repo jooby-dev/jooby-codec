@@ -12,6 +12,7 @@ export {default as GetShortNameInfo} from './GetShortNameInfo.js';
 export {default as GetShortNameProfile} from './GetShortNameProfile.js';
 export {default as GetShortNames} from './GetShortNames.js';
 export {default as ReadArchive} from './ReadArchive.js';
+export {default as Reboot} from './Reboot.js';
 export {default as RemoveShortNameProfile} from './RemoveShortNameProfile.js';
 export {default as SetArchiveProfile} from './SetArchiveProfile.js';
 export {default as SetSerialPort} from './SetSerialPort.js';
