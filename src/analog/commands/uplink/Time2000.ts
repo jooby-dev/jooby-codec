@@ -9,12 +9,12 @@ import {TTime2000} from '../../../utils/time.js';
  *
  * @example
  * // time: 2023-04-03T14:01:17.000Z
- * {sequenceNumber: 77, time: 733845677}
+ * {sequenceNumber: 77, time2000: 733845677}
  */
 interface ITime2000Parameters {
     /** unique time manipulation operation number */
     sequenceNumber: number,
-    time: TTime2000
+    time2000: TTime2000
 }
 
 
@@ -24,7 +24,7 @@ const COMMAND_BODY_SIZE = 5;
 const examples: TCommandExampleList = [
     {
         name: 'time is 2023.04.03 14:01:17 GMT',
-        parameters: {sequenceNumber: 77, time: 733845677},
+        parameters: {sequenceNumber: 77, time2000: 733845677},
         hex: {header: '09 05', body: '4d 2b bd 98 ad'}
     }
 ];
@@ -43,7 +43,7 @@ const examples: TCommandExampleList = [
  *
  * console.log(command.parameters);
  * // output:
- * {sequenceNumber: 77, time: 733845677}
+ * {sequenceNumber: 77, time2000: 733845677}
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/Time2000.md)
@@ -72,7 +72,7 @@ class Time2000 extends Command {
         const buffer = new CommandBinaryBuffer(data);
         const parameters = {
             sequenceNumber: buffer.getUint8(),
-            time: buffer.getTime()
+            time2000: buffer.getTime()
         };
 
         if ( !buffer.isEmpty ) {
@@ -84,11 +84,11 @@ class Time2000 extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {sequenceNumber, time} = this.parameters;
+        const {sequenceNumber, time2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
         buffer.setUint8(sequenceNumber);
-        buffer.setTime(time);
+        buffer.setTime(time2000);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

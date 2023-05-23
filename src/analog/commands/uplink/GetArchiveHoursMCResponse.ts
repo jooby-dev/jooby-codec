@@ -9,7 +9,7 @@ import {TTime2000} from '../../../utils/time.js';
  */
 interface IGetArchiveHoursMCResponseParameters {
     channelList: Array<IChannelHours>,
-    startTime: TTime2000
+    startTime2000: TTime2000
     hours: number
 }
 
@@ -25,7 +25,7 @@ const examples: TCommandExampleList = [
     {
         name: '4 channels at 2023.12.23 12:00:00 GMT',
         parameters: {
-            startTime: 756648000,
+            startTime2000: 756648000,
             hours: 1,
             channelList: [
                 {index: 1, value: 131, diff: [10]},
@@ -54,7 +54,7 @@ const examples: TCommandExampleList = [
  * console.log(command.parameters);
  * // output:
  * {
- *     startTime: 756648000,
+ *     startTime2000: 756648000,
  *     hours: 1,
  *     channelList: [
  *         {index: 1, value: 131, diff: [10]},
@@ -94,9 +94,9 @@ class GetArchiveHoursMCResponse extends Command {
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {hours, startTime, channelList} = this.parameters;
+        const {hours, startTime2000, channelList} = this.parameters;
 
-        buffer.setChannelsValuesWithHourDiff(hours, startTime, channelList);
+        buffer.setChannelsValuesWithHourDiff(hours, startTime2000, channelList);
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }

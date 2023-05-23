@@ -9,10 +9,10 @@ import {TTime2000} from '../../../utils/time.js';
  *
  * @example
  * // request 4 events from 2023-04-03T14:01:17.000Z
- * {startTime: 733845677, events: 4}
+ * {startTime2000: 733845677, events: 4}
  */
 interface IGetArchiveEventsParameters {
-    startTime: TTime2000,
+    startTime2000: TTime2000,
     events: number
 }
 
@@ -23,7 +23,7 @@ const COMMAND_BODY_SIZE = 5;
 const examples: TCommandExampleList = [
     {
         name: 'request 4 events from 2023.04.03 14:01:17 GMT',
-        parameters: {startTime: 733845677, events: 4},
+        parameters: {startTime2000: 733845677, events: 4},
         hex: {header: '0b 05', body: '2b bd 98 ad 04'}
     }
 ];
@@ -36,7 +36,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetArchiveEvents from 'jooby-codec/analog/commands/downlink/GetArchiveEvents.js';
  *
- * const command = new GetArchiveEvents({startTime: 733845677, events: 4});
+ * const command = new GetArchiveEvents({startTime2000: 733845677, events: 4});
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
@@ -63,19 +63,19 @@ class GetArchiveEvents extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-        const startTime = buffer.getTime();
+        const startTime2000 = buffer.getTime();
         const events = buffer.getUint8();
 
-        return new GetArchiveEvents({events, startTime});
+        return new GetArchiveEvents({events, startTime2000});
     }
 
     // returns full message - header with body
     // eslint-disable-next-line class-methods-use-this
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
-        const {startTime, events} = this.parameters;
+        const {startTime2000, events} = this.parameters;
 
-        buffer.setTime(startTime);
+        buffer.setTime(startTime2000);
         buffer.setUint8(events);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

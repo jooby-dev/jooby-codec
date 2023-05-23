@@ -6,7 +6,7 @@ import {TTime2000} from '../../../utils/time.js';
 
 
 interface IArchiveEvent {
-    time: TTime2000,
+    time2000: TTime2000,
     id: number,
     sequenceNumber: number,
 }
@@ -19,7 +19,7 @@ interface IArchiveEvent {
  * import {constants} from 'jooby-codec';
  *
  * // one `MAGNET_ON` event at 2023-04-05 13:17:20 GMT
- * [events: {id: constants.events.MAGNET_ON, sequenceNumber: 1, time: 734015840}]
+ * [events: {id: constants.events.MAGNET_ON, sequenceNumber: 1, time2000: 734015840}]
  */
 interface IGetArchiveEventsResponseParameters {
     eventList: Array<IArchiveEvent>
@@ -37,7 +37,7 @@ const examples: TCommandExampleList = [
         parameters: {
             eventList: [
                 {
-                    time: 734015840,
+                    time2000: 734015840,
                     id: events.MAGNET_ON,
                     sequenceNumber: 1
                 }
@@ -50,22 +50,22 @@ const examples: TCommandExampleList = [
         parameters: {
             eventList: [
                 {
-                    time: 734015840,
+                    time2000: 734015840,
                     id: events.MAGNET_OFF,
                     sequenceNumber: 1
                 },
                 {
-                    time: 734025840,
+                    time2000: 734025840,
                     id: events.MAGNET_ON,
                     sequenceNumber: 2
                 },
                 {
-                    time: 734035840,
+                    time2000: 734035840,
                     id: events.ACTIVATE,
                     sequenceNumber: 3
                 },
                 {
-                    time: 734045840,
+                    time2000: 734045840,
                     id: events.DEACTIVATE,
                     sequenceNumber: 4
                 }
@@ -77,13 +77,13 @@ const examples: TCommandExampleList = [
 
 
 const getEvent = ( buffer: CommandBinaryBuffer ): IArchiveEvent => ({
-    time: buffer.getTime(),
+    time2000: buffer.getTime(),
     id: buffer.getUint8(),
     sequenceNumber: buffer.getUint8()
 });
 
 const setEvent = ( buffer: CommandBinaryBuffer, event: IArchiveEvent ): void => {
-    buffer.setTime(event.time);
+    buffer.setTime(event.time2000);
     buffer.setUint8(event.id);
     buffer.setUint8(event.sequenceNumber);
 };
@@ -105,7 +105,7 @@ const setEvent = ( buffer: CommandBinaryBuffer, event: IArchiveEvent ): void => 
  * // output:
  * {
  *     eventList: [
- *         {time: 734015840, id: 1, sequenceNumber: 1}
+ *         {time2000: 734015840, id: 1, sequenceNumber: 1}
  *     ]
  * }
  * ```
