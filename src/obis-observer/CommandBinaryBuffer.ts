@@ -7,11 +7,32 @@ export interface ICommandParameters {
 }
 
 export interface IObis {
+    /**
+     * The `A` group specifies the medium
+     * (`0` - abstract objects, `1` - electricity, `6` - heat, `7` - gas, `8` - water ...).
+     */
     a?: number,
+    /**
+     * The `B` group specifies the channel.
+     * Each device with multiple channels generating measurement results, can separate the results into the channels.
+     */
     b?: number,
+    /**
+     * The `C` group specifies the physical value (current, voltage, energy, level, temperature, ...).
+     */
     c: number,
+    /**
+     * The `D` group specifies the quantity computation result of specific algorithm.
+     */
     d: number,
+    /**
+     * The `E` group specifies the measurement type defined by groups `A` to `D` into individual measurements (e.g. switching ranges).
+     */
     e?: number,
+    /**
+     * The `F` group separates the results partly defined by groups `A` to `E`.
+     * The typical usage is the specification of individual time ranges.
+     */
     f?: number
 }
 
