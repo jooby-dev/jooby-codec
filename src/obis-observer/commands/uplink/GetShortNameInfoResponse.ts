@@ -106,14 +106,19 @@ class GetShortNameInfoResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        const size = buffer.getUint8();
+        let size = buffer.getUint8() - REQUEST_ID_SIZE;
         const requestId = buffer.getUint8();
         let obis;
         let obisProfile;
 
-        // obis code + profile exists
-        if ( size > REQUEST_ID_SIZE ) {
+        // obis code assigned
+        if ( size > 0 ) {
             obis = buffer.getObis();
+            size -= CommandBinaryBuffer.getObisSize(obis);
+        }
+
+        // obis profile exists
+        if ( size > 0 ) {
             obisProfile = buffer.getObisProfile();
         }
 
