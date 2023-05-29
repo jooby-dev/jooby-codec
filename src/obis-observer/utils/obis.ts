@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import invertObject, {THashTable} from '../../utils/invertObject.js';
 import {IObis} from '../CommandBinaryBuffer.js';
