@@ -82,7 +82,11 @@ class GetShortNameInfoResponse extends Command {
         let size = 1 + REQUEST_ID_SIZE;
 
         if ( parameters.obis ) {
-            size += CommandBinaryBuffer.getObisSize(parameters.obis) + OBIS_PROFILE_SIZE;
+            size += CommandBinaryBuffer.getObisSize(parameters.obis);
+        }
+
+        if ( parameters.obisProfile ) {
+            size += OBIS_PROFILE_SIZE;
         }
 
         this.size = size;
