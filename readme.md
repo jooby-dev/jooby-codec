@@ -99,6 +99,8 @@ const messageData = message.fromHex(
 It's possible to parse message with autodetect direction:
 
 ```js
+// It is highly recommended to use a specific direction.
+// AUTO is used here just for example.
 const messageData = message.fromHex(
     '02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 0f 83 01 08 0a 0c  ef',
     directions.AUTO

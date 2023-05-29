@@ -34,6 +34,7 @@ interface IMessage {
 }
 
 interface IMessageConfig {
+    /** It is highly recommended to use a specific direction. */
     direction?: number,
     hardwareType?: number
 }
@@ -107,45 +108,47 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareTyp
 export const fromBytes = ( data: Uint8Array, config?: IMessageConfig ) => {
     const direction = config?.direction ?? AUTO;
     const hardwareType = config?.hardwareType;
-    const commandsData = data.slice(0, -1);
     const commands: Array<IMessageCommand> = [];
     const result: IMessage = {
         commands,
         lrc: {expected: undefined, actual: 0},
         isValid: false
     };
-    let expectedLrc = data.at(-1);
-    let actualLrc = calculateLrc(commandsData);
-    let position = 0;
+    let processedBytes = 0;
+    let expectedLrc;
+    let actualLrc;
 
+    // process the data except the last byte
     do {
-        const headerInfo = header.fromBytes(commandsData.slice(position, position + HEADER_MAX_SIZE));
-        const headerData = commandsData.slice(position, position + headerInfo.headerSize);
-        const bodyData = commandsData.slice(position + headerInfo.headerSize, position + headerInfo.headerSize + headerInfo.commandSize);
+        const headerInfo = header.fromBytes(data.slice(processedBytes, processedBytes + HEADER_MAX_SIZE));
+        const headerData = data.slice(processedBytes, processedBytes + headerInfo.headerSize);
+        const bodyData = data.slice(processedBytes + headerInfo.headerSize, processedBytes + headerInfo.headerSize + headerInfo.commandSize);
         let command: Command;
 
         // shift
-        position = position + headerInfo.headerSize + headerInfo.commandSize;
+        processedBytes = processedBytes + headerInfo.headerSize + headerInfo.commandSize;
 
         try {
             command = getCommand(headerInfo.commandId, bodyData, direction, hardwareType);
         } catch ( error ) {
-            // the last command in the message
-            if ( position >= commandsData.length ) {
-                // LRC may be missing so try to add one
-                command = getCommand(headerInfo.commandId, new Uint8Array([...bodyData, ...data.slice(-1)]), direction, hardwareType);
-                actualLrc = calculateLrc(data);
-                expectedLrc = undefined;
-            } else {
-                throw error;
-            }
+            command = UnknownCommand.fromBytes(bodyData, headerInfo.commandId);
         }
 
         commands.push({
             data: {header: headerData, body: bodyData},
             command
         });
-    } while ( position < commandsData.length );
+    } while ( processedBytes < data.length - 1 );
+
+    // check the last byte left unprocessed
+    if ( data.length - processedBytes === 1 ) {
+        // LRC is present
+        expectedLrc = data.at(-1);
+        actualLrc = calculateLrc(data.slice(0, -1));
+    } else {
+        // LRC is absent
+        actualLrc = calculateLrc(data);
+    }
 
     result.lrc.actual = actualLrc;
     result.lrc.expected = expectedLrc;
