@@ -11,7 +11,7 @@ interface ISetSerialPortParameters extends ICommandParameters {
     baudRate: number,
     dataBits: number,
     parity: number,
-    fixed: number
+    fixed: boolean
 }
 
 
@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
             baudRate: 5,
             dataBits: 8,
             parity: parityTypes.ODD,
-            fixed: 1
+            fixed: true
         },
         hex: {header: '13', body: '34 05 08 05'}
     },
@@ -37,7 +37,7 @@ const examples: TCommandExampleList = [
             baudRate: 12,
             dataBits: 7,
             parity: parityTypes.NONE,
-            fixed: 0
+            fixed: false
         },
         hex: {header: '13', body: '34 0c 07 00'}
     }
@@ -56,7 +56,7 @@ const examples: TCommandExampleList = [
  *     baudRate: 5,
  *     dataBits: 8,
  *     parity: parityTypes.ODD,
- *     fixed: 1
+ *     fixed: true
  * };
  * const command = new SetSerialPort(parameters);
  *

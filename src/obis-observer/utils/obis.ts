@@ -23,14 +23,14 @@ const codeLetters = invertObject(letterCodes);
  */
 export const toString = ( obis: IObis ): string => {
     if ( !obis || typeof obis !== 'object' || Object.keys(obis).length === 0 ) {
-        throw new Error('OBIS must be an object with properties.');
+        throw new Error('Must be an object with properties.');
     }
 
     // eslint-disable-next-line object-curly-newline
     const {a, b, c, d, e, f} = obis;
 
     if ( c === null || c === undefined || d === null || d === undefined ) {
-        throw new Error('Properties "c" and "d" are mandatory in OBIS.');
+        throw new Error('Properties "c" and "d" are mandatory.');
     }
 
     let result = '';
@@ -87,10 +87,23 @@ export const fromString = ( obisString: string ): IObis => {
     // so need to convert it to proper number
     Object.keys(result).forEach(groupName => {
         const groupValue = result[groupName] as string;
+
         if ( groupValue ) {
-            result[groupName] = parseInt(letterCodes[groupValue] as string || groupValue, 10);
+            const intValue = parseInt(letterCodes[groupValue] as string || groupValue, 10);
+
+            if ( intValue < 0 || intValue > 255 ) {
+                throw new Error(`Value for group "${groupName}" should be in range [0..255].`);
+            }
+
+            result[groupName] = intValue;
+        } else {
+            throw new Error(`Value for group "${groupName}" can't be empty.`);
         }
     });
+
+    if ( !('c' in result && 'd' in result) ) {
+        throw new Error('Properties "c" and "d" are mandatory.');
+    }
 
     return result as unknown as IObis;
 };
