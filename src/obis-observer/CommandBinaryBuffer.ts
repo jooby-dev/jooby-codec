@@ -38,7 +38,7 @@ export interface IObis {
 
 export interface IObisProfileFlags {
     contentType: number,
-    sendOnlyOnChange: number,
+    sendOnlyOnChange: boolean,
     archiveType: number
 }
 
@@ -178,7 +178,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             sendingCounter: this.getUint8(),
             flags: {
                 contentType: 0,
-                sendOnlyOnChange: 0,
+                sendOnlyOnChange: false,
                 archiveType: 0
             }
         } as IObisProfile;
@@ -195,7 +195,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         } = obisProfileFlags;
 
         profile.flags.contentType = bitSet.extractBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex);
-        profile.flags.sendOnlyOnChange = bitSet.extractBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex);
+        profile.flags.sendOnlyOnChange = !!bitSet.extractBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex);
         profile.flags.archiveType = bitSet.extractBits(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex);
 
         return profile;
@@ -218,7 +218,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         let flags = 0;
 
         flags = bitSet.fillBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex, profile.flags.contentType );
-        flags = bitSet.fillBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex, profile.flags.sendOnlyOnChange);
+        flags = bitSet.fillBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex, +profile.flags.sendOnlyOnChange);
         flags = bitSet.fillBits(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex, profile.flags.archiveType);
 
         this.setUint8(flags);
@@ -246,15 +246,15 @@ class CommandBinaryBuffer extends BinaryBuffer {
         const flags = this.getUint8();
 
         return {
-            fixed: bitSet.extractBits(flags, 1, 3),
+            fixed: !!bitSet.extractBits(flags, 1, 3),
             parity: bitSet.extractBits(flags, 2, 1)
         };
     }
 
-    setSerialPortFlags ( {fixed, parity}: {fixed: number, parity: number} ) {
+    setSerialPortFlags ( {fixed, parity}: {fixed: boolean, parity: number} ) {
         let flags = 0;
 
-        flags = bitSet.fillBits(flags, 1, 3, fixed);
+        flags = bitSet.fillBits(flags, 1, 3, +fixed);
         flags = bitSet.fillBits(flags, 2, 1, parity);
 
         this.setUint8(flags);

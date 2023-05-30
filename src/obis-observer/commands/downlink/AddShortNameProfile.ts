@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
                 sendingCounter: 38,
                 flags: {
                     contentType: contentTypes.AUTO,
-                    sendOnlyOnChange: 1,
+                    sendOnlyOnChange: true,
                     archiveType: archiveTypes.NONE
                 }
             }
@@ -54,7 +54,7 @@ const examples: TCommandExampleList = [
  *     sendingCounter: 38,
  *     flags: {
  *         contentType: 0,
- *         sendOnlyOnChange: 1,
+ *         sendOnlyOnChange: true,
  *         archiveType: 0
  *     }
  * };
