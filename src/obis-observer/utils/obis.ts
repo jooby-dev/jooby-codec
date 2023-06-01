@@ -62,6 +62,7 @@ export const fromString = ( obisString: string ): IObis => {
     const result: THashTable = {};
     let unprocessed = obisString;
     let parts;
+    let eValue;
 
     parts = unprocessed.split('-');
     if ( parts.length > 1 ) {
@@ -80,7 +81,11 @@ export const fromString = ( obisString: string ): IObis => {
 
     parts = unprocessed.split('.');
     if ( parts.length > 1 ) {
-        [result.c, result.d, result.e] = parts;
+        [result.c, result.d, eValue] = parts;
+
+        if ( eValue ) {
+            result.e = eValue;
+        }
     }
 
     // group value can be number or letter, e.g. 96 or "C"

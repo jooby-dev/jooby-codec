@@ -9,7 +9,6 @@ import {UPLINK} from '../../constants/directions.js';
  *
  * @example
  * // archive hours values from 001-03-10T12:00:00.000Z with 1-hour diff
- *
  * {
  *     startTime2000: 731764800,
  *     hours: 1,
@@ -22,7 +21,6 @@ import {UPLINK} from '../../constants/directions.js';
  *         }
  *     ]
  * }
- *
  */
 interface IUplinkExAbsHourMCParameters {
     channelList: Array<IChannelHourAbsoluteValue>,
