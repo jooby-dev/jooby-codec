@@ -32,7 +32,6 @@ const examples: TCommandExampleList = [
  * @example
  * ```js
  * import GetShortNameProfile from 'jooby-codec/obis-observer/commands/downlink/GetShortNameProfile.js';
-import { REQUEST_ID_SIZE } from '../../CommandBinaryBuffer';
  *
  * const parameters = {
  *     requestId: 4,

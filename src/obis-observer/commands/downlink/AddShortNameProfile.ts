@@ -49,13 +49,14 @@ const examples: TCommandExampleList = [
  *     requestId: 3,
  *     shortName: 32,
  *     obisProfile: {
- *     capturePeriod: 244,
- *     sendingPeriod: 132,
- *     sendingCounter: 38,
- *     flags: {
- *         contentType: 0,
- *         sendOnlyOnChange: true,
- *         archiveType: 0
+ *         capturePeriod: 244,
+ *         sendingPeriod: 132,
+ *         sendingCounter: 38,
+ *         flags: {
+ *             contentType: 0,
+ *             sendOnlyOnChange: true,
+ *             archiveType: 0
+ *         }
  *     }
  * };
  * const command = new AddShortNameProfile(parameters);
