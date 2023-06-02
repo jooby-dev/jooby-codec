@@ -1,5 +1,7 @@
 import BinaryBuffer from '../utils/BinaryBuffer.js';
 import * as bitSet from '../utils/bitSet.js';
+import getHexFromBytes from '../utils/getHexFromBytes.js';
+import getBytesFromHex from '../utils/getBytesFromHex.js';
 import roundNumber from '../utils/roundNumber.js';
 
 export interface ICommandParameters {
@@ -64,9 +66,16 @@ export interface IShortNameString {
     content: string
 }
 
+export interface IVersion {
+    major: number,
+    minor: number
+}
+
+
 export const REQUEST_ID_SIZE = 1;
 export const OBIS_PROFILE_SIZE = 6;
 export const DATE_TIME_SIZE = 4;
+export const EUI_SIZE = 8;
 
 
 const obisBitMask = {
@@ -258,6 +267,34 @@ class CommandBinaryBuffer extends BinaryBuffer {
         flags = bitSet.fillBits(flags, 2, 1, parity);
 
         this.setUint8(flags);
+    }
+
+    getVersion (): IVersion {
+        return {
+            major: this.getUint8(),
+            minor: this.getUint8()
+        };
+    }
+
+    setVersion ( version: IVersion ): void {
+        this.setUint8(version.major);
+        this.setUint8(version.minor);
+    }
+
+    getEUI (): string {
+        const bytes = [];
+
+        for ( let i = 0; i < EUI_SIZE; ++i ) {
+            bytes.push(this.getUint8());
+        }
+
+        return getHexFromBytes(new Uint8Array(bytes));
+    }
+
+    setEUI ( eui: string ): void {
+        const bytes = getBytesFromHex(eui);
+
+        bytes.forEach(byte => this.setUint8(byte));
     }
 }
 
