@@ -1,5 +1,6 @@
 import invertObject from '../../utils/invertObject.js';
 
+
 export const valueToRate = {
     0: 300,
     1: 600,
