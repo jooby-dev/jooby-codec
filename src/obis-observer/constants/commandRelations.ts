@@ -10,6 +10,8 @@ requestByResponse.set(uplinkCommands.AddShortNameProfileResponse, downlinkComman
 requestByResponse.set(uplinkCommands.GetArchiveProfileResponse, downlinkCommands.GetArchiveProfile);
 requestByResponse.set(uplinkCommands.GetContentByObisResponse, downlinkCommands.GetContentByObis);
 requestByResponse.set(uplinkCommands.GetContentByShortNameResponse, downlinkCommands.GetContentByShortName);
+requestByResponse.set(uplinkCommands.GetDeviceInfoResponse, downlinkCommands.GetDeviceInfo);
+requestByResponse.set(uplinkCommands.GetLorawanInfoResponse, downlinkCommands.GetLorawanInfo);
 requestByResponse.set(uplinkCommands.GetShortNameInfoResponse, downlinkCommands.GetShortNameInfo);
 requestByResponse.set(uplinkCommands.GetShortNameProfileResponse, downlinkCommands.GetShortNameProfile);
 requestByResponse.set(uplinkCommands.GetShortNamesResponse, downlinkCommands.GetShortNames);
