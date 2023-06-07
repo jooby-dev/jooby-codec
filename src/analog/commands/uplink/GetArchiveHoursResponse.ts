@@ -102,7 +102,6 @@ class GetArchiveHoursResponse extends Command {
             isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(byte),
             value: buffer.getLegacyCounterValue()
         };
-
         const diff = [];
 
         while ( buffer.offset < buffer.data.byteLength ) {

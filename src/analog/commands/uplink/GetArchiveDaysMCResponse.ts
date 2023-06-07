@@ -4,6 +4,9 @@ import {UPLINK} from '../../constants/directions.js';
 import {getTime2000FromDate, TTime2000} from '../../../utils/time.js';
 
 
+/**
+ * GetArchiveDaysMCResponse command parameters
+ */
 interface IGetArchiveDaysMCResponseParameters {
     channelList: Array<IChannelDays>,
     startTime2000: TTime2000,

@@ -87,7 +87,6 @@ class GetExAbsArchiveHoursMC extends Command {
     toBytes (): Uint8Array {
         const {channelList, hours, startTime2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
-
         const date = getDateFromTime2000(startTime2000);
         const hour = date.getUTCHours();
 

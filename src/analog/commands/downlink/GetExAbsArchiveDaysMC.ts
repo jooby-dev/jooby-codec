@@ -85,7 +85,6 @@ class GetExAbsArchiveDaysMC extends Command {
     toBytes (): Uint8Array {
         const {channelList, days, startTime2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
-
         const date = getDateFromTime2000(startTime2000);
 
         buffer.setDate(date);

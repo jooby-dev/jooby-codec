@@ -1,9 +1,3 @@
-/**
- * [[include:commands/downlink/GetArchiveDays.md]]
- *
- * @packageDocumentation
- */
-
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
@@ -85,7 +79,6 @@ class GetArchiveDays extends Command {
     toBytes (): Uint8Array {
         const {days, startTime2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
-
         const date = getDateFromTime2000(startTime2000);
 
         buffer.setDate(date);

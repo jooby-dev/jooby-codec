@@ -64,7 +64,6 @@ class GetArchiveHours extends Command {
             throw new Error(`Wrong buffer size: ${data.byteLength}.`);
         }
 
-
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
         const {hour} = buffer.getHours();
@@ -83,7 +82,6 @@ class GetArchiveHours extends Command {
     toBytes (): Uint8Array {
         const {hours, startTime2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
-
         const date = getDateFromTime2000(startTime2000);
         const hour = date.getUTCHours();
 
