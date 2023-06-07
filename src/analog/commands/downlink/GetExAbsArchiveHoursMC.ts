@@ -44,7 +44,7 @@ const examples: TCommandExampleList = [
  * // 1f 0c 04 2f 97 0c 01
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsArchiveHoursMC.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetExAbsArchiveHoursMC.md#request)
  */
 class GetExAbsArchiveHoursMC extends Command {
     constructor ( public parameters: IGetExAbsArchiveHoursMCParameters ) {

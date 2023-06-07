@@ -4,6 +4,7 @@ import {getDateFromTime2000, getTime2000FromDate, TTime2000} from '../utils/time
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
 import roundNumber from '../utils/roundNumber.js';
+import {extractBits, fillBits} from '../utils/bitSet.js';
 import * as hardwareTypes from './constants/hardwareTypes.js';
 import * as deviceParameters from './constants/deviceParameters.js';
 
@@ -372,6 +373,11 @@ export interface IParameter {
     data: TParameterData
 }
 
+export interface ILegacyCounter {
+    isMagneticInfluence: boolean,
+    value: number
+}
+
 export type TEventStatus =
     IEventGasStatus |
     IEvent2ChannelStatus |
@@ -414,6 +420,7 @@ const DATA_SENDING_INTERVAL_RESERVED_BYTES = 3;
 const PARAMETER_RX2_FREQUENCY_COEFFICIENT = 100;
 const INT12_SIZE = 3;
 const SERIAL_NUMBER_SIZE = 6;
+const MAGNETIC_INFLUENCE_BIT_INDEX = 8;
 
 const GAS_HARDWARE_TYPES = [
     hardwareTypes.GASI2,
@@ -568,6 +575,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
 
         return size;
+    }
+
+    static getMagneticInfluenceBit ( byte: number ): boolean {
+        return !!extractBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX);
+    }
+
+    static setMagneticInfluenceBit ( byte: number, value: boolean ): number {
+        return fillBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX, +value);
     }
 
     setInt12 ( value: number, isLittleEndian = this.isLittleEndian ): void {
@@ -817,9 +832,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
      * @example
      * 0xb8 = 0b10111000 will be {hours: 0b101, hour: 0b11000} i.e. {hours: 5, hour: 24}
      */
-    getHours () {
-        const byte = this.getUint8();
-
+    getHours ( byte = this.getUint8() ) {
         let hours = (byte & 0xe0) >> 5;
         const hour = byte & 0x1f;
 
@@ -1443,6 +1456,26 @@ class CommandBinaryBuffer extends BinaryBuffer {
             default:
                 throw new Error(`parameter ${id} is not supported`);
         }
+    }
+
+    getLegacyCounterValue (): number {
+        return this.getUint12(false);
+    }
+
+    setLegacyCounterValue ( value: number ): void {
+        this.setUint12(value, false);
+    }
+
+    getLegacyCounter ( byte = this.getUint8() ): ILegacyCounter {
+        return {
+            isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(byte),
+            value: this.getLegacyCounterValue()
+        };
+    }
+
+    setLegacyCounter ( counter: ILegacyCounter, byte = 0 ): void {
+        this.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, counter.isMagneticInfluence));
+        this.setLegacyCounterValue(counter.value);
     }
 }
 

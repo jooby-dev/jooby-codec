@@ -46,7 +46,7 @@ const examples: TCommandExampleList = [
  * {sequenceNumber: 77, time2000: 733845677}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/Time2000.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/Time2000.md)
  */
 class Time2000 extends Command {
     constructor ( public parameters: ITime2000Parameters ) {

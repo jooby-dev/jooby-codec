@@ -117,7 +117,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/LastEvent.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/LastEvent.md)
  */
 class LastEvent extends Command {
     constructor ( public parameters: ILastEventParameters, public config: ILastEventConfig ) {

@@ -49,7 +49,7 @@ const examples: TCommandExampleList = [
  * // 0c 02 2d 88
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/CorrectTime2000.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/CorrectTime2000.md#request)
  */
 class CorrectTime2000 extends Command {
     constructor ( public parameters: ICorrectTime2000Parameters ) {

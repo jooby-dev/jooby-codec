@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
  * // 18 00
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetCurrentMC.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetCurrentMC.md#request)
  */
 class GetCurrentMC extends Command {
     static readonly id = COMMAND_ID;

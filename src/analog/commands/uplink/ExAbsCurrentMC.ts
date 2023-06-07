@@ -49,7 +49,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/ExAbsCurrentMC.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/ExAbsCurrentMC.md)
  */
 class ExAbsCurrentMC extends Command {
     constructor ( public parameters: IExAbsCurrentMCParameters ) {

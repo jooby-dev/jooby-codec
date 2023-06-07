@@ -167,7 +167,7 @@ const examples: TCommandExampleList = [
  * // 03 0a 17 00 00 00 cc 83 00 00 07 e7
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/downlink/SetParameter.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/downlink/SetParameter.md)
  */
 class SetParameter extends Command {
     constructor ( public parameters: IParameter ) {

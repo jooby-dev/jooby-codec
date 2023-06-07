@@ -27,7 +27,7 @@ const examples: TCommandExampleList = [
  * // 1f 0f 00
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsCurrentMC.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetExAbsCurrentMC.md#request)
  */
 class GetExAbsCurrentMC extends Command {
     constructor () {

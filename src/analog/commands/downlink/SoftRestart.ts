@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
  * // 19 00
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/SoftRestart.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/SoftRestart.md#request)
  */
 class SoftRestart extends Command {
     static readonly id = COMMAND_ID;

@@ -47,7 +47,7 @@ const examples: TCommandExampleList = [
  * // 04 01 17
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetParameter.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetParameter.md#request)
  */
 class GetParameter extends Command {
     constructor ( public parameters: IGetParameterParameters ) {

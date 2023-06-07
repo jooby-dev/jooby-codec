@@ -63,7 +63,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/DayMC.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/DayMC.md)
  */
 class DayMC extends CurrentMC {
     constructor ( public parameters: IDayMCParameters ) {

@@ -2,12 +2,12 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x021f;
+const COMMAND_ID = 0x07;
 
 const examples: TCommandExampleList = [
     {
         name: 'simple request',
-        hex: {header: '1f 02 00', body: ''}
+        hex: {header: '07 00', body: ''}
     }
 ];
 
@@ -17,18 +17,18 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetLmicInfo from 'jooby-codec/analog/commands/downlink/GetLmicInfo.js';
+ * import GetCurrent from 'jooby-codec/analog/commands/downlink/GetCurrent.js';
  *
- * const command = new GetLmicInfo();
+ * const command = new GetCurrent();
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 1f 02 00
+ * // 07 00
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetLmicInfo.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetCurrent.md#request)
  */
-class GetLmicInfo extends Command {
+class GetCurrent extends Command {
     static readonly id = COMMAND_ID;
 
     static readonly directionType = DOWNLINK;
@@ -40,7 +40,7 @@ class GetLmicInfo extends Command {
 
     // data - only body (without header)
     static fromBytes () {
-        return new GetLmicInfo();
+        return new GetCurrent();
     }
 
     // returns full message - header with body
@@ -51,4 +51,4 @@ class GetLmicInfo extends Command {
 }
 
 
-export default GetLmicInfo;
+export default GetCurrent;

@@ -84,7 +84,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/ExAbsHourMC.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/ExAbsHourMC.md)
  */
 class ExAbsHourMC extends Command {
     constructor ( public parameters: IUplinkExAbsHourMCParameters ) {

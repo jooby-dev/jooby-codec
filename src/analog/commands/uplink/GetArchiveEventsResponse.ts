@@ -110,7 +110,7 @@ const setEvent = ( buffer: CommandBinaryBuffer, event: IArchiveEvent ): void => 
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveEvents.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveEvents.md#response)
  */
 class GetArchiveEventsResponse extends Command {
     constructor ( public parameters: IGetArchiveEventsResponseParameters ) {

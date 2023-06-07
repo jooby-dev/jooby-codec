@@ -55,7 +55,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/ExAbsDayMC.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/ExAbsDayMC.md)
  */
 class ExAbsDayMC extends CurrentMC {
     constructor ( public parameters: IExAbsDayMCParameters ) {

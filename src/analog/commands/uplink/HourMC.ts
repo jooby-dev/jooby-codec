@@ -63,7 +63,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/HourMC.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/HourMC.md)
  */
 class HourMC extends CurrentMC {
     constructor ( public parameters: IHourMCParameters ) {

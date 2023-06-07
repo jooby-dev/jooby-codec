@@ -4,17 +4,6 @@ import {UPLINK} from '../../constants/directions.js';
 import {getTime2000FromDate, TTime2000} from '../../../utils/time.js';
 
 
-/**
- * GetArchiveDaysMCResponse command parameters
- *
- * @example
- * // archive 2 days values from 2001-03-10T00:00:00.000Z
- * {
- *     channelList: [{index: 0, days: [{value: 234, day: 0}, {value: 332, day: 1}]}],
- *     date: '2001-03-10T12:00:00.000Z',
- *     days: 2
- * }
- */
 interface IGetArchiveDaysMCResponseParameters {
     channelList: Array<IChannelDays>,
     startTime2000: TTime2000,
@@ -72,7 +61,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveDaysMC.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveDaysMC.md#response)
  */
 class GetArchiveDaysMCResponse extends Command {
     constructor ( public parameters: IGetArchiveDaysMCResponseParameters ) {

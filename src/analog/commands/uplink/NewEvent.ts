@@ -187,7 +187,7 @@ const setDeviceId = ( buffer: CommandBinaryBuffer, value: string ): void => {
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/uplink/NewEvent.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/NewEvent.md)
  */
 class NewEvent extends Command {
     constructor ( public parameters: INewEventParameters ) {
