@@ -43,7 +43,7 @@ const examples: TCommandExampleList = [
  * // 0b 05 2b bd 98 ad 04
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveEvents.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveEvents.md#request)
  */
 class GetArchiveEvents extends Command {
     constructor ( public parameters: IGetArchiveEventsParameters ) {

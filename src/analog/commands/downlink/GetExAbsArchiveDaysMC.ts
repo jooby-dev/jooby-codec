@@ -44,7 +44,7 @@ const examples: TCommandExampleList = [
  * // 1f 0d 04 2f 98 01 01
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsArchiveDaysMC.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetExAbsArchiveDaysMC.md#request)
  */
 class GetExAbsArchiveDaysMC extends Command {
     constructor ( public parameters: IGetExAbsArchiveDaysMCParameters ) {
@@ -85,7 +85,6 @@ class GetExAbsArchiveDaysMC extends Command {
     toBytes (): Uint8Array {
         const {channelList, days, startTime2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
-
         const date = getDateFromTime2000(startTime2000);
 
         buffer.setDate(date);

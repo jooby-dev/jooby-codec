@@ -80,7 +80,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetLmicInfo.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetLmicInfo.md#response)
  */
 class GetLmicInfoResponse extends Command {
     constructor ( public parameters: IGetLmicInfoResponseParameters ) {

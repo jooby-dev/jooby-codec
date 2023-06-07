@@ -6,9 +6,12 @@
 
 export {default as CorrectTime2000} from './CorrectTime2000.js';
 export {default as GetArchiveDaysMC} from './GetArchiveDaysMC.js';
+export {default as GetArchiveDays} from './GetArchiveDays.js';
 export {default as GetArchiveEvents} from './GetArchiveEvents.js';
 export {default as GetArchiveHoursMC} from './GetArchiveHoursMC.js';
+export {default as GetArchiveHours} from './GetArchiveHours.js';
 export {default as GetCurrentMC} from './GetCurrentMC.js';
+export {default as GetCurrent} from './GetCurrent.js';
 export {default as GetExAbsArchiveDaysMC} from './GetExAbsArchiveDaysMC.js';
 export {default as GetExAbsArchiveHoursMC} from './GetExAbsArchiveHoursMC.js';
 export {default as GetExAbsCurrentMC} from './GetExAbsCurrentMC.js';

@@ -45,7 +45,7 @@ const examples: TCommandExampleList = [
  * // 02 05 4e 00 01 e2 40
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/SetTime2000.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/SetTime2000.md#request)
  */
 class SetTime2000 extends Command {
     constructor ( public parameters: ISetTime2000Parameters ) {

@@ -1,29 +1,27 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../utils/time.js';
 
 
 /**
- * GetArchiveHoursMC command parameters
+ * GetArchiveHours command parameters
  */
-interface IGetArchiveHoursMCParameters {
+interface IGetArchiveHoursParameters {
     /** the number of hours to retrieve */
     hours: number,
-    startTime2000: TTime2000,
-    /** array of channelList index numbers */
-    channelList: Array<number>
+    startTime2000: TTime2000
 }
 
 
-const COMMAND_ID = 0x1a;
+const COMMAND_ID = 0x05;
 const COMMAND_BODY_SIZE = 4;
 
 const examples: TCommandExampleList = [
     {
-        name: '2 hours pulse counter for 1 channel from 2023.12.23 12:00:00 GMT',
-        parameters: {channelList: [1], hours: 2, startTime2000: 756648000},
-        hex: {header: '1a 04', body: '2f 97 4c 01'}
+        name: '2 hours counter from 2023.12.23 12:00:00 GMT',
+        parameters: {hours: 2, startTime2000: 756648000},
+        hex: {header: '05 04', body: '2f 97 0c 02'}
     }
 ];
 
@@ -33,23 +31,21 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetArchiveHoursMC from 'jooby-codec/analog/commands/downlink/GetArchiveHoursMC.js';
+ * import GetArchiveHours from 'jooby-codec/analog/commands/downlink/GetArchiveHours.js';
  *
- * const parameters = {channelList: [1], hours: 2, startTime2000: 756648000};
- * const command = new GetArchiveHoursMC(parameters);
+ * const parameters = {hours: 2, startTime2000: 756648000};
+ * const command = new GetArchiveHours(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 1a 04 2f 97 4c 01
+ * // 05 04 2f 97 0c 02
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMC.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHours.md#request)
  */
-class GetArchiveHoursMC extends Command {
-    constructor ( public parameters: IGetArchiveHoursMCParameters ) {
+class GetArchiveHours extends Command {
+    constructor ( public parameters: IGetArchiveHoursParameters ) {
         super();
-
-        this.parameters.channelList = this.parameters.channelList.sort((a, b) => a - b);
     }
 
 
@@ -70,8 +66,8 @@ class GetArchiveHoursMC extends Command {
 
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
-        const {hour, hours} = buffer.getHours();
-        const channelList = buffer.getChannels();
+        const {hour} = buffer.getHours();
+        const hours = buffer.getUint8();
 
         date.setUTCHours(hour);
 
@@ -79,23 +75,23 @@ class GetArchiveHoursMC extends Command {
             throw new Error('BinaryBuffer is not empty.');
         }
 
-        return new GetArchiveHoursMC({channelList, hours, startTime2000: getTime2000FromDate(date)});
+        return new GetArchiveHours({hours, startTime2000: getTime2000FromDate(date)});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {channelList, hours, startTime2000} = this.parameters;
+        const {hours, startTime2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
         const date = getDateFromTime2000(startTime2000);
         const hour = date.getUTCHours();
 
         buffer.setDate(date);
-        buffer.setHours(hour, hours);
-        buffer.setChannels(channelList.map(index => ({index} as IChannel)));
+        buffer.setHours(hour, 0);
+        buffer.setUint8(hours);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
 
-export default GetArchiveHoursMC;
+export default GetArchiveHours;

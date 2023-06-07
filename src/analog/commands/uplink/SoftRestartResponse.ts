@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
  * undefined
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/SoftRestart.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/SoftRestart.md#response)
  */
 class SoftRestartResponse extends Command {
     static readonly id = COMMAND_ID;

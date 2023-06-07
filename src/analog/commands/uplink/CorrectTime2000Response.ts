@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  * {status: 0}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/CorrectTime2000.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/CorrectTime2000.md#response)
  */
 class CorrectTime2000Response extends Command {
     constructor ( public parameters: ICorrectTime2000ResponseParameters ) {

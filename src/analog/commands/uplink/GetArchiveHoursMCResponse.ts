@@ -65,7 +65,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetArchiveHoursMC.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMC.md#response)
  */
 class GetArchiveHoursMCResponse extends Command {
     constructor ( public parameters: IGetArchiveHoursMCResponseParameters ) {

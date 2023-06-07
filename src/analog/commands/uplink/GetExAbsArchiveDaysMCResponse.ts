@@ -61,7 +61,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/commands/GetExAbsArchiveDaysMC.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetExAbsArchiveDaysMC.md#response)
  */
 class GetExAbsArchiveDaysMCResponse extends Command {
     constructor ( public parameters: IGetExAbsArchiveDaysMCResponseParameters ) {
