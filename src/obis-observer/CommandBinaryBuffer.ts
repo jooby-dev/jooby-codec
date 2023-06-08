@@ -40,8 +40,9 @@ export interface IObis {
 
 export interface IObisProfileFlags {
     contentType: number,
-    sendOnlyOnChange: boolean,
-    archiveType: number
+    sendOnChange: boolean,
+    archiveProfile1: boolean,
+    archiveProfile2: boolean
 }
 
 export interface IObisProfile {
@@ -85,14 +86,16 @@ const obisBitMask = {
     a: 2 ** 3
 };
 
-const obisProfileFlags = {
-    contentTypeBitsNumber: 2,
-    contentTypeBitStartIndex: 1,
-    sendingOnlyIfChangeBitsNumber: 1,
-    sendingOnlyIfChangeBitStartIndex: 3,
-    archiveTypeBitsNumber: 2,
-    archiveTypeBitStartIndex: 4
-};
+// sizes
+const archiveProfileBitsNumber = 1;
+const sendingOnlyIfChangeBitsNumber = 1;
+const contentTypeBitsNumber = 2;
+
+// positions
+const archiveProfile1BitStartIndex = 1;
+const archiveProfile2BitStartIndex = 2;
+const sendingOnlyIfChangeBitStartIndex = 3;
+const contentTypeBitStartIndex = 4;
 
 
 /**
@@ -187,25 +190,18 @@ class CommandBinaryBuffer extends BinaryBuffer {
             sendingCounter: this.getUint8(),
             flags: {
                 contentType: 0,
-                sendOnlyOnChange: false,
-                archiveType: 0
+                sendOnChange: false,
+                archiveProfile1: false,
+                archiveProfile2: false
             }
         } as IObisProfile;
 
         const flags = this.getUint8();
 
-        const {
-            contentTypeBitsNumber,
-            contentTypeBitStartIndex,
-            sendingOnlyIfChangeBitsNumber,
-            sendingOnlyIfChangeBitStartIndex,
-            archiveTypeBitsNumber,
-            archiveTypeBitStartIndex
-        } = obisProfileFlags;
-
         profile.flags.contentType = bitSet.extractBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex);
-        profile.flags.sendOnlyOnChange = !!bitSet.extractBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex);
-        profile.flags.archiveType = bitSet.extractBits(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex);
+        profile.flags.sendOnChange = !!bitSet.extractBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex);
+        profile.flags.archiveProfile1 = !!bitSet.extractBits(flags, archiveProfileBitsNumber, archiveProfile1BitStartIndex);
+        profile.flags.archiveProfile2 = !!bitSet.extractBits(flags, archiveProfileBitsNumber, archiveProfile2BitStartIndex);
 
         return profile;
     }
@@ -215,20 +211,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint16(profile.sendingPeriod);
         this.setUint8(profile.sendingCounter);
 
-        const {
-            contentTypeBitsNumber,
-            contentTypeBitStartIndex,
-            sendingOnlyIfChangeBitsNumber,
-            sendingOnlyIfChangeBitStartIndex,
-            archiveTypeBitsNumber,
-            archiveTypeBitStartIndex
-        } = obisProfileFlags;
-
         let flags = 0;
 
         flags = bitSet.fillBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex, profile.flags.contentType );
-        flags = bitSet.fillBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex, +profile.flags.sendOnlyOnChange);
-        flags = bitSet.fillBits(flags, archiveTypeBitsNumber, archiveTypeBitStartIndex, profile.flags.archiveType);
+        flags = bitSet.fillBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex, +profile.flags.sendOnChange);
+        flags = bitSet.fillBits(flags, archiveProfileBitsNumber, archiveProfile1BitStartIndex, +profile.flags.archiveProfile1);
+        flags = bitSet.fillBits(flags, archiveProfileBitsNumber, archiveProfile2BitStartIndex, +profile.flags.archiveProfile2);
 
         this.setUint8(flags);
     }

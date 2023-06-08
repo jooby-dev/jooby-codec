@@ -18,7 +18,7 @@ const COMMAND_HEADER_SIZE = REQUEST_ID_SIZE + DATE_TIME_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'summary archive from 2023-12-23 04:00:00 GMT',
+        name: 'archive from 2023-12-23 04:00:00 GMT',
         parameters: {
             requestId: 34,
             time2000: 756619200,
@@ -48,7 +48,6 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     requestId: 34,
- *     archiveType: 2,
  *     time2000: 756619200,
  *     shortNameList: [
  *         {code: 50, content: 22.27},

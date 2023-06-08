@@ -1,7 +1,7 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IObisProfile} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
-import {archiveTypes, contentTypes} from '../../constants/index.js';
+import {contentTypes} from '../../constants/index.js';
 
 
 /**
@@ -28,8 +28,9 @@ const examples: TCommandExampleList = [
                 sendingCounter: 38,
                 flags: {
                     contentType: contentTypes.AUTO,
-                    sendOnlyOnChange: true,
-                    archiveType: archiveTypes.NONE
+                    sendOnChange: true,
+                    archiveProfile1: false,
+                    archiveProfile2: false
                 }
             }
         },
@@ -54,8 +55,9 @@ const examples: TCommandExampleList = [
  *         sendingCounter: 38,
  *         flags: {
  *             contentType: 0,
- *             sendOnlyOnChange: true,
- *             archiveType: 0
+ *             sendOnChange: true,
+ *             archiveProfile1: false,
+ *             archiveProfile2: false
  *         }
  *     }
  * };

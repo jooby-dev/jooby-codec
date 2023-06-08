@@ -1,7 +1,7 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {REQUEST_ID_SIZE, OBIS_PROFILE_SIZE, ICommandParameters, IObisProfile} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {archiveTypes, contentTypes} from '../../constants/index.js';
+import {contentTypes} from '../../constants/index.js';
 
 
 /**
@@ -25,12 +25,13 @@ const examples: TCommandExampleList = [
                 sendingCounter: 61,
                 flags: {
                     contentType: contentTypes.STRING,
-                    sendOnlyOnChange: false,
-                    archiveType: archiveTypes.DETAILED
+                    sendOnChange: false,
+                    archiveProfile1: true,
+                    archiveProfile2: true
                 }
             }
         },
-        hex: {header: '0a', body: '03 01 58 02 14 3d 0a'}
+        hex: {header: '0a', body: '03 01 58 02 14 3d 13'}
     }
 ];
 
@@ -42,7 +43,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetShortNameProfileResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNameProfileResponse.js';
  *
- * const commandBody = new Uint8Array([0x03, 0x01, 0x58, 0x02, 0x14, 0x3d, 0x0a]);
+ * const commandBody = new Uint8Array([0x03, 0x01, 0x58, 0x02, 0x14, 0x3d, 0x13]);
  * const command = GetShortNameProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
@@ -55,8 +56,9 @@ const examples: TCommandExampleList = [
  *         sendingCounter: 61,
  *         flags: {
  *             contentType: 2,
- *             sendOnlyOnChange: false,
- *             archiveType: 1
+ *             sendOnChange: false,
+ *             archiveProfile1: true,
+ *             archiveProfile2: true
  *         }
  *     }
  * }
