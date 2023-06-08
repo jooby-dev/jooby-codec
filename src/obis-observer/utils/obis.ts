@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+
 import invertObject, {THashTable} from '../../utils/invertObject.js';
 import {IObis} from '../CommandBinaryBuffer.js';
 
@@ -35,7 +37,7 @@ export const toString = ( obis: IObis ): string => {
 
     let result = '';
 
-    if ( a && b ) {
+    if ( 'a' in obis && 'b' in obis ) {
         result += `${a}-${b}:`;
     }
 
@@ -43,9 +45,9 @@ export const toString = ( obis: IObis ): string => {
     // 96.7.0 -> C.7.0
     result += `${(codeLetters[c] ?? c) as string}.${(codeLetters[d] ?? d) as string}`;
 
-    if ( e && f ) {
+    if ( 'e' in obis && 'f' in obis ) {
         result += `.${e}*${f}`;
-    } else if ( e ) {
+    } else if ( 'e' in obis ) {
         result += `.${e}`;
     }
 
