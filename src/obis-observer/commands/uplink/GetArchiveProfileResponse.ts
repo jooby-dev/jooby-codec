@@ -7,8 +7,8 @@ import {UPLINK} from '../../constants/directions.js';
  * IGetArchiveProfileResponseParameters command parameters
  */
 interface IGetArchiveProfileResponseParameters extends ICommandParameters {
-    summaryArchivePeriod?: number,
-    detailedArchivePeriod?: number
+    archiveProfile1Period?: number,
+    archiveProfile2Period?: number
 }
 
 
@@ -20,8 +20,8 @@ const examples: TCommandExampleList = [
         name: 'default periods',
         parameters: {
             requestId: 3,
-            summaryArchivePeriod: 600,
-            detailedArchivePeriod: 45
+            archiveProfile1Period: 600,
+            archiveProfile2Period: 45
         },
         hex: {header: '0e', body: '03 02 58 00 2d'}
     }
@@ -42,8 +42,8 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     requestId: 3,
- *     summaryArchivePeriod: 600,
- *     detailedArchivePeriod: 45
+ *     archiveProfile1Period: 600,
+ *     archiveProfile2Period: 45
  * }
  * ```
  *
@@ -72,19 +72,19 @@ class GetArchiveProfileResponse extends Command {
 
         return new GetArchiveProfileResponse({
             requestId: buffer.getUint8(),
-            summaryArchivePeriod: buffer.getUint16(),
-            detailedArchivePeriod: buffer.getUint16()
+            archiveProfile1Period: buffer.getUint16(),
+            archiveProfile2Period: buffer.getUint16()
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, summaryArchivePeriod, detailedArchivePeriod} = this.parameters;
+        const {requestId, archiveProfile1Period, archiveProfile2Period} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint16(summaryArchivePeriod ?? 0);
-        buffer.setUint16(detailedArchivePeriod ?? 0);
+        buffer.setUint16(archiveProfile1Period ?? 0);
+        buffer.setUint16(archiveProfile2Period ?? 0);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

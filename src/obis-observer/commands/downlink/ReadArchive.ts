@@ -1,7 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
-import {archiveTypes} from '../../constants/index.js';
 import {TTime2000} from '../../../utils/time.js';
 
 
@@ -9,7 +8,7 @@ import {TTime2000} from '../../../utils/time.js';
  * IReadArchiveParameters command parameters
  */
 interface IReadArchiveParameters extends ICommandParameters {
-    archiveType: number,
+    profile: number,
     time2000: TTime2000
 }
 
@@ -19,19 +18,19 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 5;
 
 const examples: TCommandExampleList = [
     {
-        name: 'request detailed archive from 2023.12.23 00:00:00 GMT',
+        name: 'request profile 1 from 2023.12.23 00:00:00 GMT',
         parameters: {
             requestId: 33,
-            archiveType: archiveTypes.DETAILED,
+            profile: 1,
             time2000: 756604800
         },
         hex: {header: '11', body: '21 01 2d 18 df 80'}
     },
     {
-        name: 'request summary archive from 2023-12-23 04:00:00 GMT',
+        name: 'request profile 2 from 2023-12-23 04:00:00 GMT',
         parameters: {
             requestId: 34,
-            archiveType: archiveTypes.SUMMARY,
+            profile: 2,
             time2000: 756619200
         },
         hex: {header: '11', body: '22 02 2d 19 17 c0'}
@@ -45,11 +44,10 @@ const examples: TCommandExampleList = [
  * @example
  * ```js
  * import ReadArchive from 'jooby-codec/obis-observer/commands/downlink/ReadArchive.js';
- * import archiveTypes from 'jooby-codec/obis-observer/constants/archiveTypes.js';
  *
  * const parameters = {
  *     requestId: 34,
- *     archiveType: archiveTypes.SUMMARY,
+ *     profile: 2,
  *     time2000: 756619200
  * };
  * const command = new ReadArchive(parameters);
@@ -84,7 +82,7 @@ class ReadArchive extends Command {
 
         return new ReadArchive({
             requestId: buffer.getUint8(),
-            archiveType: buffer.getUint8(),
+            profile: buffer.getUint8(),
             time2000: buffer.getUint32()
         });
     }
@@ -95,11 +93,11 @@ class ReadArchive extends Command {
             throw new Error('unknown or invalid size');
         }
 
-        const {requestId, archiveType, time2000} = this.parameters;
+        const {requestId, profile, time2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(this.size);
 
         buffer.setUint8(requestId);
-        buffer.setUint8(archiveType);
+        buffer.setUint8(profile);
         buffer.setUint32(time2000);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

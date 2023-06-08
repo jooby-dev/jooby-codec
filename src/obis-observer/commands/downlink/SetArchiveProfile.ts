@@ -7,8 +7,8 @@ import {DOWNLINK} from '../../constants/directions.js';
  * ISetArchiveProfileParameters command parameters
  */
 interface ISetArchiveProfileParameters extends ICommandParameters {
-    summaryArchivePeriod: number,
-    detailedArchivePeriod: number
+    archiveProfile1Period: number,
+    archiveProfile2Period: number
 }
 
 
@@ -20,8 +20,8 @@ const examples: TCommandExampleList = [
         name: 'set double default parameters',
         parameters: {
             requestId: 68,
-            summaryArchivePeriod: 2880,
-            detailedArchivePeriod: 30
+            archiveProfile1Period: 2880,
+            archiveProfile2Period: 30
         },
         hex: {header: '0f', body: '44 0b 40 00 1e'}
     }
@@ -36,8 +36,8 @@ const examples: TCommandExampleList = [
  * import SetArchiveProfile from 'jooby-codec/obis-observer/commands/downlink/SetArchiveProfile.js';
  * const parameters = {
  *     requestId: 68,
- *     summaryArchivePeriod: 2880,
- *     detailedArchivePeriod: 30
+ *     archiveProfile1Period: 2880,
+ *     archiveProfile2Period: 30
  * };
  * const command = new SetArchiveProfile(parameters);
  *
@@ -71,19 +71,19 @@ class SetArchiveProfile extends Command {
 
         return new SetArchiveProfile({
             requestId: buffer.getUint8(),
-            summaryArchivePeriod: buffer.getUint16(),
-            detailedArchivePeriod: buffer.getUint16()
+            archiveProfile1Period: buffer.getUint16(),
+            archiveProfile2Period: buffer.getUint16()
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, summaryArchivePeriod, detailedArchivePeriod} = this.parameters;
+        const {requestId, archiveProfile1Period, archiveProfile2Period} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint16(summaryArchivePeriod);
-        buffer.setUint16(detailedArchivePeriod);
+        buffer.setUint16(archiveProfile1Period);
+        buffer.setUint16(archiveProfile2Period);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
