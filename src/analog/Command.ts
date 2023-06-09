@@ -91,9 +91,9 @@ abstract class Command {
      * @param commandData optional command binary data
      * @returns merged data
      */
-    static toBytes ( id: number, commandData?: Uint8Array, legacyHeader?: boolean ): Uint8Array {
+    static toBytes ( id: number, commandData?: Uint8Array, isLegacyHeader?: boolean ): Uint8Array {
         const commandLength = commandData?.length ?? 0;
-        const headerData = header.toBytes(id, commandLength, legacyHeader);
+        const headerData = header.toBytes(id, commandLength, isLegacyHeader);
 
         if ( commandData && commandLength ) {
             const resultData = new Uint8Array(headerData.length + commandLength);

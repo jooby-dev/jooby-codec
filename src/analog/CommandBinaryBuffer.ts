@@ -1305,11 +1305,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     private getLegacyHourDiff (): ILegacyCounter {
-        const bytes = [this.getUint8(), this.getUint8()];
+        const stateWithValueByte = this.getUint8();
+        const valueLowerByte = this.getUint8();
 
         return {
-            isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(bytes[0]),
-            value: ((bytes[0] & 0x1f) << 8) | bytes[1]
+            isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(stateWithValueByte),
+            value: ((stateWithValueByte & 0x1f) << 8) | valueLowerByte
         };
     }
 
