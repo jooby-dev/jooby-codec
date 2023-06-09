@@ -3,11 +3,11 @@ import CommandBinaryBuffer, {ILegacyHourCounterWithDiff} from '../../CommandBina
 import {UPLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x05;
+const COMMAND_ID = 0x40;
 
 const examples: TCommandExampleList = [
     {
-        name: '1 hour archive from 2023.12.23 12:00:00 GMT',
+        name: '1 hour from 2023.12.23 12:00:00 GMT',
         parameters: {
             startTime2000: 756648000,
             counter: {isMagneticInfluence: true, value: 163},
@@ -15,7 +15,7 @@ const examples: TCommandExampleList = [
                 {isMagneticInfluence: true, value: 10}
             ]
         },
-        hex: {header: '05 08', body: '2f 97 8c 00 00 a3 80 0a'}
+        hex: {header: '40 08', body: '2f 97 8c 00 00 a3 80 0a'}
     }
 ];
 
@@ -25,10 +25,10 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetArchiveHoursResponse from 'jooby-codec/analog/commands/uplink/GetArchiveHoursResponse.js';
+ * import Hour from 'jooby-codec/analog/commands/uplink/Hour.js';
  *
  * const commandBody = new Uint8Array([0x2f, 0x97, 0x8c, 0x8c, 0x00, 0x00, 0xa3, 0x80, 0x0a]);
- * const command = GetArchiveHoursResponse.fromBytes(commandBody);
+ * const command = Hour.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -41,9 +41,9 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMC.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/Hour.md)
  */
-class GetArchiveHoursResponse extends Command {
+class Hour extends Command {
     constructor ( public parameters: ILegacyHourCounterWithDiff ) {
         super();
     }
@@ -59,10 +59,10 @@ class GetArchiveHoursResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ): GetArchiveHoursResponse {
+    static fromBytes ( data: Uint8Array ): Hour {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetArchiveHoursResponse(buffer.getLegacyHourCounterWithDiff());
+        return new Hour(buffer.getLegacyHourCounterWithDiff());
     }
 
     // returns full message - header with body
@@ -71,9 +71,9 @@ class GetArchiveHoursResponse extends Command {
 
         buffer.setLegacyHourCounterWithDiff(this.parameters);
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset(), true);
     }
 }
 
 
-export default GetArchiveHoursResponse;
+export default Hour;
