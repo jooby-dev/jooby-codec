@@ -51,15 +51,7 @@ export const fromBytes = ( data: Uint8Array ) => {
 
 export const fromHex = ( data: string ) => fromBytes(getBytesFromHex(data));
 
-export const toBytes = ( commandId: number, commandSize: number, isLegacyHeader = false ): Uint8Array => {
-    if ( isLegacyHeader ) {
-        // legacy commands contain ID more than extra command mask, i.e. 0x1f so ignore all rules and return ID + size as two bytes as is
-        return new Uint8Array([
-            commandId,
-            commandSize
-        ]);
-    }
-
+export const toBytes = ( commandId: number, commandSize: number ): Uint8Array => {
     if ( (commandId & extraCommandMask) === 0 ) {
         if ( commandSize > extraCommandMask ) {
             throw new Error(`Wrong command id/size. Id: ${commandId}, size: ${commandSize}.`);
