@@ -71,7 +71,7 @@ class Hour extends Command {
 
         buffer.setLegacyHourCounterWithDiff(this.parameters);
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset(), false);
+        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

@@ -97,7 +97,7 @@ class Day extends Command {
         buffer.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, isMagneticInfluence));
         buffer.setLegacyCounterValue(value);
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array(), false);
+        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
