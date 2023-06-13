@@ -15,7 +15,7 @@ const examples: TCommandExampleList = [
                 {isMagneticInfluence: true, value: 10}
             ]
         },
-        hex: {header: '40 08', body: '2f 97 8c 00 00 a3 80 0a'}
+        hex: {header: '48', body: '2f 97 8c 00 00 a3 80 0a'}
     }
 ];
 
@@ -71,7 +71,7 @@ class Hour extends Command {
 
         buffer.setLegacyHourCounterWithDiff(this.parameters);
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset(), true);
+        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset(), false);
     }
 }
 

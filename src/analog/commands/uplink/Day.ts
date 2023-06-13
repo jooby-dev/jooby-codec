@@ -25,7 +25,7 @@ const examples: TCommandExampleList = [
             isMagneticInfluence: true,
             value: 122
         },
-        hex: {header: '20 06', body: '2f 97 80 00 00 7a'}
+        hex: {header: '26', body: '2f 97 80 00 00 7a'}
     }
 ];
 
@@ -97,7 +97,7 @@ class Day extends Command {
         buffer.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, isMagneticInfluence));
         buffer.setLegacyCounterValue(value);
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array(), true);
+        return Command.toBytes(COMMAND_ID, buffer.toUint8Array(), false);
     }
 }
 
