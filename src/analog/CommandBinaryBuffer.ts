@@ -425,7 +425,7 @@ const DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT = 600;
 /** 'reserved' bytes which not used */
 const DATA_SENDING_INTERVAL_RESERVED_BYTES = 3;
 const PARAMETER_RX2_FREQUENCY_COEFFICIENT = 100;
-const INT12_SIZE = 3;
+const INT24_BYTE_SIZE = 3;
 const SERIAL_NUMBER_SIZE = 6;
 const MAGNETIC_INFLUENCE_BIT_INDEX = 8;
 const LEGACY_HOUR_COUNTER_SIZE = 2 + 4;
@@ -598,8 +598,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return LEGACY_HOUR_COUNTER_SIZE + (hourCounter.diff.length * LEGACY_HOUR_DIFF_SIZE);
     }
 
-    setInt12 ( value: number, isLittleEndian = this.isLittleEndian ): void {
-        const view = new DataView(this.data, this.offset, INT12_SIZE);
+    setInt24 ( value: number, isLittleEndian = this.isLittleEndian ): void {
+        const view = new DataView(this.data, this.offset, INT24_BYTE_SIZE);
 
         // set first byte as signed value
         if ( isLittleEndian ) {
@@ -612,16 +612,16 @@ class CommandBinaryBuffer extends BinaryBuffer {
             view.setUint8(2, value & 0xFF);
         }
 
-        this.offset += INT12_SIZE;
+        this.offset += INT24_BYTE_SIZE;
     }
 
-    getInt12 ( isLittleEndian = this.isLittleEndian ): number {
-        const view = new DataView(this.data, this.offset, INT12_SIZE);
+    getInt24 ( isLittleEndian = this.isLittleEndian ): number {
+        const view = new DataView(this.data, this.offset, INT24_BYTE_SIZE);
         let byte0;
         let byte1;
         let byte2;
 
-        this.offset += INT12_SIZE;
+        this.offset += INT24_BYTE_SIZE;
 
         if ( isLittleEndian ) {
             byte0 = view.getInt8(2);
@@ -643,8 +643,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return value;
     }
 
-    setUint12 ( value: number, isLittleEndian = this.isLittleEndian ): void {
-        const view = new DataView(this.data, this.offset, INT12_SIZE);
+    setUint24 ( value: number, isLittleEndian = this.isLittleEndian ): void {
+        const view = new DataView(this.data, this.offset, INT24_BYTE_SIZE);
 
         if ( isLittleEndian ) {
             view.setUint8(2, (value >> 16) & 0xFF);
@@ -656,16 +656,16 @@ class CommandBinaryBuffer extends BinaryBuffer {
             view.setUint8(2, value & 0xFF);
         }
 
-        this.offset += INT12_SIZE;
+        this.offset += INT24_BYTE_SIZE;
     }
 
-    getUint12 ( isLittleEndian = this.isLittleEndian ): number {
-        const view = new DataView(this.data, this.offset, INT12_SIZE);
+    getUint24 ( isLittleEndian = this.isLittleEndian ): number {
+        const view = new DataView(this.data, this.offset, INT24_BYTE_SIZE);
         const byte0 = view.getUint8(0);
         const byte1 = view.getUint8(1);
         const byte2 = view.getUint8(2);
 
-        this.offset += INT12_SIZE;
+        this.offset += INT24_BYTE_SIZE;
 
         if ( isLittleEndian ) {
             return byte0 + (byte1 << 8) + (byte2 << 16);
@@ -1186,13 +1186,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
     private getParameterRx2Config (): IParameterRx2Config {
         return {
             spreadFactor: this.getUint8(),
-            frequency: this.getUint12(false) * PARAMETER_RX2_FREQUENCY_COEFFICIENT
+            frequency: this.getUint24(false) * PARAMETER_RX2_FREQUENCY_COEFFICIENT
         };
     }
 
     private setParameterRx2Config ( parameter: IParameterRx2Config ): void {
         this.setUint8(parameter.spreadFactor);
-        this.setUint12(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT, false);
+        this.setUint24(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT, false);
     }
 
     private getParameterExtraFrameInterval (): IParameterExtraFrameInterval {
@@ -1490,11 +1490,11 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     getLegacyCounterValue (): number {
-        return this.getUint12(false);
+        return this.getUint24(false);
     }
 
     setLegacyCounterValue ( value: number ): void {
-        this.setUint12(value, false);
+        this.setUint24(value, false);
     }
 
     getLegacyCounter ( byte = this.getUint8() ): ILegacyCounter {
