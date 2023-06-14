@@ -61,6 +61,7 @@ export const toString = ( obis: IObis ): string => {
  */
 export const fromString = ( obisString: string ): IObis => {
     const result: THashTable = {};
+    const sortedResult: THashTable = {};
     let unprocessed = obisString;
     let parts;
     let eValue;
@@ -111,5 +112,10 @@ export const fromString = ( obisString: string ): IObis => {
         throw new Error('Properties "c" and "d" are mandatory.');
     }
 
-    return result as unknown as IObis;
+    // sort obis object keys alphabetically
+    Object.keys(result).sort().forEach(keyName => {
+        sortedResult[keyName] = result[keyName];
+    });
+
+    return sortedResult as unknown as IObis;
 };
