@@ -21,7 +21,7 @@ const DAY_COUNTER_SIZE = 4;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get day values from 2001.03.10 12:00:00',
+        name: 'get day values from 2001.03.10',
         parameters: {
             startTime2000: 2678227200,
             dayList: [
