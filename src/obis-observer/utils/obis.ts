@@ -30,24 +30,36 @@ export const toString = ( obis: IObis ): string => {
     // eslint-disable-next-line object-curly-newline
     const {a, b, c, d, e, f} = obis;
 
+    // a is missing, b is present
+    if ( (a === null || a === undefined) && (b !== null && b !== undefined) ) {
+        throw new Error('Property "a" is mandatory when "b" is present.');
+    }
+
     if ( c === null || c === undefined || d === null || d === undefined ) {
         throw new Error('Properties "c" and "d" are mandatory.');
     }
 
     let result = '';
 
-    if ( (a !== null && a !== undefined) && (b !== null && b !== undefined) ) {
-        result += `${a}-${b}:`;
+    if ( a !== null && a !== undefined ) {
+        if ( b !== null && b !== undefined ) {
+            result += `${a}-${b}:`;
+        } else {
+            result += `${a}:`;
+        }
     }
 
     // replace some numbers with letters
     // 96.7.0 -> C.7.0
     result += `${(codeLetters[c] ?? c) as string}.${(codeLetters[d] ?? d) as string}`;
 
-    if ( (e !== null && e !== undefined) && (f !== null && f !== undefined) ) {
-        result += `.${e}*${f}`;
-    } else if ( e !== null && e !== undefined ) {
+    // e and f are independent
+    if ( e !== null && e !== undefined ) {
         result += `.${e}`;
+    }
+
+    if ( f !== null && f !== undefined ) {
+        result += `*${f}`;
     }
 
     return result;
