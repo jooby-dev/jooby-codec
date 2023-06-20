@@ -32,7 +32,7 @@ const examples: TCommandExampleList = [
                 {index: 4, value: 234, diff: [11]}
             ]
         },
-        hex: {header: '17 0f', body: '2f 97 0c 0f 83 01 0a c0 06 0c 26 08 ea 01 0b'}
+        hex: {header: '17 0f', body: '2f 97 2c 0f 83 01 0a c0 06 0c 26 08 ea 01 0b'}
     }
 ];
 
@@ -45,7 +45,7 @@ const examples: TCommandExampleList = [
  * import HourMC from 'jooby-codec/analog/commands/uplink/HourMC.js';
  *
  * const commandBody = new Uint8Array([
- *    0x2f, 0x97, 0x0c, 0x0f, 0x83, 0x01, 0x0a, 0xc0, 0x06, 0x0c, 0x26, 0x08, 0xea, 0x01, 0x0b
+ *    0x2f, 0x97, 0x2c, 0x0f, 0x83, 0x01, 0x0a, 0xc0, 0x06, 0x0c, 0x26, 0x08, 0xea, 0x01, 0x0b
  * ]);
  * const command = HourMC.fromBytes(commandBody);
  *

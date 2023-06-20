@@ -846,24 +846,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
      * 0xb8 = 0b10111000 will be {hours: 0b101, hour: 0b11000} i.e. {hours: 5, hour: 24}
      */
     getHours ( byte = this.getUint8() ) {
-        let hours = (byte & 0xe0) >> 5;
+        const hours = (byte & 0xe0) >> 5;
         const hour = byte & 0x1f;
-
-        // TODO: add link to doc
-        hours = hours === 0 ? 1 : hours;
 
         return {hours, hour};
     }
 
     setHours ( hour: number, hours: number ): void {
-        let hourAmount = hours;
-
-        // TODO: add link to doc
-        if ( hourAmount === 1 ) {
-            hourAmount = 0;
-        }
-
-        this.setUint8(((hourAmount & 0x07) << 5) | (hour & 0x1f));
+        this.setUint8(((hours & 0x07) << 5) | (hour & 0x1f));
     }
 
     getTime (): TTime2000 {
