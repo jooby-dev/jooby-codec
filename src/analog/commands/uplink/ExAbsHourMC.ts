@@ -51,7 +51,7 @@ const examples: TCommandExampleList = [
                 }
             ]
         },
-        hex: {header: '1f 0a 0a', body: '2e 6a 0c 01 83 b9 f3 14 80 01'}
+        hex: {header: '1f 0a 0a', body: '2e 6a 2c 01 83 b9 f3 14 80 01'}
     }
 ];
 
@@ -64,7 +64,7 @@ const examples: TCommandExampleList = [
  * import ExAbsHourMC from 'jooby-codec/analog/commands/uplink/ExAbsHourMC.js';
  *
  * const commandBody = new Uint8Array([
- *     0x2e, 0x6a, 0x0c, 0x01, 0x82, 0xb9, 0xf3, 0x14, 0x80, 0x01
+ *     0x2e, 0x6a, 0x2c, 0x01, 0x82, 0xb9, 0xf3, 0x14, 0x80, 0x01
  * ]);
  * const command = ExAbsHourMC.fromBytes(commandBody);
  *
