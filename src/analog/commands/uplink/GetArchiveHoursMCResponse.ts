@@ -34,7 +34,7 @@ const examples: TCommandExampleList = [
                 {index: 4, value: 12, diff: [10]}
             ]
         },
-        hex: {header: '1a 0d', body: '2f 97 0c 0f 83 01 0a 08 0a 08 0a 0c 0a'}
+        hex: {header: '1a 0d', body: '2f 97 2c 0f 83 01 0a 08 0a 08 0a 0c 0a'}
     }
 ];
 
@@ -47,7 +47,7 @@ const examples: TCommandExampleList = [
  * import GetArchiveHoursMCResponse from 'jooby-codec/analog/commands/uplink/GetArchiveHoursMCResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x2f, 0x97, 0x0c, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a
+ *     0x2f, 0x97, 0x2c, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a
  * ]);
  * const command = GetArchiveHoursMCResponse.fromBytes(commandBody);
  *
