@@ -21,9 +21,9 @@ const COMMAND_BODY_SIZE = 4;
 
 const examples: TCommandExampleList = [
     {
-        name: '2 hours pulse counter for 1 channel from 2023.12.23 12:00:00 GMT',
-        parameters: {channelList: [1], hours: 2, startTime2000: 756648000},
-        hex: {header: '1a 04', body: '2f 97 4c 01'}
+        name: 'hour pulse counter and 1 hour diff for 1 channel from 2023.12.23 12:00:00 GMT',
+        parameters: {startTime2000: 756648000, hours: 2, channelList: [1]},
+        hex: {header: '1a 04', body: '2f 97 2c 01'}
     }
 ];
 
@@ -35,12 +35,12 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetArchiveHoursMC from 'jooby-codec/analog/commands/downlink/GetArchiveHoursMC.js';
  *
- * const parameters = {channelList: [1], hours: 2, startTime2000: 756648000};
+ * const parameters = {startTime2000: 756648000, hours: 2, channelList: [1]};
  * const command = new GetArchiveHoursMC(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 1a 04 2f 97 4c 01
+ * // 1a 04 2f 97 2c 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMC.md#request)
@@ -79,7 +79,7 @@ class GetArchiveHoursMC extends Command {
             throw new Error('BinaryBuffer is not empty.');
         }
 
-        return new GetArchiveHoursMC({channelList, hours, startTime2000: getTime2000FromDate(date)});
+        return new GetArchiveHoursMC({startTime2000: getTime2000FromDate(date), hours, channelList});
     }
 
     // returns full message - header with body

@@ -20,7 +20,7 @@ const COMMAND_BODY_SIZE = 3;
 const examples: TCommandExampleList = [
     {
         name: '1 day counter from 2023.03.10 00:00:00 GMT',
-        parameters: {days: 1, startTime2000: 731721600},
+        parameters: {startTime2000: 731721600, days: 1},
         hex: {header: '06 03', body: '2e 6a 01'}
     }
 ];
@@ -33,7 +33,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetArchiveDays from 'jooby-codec/analog/commands/downlink/GetArchiveDays.js';
  *
- * const parameters = {days: 1, startTime2000: 731721600};
+ * const parameters = {startTime2000: 731721600, days: 1};
  * const command = new GetArchiveDays(parameters);
  *
  * // output command binary in hex representation
@@ -72,12 +72,12 @@ class GetArchiveDays extends Command {
             throw new Error('BinaryBuffer is not empty.');
         }
 
-        return new GetArchiveDays({days, startTime2000: getTime2000FromDate(date)});
+        return new GetArchiveDays({startTime2000: getTime2000FromDate(date), days});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {days, startTime2000} = this.parameters;
+        const {startTime2000, days} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
         const date = getDateFromTime2000(startTime2000);
 

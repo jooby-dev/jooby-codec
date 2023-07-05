@@ -88,7 +88,8 @@ class Day extends Command {
         const hour = date.getUTCHours();
 
         buffer.setDate(date);
-        buffer.setHours(hour, 0);
+        // force hours to 0
+        buffer.setHours(hour, 1);
 
         // reset byte with isMagneticInfluence bit
         buffer.seek(buffer.offset - 1);

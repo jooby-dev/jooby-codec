@@ -80,12 +80,12 @@ class GetArchiveDaysResponse extends Command {
             dayList.push(buffer.getLegacyCounter());
         }
 
-        return new GetArchiveDaysResponse({dayList, startTime2000: getTime2000FromDate(date)});
+        return new GetArchiveDaysResponse({startTime2000: getTime2000FromDate(date), dayList});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {dayList, startTime2000} = this.parameters;
+        const {startTime2000, dayList} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MIN_SIZE + (dayList.length * DAY_COUNTER_SIZE));
 
         buffer.setDate(startTime2000);
