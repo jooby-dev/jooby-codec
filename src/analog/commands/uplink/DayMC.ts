@@ -82,19 +82,15 @@ class DayMC extends CurrentMC {
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ): DayMC {
-        const parameters: IDayMCParameters = {channelList: [], startTime2000: 0};
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
-        const channelList = buffer.getChannels();
-
-        parameters.channelList = channelList.map(channelIndex => ({
+        const channels = buffer.getChannels();
+        const channelList = channels.map(channelIndex => ({
             value: buffer.getExtendedValue(),
             index: channelIndex
         }) as IChannelValue);
 
-        parameters.startTime2000 = getTime2000FromDate(date);
-
-        return new DayMC(parameters);
+        return new DayMC({startTime2000: getTime2000FromDate(date), channelList});
     }
 
     // returns full message - header with body

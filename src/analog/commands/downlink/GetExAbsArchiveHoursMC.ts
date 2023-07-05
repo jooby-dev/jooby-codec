@@ -23,8 +23,8 @@ const COMMAND_BODY_SIZE = 4;
 const examples: TCommandExampleList = [
     {
         name: '1 hour absolute values for 1 channel from 2023.12.23 12:00:00 GMT',
-        parameters: {channelList: [1], hours: 1, startTime2000: 756648000},
-        hex: {header: '1f 0c 04', body: '2f 97 2c 01'}
+        parameters: {startTime2000: 756648000, hours: 1, channelList: [1]},
+        hex: {header: '1f 0c 04', body: '2f 97 0c 01'}
     }
 ];
 
@@ -36,12 +36,12 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetExAbsArchiveHoursMC from 'jooby-codec/analog/commands/downlink/GetExAbsArchiveHoursMC.js';
  *
- * const parameters = {channelList: [1], hours: 1, startTime2000: 756648000};
+ * const parameters = {startTime2000: 756648000, hours: 1, channelList: [1]};
  * const command = new GetExAbsArchiveHoursMC(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 1f 0c 04 2f 97 2c 01
+ * // 1f 0c 04 2f 97 0c 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetExAbsArchiveHoursMC.md#request)

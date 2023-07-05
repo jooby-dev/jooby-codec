@@ -20,7 +20,7 @@ const COMMAND_BODY_SIZE = 4;
 const examples: TCommandExampleList = [
     {
         name: '2 hours counter from 2023.12.23 12:00:00 GMT',
-        parameters: {hours: 2, startTime2000: 756648000},
+        parameters: {startTime2000: 756648000, hours: 2},
         hex: {header: '05 04', body: '2f 97 0c 02'}
     }
 ];
@@ -33,7 +33,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetArchiveHours from 'jooby-codec/analog/commands/downlink/GetArchiveHours.js';
  *
- * const parameters = {hours: 2, startTime2000: 756648000};
+ * const parameters = {startTime2000: 756648000, hours: 2};
  * const command = new GetArchiveHours(parameters);
  *
  * // output command binary in hex representation
@@ -75,18 +75,19 @@ class GetArchiveHours extends Command {
             throw new Error('BinaryBuffer is not empty.');
         }
 
-        return new GetArchiveHours({hours, startTime2000: getTime2000FromDate(date)});
+        return new GetArchiveHours({startTime2000: getTime2000FromDate(date), hours});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {hours, startTime2000} = this.parameters;
+        const {startTime2000, hours} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
         const date = getDateFromTime2000(startTime2000);
         const hour = date.getUTCHours();
 
         buffer.setDate(date);
-        buffer.setHours(hour, 0);
+        // force hours to 0
+        buffer.setHours(hour, 1);
         buffer.setUint8(hours);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

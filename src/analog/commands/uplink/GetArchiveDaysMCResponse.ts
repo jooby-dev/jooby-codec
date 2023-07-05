@@ -104,13 +104,13 @@ class GetArchiveDaysMCResponse extends Command {
             }
         });
 
-        return new GetArchiveDaysMCResponse({channelList, days, startTime2000: getTime2000FromDate(date)});
+        return new GetArchiveDaysMCResponse({startTime2000: getTime2000FromDate(date), days, channelList});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {days, startTime2000, channelList} = this.parameters;
+        const {startTime2000, days, channelList} = this.parameters;
 
         buffer.setDate(startTime2000);
         buffer.setChannels(channelList);

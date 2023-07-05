@@ -840,20 +840,22 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     /**
-     * Retrieve device time from byte array.
+     * Retrieve start hour and number of hours from byte array.
      *
      * @example
-     * 0xb8 = 0b10111000 will be {hours: 0b101, hour: 0b11000} i.e. {hours: 5, hour: 24}
+     * 0xb8 = 0b10111000 will be {hours: 0b101, hour: 0b11000} i.e. {hours: 6, hour: 24}
      */
     getHours ( byte = this.getUint8() ) {
-        const hours = (byte & 0xe0) >> 5;
+        // real/human hours number = 1 (hour counter value) + each hour diff
+        const hours = ((byte & 0xe0) >> 5) + 1;
         const hour = byte & 0x1f;
 
         return {hours, hour};
     }
 
     setHours ( hour: number, hours: number ): void {
-        this.setUint8(((hours & 0x07) << 5) | (hour & 0x1f));
+        // convert real/human to binary - only number of diff hours
+        this.setUint8((((hours - 1) & 0x07) << 5) | (hour & 0x1f));
     }
 
     getTime (): TTime2000 {
@@ -920,7 +922,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
             // decode hour value for channel
             const value = this.getExtendedValue();
 
-            for ( let diffHour = 0; diffHour < hours; ++diffHour ) {
+            // start from first diff hour
+            for ( let diffHour = 1; diffHour < hours; ++diffHour ) {
                 diff.push(this.getExtendedValue());
             }
 
@@ -931,7 +934,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             });
         });
 
-        return {channelList, hours, startTime2000: getTime2000FromDate(date)};
+        return {startTime2000: getTime2000FromDate(date), hours, channelList};
     }
 
     setChannelsValuesWithHourDiff ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours> ): void {
@@ -1515,7 +1518,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         date.setUTCHours(hour);
 
-        return {counter, diff, startTime2000: getTime2000FromDate(date)};
+        return {startTime2000: getTime2000FromDate(date), counter, diff};
     }
 
     setLegacyHourCounterWithDiff ( hourCounter: ILegacyHourCounterWithDiff ): void {
@@ -1523,7 +1526,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
         const hour = date.getUTCHours();
 
         this.setDate(date);
-        this.setHours(hour, 0);
+        // force hours to 0
+        this.setHours(hour, 1);
 
         // reset byte with isMagneticInfluence bit
         this.seek(this.offset - 1);

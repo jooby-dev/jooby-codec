@@ -6,21 +6,6 @@ import {UPLINK} from '../../constants/directions.js';
 
 /**
  * ExAbsHourMC command parameters
- *
- * @example
- * // archive hours values from 001-03-10T12:00:00.000Z with 1-hour diff
- * {
- *     startTime2000: 731764800,
- *     hours: 1,
- *     channelList: [
- *         {
- *             pulseCoefficient: 100,
- *             index: 0,
- *             value: 342457,
- *             diff: [128]
- *         }
- *     ]
- * }
  */
 interface IUplinkExAbsHourMCParameters {
     channelList: Array<IChannelHourAbsoluteValue>,
@@ -41,7 +26,7 @@ const examples: TCommandExampleList = [
         name: '1 channel at 2023.03.10 12:00:00 GMT',
         parameters: {
             startTime2000: 731764800,
-            hours: 1,
+            hours: 2,
             channelList: [
                 {
                     pulseCoefficient: 100,
@@ -72,7 +57,7 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     startTime2000: 731764800,
- *     hours: 1,
+ *     hours: 2,
  *     channelList: [
  *         {
  *             pulseCoefficient: 100,
@@ -110,7 +95,6 @@ class ExAbsHourMC extends Command {
         const {hour, hours} = buffer.getHours();
         const channels = buffer.getChannels();
         const channelList: Array<IChannelHourAbsoluteValue> = [];
-        const hourAmount = hours === 0 ? 1 : hours;
 
         date.setUTCHours(hour);
 
@@ -119,7 +103,7 @@ class ExAbsHourMC extends Command {
             const value = buffer.getExtendedValue();
             const diff: Array<number> = [];
 
-            for ( let hourIndex = 0; hourIndex < hourAmount; ++hourIndex ) {
+            for ( let hourIndex = 1; hourIndex < hours; ++hourIndex ) {
                 diff.push(buffer.getExtendedValue());
             }
 
@@ -131,13 +115,13 @@ class ExAbsHourMC extends Command {
             });
         });
 
-        return new ExAbsHourMC({channelList, hours: hourAmount, startTime2000: getTime2000FromDate(date)});
+        return new ExAbsHourMC({startTime2000: getTime2000FromDate(date), hours, channelList});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {hours, startTime2000, channelList} = this.parameters;
+        const {startTime2000, hours, channelList} = this.parameters;
 
         const date = getDateFromTime2000(startTime2000);
         const hour = date.getUTCHours();

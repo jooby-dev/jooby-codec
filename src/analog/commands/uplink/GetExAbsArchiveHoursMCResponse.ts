@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
         name: '1 channel at 2023.12.23 12:00:00 GMT',
         parameters: {
             startTime2000: 756648000,
-            hours: 1,
+            hours: 2,
             channelList: [
                 {value: 234, index: 2, diff: [2]}
             ]
@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  * import GetExAbsArchiveHoursMCResponse from 'jooby-codec/analog/commands/uplink/GetExAbsArchiveHoursMCResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x2f, 0x97, 0x2c, 0x04, 0xea, 0x01, 0x02
+ *     0x2f, 0x97, 0x2c, 0x02, 0xea, 0x01, 0x02
  * ]);
  * const command = GetExAbsArchiveHoursMCResponse.fromBytes(commandBody);
  *
@@ -49,7 +49,7 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     startTime2000: 756648000,
- *     hours: 1,
+ *     hours: 2,
  *     channelList: [
  *         {value: 234, index: 2, diff: [2]}
  *     ]
@@ -89,7 +89,7 @@ class GetExAbsArchiveHoursMCResponse extends Command {
             const value = buffer.getExtendedValue();
             const diff: Array<number> = [];
 
-            for ( let hourIndex = 0; hourIndex < hours; ++hourIndex ) {
+            for ( let hourIndex = 1; hourIndex < hours; ++hourIndex ) {
                 diff.push(buffer.getExtendedValue());
             }
 
@@ -100,13 +100,13 @@ class GetExAbsArchiveHoursMCResponse extends Command {
             });
         });
 
-        return new GetExAbsArchiveHoursMCResponse({channelList, hours, startTime2000: getTime2000FromDate(date)});
+        return new GetExAbsArchiveHoursMCResponse({startTime2000: getTime2000FromDate(date), hours, channelList});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
-        const {channelList, startTime2000, hours} = this.parameters;
+        const {startTime2000, hours, channelList} = this.parameters;
         const date = getDateFromTime2000(startTime2000);
         const hour = date.getUTCHours();
 

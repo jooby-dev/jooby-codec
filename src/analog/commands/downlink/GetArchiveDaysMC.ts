@@ -14,9 +14,9 @@ import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../util
  * GetArchiveDaysMC command parameters
  */
 interface IGetArchiveDaysMCParameters {
+    startTime2000: TTime2000,
     /** the number of days to retrieve */
     days: number,
-    startTime2000: TTime2000,
     /** array of channelList index numbers */
     channelList: Array<number>
 }
@@ -28,7 +28,7 @@ const COMMAND_BODY_SIZE = 4;
 const examples: TCommandExampleList = [
     {
         name: '1 day pulse counter for 1 channel from 2023.03.10 00:00:00 GMT',
-        parameters: {channelList: [1], days: 1, startTime2000: 731721600},
+        parameters: {startTime2000: 731721600, days: 1, channelList: [1]},
         hex: {header: '1b 04', body: '2e 6a 01 01'}
     }
 ];
@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetArchiveDaysMC from 'jooby-codec/analog/commands/downlink/GetArchiveDaysMC.js';
  *
- * const parameters = {channelList: [1], days: 1, startTime2000: 731721600};
+ * const parameters = {startTime2000: 731721600, days: 1, channelList: [1]};
  * const command = new GetArchiveDaysMC(parameters);
  *
  * // output command binary in hex representation
@@ -83,12 +83,12 @@ class GetArchiveDaysMC extends Command {
             throw new Error('BinaryBuffer is not empty.');
         }
 
-        return new GetArchiveDaysMC({channelList, days, startTime2000: getTime2000FromDate(date)});
+        return new GetArchiveDaysMC({startTime2000: getTime2000FromDate(date), days, channelList});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {channelList, days, startTime2000} = this.parameters;
+        const {startTime2000, days, channelList} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
         const date = getDateFromTime2000(startTime2000);
 

@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
         name: '4 channels at 2023.12.23 12:00:00 GMT',
         parameters: {
             startTime2000: 756648000,
-            hours: 1,
+            hours: 2,
             channelList: [
                 {index: 1, value: 131, diff: [10]},
                 {index: 2, value: 8, diff: [10]},
@@ -55,7 +55,7 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     startTime2000: 756648000,
- *     hours: 1,
+ *     hours: 2,
  *     channelList: [
  *         {index: 1, value: 131, diff: [10]},
  *         {index: 2, value: 8, diff: [10]},
