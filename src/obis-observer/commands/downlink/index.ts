@@ -6,6 +6,7 @@
 
 export {default as AddShortNameProfile} from './AddShortNameProfile.js';
 export {default as GetArchiveProfile} from './GetArchiveProfile.js';
+export {default as GetArchiveState} from './GetArchiveState.js';
 export {default as GetContentByObis} from './GetContentByObis.js';
 export {default as GetContentByShortName} from './GetContentByShortName.js';
 export {default as GetDeviceInfo} from './GetDeviceInfo.js';
