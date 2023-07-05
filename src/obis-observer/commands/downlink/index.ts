@@ -11,6 +11,7 @@ export {default as GetContentByObis} from './GetContentByObis.js';
 export {default as GetContentByShortName} from './GetContentByShortName.js';
 export {default as GetDeviceInfo} from './GetDeviceInfo.js';
 export {default as GetLorawanInfo} from './GetLorawanInfo.js';
+export {default as GetLorawanState} from './GetLorawanState.js';
 export {default as GetShortNameInfo} from './GetShortNameInfo.js';
 export {default as GetShortNameProfile} from './GetShortNameProfile.js';
 export {default as GetShortNames} from './GetShortNames.js';

@@ -12,6 +12,7 @@ export {default as GetContentByShortNameResponse} from './GetContentByShortNameR
 export {default as GetContentByShortNameStringResponse} from './GetContentByShortNameStringResponse.js';
 export {default as GetDeviceInfoResponse} from './GetDeviceInfoResponse.js';
 export {default as GetLorawanInfoResponse} from './GetLorawanInfoResponse.js';
+export {default as GetLorawanStateResponse} from './GetLorawanStateResponse.js';
 export {default as GetShortNameInfoResponse} from './GetShortNameInfoResponse.js';
 export {default as GetShortNameProfileResponse} from './GetShortNameProfileResponse.js';
 export {default as GetShortNamesResponse} from './GetShortNamesResponse.js';
