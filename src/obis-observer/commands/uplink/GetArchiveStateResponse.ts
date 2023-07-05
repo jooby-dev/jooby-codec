@@ -14,6 +14,7 @@ interface IGetArchiveStateResponseParameters extends ICommandParameters {
 }
 
 const COMMAND_ID = 0x29;
+
 // request id byte + records count + DateTime 4 bytes * 2
 const COMMAND_SIZE = REQUEST_ID_SIZE + 4 + DATE_TIME_SIZE * 2;
 
@@ -49,19 +50,17 @@ const examples: TCommandExampleList = [
  * import GetArchiveStateResponse from 'jooby-codec/obis-observer/commands/uplink/GetArchiveStateResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x10, 0x22, 0x02, 0x2d, 0x19, 0x17, 0xc0, 0x32, 0x41, 0xb2, 0x28, 0xf6, 0x38, 0x42, 0xb2, 0xa8, 0xf6
+ *     0x29, 0x02, 0x00, 0x00, 0x00, 0x51, 0x2c, 0x2d, 0xea, 0xae, 0x2c, 0x2f, 0x0a, 0xf6
  * ]);
  * const command = GetArchiveStateResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 34,
- *     time2000: 756619200,
- *     shortNameList: [
- *         {code: 50, content: 22.27},
- *         {code: 56, content: 89.33}
- *     ]
+ *     requestId: 2,
+ *     archiveRecordsNumber: 81,
+ *     eldestTime2000: 741206702,
+ *     newestTime2000: 741280502
  * }
  * ```
  *
@@ -90,7 +89,7 @@ class GetArchiveStateResponse extends Command {
 
         return new GetArchiveStateResponse({
             requestId: buffer.getUint8(),
-            archiveRecordsNumber: buffer.getUint32(false),
+            archiveRecordsNumber: buffer.getUint32(),
             eldestTime2000: buffer.getUint32(),
             newestTime2000: buffer.getUint32()
         });
@@ -102,7 +101,7 @@ class GetArchiveStateResponse extends Command {
         const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint32(archiveRecordsNumber, false);
+        buffer.setUint32(archiveRecordsNumber);
         buffer.setUint32(eldestTime2000);
         buffer.setUint32(newestTime2000);
 
