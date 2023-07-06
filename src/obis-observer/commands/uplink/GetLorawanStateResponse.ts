@@ -48,7 +48,7 @@ const examples: TCommandExampleList = [
  * import GetLorawanStateResponse from 'jooby-codec/obis-observer/commands/uplink/GetLorawanStateResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x25, 0x08, 0x01, 0xc1, 0x05, 0x06, 0x00, 0x00, 0x00
+ *     0x08, 0x01, 0xc1, 0x05, 0x06, 0x00, 0x00, 0x00
  * ]);
  * const command = GetLorawanStateResponse.fromBytes(commandBody);
  *
