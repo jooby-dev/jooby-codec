@@ -137,35 +137,21 @@ class GetReadoutStateResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {
-            requestId,
-            lastSuccessfulTime,
-            lastFailedTime,
-            readoutAttempts,
-            successfulReadoutAttempts,
-            readoutRepetitions,
-            waitNextSymbolErrors,
-            waitIdErrors,
-            waitNextStateErrors,
-            wrongBccErrors,
-            parityErrors,
-            frameErrors,
-            overrunErrors
-        } = this.parameters;
+        const {parameters} = this;
 
-        buffer.setUint8(requestId);
-        buffer.setUint32(lastSuccessfulTime);
-        buffer.setUint32(lastFailedTime);
-        buffer.setUint16(readoutAttempts);
-        buffer.setUint16(successfulReadoutAttempts);
-        buffer.setUint16(readoutRepetitions);
-        buffer.setUint8(waitNextSymbolErrors);
-        buffer.setUint8(waitIdErrors);
-        buffer.setUint8(waitNextStateErrors);
-        buffer.setUint8(wrongBccErrors);
-        buffer.setUint8(parityErrors);
-        buffer.setUint8(frameErrors);
-        buffer.setUint8(overrunErrors);
+        buffer.setUint8(parameters.requestId);
+        buffer.setUint32(parameters.lastSuccessfulTime);
+        buffer.setUint32(parameters.lastFailedTime);
+        buffer.setUint16(parameters.readoutAttempts);
+        buffer.setUint16(parameters.successfulReadoutAttempts);
+        buffer.setUint16(parameters.readoutRepetitions);
+        buffer.setUint8(parameters.waitNextSymbolErrors);
+        buffer.setUint8(parameters.waitIdErrors);
+        buffer.setUint8(parameters.waitNextStateErrors);
+        buffer.setUint8(parameters.wrongBccErrors);
+        buffer.setUint8(parameters.parityErrors);
+        buffer.setUint8(parameters.frameErrors);
+        buffer.setUint8(parameters.overrunErrors);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
