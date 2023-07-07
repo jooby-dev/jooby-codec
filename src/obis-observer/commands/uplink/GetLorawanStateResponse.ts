@@ -109,25 +109,16 @@ class GetLorawanStateResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {
-            requestId,
-            downlinkQuality,
-            rssi,
-            snr,
-            deviceMargin,
-            gateMargin,
-            resetFlag,
-            senderCollision
-        } = this.parameters;
+        const {parameters} = this;
 
-        buffer.setUint8(requestId);
-        buffer.setUint8(downlinkQuality);
-        buffer.setUint8(rssi);
-        buffer.setUint8(snr);
-        buffer.setUint8(deviceMargin);
-        buffer.setUint8(gateMargin);
-        buffer.setUint8(resetFlag);
-        buffer.setUint8(senderCollision);
+        buffer.setUint8(parameters.requestId);
+        buffer.setUint8(parameters.downlinkQuality);
+        buffer.setUint8(parameters.rssi);
+        buffer.setUint8(parameters.snr);
+        buffer.setUint8(parameters.deviceMargin);
+        buffer.setUint8(parameters.gateMargin);
+        buffer.setUint8(parameters.resetFlag);
+        buffer.setUint8(parameters.senderCollision);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
