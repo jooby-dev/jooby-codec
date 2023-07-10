@@ -9,6 +9,6 @@
     "readme": "./readme.md",
     "sort": ["static-first", "alphabetical"],
     "disableSources": false,
-    "plugin": ["typedoc-plugin-missing-exports", "typedoc-theme-yaf"],
-	"theme": "yaf"
+    "plugin": ["typedoc-plugin-missing-exports", "@mxssfd/typedoc-theme"],
+	"theme": "my-theme"
 }
