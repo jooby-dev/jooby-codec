@@ -23,3 +23,6 @@ export {default as RemoveShortNameProfile} from './RemoveShortNameProfile.js';
 export {default as SetArchiveProfile} from './SetArchiveProfile.js';
 export {default as SetSerialPort} from './SetSerialPort.js';
 export {default as SetShortName} from './SetShortName.js';
+export {default as UpdateImageVerify} from './UpdateImageVerify.js';
+export {default as UpdateImageWrite} from './UpdateImageWrite.js';
+export {default as UpdateRun} from './UpdateRun.js';
