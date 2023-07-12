@@ -13,6 +13,7 @@ interface IReadArchiveResponseParameters extends ICommandParameters {
 }
 
 const COMMAND_ID = 0x12;
+
 // request id byte + DateTime 4 bytes
 const COMMAND_HEADER_SIZE = REQUEST_ID_SIZE + DATE_TIME_SIZE;
 

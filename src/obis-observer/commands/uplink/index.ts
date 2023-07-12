@@ -26,3 +26,6 @@ export {default as RemoveShortNameProfileResponse} from './RemoveShortNameProfil
 export {default as SetArchiveProfileResponse} from './SetArchiveProfileResponse.js';
 export {default as SetSerialPortResponse} from './SetSerialPortResponse.js';
 export {default as SetShortNameResponse} from './SetShortNameResponse.js';
+export {default as UpdateImageVerifyResponse} from './UpdateImageVerifyResponse.js';
+export {default as UpdateImageWriteResponse} from './UpdateImageWriteResponse.js';
+export {default as UpdateRunResponse} from './UpdateRunResponse.js';
