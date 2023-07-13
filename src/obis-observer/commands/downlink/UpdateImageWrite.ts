@@ -27,7 +27,7 @@ const examples: TCommandExampleList = [
                 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0e, 0x0f
             ])
         },
-        hex: {header: '2a', body: '15 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0e 0f'}
+        hex: {header: '2a', body: '14 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0e 0f'}
     }
 ];
 
@@ -50,7 +50,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 2a 15 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0e 0f
+ * // 2a 14 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0e 0f
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/UpdateImageWrite.md#request)
@@ -93,7 +93,8 @@ class UpdateImageWrite extends Command {
         const buffer = new CommandBinaryBuffer(COMMAND_HEADER_SIZE);
         const result = new Uint8Array(this.size);
 
-        buffer.setUint8(this.size);
+        // subtract size byte to get essential data size
+        buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
         buffer.setUint32(offset);
 
