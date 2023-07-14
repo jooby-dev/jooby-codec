@@ -24,10 +24,10 @@ const examples: TCommandExampleList = [
             requestId: 33,
             offset: 2112,
             data: new Uint8Array([
-                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0e, 0x0f
+                0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
             ])
         },
-        hex: {header: '2a', body: '14 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0e 0f'}
+        hex: {header: '2a', body: '15 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 00 00 00 00 00 00'}
     }
 ];
 
@@ -43,14 +43,14 @@ const examples: TCommandExampleList = [
  *     requestId: 33,
  *     offset: 2112,
  *     data: new Uint8Array([
- *         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0e, 0x0f
+ *         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
  *     ])
  * };
  * const command = new UpdateImageWrite(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 2a 14 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0e 0f
+ * // 2a 15 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 00 00 00 00 00 00
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/UpdateImageWrite.md#request)
