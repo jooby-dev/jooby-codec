@@ -7,7 +7,9 @@ import * as uplinkCommands from './commands/uplink/index.js';
 
 import {IHexFormatOptions} from '../config.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
+import getBytesFromBase64 from '../utils/getBytesFromBase64.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
+import getBase64FromBytes from '../utils/getBase64FromBytes.js';
 
 
 interface IMessageCommand {
@@ -90,6 +92,10 @@ export const fromHex = ( data: string ) => (
     fromBytes(getBytesFromHex(data))
 );
 
+export const fromBase64 = ( data: string ) => (
+    fromBytes(getBytesFromBase64(data))
+);
+
 export const toBytes = ( commands: Array<Command> ): Uint8Array => {
     const arrays = commands.map(command => command.toBytes());
     const totalLength = arrays.reduce((accumulator, item) => (accumulator + item.length), 0);
@@ -107,3 +113,5 @@ export const toBytes = ( commands: Array<Command> ): Uint8Array => {
 };
 
 export const toHex = ( commands: Array<Command>, options: IHexFormatOptions = {} ): string => getHexFromBytes(toBytes(commands), options);
+
+export const toBase64 = ( commands: Array<Command> ): string => getBase64FromBytes(toBytes(commands));

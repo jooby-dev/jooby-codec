@@ -85,13 +85,15 @@ const uplinkMessages: TMessageList = [
 
 
 const checkMessage = ( {hex, commands, isValid}: IMessage ) => {
-    const messageData = message.fromHex(hex);
+    const messageDataFromHex = message.fromHex(hex);
+    const messageDataFromBase64 = message.fromBase64(Buffer.from(hex.replace(/\s/g, ''), 'hex').toString('base64'));
 
-    messageData.commands.forEach((messageCommand, index) => {
+    messageDataFromHex.commands.forEach((messageCommand, index) => {
         expect(messageCommand.command.parameters).toStrictEqual(commands[index].parameters);
     });
 
-    expect(messageData.isValid).toBe(isValid);
+    expect(messageDataFromHex).toStrictEqual(messageDataFromBase64);
+    expect(messageDataFromHex.isValid).toBe(isValid);
 };
 
 

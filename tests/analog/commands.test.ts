@@ -5,6 +5,7 @@ import {commands} from '../../src/analog/index.js';
 import * as message from '../../src/analog/message.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
+import getBase64FromBytes from '../../src/utils/getBase64FromBytes.js';
 
 
 const {uplink, downlink} = commands;
@@ -13,7 +14,8 @@ const {uplink, downlink} = commands;
 const checkExample = ( constructor: any, {parameters, config, hex: {header, body} }: ICommandExample ) => {
     const commandHex = getHexFromBytes(getBytesFromHex(`${header} ${body}`));
     const commandBytes = getBytesFromHex(commandHex);
-    const messageHex = `${commandHex} ${message.calculateLrc(commandBytes)}`;
+    const commandBase64 = getBase64FromBytes(commandBytes);
+    const messageHex = `${commandHex} ${message.calculateLrc(commandBytes).toString(16)}`;
     const command = new constructor(parameters, config);
     const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null, config);
 
@@ -23,6 +25,7 @@ const checkExample = ( constructor: any, {parameters, config, hex: {header, body
     expect(command.getParameters()).toStrictEqual(parameters);
     expect(command.toHex()).toBe(commandHex);
     expect(command.toJson()).toBe(JSON.stringify(command.getParameters()));
+    expect(command.toBase64()).toBe(commandBase64);
 
     expect(commandFromHex).toStrictEqual(command);
     expect(commandFromHex.toHex()).toBe(commandHex);
