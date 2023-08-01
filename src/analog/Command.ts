@@ -2,6 +2,7 @@ import * as header from './header.js';
 import {IHexFormatOptions} from '../config.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getHexFromNumber from '../utils/getHexFromNumber.js';
+import getBase64FromBytes from '../utils/getBase64FromBytes.js';
 
 
 export interface ICommandExample {
@@ -120,6 +121,10 @@ abstract class Command {
 
     toHex ( options: IHexFormatOptions = {} ) {
         return getHexFromBytes(this.toBytes(), options);
+    }
+
+    toBase64 () {
+        return getBase64FromBytes(this.toBytes());
     }
 
     /**
