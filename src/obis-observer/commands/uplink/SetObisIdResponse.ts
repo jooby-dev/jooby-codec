@@ -5,9 +5,9 @@ import {resultCodes} from '../../constants/index.js';
 
 
 /**
- * ISetShortNameResponseParameters command parameters
+ * ISetObisResponseParameters command parameters
  */
-interface ISetShortNameResponseParameters extends ICommandParameters {
+interface ISetObisIdResponseParameters extends ICommandParameters {
     resultCode: number
 }
 
@@ -17,7 +17,7 @@ const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set short name - succeed',
+        name: 'set obisId - succeed',
         parameters: {
             requestId: 2,
             resultCode: resultCodes.OK
@@ -32,10 +32,10 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import SetShortNameResponse from 'jooby-codec/obis-observer/commands/uplink/SetShortNameResponse.js';
+ * import SetObisIdResponse from 'jooby-codec/obis-observer/commands/uplink/SetObisIdResponse.js';
  *
  * const commandBody = new Uint8Array([0x02, 0x00]);
- * const command = SetShortNameResponse.fromBytes(commandBody);
+ * const command = SetObisIdResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -45,10 +45,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetShortName.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObisId.md#response)
  */
-class SetShortNameResponse extends Command {
-    constructor ( public parameters: ISetShortNameResponseParameters ) {
+class SetObisIdResponse extends Command {
+    constructor ( public parameters: ISetObisIdResponseParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -68,7 +68,7 @@ class SetShortNameResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new SetShortNameResponse({
+        return new SetObisIdResponse({
             requestId: buffer.getUint8(),
             resultCode: buffer.getUint8()
         });
@@ -87,4 +87,4 @@ class SetShortNameResponse extends Command {
 }
 
 
-export default SetShortNameResponse;
+export default SetObisIdResponse;

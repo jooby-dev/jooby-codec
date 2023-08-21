@@ -5,9 +5,9 @@ import {contentTypes} from '../../constants/index.js';
 
 
 /**
- * IGetShortNameProfileResponseParameters command parameters
+ * IGetObisProfileResponseParameters command parameters
  */
-interface IGetShortNameProfileResponseParameters extends ICommandParameters {
+interface IGetObisProfileResponseParameters extends ICommandParameters {
     obisProfile: IObisProfile,
 }
 
@@ -16,7 +16,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + OBIS_PROFILE_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'profile for short name 121',
+        name: 'obis profile for obisId 121',
         parameters: {
             requestId: 3,
             obisProfile: {
@@ -41,10 +41,10 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetShortNameProfileResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNameProfileResponse.js';
+ * import GetObisProfileResponse from 'jooby-codec/obis-observer/commands/uplink/GetObisProfileResponse.js';
  *
  * const commandBody = new Uint8Array([0x03, 0x01, 0x58, 0x02, 0x14, 0x3d, 0x13]);
- * const command = GetShortNameProfileResponse.fromBytes(commandBody);
+ * const command = GetObisProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -64,10 +64,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNameProfile.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisProfile.md#response)
  */
-class GetShortNameProfileResponse extends Command {
-    constructor ( public parameters: IGetShortNameProfileResponseParameters ) {
+class GetObisProfileResponse extends Command {
+    constructor ( public parameters: IGetObisProfileResponseParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -90,7 +90,7 @@ class GetShortNameProfileResponse extends Command {
         const requestId = buffer.getUint8();
         const obisProfile = buffer.getObisProfile();
 
-        return new GetShortNameProfileResponse({requestId, obisProfile});
+        return new GetObisProfileResponse({requestId, obisProfile});
     }
 
     // returns full message - header with body
@@ -110,4 +110,4 @@ class GetShortNameProfileResponse extends Command {
 }
 
 
-export default GetShortNameProfileResponse;
+export default GetObisProfileResponse;

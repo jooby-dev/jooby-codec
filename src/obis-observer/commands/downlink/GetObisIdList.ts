@@ -4,9 +4,9 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetShortNamesParameters command parameters
+ * IGetObisIdListParameters command parameters
  */
-interface IGetShortNamesParameters extends ICommandParameters {
+interface IGetObisIdListParameters extends ICommandParameters {
     obis: IObis
 }
 
@@ -15,7 +15,7 @@ const COMMAND_ID = 0x01;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get short name for OBIS code 0.9.1 - local time',
+        name: 'get obisId list for OBIS code 0.9.1 - local time',
         parameters: {
             requestId: 3,
             obis: {
@@ -34,7 +34,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetShortNames from 'jooby-codec/obis-observer/commands/downlink/GetShortNames.js';
+ * import GetObisIdList from 'jooby-codec/obis-observer/commands/downlink/GetObisIdList.js';
  *
  * const parameters = {
  *     requestId: 3,
@@ -44,17 +44,17 @@ const examples: TCommandExampleList = [
  *         e: 1
  *     }
  * };
- * const command = new GetShortNames(parameters);
+ * const command = new GetObisIdList(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 01 03 02 00 09 01
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNames.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisIdList.md#request)
  */
-class GetShortNames extends Command {
-    constructor ( public parameters: IGetShortNamesParameters ) {
+class GetObisIdList extends Command {
+    constructor ( public parameters: IGetObisIdListParameters ) {
         super();
 
         this.size = REQUEST_ID_SIZE + CommandBinaryBuffer.getObisSize(parameters.obis);
@@ -74,7 +74,7 @@ class GetShortNames extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetShortNames({
+        return new GetObisIdList({
             requestId: buffer.getUint8(),
             obis: buffer.getObis()
         });
@@ -97,4 +97,4 @@ class GetShortNames extends Command {
 }
 
 
-export default GetShortNames;
+export default GetObisIdList;

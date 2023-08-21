@@ -5,9 +5,9 @@ import {UPLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetContentByShortNameResponseParameters command parameters
+ * IGetObisContentByIdResponseParameters command parameters
  */
-interface IGetContentByShortNameResponseParameters extends ICommandParameters {
+interface IGetObisContentByIdResponseParameters extends ICommandParameters {
     /** obis code content from the metering device */
     content: number
 }
@@ -31,10 +31,10 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetContentByShortNameResponse from 'jooby-codec/obis-observer/commands/uplink/GetContentByShortNameResponse.js';
+ * import GetObisContentByIdResponse from 'jooby-codec/obis-observer/commands/uplink/GetObisContentByIdResponse.js';
  *
  * const commandBody = new Uint8Array([0x79, 0x43, 0xac, 0x1d, 0x71]);
- * const command = GetContentByShortNameResponse.fromBytes(commandBody);
+ * const command = GetObisContentByIdResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -44,10 +44,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetContentByShortName.md#response-with-float-content)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisContentById.md#response-with-float-content)
  */
-class GetContentByShortNameResponse extends Command {
-    constructor ( public parameters: IGetContentByShortNameResponseParameters ) {
+class GetObisContentByIdResponse extends Command {
+    constructor ( public parameters: IGetObisContentByIdResponseParameters ) {
         super();
 
         // request id byte + obis float32 content 4 bytes
@@ -70,7 +70,7 @@ class GetContentByShortNameResponse extends Command {
         const requestId = buffer.getUint8();
         const content = roundNumber(buffer.getFloat32());
 
-        return new GetContentByShortNameResponse({requestId, content});
+        return new GetObisContentByIdResponse({requestId, content});
     }
 
     // returns full message - header with body
@@ -90,4 +90,4 @@ class GetContentByShortNameResponse extends Command {
 }
 
 
-export default GetContentByShortNameResponse;
+export default GetObisContentByIdResponse;

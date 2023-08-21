@@ -4,10 +4,10 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * IRemoveShortNameProfileParameters command parameters
+ * IRemoveObisProfileParameters command parameters
  */
-interface IRemoveShortNameProfileParameters extends ICommandParameters {
-    shortName: number
+interface IRemoveObisProfileParameters extends ICommandParameters {
+    obisId: number
 }
 
 
@@ -16,10 +16,10 @@ const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'remove profile for short name 28',
+        name: 'remove obis profile for obisId 28',
         parameters: {
             requestId: 5,
-            shortName: 28
+            obisId: 28
         },
         hex: {header: '07', body: '05 1c'}
     }
@@ -31,23 +31,23 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import RemoveShortNameProfile from 'jooby-codec/obis-observer/commands/downlink/RemoveShortNameProfile.js';
+ * import RemoveObisProfile from 'jooby-codec/obis-observer/commands/downlink/RemoveObisProfile.js';
  *
  * const parameters = {
  *     requestId: 5,
- *     shortName: 28
+ *     obisId: 28
  * };
- * const command = new RemoveShortNameProfile(parameters);
+ * const command = new RemoveObisProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 07 05 1c
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveShortNameProfile.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveObisProfile.md#request)
  */
-class RemoveShortNameProfile extends Command {
-    constructor ( public parameters: IRemoveShortNameProfileParameters ) {
+class RemoveObisProfile extends Command {
+    constructor ( public parameters: IRemoveObisProfileParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -67,23 +67,23 @@ class RemoveShortNameProfile extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new RemoveShortNameProfile({
+        return new RemoveObisProfile({
             requestId: buffer.getUint8(),
-            shortName: buffer.getUint8()
+            obisId: buffer.getUint8()
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, shortName} = this.parameters;
+        const {requestId, obisId} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint8(shortName);
+        buffer.setUint8(obisId);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
 
-export default RemoveShortNameProfile;
+export default RemoveObisProfile;

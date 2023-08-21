@@ -5,9 +5,9 @@ import {resultCodes} from '../../constants/index.js';
 
 
 /**
- * IAddShortNameProfileResponseParameters command parameters
+ * IAddObisProfileResponseParameters command parameters
  */
-interface IAddShortNameProfileResponseParameters extends ICommandParameters {
+interface IAddObisProfileResponseParameters extends ICommandParameters {
     resultCode: number
 }
 
@@ -17,7 +17,7 @@ const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'add short name profile - succeed',
+        name: 'add obis profile - succeed',
         parameters: {
             requestId: 7,
             resultCode: resultCodes.OK
@@ -32,10 +32,10 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import AddShortNameProfileResponse from 'jooby-codec/obis-observer/commands/uplink/AddShortNameProfileResponse.js';
+ * import AddObisProfileResponse from 'jooby-codec/obis-observer/commands/uplink/AddObisProfileResponse.js';
  *
  * const commandBody = new Uint8Array([0x07, 0x00]);
- * const command = AddShortNameProfileResponse.fromBytes(commandBody);
+ * const command = AddObisProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -45,10 +45,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddShortNameProfile.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddObisProfile.md#response)
  */
-class AddShortNameProfileResponse extends Command {
-    constructor ( public parameters: IAddShortNameProfileResponseParameters ) {
+class AddObisProfileResponse extends Command {
+    constructor ( public parameters: IAddObisProfileResponseParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -68,7 +68,7 @@ class AddShortNameProfileResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new AddShortNameProfileResponse({
+        return new AddObisProfileResponse({
             requestId: buffer.getUint8(),
             resultCode: buffer.getUint8()
         });
@@ -87,4 +87,4 @@ class AddShortNameProfileResponse extends Command {
 }
 
 
-export default AddShortNameProfileResponse;
+export default AddObisProfileResponse;

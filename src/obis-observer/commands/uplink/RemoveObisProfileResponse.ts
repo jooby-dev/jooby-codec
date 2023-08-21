@@ -5,9 +5,9 @@ import {resultCodes} from '../../constants/index.js';
 
 
 /**
- * IRemoveShortNameProfileResponseParameters command parameters
+ * IRemoveObisProfileResponseParameters command parameters
  */
-interface IRemoveShortNameProfileResponseParameters extends ICommandParameters {
+interface IRemoveObisProfileResponseParameters extends ICommandParameters {
     resultCode: number
 }
 
@@ -17,7 +17,7 @@ const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'remove short name profile - not found',
+        name: 'remove obis profile - not found',
         parameters: {
             requestId: 5,
             resultCode: resultCodes.PROFILE_NOT_FOUND
@@ -32,10 +32,10 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import RemoveShortNameProfileResponse from 'jooby-codec/obis-observer/commands/uplink/RemoveShortNameProfileResponse.js';
+ * import RemoveObisProfileResponse from 'jooby-codec/obis-observer/commands/uplink/RemoveObisProfileResponse.js';
  *
  * const commandBody = new Uint8Array([0x05, 0x04]);
- * const command = RemoveShortNameProfileResponse.fromBytes(commandBody);
+ * const command = RemoveObisProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -45,10 +45,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveShortNameProfileResponse.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveObisProfileResponse.md#request)
  */
-class RemoveShortNameProfileResponse extends Command {
-    constructor ( public parameters: IRemoveShortNameProfileResponseParameters ) {
+class RemoveObisProfileResponse extends Command {
+    constructor ( public parameters: IRemoveObisProfileResponseParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -68,7 +68,7 @@ class RemoveShortNameProfileResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new RemoveShortNameProfileResponse({
+        return new RemoveObisProfileResponse({
             requestId: buffer.getUint8(),
             resultCode: buffer.getUint8()
         });
@@ -87,4 +87,4 @@ class RemoveShortNameProfileResponse extends Command {
 }
 
 
-export default RemoveShortNameProfileResponse;
+export default RemoveObisProfileResponse;

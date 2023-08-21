@@ -5,10 +5,10 @@ import {contentTypes} from '../../constants/index.js';
 
 
 /**
- * IAddShortNameProfileParameters command parameters
+ * IAddObisProfileParameters command parameters
  */
-interface IAddShortNameProfileParameters extends ICommandParameters {
-    shortName: number,
+interface IAddObisProfileParameters extends ICommandParameters {
+    obisId: number,
     obisProfile: IObisProfile
 }
 
@@ -18,10 +18,10 @@ const COMMAND_SIZE = 7 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'add profile for short name 32',
+        name: 'add profile for obisId 32',
         parameters: {
             requestId: 3,
-            shortName: 32,
+            obisId: 32,
             obisProfile: {
                 capturePeriod: 244,
                 sendingPeriod: 132,
@@ -44,11 +44,11 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import AddShortNameProfile from 'jooby-codec/obis-observer/commands/downlink/AddShortNameProfile.js';
+ * import AddObisProfile from 'jooby-codec/obis-observer/commands/downlink/AddObisProfile.js';
  *
  * const parameters = {
  *     requestId: 3,
- *     shortName: 32,
+ *     obisId: 32,
  *     obisProfile: {
  *         capturePeriod: 244,
  *         sendingPeriod: 132,
@@ -61,17 +61,17 @@ const examples: TCommandExampleList = [
  *         }
  *     }
  * };
- * const command = new AddShortNameProfile(parameters);
+ * const command = new AddObisProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 05 03 20 00 f4 00 84 26 04
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddShortNameProfile.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddObisProfile.md#request)
  */
-class AddShortNameProfile extends Command {
-    constructor ( public parameters: IAddShortNameProfileParameters ) {
+class AddObisProfile extends Command {
+    constructor ( public parameters: IAddObisProfileParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -91,9 +91,9 @@ class AddShortNameProfile extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new AddShortNameProfile({
+        return new AddObisProfile({
             requestId: buffer.getUint8(),
-            shortName: buffer.getUint8(),
+            obisId: buffer.getUint8(),
             obisProfile: buffer.getObisProfile()
         });
     }
@@ -101,10 +101,10 @@ class AddShortNameProfile extends Command {
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, shortName, obisProfile} = this.parameters;
+        const {requestId, obisId, obisProfile} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint8(shortName);
+        buffer.setUint8(obisId);
         buffer.setObisProfile(obisProfile);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
@@ -112,4 +112,4 @@ class AddShortNameProfile extends Command {
 }
 
 
-export default AddShortNameProfile;
+export default AddObisProfile;

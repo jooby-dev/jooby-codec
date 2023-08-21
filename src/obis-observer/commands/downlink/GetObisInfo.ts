@@ -4,11 +4,11 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetShortNameInfoParameters command parameters
+ * IGetObisInfoParameters command parameters
  */
-interface IGetShortNameInfoParameters extends ICommandParameters {
+interface IGetObisInfoParameters extends ICommandParameters {
     requestId: number,
-    shortName: number
+    obisId: number
 }
 
 
@@ -16,10 +16,10 @@ const COMMAND_ID = 0x0b;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get info for short name 44',
+        name: 'get info for obisId 44',
         parameters: {
             requestId: 3,
-            shortName: 44
+            obisId: 44
         },
         hex: {header: '0b', body: '03 2c'}
     }
@@ -31,26 +31,26 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetShortNameInfo from 'jooby-codec/obis-observer/commands/downlink/GetShortNameInfo.js';
+ * import GetObisInfo from 'jooby-codec/obis-observer/commands/downlink/GetObisInfo.js';
  *
  * const parameters = {
  *     requestId: 3,
- *     shortName: 44
+ *     obisId: 44
  * };
- * const command = new GetShortNameInfo(parameters);
+ * const command = new GetObisInfo(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 0b 03 2c
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNameInfo.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisInfo.md#request)
  */
-class GetShortNameInfo extends Command {
-    constructor ( public parameters: IGetShortNameInfoParameters ) {
+class GetObisInfo extends Command {
+    constructor ( public parameters: IGetObisInfoParameters ) {
         super();
 
-        // request id size + short name 1 byte
+        // request id size + obisId 1 byte
         this.size = REQUEST_ID_SIZE + 1;
     }
 
@@ -68,9 +68,9 @@ class GetShortNameInfo extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetShortNameInfo({
+        return new GetObisInfo({
             requestId: buffer.getUint8(),
-            shortName: buffer.getUint8()
+            obisId: buffer.getUint8()
         });
     }
 
@@ -81,14 +81,14 @@ class GetShortNameInfo extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, shortName} = this.parameters;
+        const {requestId, obisId} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint8(shortName);
+        buffer.setUint8(obisId);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
 
-export default GetShortNameInfo;
+export default GetObisInfo;

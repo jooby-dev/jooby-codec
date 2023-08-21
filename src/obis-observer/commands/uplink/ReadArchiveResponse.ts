@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IShortNameFloat, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IObisValueFloat, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
 
@@ -9,7 +9,7 @@ import {TTime2000} from '../../../utils/time.js';
  */
 interface IReadArchiveResponseParameters extends ICommandParameters {
     time2000: TTime2000,
-    shortNameList: Array<IShortNameFloat>
+    obisValueList: Array<IObisValueFloat>
 }
 
 const COMMAND_ID = 0x12;
@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
         parameters: {
             requestId: 34,
             time2000: 756619200,
-            shortNameList: [
+            obisValueList: [
                 {code: 50, content: 22.27},
                 {code: 56, content: 89.33}
             ]
@@ -50,7 +50,7 @@ const examples: TCommandExampleList = [
  * {
  *     requestId: 34,
  *     time2000: 756619200,
- *     shortNameList: [
+ *     obisValueList: [
  *         {code: 50, content: 22.27},
  *         {code: 56, content: 89.33}
  *     ]
@@ -66,9 +66,9 @@ class ReadArchiveResponse extends Command {
         // size byte + header
         let size = 1 + COMMAND_HEADER_SIZE;
 
-        // + short name list of code 1 byte with float content 4 bytes
-        this.parameters.shortNameList.forEach(shortName => {
-            size += CommandBinaryBuffer.getShortNameContentSize(shortName);
+        // + obis values list list of code 1 byte with float content 4 bytes
+        this.parameters.obisValueList.forEach(obisId => {
+            size += CommandBinaryBuffer.getObisContentSize(obisId);
         });
 
         this.size = size;
@@ -91,16 +91,16 @@ class ReadArchiveResponse extends Command {
         let size = buffer.getUint8() - COMMAND_HEADER_SIZE;
         const requestId = buffer.getUint8();
         const time2000 = buffer.getUint32();
-        const shortNameList = [];
+        const obisValueList = [];
 
         while ( size ) {
-            const shortName = buffer.getShortNameFloat();
+            const obisValue = buffer.getObisValueFloat();
 
-            size -= CommandBinaryBuffer.getShortNameContentSize(shortName);
-            shortNameList.push(shortName);
+            size -= CommandBinaryBuffer.getObisContentSize(obisValue);
+            obisValueList.push(obisValue);
         }
 
-        return new ReadArchiveResponse({requestId, time2000, shortNameList});
+        return new ReadArchiveResponse({requestId, time2000, obisValueList});
     }
 
     // returns full message - header with body
@@ -110,13 +110,13 @@ class ReadArchiveResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, time2000, shortNameList} = this.parameters;
+        const {requestId, time2000, obisValueList} = this.parameters;
 
         // subtract size byte
         buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
         buffer.setUint32(time2000);
-        shortNameList.forEach(shortName => buffer.setShortNameFloat(shortName));
+        obisValueList.forEach(obisValue => buffer.setObisValueFloat(obisValue));
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

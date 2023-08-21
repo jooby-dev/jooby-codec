@@ -4,20 +4,20 @@ import {UPLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetShortNamesResponseParameters command parameters
+ * IGetObisIdListResponseParameters command parameters
  */
-interface IGetShortNamesResponseParameters extends ICommandParameters {
-    shortNameList: Array<number>
+interface IGetObisIdListResponseParameters extends ICommandParameters {
+    obisIdList: Array<number>
 }
 
 const COMMAND_ID = 0x02;
 
 const examples: TCommandExampleList = [
     {
-        name: 'two short names for OBIS code 0.9.1 - local time',
+        name: 'two obisId for OBIS code 0.9.1 - local time',
         parameters: {
             requestId: 3,
-            shortNameList: [197, 198]
+            obisIdList: [197, 198]
         },
         hex: {header: '02', body: '03 03 c5 c6'}
     }
@@ -29,27 +29,27 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetShortNamesResponse from 'jooby-codec/obis-observer/commands/uplink/GetShortNamesResponse.js';
+ * import GetObisIdListResponse from 'jooby-codec/obis-observer/commands/uplink/GetObisIdListResponse.js';
  *
  * const commandBody = new Uint8Array([0x03, 0x03, 0xc5, 0xc6]);
- * const command = GetShortNamesResponse.fromBytes(commandBody);
+ * const command = GetObisIdListResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
  *     requestId: 3,
- *     shortNameList: [197, 198]
+ *     obisIdList: [197, 198]
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetShortNames.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisIdList.md#response)
  */
-class GetShortNamesResponse extends Command {
-    constructor ( public parameters: IGetShortNamesResponseParameters ) {
+class GetObisIdListResponse extends Command {
+    constructor ( public parameters: IGetObisIdListResponseParameters ) {
         super();
 
-        // body size = size byte + request id byte + short names 0-n bytes
-        this.size = 1 + REQUEST_ID_SIZE + parameters.shortNameList.length;
+        // body size = size byte + request id byte + obisIdList 0-n bytes
+        this.size = 1 + REQUEST_ID_SIZE + parameters.obisIdList.length;
     }
 
 
@@ -69,9 +69,9 @@ class GetShortNamesResponse extends Command {
         const size = buffer.getUint8();
         const requestId = buffer.getUint8();
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const shortNameList = [...new Array(size - REQUEST_ID_SIZE)].map(() => buffer.getUint8());
+        const obisIdList = [...new Array(size - REQUEST_ID_SIZE)].map(() => buffer.getUint8());
 
-        return new GetShortNamesResponse({requestId, shortNameList});
+        return new GetObisIdListResponse({requestId, obisIdList});
     }
 
     // returns full message - header with body
@@ -81,16 +81,16 @@ class GetShortNamesResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, shortNameList} = this.parameters;
+        const {requestId, obisIdList} = this.parameters;
 
         // subtract size byte
         buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
-        shortNameList.forEach(shortName => buffer.setUint8(shortName));
+        obisIdList.forEach(obisId => buffer.setUint8(obisId));
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
 
-export default GetShortNamesResponse;
+export default GetObisIdListResponse;

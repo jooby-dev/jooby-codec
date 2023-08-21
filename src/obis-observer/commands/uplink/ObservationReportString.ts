@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {IShortNameString, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IObisValueString, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
 
@@ -10,7 +10,7 @@ import {TTime2000} from '../../../utils/time.js';
 interface IObservationReportStringParameters {
     /** number of seconds that have elapsed since the year 2000 */
     time2000: TTime2000,
-    shortNameList: Array<IShortNameString>
+    obisValueList: Array<IObisValueString>
 }
 
 
@@ -21,7 +21,7 @@ const examples: TCommandExampleList = [
         name: 'get observation report from 2023.12.23 00:00:00 GMT',
         parameters: {
             time2000: 756604800,
-            shortNameList: [
+            obisValueList: [
                 {code: 50, content: 'reactive power QI, average'},
                 {code: 56, content: 'reactive power QI, total'}
             ]
@@ -56,7 +56,7 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     time2000: 756604800,
- *     shortNameList: [
+ *     obisValueList: [
  *         {code: 50, content: 'reactive power QI, average'},
  *         {code: 56, content: 'reactive power QI, total'}
  *     ]
@@ -72,8 +72,8 @@ class ObservationReportString extends Command {
         // real size - 1 size byte + others
         let size = 1 + DATE_TIME_SIZE;
 
-        this.parameters.shortNameList.forEach(shortName => {
-            size += CommandBinaryBuffer.getShortNameContentSize(shortName);
+        this.parameters.obisValueList.forEach(obisValue => {
+            size += CommandBinaryBuffer.getObisContentSize(obisValue);
         });
 
         this.size = size;
@@ -95,16 +95,16 @@ class ObservationReportString extends Command {
 
         let size = buffer.getUint8() - DATE_TIME_SIZE;
         const time2000 = buffer.getUint32();
-        const shortNameList = [];
+        const obisValueList = [];
 
         while ( size > 0 ) {
-            const shortName = buffer.getShortNameString();
+            const obisValue = buffer.getObisValueString();
 
-            size -= CommandBinaryBuffer.getShortNameContentSize(shortName);
-            shortNameList.push(shortName);
+            size -= CommandBinaryBuffer.getObisContentSize(obisValue);
+            obisValueList.push(obisValue);
         }
 
-        return new ObservationReportString({time2000, shortNameList});
+        return new ObservationReportString({time2000, obisValueList});
     }
 
     // returns full message - header with body
@@ -114,12 +114,12 @@ class ObservationReportString extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {time2000, shortNameList} = this.parameters;
+        const {time2000, obisValueList} = this.parameters;
 
         // subtract size byte
         buffer.setUint8(this.size - 1);
         buffer.setUint32(time2000);
-        shortNameList.forEach(shortName => buffer.setShortNameString(shortName));
+        obisValueList.forEach(obisValue => buffer.setObisValueString(obisValue));
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

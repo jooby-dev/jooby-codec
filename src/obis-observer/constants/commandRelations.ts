@@ -6,21 +6,21 @@ export const requestByResponse = new Map();
 export const responseByRequest = new Map();
 
 
-requestByResponse.set(uplinkCommands.AddShortNameProfileResponse, downlinkCommands.AddShortNameProfile);
+requestByResponse.set(uplinkCommands.AddObisProfileResponse, downlinkCommands.AddObisProfile);
 requestByResponse.set(uplinkCommands.GetArchiveProfileResponse, downlinkCommands.GetArchiveProfile);
-requestByResponse.set(uplinkCommands.GetContentByObisResponse, downlinkCommands.GetContentByObis);
-requestByResponse.set(uplinkCommands.GetContentByShortNameResponse, downlinkCommands.GetContentByShortName);
+requestByResponse.set(uplinkCommands.GetObisContentResponse, downlinkCommands.GetObisContent);
+requestByResponse.set(uplinkCommands.GetObisContentByIdResponse, downlinkCommands.GetObisContentById);
 requestByResponse.set(uplinkCommands.GetDeviceInfoResponse, downlinkCommands.GetDeviceInfo);
 requestByResponse.set(uplinkCommands.GetLorawanInfoResponse, downlinkCommands.GetLorawanInfo);
-requestByResponse.set(uplinkCommands.GetShortNameInfoResponse, downlinkCommands.GetShortNameInfo);
-requestByResponse.set(uplinkCommands.GetShortNameProfileResponse, downlinkCommands.GetShortNameProfile);
-requestByResponse.set(uplinkCommands.GetShortNamesResponse, downlinkCommands.GetShortNames);
+requestByResponse.set(uplinkCommands.GetObisInfoResponse, downlinkCommands.GetObisInfo);
+requestByResponse.set(uplinkCommands.GetObisProfileResponse, downlinkCommands.GetObisProfile);
+requestByResponse.set(uplinkCommands.GetObisIdListResponse, downlinkCommands.GetObisIdList);
 requestByResponse.set(uplinkCommands.ReadArchiveResponse, downlinkCommands.ReadArchive);
 requestByResponse.set(uplinkCommands.RebootResponse, downlinkCommands.Reboot);
-requestByResponse.set(uplinkCommands.RemoveShortNameProfileResponse, downlinkCommands.RemoveShortNameProfile);
+requestByResponse.set(uplinkCommands.RemoveObisProfileResponse, downlinkCommands.RemoveObisProfile);
 requestByResponse.set(uplinkCommands.SetArchiveProfileResponse, downlinkCommands.SetArchiveProfile);
 requestByResponse.set(uplinkCommands.SetSerialPortResponse, downlinkCommands.SetSerialPort);
-requestByResponse.set(uplinkCommands.SetShortNameResponse, downlinkCommands.SetShortName);
+requestByResponse.set(uplinkCommands.SetObisIdResponse, downlinkCommands.SetObisId);
 
 // invert keys with values
 for ( const [key, value] of requestByResponse.entries() ) {
