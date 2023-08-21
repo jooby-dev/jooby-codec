@@ -10,7 +10,7 @@ requestByResponse.set(uplinkCommands.AddObisProfileResponse, downlinkCommands.Ad
 requestByResponse.set(uplinkCommands.GetArchiveProfileResponse, downlinkCommands.GetArchiveProfile);
 requestByResponse.set(uplinkCommands.GetObisContentResponse, downlinkCommands.GetObisContent);
 requestByResponse.set(uplinkCommands.GetObisContentByIdResponse, downlinkCommands.GetObisContentById);
-requestByResponse.set(uplinkCommands.GetDeviceInfoResponse, downlinkCommands.GetDeviceInfo);
+requestByResponse.set(uplinkCommands.GetObserverInfoResponse, downlinkCommands.GetObserverInfo);
 requestByResponse.set(uplinkCommands.GetLorawanInfoResponse, downlinkCommands.GetLorawanInfo);
 requestByResponse.set(uplinkCommands.GetObisInfoResponse, downlinkCommands.GetObisInfo);
 requestByResponse.set(uplinkCommands.GetObisProfileResponse, downlinkCommands.GetObisProfile);

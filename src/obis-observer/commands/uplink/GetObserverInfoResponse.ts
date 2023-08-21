@@ -4,9 +4,9 @@ import {UPLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetDeviceInfoResponseParameters command parameters
+ * IGetObserverInfoResponseParameters command parameters
  */
-interface IGetDeviceInfoResponseParameters extends ICommandParameters {
+interface IGetObserverInfoResponseParameters extends ICommandParameters {
     softwareVersion: IVersion,
     hardwareVersion: IVersion,
     deviceName: string
@@ -43,7 +43,7 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetDeviceInfoResponse from 'jooby-codec/obis-observer/commands/uplink/GetDeviceInfoResponse.js';
+ * import GetObserverInfoResponse from 'jooby-codec/obis-observer/commands/uplink/GetObserverInfoResponse.js';
  *
  * const commandBody = new Uint8Array([
  *     0x27, 0x07, 0x00, 0x01, 0x01, 0x01, 0x21, 0x4a,
@@ -52,7 +52,7 @@ const examples: TCommandExampleList = [
  *     0x4c, 0x6f, 0x72, 0x61, 0x57, 0x61, 0x6e, 0x20,
  *     0x31, 0x44, 0x34, 0x38, 0x35, 0x20, 0x45, 0x55
  * ]);
- * const command = GetDeviceInfoResponse.fromBytes(commandBody);
+ * const command = GetObserverInfoResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -70,10 +70,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetDeviceInfo.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObserverInfo.md#response)
  */
-class GetDeviceInfoResponse extends Command {
-    constructor ( public parameters: IGetDeviceInfoResponseParameters ) {
+class GetObserverInfoResponse extends Command {
+    constructor ( public parameters: IGetObserverInfoResponseParameters ) {
         super();
 
         // real size - 1 size byte + request id byte + software version 2 bytes + hardware version 2 bytes + device name string size byte + string bytes
@@ -103,7 +103,7 @@ class GetDeviceInfoResponse extends Command {
 
         const deviceName = buffer.getString();
 
-        return new GetDeviceInfoResponse({requestId, softwareVersion, hardwareVersion, deviceName});
+        return new GetObserverInfoResponse({requestId, softwareVersion, hardwareVersion, deviceName});
     }
 
     // returns full message - header with body
@@ -127,4 +127,4 @@ class GetDeviceInfoResponse extends Command {
 }
 
 
-export default GetDeviceInfoResponse;
+export default GetObserverInfoResponse;

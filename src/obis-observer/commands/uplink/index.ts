@@ -11,7 +11,7 @@ export {default as GetObisContentResponse} from './GetObisContentResponse.js';
 export {default as GetObisContentByIdResponse} from './GetObisContentByIdResponse.js';
 export {default as GetObisContentByIdStringResponse} from './GetObisContentByIdStringResponse.js';
 export {default as GetDateResponse} from './GetDateResponse.js';
-export {default as GetDeviceInfoResponse} from './GetDeviceInfoResponse.js';
+export {default as GetObserverInfoResponse} from './GetObserverInfoResponse.js';
 export {default as GetLorawanInfoResponse} from './GetLorawanInfoResponse.js';
 export {default as GetLorawanStateResponse} from './GetLorawanStateResponse.js';
 export {default as GetReadoutStateResponse} from './GetReadoutStateResponse.js';

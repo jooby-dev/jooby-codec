@@ -21,21 +21,21 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetDeviceInfo from 'jooby-codec/obis-observer/commands/downlink/GetDeviceInfo.js';
+ * import GetObserverInfo from 'jooby-codec/obis-observer/commands/downlink/GetObserverInfo.js';
  *
  * const parameters = {
  *     requestId: 7
  * };
- * const command = new GetDeviceInfo(parameters);
+ * const command = new GetObserverInfo(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 20 07
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetDeviceInfo.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObserverInfo.md#request)
  */
-class GetDeviceInfo extends Command {
+class GetObserverInfo extends Command {
     constructor ( public parameters: ICommandParameters ) {
         super();
 
@@ -56,7 +56,7 @@ class GetDeviceInfo extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetDeviceInfo({requestId: buffer.getUint8()});
+        return new GetObserverInfo({requestId: buffer.getUint8()});
     }
 
     // returns full message - header with body
@@ -75,4 +75,4 @@ class GetDeviceInfo extends Command {
 }
 
 
-export default GetDeviceInfo;
+export default GetObserverInfo;

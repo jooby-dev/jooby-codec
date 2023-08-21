@@ -10,7 +10,7 @@ export {default as GetArchiveState} from './GetArchiveState.js';
 export {default as GetObisContent} from './GetObisContent.js';
 export {default as GetObisContentById} from './GetObisContentById.js';
 export {default as GetDate} from './GetDate.js';
-export {default as GetDeviceInfo} from './GetDeviceInfo.js';
+export {default as GetObserverInfo} from './GetObserverInfo.js';
 export {default as GetLorawanInfo} from './GetLorawanInfo.js';
 export {default as GetLorawanState} from './GetLorawanState.js';
 export {default as GetReadoutState} from './GetReadoutState.js';
