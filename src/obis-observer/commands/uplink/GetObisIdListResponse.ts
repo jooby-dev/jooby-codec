@@ -19,7 +19,7 @@ const examples: TCommandExampleList = [
             requestId: 3,
             obisIdList: [197, 198]
         },
-        hex: {header: '02', body: '03 03 c5 c6'}
+        hex: {header: '02', body: '03 c5 c6'}
     }
 ];
 
@@ -31,7 +31,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetObisIdListResponse from 'jooby-codec/obis-observer/commands/uplink/GetObisIdListResponse.js';
  *
- * const commandBody = new Uint8Array([0x03, 0x03, 0xc5, 0xc6]);
+ * const commandBody = new Uint8Array([0x03, 0xc5, 0xc6]);
  * const command = GetObisIdListResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
@@ -48,8 +48,8 @@ class GetObisIdListResponse extends Command {
     constructor ( public parameters: IGetObisIdListResponseParameters ) {
         super();
 
-        // body size = size byte + request id byte + obisIdList 0-n bytes
-        this.size = 1 + REQUEST_ID_SIZE + parameters.obisIdList.length;
+        // body size = request id byte + obisIdList 0-n bytes
+        this.size = REQUEST_ID_SIZE + parameters.obisIdList.length;
     }
 
 
@@ -66,10 +66,9 @@ class GetObisIdListResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        const size = buffer.getUint8();
         const requestId = buffer.getUint8();
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const obisIdList = [...new Array(size - REQUEST_ID_SIZE)].map(() => buffer.getUint8());
+        const obisIdList = [...new Array(data.length - REQUEST_ID_SIZE)].map(() => buffer.getUint8());
 
         return new GetObisIdListResponse({requestId, obisIdList});
     }
@@ -83,8 +82,6 @@ class GetObisIdListResponse extends Command {
         const buffer = new CommandBinaryBuffer(this.size);
         const {requestId, obisIdList} = this.parameters;
 
-        // subtract size byte
-        buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
         obisIdList.forEach(obisId => buffer.setUint8(obisId));
 

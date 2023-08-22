@@ -31,7 +31,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 1c 03
+ * // 1c 01 03
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/Reboot.md#request)

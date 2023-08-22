@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 09 04 80
+ * // 09 02 04 80
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisIdProfile.md#request)

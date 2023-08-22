@@ -90,19 +90,10 @@ abstract class Command {
      */
     static toBytes ( id: number, commandData?: Uint8Array ): Uint8Array {
         const commandLength = commandData?.length ?? 0;
-        const headerData = new Uint8Array([id]);
 
-        if ( commandData && commandLength ) {
-            const resultData = new Uint8Array(commandLength + headerData.length);
-
-            resultData.set(headerData);
-            resultData.set(commandData, headerData.length);
-
-            return resultData;
-        }
-
-        // simple command without body
-        return headerData;
+        return ( commandData && commandLength )
+            ? new Uint8Array([id, commandLength, ...commandData])
+            : new Uint8Array([id, 0]);
     }
 
     /** Get command parameters. */

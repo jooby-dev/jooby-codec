@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 17 79 32
+ * // 17 02 79 32
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisContentById.md#request)

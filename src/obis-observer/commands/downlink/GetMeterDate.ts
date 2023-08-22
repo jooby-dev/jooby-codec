@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 22 08
+ * // 22 01 08
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterDate.md#request)

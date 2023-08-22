@@ -11,8 +11,9 @@ const {uplink, downlink} = commands;
 
 
 const checkExample = ( constructor: any, {parameters, hardwareType, hex: {header, body} }: ICommandExample ) => {
-    const commandHex = getHexFromBytes(getBytesFromHex(`${header} ${body}`));
-    const commandBytes = getBytesFromHex(commandHex);
+    const bodyBytes = getBytesFromHex(body);
+    const commandBytes = new Uint8Array([parseInt(header, 16), bodyBytes.length, ...bodyBytes]);
+    const commandHex = getHexFromBytes(commandBytes);
     const commandBase64 = getBase64FromBytes(commandBytes);
     const command = new constructor(parameters, hardwareType);
     const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null, hardwareType);

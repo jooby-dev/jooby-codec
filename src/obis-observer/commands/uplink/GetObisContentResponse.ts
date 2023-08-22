@@ -20,7 +20,7 @@ const examples: TCommandExampleList = [
             requestId: 2,
             content: '57906635'
         },
-        hex: {header: '16', body: '0a 02 08 35 37 39 30 36 36 33 35'}
+        hex: {header: '16', body: '02 08 35 37 39 30 36 36 33 35'}
     }
 ];
 
@@ -32,7 +32,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetContentByObisResponse from 'jooby-codec/obis-observer/commands/uplink/GetContentByObisResponse.js';
  *
- * const commandBody = new Uint8Array([0x0a, 0x02, 0x08, 0x35, 0x37, 0x39, 0x30, 0x36, 0x36, 0x33, 0x35]);
+ * const commandBody = new Uint8Array([0x02, 0x08, 0x35, 0x37, 0x39, 0x30, 0x36, 0x36, 0x33, 0x35]);
  * const command = GetContentByObisResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
@@ -49,8 +49,8 @@ class GetContentByObisResponse extends Command {
     constructor ( public parameters: IGetContentByObisResponseParameters ) {
         super();
 
-        // request id size + 1 command size byte + 1 content size byte + content size
-        this.size = REQUEST_ID_SIZE + 1 + 1 + this.parameters.content.length;
+        // request id size + 1 content size byte + content size
+        this.size = REQUEST_ID_SIZE + 1 + this.parameters.content.length;
     }
 
 
@@ -66,10 +66,6 @@ class GetContentByObisResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-
-        // need to skip 1 byte as size is not used
-        buffer.seek(buffer.offset + 1);
-
         const requestId = buffer.getUint8();
         const content = buffer.getString();
 
@@ -85,8 +81,6 @@ class GetContentByObisResponse extends Command {
         const buffer = new CommandBinaryBuffer(this.size);
         const {requestId, content} = this.parameters;
 
-        // subtract size byte
-        buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
         buffer.setString(content);
 

@@ -16,7 +16,7 @@ type TMessageList = Array<IMessage>;
 const downlinkMessages: TMessageList = [
     {
         // GetObisIdList + GetObisIdList
-        hex: '01 03 02 00 09 01  01 04 02 00 09 01',
+        hex: '01 05 03 02 00 09 01  01 05 04 02 00 09 01',
         commands: [
             {
                 parameters: {
@@ -48,7 +48,7 @@ const downlinkMessages: TMessageList = [
 const uplinkMessages: TMessageList = [
     {
         // AddObisProfileResponse + ObservationReport
-        hex: '06 07 00  1a 0e 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec',
+        hex: '06 02 07 00  1a 0e 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec',
         commands: [
             {
                 parameters: {
@@ -75,7 +75,7 @@ const uplinkMessages: TMessageList = [
 const mixedMessages: TMessageList = [
     {
         // GetObisIdList + GetObisIdListResponse
-        hex: '01 07 02 00 09 01  02 03 07 c5 c6',
+        hex: '01 05 07 02 00 09 01  02 03 07 c5 c6',
         commands: [
             {
                 parameters: {

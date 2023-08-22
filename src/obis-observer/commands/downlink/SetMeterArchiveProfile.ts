@@ -43,7 +43,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 0f 44 0b 40 00 1e
+ * // 0f 05 44 0b 40 00 1e
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetMeterArchiveProfile.md#request)

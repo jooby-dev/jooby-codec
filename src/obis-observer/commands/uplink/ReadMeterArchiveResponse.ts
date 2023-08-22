@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
                 {code: 56, content: 89.33}
             ]
         },
-        hex: {header: '12', body: '0f 22 2d 19 17 c0 32 41 b2 28 f6 38 42 b2 a8 f6'}
+        hex: {header: '12', body: '22 2d 19 17 c0 32 41 b2 28 f6 38 42 b2 a8 f6'}
     }
 ];
 
@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  * import ReadMeterArchiveResponse from 'jooby-codec/obis-observer/commands/uplink/ReadMeterArchiveResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x10, 0x22, 0x02, 0x2d, 0x19, 0x17, 0xc0, 0x32, 0x41, 0xb2, 0x28, 0xf6, 0x38, 0x42, 0xb2, 0xa8, 0xf6
+ *     0x22, 0x02, 0x2d, 0x19, 0x17, 0xc0, 0x32, 0x41, 0xb2, 0x28, 0xf6, 0x38, 0x42, 0xb2, 0xa8, 0xf6
  * ]);
  * const command = ReadMeterArchiveResponse.fromBytes(commandBody);
  *
@@ -63,8 +63,7 @@ class ReadMeterArchiveResponse extends Command {
     constructor ( public parameters: IReadMeterArchiveResponseParameters ) {
         super();
 
-        // size byte + header
-        let size = 1 + COMMAND_HEADER_SIZE;
+        let size = COMMAND_HEADER_SIZE;
 
         // + obis values list list of code 1 byte with float content 4 bytes
         this.parameters.obisValueList.forEach(obisId => {
@@ -88,7 +87,7 @@ class ReadMeterArchiveResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        let size = buffer.getUint8() - COMMAND_HEADER_SIZE;
+        let size = data.length - COMMAND_HEADER_SIZE;
         const requestId = buffer.getUint8();
         const time2000 = buffer.getUint32();
         const obisValueList = [];
@@ -112,8 +111,6 @@ class ReadMeterArchiveResponse extends Command {
         const buffer = new CommandBinaryBuffer(this.size);
         const {requestId, time2000, obisValueList} = this.parameters;
 
-        // subtract size byte
-        buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
         buffer.setUint32(time2000);
         obisValueList.forEach(obisValue => buffer.setObisValueFloat(obisValue));

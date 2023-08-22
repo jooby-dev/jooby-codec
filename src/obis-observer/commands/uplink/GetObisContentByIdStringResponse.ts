@@ -20,7 +20,7 @@ const examples: TCommandExampleList = [
             requestId: 121,
             content: 'Total energy'
         },
-        hex: {header: '19', body: '0e 79 0c 54 6f 74 61 6c 20 65 6e 65 72 67 79'}
+        hex: {header: '19', body: '79 0c 54 6f 74 61 6c 20 65 6e 65 72 67 79'}
     }
 ];
 
@@ -49,8 +49,8 @@ class GetObisContentByIdStringResponse extends Command {
     constructor ( public parameters: IGetObisContentByIdStringResponseParameters ) {
         super();
 
-        // request id byte + command size byte + obis string content 2-n bytes
-        this.size = REQUEST_ID_SIZE + 1 + this.parameters.content.length + 1;
+        // request id byte + obis string content 2-n bytes
+        this.size = REQUEST_ID_SIZE + this.parameters.content.length + 1;
     }
 
     static readonly id = COMMAND_ID;
@@ -65,10 +65,6 @@ class GetObisContentByIdStringResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-
-        // skip size byte
-        buffer.seek(buffer.offset + 1);
-
         const requestId = buffer.getUint8();
         const content = buffer.getString();
 
@@ -84,8 +80,6 @@ class GetObisContentByIdStringResponse extends Command {
         const buffer = new CommandBinaryBuffer(this.size);
         const {requestId, content} = this.parameters;
 
-        // subtract size byte
-        buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
         buffer.setString(content);
 
