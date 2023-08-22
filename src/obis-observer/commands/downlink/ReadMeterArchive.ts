@@ -5,9 +5,9 @@ import {TTime2000} from '../../../utils/time.js';
 
 
 /**
- * IReadArchiveParameters command parameters
+ * IReadMeterArchiveParameters command parameters
  */
-interface IReadArchiveParameters extends ICommandParameters {
+interface IReadMeterArchiveParameters extends ICommandParameters {
     profile: number,
     time2000: TTime2000
 }
@@ -43,24 +43,24 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import ReadArchive from 'jooby-codec/obis-observer/commands/downlink/ReadArchive.js';
+ * import ReadMeterArchive from 'jooby-codec/obis-observer/commands/downlink/ReadMeterArchive.js';
  *
  * const parameters = {
  *     requestId: 34,
  *     profile: 2,
  *     time2000: 756619200
  * };
- * const command = new ReadArchive(parameters);
+ * const command = new ReadMeterArchive(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 11 22 02 2d 19 17 c0
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadArchive.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadMeterArchive.md#request)
  */
-class ReadArchive extends Command {
-    constructor ( public parameters: IReadArchiveParameters ) {
+class ReadMeterArchive extends Command {
+    constructor ( public parameters: IReadMeterArchiveParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -80,7 +80,7 @@ class ReadArchive extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new ReadArchive({
+        return new ReadMeterArchive({
             requestId: buffer.getUint8(),
             profile: buffer.getUint8(),
             time2000: buffer.getUint32()
@@ -105,4 +105,4 @@ class ReadArchive extends Command {
 }
 
 
-export default ReadArchive;
+export default ReadMeterArchive;

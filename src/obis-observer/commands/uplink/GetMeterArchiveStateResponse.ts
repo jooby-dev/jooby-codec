@@ -5,9 +5,9 @@ import {TTime2000} from '../../../utils/time.js';
 
 
 /**
- * IGetArchiveStateResponseParameters command parameters
+ * IGetMeterArchiveStateResponseParameters command parameters
  */
-interface IGetArchiveStateResponseParameters extends ICommandParameters {
+interface IGetMeterArchiveStateResponseParameters extends ICommandParameters {
     archiveRecordsNumber: number,
     eldestTime2000: TTime2000,
     newestTime2000: TTime2000
@@ -47,12 +47,12 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetArchiveStateResponse from 'jooby-codec/obis-observer/commands/uplink/GetArchiveStateResponse.js';
+ * import GetMeterArchiveStateResponse from 'jooby-codec/obis-observer/commands/uplink/GetMeterArchiveStateResponse.js';
  *
  * const commandBody = new Uint8Array([
  *     0x29, 0x02, 0x00, 0x00, 0x00, 0x51, 0x2c, 0x2d, 0xea, 0xae, 0x2c, 0x2f, 0x0a, 0xf6
  * ]);
- * const command = GetArchiveStateResponse.fromBytes(commandBody);
+ * const command = GetMeterArchiveStateResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -64,10 +64,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveState.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterArchiveState.md#response)
  */
-class GetArchiveStateResponse extends Command {
-    constructor ( public parameters: IGetArchiveStateResponseParameters ) {
+class GetMeterArchiveStateResponse extends Command {
+    constructor ( public parameters: IGetMeterArchiveStateResponseParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -87,7 +87,7 @@ class GetArchiveStateResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetArchiveStateResponse({
+        return new GetMeterArchiveStateResponse({
             requestId: buffer.getUint8(),
             archiveRecordsNumber: buffer.getUint32(),
             eldestTime2000: buffer.getUint32(),
@@ -110,4 +110,4 @@ class GetArchiveStateResponse extends Command {
 }
 
 
-export default GetArchiveStateResponse;
+export default GetMeterArchiveStateResponse;

@@ -5,9 +5,9 @@ import {TTime2000} from '../../../utils/time.js';
 
 
 /**
- * IReadArchiveResponseParameters command parameters
+ * IReadMeterArchiveResponseParameters command parameters
  */
-interface IReadArchiveResponseParameters extends ICommandParameters {
+interface IReadMeterArchiveResponseParameters extends ICommandParameters {
     time2000: TTime2000,
     obisValueList: Array<IObisValueFloat>
 }
@@ -38,12 +38,12 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import ReadArchiveResponse from 'jooby-codec/obis-observer/commands/uplink/ReadArchiveResponse.js';
+ * import ReadMeterArchiveResponse from 'jooby-codec/obis-observer/commands/uplink/ReadMeterArchiveResponse.js';
  *
  * const commandBody = new Uint8Array([
  *     0x10, 0x22, 0x02, 0x2d, 0x19, 0x17, 0xc0, 0x32, 0x41, 0xb2, 0x28, 0xf6, 0x38, 0x42, 0xb2, 0xa8, 0xf6
  * ]);
- * const command = ReadArchiveResponse.fromBytes(commandBody);
+ * const command = ReadMeterArchiveResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -57,10 +57,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadArchive.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadMeterArchive.md#response)
  */
-class ReadArchiveResponse extends Command {
-    constructor ( public parameters: IReadArchiveResponseParameters ) {
+class ReadMeterArchiveResponse extends Command {
+    constructor ( public parameters: IReadMeterArchiveResponseParameters ) {
         super();
 
         // size byte + header
@@ -100,7 +100,7 @@ class ReadArchiveResponse extends Command {
             obisValueList.push(obisValue);
         }
 
-        return new ReadArchiveResponse({requestId, time2000, obisValueList});
+        return new ReadMeterArchiveResponse({requestId, time2000, obisValueList});
     }
 
     // returns full message - header with body
@@ -123,4 +123,4 @@ class ReadArchiveResponse extends Command {
 }
 
 
-export default ReadArchiveResponse;
+export default ReadMeterArchiveResponse;

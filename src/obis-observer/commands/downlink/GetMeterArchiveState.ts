@@ -4,9 +4,9 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetArchiveStateParameters command parameters
+ * IGetMeterArchiveStateParameters command parameters
  */
-interface IGetArchiveStateParameters extends ICommandParameters {
+interface IGetMeterArchiveStateParameters extends ICommandParameters {
     profile: number
 }
 
@@ -16,7 +16,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get archive state',
+        name: 'get meter archive state',
         parameters: {
             requestId: 5,
             profile: 1
@@ -31,23 +31,23 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetArchiveState from 'jooby-codec/obis-observer/commands/downlink/GetArchiveState.js';
+ * import GetMeterArchiveState from 'jooby-codec/obis-observer/commands/downlink/GetMeterArchiveState.js';
  *
  * const parameters = {
  *     requestId: 5,
  *     profile: 1
  * };
- * const command = new GetArchiveState(parameters);
+ * const command = new GetMeterArchiveState(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 28 05 01
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveState.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterArchiveState.md#request)
  */
-class GetArchiveState extends Command {
-    constructor ( public parameters: IGetArchiveStateParameters ) {
+class GetMeterArchiveState extends Command {
+    constructor ( public parameters: IGetMeterArchiveStateParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -67,7 +67,7 @@ class GetArchiveState extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetArchiveState({
+        return new GetMeterArchiveState({
             requestId: buffer.getUint8(),
             profile: buffer.getUint8()
         });
@@ -86,4 +86,4 @@ class GetArchiveState extends Command {
 }
 
 
-export default GetArchiveState;
+export default GetMeterArchiveState;

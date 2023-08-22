@@ -21,21 +21,21 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetDate from 'jooby-codec/obis-observer/commands/downlink/GetDate.js';
+ * import GetMeterDate from 'jooby-codec/obis-observer/commands/downlink/GetMeterDate.js';
  *
  * const parameters = {
  *     requestId: 8
  * };
- * const command = new GetDate(parameters);
+ * const command = new GetMeterDate(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 22 08
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetDate.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterDate.md#request)
  */
-class GetDate extends Command {
+class GetMeterDate extends Command {
     constructor ( public parameters: ICommandParameters ) {
         super();
 
@@ -56,7 +56,7 @@ class GetDate extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetDate({requestId: buffer.getUint8()});
+        return new GetMeterDate({requestId: buffer.getUint8()});
     }
 
     // returns full message - header with body
@@ -75,4 +75,4 @@ class GetDate extends Command {
 }
 
 
-export default GetDate;
+export default GetMeterDate;

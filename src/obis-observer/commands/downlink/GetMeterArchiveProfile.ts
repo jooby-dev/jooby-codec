@@ -22,21 +22,21 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetArchiveProfile from 'jooby-codec/obis-observer/commands/downlink/GetArchiveProfile.js';
+ * import GetMeterArchiveProfile from 'jooby-codec/obis-observer/commands/downlink/GetMeterArchiveProfile.js';
  *
  * const parameters = {
  *     requestId: 3
  * };
- * const command = new GetArchiveProfile(parameters);
+ * const command = new GetMeterArchiveProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 0d 03
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveProfile.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterArchiveProfile.md#request)
  */
-class GetArchiveProfile extends Command {
+class GetMeterArchiveProfile extends Command {
     constructor ( public parameters: ICommandParameters ) {
         super();
 
@@ -57,7 +57,7 @@ class GetArchiveProfile extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetArchiveProfile({requestId: buffer.getUint8()});
+        return new GetMeterArchiveProfile({requestId: buffer.getUint8()});
     }
 
     // returns full message - header with body
@@ -75,4 +75,4 @@ class GetArchiveProfile extends Command {
 }
 
 
-export default GetArchiveProfile;
+export default GetMeterArchiveProfile;

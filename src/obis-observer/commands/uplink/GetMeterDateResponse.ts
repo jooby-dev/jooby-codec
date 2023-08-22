@@ -5,9 +5,9 @@ import {TTime2000} from '../../../utils/time.js';
 
 
 /**
- * IGetDateResponseParameters command parameters
+ * IGetMeterDateResponseParameters command parameters
  */
-interface IGetDateResponseParameters extends ICommandParameters {
+interface IGetMeterDateResponseParameters extends ICommandParameters {
     time2000: TTime2000,
     uptime: number
 }
@@ -32,12 +32,12 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetDateResponse from 'jooby-codec/obis-observer/commands/uplink/GetDateResponse.js';
+ * import GetMeterDateResponse from 'jooby-codec/obis-observer/commands/uplink/GetMeterDateResponse.js';
  *
  * const commandBody = new Uint8Array([
  *     0x07, 0x2c, 0x2f, 0x0a, 0xf6, 0x00, 0x00, 0x0f, 0xb0
  * ]);
- * const command = GetDateResponse.fromBytes(commandBody);
+ * const command = GetMeterDateResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -48,10 +48,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetDate.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterDate.md#response)
  */
-class GetDateResponse extends Command {
-    constructor ( public parameters: IGetDateResponseParameters ) {
+class GetMeterDateResponse extends Command {
+    constructor ( public parameters: IGetMeterDateResponseParameters ) {
         super();
 
         this.size = REQUEST_ID_SIZE + DATE_TIME_SIZE + 4;
@@ -71,7 +71,7 @@ class GetDateResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetDateResponse({
+        return new GetMeterDateResponse({
             requestId: buffer.getUint8(),
             time2000: buffer.getUint32(),
             uptime: buffer.getUint32()
@@ -96,4 +96,4 @@ class GetDateResponse extends Command {
 }
 
 
-export default GetDateResponse;
+export default GetMeterDateResponse;

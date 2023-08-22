@@ -5,9 +5,9 @@ import {resultCodes} from '../../constants/index.js';
 
 
 /**
- * ISetArchiveProfileResponseParameters command parameters
+ * ISetMeterArchiveProfileResponseParameters command parameters
  */
-interface ISetArchiveProfileResponseParameters extends ICommandParameters {
+interface ISetMeterArchiveProfileResponseParameters extends ICommandParameters {
     resultCode: number
 }
 
@@ -40,10 +40,10 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import SetArchiveProfileResponse from 'jooby-codec/obis-observer/commands/uplink/SetArchiveProfileResponse.js';
+ * import SetMeterArchiveProfileResponse from 'jooby-codec/obis-observer/commands/uplink/SetMeterArchiveProfileResponse.js';
  *
  * const commandBody = new Uint8Array([0x9c, 0x00]);
- * const command = SetArchiveProfileResponse.fromBytes(commandBody);
+ * const command = SetMeterArchiveProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -53,10 +53,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetArchiveProfile.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commads/SetMeterArchiveProfile.md#response)
  */
-class SetArchiveProfileResponse extends Command {
-    constructor ( public parameters: ISetArchiveProfileResponseParameters ) {
+class SetMeterArchiveProfileResponse extends Command {
+    constructor ( public parameters: ISetMeterArchiveProfileResponseParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -76,7 +76,7 @@ class SetArchiveProfileResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new SetArchiveProfileResponse({
+        return new SetMeterArchiveProfileResponse({
             requestId: buffer.getUint8(),
             resultCode: buffer.getUint8()
         });
@@ -95,4 +95,4 @@ class SetArchiveProfileResponse extends Command {
 }
 
 
-export default SetArchiveProfileResponse;
+export default SetMeterArchiveProfileResponse;
