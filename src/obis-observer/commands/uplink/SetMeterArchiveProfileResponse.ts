@@ -12,7 +12,7 @@ interface ISetMeterArchiveProfileResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x10;
+const COMMAND_ID = 0x69;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 156,
             resultCode: resultCodes.OK
         },
-        hex: {header: '10', body: '9c 00'}
+        hex: {header: '69', body: '9c 00'}
     },
     {
         name: 'failed request',
@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
             requestId: 49,
             resultCode: resultCodes.PROFILE_NOT_FOUND
         },
-        hex: {header: '10', body: '31 05'}
+        hex: {header: '69', body: '31 05'}
     }
 ];
 

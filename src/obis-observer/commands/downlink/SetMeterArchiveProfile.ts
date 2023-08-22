@@ -12,7 +12,7 @@ interface ISetMeterArchiveProfileParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x0f;
+const COMMAND_ID = 0x68;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 4;
 
 const examples: TCommandExampleList = [
@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
             archiveProfile1Period: 2880,
             archiveProfile2Period: 30
         },
-        hex: {header: '0f', body: '44 0b 40 00 1e'}
+        hex: {header: '68', body: '44 0b 40 00 1e'}
     }
 ];
 
@@ -43,7 +43,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 0f 05 44 0b 40 00 1e
+ * // 68 05 44 0b 40 00 1e
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetMeterArchiveProfile.md#request)

@@ -11,7 +11,7 @@ interface IGetMeterArchiveStateParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x28;
+const COMMAND_ID = 0x7c;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
@@ -21,7 +21,7 @@ const examples: TCommandExampleList = [
             requestId: 5,
             profile: 1
         },
-        hex: {header: '28', body: '05 01'}
+        hex: {header: '7c', body: '05 01'}
     }
 ];
 
@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 28 02 05 01
+ * // 7c 02 05 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterArchiveState.md#request)

@@ -3,7 +3,7 @@ import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../Co
 import {DOWNLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x0d;
+const COMMAND_ID = 0x66;
 const COMMAND_SIZE = REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
@@ -12,7 +12,7 @@ const examples: TCommandExampleList = [
         parameters: {
             requestId: 3
         },
-        hex: {header: '0d', body: '03'}
+        hex: {header: '66', body: '03'}
     }
 ];
 
@@ -31,7 +31,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 0d 01 03
+ * // 66 01 03
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterArchiveProfile.md#request)

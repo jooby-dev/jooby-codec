@@ -12,7 +12,7 @@ interface IReadMeterArchiveResponseParameters extends ICommandParameters {
     obisValueList: Array<IObisValueFloat>
 }
 
-const COMMAND_ID = 0x12;
+const COMMAND_ID = 0x80;
 
 // request id byte + DateTime 4 bytes
 const COMMAND_HEADER_SIZE = REQUEST_ID_SIZE + DATE_TIME_SIZE;
@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
                 {code: 56, content: 89.33}
             ]
         },
-        hex: {header: '12', body: '22 2d 19 17 c0 32 41 b2 28 f6 38 42 b2 a8 f6'}
+        hex: {header: '80', body: '22 2d 19 17 c0 32 41 b2 28 f6 38 42 b2 a8 f6'}
     }
 ];
 

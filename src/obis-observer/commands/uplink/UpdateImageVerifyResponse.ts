@@ -12,7 +12,7 @@ interface IUpdateImageVerifyResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x2d;
+const COMMAND_ID = 0x31;
 const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 32,
             resultCode: resultCodes.OK
         },
-        hex: {header: '2d', body: '20 00'}
+        hex: {header: '31', body: '20 00'}
     }
 ];
 

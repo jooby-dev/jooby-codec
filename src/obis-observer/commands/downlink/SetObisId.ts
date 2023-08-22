@@ -12,7 +12,7 @@ interface ISetObisIdParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x03;
+const COMMAND_ID = 0x42;
 
 const examples: TCommandExampleList = [
     {
@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
                 e: 1
             }
         },
-        hex: {header: '03', body: '03 2c 02 00 09 01'}
+        hex: {header: '42', body: '03 2c 02 00 09 01'}
     }
 ];
 
@@ -49,7 +49,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 03 05 2c 02 00 09 01
+ * // 42 05 2c 02 00 09 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObisId.md#request)

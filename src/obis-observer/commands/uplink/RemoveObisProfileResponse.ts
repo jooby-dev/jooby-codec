@@ -12,7 +12,7 @@ interface IRemoveObisProfileResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x08;
+const COMMAND_ID = 0x47;
 const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 5,
             resultCode: resultCodes.PROFILE_NOT_FOUND
         },
-        hex: {header: '08', body: '05 05'}
+        hex: {header: '47', body: '05 05'}
     }
 ];
 

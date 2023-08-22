@@ -12,7 +12,7 @@ interface ISetObisIdResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x04;
+const COMMAND_ID = 0x43;
 const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 2,
             resultCode: resultCodes.OK
         },
-        hex: {header: '04', body: '02 00'}
+        hex: {header: '43', body: '02 00'}
     }
 ];
 

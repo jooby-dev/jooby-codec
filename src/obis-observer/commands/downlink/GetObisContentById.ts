@@ -12,7 +12,7 @@ interface IGetObisContentByIdParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x17;
+const COMMAND_ID = 0x4e;
 
 const examples: TCommandExampleList = [
     {
@@ -21,7 +21,7 @@ const examples: TCommandExampleList = [
             requestId: 121,
             obisId: 50
         },
-        hex: {header: '17', body: '79 32'}
+        hex: {header: '4e', body: '79 32'}
     }
 ];
 
@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 17 02 79 32
+ * // 4e 02 79 32
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisContentById.md#request)

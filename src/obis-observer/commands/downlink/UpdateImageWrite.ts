@@ -12,7 +12,7 @@ interface IUpdateImageWriteParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x2a;
+const COMMAND_ID = 0x32;
 
 // id + offset
 const COMMAND_HEADER_SIZE = REQUEST_ID_SIZE + 4;
@@ -27,7 +27,7 @@ const examples: TCommandExampleList = [
                 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
             ])
         },
-        hex: {header: '2a', body: '21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 00 00 00 00 00 00'}
+        hex: {header: '32', body: '21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 00 00 00 00 00 00'}
     }
 ];
 
@@ -50,7 +50,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 2a 15 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 00 00 00 00 00 00
+ * // 32 15 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 00 00 00 00 00 00
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/UpdateImageWrite.md#request)

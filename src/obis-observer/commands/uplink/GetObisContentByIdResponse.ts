@@ -12,7 +12,7 @@ interface IGetObisContentByIdResponseParameters extends ICommandParameters {
     content: number
 }
 
-const COMMAND_ID = 0x18;
+const COMMAND_ID = 0x4e;
 
 const examples: TCommandExampleList = [
     {
@@ -21,7 +21,7 @@ const examples: TCommandExampleList = [
             requestId: 121,
             content: 344.23
         },
-        hex: {header: '18', body: '79 43 ac 1d 71'}
+        hex: {header: '4e', body: '79 43 ac 1d 71'}
     }
 ];
 

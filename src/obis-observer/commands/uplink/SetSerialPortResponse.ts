@@ -12,7 +12,7 @@ interface ISetSerialPortResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x14;
+const COMMAND_ID = 0x1a;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 32,
             resultCode: resultCodes.OK
         },
-        hex: {header: '14', body: '20 00'}
+        hex: {header: '1a', body: '20 00'}
     },
     {
         name: 'set serial port settings - failed',
@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
             requestId: 32,
             resultCode: resultCodes.FAILURE
         },
-        hex: {header: '14', body: '20 01'}
+        hex: {header: '1a', body: '20 01'}
     }
 ];
 

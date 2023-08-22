@@ -13,7 +13,7 @@ interface IAddObisProfileParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x05;
+const COMMAND_ID = 0x44;
 const COMMAND_SIZE = 7 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
@@ -34,7 +34,7 @@ const examples: TCommandExampleList = [
                 }
             }
         },
-        hex: {header: '05', body: '03 20 00 f4 00 84 26 04'}
+        hex: {header: '44', body: '03 20 00 f4 00 84 26 04'}
     }
 ];
 
@@ -65,7 +65,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 05 08 03 20 00 f4 00 84 26 04
+ * // 44 08 03 20 00 f4 00 84 26 04
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddObisProfile.md#request)

@@ -14,7 +14,7 @@ interface IObservationReportParameters {
 }
 
 
-const COMMAND_ID = 0x1a;
+const COMMAND_ID = 0x51;
 
 const examples: TCommandExampleList = [
     {
@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
                 {code: 56, content: 45.33}
             ]
         },
-        hex: {header: '1a', body: '2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec'}
+        hex: {header: '51', body: '2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec'}
     }
 ];
 

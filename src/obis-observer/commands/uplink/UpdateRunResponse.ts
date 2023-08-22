@@ -12,7 +12,7 @@ interface IUpdateRunResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x2f;
+const COMMAND_ID = 0x35;
 const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 33,
             resultCode: resultCodes.OK
         },
-        hex: {header: '2f', body: '21 00'}
+        hex: {header: '35', body: '21 00'}
     }
 ];
 

@@ -12,7 +12,7 @@ interface IGetMeterDateResponseParameters extends ICommandParameters {
     uptime: number
 }
 
-const COMMAND_ID = 0x23;
+const COMMAND_ID = 0x7b;
 
 const examples: TCommandExampleList = [
     {
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             time2000: 741280502,
             uptime: 4016
         },
-        hex: {header: '23', body: '07 2c 2f 0a f6 00 00 0f b0'}
+        hex: {header: '7b', body: '07 2c 2f 0a f6 00 00 0f b0'}
     }
 ];
 

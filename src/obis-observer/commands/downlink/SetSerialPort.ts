@@ -15,7 +15,7 @@ interface ISetSerialPortParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x13;
+const COMMAND_ID = 0x09;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 3;
 
 const examples: TCommandExampleList = [
@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
             parity: parityTypes.ODD,
             fixed: true
         },
-        hex: {header: '13', body: '34 05 08 05'}
+        hex: {header: '09', body: '34 05 08 05'}
     },
     {
         name: 'set settings: 115200, 7, none',
@@ -39,7 +39,7 @@ const examples: TCommandExampleList = [
             parity: parityTypes.NONE,
             fixed: false
         },
-        hex: {header: '13', body: '34 0c 07 00'}
+        hex: {header: '09', body: '34 0c 07 00'}
     }
 ];
 
@@ -62,7 +62,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 13 04 34 05 08 05
+ * // 09 04 34 05 08 05
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetSerialPort.md#request)

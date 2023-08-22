@@ -12,7 +12,7 @@ interface IGetArchiveProfileResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x0e;
+const COMMAND_ID = 0x67;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 4;
 
 const examples: TCommandExampleList = [
@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
             archiveProfile1Period: 600,
             archiveProfile2Period: 45
         },
-        hex: {header: '0e', body: '03 02 58 00 2d'}
+        hex: {header: '67', body: '03 02 58 00 2d'}
     }
 ];
 

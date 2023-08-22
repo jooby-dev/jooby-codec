@@ -3,7 +3,7 @@ import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../Co
 import {DOWNLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x2c;
+const COMMAND_ID = 0x30;
 const COMMAND_SIZE = REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
@@ -12,7 +12,7 @@ const examples: TCommandExampleList = [
         parameters: {
             requestId: 33
         },
-        hex: {header: '2c', body: '21'}
+        hex: {header: '30', body: '21'}
     }
 ];
 
@@ -31,7 +31,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 2c 01 21
+ * // 30 01 21
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/UpdateImageVerify.md#request)

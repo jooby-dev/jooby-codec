@@ -13,7 +13,7 @@ interface IReadMeterArchiveParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x11;
+const COMMAND_ID = 0x7f;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 5;
 
 const examples: TCommandExampleList = [
@@ -24,7 +24,7 @@ const examples: TCommandExampleList = [
             profile: 1,
             time2000: 756604800
         },
-        hex: {header: '11', body: '21 01 2d 18 df 80'}
+        hex: {header: '7f', body: '21 01 2d 18 df 80'}
     },
     {
         name: 'request profile 2 from 2023-12-23 04:00:00 GMT',
@@ -33,7 +33,7 @@ const examples: TCommandExampleList = [
             profile: 2,
             time2000: 756619200
         },
-        hex: {header: '11', body: '22 02 2d 19 17 c0'}
+        hex: {header: '7f', body: '22 02 2d 19 17 c0'}
     }
 ];
 
@@ -54,7 +54,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 11 06 22 02 2d 19 17 c0
+ * // 7f 06 22 02 2d 19 17 c0
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadMeterArchive.md#request)

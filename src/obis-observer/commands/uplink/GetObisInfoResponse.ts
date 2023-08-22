@@ -12,7 +12,7 @@ interface IGetObisInfoResponseParameters extends ICommandParameters {
     obisProfile?: IObisProfile,
 }
 
-const COMMAND_ID = 0x0c;
+const COMMAND_ID = 0x4b;
 
 const examples: TCommandExampleList = [
     {
@@ -36,7 +36,7 @@ const examples: TCommandExampleList = [
                 }
             }
         },
-        hex: {header: '0c', body: '03 02 00 09 01 01 58 02 14 3d 15'}
+        hex: {header: '4b', body: '03 02 00 09 01 01 58 02 14 3d 15'}
     }
 ];
 

@@ -13,7 +13,7 @@ interface IGetObserverInfoResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x21;
+const COMMAND_ID = 0x02;
 
 const examples: TCommandExampleList = [
     {
@@ -31,7 +31,7 @@ const examples: TCommandExampleList = [
             deviceName: 'Jooby Electra RM LoraWan 1D485 EU'
         },
         hex: {
-            header: '21',
+            header: '02',
             body: '07 00 01 01 01 21 4a 6f 6f 62 79 20 45 6c 65 63 74 72 61 20 52 4d 20 4c 6f 72 61 57 61 6e 20 31 44 34 38 35 20 45 55'
         }
     }

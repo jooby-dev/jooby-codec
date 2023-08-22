@@ -10,7 +10,7 @@ interface IGetObisIdListResponseParameters extends ICommandParameters {
     obisIdList: Array<number>
 }
 
-const COMMAND_ID = 0x02;
+const COMMAND_ID = 0x41;
 
 const examples: TCommandExampleList = [
     {
@@ -19,7 +19,7 @@ const examples: TCommandExampleList = [
             requestId: 3,
             obisIdList: [197, 198]
         },
-        hex: {header: '02', body: '03 c5 c6'}
+        hex: {header: '41', body: '03 c5 c6'}
     }
 ];
 
