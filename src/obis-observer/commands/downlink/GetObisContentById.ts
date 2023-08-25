@@ -7,7 +7,6 @@ import {DOWNLINK} from '../../constants/directions.js';
  * IGetObisContentByIdParameters command parameters
  */
 interface IGetObisContentByIdParameters extends ICommandParameters {
-    requestId: number,
     obisId: number
 }
 
