@@ -4,6 +4,8 @@
  * @packageDocumentation
  */
 
+
+export {default as AddMeterProfileResponse} from './AddMeterProfileResponse.js';
 export {default as AddObisProfileResponse} from './AddObisProfileResponse.js';
 export {default as GetMeterArchiveProfileResponse} from './GetMeterArchiveProfileResponse.js';
 export {default as GetMeterArchiveStateResponse} from './GetMeterArchiveStateResponse.js';
@@ -18,10 +20,12 @@ export {default as GetReadoutStateResponse} from './GetReadoutStateResponse.js';
 export {default as GetObisInfoResponse} from './GetObisInfoResponse.js';
 export {default as GetObisProfileResponse} from './GetObisProfileResponse.js';
 export {default as GetObisIdListResponse} from './GetObisIdListResponse.js';
+export {default as GetMeterProfileIdListResponse} from './GetMeterProfileIdListResponse.js';
 export {default as ObservationReport} from './ObservationReport.js';
 export {default as ObservationReportString} from './ObservationReportString.js';
 export {default as ReadMeterArchiveResponse} from './ReadMeterArchiveResponse.js';
 export {default as RebootResponse} from './RebootResponse.js';
+export {default as RemoveMeterProfileResponse} from './RemoveMeterProfileResponse.js';
 export {default as RemoveObisProfileResponse} from './RemoveObisProfileResponse.js';
 export {default as SetMeterArchiveProfileResponse} from './SetMeterArchiveProfileResponse.js';
 export {default as SetSerialPortResponse} from './SetSerialPortResponse.js';

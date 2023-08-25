@@ -4,6 +4,7 @@
  * @packageDocumentation
  */
 
+export {default as AddMeterProfile} from './AddMeterProfile.js';
 export {default as AddObisProfile} from './AddObisProfile.js';
 export {default as GetMeterArchiveProfile} from './GetMeterArchiveProfile.js';
 export {default as GetMeterArchiveState} from './GetMeterArchiveState.js';
@@ -17,8 +18,10 @@ export {default as GetReadoutState} from './GetReadoutState.js';
 export {default as GetObisInfo} from './GetObisInfo.js';
 export {default as GetObisProfile} from './GetObisProfile.js';
 export {default as GetObisIdList} from './GetObisIdList.js';
+export {default as GetMeterProfileIdList} from './GetMeterProfileIdList.js';
 export {default as ReadMeterArchive} from './ReadMeterArchive.js';
 export {default as Reboot} from './Reboot.js';
+export {default as RemoveMeterProfile} from './RemoveMeterProfile.js';
 export {default as RemoveObisProfile} from './RemoveObisProfile.js';
 export {default as SetMeterArchiveProfile} from './SetMeterArchiveProfile.js';
 export {default as SetSerialPort} from './SetSerialPort.js';
