@@ -8,6 +8,7 @@ import {DOWNLINK} from '../../constants/directions.js';
  */
 interface IGetObisInfoParameters extends ICommandParameters {
     requestId: number,
+    meterProfileId: number,
     obisId: number
 }
 
@@ -19,9 +20,10 @@ const examples: TCommandExampleList = [
         name: 'get info for obisId 44',
         parameters: {
             requestId: 3,
+            meterProfileId: 7,
             obisId: 44
         },
-        hex: {header: '4a', body: '03 2c'}
+        hex: {header: '4a', body: '03 07 2c'}
     }
 ];
 
@@ -35,13 +37,14 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     requestId: 3,
+ *     meterProfileId: 7,
  *     obisId: 44
  * };
  * const command = new GetObisInfo(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 4a 02 03 2c
+ * // 4a 03 03 07 2c
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisInfo.md#request)
@@ -51,7 +54,7 @@ class GetObisInfo extends Command {
         super();
 
         // request id size + obisId 1 byte
-        this.size = REQUEST_ID_SIZE + 1;
+        this.size = REQUEST_ID_SIZE + 1 + 1;
     }
 
 
@@ -70,23 +73,17 @@ class GetObisInfo extends Command {
 
         return new GetObisInfo({
             requestId: buffer.getUint8(),
+            meterProfileId: buffer.getUint8(),
             obisId: buffer.getUint8()
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
-        const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, obisId} = this.parameters;
-
-        buffer.setUint8(requestId);
-        buffer.setUint8(obisId);
-
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(
+            COMMAND_ID,
+            new Uint8Array([this.parameters.requestId, this.parameters.meterProfileId, this.parameters.obisId])
+        );
     }
 }
 

@@ -3,16 +3,25 @@ import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../Co
 import {DOWNLINK} from '../../constants/directions.js';
 
 
+/**
+ * IGetMeterArchiveProfileParameters command parameters
+ */
+interface IGetMeterArchiveProfileParameters extends ICommandParameters {
+    meterProfileId: number
+}
+
+
 const COMMAND_ID = 0x66;
-const COMMAND_SIZE = REQUEST_ID_SIZE;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'simple request',
+        name: 'get meter archive profile',
         parameters: {
-            requestId: 3
+            requestId: 3,
+            meterProfileId: 4
         },
-        hex: {header: '66', body: '03'}
+        hex: {header: '66', body: '03 04'}
     }
 ];
 
@@ -25,19 +34,20 @@ const examples: TCommandExampleList = [
  * import GetMeterArchiveProfile from 'jooby-codec/obis-observer/commands/downlink/GetMeterArchiveProfile.js';
  *
  * const parameters = {
- *     requestId: 3
+ *     requestId: 3,
+ *     meterProfileId: 4
  * };
  * const command = new GetMeterArchiveProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 66 01 03
+ * // 66 02 03 04
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterArchiveProfile.md#request)
  */
 class GetMeterArchiveProfile extends Command {
-    constructor ( public parameters: ICommandParameters ) {
+    constructor ( public parameters: IGetMeterArchiveProfileParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -57,20 +67,15 @@ class GetMeterArchiveProfile extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetMeterArchiveProfile({requestId: buffer.getUint8()});
+        return new GetMeterArchiveProfile({requestId: buffer.getUint8(), meterProfileId: buffer.getUint8()});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
-        const buffer = new CommandBinaryBuffer(this.size);
-
-        buffer.setUint8(this.parameters.requestId);
-
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(
+            COMMAND_ID,
+            new Uint8Array([this.parameters.requestId, this.parameters.meterProfileId])
+        );
     }
 }
 

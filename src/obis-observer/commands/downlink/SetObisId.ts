@@ -7,6 +7,7 @@ import {DOWNLINK} from '../../constants/directions.js';
  * ISetObisIdParameters command parameters
  */
 interface ISetObisIdParameters extends ICommandParameters {
+    meterProfileId: number,
     obisId: number,
     obis: IObis
 }
@@ -16,9 +17,10 @@ const COMMAND_ID = 0x42;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set obisId 44 for OBIS code 0.9.1',
+        name: 'set meter profile 2, obisId 44 for OBIS code 0.9.1',
         parameters: {
             requestId: 3,
+            meterProfileId: 2,
             obisId: 44,
             obis: {
                 c: 0,
@@ -26,7 +28,7 @@ const examples: TCommandExampleList = [
                 e: 1
             }
         },
-        hex: {header: '42', body: '03 2c 02 00 09 01'}
+        hex: {header: '42', body: '03 02 2c 02 00 09 01'}
     }
 ];
 
@@ -38,6 +40,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import SetObisID from 'jooby-codec/obis-observer/commands/downlink/SetObisId.js';
  * const parameters = {
+ *     meterProfileId: 2,
  *     obisId: 44,
  *     obis: {
  *         c: 0,
@@ -49,7 +52,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 42 05 2c 02 00 09 01
+ * // 42 06 02 2c 02 00 09 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObisId.md#request)
@@ -58,8 +61,8 @@ class SetObisId extends Command {
     constructor ( public parameters: ISetObisIdParameters ) {
         super();
 
-        // request id 1 byte + oibsId 1 byte + obis size
-        this.size = REQUEST_ID_SIZE + 1 + CommandBinaryBuffer.getObisSize(parameters.obis);
+        // request id 1 byte + meterProfileId 1 byte + oibsId 1 byte + obis size
+        this.size = REQUEST_ID_SIZE + 1 + 1 + CommandBinaryBuffer.getObisSize(parameters.obis);
     }
 
 
@@ -78,6 +81,7 @@ class SetObisId extends Command {
 
         return new SetObisId({
             requestId: buffer.getUint8(),
+            meterProfileId: buffer.getUint8(),
             obisId: buffer.getUint8(),
             obis: buffer.getObis()
         });
@@ -90,9 +94,10 @@ class SetObisId extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, obisId, obis} = this.parameters;
+        const {requestId, meterProfileId, obisId, obis} = this.parameters;
 
         buffer.setUint8(requestId);
+        buffer.setUint8(meterProfileId);
         buffer.setUint8(obisId);
         buffer.setObis(obis);
 

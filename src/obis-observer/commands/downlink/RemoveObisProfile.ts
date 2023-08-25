@@ -7,6 +7,7 @@ import {DOWNLINK} from '../../constants/directions.js';
  * IRemoveObisProfileParameters command parameters
  */
 interface IRemoveObisProfileParameters extends ICommandParameters {
+    meterProfileId: number,
     obisId: number
 }
 
@@ -19,9 +20,10 @@ const examples: TCommandExampleList = [
         name: 'remove obis profile for obisId 28',
         parameters: {
             requestId: 5,
+            meterProfileId: 4,
             obisId: 28
         },
-        hex: {header: '46', body: '05 1c'}
+        hex: {header: '46', body: '05 04 1c'}
     }
 ];
 
@@ -35,13 +37,14 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     requestId: 5,
+ *     meterProfileId: 04,
  *     obisId: 28
  * };
  * const command = new RemoveObisProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 46 02 05 1c
+ * // 46 03 05 04 1c
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveObisProfile.md#request)
@@ -69,19 +72,17 @@ class RemoveObisProfile extends Command {
 
         return new RemoveObisProfile({
             requestId: buffer.getUint8(),
+            meterProfileId: buffer.getUint8(),
             obisId: buffer.getUint8()
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, obisId} = this.parameters;
-
-        buffer.setUint8(requestId);
-        buffer.setUint8(obisId);
-
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(
+            COMMAND_ID,
+            new Uint8Array([this.parameters.requestId, this.parameters.meterProfileId, this.parameters.obisId])
+        );
     }
 }
 

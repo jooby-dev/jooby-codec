@@ -8,19 +8,21 @@ import {contentTypes} from '../../constants/index.js';
  * IAddObisProfileParameters command parameters
  */
 interface IAddObisProfileParameters extends ICommandParameters {
+    meterProfileId: number,
     obisId: number,
     obisProfile: IObisProfile
 }
 
 
 const COMMAND_ID = 0x44;
-const COMMAND_SIZE = 7 + REQUEST_ID_SIZE;
+const COMMAND_SIZE = 8 + REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
     {
         name: 'add profile for obisId 32',
         parameters: {
             requestId: 3,
+            meterProfileId: 2,
             obisId: 32,
             obisProfile: {
                 capturePeriod: 244,
@@ -34,7 +36,7 @@ const examples: TCommandExampleList = [
                 }
             }
         },
-        hex: {header: '44', body: '03 20 00 f4 00 84 26 04'}
+        hex: {header: '44', body: '03 02 20 00 f4 00 84 26 04'}
     }
 ];
 
@@ -48,6 +50,7 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     requestId: 3,
+ *     meterProfileId: 2,
  *     obisId: 32,
  *     obisProfile: {
  *         capturePeriod: 244,
@@ -65,7 +68,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 44 08 03 20 00 f4 00 84 26 04
+ * // 44 09 03 02 20 00 f4 00 84 26 04
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddObisProfile.md#request)
@@ -93,6 +96,7 @@ class AddObisProfile extends Command {
 
         return new AddObisProfile({
             requestId: buffer.getUint8(),
+            meterProfileId: buffer.getUint8(),
             obisId: buffer.getUint8(),
             obisProfile: buffer.getObisProfile()
         });
@@ -101,9 +105,10 @@ class AddObisProfile extends Command {
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, obisId, obisProfile} = this.parameters;
+        const {requestId, meterProfileId, obisId, obisProfile} = this.parameters;
 
         buffer.setUint8(requestId);
+        buffer.setUint8(meterProfileId);
         buffer.setUint8(obisId);
         buffer.setObisProfile(obisProfile);
 

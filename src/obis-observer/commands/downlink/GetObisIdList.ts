@@ -7,6 +7,7 @@ import {DOWNLINK} from '../../constants/directions.js';
  * IGetObisIdListParameters command parameters
  */
 interface IGetObisIdListParameters extends ICommandParameters {
+    meterProfileId: number,
     obis: IObis
 }
 
@@ -18,13 +19,14 @@ const examples: TCommandExampleList = [
         name: 'get obisId list for OBIS code 0.9.1 - local time',
         parameters: {
             requestId: 3,
+            meterProfileId: 5,
             obis: {
                 c: 0,
                 d: 9,
                 e: 1
             }
         },
-        hex: {header: '40', body: '03 02 00 09 01'}
+        hex: {header: '40', body: '03 05 02 00 09 01'}
     }
 ];
 
@@ -38,6 +40,7 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     requestId: 3,
+ *     meterProfileId: 5,
  *     obis: {
  *         c: 0,
  *         d: 9,
@@ -48,7 +51,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 40 05 03 02 00 09 01
+ * // 40 05 06 05 02 00 09 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisIdList.md#request)
@@ -57,7 +60,7 @@ class GetObisIdList extends Command {
     constructor ( public parameters: IGetObisIdListParameters ) {
         super();
 
-        this.size = REQUEST_ID_SIZE + CommandBinaryBuffer.getObisSize(parameters.obis);
+        this.size = REQUEST_ID_SIZE + 1 + CommandBinaryBuffer.getObisSize(parameters.obis);
     }
 
 
@@ -76,6 +79,7 @@ class GetObisIdList extends Command {
 
         return new GetObisIdList({
             requestId: buffer.getUint8(),
+            meterProfileId: buffer.getUint8(),
             obis: buffer.getObis()
         });
     }
@@ -86,10 +90,11 @@ class GetObisIdList extends Command {
             throw new Error('unknown or invalid size');
         }
 
-        const {requestId, obis} = this.parameters;
+        const {requestId, meterProfileId, obis} = this.parameters;
         const buffer = new CommandBinaryBuffer(this.size);
 
         buffer.setUint8(requestId);
+        buffer.setUint8(meterProfileId);
         buffer.setObis(obis);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

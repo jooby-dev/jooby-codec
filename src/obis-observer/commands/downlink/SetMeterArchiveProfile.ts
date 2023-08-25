@@ -7,23 +7,25 @@ import {DOWNLINK} from '../../constants/directions.js';
  * ISetMeterArchiveProfileParameters command parameters
  */
 interface ISetMeterArchiveProfileParameters extends ICommandParameters {
-    archiveProfile1Period: number,
-    archiveProfile2Period: number
+    meterProfileId: number,
+    archive1Period: number,
+    archive2Period: number
 }
 
 
 const COMMAND_ID = 0x68;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 4;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 5;
 
 const examples: TCommandExampleList = [
     {
         name: 'set double default parameters',
         parameters: {
             requestId: 68,
-            archiveProfile1Period: 2880,
-            archiveProfile2Period: 30
+            meterProfileId: 8,
+            archive1Period: 2880,
+            archive2Period: 30
         },
-        hex: {header: '68', body: '44 0b 40 00 1e'}
+        hex: {header: '68', body: '44 08 0b 40 00 1e'}
     }
 ];
 
@@ -36,14 +38,15 @@ const examples: TCommandExampleList = [
  * import SetMeterArchiveProfile from 'jooby-codec/obis-observer/commands/downlink/SetMeterArchiveProfile.js';
  * const parameters = {
  *     requestId: 68,
- *     archiveProfile1Period: 2880,
- *     archiveProfile2Period: 30
+ *     meterProfileId: 8,
+ *     archive1Period: 2880,
+ *     archive2Period: 30
  * };
  * const command = new SetMeterArchiveProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 68 05 44 0b 40 00 1e
+ * // 68 06 08 44 0b 40 00 1e
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetMeterArchiveProfile.md#request)
@@ -71,19 +74,21 @@ class SetMeterArchiveProfile extends Command {
 
         return new SetMeterArchiveProfile({
             requestId: buffer.getUint8(),
-            archiveProfile1Period: buffer.getUint16(),
-            archiveProfile2Period: buffer.getUint16()
+            meterProfileId: buffer.getUint8(),
+            archive1Period: buffer.getUint16(),
+            archive2Period: buffer.getUint16()
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, archiveProfile1Period, archiveProfile2Period} = this.parameters;
+        const {requestId, meterProfileId, archive1Period, archive2Period} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint16(archiveProfile1Period);
-        buffer.setUint16(archiveProfile2Period);
+        buffer.setUint8(meterProfileId);
+        buffer.setUint16(archive1Period);
+        buffer.setUint16(archive2Period);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

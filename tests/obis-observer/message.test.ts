@@ -16,11 +16,12 @@ type TMessageList = Array<IMessage>;
 const downlinkMessages: TMessageList = [
     {
         // GetObisIdList + GetObisIdList
-        hex: '40 05 03 02 00 09 01  40 05 04 02 00 09 01',
+        hex: '40 06 03 01 02 00 09 01  40 06 04 07 02 00 09 01',
         commands: [
             {
                 parameters: {
                     requestId: 3,
+                    meterProfileId: 1,
                     obis: {
                         c: 0,
                         d: 9,
@@ -32,6 +33,7 @@ const downlinkMessages: TMessageList = [
             {
                 parameters: {
                     requestId: 4,
+                    meterProfileId: 7,
                     obis: {
                         c: 0,
                         d: 9,
@@ -75,11 +77,12 @@ const uplinkMessages: TMessageList = [
 const mixedMessages: TMessageList = [
     {
         // GetObisIdList + GetObisIdListResponse
-        hex: '40 05 07 02 00 09 01  41 03 07 c5 c6',
+        hex: '40 06 07 09 02 00 09 01  41 03 07 c5 c6',
         commands: [
             {
                 parameters: {
                     requestId: 7,
+                    meterProfileId: 9,
                     obis: {
                         c: 0,
                         d: 9,
