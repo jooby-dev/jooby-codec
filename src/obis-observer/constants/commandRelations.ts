@@ -11,6 +11,7 @@ requestByResponse.set(uplinkCommands.AddObisProfileResponse, downlinkCommands.Ad
 requestByResponse.set(uplinkCommands.GetMeterArchiveProfileResponse, downlinkCommands.GetMeterArchiveProfile);
 requestByResponse.set(uplinkCommands.GetObisContentResponse, downlinkCommands.GetObisContent);
 requestByResponse.set(uplinkCommands.GetObisContentByIdResponse, downlinkCommands.GetObisContentById);
+requestByResponse.set(uplinkCommands.GetObserverCapabilitiesResponse, downlinkCommands.GetObserverCapabilities);
 requestByResponse.set(uplinkCommands.GetObserverInfoResponse, downlinkCommands.GetObserverInfo);
 requestByResponse.set(uplinkCommands.GetLorawanInfoResponse, downlinkCommands.GetLorawanInfo);
 requestByResponse.set(uplinkCommands.GetObisInfoResponse, downlinkCommands.GetObisInfo);

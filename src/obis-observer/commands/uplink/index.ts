@@ -15,6 +15,7 @@ export {default as GetObisContentByIdStringResponse} from './GetObisContentByIdS
 export {default as GetMeterDateResponse} from './GetMeterDateResponse.js';
 export {default as GetMeterIdResponse} from './GetMeterIdResponse.js';
 export {default as GetMeterInfoResponse} from './GetMeterInfoResponse.js';
+export {default as GetObserverCapabilitiesResponse} from './GetObserverCapabilitiesResponse.js';
 export {default as GetObserverInfoResponse} from './GetObserverInfoResponse.js';
 export {default as GetLorawanInfoResponse} from './GetLorawanInfoResponse.js';
 export {default as GetLorawanStateResponse} from './GetLorawanStateResponse.js';

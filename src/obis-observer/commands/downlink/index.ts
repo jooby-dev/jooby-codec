@@ -13,6 +13,7 @@ export {default as GetObisContentById} from './GetObisContentById.js';
 export {default as GetMeterDate} from './GetMeterDate.js';
 export {default as GetMeterId} from './GetMeterId.js';
 export {default as GetMeterInfo} from './GetMeterInfo.js';
+export {default as GetObserverCapabilities} from './GetObserverCapabilities.js';
 export {default as GetObserverInfo} from './GetObserverInfo.js';
 export {default as GetLorawanInfo} from './GetLorawanInfo.js';
 export {default as GetLorawanState} from './GetLorawanState.js';
