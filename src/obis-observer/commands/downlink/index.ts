@@ -28,6 +28,7 @@ export {default as Reboot} from './Reboot.js';
 export {default as RemoveMeter} from './RemoveMeter.js';
 export {default as RemoveMeterProfile} from './RemoveMeterProfile.js';
 export {default as RemoveObisProfile} from './RemoveObisProfile.js';
+export {default as SetLorawanActivationMethod} from './SetLorawanActivationMethod.js';
 export {default as SetMeterArchiveProfile} from './SetMeterArchiveProfile.js';
 export {default as SetSerialPort} from './SetSerialPort.js';
 export {default as SetupMeter} from './SetupMeter.js';
