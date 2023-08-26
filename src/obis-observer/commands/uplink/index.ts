@@ -18,6 +18,7 @@ export {default as GetMeterInfoResponse} from './GetMeterInfoResponse.js';
 export {default as GetObserverInfoResponse} from './GetObserverInfoResponse.js';
 export {default as GetLorawanInfoResponse} from './GetLorawanInfoResponse.js';
 export {default as GetLorawanStateResponse} from './GetLorawanStateResponse.js';
+export {default as GetObserverSingleModeResponse} from './GetObserverSingleModeResponse.js';
 export {default as GetReadoutStateResponse} from './GetReadoutStateResponse.js';
 export {default as GetObisInfoResponse} from './GetObisInfoResponse.js';
 export {default as GetObisProfileResponse} from './GetObisProfileResponse.js';

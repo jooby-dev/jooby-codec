@@ -16,6 +16,7 @@ export {default as GetMeterInfo} from './GetMeterInfo.js';
 export {default as GetObserverInfo} from './GetObserverInfo.js';
 export {default as GetLorawanInfo} from './GetLorawanInfo.js';
 export {default as GetLorawanState} from './GetLorawanState.js';
+export {default as GetObserverSingleMode} from './GetObserverSingleMode.js';
 export {default as GetReadoutState} from './GetReadoutState.js';
 export {default as GetObisInfo} from './GetObisInfo.js';
 export {default as GetObisProfile} from './GetObisProfile.js';
