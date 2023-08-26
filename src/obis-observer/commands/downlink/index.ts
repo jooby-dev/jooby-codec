@@ -30,6 +30,7 @@ export {default as SetMeterArchiveProfile} from './SetMeterArchiveProfile.js';
 export {default as SetSerialPort} from './SetSerialPort.js';
 export {default as SetupMeter} from './SetupMeter.js';
 export {default as SetObisId} from './SetObisId.js';
+export {default as SetObserverSingleMode} from './SetObserverSingleMode.js';
 export {default as UpdateImageVerify} from './UpdateImageVerify.js';
 export {default as UpdateImageWrite} from './UpdateImageWrite.js';
 export {default as UpdateRun} from './UpdateRun.js';

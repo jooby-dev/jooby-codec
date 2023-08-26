@@ -34,6 +34,7 @@ export {default as SetMeterArchiveProfileResponse} from './SetMeterArchiveProfil
 export {default as SetSerialPortResponse} from './SetSerialPortResponse.js';
 export {default as SetupMeterResponse} from './SetupMeterResponse.js';
 export {default as SetObisIdResponse} from './SetObisIdResponse.js';
+export {default as SetObserverSingleModeResponse} from './SetObserverSingleModeResponse.js';
 export {default as UpdateImageVerifyResponse} from './UpdateImageVerifyResponse.js';
 export {default as UpdateImageWriteResponse} from './UpdateImageWriteResponse.js';
 export {default as UpdateRunResponse} from './UpdateRunResponse.js';

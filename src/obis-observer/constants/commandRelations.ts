@@ -30,6 +30,7 @@ requestByResponse.set(uplinkCommands.SetMeterArchiveProfileResponse, downlinkCom
 requestByResponse.set(uplinkCommands.SetSerialPortResponse, downlinkCommands.SetSerialPort);
 requestByResponse.set(uplinkCommands.SetupMeterResponse, downlinkCommands.SetupMeter);
 requestByResponse.set(uplinkCommands.SetObisIdResponse, downlinkCommands.SetObisId);
+requestByResponse.set(uplinkCommands.SetObserverSingleModeResponse, downlinkCommands.SetObserverSingleMode);
 
 // invert keys with values
 for ( const [key, value] of requestByResponse.entries() ) {
