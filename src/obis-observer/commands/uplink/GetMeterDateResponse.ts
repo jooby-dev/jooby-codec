@@ -8,21 +8,21 @@ import {TTime2000} from '../../../utils/time.js';
  * IGetMeterDateResponseParameters command parameters
  */
 interface IGetMeterDateResponseParameters extends ICommandParameters {
-    time2000: TTime2000,
-    uptime: number
+    meterId: number,
+    time2000: TTime2000
 }
 
 const COMMAND_ID = 0x7b;
 
 const examples: TCommandExampleList = [
     {
-        name: 'current date and time info',
+        name: 'meter date and time info',
         parameters: {
             requestId: 7,
-            time2000: 741280502,
-            uptime: 4016
+            meterId: 4,
+            time2000: 741280502
         },
-        hex: {header: '7b', body: '07 2c 2f 0a f6 00 00 0f b0'}
+        hex: {header: '7b', body: '07 04 2c 2f 0a f6'}
     }
 ];
 
@@ -35,7 +35,7 @@ const examples: TCommandExampleList = [
  * import GetMeterDateResponse from 'jooby-codec/obis-observer/commands/uplink/GetMeterDateResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x07, 0x2c, 0x2f, 0x0a, 0xf6, 0x00, 0x00, 0x0f, 0xb0
+ *     0x07, 0x04, 0x2c, 0x2f, 0x0a, 0xf6
  * ]);
  * const command = GetMeterDateResponse.fromBytes(commandBody);
  *
@@ -43,8 +43,8 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     requestId: 7,
- *     time2000: 741280502,
- *     uptime: 4016
+ *     meterId: 4
+ *     time2000: 741280502
  * }
  * ```
  *
@@ -54,7 +54,7 @@ class GetMeterDateResponse extends Command {
     constructor ( public parameters: IGetMeterDateResponseParameters ) {
         super();
 
-        this.size = REQUEST_ID_SIZE + DATE_TIME_SIZE + 4;
+        this.size = REQUEST_ID_SIZE + 1 + DATE_TIME_SIZE;
     }
 
 
@@ -73,8 +73,8 @@ class GetMeterDateResponse extends Command {
 
         return new GetMeterDateResponse({
             requestId: buffer.getUint8(),
-            time2000: buffer.getUint32(),
-            uptime: buffer.getUint32()
+            meterId: buffer.getUint8(),
+            time2000: buffer.getUint32()
         });
     }
 
@@ -85,11 +85,11 @@ class GetMeterDateResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, time2000, uptime} = this.parameters;
+        const {requestId, meterId, time2000} = this.parameters;
 
         buffer.setUint8(requestId);
+        buffer.setUint8(meterId);
         buffer.setUint32(time2000);
-        buffer.setUint32(uptime);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

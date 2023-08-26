@@ -8,32 +8,35 @@ import {TTime2000} from '../../../utils/time.js';
  * IReadMeterArchiveParameters command parameters
  */
 interface IReadMeterArchiveParameters extends ICommandParameters {
-    profile: number,
+    meterId: number,
+    archiveType: number,
     time2000: TTime2000
 }
 
 
 const COMMAND_ID = 0x7f;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 5;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 6;
 
 const examples: TCommandExampleList = [
     {
-        name: 'request profile 1 from 2023.12.23 00:00:00 GMT',
+        name: 'request archive 1 from 2023.12.23 00:00:00 GMT',
         parameters: {
             requestId: 33,
-            profile: 1,
+            meterId: 5,
+            archiveType: 1,
             time2000: 756604800
         },
-        hex: {header: '7f', body: '21 01 2d 18 df 80'}
+        hex: {header: '7f', body: '21 05 01 2d 18 df 80'}
     },
     {
-        name: 'request profile 2 from 2023-12-23 04:00:00 GMT',
+        name: 'request archive 2 from 2023-12-23 04:00:00 GMT',
         parameters: {
             requestId: 34,
-            profile: 2,
+            meterId: 5,
+            archiveType: 2,
             time2000: 756619200
         },
-        hex: {header: '7f', body: '22 02 2d 19 17 c0'}
+        hex: {header: '7f', body: '22 05 02 2d 19 17 c0'}
     }
 ];
 
@@ -47,14 +50,15 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     requestId: 34,
- *     profile: 2,
+ *     meterId: 5,
+ *     archiveType: 2,
  *     time2000: 756619200
  * };
  * const command = new ReadMeterArchive(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 7f 06 22 02 2d 19 17 c0
+ * // 7f 07 05 22 02 2d 19 17 c0
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadMeterArchive.md#request)
@@ -82,7 +86,8 @@ class ReadMeterArchive extends Command {
 
         return new ReadMeterArchive({
             requestId: buffer.getUint8(),
-            profile: buffer.getUint8(),
+            meterId: buffer.getUint8(),
+            archiveType: buffer.getUint8(),
             time2000: buffer.getUint32()
         });
     }
@@ -93,11 +98,12 @@ class ReadMeterArchive extends Command {
             throw new Error('unknown or invalid size');
         }
 
-        const {requestId, profile, time2000} = this.parameters;
+        const {requestId, meterId, archiveType, time2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(this.size);
 
         buffer.setUint8(requestId);
-        buffer.setUint8(profile);
+        buffer.setUint8(meterId);
+        buffer.setUint8(archiveType);
         buffer.setUint32(time2000);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

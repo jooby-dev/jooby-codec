@@ -7,21 +7,23 @@ import {DOWNLINK} from '../../constants/directions.js';
  * IGetMeterArchiveStateParameters command parameters
  */
 interface IGetMeterArchiveStateParameters extends ICommandParameters {
-    profile: number
+    meterId: number,
+    archiveType: number
 }
 
 
 const COMMAND_ID = 0x7c;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 2;
 
 const examples: TCommandExampleList = [
     {
         name: 'get meter archive state',
         parameters: {
             requestId: 5,
-            profile: 1
+            meterId: 3,
+            archiveType: 1
         },
-        hex: {header: '7c', body: '05 01'}
+        hex: {header: '7c', body: '05 03 01'}
     }
 ];
 
@@ -35,13 +37,14 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     requestId: 5,
+ *     meterId: 3,
  *     profile: 1
  * };
  * const command = new GetMeterArchiveState(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 7c 02 05 01
+ * // 7c 03 05 03 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterArchiveState.md#request)
@@ -69,19 +72,17 @@ class GetMeterArchiveState extends Command {
 
         return new GetMeterArchiveState({
             requestId: buffer.getUint8(),
-            profile: buffer.getUint8()
+            meterId: buffer.getUint8(),
+            archiveType: buffer.getUint8()
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, profile} = this.parameters;
-
-        buffer.setUint8(requestId);
-        buffer.setUint8(profile);
-
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(
+            COMMAND_ID,
+            new Uint8Array([this.parameters.requestId, this.parameters.meterId, this.parameters.archiveType])
+        );
     }
 }
 
