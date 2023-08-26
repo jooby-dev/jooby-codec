@@ -21,6 +21,7 @@ requestByResponse.set(uplinkCommands.GetMeterIdResponse, downlinkCommands.GetMet
 requestByResponse.set(uplinkCommands.GetMeterInfoResponse, downlinkCommands.GetMeterInfo);
 requestByResponse.set(uplinkCommands.GetMeterProfileIdListResponse, downlinkCommands.GetMeterProfileIdList);
 requestByResponse.set(uplinkCommands.GetObserverSingleModeResponse, downlinkCommands.GetObserverSingleMode);
+requestByResponse.set(uplinkCommands.GetObserverUptimeResponse, downlinkCommands.GetObserverUptime);
 requestByResponse.set(uplinkCommands.GetReadoutStateResponse, downlinkCommands.GetReadoutState);
 requestByResponse.set(uplinkCommands.ReadMeterArchiveResponse, downlinkCommands.ReadMeterArchive);
 requestByResponse.set(uplinkCommands.RebootResponse, downlinkCommands.Reboot);
