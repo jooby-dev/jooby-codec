@@ -10,7 +10,7 @@ interface IGetObserverCapabilitiesResponseParameters extends ICommandParameters 
     maxMeterProfilesNumber: number,
     maxMetersNumber: number,
     maxObisProfilesNumber: number,
-    multiModeSupported: boolean
+    isMultiModeSupported: boolean
 }
 
 
@@ -24,7 +24,7 @@ const examples: TCommandExampleList = [
             maxMeterProfilesNumber: 8,
             maxMetersNumber: 8,
             maxObisProfilesNumber: 255,
-            multiModeSupported: true
+            isMultiModeSupported: true
         },
         hex: {
             header: '04',
@@ -53,7 +53,7 @@ const examples: TCommandExampleList = [
  *     maxMeterProfilesNumber: 8,
  *     maxMetersNumber: 8,
  *     maxObisProfilesNumber: 255,
- *     multiModeSupported: true
+ *     isMultiModeSupported: true
  * }
  * ```
  *
@@ -84,14 +84,14 @@ class GetObserverCapabilitiesResponse extends Command {
         const maxMeterProfilesNumber = buffer.getUint8();
         const maxMetersNumber = buffer.getUint8();
         const maxObisProfilesNumber = buffer.getUint8();
-        const multiModeSupported = buffer.getUint8() !== 0;
+        const isMultiModeSupported = buffer.getUint8() !== 0;
 
         return new GetObserverCapabilitiesResponse({
             requestId,
             maxMeterProfilesNumber,
             maxMetersNumber,
             maxObisProfilesNumber,
-            multiModeSupported
+            isMultiModeSupported
         });
     }
 
@@ -104,7 +104,7 @@ class GetObserverCapabilitiesResponse extends Command {
                 this.parameters.maxMeterProfilesNumber,
                 this.parameters.maxMetersNumber,
                 this.parameters.maxObisProfilesNumber,
-                this.parameters.multiModeSupported ? 1 : 0
+                this.parameters.isMultiModeSupported ? 1 : 0
             ])
         );
     }

@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
 
@@ -15,7 +15,7 @@ interface IReadMeterArchiveParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x7f;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 6;
+const COMMAND_SIZE = REQUEST_ID_SIZE + DATE_TIME_SIZE + 2;
 
 const examples: TCommandExampleList = [
     {

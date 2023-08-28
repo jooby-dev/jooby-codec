@@ -38,7 +38,7 @@ const examples: TCommandExampleList = [
  * const parameters = {
  *     requestId: 5,
  *     meterId: 3,
- *     profile: 1
+ *     archiveType: 1
  * };
  * const command = new GetMeterArchiveState(parameters);
  *

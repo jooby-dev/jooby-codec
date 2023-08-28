@@ -40,7 +40,7 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     requestId: 7,
-  *     uptime: 4016
+ *     uptime: 4016
  * }
  * ```
  *
