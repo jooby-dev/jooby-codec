@@ -14,7 +14,7 @@ interface ISetMeterArchiveProfileParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x68;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 5;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 1 + 2 + 2;
 
 const examples: TCommandExampleList = [
     {

@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IObisProfile} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IObisProfile, OBIS_PROFILE_SIZE} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 import {contentTypes} from '../../constants/index.js';
 
@@ -15,7 +15,7 @@ interface IAddObisProfileParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x44;
-const COMMAND_SIZE = 8 + REQUEST_ID_SIZE;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 1 + 1 + OBIS_PROFILE_SIZE;
 
 const examples: TCommandExampleList = [
     {

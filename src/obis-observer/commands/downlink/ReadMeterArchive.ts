@@ -15,7 +15,7 @@ interface IReadMeterArchiveParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x7f;
-const COMMAND_SIZE = REQUEST_ID_SIZE + DATE_TIME_SIZE + 2;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 2 + DATE_TIME_SIZE;
 
 const examples: TCommandExampleList = [
     {

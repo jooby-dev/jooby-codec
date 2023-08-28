@@ -13,7 +13,7 @@ interface IRebootResponseParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x1a;
-const COMMAND_SIZE = REQUEST_ID_SIZE;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {

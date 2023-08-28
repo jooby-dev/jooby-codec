@@ -11,8 +11,6 @@ interface IGetMeterIdResponseParameters extends ICommandParameters {
 }
 
 const COMMAND_ID = 0x74;
-
-// request id byte + records count + DateTime 4 bytes * 2
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [

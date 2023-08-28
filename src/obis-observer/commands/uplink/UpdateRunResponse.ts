@@ -13,7 +13,7 @@ interface IUpdateRunResponseParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x35;
-const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
