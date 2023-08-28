@@ -20,7 +20,7 @@ const examples: TCommandExampleList = [
             requestId: 121,
             content: 'Total energy'
         },
-        hex: {header: '4f', body: '79 0c 54 6f 74 61 6c 20 65 6e 65 72 67 79'}
+        hex: {header: '4f 0e', body: '79 0c 54 6f 74 61 6c 20 65 6e 65 72 67 79'}
     }
 ];
 

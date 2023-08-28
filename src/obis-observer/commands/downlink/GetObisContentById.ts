@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             meterId: 4,
             obisId: 50
         },
-        hex: {header: '4e', body: '79 04 32'}
+        hex: {header: '4e 03', body: '79 04 32'}
     }
 ];
 

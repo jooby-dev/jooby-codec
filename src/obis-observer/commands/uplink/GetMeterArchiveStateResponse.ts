@@ -27,7 +27,7 @@ const examples: TCommandExampleList = [
             eldestTime2000: 0,
             newestTime2000: 0
         },
-        hex: {header: '7d', body: '02 00 00 00 00 00 00 00 00 00 00 00 00'}
+        hex: {header: '7d 0d', body: '02 00 00 00 00 00 00 00 00 00 00 00 00'}
     },
     {
         name: '81 records from 2023.06.27 18:45:02 GMT to 2023.06.28 15:15:02 GMT',
@@ -37,7 +37,7 @@ const examples: TCommandExampleList = [
             eldestTime2000: 741206702,
             newestTime2000: 741280502
         },
-        hex: {header: '7d', body: '02 00 00 00 51 2c 2d ea ae 2c 2f 0a f6'}
+        hex: {header: '7d 0d', body: '02 00 00 00 51 2c 2d ea ae 2c 2f 0a f6'}
     }
 ];
 

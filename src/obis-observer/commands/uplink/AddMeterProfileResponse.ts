@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 7,
             resultCode: resultCodes.OK
         },
-        hex: {header: '61', body: '07 00'}
+        hex: {header: '61 02', body: '07 00'}
     }
 ];
 

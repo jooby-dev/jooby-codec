@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
             meterId: 3,
             archiveType: 1
         },
-        hex: {header: '7c', body: '05 03 01'}
+        hex: {header: '7c 03', body: '05 03 01'}
     }
 ];
 

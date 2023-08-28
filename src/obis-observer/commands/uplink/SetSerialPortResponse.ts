@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 32,
             resultCode: resultCodes.OK
         },
-        hex: {header: '1a', body: '20 00'}
+        hex: {header: '1a 02', body: '20 00'}
     },
     {
         name: 'set serial port settings - failed',
@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
             requestId: 32,
             resultCode: resultCodes.FAILURE
         },
-        hex: {header: '1a', body: '20 01'}
+        hex: {header: '1a 02', body: '20 01'}
     }
 ];
 

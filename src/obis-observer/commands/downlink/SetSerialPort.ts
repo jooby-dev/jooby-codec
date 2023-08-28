@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
             parity: parityTypes.ODD,
             fixed: true
         },
-        hex: {header: '09', body: '34 05 08 05'}
+        hex: {header: '09 04', body: '34 05 08 05'}
     },
     {
         name: 'set settings: 115200, 7, none',
@@ -39,7 +39,7 @@ const examples: TCommandExampleList = [
             parity: parityTypes.NONE,
             fixed: false
         },
-        hex: {header: '09', body: '34 0c 07 00'}
+        hex: {header: '09 04', body: '34 0c 07 00'}
     }
 ];
 

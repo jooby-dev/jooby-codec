@@ -19,7 +19,7 @@ const examples: TCommandExampleList = [
             requestId: 7,
             isSingleMode: true
         },
-        hex: {header: '0e', body: '07 01'}
+        hex: {header: '0e 02', body: '07 01'}
     }
 ];
 

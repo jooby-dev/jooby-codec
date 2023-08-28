@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
             archiveProfile1Period: 600,
             archiveProfile2Period: 45
         },
-        hex: {header: '67', body: '03 02 58 00 2d'}
+        hex: {header: '67 05', body: '03 02 58 00 2d'}
     }
 ];
 

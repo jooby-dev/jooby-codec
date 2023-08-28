@@ -27,7 +27,7 @@ const examples: TCommandExampleList = [
             isMultiModeSupported: true
         },
         hex: {
-            header: '04',
+            header: '04 05',
             body: '07 08 08 ff 01'
         }
     }

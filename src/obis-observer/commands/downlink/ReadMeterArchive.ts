@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
             archiveType: 1,
             time2000: 756604800
         },
-        hex: {header: '7f', body: '21 05 01 2d 18 df 80'}
+        hex: {header: '7f 07', body: '21 05 01 2d 18 df 80'}
     },
     {
         name: 'request archive 2 from 2023-12-23 04:00:00 GMT',
@@ -36,7 +36,7 @@ const examples: TCommandExampleList = [
             archiveType: 2,
             time2000: 756619200
         },
-        hex: {header: '7f', body: '22 05 02 2d 19 17 c0'}
+        hex: {header: '7f 07', body: '22 05 02 2d 19 17 c0'}
     }
 ];
 

@@ -54,7 +54,7 @@ const examples: TCommandExampleList = [
             frameErrors: 0,
             overrunErrors: 0
         },
-        hex: {header: '08', body: '03 00 00 00 7f 00 00 00 c1 00 0e 00 0c 00 02 00 00 00 00 00 00 00'}
+        hex: {header: '08 16', body: '03 00 00 00 7f 00 00 00 c1 00 0e 00 0c 00 02 00 00 00 00 00 00 00'}
     }
 ];
 

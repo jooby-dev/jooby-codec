@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
             meterProfileId: 4,
             obisId: 28
         },
-        hex: {header: '46', body: '05 04 1c'}
+        hex: {header: '46 03', body: '05 04 1c'}
     }
 ];
 

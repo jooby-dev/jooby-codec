@@ -35,7 +35,7 @@ const examples: TCommandExampleList = [
             resetFlag: 0,
             senderCollision: 0
         },
-        hex: {header: '16', body: '08 01 c1 05 06 00 00 00'}
+        hex: {header: '16 08', body: '08 01 c1 05 06 00 00 00'}
     }
 ];
 

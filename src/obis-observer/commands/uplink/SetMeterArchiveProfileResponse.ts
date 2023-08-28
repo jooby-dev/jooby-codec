@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 156,
             resultCode: resultCodes.OK
         },
-        hex: {header: '69', body: '9c 00'}
+        hex: {header: '69 02', body: '9c 00'}
     },
     {
         name: 'failed request',
@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
             requestId: 49,
             resultCode: resultCodes.PROFILE_NOT_FOUND
         },
-        hex: {header: '69', body: '31 05'}
+        hex: {header: '69 02', body: '31 05'}
     }
 ];
 

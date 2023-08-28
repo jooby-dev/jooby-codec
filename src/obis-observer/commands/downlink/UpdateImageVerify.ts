@@ -12,7 +12,7 @@ const examples: TCommandExampleList = [
         parameters: {
             requestId: 33
         },
-        hex: {header: '30', body: '21'}
+        hex: {header: '30 01', body: '21'}
     }
 ];
 

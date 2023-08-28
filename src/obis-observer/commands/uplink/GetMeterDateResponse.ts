@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             meterId: 4,
             time2000: 741280502
         },
-        hex: {header: '7b', body: '07 04 2c 2f 0a f6'}
+        hex: {header: '7b 06', body: '07 04 2c 2f 0a f6'}
     }
 ];
 

@@ -33,7 +33,7 @@ const examples: TCommandExampleList = [
             deviceClass: deviceClasses.C,
             activationMethod: 1
         },
-        hex: {header: '14', body: '08 00 1a 79 88 16 aa 55 61 00 11 22 33 44 55 66 77 02 01'}
+        hex: {header: '14 13', body: '08 00 1a 79 88 16 aa 55 61 00 11 22 33 44 55 66 77 02 01'}
     }
 ];
 
