@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
@@ -65,14 +65,8 @@ class GetObisContentById extends Command {
     static readonly hasParameters = true;
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new GetObisContentById({
-            requestId: buffer.getUint8(),
-            meterId: buffer.getUint8(),
-            obisId: buffer.getUint8()
-        });
+    static fromBytes ( [requestId, meterId, obisId]: Uint8Array ) {
+        return new GetObisContentById({requestId, meterId, obisId});
     }
 
     // returns full message - header with body

@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
@@ -7,7 +7,7 @@ import {UPLINK} from '../../constants/directions.js';
  * IGetObserverSingleModeResponseParameters command parameters
  */
 interface IGetObserverSingleModeResponseParameters extends ICommandParameters {
-    singleMode: boolean
+    isSingleMode: boolean
 }
 
 const COMMAND_ID = 0x0e;
@@ -17,7 +17,7 @@ const examples: TCommandExampleList = [
         name: 'get current single mode',
         parameters: {
             requestId: 7,
-            singleMode: true
+            isSingleMode: true
         },
         hex: {header: '0e', body: '07 01'}
     }
@@ -64,20 +64,15 @@ class GetObserverSingleModeResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new GetObserverSingleModeResponse({
-            requestId: buffer.getUint8(),
-            singleMode: buffer.getUint8() !== 0
-        });
+    static fromBytes ( [requestId, isSingleMode]: Uint8Array ) {
+        return new GetObserverSingleModeResponse({requestId, isSingleMode: isSingleMode !== 0});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         return Command.toBytes(
             COMMAND_ID,
-            new Uint8Array([this.parameters.requestId, this.parameters.singleMode ? 1 : 0])
+            new Uint8Array([this.parameters.requestId, this.parameters.isSingleMode ? 1 : 0])
         );
     }
 }

@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
@@ -64,22 +64,15 @@ class RemoveMeter extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new RemoveMeter({
-            requestId: buffer.getUint8(),
-            meterId: buffer.getUint8()
-        });
+    static fromBytes ( [requestId, meterId]: Uint8Array ) {
+        return new RemoveMeter({requestId, meterId});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         return Command.toBytes(
             COMMAND_ID,
-            new Uint8Array(
-                [this.parameters.requestId, this.parameters.meterId]
-            )
+            new Uint8Array([this.parameters.requestId, this.parameters.meterId])
         );
     }
 }

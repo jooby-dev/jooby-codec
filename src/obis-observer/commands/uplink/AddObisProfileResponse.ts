@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {resultCodes} from '../../constants/index.js';
 
@@ -65,24 +65,13 @@ class AddObisProfileResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new AddObisProfileResponse({
-            requestId: buffer.getUint8(),
-            resultCode: buffer.getUint8()
-        });
+    static fromBytes ( [requestId, resultCode]: Uint8Array ) {
+        return new AddObisProfileResponse({requestId, resultCode});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, resultCode} = this.parameters;
-
-        buffer.setUint8(requestId);
-        buffer.setUint8(resultCode);
-
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId, this.parameters.resultCode]));
     }
 }
 

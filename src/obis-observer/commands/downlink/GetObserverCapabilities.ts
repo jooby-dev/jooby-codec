@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
@@ -53,10 +53,8 @@ class GetObserverCapabilities extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new GetObserverCapabilities({requestId: buffer.getUint8()});
+    static fromBytes ( [requestId]: Uint8Array ) {
+        return new GetObserverCapabilities({requestId});
     }
 
     // returns full message - header with body

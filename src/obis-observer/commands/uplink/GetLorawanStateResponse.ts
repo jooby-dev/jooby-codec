@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
@@ -88,39 +88,46 @@ class GetLorawanStateResponse extends Command {
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
+        const [
+            requestId,
+            downlinkQuality,
+            rssi,
+            snr,
+            deviceMargin,
+            gateMargin,
+            resetFlag,
+            senderCollision
+        ] = data;
 
         return new GetLorawanStateResponse({
-            requestId: buffer.getUint8(),
-            downlinkQuality: buffer.getUint8(),
-            rssi: buffer.getUint8(),
-            snr: buffer.getUint8(),
-            deviceMargin: buffer.getUint8(),
-            gateMargin: buffer.getUint8(),
-            resetFlag: buffer.getUint8(),
-            senderCollision: buffer.getUint8()
+            requestId,
+            downlinkQuality,
+            rssi,
+            snr,
+            deviceMargin,
+            gateMargin,
+            resetFlag,
+            senderCollision
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
-        const buffer = new CommandBinaryBuffer(this.size);
         const {parameters} = this;
 
-        buffer.setUint8(parameters.requestId);
-        buffer.setUint8(parameters.downlinkQuality);
-        buffer.setUint8(parameters.rssi);
-        buffer.setUint8(parameters.snr);
-        buffer.setUint8(parameters.deviceMargin);
-        buffer.setUint8(parameters.gateMargin);
-        buffer.setUint8(parameters.resetFlag);
-        buffer.setUint8(parameters.senderCollision);
-
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(
+            COMMAND_ID,
+            new Uint8Array([
+                parameters.requestId,
+                parameters.downlinkQuality,
+                parameters.rssi,
+                parameters.snr,
+                parameters.deviceMargin,
+                parameters.gateMargin,
+                parameters.resetFlag,
+                parameters.senderCollision
+            ])
+        );
     }
 }
 

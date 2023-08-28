@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
@@ -79,32 +79,35 @@ class GetObserverCapabilitiesResponse extends Command {
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-        const requestId = buffer.getUint8();
-        const maxMeterProfilesNumber = buffer.getUint8();
-        const maxMetersNumber = buffer.getUint8();
-        const maxObisProfilesNumber = buffer.getUint8();
-        const isMultiModeSupported = buffer.getUint8() !== 0;
+        const [
+            requestId,
+            maxMeterProfilesNumber,
+            maxMetersNumber,
+            maxObisProfilesNumber,
+            isMultiModeSupported
+        ] = data;
 
         return new GetObserverCapabilitiesResponse({
             requestId,
             maxMeterProfilesNumber,
             maxMetersNumber,
             maxObisProfilesNumber,
-            isMultiModeSupported
+            isMultiModeSupported: isMultiModeSupported !== 0
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
+        const {parameters} = this;
+
         return Command.toBytes(
             COMMAND_ID,
             new Uint8Array([
-                this.parameters.requestId,
-                this.parameters.maxMeterProfilesNumber,
-                this.parameters.maxMetersNumber,
-                this.parameters.maxObisProfilesNumber,
-                this.parameters.isMultiModeSupported ? 1 : 0
+                parameters.requestId,
+                parameters.maxMeterProfilesNumber,
+                parameters.maxMetersNumber,
+                parameters.maxObisProfilesNumber,
+                parameters.isMultiModeSupported ? 1 : 0
             ])
         );
     }

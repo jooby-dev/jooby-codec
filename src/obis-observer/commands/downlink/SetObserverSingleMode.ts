@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
@@ -64,13 +64,8 @@ class SetObserverSingleMode extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new SetObserverSingleMode({
-            requestId: buffer.getUint8(),
-            singleMode: buffer.getUint8() !== 0
-        });
+    static fromBytes ( [requestId, singleMode]: Uint8Array ) {
+        return new SetObserverSingleMode({requestId, singleMode: singleMode !== 0});
     }
 
     // returns full message - header with body

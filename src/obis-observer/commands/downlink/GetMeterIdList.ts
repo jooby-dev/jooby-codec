@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
@@ -63,10 +63,8 @@ class GetMeterIdList extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new GetMeterIdList({requestId: buffer.getUint8(), startIndex: buffer.getUint8()});
+    static fromBytes ( [requestId, startIndex]: Uint8Array ) {
+        return new GetMeterIdList({requestId, startIndex});
     }
 
     // returns full message - header with body

@@ -1,6 +1,15 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
+import {resultCodes} from '../../constants/index.js';
+
+
+/**
+ * IAddMeterProfileResponseParameters command parameters
+ */
+interface IRebootResponseParameters extends ICommandParameters {
+    resultCode: number
+}
 
 
 const COMMAND_ID = 0x1a;
@@ -8,11 +17,12 @@ const COMMAND_SIZE = REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'simple response',
+        name: 'reboot response',
         parameters: {
-            requestId: 7
+            requestId: 7,
+            resultCode: resultCodes.OK
         },
-        hex: {header: '1a', body: '07'}
+        hex: {header: '1a', body: '07 00'}
     }
 ];
 
@@ -37,7 +47,7 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/Reboot.md#response)
  */
 class RebootResponse extends Command {
-    constructor ( public parameters: ICommandParameters ) {
+    constructor ( public parameters: IRebootResponseParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -54,19 +64,13 @@ class RebootResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new RebootResponse({requestId: buffer.getUint8()});
+    static fromBytes ( [requestId, resultCode]: Uint8Array ) {
+        return new RebootResponse({requestId, resultCode});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-
-        buffer.setUint8(this.parameters.requestId);
-
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId, this.parameters.resultCode]));
     }
 }
 

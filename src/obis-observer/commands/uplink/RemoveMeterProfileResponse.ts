@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {resultCodes} from '../../constants/index.js';
 
@@ -65,13 +65,8 @@ class RemoveMeterProfileResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new RemoveMeterProfileResponse({
-            requestId: buffer.getUint8(),
-            resultCode: buffer.getUint8()
-        });
+    static fromBytes ( [requestId, resultCode]: Uint8Array ) {
+        return new RemoveMeterProfileResponse({requestId, resultCode});
     }
 
     // returns full message - header with body

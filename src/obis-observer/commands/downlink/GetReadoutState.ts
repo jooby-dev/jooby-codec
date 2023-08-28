@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 
 
@@ -7,20 +7,13 @@ import {DOWNLINK} from '../../constants/directions.js';
  * IGetReadoutStateParameters command parameters
  */
 interface IGetReadoutStateParameters extends ICommandParameters {
-    meterId?: number
+    meterId: number
 }
 
 
 const COMMAND_ID = 0x07;
 
 const examples: TCommandExampleList = [
-    {
-        name: 'get readout state',
-        parameters: {
-            requestId: 8
-        },
-        hex: {header: '07', body: '08'}
-    },
     {
         name: 'get readout state for meter id 3',
         parameters: {
@@ -70,32 +63,13 @@ class GetReadoutState extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        const requestId = buffer.getUint8();
-
-        return buffer.isEmpty
-            ? new GetReadoutState({requestId})
-            : new GetReadoutState({requestId, meterId: buffer.getUint8()});
+    static fromBytes ( [requestId, meterId]: Uint8Array ) {
+        return new GetReadoutState({requestId, meterId});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
-        const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, meterId} = this.parameters;
-
-        buffer.setUint8(requestId);
-
-        if ( meterId ) {
-            buffer.setUint8(meterId);
-        }
-
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId, this.parameters.meterId]));
     }
 }
 
