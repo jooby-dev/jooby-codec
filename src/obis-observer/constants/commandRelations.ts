@@ -14,6 +14,7 @@ requestByResponse.set(uplinkCommands.GetMeterDateResponse, downlinkCommands.GetM
 requestByResponse.set(uplinkCommands.GetMeterIdResponse, downlinkCommands.GetMeterId);
 requestByResponse.set(uplinkCommands.GetMeterInfoResponse, downlinkCommands.GetMeterInfo);
 requestByResponse.set(uplinkCommands.GetMeterProfileIdListResponse, downlinkCommands.GetMeterProfileIdList);
+requestByResponse.set(uplinkCommands.GetMeterReadoutStateResponse, downlinkCommands.GetMeterReadoutState);
 requestByResponse.set(uplinkCommands.GetObisContentByIdResponse, downlinkCommands.GetObisContentById);
 requestByResponse.set(uplinkCommands.GetObisContentResponse, downlinkCommands.GetObisContent);
 requestByResponse.set(uplinkCommands.GetObisIdListResponse, downlinkCommands.GetObisIdList);
@@ -23,7 +24,6 @@ requestByResponse.set(uplinkCommands.GetObserverCapabilitiesResponse, downlinkCo
 requestByResponse.set(uplinkCommands.GetObserverInfoResponse, downlinkCommands.GetObserverInfo);
 requestByResponse.set(uplinkCommands.GetObserverSingleModeResponse, downlinkCommands.GetObserverSingleMode);
 requestByResponse.set(uplinkCommands.GetObserverUptimeResponse, downlinkCommands.GetObserverUptime);
-requestByResponse.set(uplinkCommands.GetReadoutStateResponse, downlinkCommands.GetReadoutState);
 requestByResponse.set(uplinkCommands.ReadMeterArchiveResponse, downlinkCommands.ReadMeterArchive);
 requestByResponse.set(uplinkCommands.RebootResponse, downlinkCommands.Reboot);
 requestByResponse.set(uplinkCommands.RemoveMeterProfileResponse, downlinkCommands.RemoveMeterProfile);

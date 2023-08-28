@@ -4,14 +4,14 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetReadoutStateParameters command parameters
+ * IGetMeterReadoutStateParameters command parameters
  */
-interface IGetReadoutStateParameters extends ICommandParameters {
+interface IGetMeterReadoutStateParameters extends ICommandParameters {
     meterId: number
 }
 
 
-const COMMAND_ID = 0x07;
+const COMMAND_ID = 0x81;
 
 const examples: TCommandExampleList = [
     {
@@ -20,7 +20,7 @@ const examples: TCommandExampleList = [
             requestId: 9,
             meterId: 3
         },
-        hex: {header: '07 02', body: '09 03'}
+        hex: {header: '81 02', body: '09 03'}
     }
 ];
 
@@ -30,23 +30,23 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetReadoutState from 'jooby-codec/obis-observer/commands/downlink/GetReadoutState.js';
+ * import GetMeterReadoutState from 'jooby-codec/obis-observer/commands/downlink/GetMeterReadoutState.js';
  *
  * const parameters = {
  *     requestId: 8,
  *     meterId: 3
  * };
- * const command = new GetReadoutState(parameters);
+ * const command = new GetMeterReadoutState(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 07 02 08 03
+ * // 81 02 08 03
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetReadoutState.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterReadoutState.md#request)
  */
-class GetReadoutState extends Command {
-    constructor ( public parameters: IGetReadoutStateParameters ) {
+class GetMeterReadoutState extends Command {
+    constructor ( public parameters: IGetMeterReadoutStateParameters ) {
         super();
 
         this.size = REQUEST_ID_SIZE + (parameters.meterId ? 1 : 0);
@@ -64,7 +64,7 @@ class GetReadoutState extends Command {
 
     // data - only body (without header)
     static fromBytes ( [requestId, meterId]: Uint8Array ) {
-        return new GetReadoutState({requestId, meterId});
+        return new GetMeterReadoutState({requestId, meterId});
     }
 
     // returns full message - header with body
@@ -74,4 +74,4 @@ class GetReadoutState extends Command {
 }
 
 
-export default GetReadoutState;
+export default GetMeterReadoutState;

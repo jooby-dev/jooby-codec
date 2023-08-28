@@ -4,9 +4,9 @@ import {UPLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetReadoutStateResponseParameters command parameters
+ * IGetMeterReadoutStateResponseParameters command parameters
  */
-interface IGetReadoutStateResponseParameters extends ICommandParameters {
+interface IGetMeterReadoutStateResponseParameters extends ICommandParameters {
     /** seconds since the start of the device when the last successful readout attempt occurred */
     lastSuccessfulTime: number,
     /** seconds since the start of the device when the last failed readout attempt occurred */
@@ -34,11 +34,11 @@ interface IGetReadoutStateResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x08;
+const COMMAND_ID = 0x82;
 
 const examples: TCommandExampleList = [
     {
-        name: 'simple response',
+        name: 'get meter readout state response',
         parameters: {
             requestId: 3,
             lastSuccessfulTime: 127,
@@ -54,7 +54,7 @@ const examples: TCommandExampleList = [
             frameErrors: 0,
             overrunErrors: 0
         },
-        hex: {header: '08 16', body: '03 00 00 00 7f 00 00 00 c1 00 0e 00 0c 00 02 00 00 00 00 00 00 00'}
+        hex: {header: '82 16', body: '03 00 00 00 7f 00 00 00 c1 00 0e 00 0c 00 02 00 00 00 00 00 00 00'}
     }
 ];
 
@@ -64,12 +64,12 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetReadoutStateResponse from 'jooby-codec/obis-observer/commands/uplink/GetReadoutStateResponse.js';
+ * import GetMeterReadoutStateResponse from 'jooby-codec/obis-observer/commands/uplink/GetMeterReadoutStateResponse.js';
  *
  * const commandBody = new Uint8Array([
  *     0x03, 0x00, 0x00, 0x00, 0x7f, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x0e, 0x00, 0x0c, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
  * ]);
- * const command = GetReadoutStateResponse.fromBytes(commandBody);
+ * const command = GetMeterReadoutStateResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -90,10 +90,10 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetReadoutState.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterReadoutState.md#response)
  */
-class GetReadoutStateResponse extends Command {
-    constructor ( public parameters: IGetReadoutStateResponseParameters ) {
+class GetMeterReadoutStateResponse extends Command {
+    constructor ( public parameters: IGetMeterReadoutStateResponseParameters ) {
         super();
 
         this.size = REQUEST_ID_SIZE + 4 + 4 + 2 + 2 + 2 + 7;
@@ -113,7 +113,7 @@ class GetReadoutStateResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetReadoutStateResponse({
+        return new GetMeterReadoutStateResponse({
             requestId: buffer.getUint8(),
             lastSuccessfulTime: buffer.getUint32(),
             lastFailedTime: buffer.getUint32(),
@@ -158,4 +158,4 @@ class GetReadoutStateResponse extends Command {
 }
 
 
-export default GetReadoutStateResponse;
+export default GetMeterReadoutStateResponse;

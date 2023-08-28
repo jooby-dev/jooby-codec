@@ -15,6 +15,7 @@ export {default as GetMeterDateResponse} from './GetMeterDateResponse.js';
 export {default as GetMeterIdResponse} from './GetMeterIdResponse.js';
 export {default as GetMeterInfoResponse} from './GetMeterInfoResponse.js';
 export {default as GetMeterProfileIdListResponse} from './GetMeterProfileIdListResponse.js';
+export {default as GetMeterReadoutStateResponse} from './GetMeterReadoutStateResponse.js';
 export {default as GetObisContentByIdResponse} from './GetObisContentByIdResponse.js';
 export {default as GetObisContentByIdStringResponse} from './GetObisContentByIdStringResponse.js';
 export {default as GetObisContentResponse} from './GetObisContentResponse.js';
@@ -25,7 +26,6 @@ export {default as GetObserverCapabilitiesResponse} from './GetObserverCapabilit
 export {default as GetObserverInfoResponse} from './GetObserverInfoResponse.js';
 export {default as GetObserverSingleModeResponse} from './GetObserverSingleModeResponse.js';
 export {default as GetObserverUptimeResponse} from './GetObserverUptimeResponse.js';
-export {default as GetReadoutStateResponse} from './GetReadoutStateResponse.js';
 export {default as ObservationReport} from './ObservationReport.js';
 export {default as ObservationReportString} from './ObservationReportString.js';
 export {default as ReadMeterArchiveResponse} from './ReadMeterArchiveResponse.js';
