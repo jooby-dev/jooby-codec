@@ -13,10 +13,10 @@ interface IUpdateImageWriteParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x2a;
+const COMMAND_ID = 0x32;
 
-// size + id + offset
-const COMMAND_HEADER_SIZE = 1 + REQUEST_ID_SIZE + 4;
+// id + offset
+const COMMAND_HEADER_SIZE = REQUEST_ID_SIZE + 4;
 
 const examples: TCommandExampleList = [
     {
@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
                 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
             ])
         },
-        hex: {header: '2a', body: '15 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 00 00 00 00 00 00'}
+        hex: {header: '32 15', body: '21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 00 00 00 00 00 00'}
     }
 ];
 
@@ -51,7 +51,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 2a 15 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 00 00 00 00 00 00
+ * // 32 15 21 00 00 08 40 00 01 02 03 04 05 06 07 08 09 00 00 00 00 00 00
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/UpdateImageWrite.md#request)
@@ -76,10 +76,9 @@ class UpdateImageWrite extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-        const size = buffer.getUint8();
         const requestId = buffer.getUint8();
         const offset = buffer.getUint32();
-        const imageData = buffer.toUint8Array().slice(COMMAND_HEADER_SIZE, size + COMMAND_HEADER_SIZE);
+        const imageData = data.slice(COMMAND_HEADER_SIZE);
 
         return new UpdateImageWrite({requestId, offset, data: imageData});
     }
@@ -93,8 +92,6 @@ class UpdateImageWrite extends Command {
         const {requestId, offset, data} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_HEADER_SIZE);
 
-        // subtract size byte to get essential data size
-        buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
         buffer.setUint32(offset);
 

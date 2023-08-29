@@ -91,7 +91,7 @@ abstract class Command {
      */
     static toBytes ( id: number, commandData?: Uint8Array ): Uint8Array {
         const commandLength = commandData?.length ?? 0;
-        const headerData = new Uint8Array([id]);
+        const headerData = new Uint8Array([id, commandLength]);
 
         if ( commandData && commandLength ) {
             return mergeUint8Arrays(headerData, commandData);

@@ -4,4 +4,4 @@ export * as deviceClasses from './deviceClasses.js';
 export * as directions from './directions.js';
 export * as parityTypes from './parityTypes.js';
 export * as resultCodes from './resultCodes.js';
-export {default as shortNames} from './shortNames.js';
+export {default as obisIds} from './obisIds.js';

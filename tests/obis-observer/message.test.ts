@@ -15,30 +15,32 @@ type TMessageList = Array<IMessage>;
 
 const downlinkMessages: TMessageList = [
     {
-        // GetShortNames + GetShortNames
-        hex: '01 03 02 00 09 01  01 04 02 00 09 01',
+        // GetObisIdList + GetObisIdList
+        hex: '40 06 03 01 02 00 09 01  40 06 04 07 02 00 09 01',
         commands: [
             {
                 parameters: {
                     requestId: 3,
+                    meterProfileId: 1,
                     obis: {
                         c: 0,
                         d: 9,
                         e: 1
                     }
                 },
-                command: downlinkCommands.GetShortNames
+                command: downlinkCommands.GetObisIdList
             },
             {
                 parameters: {
                     requestId: 4,
+                    meterProfileId: 7,
                     obis: {
                         c: 0,
                         d: 9,
                         e: 1
                     }
                 },
-                command: downlinkCommands.GetShortNames
+                command: downlinkCommands.GetObisIdList
             }
         ],
         isValid: true
@@ -47,20 +49,20 @@ const downlinkMessages: TMessageList = [
 
 const uplinkMessages: TMessageList = [
     {
-        // AddShortNameProfileResponse + ObservationReport
-        hex: '06 07 00  1a 0e 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec',
+        // AddObisProfileResponse + ObservationReport
+        hex: '45 02 07 00  51 0e 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec',
         commands: [
             {
                 parameters: {
                     requestId: 7,
                     resultCode: 0
                 },
-                command: uplinkCommands.AddShortNameProfileResponse
+                command: uplinkCommands.AddObisProfileResponse
             },
             {
                 parameters: {
                     time2000: 756604800,
-                    shortNameList: [
+                    obisValueList: [
                         {code: 50, content: 34.33},
                         {code: 56, content: 45.33}
                     ]
@@ -74,26 +76,27 @@ const uplinkMessages: TMessageList = [
 
 const mixedMessages: TMessageList = [
     {
-        // GetShortNames + GetShortNamesResponse
-        hex: '01 07 02 00 09 01  02 03 07 c5 c6',
+        // GetObisIdList + GetObisIdListResponse
+        hex: '40 06 07 09 02 00 09 01  41 03 07 c5 c6',
         commands: [
             {
                 parameters: {
                     requestId: 7,
+                    meterProfileId: 9,
                     obis: {
                         c: 0,
                         d: 9,
                         e: 1
                     }
                 },
-                command: downlinkCommands.GetShortNames
+                command: downlinkCommands.GetObisIdList
             },
             {
                 parameters: {
                     requestId: 7,
-                    shortNameList: [197, 198]
+                    obisIdList: [197, 198]
                 },
-                command: uplinkCommands.GetShortNamesResponse
+                command: uplinkCommands.GetObisIdListResponse
             }
         ],
         isValid: true
