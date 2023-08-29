@@ -6,21 +6,40 @@ export const requestByResponse = new Map();
 export const responseByRequest = new Map();
 
 
-requestByResponse.set(uplinkCommands.AddShortNameProfileResponse, downlinkCommands.AddShortNameProfile);
-requestByResponse.set(uplinkCommands.GetArchiveProfileResponse, downlinkCommands.GetArchiveProfile);
-requestByResponse.set(uplinkCommands.GetContentByObisResponse, downlinkCommands.GetContentByObis);
-requestByResponse.set(uplinkCommands.GetContentByShortNameResponse, downlinkCommands.GetContentByShortName);
-requestByResponse.set(uplinkCommands.GetDeviceInfoResponse, downlinkCommands.GetDeviceInfo);
+requestByResponse.set(uplinkCommands.AddMeterProfileResponse, downlinkCommands.AddMeterProfile);
+requestByResponse.set(uplinkCommands.AddObisProfileResponse, downlinkCommands.AddObisProfile);
 requestByResponse.set(uplinkCommands.GetLorawanInfoResponse, downlinkCommands.GetLorawanInfo);
-requestByResponse.set(uplinkCommands.GetShortNameInfoResponse, downlinkCommands.GetShortNameInfo);
-requestByResponse.set(uplinkCommands.GetShortNameProfileResponse, downlinkCommands.GetShortNameProfile);
-requestByResponse.set(uplinkCommands.GetShortNamesResponse, downlinkCommands.GetShortNames);
-requestByResponse.set(uplinkCommands.ReadArchiveResponse, downlinkCommands.ReadArchive);
+requestByResponse.set(uplinkCommands.GetMeterArchiveProfileResponse, downlinkCommands.GetMeterArchiveProfile);
+requestByResponse.set(uplinkCommands.GetMeterArchiveStateResponse, downlinkCommands.GetMeterArchiveState);
+requestByResponse.set(uplinkCommands.GetMeterDateResponse, downlinkCommands.GetMeterDate);
+requestByResponse.set(uplinkCommands.GetMeterIdListResponse, downlinkCommands.GetMeterIdList);
+requestByResponse.set(uplinkCommands.GetMeterIdResponse, downlinkCommands.GetMeterId);
+requestByResponse.set(uplinkCommands.GetMeterInfoResponse, downlinkCommands.GetMeterInfo);
+requestByResponse.set(uplinkCommands.GetMeterProfileIdListResponse, downlinkCommands.GetMeterProfileIdList);
+requestByResponse.set(uplinkCommands.GetMeterReadoutStateResponse, downlinkCommands.GetMeterReadoutState);
+requestByResponse.set(uplinkCommands.GetObisContentByIdResponse, downlinkCommands.GetObisContentById);
+requestByResponse.set(uplinkCommands.GetObisContentResponse, downlinkCommands.GetObisContent);
+requestByResponse.set(uplinkCommands.GetObisIdListResponse, downlinkCommands.GetObisIdList);
+requestByResponse.set(uplinkCommands.GetObisInfoResponse, downlinkCommands.GetObisInfo);
+requestByResponse.set(uplinkCommands.GetObisProfileResponse, downlinkCommands.GetObisProfile);
+requestByResponse.set(uplinkCommands.GetObserverCapabilitiesResponse, downlinkCommands.GetObserverCapabilities);
+requestByResponse.set(uplinkCommands.GetObserverInfoResponse, downlinkCommands.GetObserverInfo);
+requestByResponse.set(uplinkCommands.GetObserverSingleModeResponse, downlinkCommands.GetObserverSingleMode);
+requestByResponse.set(uplinkCommands.GetObserverUptimeResponse, downlinkCommands.GetObserverUptime);
+requestByResponse.set(uplinkCommands.ReadMeterArchiveResponse, downlinkCommands.ReadMeterArchive);
 requestByResponse.set(uplinkCommands.RebootResponse, downlinkCommands.Reboot);
-requestByResponse.set(uplinkCommands.RemoveShortNameProfileResponse, downlinkCommands.RemoveShortNameProfile);
-requestByResponse.set(uplinkCommands.SetArchiveProfileResponse, downlinkCommands.SetArchiveProfile);
+requestByResponse.set(uplinkCommands.RemoveMeterProfileResponse, downlinkCommands.RemoveMeterProfile);
+requestByResponse.set(uplinkCommands.RemoveMeterResponse, downlinkCommands.RemoveMeter);
+requestByResponse.set(uplinkCommands.RemoveObisProfileResponse, downlinkCommands.RemoveObisProfile);
+requestByResponse.set(uplinkCommands.SetLorawanActivationMethodResponse, downlinkCommands.SetLorawanActivationMethod);
+requestByResponse.set(uplinkCommands.SetMeterArchiveProfileResponse, downlinkCommands.SetMeterArchiveProfile);
+requestByResponse.set(uplinkCommands.SetObisIdResponse, downlinkCommands.SetObisId);
+requestByResponse.set(uplinkCommands.SetObserverSingleModeResponse, downlinkCommands.SetObserverSingleMode);
 requestByResponse.set(uplinkCommands.SetSerialPortResponse, downlinkCommands.SetSerialPort);
-requestByResponse.set(uplinkCommands.SetShortNameResponse, downlinkCommands.SetShortName);
+requestByResponse.set(uplinkCommands.SetupMeterResponse, downlinkCommands.SetupMeter);
+requestByResponse.set(uplinkCommands.UpdateImageVerifyResponse, downlinkCommands.UpdateImageVerify);
+requestByResponse.set(uplinkCommands.UpdateImageWriteResponse, downlinkCommands.UpdateImageWrite);
+requestByResponse.set(uplinkCommands.UpdateRunResponse, downlinkCommands.UpdateRun);
 
 // invert keys with values
 for ( const [key, value] of requestByResponse.entries() ) {

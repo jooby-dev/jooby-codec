@@ -57,12 +57,12 @@ export interface IObisProfile {
     flags: IObisProfileFlags
 }
 
-export interface IShortNameFloat {
+export interface IObisValueFloat {
     code: number,
     content: number
 }
 
-export interface IShortNameString {
+export interface IObisValueString {
     code: number,
     content: string
 }
@@ -113,14 +113,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return keys.filter(key => obis[key] !== undefined).length + 1;
     }
 
-    static getShortNameContentSize ( shortName: IShortNameFloat | IShortNameString ) {
-        if ( typeof shortName.content === 'number' ) {
-            // IShortNameFloat, 1 byte short name code + 4 byte float value
+    static getObisContentSize ( obisValue: IObisValueFloat | IObisValueString ) {
+        if ( typeof obisValue.content === 'number' ) {
+            // IObisValueFloat, 1 byte obis id code + 4 byte float value
             return 5;
         }
 
-        // 1 byte for short name code + 1 byte of string size + string bytes
-        return 1 + shortName.content.length + 1;
+        // 1 byte for obis id code + 1 byte of string size + string bytes
+        return 1 + obisValue.content.length + 1;
     }
 
     getObis (): IObis {
@@ -221,22 +221,22 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(flags);
     }
 
-    getShortNameString (): IShortNameString {
+    getObisValueString (): IObisValueString {
         return {code: this.getUint8(), content: this.getString()};
     }
 
-    setShortNameString ( shortName: IShortNameString ) {
-        this.setUint8(shortName.code);
-        this.setString(shortName.content);
+    setObisValueString ( obisValue: IObisValueString ) {
+        this.setUint8(obisValue.code);
+        this.setString(obisValue.content);
     }
 
-    getShortNameFloat (): IShortNameFloat {
+    getObisValueFloat (): IObisValueFloat {
         return {code: this.getUint8(), content: roundNumber(this.getFloat32())};
     }
 
-    setShortNameFloat ( shortName: IShortNameFloat ) {
-        this.setUint8(shortName.code);
-        this.setFloat32(roundNumber(shortName.content));
+    setObisValueFloat ( obisValue: IObisValueFloat ) {
+        this.setUint8(obisValue.code);
+        this.setFloat32(roundNumber(obisValue.content));
     }
 
     getSerialPortFlags () {
