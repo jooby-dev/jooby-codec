@@ -7,22 +7,31 @@ import {UPLINK} from '../../constants/directions.js';
  * IGetMeterInfoResponseParameters command parameters
  */
 interface IGetMeterInfoResponseParameters extends ICommandParameters {
-    meterProfileId: number,
+    meterProfileId?: number,
     address: string
 }
 
 
 const COMMAND_ID = 0x79;
+const INVALID_METER_PROFILE_ID = 0xff;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get meter info response',
+        name: 'get meter info response with meterProfileId',
         parameters: {
             requestId: 2,
             meterProfileId: 1,
             address: 'ma2375'
         },
         hex: {header: '79 09', body: '02 01 06 6d 61 32 33 37 35'}
+    },
+    {
+        name: 'get meter info response without meterProfileId',
+        parameters: {
+            requestId: 2,
+            address: 'ma2375'
+        },
+        hex: {header: '79 09', body: '02 ff 06 6d 61 32 33 37 35'}
     }
 ];
 
@@ -72,11 +81,13 @@ class GetMeterInfoResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetMeterInfoResponse({
-            requestId: buffer.getUint8(),
-            meterProfileId: buffer.getUint8(),
-            address: buffer.getString()
-        });
+        const requestId = buffer.getUint8();
+        const meterProfileId = buffer.getUint8();
+        const address = buffer.getString();
+
+        return meterProfileId === INVALID_METER_PROFILE_ID
+            ? new GetMeterInfoResponse({requestId, address})
+            : new GetMeterInfoResponse({requestId, meterProfileId, address});
     }
 
     // returns full message - header with body
@@ -89,7 +100,7 @@ class GetMeterInfoResponse extends Command {
         const {requestId, meterProfileId, address} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint8(meterProfileId);
+        buffer.setUint8(meterProfileId || INVALID_METER_PROFILE_ID);
         buffer.setString(address);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
