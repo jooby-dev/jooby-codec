@@ -108,11 +108,7 @@ class ObservationReportString extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
-        const buffer = new CommandBinaryBuffer(this.size);
+        const buffer = new CommandBinaryBuffer(this.size as number);
         const {time2000, obisValueList} = this.parameters;
 
         buffer.setUint32(time2000);

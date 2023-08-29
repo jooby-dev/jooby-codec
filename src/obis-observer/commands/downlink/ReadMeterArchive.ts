@@ -94,12 +94,8 @@ class ReadMeterArchive extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
         const {requestId, meterId, archiveType, time2000} = this.parameters;
-        const buffer = new CommandBinaryBuffer(this.size);
+        const buffer = new CommandBinaryBuffer(this.size as number);
 
         buffer.setUint8(requestId);
         buffer.setUint8(meterId);
