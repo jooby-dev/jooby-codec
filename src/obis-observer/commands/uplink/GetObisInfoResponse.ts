@@ -37,6 +37,25 @@ const examples: TCommandExampleList = [
             }
         },
         hex: {header: '4b 0b', body: '03 02 00 09 01 01 58 02 14 3d 15'}
+    },
+    {
+        name: 'response to GetObisInfo with obis code 0.9.1 without obis profile',
+        parameters: {
+            requestId: 3,
+            obis: {
+                c: 0,
+                d: 9,
+                e: 1
+            }
+        },
+        hex: {header: '4b 05', body: '03 02 00 09 01'}
+    },
+    {
+        name: 'response to GetObisInfo without data',
+        parameters: {
+            requestId: 3
+        },
+        hex: {header: '4b 01', body: '03'}
     }
 ];
 
@@ -84,10 +103,10 @@ class GetObisInfoResponse extends Command {
 
         if ( parameters.obis ) {
             size += CommandBinaryBuffer.getObisSize(parameters.obis);
-        }
 
-        if ( parameters.obisProfile ) {
-            size += OBIS_PROFILE_SIZE;
+            if ( parameters.obisProfile ) {
+                size += OBIS_PROFILE_SIZE;
+            }
         }
 
         this.size = size;
@@ -106,24 +125,17 @@ class GetObisInfoResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-
-        let size = data.length - REQUEST_ID_SIZE;
         const requestId = buffer.getUint8();
-        let obis;
-        let obisProfile;
 
-        // obis code assigned
-        if ( size > 0 ) {
-            obis = buffer.getObis();
-            size -= CommandBinaryBuffer.getObisSize(obis);
+        if (buffer.isEmpty) {
+            return new GetObisInfoResponse({requestId});
         }
 
-        // obis profile exists
-        if ( size > 0 ) {
-            obisProfile = buffer.getObisProfile();
-        }
+        const obis = buffer.getObis();
 
-        return new GetObisInfoResponse({requestId, obis, obisProfile});
+        return buffer.isEmpty
+            ? new GetObisInfoResponse({requestId, obis})
+            : new GetObisInfoResponse({requestId, obis, obisProfile: buffer.getObisProfile()});
     }
 
     // returns full message - header with body
@@ -139,10 +151,10 @@ class GetObisInfoResponse extends Command {
 
         if ( obis ) {
             buffer.setObis(obis);
-        }
 
-        if ( obisProfile ) {
-            buffer.setObisProfile(obisProfile);
+            if ( obisProfile ) {
+                buffer.setObisProfile(obisProfile);
+            }
         }
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
