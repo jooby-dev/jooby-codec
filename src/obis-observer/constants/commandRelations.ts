@@ -10,7 +10,9 @@ requestByResponse.set(uplinkCommands.AddMeterProfileResponse, downlinkCommands.A
 requestByResponse.set(uplinkCommands.AddObisProfileResponse, downlinkCommands.AddObisProfile);
 requestByResponse.set(uplinkCommands.GetLorawanInfoResponse, downlinkCommands.GetLorawanInfo);
 requestByResponse.set(uplinkCommands.GetMeterArchiveProfileResponse, downlinkCommands.GetMeterArchiveProfile);
+requestByResponse.set(uplinkCommands.GetMeterArchiveStateResponse, downlinkCommands.GetMeterArchiveState);
 requestByResponse.set(uplinkCommands.GetMeterDateResponse, downlinkCommands.GetMeterDate);
+requestByResponse.set(uplinkCommands.GetMeterIdListResponse, downlinkCommands.GetMeterIdList);
 requestByResponse.set(uplinkCommands.GetMeterIdResponse, downlinkCommands.GetMeterId);
 requestByResponse.set(uplinkCommands.GetMeterInfoResponse, downlinkCommands.GetMeterInfo);
 requestByResponse.set(uplinkCommands.GetMeterProfileIdListResponse, downlinkCommands.GetMeterProfileIdList);
@@ -35,6 +37,9 @@ requestByResponse.set(uplinkCommands.SetObisIdResponse, downlinkCommands.SetObis
 requestByResponse.set(uplinkCommands.SetObserverSingleModeResponse, downlinkCommands.SetObserverSingleMode);
 requestByResponse.set(uplinkCommands.SetSerialPortResponse, downlinkCommands.SetSerialPort);
 requestByResponse.set(uplinkCommands.SetupMeterResponse, downlinkCommands.SetupMeter);
+requestByResponse.set(uplinkCommands.UpdateImageVerifyResponse, downlinkCommands.UpdateImageVerify);
+requestByResponse.set(uplinkCommands.UpdateImageWriteResponse, downlinkCommands.UpdateImageWrite);
+requestByResponse.set(uplinkCommands.UpdateRunResponse, downlinkCommands.UpdateRun);
 
 // invert keys with values
 for ( const [key, value] of requestByResponse.entries() ) {

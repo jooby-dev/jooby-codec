@@ -12,6 +12,7 @@ export {default as GetMeterArchiveProfile} from './GetMeterArchiveProfile.js';
 export {default as GetMeterArchiveState} from './GetMeterArchiveState.js';
 export {default as GetMeterDate} from './GetMeterDate.js';
 export {default as GetMeterId} from './GetMeterId.js';
+export {default as GetMeterIdList} from './GetMeterIdList.js';
 export {default as GetMeterInfo} from './GetMeterInfo.js';
 export {default as GetMeterProfileIdList} from './GetMeterProfileIdList.js';
 export {default as GetMeterReadoutState} from './GetMeterReadoutState.js';
