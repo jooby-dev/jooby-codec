@@ -57,6 +57,7 @@ const isValidParameterSet = ( parameters: IGetMeterArchiveStateResponseParameter
         && newestTime2000 !== undefined;
 };
 
+
 /**
  * Uplink command.
  *
