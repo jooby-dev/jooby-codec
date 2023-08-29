@@ -14,7 +14,7 @@ const COMMAND_ID = 0x0e;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get current single mode',
+        name: 'response to GetObserverSingleMode',
         parameters: {
             requestId: 7,
             isSingleMode: true

@@ -17,7 +17,7 @@ const COMMAND_ID = 0x02;
 
 const examples: TCommandExampleList = [
     {
-        name: 'response from device "Jooby Electra RM LoraWan 1D485 EU"',
+        name: 'response to GetObserverInfo with device name "Jooby Electra RM LoraWan 1D485 EU"',
         parameters: {
             requestId: 7,
             softwareVersion: {

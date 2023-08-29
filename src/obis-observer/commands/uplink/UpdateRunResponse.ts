@@ -17,7 +17,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'success',
+        name: 'response to UpdateRun - success',
         parameters: {
             requestId: 33,
             resultCode: resultCodes.OK

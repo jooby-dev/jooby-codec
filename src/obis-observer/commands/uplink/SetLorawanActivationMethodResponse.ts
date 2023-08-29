@@ -17,7 +17,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set observer single mode - succeed',
+        name: 'response to SetLorawanActivationMode - succeed',
         parameters: {
             requestId: 7,
             resultCode: resultCodes.OK

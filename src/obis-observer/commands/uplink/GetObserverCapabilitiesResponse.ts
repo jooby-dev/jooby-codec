@@ -18,7 +18,7 @@ const COMMAND_ID = 0x04;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get observer capabilities response',
+        name: 'response to GetObserverCapabilities',
         parameters: {
             requestId: 7,
             maxMeterProfilesNumber: 8,

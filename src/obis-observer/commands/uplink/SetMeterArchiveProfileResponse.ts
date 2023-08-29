@@ -17,7 +17,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'successful request',
+        name: 'response to SetMeterArchiveProfile - successful',
         parameters: {
             requestId: 156,
             resultCode: resultCodes.OK
@@ -25,7 +25,7 @@ const examples: TCommandExampleList = [
         hex: {header: '69 02', body: '9c 00'}
     },
     {
-        name: 'failed request',
+        name: 'response to SetMeterArchiveProfile - failed',
         parameters: {
             requestId: 49,
             resultCode: resultCodes.PROFILE_NOT_FOUND

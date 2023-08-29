@@ -16,7 +16,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set observer single mode',
+        name: 'set lorawan activation mode to ABP',
         parameters: {
             requestId: 3,
             activationMethod: 1
@@ -35,7 +35,7 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     requestId: 3,
- *     activationMethod: true
+ *     activationMethod: 1
  * };
  * const command = new SetLorawanActivationMethod(parameters);
  *

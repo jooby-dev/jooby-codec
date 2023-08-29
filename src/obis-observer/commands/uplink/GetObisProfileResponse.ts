@@ -16,7 +16,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + OBIS_PROFILE_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'obis profile for obisId 121',
+        name: 'response to GetObisProfile',
         parameters: {
             requestId: 3,
             obisProfile: {

@@ -17,7 +17,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 4;
 
 const examples: TCommandExampleList = [
     {
-        name: 'default periods',
+        name: 'response to GetMeterArchiveProfile',
         parameters: {
             requestId: 3,
             archiveProfile1Period: 600,

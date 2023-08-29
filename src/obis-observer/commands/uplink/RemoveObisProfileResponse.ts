@@ -17,7 +17,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'remove obis profile - not found',
+        name: 'responst to RemoveObisProfile - not found',
         parameters: {
             requestId: 5,
             resultCode: resultCodes.PROFILE_NOT_FOUND

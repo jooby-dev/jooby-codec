@@ -16,7 +16,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'add meter profile with Id 17',
+        name: 'remove meter 17',
         parameters: {
             requestId: 3,
             meterId: 17

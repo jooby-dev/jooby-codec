@@ -15,7 +15,7 @@ const COMMAND_ID = 0x81;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get readout state for meter id 3',
+        name: 'get readout state for meter 3',
         parameters: {
             requestId: 9,
             meterId: 3

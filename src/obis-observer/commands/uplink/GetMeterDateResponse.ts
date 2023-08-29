@@ -16,7 +16,7 @@ const COMMAND_ID = 0x7b;
 
 const examples: TCommandExampleList = [
     {
-        name: 'meter date and time info',
+        name: 'response to GetMeterDate',
         parameters: {
             requestId: 7,
             meterId: 4,

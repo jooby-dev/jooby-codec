@@ -17,7 +17,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'remove obis profile for obisId 28',
+        name: 'remove obis profile for obisId 28 in meter profile 4',
         parameters: {
             requestId: 5,
             meterProfileId: 4,

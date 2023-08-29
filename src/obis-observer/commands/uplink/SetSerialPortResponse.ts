@@ -17,7 +17,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set serial port settings - succeed',
+        name: 'response to SetSerialPortSettings - succeed',
         parameters: {
             requestId: 32,
             resultCode: resultCodes.OK
@@ -25,7 +25,7 @@ const examples: TCommandExampleList = [
         hex: {header: '1a 02', body: '20 00'}
     },
     {
-        name: 'set serial port settings - failed',
+        name: 'response to SetSerialPortSettings - failed',
         parameters: {
             requestId: 32,
             resultCode: resultCodes.FAILURE

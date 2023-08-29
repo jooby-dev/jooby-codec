@@ -14,7 +14,7 @@ const COMMAND_ID = 0x65;
 
 const examples: TCommandExampleList = [
     {
-        name: 'two meterProfileId',
+        name: 'response to GetMeterProfileIdList with two meterProfileId',
         parameters: {
             requestId: 3,
             meterProfileIdList: [1, 2]

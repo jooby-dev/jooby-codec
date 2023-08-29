@@ -20,7 +20,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 4 + DATE_TIME_SIZE * 2;
 
 const examples: TCommandExampleList = [
     {
-        name: 'no archive records',
+        name: 'response to GetMeterArchiveState. no archive records',
         parameters: {
             requestId: 2,
             archiveRecordsNumber: 0,
@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
         hex: {header: '7d 0d', body: '02 00 00 00 00 00 00 00 00 00 00 00 00'}
     },
     {
-        name: '81 records from 2023.06.27 18:45:02 GMT to 2023.06.28 15:15:02 GMT',
+        name: 'response to GetMeterArchiveState. 81 records from 2023.06.27 18:45:02 GMT to 2023.06.28 15:15:02 GMT',
         parameters: {
             requestId: 2,
             archiveRecordsNumber: 81,

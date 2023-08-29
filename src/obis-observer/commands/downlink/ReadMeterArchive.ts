@@ -19,7 +19,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 2 + DATE_TIME_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'request archive 1 from 2023.12.23 00:00:00 GMT',
+        name: 'request to read archive 1 from 2023.12.23 00:00:00 GMT for meter 5',
         parameters: {
             requestId: 33,
             meterId: 5,
@@ -29,14 +29,14 @@ const examples: TCommandExampleList = [
         hex: {header: '7f 07', body: '21 05 01 2d 18 df 80'}
     },
     {
-        name: 'request archive 2 from 2023-12-23 04:00:00 GMT',
+        name: 'request archive 2 from 2023-12-23 04:00:00 GMT for meter 6',
         parameters: {
             requestId: 34,
-            meterId: 5,
+            meterId: 6,
             archiveType: 2,
             time2000: 756619200
         },
-        hex: {header: '7f 07', body: '22 05 02 2d 19 17 c0'}
+        hex: {header: '7f 07', body: '22 06 02 2d 19 17 c0'}
     }
 ];
 

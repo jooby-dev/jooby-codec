@@ -16,7 +16,7 @@ const COMMAND_ID = 0x4e;
 
 const examples: TCommandExampleList = [
     {
-        name: 'simple response',
+        name: 'response to GetObisContentById',
         parameters: {
             requestId: 121,
             content: 344.23

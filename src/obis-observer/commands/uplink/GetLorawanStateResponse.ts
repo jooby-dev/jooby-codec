@@ -24,7 +24,7 @@ const COMMAND_ID = 0x16;
 
 const examples: TCommandExampleList = [
     {
-        name: 'simple response',
+        name: 'response to GetLorawanState',
         parameters: {
             requestId: 8,
             downlinkQuality: 1,

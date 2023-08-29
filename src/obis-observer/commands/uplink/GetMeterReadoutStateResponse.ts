@@ -38,7 +38,7 @@ const COMMAND_ID = 0x82;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get meter readout state response',
+        name: 'response to GetMeterReadoutState',
         parameters: {
             requestId: 3,
             lastSuccessfulTime: 127,

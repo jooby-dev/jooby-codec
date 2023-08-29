@@ -14,7 +14,7 @@ const COMMAND_ID = 0x06;
 
 const examples: TCommandExampleList = [
     {
-        name: 'current date and time info',
+        name: 'response to GetObserverUptime',
         parameters: {
             requestId: 7,
             uptime: 4016

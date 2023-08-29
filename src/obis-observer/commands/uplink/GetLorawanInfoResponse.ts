@@ -25,7 +25,7 @@ const COMMAND_ID = 0x14;
 
 const examples: TCommandExampleList = [
     {
-        name: 'response from device "001a798816aa5561"',
+        name: 'response to GetLorawanInfo',
         parameters: {
             requestId: 8,
             deviceEUI: '00 1a 79 88 16 aa 55 61',

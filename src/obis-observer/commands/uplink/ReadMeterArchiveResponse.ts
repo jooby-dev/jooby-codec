@@ -19,7 +19,7 @@ const COMMAND_HEADER_SIZE = REQUEST_ID_SIZE + DATE_TIME_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'archive from 2023-12-23 04:00:00 GMT',
+        name: 'response to ReadMeterArchive from 2023-12-23 04:00:00 GMT',
         parameters: {
             requestId: 34,
             time2000: 756619200,

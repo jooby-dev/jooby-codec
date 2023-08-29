@@ -16,7 +16,7 @@ const COMMAND_ID = 0x4c;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get content for OBIS code 0.9.1 - local time',
+        name: 'get content for OBIS code 0.9.1 - local time for meter 8',
         parameters: {
             requestId: 3,
             meterId: 8,

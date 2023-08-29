@@ -18,7 +18,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1 + 2 + 2;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set double default parameters',
+        name: 'set archive settings in meter profile 8',
         parameters: {
             requestId: 68,
             meterProfileId: 8,
