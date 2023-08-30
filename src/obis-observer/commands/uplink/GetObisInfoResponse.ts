@@ -31,8 +31,8 @@ const examples: TCommandExampleList = [
                 flags: {
                     contentType: contentTypes.STRING,
                     sendOnChange: true,
-                    archiveProfile1: true,
-                    archiveProfile2: false
+                    archive1: true,
+                    archive2: false
                 }
             }
         },
@@ -86,8 +86,8 @@ const examples: TCommandExampleList = [
  *         flags: {
  *             contentType: 2,
  *             sendOnChange: true,
- *             archiveProfile1: true,
- *             archiveProfile2: false
+ *             archive1: true,
+ *             archive2: false
  *         }
  *     }
  * }
