@@ -86,6 +86,7 @@ class GetObisContentByIdResponse extends Command {
         const {requestId, content} = this.parameters;
 
         buffer.setUint8(requestId);
+
         if ( content ) {
             buffer.setFloat32(roundNumber(content));
         }

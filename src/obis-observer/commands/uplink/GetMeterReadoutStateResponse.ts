@@ -33,6 +33,7 @@ interface IGetMeterReadoutStateResponseParameters extends ICommandParameters {
     overrunErrors: number
 }
 
+
 const COMMAND_ID = 0x82;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 4 + 4 + 2 + 2 + 2 + 7;
 

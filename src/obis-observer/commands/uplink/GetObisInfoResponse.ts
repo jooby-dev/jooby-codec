@@ -127,7 +127,7 @@ class GetObisInfoResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
         const requestId = buffer.getUint8();
 
-        if (buffer.isEmpty) {
+        if ( buffer.isEmpty ) {
             return new GetObisInfoResponse({requestId});
         }
 

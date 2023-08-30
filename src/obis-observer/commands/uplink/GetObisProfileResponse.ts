@@ -107,7 +107,7 @@ class GetObisProfileResponse extends Command {
 
         buffer.setUint8(requestId);
 
-        if (obisProfile) {
+        if ( obisProfile ) {
             buffer.setObisProfile(obisProfile);
         }
 

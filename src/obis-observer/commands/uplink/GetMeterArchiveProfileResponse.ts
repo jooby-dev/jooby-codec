@@ -102,8 +102,8 @@ class GetArchiveProfileResponse extends Command {
         }
 
         const {requestId, archive1Period, archive2Period} = this.parameters as IGetArchiveProfileResponseParameters;
-
         const buffer = new CommandBinaryBuffer(this.size as number);
+
         buffer.setUint8(requestId);
         buffer.setUint16(archive1Period);
         buffer.setUint16(archive2Period);

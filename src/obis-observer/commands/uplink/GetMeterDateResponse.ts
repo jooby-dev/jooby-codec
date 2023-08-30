@@ -87,6 +87,7 @@ class GetMeterDateResponse extends Command {
         const {requestId, time2000} = this.parameters;
 
         buffer.setUint8(requestId);
+
         if ( time2000 ) {
             buffer.setUint32(time2000);
         }
