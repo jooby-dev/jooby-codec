@@ -6,7 +6,7 @@ import {UPLINK} from '../../constants/directions.js';
 /**
  * IGetArchiveProfileResponseParameters command parameters
  */
-interface IGetArchiveProfileResponseParameters extends ICommandParameters {
+interface IGetMeterArchiveProfileResponseParameters extends ICommandParameters {
     archive1Period: number,
     archive2Period: number
 }
@@ -34,8 +34,8 @@ const examples: TCommandExampleList = [
     }
 ];
 
-const isValidParameterSet = ( parameters: IGetArchiveProfileResponseParameters | ICommandParameters ): boolean => {
-    const {requestId, archive1Period, archive2Period} = parameters as IGetArchiveProfileResponseParameters;
+const isValidParameterSet = ( parameters: IGetMeterArchiveProfileResponseParameters | ICommandParameters ): boolean => {
+    const {requestId, archive1Period, archive2Period} = parameters as IGetMeterArchiveProfileResponseParameters;
 
     return requestId !== undefined
         && archive1Period !== undefined
@@ -64,8 +64,8 @@ const isValidParameterSet = ( parameters: IGetArchiveProfileResponseParameters |
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveProfile.md#response)
  */
-class GetArchiveProfileResponse extends Command {
-    constructor ( public parameters: IGetArchiveProfileResponseParameters | ICommandParameters ) {
+class GetMeterArchiveProfileResponse extends Command {
+    constructor ( public parameters: IGetMeterArchiveProfileResponseParameters | ICommandParameters ) {
         super();
 
         this.size = isValidParameterSet(parameters) ? COMMAND_SIZE : REQUEST_ID_SIZE;
@@ -87,8 +87,8 @@ class GetArchiveProfileResponse extends Command {
         const requestId = buffer.getUint8();
 
         return buffer.isEmpty
-            ? new GetArchiveProfileResponse({requestId})
-            : new GetArchiveProfileResponse({
+            ? new GetMeterArchiveProfileResponse({requestId})
+            : new GetMeterArchiveProfileResponse({
                 requestId,
                 archive1Period: buffer.getUint16(),
                 archive2Period: buffer.getUint16()
@@ -101,7 +101,7 @@ class GetArchiveProfileResponse extends Command {
             return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId]));
         }
 
-        const {requestId, archive1Period, archive2Period} = this.parameters as IGetArchiveProfileResponseParameters;
+        const {requestId, archive1Period, archive2Period} = this.parameters as IGetMeterArchiveProfileResponseParameters;
         const buffer = new CommandBinaryBuffer(this.size as number);
 
         buffer.setUint8(requestId);
@@ -113,4 +113,4 @@ class GetArchiveProfileResponse extends Command {
 }
 
 
-export default GetArchiveProfileResponse;
+export default GetMeterArchiveProfileResponse;
