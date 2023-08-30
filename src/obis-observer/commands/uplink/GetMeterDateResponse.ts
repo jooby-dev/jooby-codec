@@ -8,21 +8,26 @@ import {TTime2000} from '../../../utils/time.js';
  * IGetMeterDateResponseParameters command parameters
  */
 interface IGetMeterDateResponseParameters extends ICommandParameters {
-    meterId: number,
-    time2000: TTime2000
+    time2000?: TTime2000
 }
 
 const COMMAND_ID = 0x7b;
 
 const examples: TCommandExampleList = [
     {
-        name: 'response to GetMeterDate',
+        name: 'response to GetMeterDate with data',
         parameters: {
             requestId: 7,
-            meterId: 4,
             time2000: 741280502
         },
-        hex: {header: '7b 06', body: '07 04 2c 2f 0a f6'}
+        hex: {header: '7b 05', body: '07 2c 2f 0a f6'}
+    },
+    {
+        name: 'response to GetMeterDate without data',
+        parameters: {
+            requestId: 8
+        },
+        hex: {header: '7b 01', body: '08'}
     }
 ];
 
@@ -35,7 +40,7 @@ const examples: TCommandExampleList = [
  * import GetMeterDateResponse from 'jooby-codec/obis-observer/commands/uplink/GetMeterDateResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x07, 0x04, 0x2c, 0x2f, 0x0a, 0xf6
+ *     0x07, 0x2c, 0x2f, 0x0a, 0xf6
  * ]);
  * const command = GetMeterDateResponse.fromBytes(commandBody);
  *
@@ -43,7 +48,6 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     requestId: 7,
- *     meterId: 4
  *     time2000: 741280502
  * }
  * ```
@@ -54,7 +58,7 @@ class GetMeterDateResponse extends Command {
     constructor ( public parameters: IGetMeterDateResponseParameters ) {
         super();
 
-        this.size = REQUEST_ID_SIZE + 1 + DATE_TIME_SIZE;
+        this.size = REQUEST_ID_SIZE + (parameters.time2000 ? DATE_TIME_SIZE : 0);
     }
 
 
@@ -70,26 +74,23 @@ class GetMeterDateResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
+        const requestId = buffer.getUint8();
 
-        return new GetMeterDateResponse({
-            requestId: buffer.getUint8(),
-            meterId: buffer.getUint8(),
-            time2000: buffer.getUint32()
-        });
+        return buffer.isEmpty
+            ? new GetMeterDateResponse({requestId})
+            : new GetMeterDateResponse({requestId, time2000: buffer.getUint32()});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
-        const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, meterId, time2000} = this.parameters;
+        const buffer = new CommandBinaryBuffer(this.size as number);
+        const {requestId, time2000} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint8(meterId);
-        buffer.setUint32(time2000);
+
+        if ( time2000 ) {
+            buffer.setUint32(time2000);
+        }
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

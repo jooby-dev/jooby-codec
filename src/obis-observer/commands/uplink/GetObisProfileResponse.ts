@@ -8,7 +8,7 @@ import {contentTypes} from '../../constants/index.js';
  * IGetObisProfileResponseParameters command parameters
  */
 interface IGetObisProfileResponseParameters extends ICommandParameters {
-    obisProfile: IObisProfile,
+    obisProfile?: IObisProfile,
 }
 
 const COMMAND_ID = 0x49;
@@ -32,6 +32,13 @@ const examples: TCommandExampleList = [
             }
         },
         hex: {header: '49 07', body: '03 01 58 02 14 3d 13'}
+    },
+    {
+        name: 'response to GetObisProfile without data',
+        parameters: {
+            requestId: 3
+        },
+        hex: {header: '49 01', body: '03'}
     }
 ];
 
@@ -70,7 +77,7 @@ class GetObisProfileResponse extends Command {
     constructor ( public parameters: IGetObisProfileResponseParameters ) {
         super();
 
-        this.size = COMMAND_SIZE;
+        this.size = parameters.obisProfile ? COMMAND_SIZE : REQUEST_ID_SIZE;
     }
 
 
@@ -86,24 +93,23 @@ class GetObisProfileResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-
         const requestId = buffer.getUint8();
-        const obisProfile = buffer.getObisProfile();
 
-        return new GetObisProfileResponse({requestId, obisProfile});
+        return buffer.isEmpty
+            ? new GetObisProfileResponse({requestId})
+            : new GetObisProfileResponse({requestId, obisProfile: buffer.getObisProfile()});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
-        const buffer = new CommandBinaryBuffer(this.size);
+        const buffer = new CommandBinaryBuffer(this.size as number);
         const {requestId, obisProfile} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setObisProfile(obisProfile);
+
+        if ( obisProfile ) {
+            buffer.setObisProfile(obisProfile);
+        }
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

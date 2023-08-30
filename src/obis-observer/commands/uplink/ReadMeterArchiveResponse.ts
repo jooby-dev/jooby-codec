@@ -29,8 +29,35 @@ const examples: TCommandExampleList = [
             ]
         },
         hex: {header: '80 0f', body: '22 2d 19 17 c0 32 41 b2 28 f6 38 42 b2 a8 f6'}
+    },
+    {
+        name: 'response to ReadMeterArchive without data',
+        parameters: {
+            requestId: 34
+        },
+        hex: {header: '80 01', body: '22'}
     }
+
 ];
+
+const isValidParameterSet = ( parameters: IReadMeterArchiveResponseParameters | ICommandParameters ): boolean => {
+    const {requestId, time2000, obisValueList} = parameters as IReadMeterArchiveResponseParameters;
+
+    return requestId !== undefined
+        && time2000 !== undefined
+        && obisValueList !== undefined;
+};
+
+const commandSize = ( parameters: IReadMeterArchiveResponseParameters ): number => {
+    let size = COMMAND_HEADER_SIZE;
+
+    // + obis values list list of code 1 byte with float content 4 bytes
+    parameters.obisValueList.forEach(obisId => {
+        size += CommandBinaryBuffer.getObisContentSize(obisId);
+    });
+
+    return size;
+};
 
 
 /**
@@ -60,17 +87,12 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadMeterArchive.md#response)
  */
 class ReadMeterArchiveResponse extends Command {
-    constructor ( public parameters: IReadMeterArchiveResponseParameters ) {
+    constructor ( public parameters: IReadMeterArchiveResponseParameters | ICommandParameters) {
         super();
 
-        let size = COMMAND_HEADER_SIZE;
-
-        // + obis values list list of code 1 byte with float content 4 bytes
-        this.parameters.obisValueList.forEach(obisId => {
-            size += CommandBinaryBuffer.getObisContentSize(obisId);
-        });
-
-        this.size = size;
+        this.size = isValidParameterSet(parameters)
+            ? commandSize(parameters as IReadMeterArchiveResponseParameters)
+            : REQUEST_ID_SIZE;
     }
 
 
@@ -86,16 +108,18 @@ class ReadMeterArchiveResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-
-        let size = data.length - COMMAND_HEADER_SIZE;
         const requestId = buffer.getUint8();
+
+        if ( buffer.isEmpty) {
+            return new ReadMeterArchiveResponse({requestId});
+        }
+
         const time2000 = buffer.getUint32();
         const obisValueList = [];
 
-        while ( size ) {
+        while ( !buffer.isEmpty ) {
             const obisValue = buffer.getObisValueFloat();
 
-            size -= CommandBinaryBuffer.getObisContentSize(obisValue);
             obisValueList.push(obisValue);
         }
 
@@ -104,12 +128,12 @@ class ReadMeterArchiveResponse extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
+        if ( !isValidParameterSet(this.parameters) ) {
+            return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId]));
         }
 
-        const buffer = new CommandBinaryBuffer(this.size);
-        const {requestId, time2000, obisValueList} = this.parameters;
+        const {requestId, time2000, obisValueList} = this.parameters as IReadMeterArchiveResponseParameters;
+        const buffer = new CommandBinaryBuffer(this.size as number);
 
         buffer.setUint8(requestId);
         buffer.setUint32(time2000);
