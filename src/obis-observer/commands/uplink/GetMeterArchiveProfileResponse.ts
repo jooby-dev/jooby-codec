@@ -57,8 +57,8 @@ const isValidParameterSet = ( parameters: IGetArchiveProfileResponseParameters |
  * // output:
  * {
  *     requestId: 3,
- *     archiveProfile1Period: 600,
- *     archiveProfile2Period: 45
+ *     archive1Period: 600,
+ *     archive2Period: 45
  * }
  * ```
  *

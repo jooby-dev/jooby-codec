@@ -41,8 +41,8 @@ export interface IObis {
 export interface IObisProfileFlags {
     contentType: number,
     sendOnChange: boolean,
-    archiveProfile1: boolean,
-    archiveProfile2: boolean
+    archive1: boolean,
+    archive2: boolean
 }
 
 export interface IObisProfile {
@@ -87,13 +87,13 @@ const obisBitMask = {
 };
 
 // sizes
-const archiveProfileBitsNumber = 1;
+const archiveBitsNumber = 1;
 const sendingOnlyIfChangeBitsNumber = 1;
 const contentTypeBitsNumber = 2;
 
 // positions
-const archiveProfile1BitStartIndex = 1;
-const archiveProfile2BitStartIndex = 2;
+const archive1BitStartIndex = 1;
+const archive2BitStartIndex = 2;
 const sendingOnlyIfChangeBitStartIndex = 3;
 const contentTypeBitStartIndex = 4;
 
@@ -191,8 +191,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
             flags: {
                 contentType: 0,
                 sendOnChange: false,
-                archiveProfile1: false,
-                archiveProfile2: false
+                archive1: false,
+                archive2: false
             }
         } as IObisProfile;
 
@@ -200,8 +200,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         profile.flags.contentType = bitSet.extractBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex);
         profile.flags.sendOnChange = !!bitSet.extractBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex);
-        profile.flags.archiveProfile1 = !!bitSet.extractBits(flags, archiveProfileBitsNumber, archiveProfile1BitStartIndex);
-        profile.flags.archiveProfile2 = !!bitSet.extractBits(flags, archiveProfileBitsNumber, archiveProfile2BitStartIndex);
+        profile.flags.archive1 = !!bitSet.extractBits(flags, archiveBitsNumber, archive1BitStartIndex);
+        profile.flags.archive2 = !!bitSet.extractBits(flags, archiveBitsNumber, archive2BitStartIndex);
 
         return profile;
     }
@@ -215,8 +215,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         flags = bitSet.fillBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex, profile.flags.contentType );
         flags = bitSet.fillBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex, +profile.flags.sendOnChange);
-        flags = bitSet.fillBits(flags, archiveProfileBitsNumber, archiveProfile1BitStartIndex, +profile.flags.archiveProfile1);
-        flags = bitSet.fillBits(flags, archiveProfileBitsNumber, archiveProfile2BitStartIndex, +profile.flags.archiveProfile2);
+        flags = bitSet.fillBits(flags, archiveBitsNumber, archive1BitStartIndex, +profile.flags.archive1);
+        flags = bitSet.fillBits(flags, archiveBitsNumber, archive2BitStartIndex, +profile.flags.archive2);
 
         this.setUint8(flags);
     }
