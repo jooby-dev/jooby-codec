@@ -85,10 +85,6 @@ class UpdateImageWrite extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
         const {requestId, offset, data} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_HEADER_SIZE);
 

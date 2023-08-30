@@ -35,6 +35,7 @@ interface IGetMeterReadoutStateResponseParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x82;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 4 + 4 + 2 + 2 + 2 + 7;
 
 const examples: TCommandExampleList = [
     {
@@ -55,8 +56,47 @@ const examples: TCommandExampleList = [
             overrunErrors: 0
         },
         hex: {header: '82 16', body: '03 00 00 00 7f 00 00 00 c1 00 0e 00 0c 00 02 00 00 00 00 00 00 00'}
+    },
+    {
+        name: 'response to GetMeterReadoutState without data',
+        parameters: {
+            requestId: 3
+        },
+        hex: {header: '82 01', body: '03'}
     }
 ];
+
+const isValidParameterSet = ( parameters: IGetMeterReadoutStateResponseParameters | ICommandParameters ): boolean => {
+    const {
+        requestId,
+        lastSuccessfulTime,
+        lastFailedTime,
+        readoutAttempts,
+        successfulReadoutAttempts,
+        readoutRepetitions,
+        waitNextSymbolErrors,
+        waitIdErrors,
+        waitNextStateErrors,
+        wrongBccErrors,
+        parityErrors,
+        frameErrors,
+        overrunErrors
+    } = parameters as IGetMeterReadoutStateResponseParameters;
+
+    return requestId !== undefined
+        && lastSuccessfulTime !== undefined
+        && lastFailedTime !== undefined
+        && readoutAttempts !== undefined
+        && successfulReadoutAttempts !== undefined
+        && readoutRepetitions !== undefined
+        && waitNextSymbolErrors !== undefined
+        && waitIdErrors !== undefined
+        && waitNextStateErrors !== undefined
+        && wrongBccErrors !== undefined
+        && parityErrors !== undefined
+        && frameErrors !== undefined
+        && overrunErrors !== undefined;
+};
 
 
 /**
@@ -93,10 +133,10 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterReadoutState.md#response)
  */
 class GetMeterReadoutStateResponse extends Command {
-    constructor ( public parameters: IGetMeterReadoutStateResponseParameters ) {
+    constructor ( public parameters: IGetMeterReadoutStateResponseParameters | ICommandParameters ) {
         super();
 
-        this.size = REQUEST_ID_SIZE + 4 + 4 + 2 + 2 + 2 + 7;
+        this.size = isValidParameterSet(parameters) ? COMMAND_SIZE : REQUEST_ID_SIZE;
     }
 
 
@@ -112,32 +152,35 @@ class GetMeterReadoutStateResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
+        const requestId = buffer.getUint8();
 
-        return new GetMeterReadoutStateResponse({
-            requestId: buffer.getUint8(),
-            lastSuccessfulTime: buffer.getUint32(),
-            lastFailedTime: buffer.getUint32(),
-            readoutAttempts: buffer.getUint16(),
-            successfulReadoutAttempts: buffer.getUint16(),
-            readoutRepetitions: buffer.getUint16(),
-            waitNextSymbolErrors: buffer.getUint8(),
-            waitIdErrors: buffer.getUint8(),
-            waitNextStateErrors: buffer.getUint8(),
-            wrongBccErrors: buffer.getUint8(),
-            parityErrors: buffer.getUint8(),
-            frameErrors: buffer.getUint8(),
-            overrunErrors: buffer.getUint8()
-        });
+        return buffer.isEmpty
+            ? new GetMeterReadoutStateResponse({requestId})
+            : new GetMeterReadoutStateResponse({
+                requestId,
+                lastSuccessfulTime: buffer.getUint32(),
+                lastFailedTime: buffer.getUint32(),
+                readoutAttempts: buffer.getUint16(),
+                successfulReadoutAttempts: buffer.getUint16(),
+                readoutRepetitions: buffer.getUint16(),
+                waitNextSymbolErrors: buffer.getUint8(),
+                waitIdErrors: buffer.getUint8(),
+                waitNextStateErrors: buffer.getUint8(),
+                wrongBccErrors: buffer.getUint8(),
+                parityErrors: buffer.getUint8(),
+                frameErrors: buffer.getUint8(),
+                overrunErrors: buffer.getUint8()
+            });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
+        if ( !isValidParameterSet(this.parameters) ) {
+            return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId]));
         }
 
-        const buffer = new CommandBinaryBuffer(this.size);
-        const {parameters} = this;
+        const buffer = new CommandBinaryBuffer(this.size as number);
+        const parameters = this.parameters as IGetMeterReadoutStateResponseParameters;
 
         buffer.setUint8(parameters.requestId);
         buffer.setUint32(parameters.lastSuccessfulTime);

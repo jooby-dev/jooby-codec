@@ -7,11 +7,12 @@ import {UPLINK} from '../../constants/directions.js';
  * IGetMeterIdResponseParameters command parameters
  */
 interface IGetMeterIdResponseParameters extends ICommandParameters {
-    meterId: number
+    meterId?: number
 }
 
-const COMMAND_ID = 0x74;
+const COMMAND_ID = 0x77;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
+
 
 const examples: TCommandExampleList = [
     {
@@ -20,7 +21,14 @@ const examples: TCommandExampleList = [
             requestId: 2,
             meterId: 1
         },
-        hex: {header: '74 02', body: '02 01'}
+        hex: {header: '77 02', body: '02 01'}
+    },
+    {
+        name: 'get meter id response without data',
+        parameters: {
+            requestId: 2
+        },
+        hex: {header: '77 01', body: '02'}
     }
 ];
 
@@ -41,7 +49,7 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     requestId: 2,
- *     meterId: 81
+ *     meterId: 1
  * }
  * ```
  *
@@ -51,7 +59,7 @@ class GetMeterIdResponse extends Command {
     constructor ( public parameters: IGetMeterIdResponseParameters ) {
         super();
 
-        this.size = COMMAND_SIZE;
+        this.size = parameters.meterId ? COMMAND_SIZE : REQUEST_ID_SIZE;
     }
 
 
@@ -66,14 +74,18 @@ class GetMeterIdResponse extends Command {
 
     // data - only body (without header)
     static fromBytes ( [requestId, meterId]: Uint8Array ) {
-        return new GetMeterIdResponse({requestId, meterId});
+        return meterId
+            ? new GetMeterIdResponse({requestId, meterId})
+            : new GetMeterIdResponse({requestId});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         return Command.toBytes(
             COMMAND_ID,
-            new Uint8Array([this.parameters.requestId, this.parameters.meterId])
+            this.parameters.meterId
+                ? new Uint8Array([this.parameters.requestId, this.parameters.meterId])
+                : new Uint8Array([this.parameters.requestId])
         );
     }
 }

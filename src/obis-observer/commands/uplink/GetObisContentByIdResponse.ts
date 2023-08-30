@@ -9,7 +9,7 @@ import {UPLINK} from '../../constants/directions.js';
  */
 interface IGetObisContentByIdResponseParameters extends ICommandParameters {
     /** obis code content from the metering device */
-    content: number
+    content?: number
 }
 
 const COMMAND_ID = 0x4e;
@@ -22,6 +22,13 @@ const examples: TCommandExampleList = [
             content: 344.23
         },
         hex: {header: '4e 05', body: '79 43 ac 1d 71'}
+    },
+    {
+        name: 'response to GetObisContentById without content',
+        parameters: {
+            requestId: 122
+        },
+        hex: {header: '4e 01', body: '7a'}
     }
 ];
 
@@ -51,7 +58,7 @@ class GetObisContentByIdResponse extends Command {
         super();
 
         // request id byte + obis float32 content 4 bytes
-        this.size = REQUEST_ID_SIZE + 4;
+        this.size = REQUEST_ID_SIZE + (parameters.content ? 4 : 0);
     }
 
     static readonly id = COMMAND_ID;
@@ -66,24 +73,23 @@ class GetObisContentByIdResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-
         const requestId = buffer.getUint8();
-        const content = roundNumber(buffer.getFloat32());
 
-        return new GetObisContentByIdResponse({requestId, content});
+        return buffer.isEmpty
+            ? new GetObisContentByIdResponse({requestId})
+            : new GetObisContentByIdResponse({requestId, content: roundNumber(buffer.getFloat32())});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
-        const buffer = new CommandBinaryBuffer(this.size);
+        const buffer = new CommandBinaryBuffer(this.size as number);
         const {requestId, content} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setFloat32(roundNumber(content));
+
+        if ( content ) {
+            buffer.setFloat32(roundNumber(content));
+        }
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

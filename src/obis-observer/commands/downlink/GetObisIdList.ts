@@ -86,12 +86,8 @@ class GetObisIdList extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
         const {requestId, meterProfileId, obis} = this.parameters;
-        const buffer = new CommandBinaryBuffer(this.size);
+        const buffer = new CommandBinaryBuffer(this.size as number);
 
         buffer.setUint8(requestId);
         buffer.setUint8(meterProfileId);
