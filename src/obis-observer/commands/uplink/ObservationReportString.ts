@@ -8,6 +8,7 @@ import {TTime2000} from '../../../utils/time.js';
  * IObservationReportStringParameters command parameters
  */
 interface IObservationReportStringParameters {
+    meterId: number,
     /** number of seconds that have elapsed since the year 2000 */
     time2000: TTime2000,
     obisValueList: Array<IObisValueString>
@@ -20,6 +21,7 @@ const examples: TCommandExampleList = [
     {
         name: 'observation report from 2023.12.23 00:00:00 GMT',
         parameters: {
+            meterId: 2,
             time2000: 756604800,
             obisValueList: [
                 {code: 50, content: 'reactive power QI, average'},
@@ -27,8 +29,8 @@ const examples: TCommandExampleList = [
             ]
         },
         hex: {
-            header: '52 3a',
-            body: '2d 18 df 80 32 1a 72 65 61 63 74 69 76 65 20 70 6f 77 65'
+            header: '52 3b',
+            body: '02 2d 18 df 80 32 1a 72 65 61 63 74 69 76 65 20 70 6f 77 65'
                 + ' 72 20 51 49 2c 20 61 76 65 72 61 67 65 38 18 72 65 61 63 74 69 76'
                 + ' 65 20 70 6f 77 65 72 20 51 49 2c 20 74 6f 74 61 6c'
         }
@@ -69,7 +71,7 @@ class ObservationReportString extends Command {
     constructor ( public parameters: IObservationReportStringParameters ) {
         super();
 
-        let size = DATE_TIME_SIZE;
+        let size = 1 + DATE_TIME_SIZE;
 
         this.parameters.obisValueList.forEach(obisValue => {
             size += CommandBinaryBuffer.getObisContentSize(obisValue);
@@ -91,26 +93,25 @@ class ObservationReportString extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-
-        let size = data.length - DATE_TIME_SIZE;
+        const meterId = buffer.getUint8();
         const time2000 = buffer.getUint32();
         const obisValueList = [];
 
-        while ( size > 0 ) {
+        while ( !buffer.isEmpty ) {
             const obisValue = buffer.getObisValueString();
 
-            size -= CommandBinaryBuffer.getObisContentSize(obisValue);
             obisValueList.push(obisValue);
         }
 
-        return new ObservationReportString({time2000, obisValueList});
+        return new ObservationReportString({meterId, time2000, obisValueList});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(this.size as number);
-        const {time2000, obisValueList} = this.parameters;
+        const {meterId, time2000, obisValueList} = this.parameters;
 
+        buffer.setUint8(meterId);
         buffer.setUint32(time2000);
         obisValueList.forEach(obisValue => buffer.setObisValueString(obisValue));
 
