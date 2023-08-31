@@ -8,6 +8,7 @@ import {UPLINK} from '../../constants/directions.js';
  */
 interface IGetObserverInfoResponseParameters extends ICommandParameters {
     softwareVersion: IVersion,
+    protocolVersion: IVersion,
     hardwareVersion: IVersion,
     deviceName: string
 }
@@ -24,6 +25,10 @@ const examples: TCommandExampleList = [
                 major: 0,
                 minor: 1
             },
+            protocolVersion: {
+                major: 0,
+                minor: 1
+            },
             hardwareVersion: {
                 major: 1,
                 minor: 1
@@ -31,8 +36,8 @@ const examples: TCommandExampleList = [
             deviceName: 'Jooby Electra RM LoraWan 1D485 EU'
         },
         hex: {
-            header: '02 27',
-            body: '07 00 01 01 01 21 4a 6f 6f 62 79 20 45 6c 65 63 74 72 61 20 52 4d 20 4c 6f 72 61 57 61 6e 20 31 44 34 38 35 20 45 55'
+            header: '02 29',
+            body: '07 00 01 00 01 01 01 21 4a 6f 6f 62 79 20 45 6c 65 63 74 72 61 20 52 4d 20 4c 6f 72 61 57 61 6e 20 31 44 34 38 35 20 45 55'
         }
     }
 ];
@@ -46,11 +51,12 @@ const examples: TCommandExampleList = [
  * import GetObserverInfoResponse from 'jooby-codec/obis-observer/commands/uplink/GetObserverInfoResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x07, 0x00, 0x01, 0x01, 0x01, 0x21, 0x4a,
- *     0x6f, 0x6f, 0x62, 0x79, 0x20, 0x45, 0x6c, 0x65,
- *     0x63, 0x74, 0x72, 0x61, 0x20, 0x52, 0x4d, 0x20,
- *     0x4c, 0x6f, 0x72, 0x61, 0x57, 0x61, 0x6e, 0x20,
- *     0x31, 0x44, 0x34, 0x38, 0x35, 0x20, 0x45, 0x55
+ *     0x07, 0x00, 0x01, 0x00, 0x01, 0x01, 0x01, 0x21,
+ *     0x4a, 0x6f, 0x6f, 0x62, 0x79, 0x20, 0x45, 0x6c,
+ *     0x65, 0x63, 0x74, 0x72, 0x61, 0x20, 0x52, 0x4d,
+ *     0x20, 0x4c, 0x6f, 0x72, 0x61, 0x57, 0x61, 0x6e,
+ *     0x20, 0x31, 0x44, 0x34, 0x38, 0x35, 0x20, 0x45,
+ *     0x55
  * ]);
  * const command = GetObserverInfoResponse.fromBytes(commandBody);
  *
@@ -59,6 +65,10 @@ const examples: TCommandExampleList = [
  * {
  *     requestId: 7,
  *     softwareVersion: {
+ *         major: 0,
+ *         minor: 1
+ *     },
+ *     protocolVersion: {
  *         major: 0,
  *         minor: 1
  *     },
@@ -76,10 +86,10 @@ class GetObserverInfoResponse extends Command {
     constructor ( public parameters: IGetObserverInfoResponseParameters ) {
         super();
 
-        // real size - request id byte + software version 2 bytes + hardware version 2 bytes + device name string size byte + string bytes
-        this.size = REQUEST_ID_SIZE + 2 + 2 + 1 + parameters.deviceName.length;
+        // real size - request id byte + software version 2 bytes + protocol version 2 bytes + hardware version 2 bytes +
+        // device name string size byte + string bytes
+        this.size = REQUEST_ID_SIZE + 2 + 2 + 2 + 1 + parameters.deviceName.length;
     }
-
 
     static readonly id = COMMAND_ID;
 
@@ -95,20 +105,22 @@ class GetObserverInfoResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
         const requestId = buffer.getUint8();
         const softwareVersion = buffer.getVersion();
+        const protocolVersion = buffer.getVersion();
         const hardwareVersion = buffer.getVersion();
 
         const deviceName = buffer.getString();
 
-        return new GetObserverInfoResponse({requestId, softwareVersion, hardwareVersion, deviceName});
+        return new GetObserverInfoResponse({requestId, softwareVersion, protocolVersion, hardwareVersion, deviceName});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(this.size as number);
-        const {requestId, softwareVersion, hardwareVersion, deviceName} = this.parameters;
+        const {requestId, softwareVersion, protocolVersion, hardwareVersion, deviceName} = this.parameters;
 
         buffer.setUint8(requestId);
         buffer.setVersion(softwareVersion);
+        buffer.setVersion(protocolVersion);
         buffer.setVersion(hardwareVersion);
         buffer.setString(deviceName);
 
