@@ -25,6 +25,7 @@ export {default as Hour} from './Hour.js';
 export {default as HourMC} from './HourMC.js';
 export {default as LastEvent} from './LastEvent.js';
 export {default as NewEvent} from './NewEvent.js';
+export {default as SetParameterResponse} from './SetParameterResponse.js';
 export {default as SetTime2000Response} from './SetTime2000Response.js';
 export {default as SoftRestartResponse} from './SoftRestartResponse.js';
 export {default as Status} from './Status.js';
