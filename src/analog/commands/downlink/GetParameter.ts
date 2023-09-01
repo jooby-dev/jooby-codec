@@ -1,33 +1,35 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IRequestParameter} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 import * as deviceParameters from '../../constants/deviceParameters.js';
 
 
-/**
- * GetParameter command parameters
- */
-interface IGetParameterParameters {
-    /**
-     * Parameter id - one of `constants/deviceParameters`.
-     */
-    id: number
-}
-
-
 const COMMAND_ID = 0x04;
-const COMMAND_BODY_SIZE = 1;
 
 const examples: TCommandExampleList = [
     {
         name: 'request absolute data (not multichannel device)',
-        parameters: {id: deviceParameters.ABSOLUTE_DATA},
+        parameters: {
+            id: deviceParameters.ABSOLUTE_DATA,
+            data: undefined
+        },
         hex: {header: '04 01', body: '17'}
     },
     {
         name: 'request for state of absolute data (not multichannel device)',
-        parameters: {id: deviceParameters.ABSOLUTE_DATA_ENABLE},
+        parameters: {
+            id: deviceParameters.ABSOLUTE_DATA_ENABLE,
+            data: undefined
+        },
         hex: {header: '04 01', body: '18'}
+    },
+    {
+        name: 'request for state of absolute for multichannel device (1 channel)',
+        parameters: {
+            id: deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL,
+            data: {channel: 1}
+        },
+        hex: {header: '04 02', body: '1d 00'}
     }
 ];
 
@@ -50,7 +52,7 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetParameter.md#request)
  */
 class GetParameter extends Command {
-    constructor ( public parameters: IGetParameterParameters ) {
+    constructor ( public parameters: IRequestParameter ) {
         super();
     }
 
@@ -68,17 +70,18 @@ class GetParameter extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetParameter({id: buffer.getUint8()});
+        return new GetParameter(buffer.getRequestParameter());
     }
 
     // returns full message - header with body
-    // eslint-disable-next-line class-methods-use-this
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+        const size = CommandBinaryBuffer.getRequestParameterSize(this.parameters);
+        console.log({size});
+        const buffer = new CommandBinaryBuffer(CommandBinaryBuffer.getRequestParameterSize(this.parameters));
 
-        buffer.setUint8(this.parameters.id);
+        buffer.setRequestParameter(this.parameters);
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 
