@@ -11,7 +11,7 @@ const examples: TCommandExampleList = [
         name: 'request absolute data (not multichannel device)',
         parameters: {
             id: deviceParameters.ABSOLUTE_DATA,
-            data: undefined
+            data: null
         },
         hex: {header: '04 01', body: '17'}
     },
@@ -19,7 +19,7 @@ const examples: TCommandExampleList = [
         name: 'request for state of absolute data (not multichannel device)',
         parameters: {
             id: deviceParameters.ABSOLUTE_DATA_ENABLE,
-            data: undefined
+            data: null
         },
         hex: {header: '04 01', body: '18'}
     },
@@ -75,8 +75,6 @@ class GetParameter extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const size = CommandBinaryBuffer.getRequestParameterSize(this.parameters);
-        console.log({size});
         const buffer = new CommandBinaryBuffer(CommandBinaryBuffer.getRequestParameterSize(this.parameters));
 
         buffer.setRequestParameter(this.parameters);

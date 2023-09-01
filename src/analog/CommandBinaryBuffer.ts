@@ -383,7 +383,7 @@ export interface IParameter {
 
 export interface IRequestParameter {
     id: number,
-    data?: TRequestParameterData
+    data: IRequestParameterAbsoluteDataMC | null
 }
 
 export interface ILegacyCounter {
@@ -425,10 +425,6 @@ type TParameterData =
     IParameterAbsoluteDataEnableMC |
     IParameterPulseChannelsScanConfig |
     IParameterPulseChannelsSetConfig;
-
-/* sorted by parameter id */
-type TRequestParameterData =
-    IRequestParameterAbsoluteDataMC;
 
 
 const INITIAL_YEAR = 2000;
@@ -1529,7 +1525,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     getRequestParameter (): IRequestParameter {
         const id = this.getUint8();
-        let data;
+        let data = null;
 
         switch ( id ) {
             case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
