@@ -367,10 +367,23 @@ interface IParameterPulseChannelsSetConfig {
     channel4: boolean
 }
 
+/**
+ * Request absolute data parameter of multi-channel devices for specific channel.
+ * deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL = `29`.
+ */
+interface IRequestParameterAbsoluteDataMC {
+    channel: number
+}
+
 
 export interface IParameter {
     id: number,
     data: TParameterData
+}
+
+export interface IRequestParameter {
+    id: number,
+    data: IRequestParameterAbsoluteDataMC | null
 }
 
 export interface ILegacyCounter {
@@ -581,6 +594,24 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         if ( size === undefined ) {
             throw new Error('unknown parameter id');
+        }
+
+        return size;
+    }
+
+    static getRequestParameterSize ( parameter: IRequestParameter ): number {
+        let size;
+
+        switch ( parameter.id ) {
+            case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
+                // 1 byte ID + channel 1 byte
+                size = 2;
+                break;
+
+            default:
+                // 1 byte for ID
+                size = 1;
+                break;
         }
 
         return size;
@@ -1479,6 +1510,47 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
             default:
                 throw new Error(`parameter ${id} is not supported`);
+        }
+    }
+
+    getRequestParameterAbsoluteDataMC (): IRequestParameterAbsoluteDataMC {
+        return {
+            channel: this.getChannelValue()
+        };
+    }
+
+    setRequestParameterAbsoluteDataMC ( parameter: IRequestParameterAbsoluteDataMC ): void {
+        this.setChannelValue(parameter.channel);
+    }
+
+    getRequestParameter (): IRequestParameter {
+        const id = this.getUint8();
+        let data = null;
+
+        switch ( id ) {
+            case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
+                data = this.getRequestParameterAbsoluteDataMC();
+                break;
+
+            default:
+                break;
+        }
+
+        return {id, data};
+    }
+
+    setRequestParameter ( parameter: IRequestParameter ): void {
+        const {id, data} = parameter;
+
+        this.setUint8(id);
+
+        switch ( id ) {
+            case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
+                this.setRequestParameterAbsoluteDataMC(data as IRequestParameterAbsoluteDataMC);
+                break;
+
+            default:
+                break;
         }
     }
 
