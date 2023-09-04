@@ -1,0 +1,13 @@
+export const DATA_REQUEST = 0x50;
+export const DATA_RESPONSE = 0x51;
+export const IDENT_REQUEST = 0x52;
+export const IDENT_RESPONSE = 0x53;
+export const L2_SET_ADDRESS_REQUEST = 0x54;
+export const L2_SET_ADDRESS_RESPONSE = 0x55;
+export const L2_CHECK_ADDRESS_REQUEST = 0x56;
+export const L2_CHECK_ADDRESS_RESPONSE = 0x57;
+export const L2_RM_ADDRESS_REQUEST = 0x58;
+export const L2_RM_ADDRESS_RESPONSE = 0x59;
+export const FRAGMENT_REQUEST = 0x5A;
+export const FRAGMENT_RESPONSE = 0x5B;
+export const INVALID = 0xFF;
