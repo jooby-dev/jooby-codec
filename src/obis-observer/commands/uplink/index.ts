@@ -7,10 +7,10 @@
 
 export {default as AddMeterProfileResponse} from './AddMeterProfileResponse.js';
 export {default as AddObisProfileResponse} from './AddObisProfileResponse.js';
+export {default as GetArchiveStateResponse} from './GetArchiveStateResponse.js';
 export {default as GetLorawanInfoResponse} from './GetLorawanInfoResponse.js';
 export {default as GetLorawanStateResponse} from './GetLorawanStateResponse.js';
 export {default as GetMeterArchiveProfileResponse} from './GetMeterArchiveProfileResponse.js';
-export {default as GetMeterArchiveStateResponse} from './GetMeterArchiveStateResponse.js';
 export {default as GetMeterDateResponse} from './GetMeterDateResponse.js';
 export {default as GetMeterIdListResponse} from './GetMeterIdListResponse.js';
 export {default as GetMeterIdResponse} from './GetMeterIdResponse.js';
