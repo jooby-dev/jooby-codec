@@ -8,9 +8,9 @@ export const responseByRequest = new Map();
 
 requestByResponse.set(uplinkCommands.AddMeterProfileResponse, downlinkCommands.AddMeterProfile);
 requestByResponse.set(uplinkCommands.AddObisProfileResponse, downlinkCommands.AddObisProfile);
+requestByResponse.set(uplinkCommands.GetArchiveStateResponse, downlinkCommands.GetArchiveState);
 requestByResponse.set(uplinkCommands.GetLorawanInfoResponse, downlinkCommands.GetLorawanInfo);
 requestByResponse.set(uplinkCommands.GetMeterArchiveProfileResponse, downlinkCommands.GetMeterArchiveProfile);
-requestByResponse.set(uplinkCommands.GetMeterArchiveStateResponse, downlinkCommands.GetMeterArchiveState);
 requestByResponse.set(uplinkCommands.GetMeterDateResponse, downlinkCommands.GetMeterDate);
 requestByResponse.set(uplinkCommands.GetMeterIdListResponse, downlinkCommands.GetMeterIdList);
 requestByResponse.set(uplinkCommands.GetMeterIdResponse, downlinkCommands.GetMeterId);

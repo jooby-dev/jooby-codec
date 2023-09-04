@@ -7,13 +7,13 @@ import {TTime2000} from '../../../utils/time.js';
 /**
  * IGetMeterArchiveStateResponseParameters command parameters
  */
-interface IGetMeterArchiveStateResponseParameters extends ICommandParameters {
+interface IGetArchiveStateResponseParameters extends ICommandParameters {
     archiveRecordsNumber: number,
     eldestTime2000: TTime2000,
     newestTime2000: TTime2000
 }
 
-const COMMAND_ID = 0x7d;
+const COMMAND_ID = 0x10;
 
 // request id byte + records count + DateTime 4 bytes * 2
 const COMMAND_SIZE = REQUEST_ID_SIZE + 4 + DATE_TIME_SIZE * 2;
@@ -27,7 +27,7 @@ const examples: TCommandExampleList = [
             eldestTime2000: 0,
             newestTime2000: 0
         },
-        hex: {header: '7d 0d', body: '02 00 00 00 00 00 00 00 00 00 00 00 00'}
+        hex: {header: '10 0d', body: '02 00 00 00 00 00 00 00 00 00 00 00 00'}
     },
     {
         name: 'response to GetMeterArchiveState. 81 records from 2023.06.27 18:45:02 GMT to 2023.06.28 15:15:02 GMT',
@@ -37,19 +37,19 @@ const examples: TCommandExampleList = [
             eldestTime2000: 741206702,
             newestTime2000: 741280502
         },
-        hex: {header: '7d 0d', body: '02 00 00 00 51 2c 2d ea ae 2c 2f 0a f6'}
+        hex: {header: '10 0d', body: '02 00 00 00 51 2c 2d ea ae 2c 2f 0a f6'}
     },
     {
         name: 'response to GetMeterArchiveState without data',
         parameters: {
             requestId: 2
         },
-        hex: {header: '7d 01', body: '02'}
+        hex: {header: '10 01', body: '02'}
     }
 ];
 
-const isValidParameterSet = ( parameters: IGetMeterArchiveStateResponseParameters | ICommandParameters ): boolean => {
-    const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = parameters as IGetMeterArchiveStateResponseParameters;
+const isValidParameterSet = ( parameters: IGetArchiveStateResponseParameters | ICommandParameters ): boolean => {
+    const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = parameters as IGetArchiveStateResponseParameters;
 
     return requestId !== undefined
         && archiveRecordsNumber !== undefined
@@ -63,12 +63,12 @@ const isValidParameterSet = ( parameters: IGetMeterArchiveStateResponseParameter
  *
  * @example create command instance from command body hex dump
  * ```js
- * import GetMeterArchiveStateResponse from 'jooby-codec/obis-observer/commands/uplink/GetMeterArchiveStateResponse.js';
+ * import GetArchiveStateResponse from 'jooby-codec/obis-observer/commands/uplink/GetArchiveStateResponse.js';
  *
  * const commandBody = new Uint8Array([
  *     0x02, 0x00, 0x00, 0x00, 0x51, 0x2c, 0x2d, 0xea, 0xae, 0x2c, 0x2f, 0x0a, 0xf6
  * ]);
- * const command = GetMeterArchiveStateResponse.fromBytes(commandBody);
+ * const command = GetArchiveStateResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -80,10 +80,10 @@ const isValidParameterSet = ( parameters: IGetMeterArchiveStateResponseParameter
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterArchiveState.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveState.md#response)
  */
-class GetMeterArchiveStateResponse extends Command {
-    constructor ( public parameters: IGetMeterArchiveStateResponseParameters | ICommandParameters ) {
+class GetArchiveStateResponse extends Command {
+    constructor ( public parameters: IGetArchiveStateResponseParameters | ICommandParameters ) {
         super();
 
         this.size = isValidParameterSet(parameters) ? COMMAND_SIZE : REQUEST_ID_SIZE;
@@ -104,8 +104,8 @@ class GetMeterArchiveStateResponse extends Command {
         const requestId = buffer.getUint8();
 
         return buffer.isEmpty
-            ? new GetMeterArchiveStateResponse({requestId} as ICommandParameters)
-            : new GetMeterArchiveStateResponse({
+            ? new GetArchiveStateResponse({requestId} as ICommandParameters)
+            : new GetArchiveStateResponse({
                 requestId,
                 archiveRecordsNumber: buffer.getUint32(),
                 eldestTime2000: buffer.getUint32(),
@@ -120,7 +120,7 @@ class GetMeterArchiveStateResponse extends Command {
         }
 
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = this.parameters as IGetMeterArchiveStateResponseParameters;
+        const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = this.parameters as IGetArchiveStateResponseParameters;
 
         buffer.setUint8(requestId);
         buffer.setUint32(archiveRecordsNumber);
@@ -132,4 +132,4 @@ class GetMeterArchiveStateResponse extends Command {
 }
 
 
-export default GetMeterArchiveStateResponse;
+export default GetArchiveStateResponse;
