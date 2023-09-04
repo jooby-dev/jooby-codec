@@ -1,6 +1,7 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
+import mergeUint8Arrays from '../../../utils/mergeUint8Arrays.js';
 
 
 /**
@@ -91,18 +92,17 @@ class UpdateImageWrite extends Command {
 
         const {requestId, offset, data} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_HEADER_SIZE);
-        const result = new Uint8Array(this.size);
 
         // subtract size byte to get essential data size
         buffer.setUint8(this.size - 1);
         buffer.setUint8(requestId);
         buffer.setUint32(offset);
 
-        // combine header and image data
-        result.set(buffer.toUint8Array());
-        result.set(data, COMMAND_HEADER_SIZE);
-
-        return Command.toBytes(COMMAND_ID, result);
+        return Command.toBytes(
+            COMMAND_ID,
+            // combine header and image data
+            mergeUint8Arrays(buffer.toUint8Array(), data)
+        );
     }
 }
 
