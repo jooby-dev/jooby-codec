@@ -30,6 +30,14 @@ const examples: TCommandExampleList = [
             data: {channel: 1}
         },
         hex: {header: '04 02', body: '1d 00'}
+    },
+    {
+        name: 'request for state of absolute data for multichannel device (1 channel)',
+        parameters: {
+            id: deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL,
+            data: {channel: 1}
+        },
+        hex: {header: '04 02', body: '1e 00'}
     }
 ];
 
