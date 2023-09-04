@@ -7,6 +7,7 @@ import {UPLINK} from '../../constants/directions.js';
  * IGetMeterProfileIdListResponseParameters command parameters
  */
 interface IGetMeterProfileIdListResponseParameters extends ICommandParameters {
+    isCompleted: boolean,
     meterProfileIdList: Array<number>
 }
 
@@ -16,10 +17,11 @@ const examples: TCommandExampleList = [
     {
         name: 'response to GetMeterProfileIdList with two meterProfileId',
         parameters: {
-            requestId: 3,
+            requestId: 5,
+            isCompleted: true,
             meterProfileIdList: [1, 2]
         },
-        hex: {header: '65 03', body: '03 01 02'}
+        hex: {header: '65 04', body: '05 01 01 02'}
     }
 ];
 
@@ -31,13 +33,14 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetMeterProfileIdListResponse from 'jooby-codec/obis-observer/commands/uplink/GetMeterProfileIdList.js';
  *
- * const commandBody = new Uint8Array([0x03, 0xc5, 0xc6]);
+ * const commandBody = new Uint8Array([0x05, 0x01, 0x01, 0x02]);
  * const command = GetMeterProfileIdListResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 3,
+ *     requestId: 5,
+ *     isCompleted: true,
  *     meterProfileIdList: [1, 2]
  * }
  * ```
@@ -48,8 +51,8 @@ class GetMeterProfileIdListResponse extends Command {
     constructor ( public parameters: IGetMeterProfileIdListResponseParameters ) {
         super();
 
-        // body size = request id byte + meterProfileIdList 0-n bytes
-        this.size = REQUEST_ID_SIZE + parameters.meterProfileIdList.length;
+        // body size = request id byte + isCompleted byte + meterProfileIdList 0-n bytes
+        this.size = REQUEST_ID_SIZE + 1 + parameters.meterProfileIdList.length;
     }
 
 
@@ -67,18 +70,21 @@ class GetMeterProfileIdListResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         const requestId = buffer.getUint8();
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const meterProfileIdList = [...new Array(data.length - REQUEST_ID_SIZE)].map(() => buffer.getUint8());
+        const isCompleted = buffer.isEmpty ? 1 : buffer.getUint8();
+        const meterProfileIdList = buffer.isEmpty
+            ? []
+            : [...new Array<number>(buffer.bytesLeft)].map(() => buffer.getUint8());
 
-        return new GetMeterProfileIdListResponse({requestId, meterProfileIdList});
+        return new GetMeterProfileIdListResponse({requestId, isCompleted: isCompleted !== 0, meterProfileIdList});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(this.size as number);
-        const {requestId, meterProfileIdList} = this.parameters;
+        const {requestId, isCompleted, meterProfileIdList} = this.parameters;
 
         buffer.setUint8(requestId);
+        buffer.setUint8(isCompleted ? 1 : 0);
         meterProfileIdList.forEach(meterProfileId => buffer.setUint8(meterProfileId));
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
