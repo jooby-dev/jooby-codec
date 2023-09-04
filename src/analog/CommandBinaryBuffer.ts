@@ -368,10 +368,9 @@ interface IParameterPulseChannelsSetConfig {
 }
 
 /**
- * Request absolute data parameter of multi-channel devices for specific channel.
- * deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL = `29`.
+ * Request parameter for specific channel, works for multichannel devices only.
  */
-interface IRequestParameterAbsoluteDataMC {
+interface IRequestChannelParameter {
     channel: number
 }
 
@@ -383,7 +382,7 @@ export interface IParameter {
 
 export interface IRequestParameter {
     id: number,
-    data: IRequestParameterAbsoluteDataMC | null
+    data: IRequestChannelParameter | null
 }
 
 export interface ILegacyCounter {
@@ -604,6 +603,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         switch ( parameter.id ) {
             case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
+            case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
                 // 1 byte ID + channel 1 byte
                 size = 2;
                 break;
@@ -1513,13 +1513,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
     }
 
-    getRequestParameterAbsoluteDataMC (): IRequestParameterAbsoluteDataMC {
+    getRequestChannelParameter (): IRequestChannelParameter {
         return {
             channel: this.getChannelValue()
         };
     }
 
-    setRequestParameterAbsoluteDataMC ( parameter: IRequestParameterAbsoluteDataMC ): void {
+    setRequestChannelParameter ( parameter: IRequestChannelParameter ): void {
         this.setChannelValue(parameter.channel);
     }
 
@@ -1528,8 +1528,9 @@ class CommandBinaryBuffer extends BinaryBuffer {
         let data = null;
 
         switch ( id ) {
+            case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
             case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
-                data = this.getRequestParameterAbsoluteDataMC();
+                data = this.getRequestChannelParameter();
                 break;
 
             default:
@@ -1546,7 +1547,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         switch ( id ) {
             case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
-                this.setRequestParameterAbsoluteDataMC(data as IRequestParameterAbsoluteDataMC);
+            case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
+                this.setRequestChannelParameter(data as IRequestChannelParameter);
                 break;
 
             default:
