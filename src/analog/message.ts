@@ -14,6 +14,7 @@ import getBytesFromHex from '../utils/getBytesFromHex.js';
 import getBytesFromBase64 from '../utils/getBytesFromBase64.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBase64FromBytes from '../utils/getBase64FromBytes.js';
+import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
 interface IMessageCommand {
@@ -48,10 +49,10 @@ const HEADER_MAX_SIZE = 3;
 const directionTypeIds: Set<number> = new Set<number>(Object.values(directionTypes));
 
 // convert export namespace to dictionary {commandId: commandConstructor}
-const downlinkCommandsById = Object.fromEntries(
+export const downlinkCommandsById = Object.fromEntries(
     Object.values(downlinkCommands).map(item => [item.id, item])
 );
-const uplinkCommandsById = Object.fromEntries(
+export const uplinkCommandsById = Object.fromEntries(
     Object.values(uplinkCommands).map(item => [item.id, item])
 );
 
@@ -91,7 +92,7 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareTyp
         return new UnknownCommand({id, data});
     }
 
-    // ths specific direction
+    // the specific direction
     if ( direction === DOWNLINK || direction === UPLINK ) {
         const command = direction === UPLINK ? uplinkCommand : downlinkCommand;
 
@@ -168,23 +169,10 @@ export const fromBase64 = ( data: string ) => (
 );
 
 export const toBytes = ( commands: Array<Command> ): Uint8Array => {
-    const arrays = commands.map(command => command.toBytes());
-    const totalLength = arrays.reduce((accumulator, item) => (accumulator + item.length), 0);
+    const commandBytes = commands.map(command => command.toBytes());
+    const body = mergeUint8Arrays(...commandBytes);
 
-    // 1 additional byte at the end is for LRC
-    const result = new Uint8Array(totalLength + 1);
-    let offset = 0;
-
-    // fill result with all chunks
-    arrays.forEach(item => {
-        result.set(item, offset);
-        offset += item.length;
-    });
-
-    // set last byte to LRC
-    result[result.length - 1] = calculateLrc(result.slice(0, result.length - 1));
-
-    return result;
+    return mergeUint8Arrays(body, new Uint8Array([calculateLrc(body)]));
 };
 
 export const toHex = ( commands: Array<Command>, options: IHexFormatOptions = {} ): string => getHexFromBytes(toBytes(commands), options);

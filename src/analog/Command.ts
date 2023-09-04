@@ -3,6 +3,7 @@ import {IHexFormatOptions} from '../config.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getHexFromNumber from '../utils/getHexFromNumber.js';
 import getBase64FromBytes from '../utils/getBase64FromBytes.js';
+import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
 export interface ICommandExample {
@@ -97,12 +98,7 @@ abstract class Command {
         const headerData = header.toBytes(id, commandLength);
 
         if ( commandData && commandLength ) {
-            const resultData = new Uint8Array(headerData.length + commandLength);
-
-            resultData.set(headerData);
-            resultData.set(commandData, headerData.length);
-
-            return resultData;
+            return mergeUint8Arrays(headerData, commandData);
         }
 
         // simple command without body

@@ -10,6 +10,7 @@ import getBytesFromHex from '../utils/getBytesFromHex.js';
 import getBytesFromBase64 from '../utils/getBytesFromBase64.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBase64FromBytes from '../utils/getBase64FromBytes.js';
+import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
 interface IMessageCommand {
@@ -31,11 +32,11 @@ interface IMessage {
 const HEADER_SIZE = 1;
 
 // convert export namespace to dictionary {commandId: commandConstructor}
-const downlinkCommandsById = Object.fromEntries(
+export const downlinkCommandsById = Object.fromEntries(
     Object.values(downlinkCommands).map(item => [item.id, item])
 );
 
-const uplinkCommandsById = Object.fromEntries(
+export const uplinkCommandsById = Object.fromEntries(
     Object.values(uplinkCommands).map(item => [item.id, item])
 );
 
@@ -97,19 +98,9 @@ export const fromBase64 = ( data: string ) => (
 );
 
 export const toBytes = ( commands: Array<Command> ): Uint8Array => {
-    const arrays = commands.map(command => command.toBytes());
-    const totalLength = arrays.reduce((accumulator, item) => (accumulator + item.length), 0);
+    const commandBytes = commands.map(command => command.toBytes());
 
-    const result = new Uint8Array(totalLength);
-    let offset = 0;
-
-    // fill result with all chunks
-    arrays.forEach(item => {
-        result.set(item, offset);
-        offset += item.length;
-    });
-
-    return result;
+    return mergeUint8Arrays(...commandBytes);
 };
 
 export const toHex = ( commands: Array<Command>, options: IHexFormatOptions = {} ): string => getHexFromBytes(toBytes(commands), options);
