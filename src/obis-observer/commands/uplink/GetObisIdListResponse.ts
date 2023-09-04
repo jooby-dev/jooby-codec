@@ -7,6 +7,7 @@ import {UPLINK} from '../../constants/directions.js';
  * IGetObisIdListResponseParameters command parameters
  */
 interface IGetObisIdListResponseParameters extends ICommandParameters {
+    isCompleted: boolean,
     obisIdList: Array<number>
 }
 
@@ -17,9 +18,10 @@ const examples: TCommandExampleList = [
         name: 'response to GetObisIdList with two obis id',
         parameters: {
             requestId: 3,
+            isCompleted: true,
             obisIdList: [197, 198]
         },
-        hex: {header: '41 03', body: '03 c5 c6'}
+        hex: {header: '41 04', body: '03 01 c5 c6'}
     }
 ];
 
@@ -31,13 +33,14 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetObisIdListResponse from 'jooby-codec/obis-observer/commands/uplink/GetObisIdListResponse.js';
  *
- * const commandBody = new Uint8Array([0x03, 0xc5, 0xc6]);
+ * const commandBody = new Uint8Array([0x03, 0x01, 0xc5, 0xc6]);
  * const command = GetObisIdListResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
  *     requestId: 3,
+ *     isCompleted: true,
  *     obisIdList: [197, 198]
  * }
  * ```
@@ -48,8 +51,8 @@ class GetObisIdListResponse extends Command {
     constructor ( public parameters: IGetObisIdListResponseParameters ) {
         super();
 
-        // body size = request id byte + obisIdList 0-n bytes
-        this.size = REQUEST_ID_SIZE + parameters.obisIdList.length;
+        // body size = request id byte + isCompleted byte + obisIdList 0-n bytes
+        this.size = REQUEST_ID_SIZE + 1 + parameters.obisIdList.length;
     }
 
 
@@ -67,18 +70,21 @@ class GetObisIdListResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         const requestId = buffer.getUint8();
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const obisIdList = [...new Array(data.length - REQUEST_ID_SIZE)].map(() => buffer.getUint8());
+        const isCompleted = buffer.isEmpty ? 1 : buffer.getUint8();
+        const obisIdList = buffer.isEmpty
+            ? []
+            : [...new Array<number>(buffer.bytesLeft)].map(() => buffer.getUint8());
 
-        return new GetObisIdListResponse({requestId, obisIdList});
+        return new GetObisIdListResponse({requestId, isCompleted: isCompleted !== 0, obisIdList});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(this.size as number);
-        const {requestId, obisIdList} = this.parameters;
+        const {requestId, isCompleted, obisIdList} = this.parameters;
 
         buffer.setUint8(requestId);
+        buffer.setUint8(isCompleted ? 1 : 0);
         obisIdList.forEach(obisId => buffer.setUint8(obisId));
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

@@ -78,7 +78,7 @@ const uplinkMessages: TMessageList = [
 const mixedMessages: TMessageList = [
     {
         // GetObisIdList + GetObisIdListResponse
-        hex: '40 06 07 09 02 00 09 01  41 03 07 c5 c6',
+        hex: '40 06 07 09 02 00 09 01  41 04 07 01 c5 c6',
         commands: [
             {
                 parameters: {
@@ -95,6 +95,7 @@ const mixedMessages: TMessageList = [
             {
                 parameters: {
                     requestId: 7,
+                    isCompleted: true,
                     obisIdList: [197, 198]
                 },
                 command: uplinkCommands.GetObisIdListResponse
