@@ -59,10 +59,12 @@ module.exports = {
         '@typescript-eslint/comma-dangle': ['error', 'never'],
         '@typescript-eslint/indent': ['error', 4],
         '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
         '@typescript-eslint/no-useless-constructor': 'off',
         '@typescript-eslint/object-curly-spacing': ['error', 'never'],
         '@typescript-eslint/space-before-function-paren': ['error', {anonymous: 'always', named: 'always'}],
 
+        'import/no-extraneous-dependencies': 'off',
         'import/prefer-default-export': 'off',
 
         'arrow-parens': ['warn', 'as-needed'],
