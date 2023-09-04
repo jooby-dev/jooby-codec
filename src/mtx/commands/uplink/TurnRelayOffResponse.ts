@@ -3,13 +3,13 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x18;
+const COMMAND_ID = 0x19;
 const COMMAND_SIZE = 0;
 
 const examples: TCommandExampleList = [
     {
         name: 'simple response',
-        hex: {header: '18 00', body: ''}
+        hex: {header: '19 00', body: ''}
     }
 ];
 
@@ -19,9 +19,9 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import TurnRelayOnResponse from 'jooby-codec/mtx/commands/uplink/TurnRelayOnResponse.js';
+ * import TurnRelayOffResponse from 'jooby-codec/mtx/commands/uplink/TurnRelayOffResponse.js';
  *
- * const command = TurnRelayOnResponse.fromBytes();
+ * const command = TurnRelayOffResponse.fromBytes();
  *
  * console.log(command.parameters);
  * // output:
@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/TurnRelayOn.md#response)
  */
-class TurnRelayOnResponse extends Command {
+class TurnRelayOffResponse extends Command {
     constructor () {
         super();
 
@@ -48,8 +48,8 @@ class TurnRelayOnResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes (): TurnRelayOnResponse {
-        return new TurnRelayOnResponse();
+    static fromBytes (): TurnRelayOffResponse {
+        return new TurnRelayOffResponse();
     }
 
     // returns full message - header with body
@@ -60,4 +60,4 @@ class TurnRelayOnResponse extends Command {
 }
 
 
-export default TurnRelayOnResponse;
+export default TurnRelayOffResponse;
