@@ -20,7 +20,7 @@ const examples: TCommandExampleList = [
         name: 'responst to RemoveObisProfile - not found',
         parameters: {
             requestId: 5,
-            resultCode: resultCodes.PROFILE_NOT_FOUND
+            resultCode: resultCodes.OBIS_PROFILE_NOT_FOUND
         },
         hex: {header: '47 02', body: '05 05'}
     }

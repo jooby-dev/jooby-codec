@@ -28,9 +28,9 @@ const examples: TCommandExampleList = [
         name: 'response to SetMeterArchiveProfile - failed',
         parameters: {
             requestId: 49,
-            resultCode: resultCodes.PROFILE_NOT_FOUND
+            resultCode: resultCodes.METER_PROFILE_NOT_FOUND
         },
-        hex: {header: '69 02', body: '31 05'}
+        hex: {header: '69 02', body: '31 0a'}
     }
 ];
 
