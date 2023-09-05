@@ -140,9 +140,7 @@ class ReadArchiveResponse extends Command {
         const time2000 = buffer.getUint32();
 
         while ( !buffer.isEmpty ) {
-            const obisValue = buffer.getObisValueFloat();
-
-            obisValueList.push(obisValue);
+            obisValueList.push(buffer.getObisValueFloat());
         }
 
         return new ReadArchiveResponse({requestId, isCompleted, meterId, time2000, obisValueList});
