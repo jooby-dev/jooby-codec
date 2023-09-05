@@ -7,17 +7,16 @@ import {UPLINK} from '../../constants/directions.js';
  * IGetMeterInfoResponseParameters command parameters
  */
 interface IGetMeterInfoResponseParameters extends ICommandParameters {
-    meterProfileId?: number,
-    address: string
+    address: string,
+    meterProfileId?: number
 }
 
 
 const COMMAND_ID = 0x79;
-const INVALID_METER_PROFILE_ID = 0xff;
 
 const examples: TCommandExampleList = [
     {
-        name: 'get meter info response without meterProfileId',
+        name: 'get meter info response without meterProfileId and without address',
         parameters: {
             requestId: 3,
             address: ''
@@ -25,23 +24,37 @@ const examples: TCommandExampleList = [
         hex: {header: '79 01', body: '03'}
     },
     {
-        name: 'get meter info response with meterProfileId',
-        parameters: {
-            requestId: 2,
-            meterProfileId: 1,
-            address: 'ma2375'
-        },
-        hex: {header: '79 09', body: '02 01 06 6d 61 32 33 37 35'}
-    },
-    {
         name: 'get meter info response without meterProfileId',
         parameters: {
             requestId: 2,
             address: 'ma2375'
         },
-        hex: {header: '79 09', body: '02 ff 06 6d 61 32 33 37 35'}
+        hex: {header: '79 08', body: '02 06 6d 61 32 33 37 35'}
+    },
+    {
+        name: 'get meter info response with meterProfileId',
+        parameters: {
+            requestId: 2,
+            address: 'ma2375',
+            meterProfileId: 1
+        },
+        hex: {header: '79 09', body: '02 06 6d 61 32 33 37 35 01'}
     }
 ];
+
+const commandSize = ( parameters: IGetMeterInfoResponseParameters ): number => {
+    let size = REQUEST_ID_SIZE;
+
+    if ( parameters.address.length !== 0 || parameters.meterProfileId ) {
+        size += 1 + parameters.address.length;
+
+        if ( parameters.meterProfileId ) {
+            size += 1;
+        }
+    }
+
+    return size;
+};
 
 
 /**
@@ -71,16 +84,7 @@ class GetMeterInfoResponse extends Command {
     constructor ( public parameters: IGetMeterInfoResponseParameters ) {
         super();
 
-        let size = REQUEST_ID_SIZE;
-        if ( parameters.meterProfileId || parameters.address.length !== 0 ) {
-            size += 1;
-        }
-
-        if ( parameters.address.length !== 0 ) {
-            size += 1 + parameters.address.length;
-        }
-
-        this.size = size;
+        this.size = commandSize(parameters);
     }
 
 
@@ -98,16 +102,11 @@ class GetMeterInfoResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         const requestId = buffer.getUint8();
-        if ( buffer.isEmpty ) {
-            return new GetMeterInfoResponse({requestId, address: ''});
-        }
-
-        const meterProfileId = buffer.getUint8();
         const address = buffer.isEmpty ? '' : buffer.getString();
 
-        return meterProfileId === INVALID_METER_PROFILE_ID
+        return buffer.isEmpty
             ? new GetMeterInfoResponse({requestId, address})
-            : new GetMeterInfoResponse({requestId, meterProfileId, address});
+            : new GetMeterInfoResponse({requestId, address, meterProfileId: buffer.getUint8()});
     }
 
     // returns full message - header with body
@@ -117,11 +116,10 @@ class GetMeterInfoResponse extends Command {
 
         buffer.setUint8(requestId);
 
-        if ( meterProfileId || address.length !== 0) {
-            buffer.setUint8(meterProfileId || INVALID_METER_PROFILE_ID);
-
-            if ( address.length !== 0) {
-                buffer.setString(address);
+        if ( address.length !== 0 || meterProfileId ) {
+            buffer.setString(address);
+            if (meterProfileId) {
+                buffer.setUint8(meterProfileId);
             }
         }
 

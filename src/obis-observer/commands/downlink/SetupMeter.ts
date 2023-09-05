@@ -8,8 +8,8 @@ import {DOWNLINK} from '../../constants/directions.js';
  */
 interface ISetupMeterParameters extends ICommandParameters {
     meterId: number,
-    meterProfileId: number,
-    address: string
+    address: string,
+    meterProfileId?: number
 }
 
 
@@ -17,16 +17,48 @@ const COMMAND_ID = 0x70;
 
 const examples: TCommandExampleList = [
     {
+        name: 'setup meter with Id 20 without profile and without address',
+        parameters: {
+            requestId: 3,
+            meterId: 20,
+            address: ''
+        },
+        hex: {header: '70 02', body: '03 14'}
+    },
+    {
+        name: 'setup meter with Id 20 without profile',
+        parameters: {
+            requestId: 3,
+            meterId: 20,
+            address: 'ma2375'
+        },
+        hex: {header: '70 09', body: '03 14 06 6d 61 32 33 37 35'}
+    },
+    {
         name: 'setup meter with Id 20',
         parameters: {
             requestId: 3,
             meterId: 20,
-            meterProfileId: 17,
-            address: 'ma2375'
+            address: 'ma2375',
+            meterProfileId: 17
         },
-        hex: {header: '70 0a', body: '03 14 11 06 6d 61 32 33 37 35'}
+        hex: {header: '70 0a', body: '03 14 06 6d 61 32 33 37 35 11'}
     }
 ];
+
+const commandSize = ( parameters: ISetupMeterParameters ): number => {
+    let size = REQUEST_ID_SIZE + 1;
+
+    if ( parameters.address.length !== 0 || parameters.meterProfileId ) {
+        size += 1 + parameters.address.length;
+
+        if ( parameters.meterProfileId ) {
+            size += 1;
+        }
+    }
+
+    return size;
+};
 
 
 /**
@@ -55,7 +87,7 @@ class SetupMeter extends Command {
     constructor ( public parameters: ISetupMeterParameters ) {
         super();
 
-        this.size = REQUEST_ID_SIZE + 3 + parameters.address.length;
+        this.size = commandSize(parameters);
     }
 
 
@@ -72,12 +104,18 @@ class SetupMeter extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new SetupMeter({
-            requestId: buffer.getUint8(),
-            meterId: buffer.getUint8(),
-            meterProfileId: buffer.getUint8(),
-            address: buffer.getString()
-        });
+        const requestId = buffer.getUint8();
+        const meterId = buffer.getUint8();
+
+        if ( buffer.isEmpty ) {
+            return new SetupMeter({requestId, meterId, address: ''});
+        }
+
+        const address = buffer.isEmpty ? '' : buffer.getString();
+
+        return buffer.isEmpty
+            ? new SetupMeter({requestId, meterId, address})
+            : new SetupMeter({requestId, meterId, meterProfileId: buffer.getUint8(), address});
     }
 
     // returns full message - header with body
@@ -87,8 +125,13 @@ class SetupMeter extends Command {
 
         buffer.setUint8(requestId);
         buffer.setUint8(meterId);
-        buffer.setUint8(meterProfileId);
-        buffer.setString(address);
+
+        if ( address.length !== 0 || meterProfileId ) {
+            buffer.setString(address);
+            if ( meterProfileId ) {
+                buffer.setUint8(meterProfileId);
+            }
+        }
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
