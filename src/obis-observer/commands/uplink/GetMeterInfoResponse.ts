@@ -17,6 +17,14 @@ const INVALID_METER_PROFILE_ID = 0xff;
 
 const examples: TCommandExampleList = [
     {
+        name: 'get meter info response without meterProfileId',
+        parameters: {
+            requestId: 3,
+            address: ''
+        },
+        hex: {header: '79 01', body: '03'}
+    },
+    {
         name: 'get meter info response with meterProfileId',
         parameters: {
             requestId: 2,
@@ -63,8 +71,16 @@ class GetMeterInfoResponse extends Command {
     constructor ( public parameters: IGetMeterInfoResponseParameters ) {
         super();
 
-        // real size - request id byte + software version 2 bytes + hardware version 2 bytes + device name string size byte + string bytes
-        this.size = REQUEST_ID_SIZE + 1 + 1 + parameters.address.length;
+        let size = REQUEST_ID_SIZE;
+        if ( parameters.meterProfileId || parameters.address.length !== 0 ) {
+            size += 1;
+        }
+
+        if ( parameters.address.length !== 0 ) {
+            size += 1 + parameters.address.length;
+        }
+
+        this.size = size;
     }
 
 
@@ -82,8 +98,12 @@ class GetMeterInfoResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         const requestId = buffer.getUint8();
+        if ( buffer.isEmpty ) {
+            return new GetMeterInfoResponse({requestId, address: ''});
+        }
+
         const meterProfileId = buffer.getUint8();
-        const address = buffer.getString();
+        const address = buffer.isEmpty ? '' : buffer.getString();
 
         return meterProfileId === INVALID_METER_PROFILE_ID
             ? new GetMeterInfoResponse({requestId, address})
@@ -96,8 +116,14 @@ class GetMeterInfoResponse extends Command {
         const {requestId, meterProfileId, address} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint8(meterProfileId || INVALID_METER_PROFILE_ID);
-        buffer.setString(address);
+
+        if ( meterProfileId || address.length !== 0) {
+            buffer.setUint8(meterProfileId || INVALID_METER_PROFILE_ID);
+
+            if ( address.length !== 0) {
+                buffer.setString(address);
+            }
+        }
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
