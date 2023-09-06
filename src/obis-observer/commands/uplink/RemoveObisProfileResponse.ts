@@ -17,12 +17,12 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'responst to RemoveObisProfile - not found',
+        name: 'response to RemoveObisProfile - not found',
         parameters: {
             requestId: 5,
-            resultCode: resultCodes.OBIS_PROFILE_NOT_FOUND
+            resultCode: resultCodes.OK
         },
-        hex: {header: '47 02', body: '05 05'}
+        hex: {header: '47 02', body: '05 00'}
     }
 ];
 

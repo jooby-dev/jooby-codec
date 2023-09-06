@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
             requestId: 49,
             resultCode: resultCodes.METER_PROFILE_NOT_FOUND
         },
-        hex: {header: '69 02', body: '31 0a'}
+        hex: {header: '69 02', body: '31 09'}
     }
 ];
 
