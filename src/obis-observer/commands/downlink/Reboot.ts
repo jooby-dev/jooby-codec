@@ -3,7 +3,7 @@ import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js'
 import {DOWNLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x19;
+const COMMAND_ID = 0x26;
 const COMMAND_SIZE = REQUEST_ID_SIZE;
 
 const examples: TCommandExampleList = [
@@ -12,7 +12,7 @@ const examples: TCommandExampleList = [
         parameters: {
             requestId: 3
         },
-        hex: {header: '19 01', body: '03'}
+        hex: {header: '26 01', body: '03'}
     }
 ];
 
@@ -31,7 +31,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 19 01 03
+ * // 26 01 03
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/Reboot.md#request)

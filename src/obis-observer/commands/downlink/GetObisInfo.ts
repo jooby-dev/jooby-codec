@@ -12,7 +12,7 @@ interface IGetObisInfoParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x4a;
+const COMMAND_ID = 0x4c;
 
 const examples: TCommandExampleList = [
     {
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             meterProfileId: 7,
             obisId: 44
         },
-        hex: {header: '4a 03', body: '03 07 2c'}
+        hex: {header: '4c 03', body: '03 07 2c'}
     }
 ];
 
@@ -43,7 +43,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 4a 03 03 07 2c
+ * // 4c 03 03 07 2c
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisInfo.md#request)

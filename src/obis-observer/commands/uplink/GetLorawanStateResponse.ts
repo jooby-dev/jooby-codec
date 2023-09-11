@@ -20,7 +20,7 @@ interface IGetLorawanStateResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x16;
+const COMMAND_ID = 0x23;
 
 const examples: TCommandExampleList = [
     {
@@ -35,7 +35,7 @@ const examples: TCommandExampleList = [
             resetFlag: 0,
             senderCollision: 0
         },
-        hex: {header: '16 08', body: '08 01 c1 05 06 00 00 00'}
+        hex: {header: '23 08', body: '08 01 c1 05 06 00 00 00'}
     }
 ];
 

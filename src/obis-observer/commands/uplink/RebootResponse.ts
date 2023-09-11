@@ -12,7 +12,7 @@ interface IRebootResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x1a;
+const COMMAND_ID = 0x27;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 7,
             resultCode: resultCodes.OK
         },
-        hex: {header: '1a 02', body: '07 00'}
+        hex: {header: '27 02', body: '07 00'}
     }
 ];
 

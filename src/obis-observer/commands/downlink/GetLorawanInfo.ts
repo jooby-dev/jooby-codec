@@ -3,7 +3,7 @@ import {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js'
 import {DOWNLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x13;
+const COMMAND_ID = 0x20;
 
 const examples: TCommandExampleList = [
     {
@@ -11,7 +11,7 @@ const examples: TCommandExampleList = [
         parameters: {
             requestId: 8
         },
-        hex: {header: '13 01', body: '08'}
+        hex: {header: '20 01', body: '08'}
     }
 ];
 
@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 13 01 08
+ * // 20 01 08
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetLorawanInfo.md#request)

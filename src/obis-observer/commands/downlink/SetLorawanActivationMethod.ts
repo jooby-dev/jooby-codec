@@ -11,7 +11,7 @@ interface ISetLorawanActivationMethodParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x17;
+const COMMAND_ID = 0x24;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
@@ -21,7 +21,7 @@ const examples: TCommandExampleList = [
             requestId: 3,
             activationMethod: 1
         },
-        hex: {header: '17 02', body: '03 01'}
+        hex: {header: '24 02', body: '03 01'}
     }
 ];
 
@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 17 02 03 01
+ * // 24 02 03 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetLorawanActivationMethod.md#request)

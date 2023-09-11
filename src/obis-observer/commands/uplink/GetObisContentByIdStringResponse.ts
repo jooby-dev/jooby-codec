@@ -11,7 +11,7 @@ interface IGetObisContentByIdStringResponseParameters extends ICommandParameters
     content: string
 }
 
-const COMMAND_ID = 0x4f;
+const COMMAND_ID = 0x52;
 
 const examples: TCommandExampleList = [
     {
@@ -20,7 +20,7 @@ const examples: TCommandExampleList = [
             requestId: 121,
             content: 'Total energy'
         },
-        hex: {header: '4f 0e', body: '79 0c 54 6f 74 61 6c 20 65 6e 65 72 67 79'}
+        hex: {header: '52 0e', body: '79 0c 54 6f 74 61 6c 20 65 6e 65 72 67 79'}
     }
 ];
 
@@ -32,7 +32,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetObisContentByIdStringResponse from 'jooby-codec/obis-observer/commands/uplink/GetObisContentByIdStringResponse.js';
  *
- * const commandBody = new Uint8Array([0x79, 0x0c, 0x54, 0x6f, 0x74, 0x61, 0x6c, 0x20, 0x65, 0x6e, 0x65, 0x72, 0x67, 0x79]);
+ * const commandBody = new Uint8Array([0x79, 0x0c, 0x52, 0x6f, 0x74, 0x61, 0x6c, 0x20, 0x65, 0x6e, 0x65, 0x72, 0x67, 0x79]);
  * const command = GetObisContentByIdStringResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);

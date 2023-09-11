@@ -11,7 +11,7 @@ interface IGetObisProfileResponseParameters extends ICommandParameters {
     obisProfile?: IObisProfile,
 }
 
-const COMMAND_ID = 0x49;
+const COMMAND_ID = 0x4b;
 const COMMAND_SIZE = REQUEST_ID_SIZE + OBIS_PROFILE_SIZE;
 
 const examples: TCommandExampleList = [
@@ -31,14 +31,14 @@ const examples: TCommandExampleList = [
                 }
             }
         },
-        hex: {header: '49 07', body: '03 01 58 02 14 3d 13'}
+        hex: {header: '4b 07', body: '03 01 58 02 14 3d 13'}
     },
     {
         name: 'response to GetObisProfile without data',
         parameters: {
             requestId: 3
         },
-        hex: {header: '49 01', body: '03'}
+        hex: {header: '4b 01', body: '03'}
     }
 ];
 

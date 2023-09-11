@@ -13,22 +13,22 @@ interface ISetObisIdParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x42;
+const COMMAND_ID = 0x44;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set obisId 44 for OBIS code 0.9.1 in meter profile 2',
+        name: 'set obisId 240 for OBIS code 0.9.1 in meter profile 2',
         parameters: {
             requestId: 3,
             meterProfileId: 2,
-            obisId: 44,
+            obisId: 240,
             obis: {
                 c: 0,
                 d: 9,
                 e: 1
             }
         },
-        hex: {header: '42 07', body: '03 02 2c 02 00 09 01'}
+        hex: {header: '44 07', body: '03 02 f0 02 00 09 01'}
     }
 ];
 
@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  * import SetObisID from 'jooby-codec/obis-observer/commands/downlink/SetObisId.js';
  * const parameters = {
  *     meterProfileId: 2,
- *     obisId: 44,
+ *     obisId: 240,
  *     obis: {
  *         c: 0,
  *         d: 9,
@@ -52,7 +52,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 42 06 02 2c 02 00 09 01
+ * // 44 06 02 f0 02 00 09 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObisId.md#request)

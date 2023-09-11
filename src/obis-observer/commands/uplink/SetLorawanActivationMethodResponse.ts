@@ -12,7 +12,7 @@ interface ISetLorawanActivationMethodResponseParameters extends ICommandParamete
 }
 
 
-const COMMAND_ID = 0x18;
+const COMMAND_ID = 0x25;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             requestId: 7,
             resultCode: resultCodes.OK
         },
-        hex: {header: '18 02', body: '07 00'}
+        hex: {header: '25 02', body: '07 00'}
     }
 ];
 

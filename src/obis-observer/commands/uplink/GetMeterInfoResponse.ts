@@ -24,6 +24,15 @@ const examples: TCommandExampleList = [
         hex: {header: '79 01', body: '03'}
     },
     {
+        name: 'get meter info response without meterProfileId 1',
+        parameters: {
+            requestId: 8,
+            address: 'ma2',
+            meterProfileId: 0x7c
+        },
+        hex: {header: '79 06', body: '08 03 6d 61 32 7c'}
+    },
+    {
         name: 'get meter info response without meterProfileId',
         parameters: {
             requestId: 2,
@@ -100,7 +109,6 @@ class GetMeterInfoResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-
         const requestId = buffer.getUint8();
         const address = buffer.isEmpty ? '' : buffer.getString();
 

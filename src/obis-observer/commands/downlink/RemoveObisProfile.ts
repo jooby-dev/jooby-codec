@@ -12,7 +12,7 @@ interface IRemoveObisProfileParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x46;
+const COMMAND_ID = 0x48;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
             meterProfileId: 4,
             obisId: 28
         },
-        hex: {header: '46 03', body: '05 04 1c'}
+        hex: {header: '48 03', body: '05 04 1c'}
     }
 ];
 
@@ -44,7 +44,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 46 03 05 04 1c
+ * // 48 03 05 04 1c
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveObisProfile.md#request)
