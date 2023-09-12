@@ -9,22 +9,13 @@ import {DOWNLINK} from '../../constants/directions.js';
 interface IGetObisIdListParameters extends ICommandParameters {
     meterProfileId: number,
     index: number,
-    obis?: IObis
+    obis: IObis
 }
 
 
 const COMMAND_ID = 0x40;
 
 const examples: TCommandExampleList = [
-    {
-        name: 'get obisId list',
-        parameters: {
-            requestId: 3,
-            meterProfileId: 5,
-            index: 0
-        },
-        hex: {header: '40 03', body: '03 05 00'}
-    },
     {
         name: 'get obisId list for OBIS code 0.9.1 - local time in meter profile 5',
         parameters: {
@@ -72,7 +63,7 @@ class GetObisIdList extends Command {
     constructor ( public parameters: IGetObisIdListParameters ) {
         super();
 
-        this.size = REQUEST_ID_SIZE + 2 + (parameters.obis ? CommandBinaryBuffer.getObisSize(parameters.obis) : 0);
+        this.size = REQUEST_ID_SIZE + 2 + CommandBinaryBuffer.getObisSize(parameters.obis);
     }
 
 
@@ -88,13 +79,13 @@ class GetObisIdList extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-        const requestId = buffer.getUint8();
-        const meterProfileId = buffer.getUint8();
-        const index = buffer.getUint8();
 
-        return buffer.isEmpty
-            ? new GetObisIdList({requestId, meterProfileId, index})
-            : new GetObisIdList({requestId, meterProfileId, index, obis: buffer.getObis()});
+        return new GetObisIdList({
+            requestId: buffer.getUint8(),
+            meterProfileId: buffer.getUint8(),
+            index: buffer.getUint8(),
+            obis: buffer.getObis()
+        });
     }
 
     // returns full message - header with body
@@ -105,10 +96,7 @@ class GetObisIdList extends Command {
         buffer.setUint8(requestId);
         buffer.setUint8(meterProfileId);
         buffer.setUint8(index);
-
-        if ( obis ) {
-            buffer.setObis(obis);
-        }
+        buffer.setObis(obis);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
