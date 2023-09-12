@@ -25,7 +25,7 @@ export interface ITariffPlan {
     dayProfilesArraySize: number
 }
 
-export interface IDisplaySetOperatorParameter {
+export interface IDisplaySetBaseOperatorParameter {
     TEST_D: boolean,
     VERSION_D: boolean,
     WH_D: boolean,
@@ -53,38 +53,14 @@ export interface IDisplaySetOperatorParameter {
     POWER_THRESHOLD_T2: boolean,
     POWER_THRESHOLD_T3: boolean,
     SALDO_D: boolean,
+}
+
+export interface IDisplaySetOperatorParameter extends IDisplaySetBaseOperatorParameter {
     SCROLL_D: boolean
 }
 
-export interface IDisplaySetExtOperatorParameter {
-    TEST_D: boolean,
-    VERSION_D: boolean,
-    WH_D: boolean,
-    WH_T1_D: boolean,
-    WH_T2_D: boolean,
-    WH_T3_D: boolean,
-    WH_T4_D: boolean,
-    POWER_D: boolean,
-    POWERB_D: boolean,
-    IRMS_D: boolean,
-    IRMSB_D: boolean,
-    VRMS_D: boolean,
-    TIME_D: boolean,
-    DATE_D: boolean,
-    WH_EXP_D: boolean,
-    WH_EXP_T1_D: boolean,
-    WH_EXP_T2_D: boolean,
-    WH_EXP_T3_D: boolean,
-    WH_EXP_T4_D: boolean,
-    PF_A: boolean,
-    PF_B: boolean,
-    VBAT: boolean,
-    POWER_THRESHOLD_T0: boolean,
-    POWER_THRESHOLD_T1: boolean,
-    POWER_THRESHOLD_T2: boolean,
-    POWER_THRESHOLD_T3: boolean,
+export interface IDisplaySetExtOperatorParameter extends IDisplaySetBaseOperatorParameter {
     MAGNET_TESLA: boolean,
-    SALDO_D: boolean,
     SPEED_D: boolean,
     NEW_SORT_DISPLAY: boolean
 }
@@ -336,7 +312,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         const dateTime: IDateTime = {
             year: date.getFullYear() - 2000,
             month: date.getMonth() + 1,
-            day: 0, // todo
+            day: date.getDay(),
             date: date.getDate(),
             hours: date.getHours(),
             minutes: date.getMinutes(),
