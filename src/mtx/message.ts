@@ -116,7 +116,6 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO ): Command =
         // uplink should be more often
         return uplinkCommand.fromBytes(data) as Command;
     } catch {
-        // @ts-expect-error qwe
         return downlinkCommand.fromBytes(data) as Command;
     }
 };
@@ -174,7 +173,12 @@ export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IM
 
     do {
         const commandId = commandsData[position];
-        const commandBody = commandsData.slice(position + COMMAND_HEADER_SIZE);
+        const commandBodySize = commandsData[position + 1];
+        const commandSize = COMMAND_HEADER_SIZE + commandBodySize;
+        const commandBody = commandsData.slice(
+            position + COMMAND_HEADER_SIZE,
+            position + commandSize
+        );
 
         // invalid command or padding zeros after decryption
         if ( !commandId ) {
@@ -188,7 +192,7 @@ export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IM
             command
         });
 
-        position += COMMAND_HEADER_SIZE + command.size;
+        position += commandSize;
     } while ( position <= commandsData.length );
 
     return result;

@@ -1,15 +1,16 @@
 import Command, {TCommandExampleList} from '../../Command.js';
+//import CommandBinaryBuffer, {ILegacyCounter} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
 
-const COMMAND_ID = 0x18;
+const COMMAND_ID = 0x5d;
 const COMMAND_SIZE = 0;
 
 const examples: TCommandExampleList = [
     {
         name: 'simple response',
-        hex: {header: '18 00', body: ''}
+        hex: {header: '5d 00', body: ''}
     }
 ];
 
@@ -19,9 +20,9 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import TurnRelayOnResponse from 'jooby-codec/mtx/commands/uplink/TurnRelayOnResponse.js';
+ * import SetDisplayParamResponse from 'jooby-codec/mtx/commands/uplink/SetDisplayParamResponse.js';
  *
- * const command = TurnRelayOnResponse.fromBytes();
+ * const command = SetDisplayParamResponse.fromBytes();
  *
  * console.log(command.parameters);
  * // output:
@@ -30,7 +31,7 @@ const examples: TCommandExampleList = [
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/TurnRelayOn.md#response)
  */
-class TurnRelayOnResponse extends Command {
+class SetDisplayParamResponse extends Command {
     constructor () {
         super();
 
@@ -50,8 +51,8 @@ class TurnRelayOnResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes (): TurnRelayOnResponse {
-        return new TurnRelayOnResponse();
+    static fromBytes (): SetDisplayParamResponse {
+        return new SetDisplayParamResponse();
     }
 
     // returns full message - header with body
@@ -61,4 +62,4 @@ class TurnRelayOnResponse extends Command {
 }
 
 
-export default TurnRelayOnResponse;
+export default SetDisplayParamResponse;
