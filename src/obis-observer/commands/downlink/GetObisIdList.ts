@@ -8,6 +8,7 @@ import {DOWNLINK} from '../../constants/directions.js';
  */
 interface IGetObisIdListParameters extends ICommandParameters {
     meterProfileId: number,
+    index: number,
     obis?: IObis
 }
 
@@ -19,22 +20,24 @@ const examples: TCommandExampleList = [
         name: 'get obisId list',
         parameters: {
             requestId: 3,
-            meterProfileId: 5
+            meterProfileId: 5,
+            index: 0
         },
-        hex: {header: '40 02', body: '03 05'}
+        hex: {header: '40 03', body: '03 05 00'}
     },
     {
         name: 'get obisId list for OBIS code 0.9.1 - local time in meter profile 5',
         parameters: {
             requestId: 3,
             meterProfileId: 5,
+            index: 1,
             obis: {
                 c: 0,
                 d: 9,
                 e: 1
             }
         },
-        hex: {header: '40 06', body: '03 05 02 00 09 01'}
+        hex: {header: '40 07', body: '03 05 01 02 00 09 01'}
     }
 ];
 
@@ -49,6 +52,7 @@ const examples: TCommandExampleList = [
  * const parameters = {
  *     requestId: 3,
  *     meterProfileId: 5,
+ *     index: 0,
  *     obis: {
  *         c: 0,
  *         d: 9,
@@ -59,7 +63,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 40 06 03 05 02 00 09 01
+ * // 40 07 03 05 00 02 00 09 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisIdList.md#request)
@@ -68,9 +72,7 @@ class GetObisIdList extends Command {
     constructor ( public parameters: IGetObisIdListParameters ) {
         super();
 
-        this.size = REQUEST_ID_SIZE
-            + 1
-            + (parameters.obis ? CommandBinaryBuffer.getObisSize(parameters.obis) : 0);
+        this.size = REQUEST_ID_SIZE + 2 + (parameters.obis ? CommandBinaryBuffer.getObisSize(parameters.obis) : 0);
     }
 
 
@@ -88,19 +90,22 @@ class GetObisIdList extends Command {
         const buffer = new CommandBinaryBuffer(data);
         const requestId = buffer.getUint8();
         const meterProfileId = buffer.getUint8();
+        const index = buffer.getUint8();
 
         return buffer.isEmpty
-            ? new GetObisIdList({requestId, meterProfileId})
-            : new GetObisIdList({requestId, meterProfileId, obis: buffer.getObis()});
+            ? new GetObisIdList({requestId, meterProfileId, index})
+            : new GetObisIdList({requestId, meterProfileId, index, obis: buffer.getObis()});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {requestId, meterProfileId, obis} = this.parameters;
+        const {requestId, meterProfileId, index, obis} = this.parameters;
         const buffer = new CommandBinaryBuffer(this.size as number);
 
         buffer.setUint8(requestId);
         buffer.setUint8(meterProfileId);
+        buffer.setUint8(index);
+
         if ( obis ) {
             buffer.setObis(obis);
         }
