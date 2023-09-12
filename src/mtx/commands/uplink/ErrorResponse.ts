@@ -1,12 +1,10 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {ACCESS_DENIED} from '../../constants/errorCodes.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
+import {ACCESS_DENIED} from '../../constants/resultCodes.js';
 
 
-/**
- * IErrorResponseParameters command parameters
- */
 interface IErrorResponseParameters {
     commandId: number,
     errorCode: number
@@ -65,6 +63,8 @@ class ErrorResponse extends Command {
     static readonly examples = examples;
 
     static readonly hasParameters = true;
+
+    static readonly accessLevel = READ_ONLY;
 
 
     // data - only body (without header)

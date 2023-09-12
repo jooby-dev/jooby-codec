@@ -1,15 +1,15 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../constants/directions.js';
-import {READ_WRITE} from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
-const COMMAND_ID = 0x19;
+const COMMAND_ID = 0x07;
 const COMMAND_SIZE = 0;
 
 const examples: TCommandExampleList = [
     {
         name: 'simple request',
-        hex: {header: '19 00', body: ''}
+        hex: {header: '07 00', body: ''}
     }
 ];
 
@@ -19,18 +19,18 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import TurnRelayOff from 'jooby-codec/mtx/commands/downlink/TurnRelayOff.js';
+ * import GetDateTime from 'jooby-codec/mtx/commands/downlink/GetDateTime.js';
  *
- * const command = new TurnRelayOff();
+ * const command = new GetDateTime();
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 19 00
+ * // 07 00
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/TurnRelayOff.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDateTime.md#request)
  */
-class TurnRelayOff extends Command {
+class GetDateTime extends Command {
     constructor () {
         super();
 
@@ -46,12 +46,12 @@ class TurnRelayOff extends Command {
 
     static readonly hasParameters = false;
 
-    static readonly accessLevel = READ_WRITE;
+    static readonly accessLevel = READ_ONLY;
 
 
     // data - only body (without header)
     static fromBytes () {
-        return new TurnRelayOff();
+        return new GetDateTime();
     }
 
     // returns full message - header with body
@@ -61,4 +61,4 @@ class TurnRelayOff extends Command {
 }
 
 
-export default TurnRelayOff;
+export default GetDateTime;

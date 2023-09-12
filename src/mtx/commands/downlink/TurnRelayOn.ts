@@ -55,7 +55,6 @@ class TurnRelayOn extends Command {
     }
 
     // returns full message - header with body
-    // eslint-disable-next-line class-methods-use-this
     toBytes (): Uint8Array {
         return new Uint8Array([COMMAND_ID, this.size]);
     }
