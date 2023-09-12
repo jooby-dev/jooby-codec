@@ -28,7 +28,7 @@ export default [
     {obisId: 26, obisCode: '3.5.0', isStatic: true, isGeneral: true, description: 'reactive power+ (QI+QII), average'},
     {obisId: 27, obisCode: '3.6.0', isStatic: true, isGeneral: true, description: 'reactive power+ (QI+QII), maximum, total'},
     {obisId: 28, obisCode: '3.6.1', isStatic: true, isGeneral: true, description: 'reactive power+ (QI+QII), maximum, tariff T1'},
-    {obisId: 39, obisCode: '3.6.2', isStatic: true, isGeneral: true, description: 'reactive power+ (QI+QII), maximum, tariff T2'},
+    {obisId: 29, obisCode: '3.6.2', isStatic: true, isGeneral: true, description: 'reactive power+ (QI+QII), maximum, tariff T2'},
     {obisId: 30, obisCode: '3.6.3', isStatic: true, isGeneral: true, description: 'reactive power+ (QI+QII), maximum, tariff T3'},
     {obisId: 31, obisCode: '3.6.4', isStatic: true, isGeneral: true, description: 'reactive power+ (QI+QII), maximum, tariff T4'},
     {obisId: 32, obisCode: '3.8.0', isStatic: true, isGeneral: true, description: 'reactive power+ (QI+QII), total'},
