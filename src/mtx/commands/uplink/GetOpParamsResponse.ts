@@ -64,7 +64,7 @@ class GetOpParamsResponse extends Command {
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
-        if ( data.length !== COMMAND_SIZE ) {
+        if ( data.length < COMMAND_SIZE ) {
             throw new Error('Invalid SetOpParams data size.');
         }
 
