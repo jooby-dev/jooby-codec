@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 
 import Command from './Command.js';
+import UnknownCommand from './UnknownCommand.js';
 import * as downlinkCommands from './commands/downlink/index.js';
 import * as uplinkCommands from './commands/uplink/index.js';
 
@@ -86,7 +87,7 @@ export const uplinkCommandsById = Object.fromEntries(
     Object.values(uplinkCommands).map(item => [item.id, item])
 );
 
-const getCommand = ( id: number, data: Uint8Array, direction = AUTO ): Command => {
+const getCommand = ( id: number, size: number, data: Uint8Array, direction = AUTO ): Command => {
     if ( !directionTypeIds.has(direction) ) {
         throw new Error('wrong direction type');
     }
@@ -101,7 +102,7 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO ): Command =
         || (direction === UPLINK && !uplinkCommand)
     ) {
         // missing command implementation
-        //return new UnknownCommand({id, data});
+        return new UnknownCommand({id, size, data});
     }
 
     // the specific direction
@@ -185,7 +186,7 @@ export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IM
             break;
         }
 
-        const command = getCommand(commandId, commandBody, direction);
+        const command = getCommand(commandId, commandBodySize, commandBody, direction);
 
         commands.push({
             data: {header: new Uint8Array([commandId]), body: commandBody},
