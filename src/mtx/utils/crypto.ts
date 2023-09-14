@@ -26,13 +26,13 @@ const convertUint8ArrayToWordArray = ( data: Uint8Array ): crypto.lib.WordArray 
     return crypto.lib.WordArray.create(result, data.byteLength);
 };
 
-export const aes = {
-    config: {
-        keySize: 16,
-        mode: crypto.mode.ECB,
-        padding: crypto.pad.NoPadding
-    },
+const aesConfig = {
+    keySize: 16,
+    mode: crypto.mode.ECB,
+    padding: crypto.pad.NoPadding
+};
 
+export const aes = {
     /**
      * AES encrypt
      *
@@ -44,7 +44,7 @@ export const aes = {
         const {ciphertext} = crypto.AES.encrypt(
             convertUint8ArrayToWordArray(value),
             convertUint8ArrayToWordArray(key),
-            aes.config
+            aesConfig
         );
 
         return convertWordArrayToUint8Array(ciphertext);
@@ -62,7 +62,7 @@ export const aes = {
             crypto.AES.decrypt(
                 getBase64FromBytes(value),
                 convertUint8ArrayToWordArray(key),
-                aes.config
+                aesConfig
             )
         )
     )
