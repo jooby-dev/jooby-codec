@@ -27,7 +27,7 @@ export {default as GetObserverInfo} from './GetObserverInfo.js';
 export {default as GetObserverSingleMode} from './GetObserverSingleMode.js';
 export {default as GetObserverUptime} from './GetObserverUptime.js';
 export {default as GetReassignableObisIdList} from './GetObisInfoList.js';
-export {default as ReadMeterArchive} from './ReadArchive.js';
+export {default as ReadMeterArchive} from './ReadMeterArchive.js';
 export {default as Reboot} from './Reboot.js';
 export {default as RemoveMeter} from './RemoveMeter.js';
 export {default as RemoveMeterProfile} from './RemoveMeterProfile.js';
