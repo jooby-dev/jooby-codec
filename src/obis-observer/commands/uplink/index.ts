@@ -31,6 +31,7 @@ export {default as GetObserverUptimeResponse} from './GetObserverUptimeResponse.
 export {default as ObservationReport} from './ObservationReport.js';
 export {default as ObservationReportString} from './ObservationReportString.js';
 export {default as ReadMeterArchiveResponse} from './ReadMeterArchiveResponse.js';
+export {default as ReadMeterArchiveWithDateResponse} from './ReadMeterArchiveWithDateResponse.js';
 export {default as RebootResponse} from './RebootResponse.js';
 export {default as RemoveMeterProfileResponse} from './RemoveMeterProfileResponse.js';
 export {default as RemoveMeterResponse} from './RemoveMeterResponse.js';

@@ -35,6 +35,7 @@ requestByResponse.set(uplinkCommands.GetObserverInfoResponse, downlinkCommands.G
 requestByResponse.set(uplinkCommands.GetObserverSingleModeResponse, downlinkCommands.GetObserverSingleMode);
 requestByResponse.set(uplinkCommands.GetObserverUptimeResponse, downlinkCommands.GetObserverUptime);
 requestByResponse.set(uplinkCommands.ReadMeterArchiveResponse, downlinkCommands.ReadMeterArchive);
+requestByResponse.set(uplinkCommands.ReadMeterArchiveWithDateResponse, downlinkCommands.ReadMeterArchiveWithDate);
 requestByResponse.set(uplinkCommands.RebootResponse, downlinkCommands.Reboot);
 requestByResponse.set(uplinkCommands.RemoveMeterProfileResponse, downlinkCommands.RemoveMeterProfile);
 requestByResponse.set(uplinkCommands.RemoveMeterResponse, downlinkCommands.RemoveMeter);
