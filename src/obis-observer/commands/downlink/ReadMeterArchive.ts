@@ -1,64 +1,32 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
-import {TTime2000} from '../../../utils/time.js';
 
 
 /**
- * IReadArchiveParameters command parameters
+ * IReadMeterArchiveParameters command parameters
  */
-interface IReadArchiveParameters extends ICommandParameters {
+interface IReadMeterArchiveParameters extends ICommandParameters {
     archiveType: number,
-    startIndex: number,
-    meterId?: number,
-    time2000?: TTime2000
+    index: number,
+    meterId: number
 }
 
 
 const COMMAND_ID = 0x11;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 2;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 6;
 
 const examples: TCommandExampleList = [
-    {
-        name: 'request to read all archive 1',
-        parameters: {
-            requestId: 3,
-            archiveType: 1,
-            startIndex: 0
-        },
-        hex: {header: '11 03', body: '03 01 00'}
-    },
+
     {
         name: 'request to read all archive 1 for the meter 2 starts with index 4',
         parameters: {
             requestId: 3,
             archiveType: 1,
-            startIndex: 4,
+            index: 4,
             meterId: 2
         },
-        hex: {header: '11 04', body: '03 01 04 02'}
-    },
-    {
-        name: 'request to read archive 1 from 2023.12.23 00:00:00 GMT for meter 5',
-        parameters: {
-            requestId: 33,
-            archiveType: 1,
-            startIndex: 0,
-            meterId: 5,
-            time2000: 756604800
-        },
-        hex: {header: '11 08', body: '21 01 00 05 2d 18 df 80'}
-    },
-    {
-        name: 'request archive 2 from 2023-12-23 04:00:00 GMT for meter 6',
-        parameters: {
-            requestId: 34,
-            archiveType: 2,
-            startIndex: 0,
-            meterId: 6,
-            time2000: 756619200
-        },
-        hex: {header: '11 08', body: '22 02 00 06 2d 19 17 c0'}
+        hex: {header: '11 07', body: '03 01 00 00 00 04 02'}
     }
 ];
 
@@ -68,30 +36,28 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import ReadArchive from 'jooby-codec/obis-observer/commands/downlink/ReadArchive.js';
+ * import ReadMeterArchive from 'jooby-codec/obis-observer/commands/downlink/ReadMeterArchive.js';
  *
  * const parameters = {
- *     requestId: 34,
- *     meterId: 5,
- *     archiveType: 2,
- *     time2000: 756619200
+ *     requestId: 3,
+ *     archiveType: 1,
+ *     index: 4,
+ *     meterId: 2
  * };
  * const command = new ReadMeterArchive(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 7f 07 05 22 02 2d 19 17 c0
+ * // 11 07 03 01 00 00 00 04 02
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadMeterArchive.md#request)
  */
 class ReadMeterArchive extends Command {
-    constructor ( public parameters: IReadArchiveParameters ) {
+    constructor ( public parameters: IReadMeterArchiveParameters ) {
         super();
 
-        this.size = COMMAND_SIZE
-            + (parameters.meterId ? 1 : 0)
-            + (parameters.time2000 ? DATE_TIME_SIZE : 0);
+        this.size = COMMAND_SIZE;
     }
 
 
@@ -108,36 +74,23 @@ class ReadMeterArchive extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        const requestId = buffer.getUint8();
-        const archiveType = buffer.getUint8();
-        const startIndex = buffer.getUint8();
-
-        if ( buffer.isEmpty ) {
-            return new ReadMeterArchive({requestId, archiveType, startIndex});
-        }
-
-        const meterId = buffer.getUint8();
-        return buffer.isEmpty
-            ? new ReadMeterArchive({requestId, archiveType, startIndex, meterId})
-            : new ReadMeterArchive({requestId, archiveType, startIndex, meterId, time2000: buffer.getUint32()});
+        return new ReadMeterArchive({
+            requestId: buffer.getUint8(),
+            archiveType: buffer.getUint8(),
+            index: buffer.getUint32(),
+            meterId: buffer.getUint8()
+        });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {requestId, archiveType, startIndex, meterId, time2000} = this.parameters;
+        const {requestId, archiveType, index, meterId} = this.parameters;
         const buffer = new CommandBinaryBuffer(this.size as number);
 
         buffer.setUint8(requestId);
         buffer.setUint8(archiveType);
-        buffer.setUint8(startIndex);
-
-        if ( meterId ) {
-            buffer.setUint8(meterId);
-
-            if (time2000) {
-                buffer.setUint32(time2000);
-            }
-        }
+        buffer.setUint32(index);
+        buffer.setUint8(meterId);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

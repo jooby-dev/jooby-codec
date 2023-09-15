@@ -2,73 +2,76 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IObisValueFloat, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
+import roundNumber from '../../../utils/roundNumber.js';
 
+
+type TArchiveContentPerDate = {
+    time2000: TTime2000,
+    obisValueList: Array<IObisValueFloat>
+};
 
 /**
- * IReadArchiveResponseParameters command parameters
+ * IReadMeterArchiveResponseParameters command parameters
  */
-interface IReadArchiveResponseParameters extends ICommandParameters {
+interface IReadMeterArchiveResponseParameters extends ICommandParameters {
     isCompleted: boolean,
-    meterId?: number,
-    time2000?: TTime2000,
-    obisValueList: Array<IObisValueFloat>
+    content: Array<TArchiveContentPerDate>
 }
 
-const COMMAND_ID = 0x10;
+const COMMAND_ID = 0x12;
 
 // request id byte isCompleted byte
 const COMMAND_HEADER_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'response to ReadArchive from 2023-12-23 04:00:00 GMT for meter 4',
+        name: 'response to ReadMeterArchive from 2023-12-23 04:00:00 GMT for meter 4',
         parameters: {
-            requestId: 34,
+            requestId: 12,
             isCompleted: true,
-            meterId: 4,
-            time2000: 756619200,
-            obisValueList: [
-                {code: 50, content: 22.27},
-                {code: 56, content: 89.33}
+            content: [
+                {
+                    time2000: 464784480,
+                    obisValueList: [{code: 8, content: 0.40}]
+                },
+                {
+                    time2000: 464784416,
+                    obisValueList: [{code: 8, content: 0.20}]
+                }
             ]
         },
-        hex: {header: '10 11', body: '22 01 04 2d 19 17 c0 32 41 b2 28 f6 38 42 b2 a8 f6'}
+        hex: {header: '12 15', body: '0c 01 1b b4 0c 60 08 3e cc cc cd 00 1b b4 0c 20 08 3e 4c cc cd'}
     },
     {
-        name: 'response to ReadArchive for meter 3',
+        name: 'response to ReadMeterArchive without data',
         parameters: {
             requestId: 34,
             isCompleted: true,
-            meterId: 3,
-            obisValueList: []
+            content: []
         },
-        hex: {header: '10 03', body: '22 01 03'}
-    },
-    {
-        name: 'response to ReadArchive without data',
-        parameters: {
-            requestId: 34,
-            isCompleted: true,
-            obisValueList: []
-        },
-        hex: {header: '10 02', body: '22 01'}
+        hex: {header: '12 02', body: '22 01'}
     }
 ];
 
-const commandSize = ( parameters: IReadArchiveResponseParameters ): number => {
+const commandSize = ( parameters: IReadMeterArchiveResponseParameters ): number => {
     let size = COMMAND_HEADER_SIZE;
+    let datesInContent = 0;
 
-    if ( parameters.meterId ) {
-        size += 1;
+    for ( let it = 0; it < parameters.content.length; ++it ) {
+        const obisValues = parameters.content[it].obisValueList;
 
-        if ( parameters.time2000 ) {
+        if ( obisValues.length !== 0 ) {
             size += DATE_TIME_SIZE;
+            // 1 byte obis id + 4 byte float value for each obis value
+            size += (1 + 4) * obisValues.length;
 
-            // + obis values list list of code 1 byte with float content 4 bytes
-            parameters.obisValueList.forEach(obisId => {
-                size += CommandBinaryBuffer.getObisContentSize(obisId);
-            });
+            datesInContent++;
         }
+    }
+
+    if ( datesInContent !== 0 ) {
+        // 1 byte for each date except the last - date end flag
+        size += datesInContent - 1;
     }
 
     return size;
@@ -80,31 +83,36 @@ const commandSize = ( parameters: IReadArchiveResponseParameters ): number => {
  *
  * @example create command instance from command body hex dump
  * ```js
- * import ReadArchiveResponse from 'jooby-codec/obis-observer/commands/uplink/ReadArchiveResponse.js';
+ * import ReadMeterArchiveResponse from 'jooby-codec/obis-observer/commands/uplink/ReadMeterArchiveResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x22, 01, 03, 0x02, 0x2d, 0x19, 0x17, 0xc0, 0x32, 0x41, 0xb2, 0x28, 0xf6, 0x38, 0x42, 0xb2, 0xa8, 0xf6
+ *     0x0c, 0x01, 0x1b, 0xb4, 0x0c, 0x60, 0x08, 0x3e, 0xcc, 0xcc, 0xcd, 0x00, 0x1b, 0xb4, 0x0c, 0x20, 0x08, 0x3e, 0x4c, 0xcc, 0xcd
  * ]);
- * const command = ReadArchiveResponse.fromBytes(commandBody);
+ * const command = ReadMeterArchiveResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 34,
+ *     requestId: 12,
  *     isCompleted: true,
- *     meterId: 03,
- *     time2000: 756619200,
- *     obisValueList: [
- *         {code: 50, content: 22.27},
- *         {code: 56, content: 89.33}
+ *     meterId: 4,
+ *     content: [
+ *         {
+ *             time2000: 464784480,
+ *             obisValueList: [{code: 8, content: 0.40}]
+ *         },
+ *         {
+ *             time2000: 464784416,
+ *             obisValueList: [{code: 8, content: 0.20}]
+ *         }
  *     ]
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadArchive.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadMeterArchive.md#response)
  */
-class ReadArchiveResponse extends Command {
-    constructor ( public parameters: IReadArchiveResponseParameters) {
+class ReadMeterArchiveResponse extends Command {
+    constructor ( public parameters: IReadMeterArchiveResponseParameters) {
         super();
 
         this.size = commandSize(parameters);
@@ -124,47 +132,56 @@ class ReadArchiveResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
         const requestId = buffer.getUint8();
-        const isCompleted = buffer.getUint8() !== 0;
-        const obisValueList:Array<IObisValueFloat> = [];
+        const isCompleted = buffer.isEmpty ? true : buffer.getUint8() !== 0;
+        const content:Array<TArchiveContentPerDate> = [];
 
-        if ( buffer.isEmpty) {
-            return new ReadArchiveResponse({requestId, isCompleted, obisValueList});
+        if ( buffer.isEmpty ) {
+            return new ReadMeterArchiveResponse({requestId, isCompleted, content});
         }
-
-        const meterId = buffer.getUint8();
-
-        if ( buffer.isEmpty) {
-            return new ReadArchiveResponse({requestId, isCompleted, meterId, obisValueList});
-        }
-
-        const time2000 = buffer.getUint32();
 
         while ( !buffer.isEmpty ) {
-            obisValueList.push(buffer.getObisValueFloat());
+            const dateContent: TArchiveContentPerDate = {
+                time2000: buffer.getUint32(),
+                obisValueList: []
+            };
+
+            while ( !buffer.isEmpty ) {
+                const code = buffer.getUint8();
+                if ( code === 0) {
+                    break;
+                }
+
+                dateContent.obisValueList.push({code, content: roundNumber(buffer.getFloat32())});
+            }
+
+            content.push(dateContent);
         }
 
-        return new ReadArchiveResponse({requestId, isCompleted, meterId, time2000, obisValueList});
+        return new ReadMeterArchiveResponse({requestId, isCompleted, content});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {requestId, isCompleted, meterId, time2000, obisValueList} = this.parameters;
+        const {requestId, isCompleted, content} = this.parameters;
         const buffer = new CommandBinaryBuffer(this.size as number);
 
         buffer.setUint8(requestId);
         buffer.setUint8(isCompleted ? 1 : 0);
 
-        if ( meterId ) {
-            buffer.setUint8(meterId);
-            if ( time2000 ) {
-                buffer.setUint32(time2000);
-                obisValueList.forEach(obisValue => buffer.setObisValueFloat(obisValue));
+        for ( let it = 0; it < content.length; ++it ) {
+            if ( it !== 0) {
+                // end of date flag
+                buffer.setUint8(0);
             }
+
+            buffer.setUint32(content[it].time2000);
+            content[it].obisValueList.forEach(obisValue => buffer.setObisValueFloat(obisValue));
         }
+
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
 
-export default ReadArchiveResponse;
+export default ReadMeterArchiveResponse;
