@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 import * as downlinkCommands from '../commands/downlink/index.js';
 import * as uplinkCommands from '../commands/uplink/index.js';
 
 
+// constructor to constructor
 export const requestByResponse = new Map();
 export const responseByRequest = new Map();
+
+// id to constructor
+export const requestById = new Map();
+export const responseById = new Map();
 
 
 requestByResponse.set(uplinkCommands.AddShortNameProfileResponse, downlinkCommands.AddShortNameProfile);
@@ -22,7 +29,10 @@ requestByResponse.set(uplinkCommands.SetArchiveProfileResponse, downlinkCommands
 requestByResponse.set(uplinkCommands.SetSerialPortResponse, downlinkCommands.SetSerialPort);
 requestByResponse.set(uplinkCommands.SetShortNameResponse, downlinkCommands.SetShortName);
 
-// invert keys with values
-for ( const [key, value] of requestByResponse.entries() ) {
-    responseByRequest.set(value, key);
+for ( const [response, request] of requestByResponse.entries() ) {
+    // invert keys with values
+    responseByRequest.set(request, response);
+    // fill id to constructor dictionaries
+    responseById.set(response.id, response);
+    requestById.set(request.id, request);
 }
