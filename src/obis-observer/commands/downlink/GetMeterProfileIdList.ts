@@ -7,7 +7,7 @@ import {DOWNLINK} from '../../constants/directions.js';
  * IGetMeterIdParameters command parameters
  */
 interface IGetMeterProfileIdListParameters extends ICommandParameters {
-    startIndex: number
+    index: number
 }
 
 
@@ -18,7 +18,7 @@ const examples: TCommandExampleList = [
         name: 'get meter profile id list',
         parameters: {
             requestId: 8,
-            startIndex: 3
+            index: 3
         },
         hex: {header: '64 02', body: '08 03'}
     }
@@ -34,7 +34,7 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     requestId: 8,
- *     startIndex: 3
+ *     index: 3
  * };
  * const command = new GetMeterProfileIdList(parameters);
  *
@@ -63,13 +63,13 @@ class GetMeterProfileIdList extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( [requestId, startIndex]: Uint8Array ) {
-        return new GetMeterProfileIdList({requestId, startIndex});
+    static fromBytes ( [requestId, index]: Uint8Array ) {
+        return new GetMeterProfileIdList({requestId, index});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId, this.parameters.startIndex]));
+        return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId, this.parameters.index]));
     }
 }
 
