@@ -1,15 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {resultCodes} from '../../constants/index.js';
-
-
-/**
- * ISetObserverSingleModeResponseParameters command parameters
- */
-interface ISetObserverSingleModeResponseParameters extends ICommandParameters {
-    resultCode: number
-}
 
 
 const COMMAND_ID = 0x0c;
@@ -19,10 +10,9 @@ const examples: TCommandExampleList = [
     {
         name: 'response to SetObserverSingleMode - succeed',
         parameters: {
-            requestId: 7,
-            resultCode: resultCodes.OK
+            requestId: 7
         },
-        hex: {header: '0c 02', body: '07 00'}
+        hex: {header: '0c 01', body: '07'}
     }
 ];
 
@@ -34,21 +24,20 @@ const examples: TCommandExampleList = [
  * ```js
  * import SetObserverSingleModeResponse from 'jooby-codec/obis-observer/commands/uplink/SetObserverSingleModeResponse.js';
  *
- * const commandBody = new Uint8Array([0x07, 0x00]);
+ * const commandBody = new Uint8Array([0x07]);
  * const command = SetObserverSingleModeResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 7,
- *     resultCode: 0
+ *     requestId: 7
  * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObserverSingleMode.md#response)
  */
 class SetObserverSingleModeResponse extends Command {
-    constructor ( public parameters: ISetObserverSingleModeResponseParameters ) {
+    constructor ( public parameters: ICommandParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -65,8 +54,8 @@ class SetObserverSingleModeResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( [requestId, resultCode]: Uint8Array ) {
-        return new SetObserverSingleModeResponse({requestId, resultCode});
+    static fromBytes ( [requestId]: Uint8Array ) {
+        return new SetObserverSingleModeResponse({requestId});
     }
 
     // returns full message - header with body
@@ -74,7 +63,7 @@ class SetObserverSingleModeResponse extends Command {
         return Command.toBytes(
             COMMAND_ID,
             new Uint8Array(
-                [this.parameters.requestId, this.parameters.resultCode]
+                [this.parameters.requestId]
             )
         );
     }

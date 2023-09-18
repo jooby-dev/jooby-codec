@@ -1,15 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {resultCodes} from '../../constants/index.js';
-
-
-/**
- * ISetSerialPortResponseParameters command parameters
- */
-interface ISetSerialPortResponseParameters extends ICommandParameters {
-    resultCode: number
-}
 
 
 const COMMAND_ID = 0x1a;
@@ -19,18 +10,9 @@ const examples: TCommandExampleList = [
     {
         name: 'response to SetSerialPortSettings - succeed',
         parameters: {
-            requestId: 32,
-            resultCode: resultCodes.OK
+            requestId: 32
         },
-        hex: {header: '1a 02', body: '20 00'}
-    },
-    {
-        name: 'response to SetSerialPortSettings - failed',
-        parameters: {
-            requestId: 32,
-            resultCode: resultCodes.FAILURE
-        },
-        hex: {header: '1a 02', body: '20 01'}
+        hex: {header: '1a 01', body: '20'}
     }
 ];
 
@@ -42,21 +24,20 @@ const examples: TCommandExampleList = [
  * ```js
  * import SetSerialPortResponse from 'jooby-codec/obis-observer/commands/uplink/SetSerialPortResponse.js';
  *
- * const commandBody = new Uint8Array([0x20, 0x00]);
+ * const commandBody = new Uint8Array([0x20]);
  * const command = SetSerialPortResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 32,
- *     resultCode: 0
+ *     requestId: 32
  * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetSerialPort.md#response)
  */
 class SetSerialPortResponse extends Command {
-    constructor ( public parameters: ISetSerialPortResponseParameters ) {
+    constructor ( public parameters: ICommandParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -73,8 +54,8 @@ class SetSerialPortResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( [requestId, resultCode]: Uint8Array ) {
-        return new SetSerialPortResponse({requestId, resultCode});
+    static fromBytes ( [requestId]: Uint8Array ) {
+        return new SetSerialPortResponse({requestId});
     }
 
     // returns full message - header with body
@@ -82,7 +63,7 @@ class SetSerialPortResponse extends Command {
         return Command.toBytes(
             COMMAND_ID,
             new Uint8Array(
-                [this.parameters.requestId, this.parameters.resultCode]
+                [this.parameters.requestId]
             )
         );
     }

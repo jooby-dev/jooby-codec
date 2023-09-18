@@ -124,8 +124,11 @@ class GetArchiveStateResponse extends Command {
 
         buffer.setUint8(requestId);
         buffer.setUint32(archiveRecordsNumber);
-        buffer.setUint32(eldestTime2000);
-        buffer.setUint32(newestTime2000);
+
+        if ( !buffer.isEmpty ) {
+            buffer.setUint32(eldestTime2000);
+            buffer.setUint32(newestTime2000);
+        }
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

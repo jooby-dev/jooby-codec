@@ -1,15 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {resultCodes} from '../../constants/index.js';
-
-
-/**
- * IAddMeterProfileResponseParameters command parameters
- */
-interface IRebootResponseParameters extends ICommandParameters {
-    resultCode: number
-}
 
 
 const COMMAND_ID = 0x27;
@@ -19,10 +10,9 @@ const examples: TCommandExampleList = [
     {
         name: 'reboot response',
         parameters: {
-            requestId: 7,
-            resultCode: resultCodes.OK
+            requestId: 7
         },
-        hex: {header: '27 02', body: '07 00'}
+        hex: {header: '27 01', body: '07'}
     }
 ];
 
@@ -47,7 +37,7 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/Reboot.md#response)
  */
 class RebootResponse extends Command {
-    constructor ( public parameters: IRebootResponseParameters ) {
+    constructor ( public parameters: ICommandParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -64,13 +54,13 @@ class RebootResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( [requestId, resultCode]: Uint8Array ) {
-        return new RebootResponse({requestId, resultCode});
+    static fromBytes ( [requestId]: Uint8Array ) {
+        return new RebootResponse({requestId});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId, this.parameters.resultCode]));
+        return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId]));
     }
 }
 

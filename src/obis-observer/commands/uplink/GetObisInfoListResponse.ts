@@ -39,6 +39,15 @@ const examples: TCommandExampleList = [
             ]
         },
         hex: {header: '43 06', body: '03 01 c5 03 c6 01'}
+    },
+    {
+        name: 'response to GetObisInfoList without elements',
+        parameters: {
+            requestId: 3,
+            isCompleted: true,
+            obisInfoList: []
+        },
+        hex: {header: '43 02', body: '03 01'}
     }
 ];
 

@@ -1,15 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {resultCodes} from '../../constants/index.js';
-
-
-/**
- * ISetObisResponseParameters command parameters
- */
-interface ISetObisIdResponseParameters extends ICommandParameters {
-    resultCode: number
-}
 
 
 const COMMAND_ID = 0x45;
@@ -19,10 +10,9 @@ const examples: TCommandExampleList = [
     {
         name: 'response to SetObisId - succeed',
         parameters: {
-            requestId: 2,
-            resultCode: resultCodes.OK
+            requestId: 2
         },
-        hex: {header: '45 02', body: '02 00'}
+        hex: {header: '45 01', body: '02'}
     }
 ];
 
@@ -34,21 +24,20 @@ const examples: TCommandExampleList = [
  * ```js
  * import SetObisIdResponse from 'jooby-codec/obis-observer/commands/uplink/SetObisIdResponse.js';
  *
- * const commandBody = new Uint8Array([0x02, 0x00]);
+ * const commandBody = new Uint8Array([0x02]);
  * const command = SetObisIdResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
  *     requestId: 2,
- *     resultCode: 0
  * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObisId.md#response)
  */
 class SetObisIdResponse extends Command {
-    constructor ( public parameters: ISetObisIdResponseParameters ) {
+    constructor ( public parameters: ICommandParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -65,8 +54,8 @@ class SetObisIdResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( [requestId, resultCode]: Uint8Array ) {
-        return new SetObisIdResponse({requestId, resultCode});
+    static fromBytes ( [requestId]: Uint8Array ) {
+        return new SetObisIdResponse({requestId});
     }
 
     // returns full message - header with body
@@ -74,7 +63,7 @@ class SetObisIdResponse extends Command {
         return Command.toBytes(
             COMMAND_ID,
             new Uint8Array(
-                [this.parameters.requestId, this.parameters.resultCode]
+                [this.parameters.requestId]
             )
         );
     }

@@ -1,15 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {resultCodes} from '../../constants/index.js';
-
-
-/**
- * ISetMeterArchiveProfileResponseParameters command parameters
- */
-interface ISetMeterArchiveProfileResponseParameters extends ICommandParameters {
-    resultCode: number
-}
 
 
 const COMMAND_ID = 0x69;
@@ -19,18 +10,9 @@ const examples: TCommandExampleList = [
     {
         name: 'response to SetMeterArchiveProfile - successful',
         parameters: {
-            requestId: 156,
-            resultCode: resultCodes.OK
+            requestId: 156
         },
-        hex: {header: '69 02', body: '9c 00'}
-    },
-    {
-        name: 'response to SetMeterArchiveProfile - failed',
-        parameters: {
-            requestId: 49,
-            resultCode: resultCodes.METER_PROFILE_NOT_FOUND
-        },
-        hex: {header: '69 02', body: '31 09'}
+        hex: {header: '69 01', body: '9c'}
     }
 ];
 
@@ -42,21 +24,20 @@ const examples: TCommandExampleList = [
  * ```js
  * import SetMeterArchiveProfileResponse from 'jooby-codec/obis-observer/commands/uplink/SetMeterArchiveProfileResponse.js';
  *
- * const commandBody = new Uint8Array([0x9c, 0x00]);
+ * const commandBody = new Uint8Array([0x9c]);
  * const command = SetMeterArchiveProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 156,
- *     resultCode: 0
+ *     requestId: 156
  * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commads/SetMeterArchiveProfile.md#response)
  */
 class SetMeterArchiveProfileResponse extends Command {
-    constructor ( public parameters: ISetMeterArchiveProfileResponseParameters ) {
+    constructor ( public parameters: ICommandParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -73,8 +54,8 @@ class SetMeterArchiveProfileResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( [requestId, resultCode]: Uint8Array ) {
-        return new SetMeterArchiveProfileResponse({requestId, resultCode});
+    static fromBytes ( [requestId]: Uint8Array ) {
+        return new SetMeterArchiveProfileResponse({requestId});
     }
 
     // returns full message - header with body
@@ -82,7 +63,7 @@ class SetMeterArchiveProfileResponse extends Command {
         return Command.toBytes(
             COMMAND_ID,
             new Uint8Array(
-                [this.parameters.requestId, this.parameters.resultCode]
+                [this.parameters.requestId]
             )
         );
     }

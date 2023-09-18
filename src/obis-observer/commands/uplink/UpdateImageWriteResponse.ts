@@ -1,15 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {resultCodes} from '../../constants/index.js';
-
-
-/**
- * IUpdateImageWriteResponseParameters command parameters
- */
-interface IUpdateImageWriteResponseParameters extends ICommandParameters {
-    resultCode: number
-}
 
 
 const COMMAND_ID = 0x33;
@@ -19,10 +10,9 @@ const examples: TCommandExampleList = [
     {
         name: 'response to UpdateImageWrite - success',
         parameters: {
-            requestId: 33,
-            resultCode: resultCodes.OK
+            requestId: 33
         },
-        hex: {header: '33 02', body: '21 00'}
+        hex: {header: '33 01', body: '21'}
     }
 ];
 
@@ -34,21 +24,20 @@ const examples: TCommandExampleList = [
  * ```js
  * import UpdateImageWriteResponse from 'jooby-codec/obis-observer/commands/uplink/UpdateImageWriteResponse.js';
  *
- * const commandBody = new Uint8Array([0x21, 0x00]);
+ * const commandBody = new Uint8Array([0x21]);
  * const command = UpdateImageWriteResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 33,
- *     resultCode: 0
- * }
+ *     requestId: 33
+* }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/UpdateImageWrite.md#response)
  */
 class UpdateImageWriteResponse extends Command {
-    constructor ( public parameters: IUpdateImageWriteResponseParameters ) {
+    constructor ( public parameters: ICommandParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -65,8 +54,8 @@ class UpdateImageWriteResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( [requestId, resultCode]: Uint8Array ) {
-        return new UpdateImageWriteResponse({requestId, resultCode});
+    static fromBytes ( [requestId]: Uint8Array ) {
+        return new UpdateImageWriteResponse({requestId});
     }
 
     // returns full message - header with body
@@ -74,7 +63,7 @@ class UpdateImageWriteResponse extends Command {
         return Command.toBytes(
             COMMAND_ID,
             new Uint8Array(
-                [this.parameters.requestId, this.parameters.resultCode]
+                [this.parameters.requestId]
             )
         );
     }

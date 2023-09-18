@@ -1,14 +1,13 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {resultCodes} from '../../constants/index.js';
 
 
 /**
  * IUpdateImageVerifyResponseParameters command parameters
  */
 interface IUpdateImageVerifyResponseParameters extends ICommandParameters {
-    resultCode: number
+    isImageValid: boolean
 }
 
 
@@ -20,9 +19,9 @@ const examples: TCommandExampleList = [
         name: 'response to UpdateImageVerify - success',
         parameters: {
             requestId: 32,
-            resultCode: resultCodes.OK
+            isImageValid: true
         },
-        hex: {header: '31 02', body: '20 00'}
+        hex: {header: '31 02', body: '20 01'}
     }
 ];
 
@@ -41,7 +40,7 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     requestId: 32,
- *     resultCode: 0
+ *     isImageValid: false
  * }
  * ```
  *
@@ -65,8 +64,8 @@ class UpdateImageVerifyResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( [requestId, resultCode]: Uint8Array ) {
-        return new UpdateImageVerifyResponse({requestId, resultCode});
+    static fromBytes ( [requestId, isImageValid]: Uint8Array ) {
+        return new UpdateImageVerifyResponse({requestId, isImageValid: isImageValid === 1});
     }
 
     // returns full message - header with body
@@ -74,7 +73,7 @@ class UpdateImageVerifyResponse extends Command {
         return Command.toBytes(
             COMMAND_ID,
             new Uint8Array(
-                [this.parameters.requestId, this.parameters.resultCode]
+                [this.parameters.requestId, this.parameters.isImageValid ? 1 : 0]
             )
         );
     }
