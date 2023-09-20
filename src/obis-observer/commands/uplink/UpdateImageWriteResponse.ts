@@ -3,7 +3,7 @@ import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js'
 import {UPLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x33;
+const COMMAND_ID = 0x31;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
@@ -12,7 +12,7 @@ const examples: TCommandExampleList = [
         parameters: {
             requestId: 33
         },
-        hex: {header: '33 01', body: '21'}
+        hex: {header: '31 01', body: '21'}
     }
 ];
 
