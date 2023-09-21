@@ -5,17 +5,17 @@ import {TTime2000} from '../../../utils/time.js';
 import roundNumber from '../../../utils/roundNumber.js';
 
 
-type TArchiveContentPerDate = {
+interface IArchiveContentPerDate {
     time2000: TTime2000,
     obisValueList: Array<IObisValueFloat>
-};
+}
 
 /**
  * IReadMeterArchiveResponseParameters command parameters
  */
 interface IReadMeterArchiveResponseParameters extends ICommandParameters {
     isCompleted: boolean,
-    content: Array<TArchiveContentPerDate>
+    content: Array<IArchiveContentPerDate>
 }
 
 const COMMAND_ID = 0x12;
@@ -133,14 +133,14 @@ class ReadMeterArchiveResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
         const requestId = buffer.getUint8();
         const isCompleted = buffer.isEmpty ? true : buffer.getUint8() !== 0;
-        const content:Array<TArchiveContentPerDate> = [];
+        const content:Array<IArchiveContentPerDate> = [];
 
         if ( buffer.isEmpty ) {
             return new ReadMeterArchiveResponse({requestId, isCompleted, content});
         }
 
         while ( !buffer.isEmpty ) {
-            const dateContent: TArchiveContentPerDate = {
+            const dateContent: IArchiveContentPerDate = {
                 time2000: buffer.getUint32(),
                 obisValueList: []
             };

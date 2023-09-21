@@ -3,18 +3,18 @@ import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../Co
 import {UPLINK} from '../../constants/directions.js';
 
 
-type TObisInfo = {
+interface IObisInfo {
     obisId: number,
     isStatic: boolean,
     hasProfile: boolean
-};
+}
 
 /**
  * IGetObisInfoListResponseParameters command parameters
  */
 interface IGetObisInfoListResponseParameters extends ICommandParameters {
     isCompleted: boolean,
-    obisInfoList: Array<TObisInfo>
+    obisInfoList: Array<IObisInfo>
 }
 
 const COMMAND_ID = 0x43;
@@ -111,7 +111,7 @@ class GetObisInfoListResponse extends Command {
         }
 
         const isCompleted = buffer.getUint8();
-        const obisInfoList = new Array<TObisInfo>(buffer.bytesLeft / 2);
+        const obisInfoList = new Array<IObisInfo>(buffer.bytesLeft / 2);
         let obisId;
         let obisFlags;
 
