@@ -52,12 +52,11 @@ const downlinkMessages: TMessageList = [
 const uplinkMessages: TMessageList = [
     {
         // AddObisProfileResponse + ObservationReport
-        hex: '49 02 07 00  53 0f 04 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec',
+        hex: '49 01 07 53 0f 04 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec',
         commands: [
             {
                 parameters: {
-                    requestId: 7,
-                    resultCode: 0
+                    requestId: 7
                 },
                 command: uplinkCommands.AddObisProfileResponse
             },
