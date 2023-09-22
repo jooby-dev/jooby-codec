@@ -5,7 +5,7 @@ import {TTime2000} from '../../../utils/time.js';
 
 
 /**
- * IGetArchiveStateResponseParameters command parameters
+ * IGetMeterArchiveStateResponseParameters command parameters
  */
 interface IGetArchiveStateResponseParameters extends ICommandParameters {
     archiveRecordsNumber: number,
@@ -13,33 +13,49 @@ interface IGetArchiveStateResponseParameters extends ICommandParameters {
     newestTime2000: TTime2000
 }
 
-const COMMAND_ID = 0x29;
+const COMMAND_ID = 0x10;
 
 // request id byte + records count + DateTime 4 bytes * 2
 const COMMAND_SIZE = REQUEST_ID_SIZE + 4 + DATE_TIME_SIZE * 2;
 
 const examples: TCommandExampleList = [
     {
-        name: 'no archive records',
+        name: 'response to GetMeterArchiveState. no archive records',
         parameters: {
             requestId: 2,
             archiveRecordsNumber: 0,
             eldestTime2000: 0,
             newestTime2000: 0
         },
-        hex: {header: '29', body: '02 00 00 00 00 00 00 00 00 00 00 00 00'}
+        hex: {header: '10 0d', body: '02 00 00 00 00 00 00 00 00 00 00 00 00'}
     },
     {
-        name: '81 records from 2023.06.27 18:45:02 GMT to 2023.06.28 15:15:02 GMT',
+        name: 'response to GetMeterArchiveState. 81 records from 2023.06.27 18:45:02 GMT to 2023.06.28 15:15:02 GMT',
         parameters: {
             requestId: 2,
             archiveRecordsNumber: 81,
             eldestTime2000: 741206702,
             newestTime2000: 741280502
         },
-        hex: {header: '29', body: '02 00 00 00 51 2c 2d ea ae 2c 2f 0a f6'}
+        hex: {header: '10 0d', body: '02 00 00 00 51 2c 2d ea ae 2c 2f 0a f6'}
+    },
+    {
+        name: 'response to GetMeterArchiveState without data',
+        parameters: {
+            requestId: 2
+        },
+        hex: {header: '10 01', body: '02'}
     }
 ];
+
+const isValidParameterSet = ( parameters: IGetArchiveStateResponseParameters | ICommandParameters ): boolean => {
+    const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = parameters as IGetArchiveStateResponseParameters;
+
+    return requestId !== undefined
+        && archiveRecordsNumber !== undefined
+        && eldestTime2000 !== undefined
+        && newestTime2000 !== undefined;
+};
 
 
 /**
@@ -50,7 +66,7 @@ const examples: TCommandExampleList = [
  * import GetArchiveStateResponse from 'jooby-codec/obis-observer/commands/uplink/GetArchiveStateResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x29, 0x02, 0x00, 0x00, 0x00, 0x51, 0x2c, 0x2d, 0xea, 0xae, 0x2c, 0x2f, 0x0a, 0xf6
+ *     0x02, 0x00, 0x00, 0x00, 0x51, 0x2c, 0x2d, 0xea, 0xae, 0x2c, 0x2f, 0x0a, 0xf6
  * ]);
  * const command = GetArchiveStateResponse.fromBytes(commandBody);
  *
@@ -67,12 +83,11 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveState.md#response)
  */
 class GetArchiveStateResponse extends Command {
-    constructor ( public parameters: IGetArchiveStateResponseParameters ) {
+    constructor ( public parameters: IGetArchiveStateResponseParameters | ICommandParameters ) {
         super();
 
-        this.size = COMMAND_SIZE;
+        this.size = isValidParameterSet(parameters) ? COMMAND_SIZE : REQUEST_ID_SIZE;
     }
-
 
     static readonly id = COMMAND_ID;
 
@@ -86,24 +101,34 @@ class GetArchiveStateResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
+        const requestId = buffer.getUint8();
 
-        return new GetArchiveStateResponse({
-            requestId: buffer.getUint8(),
-            archiveRecordsNumber: buffer.getUint32(),
-            eldestTime2000: buffer.getUint32(),
-            newestTime2000: buffer.getUint32()
-        });
+        return buffer.isEmpty
+            ? new GetArchiveStateResponse({requestId} as ICommandParameters)
+            : new GetArchiveStateResponse({
+                requestId,
+                archiveRecordsNumber: buffer.getUint32(),
+                eldestTime2000: buffer.getUint32(),
+                newestTime2000: buffer.getUint32()
+            });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
+        if ( !isValidParameterSet(this.parameters) ) {
+            return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId]));
+        }
+
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = this.parameters;
+        const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = this.parameters as IGetArchiveStateResponseParameters;
 
         buffer.setUint8(requestId);
         buffer.setUint32(archiveRecordsNumber);
-        buffer.setUint32(eldestTime2000);
-        buffer.setUint32(newestTime2000);
+
+        if ( !buffer.isEmpty ) {
+            buffer.setUint32(eldestTime2000);
+            buffer.setUint32(newestTime2000);
+        }
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

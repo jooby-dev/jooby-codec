@@ -1,28 +1,27 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
-import {resultCodes} from '../../constants/index.js';
 
 
 /**
  * IUpdateImageVerifyResponseParameters command parameters
  */
 interface IUpdateImageVerifyResponseParameters extends ICommandParameters {
-    resultCode: number
+    isImageValid: boolean
 }
 
 
-const COMMAND_ID = 0x2d;
-const COMMAND_SIZE = 1 + REQUEST_ID_SIZE;
+const COMMAND_ID = 0x33;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'success',
+        name: 'response to UpdateImageVerify - success',
         parameters: {
             requestId: 32,
-            resultCode: resultCodes.OK
+            isImageValid: true
         },
-        hex: {header: '2d', body: '20 00'}
+        hex: {header: '33 02', body: '20 01'}
     }
 ];
 
@@ -41,7 +40,7 @@ const examples: TCommandExampleList = [
  * // output:
  * {
  *     requestId: 32,
- *     resultCode: 0
+ *     isImageValid: false
  * }
  * ```
  *
@@ -65,24 +64,18 @@ class UpdateImageVerifyResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new UpdateImageVerifyResponse({
-            requestId: buffer.getUint8(),
-            resultCode: buffer.getUint8()
-        });
+    static fromBytes ( [requestId, isImageValid]: Uint8Array ) {
+        return new UpdateImageVerifyResponse({requestId, isImageValid: isImageValid === 1});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {requestId, resultCode} = this.parameters;
-
-        buffer.setUint8(requestId);
-        buffer.setUint8(resultCode);
-
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(
+            COMMAND_ID,
+            new Uint8Array(
+                [this.parameters.requestId, this.parameters.isImageValid ? 1 : 0]
+            )
+        );
     }
 }
 

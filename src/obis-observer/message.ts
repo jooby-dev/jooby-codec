@@ -63,10 +63,9 @@ export const fromBytes = ( commandsData: Uint8Array ) => {
 
     do {
         const headerData = commandsData.slice(position, position + HEADER_SIZE);
-        const bodyData = commandsData.slice(position + HEADER_SIZE);
-
-        position += HEADER_SIZE;
-
+        const commandSize = commandsData[position + HEADER_SIZE];
+        position += HEADER_SIZE + 1;
+        const bodyData = commandsData.slice(position, position + commandSize);
         const command = getCommand(headerData[0], bodyData);
 
         commands.push({
@@ -74,16 +73,7 @@ export const fromBytes = ( commandsData: Uint8Array ) => {
             command
         });
 
-        if ( command instanceof UnknownCommand ) {
-            // unknown command, unknown size, can't detect next commands - end analysis
-            break;
-        } else if ( typeof command.size === 'number' ) {
-            position += command.size;
-        } else {
-            result.isValid = false;
-            // unknown size, can't detect next commands - end analysis
-            break;
-        }
+        position += commandSize;
     } while ( position < commandsData.length );
 
     return result;

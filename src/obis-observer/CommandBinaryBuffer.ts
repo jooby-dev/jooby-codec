@@ -41,8 +41,8 @@ export interface IObis {
 export interface IObisProfileFlags {
     contentType: number,
     sendOnChange: boolean,
-    archiveProfile1: boolean,
-    archiveProfile2: boolean
+    archive1: boolean,
+    archive2: boolean
 }
 
 export interface IObisProfile {
@@ -57,12 +57,12 @@ export interface IObisProfile {
     flags: IObisProfileFlags
 }
 
-export interface IShortNameFloat {
+export interface IObisValueFloat {
     code: number,
     content: number
 }
 
-export interface IShortNameString {
+export interface IObisValueString {
     code: number,
     content: string
 }
@@ -87,13 +87,13 @@ const obisBitMask = {
 };
 
 // sizes
-const archiveProfileBitsNumber = 1;
+const archiveBitsNumber = 1;
 const sendingOnlyIfChangeBitsNumber = 1;
 const contentTypeBitsNumber = 2;
 
 // positions
-const archiveProfile1BitStartIndex = 1;
-const archiveProfile2BitStartIndex = 2;
+const archive1BitStartIndex = 1;
+const archive2BitStartIndex = 2;
 const sendingOnlyIfChangeBitStartIndex = 3;
 const contentTypeBitStartIndex = 4;
 
@@ -113,14 +113,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return keys.filter(key => obis[key] !== undefined).length + 1;
     }
 
-    static getShortNameContentSize ( shortName: IShortNameFloat | IShortNameString ) {
-        if ( typeof shortName.content === 'number' ) {
-            // IShortNameFloat, 1 byte short name code + 4 byte float value
+    static getObisContentSize ( obisValue: IObisValueFloat | IObisValueString ) {
+        if ( typeof obisValue.content === 'number' ) {
+            // IObisValueFloat, 1 byte obis id code + 4 byte float value
             return 5;
         }
 
-        // 1 byte for short name code + 1 byte of string size + string bytes
-        return 1 + shortName.content.length + 1;
+        // 1 byte for obis id code + 1 byte of string size + string bytes
+        return 1 + obisValue.content.length + 1;
     }
 
     getObis (): IObis {
@@ -191,8 +191,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
             flags: {
                 contentType: 0,
                 sendOnChange: false,
-                archiveProfile1: false,
-                archiveProfile2: false
+                archive1: false,
+                archive2: false
             }
         } as IObisProfile;
 
@@ -200,8 +200,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         profile.flags.contentType = bitSet.extractBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex);
         profile.flags.sendOnChange = !!bitSet.extractBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex);
-        profile.flags.archiveProfile1 = !!bitSet.extractBits(flags, archiveProfileBitsNumber, archiveProfile1BitStartIndex);
-        profile.flags.archiveProfile2 = !!bitSet.extractBits(flags, archiveProfileBitsNumber, archiveProfile2BitStartIndex);
+        profile.flags.archive1 = !!bitSet.extractBits(flags, archiveBitsNumber, archive1BitStartIndex);
+        profile.flags.archive2 = !!bitSet.extractBits(flags, archiveBitsNumber, archive2BitStartIndex);
 
         return profile;
     }
@@ -215,28 +215,28 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         flags = bitSet.fillBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex, profile.flags.contentType );
         flags = bitSet.fillBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex, +profile.flags.sendOnChange);
-        flags = bitSet.fillBits(flags, archiveProfileBitsNumber, archiveProfile1BitStartIndex, +profile.flags.archiveProfile1);
-        flags = bitSet.fillBits(flags, archiveProfileBitsNumber, archiveProfile2BitStartIndex, +profile.flags.archiveProfile2);
+        flags = bitSet.fillBits(flags, archiveBitsNumber, archive1BitStartIndex, +profile.flags.archive1);
+        flags = bitSet.fillBits(flags, archiveBitsNumber, archive2BitStartIndex, +profile.flags.archive2);
 
         this.setUint8(flags);
     }
 
-    getShortNameString (): IShortNameString {
+    getObisValueString (): IObisValueString {
         return {code: this.getUint8(), content: this.getString()};
     }
 
-    setShortNameString ( shortName: IShortNameString ) {
-        this.setUint8(shortName.code);
-        this.setString(shortName.content);
+    setObisValueString ( obisValue: IObisValueString ) {
+        this.setUint8(obisValue.code);
+        this.setString(obisValue.content);
     }
 
-    getShortNameFloat (): IShortNameFloat {
+    getObisValueFloat (): IObisValueFloat {
         return {code: this.getUint8(), content: roundNumber(this.getFloat32())};
     }
 
-    setShortNameFloat ( shortName: IShortNameFloat ) {
-        this.setUint8(shortName.code);
-        this.setFloat32(roundNumber(shortName.content));
+    setObisValueFloat ( obisValue: IObisValueFloat ) {
+        this.setUint8(obisValue.code);
+        this.setFloat32(roundNumber(obisValue.content));
     }
 
     getSerialPortFlags () {

@@ -1,18 +1,18 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x1d;
-const COMMAND_SIZE = REQUEST_ID_SIZE;
+const COMMAND_ID = 0x27;
+const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'simple response',
+        name: 'reboot response',
         parameters: {
             requestId: 7
         },
-        hex: {header: '1d', body: '07'}
+        hex: {header: '27 01', body: '07'}
     }
 ];
 
@@ -54,19 +54,13 @@ class RebootResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new RebootResponse({requestId: buffer.getUint8()});
+    static fromBytes ( [requestId]: Uint8Array ) {
+        return new RebootResponse({requestId});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-
-        buffer.setUint8(this.parameters.requestId);
-
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId]));
     }
 }
 

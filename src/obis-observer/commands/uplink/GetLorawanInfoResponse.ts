@@ -21,11 +21,11 @@ interface IGetLorawanInfoResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_ID = 0x1f;
+const COMMAND_ID = 0x21;
 
 const examples: TCommandExampleList = [
     {
-        name: 'response from device "001a798816aa5561"',
+        name: 'response to GetLorawanInfo',
         parameters: {
             requestId: 8,
             deviceEUI: '00 1a 79 88 16 aa 55 61',
@@ -33,7 +33,7 @@ const examples: TCommandExampleList = [
             deviceClass: deviceClasses.C,
             activationMethod: 1
         },
-        hex: {header: '1f', body: '08 00 1a 79 88 16 aa 55 61 00 11 22 33 44 55 66 77 02 01'}
+        hex: {header: '21 13', body: '08 00 1a 79 88 16 aa 55 61 00 11 22 33 44 55 66 77 02 01'}
     }
 ];
 
@@ -97,11 +97,7 @@ class GetLorawanInfoResponse extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( typeof this.size !== 'number' ) {
-            throw new Error('unknown or invalid size');
-        }
-
-        const buffer = new CommandBinaryBuffer(this.size);
+        const buffer = new CommandBinaryBuffer(this.size as number);
         const {requestId, deviceEUI, applicationEUI, deviceClass, activationMethod} = this.parameters;
 
         buffer.setUint8(requestId);
