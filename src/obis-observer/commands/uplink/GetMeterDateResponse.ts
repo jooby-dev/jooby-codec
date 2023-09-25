@@ -8,7 +8,7 @@ import {TTime2000} from '../../../utils/time.js';
  * IGetMeterDateResponseParameters command parameters
  */
 interface IGetMeterDateResponseParameters extends ICommandParameters {
-    time2000?: TTime2000
+    time2000: TTime2000
 }
 
 const COMMAND_ID = 0x7b;
@@ -21,13 +21,6 @@ const examples: TCommandExampleList = [
             time2000: 741280502
         },
         hex: {header: '7b 05', body: '07 2c 2f 0a f6'}
-    },
-    {
-        name: 'response to GetMeterDate without data',
-        parameters: {
-            requestId: 8
-        },
-        hex: {header: '7b 01', body: '08'}
     }
 ];
 
@@ -74,11 +67,8 @@ class GetMeterDateResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-        const requestId = buffer.getUint8();
 
-        return buffer.isEmpty
-            ? new GetMeterDateResponse({requestId})
-            : new GetMeterDateResponse({requestId, time2000: buffer.getUint32()});
+        return new GetMeterDateResponse({requestId: buffer.getUint8(), time2000: buffer.getUint32()});
     }
 
     // returns full message - header with body
@@ -87,10 +77,7 @@ class GetMeterDateResponse extends Command {
         const {requestId, time2000} = this.parameters;
 
         buffer.setUint8(requestId);
-
-        if ( time2000 ) {
-            buffer.setUint32(time2000);
-        }
+        buffer.setUint32(time2000);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

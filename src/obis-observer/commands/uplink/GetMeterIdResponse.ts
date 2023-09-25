@@ -7,7 +7,7 @@ import {UPLINK} from '../../constants/directions.js';
  * IGetMeterIdResponseParameters command parameters
  */
 interface IGetMeterIdResponseParameters extends ICommandParameters {
-    meterId?: number
+    meterId: number
 }
 
 const COMMAND_ID = 0x77;
@@ -22,13 +22,6 @@ const examples: TCommandExampleList = [
             meterId: 1
         },
         hex: {header: '77 02', body: '02 01'}
-    },
-    {
-        name: 'get meter id response without data',
-        parameters: {
-            requestId: 2
-        },
-        hex: {header: '77 01', body: '02'}
     }
 ];
 
@@ -74,18 +67,14 @@ class GetMeterIdResponse extends Command {
 
     // data - only body (without header)
     static fromBytes ( [requestId, meterId]: Uint8Array ) {
-        return meterId
-            ? new GetMeterIdResponse({requestId, meterId})
-            : new GetMeterIdResponse({requestId});
+        return new GetMeterIdResponse({requestId, meterId});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         return Command.toBytes(
             COMMAND_ID,
-            this.parameters.meterId
-                ? new Uint8Array([this.parameters.requestId, this.parameters.meterId])
-                : new Uint8Array([this.parameters.requestId])
+            new Uint8Array([this.parameters.requestId, this.parameters.meterId])
         );
     }
 }
