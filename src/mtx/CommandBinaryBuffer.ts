@@ -166,9 +166,30 @@ export interface IOperatorParameters {
     timeCorrectPassHalfhour: boolean,
 }
 
+export interface IDayProfile {
+    hour: number,
+    isFirstHalfHour: boolean,
+    tariff: number
+}
+
+export interface ISeasonProfile {
+    month: number,
+    date: number,
+    dayIndexes: Array<number>
+}
+
+export interface ISpecialDay {
+    month: number,
+    date: number,
+    dayIndex: number,
+    isPeriodic: boolean
+}
+
 
 export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
+export const SEASON_PROFILE_DAYS_NUMBER = 7;
+export const SEASON_PROFILE_SIZE = 2 + SEASON_PROFILE_DAYS_NUMBER;
 
 const displaySetMask = {
     TEST_D: 0x0001,
@@ -532,6 +553,73 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(operatorParameters.timeoutBipolarPower);
         this.setUint8(bitSet.fromObject(relaySet5Mask, (operatorParameters.relaySet5 as unknown) as bitSet.TBooleanObject));
         this.setUint8(timeCorrectPeriod);
+    }
+
+    static getDayProfileFromByte ( value: number ): IDayProfile {
+        return {
+            tariff: bitSet.extractBits(value, 2, 1),
+            isFirstHalfHour: !bitSet.extractBits(value, 1, 3),
+            hour: bitSet.extractBits(value, 5, 4)
+        };
+    }
+
+    static getByteFromDayProfile ( dayProfile: IDayProfile ): number {
+        let value = 0;
+
+        value = bitSet.fillBits(value, 2, 1, dayProfile.tariff);
+        value = bitSet.fillBits(value, 1, 3, +!dayProfile.isFirstHalfHour);
+        value = bitSet.fillBits(value, 5, 4, dayProfile.hour);
+
+        return value;
+    }
+
+    getDayProfile (): IDayProfile {
+        return CommandBinaryBuffer.getDayProfileFromByte(this.getUint8());
+    }
+
+    setDayProfile ( dayProfile: IDayProfile ) {
+        this.setUint8(CommandBinaryBuffer.getByteFromDayProfile(dayProfile));
+    }
+
+    static getDefaultSeasonProfile (): ISeasonProfile {
+        return {
+            month: 1,
+            date: 1,
+            dayIndexes: [0, 0, 0, 0, 0, 0, 0]
+        };
+    }
+
+    getSeasonProfile (): ISeasonProfile {
+        return {
+            month: this.getUint8(),
+            date: this.getUint8(),
+            dayIndexes: Array.from(
+                {length: SEASON_PROFILE_DAYS_NUMBER},
+                () => this.getUint8()
+            )
+        };
+    }
+
+    setSeasonProfile ( seasonProfile: ISeasonProfile ) {
+        this.setUint8(seasonProfile.month);
+        this.setUint8(seasonProfile.date);
+        seasonProfile.dayIndexes.forEach(value => this.setUint8(value));
+    }
+
+    getSpecialDay (): ISpecialDay {
+        return {
+            month: this.getUint8(),
+            date: this.getUint8(),
+            dayIndex: this.getUint8(),
+            isPeriodic: this.getUint8() === 0
+        };
+    }
+
+    setSpecialDay ( specialDay: ISpecialDay ) {
+        this.setUint8(specialDay.month);
+        this.setUint8(specialDay.date);
+        this.setUint8(specialDay.dayIndex);
+        this.setUint8(+!specialDay.isPeriodic);
     }
 }
 
