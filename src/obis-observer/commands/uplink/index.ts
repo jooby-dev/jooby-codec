@@ -6,7 +6,7 @@
 
 
 export {default as AddMeterProfileResponse} from './AddMeterProfileResponse.js';
-export {default as AddObisProfileResponse} from './AddObisProfileResponse.js';
+export {default as SetObisProfileResponse} from './SetObisProfileResponse.js';
 export {default as ErrorResponse} from './ErrorResponse.js';
 export {default as GetArchiveStateResponse} from './GetArchiveStateResponse.js';
 export {default as GetLorawanInfoResponse} from './GetLorawanInfoResponse.js';

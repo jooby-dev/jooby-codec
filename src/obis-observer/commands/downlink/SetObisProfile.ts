@@ -5,9 +5,9 @@ import {contentTypes} from '../../constants/index.js';
 
 
 /**
- * IAddObisProfileParameters command parameters
+ * ISetObisProfileParameters command parameters
  */
-interface IAddObisProfileParameters extends ICommandParameters {
+interface ISetObisProfileParameters extends ICommandParameters {
     meterProfileId: number,
     obisId: number,
     obisProfile: IObisProfile
@@ -19,7 +19,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1 + 1 + OBIS_PROFILE_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'add OBIS profile for obisId 32 in meter profile 2',
+        name: 'set OBIS profile for obisId 32 in meter profile 2',
         parameters: {
             requestId: 3,
             meterProfileId: 2,
@@ -46,7 +46,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import AddObisProfile from 'jooby-codec/obis-observer/commands/downlink/AddObisProfile.js';
+ * import SetObisProfile from 'jooby-codec/obis-observer/commands/downlink/SetObisProfile.js';
  *
  * const parameters = {
  *     requestId: 3,
@@ -64,17 +64,17 @@ const examples: TCommandExampleList = [
  *         }
  *     }
  * };
- * const command = new AddObisProfile(parameters);
+ * const command = new SetObisProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 46 09 03 02 20 00 f4 00 84 26 04
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddObisProfile.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObisProfile.md#request)
  */
-class AddObisProfile extends Command {
-    constructor ( public parameters: IAddObisProfileParameters ) {
+class SetObisProfile extends Command {
+    constructor ( public parameters: ISetObisProfileParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -94,7 +94,7 @@ class AddObisProfile extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new AddObisProfile({
+        return new SetObisProfile({
             requestId: buffer.getUint8(),
             meterProfileId: buffer.getUint8(),
             obisId: buffer.getUint8(),
@@ -117,4 +117,4 @@ class AddObisProfile extends Command {
 }
 
 
-export default AddObisProfile;
+export default SetObisProfile;

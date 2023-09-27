@@ -5,7 +5,7 @@
  */
 
 export {default as AddMeterProfile} from './AddMeterProfile.js';
-export {default as AddObisProfile} from './AddObisProfile.js';
+export {default as SetObisProfile} from './SetObisProfile.js';
 export {default as GetArchiveState} from './GetArchiveState.js';
 export {default as GetLorawanInfo} from './GetLorawanInfo.js';
 export {default as GetLorawanState} from './GetLorawanState.js';

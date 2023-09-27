@@ -47,7 +47,7 @@ const uplinkMessages: TMessageList = [
                 parameters: {
                     requestId: 7
                 },
-                command: uplinkCommands.AddObisProfileResponse
+                command: uplinkCommands.SetObisProfileResponse
             },
             {
                 parameters: {

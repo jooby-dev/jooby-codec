@@ -8,7 +8,7 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'add obis profile - succeed',
+        name: 'set obis profile - succeed',
         parameters: {
             requestId: 7
         },
@@ -22,10 +22,10 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import AddObisProfileResponse from 'jooby-codec/obis-observer/commands/uplink/AddObisProfileResponse.js';
+ * import SetObisProfileResponse from 'jooby-codec/obis-observer/commands/uplink/SetObisProfileResponse.js';
  *
  * const commandBody = new Uint8Array([0x07]);
- * const command = AddObisProfileResponse.fromBytes(commandBody);
+ * const command = SetObisProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -34,9 +34,9 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddObisProfile.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObisProfile.md#response)
  */
-class AddObisProfileResponse extends Command {
+class SetObisProfileResponse extends Command {
     constructor ( public parameters: ICommandParameters ) {
         super();
 
@@ -55,7 +55,7 @@ class AddObisProfileResponse extends Command {
 
     // data - only body (without header)
     static fromBytes ( [requestId]: Uint8Array ) {
-        return new AddObisProfileResponse({requestId});
+        return new SetObisProfileResponse({requestId});
     }
 
     // returns full message - header with body
@@ -65,4 +65,4 @@ class AddObisProfileResponse extends Command {
 }
 
 
-export default AddObisProfileResponse;
+export default SetObisProfileResponse;
