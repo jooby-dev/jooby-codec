@@ -4,9 +4,9 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * IGetMeterArchiveProfileParameters command parameters
+ * IGetMeterProfileParameters command parameters
  */
-interface IGetMeterArchiveProfileParameters extends ICommandParameters {
+interface IGetMeterProfileParameters extends ICommandParameters {
     meterProfileId: number
 }
 
@@ -31,23 +31,23 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import GetMeterArchiveProfile from 'jooby-codec/obis-observer/commands/downlink/GetMeterArchiveProfile.js';
+ * import GetMeterProfile from 'jooby-codec/obis-observer/commands/downlink/GetMeterProfile.js';
  *
  * const parameters = {
  *     requestId: 3,
  *     meterProfileId: 4
  * };
- * const command = new GetMeterArchiveProfile(parameters);
+ * const command = new GetMeterProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 66 02 03 04
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterArchiveProfile.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterProfile.md#request)
  */
-class GetMeterArchiveProfile extends Command {
-    constructor ( public parameters: IGetMeterArchiveProfileParameters ) {
+class GetMeterProfile extends Command {
+    constructor ( public parameters: IGetMeterProfileParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -65,7 +65,7 @@ class GetMeterArchiveProfile extends Command {
 
     // data - only body (without header)
     static fromBytes ( [requestId, meterProfileId]: Uint8Array ) {
-        return new GetMeterArchiveProfile({requestId, meterProfileId});
+        return new GetMeterProfile({requestId, meterProfileId});
     }
 
     // returns full message - header with body
@@ -78,4 +78,4 @@ class GetMeterArchiveProfile extends Command {
 }
 
 
-export default GetMeterArchiveProfile;
+export default GetMeterProfile;

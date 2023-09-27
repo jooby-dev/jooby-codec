@@ -7,11 +7,11 @@
 export {default as GetArchiveState} from './GetArchiveState.js';
 export {default as GetLorawanInfo} from './GetLorawanInfo.js';
 export {default as GetLorawanState} from './GetLorawanState.js';
-export {default as GetMeterArchiveProfile} from './GetMeterArchiveProfile.js';
 export {default as GetMeterDate} from './GetMeterDate.js';
 export {default as GetMeterId} from './GetMeterId.js';
 export {default as GetMeterIdList} from './GetMeterIdList.js';
 export {default as GetMeterInfo} from './GetMeterInfo.js';
+export {default as GetMeterProfile} from './GetMeterProfile.js';
 export {default as GetMeterProfileIdList} from './GetMeterProfileIdList.js';
 export {default as GetMeterReadoutState} from './GetMeterReadoutState.js';
 export {default as GetObisContent} from './GetObisContent.js';

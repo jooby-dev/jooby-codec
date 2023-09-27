@@ -13,15 +13,14 @@ export const requestById = new Map();
 export const responseById = new Map();
 
 
-requestByResponse.set(uplinkCommands.SetObisProfileResponse, downlinkCommands.SetObisProfile);
 requestByResponse.set(uplinkCommands.GetArchiveStateResponse, downlinkCommands.GetArchiveState);
 requestByResponse.set(uplinkCommands.GetLorawanInfoResponse, downlinkCommands.GetLorawanInfo);
-requestByResponse.set(uplinkCommands.GetMeterArchiveProfileResponse, downlinkCommands.GetMeterArchiveProfile);
 requestByResponse.set(uplinkCommands.GetMeterDateResponse, downlinkCommands.GetMeterDate);
 requestByResponse.set(uplinkCommands.GetMeterIdListResponse, downlinkCommands.GetMeterIdList);
 requestByResponse.set(uplinkCommands.GetMeterIdResponse, downlinkCommands.GetMeterId);
 requestByResponse.set(uplinkCommands.GetMeterInfoResponse, downlinkCommands.GetMeterInfo);
 requestByResponse.set(uplinkCommands.GetMeterProfileIdListResponse, downlinkCommands.GetMeterProfileIdList);
+requestByResponse.set(uplinkCommands.GetMeterProfileResponse, downlinkCommands.GetMeterProfile);
 requestByResponse.set(uplinkCommands.GetMeterReadoutStateResponse, downlinkCommands.GetMeterReadoutState);
 requestByResponse.set(uplinkCommands.GetObisContentByIdResponse, downlinkCommands.GetObisContentById);
 requestByResponse.set(uplinkCommands.GetObisContentResponse, downlinkCommands.GetObisContent);
@@ -39,10 +38,11 @@ requestByResponse.set(uplinkCommands.RemoveMeterProfileResponse, downlinkCommand
 requestByResponse.set(uplinkCommands.RemoveMeterResponse, downlinkCommands.RemoveMeter);
 requestByResponse.set(uplinkCommands.RemoveObisResponse, downlinkCommands.RemoveObis);
 requestByResponse.set(uplinkCommands.SetLorawanActivationMethodResponse, downlinkCommands.SetLorawanActivationMethod);
+requestByResponse.set(uplinkCommands.SetObisProfileResponse, downlinkCommands.SetObisProfile);
 requestByResponse.set(uplinkCommands.SetObserverSingleModeResponse, downlinkCommands.SetObserverSingleMode);
 requestByResponse.set(uplinkCommands.SetSerialPortResponse, downlinkCommands.SetSerialPort);
-requestByResponse.set(uplinkCommands.SetupMeterResponse, downlinkCommands.SetupMeter);
 requestByResponse.set(uplinkCommands.SetupMeterProfileResponse, downlinkCommands.SetupMeterProfile);
+requestByResponse.set(uplinkCommands.SetupMeterResponse, downlinkCommands.SetupMeter);
 requestByResponse.set(uplinkCommands.SetupObisResponse, downlinkCommands.SetupObis);
 requestByResponse.set(uplinkCommands.UpdateImageVerifyResponse, downlinkCommands.UpdateImageVerify);
 requestByResponse.set(uplinkCommands.UpdateImageWriteResponse, downlinkCommands.UpdateImageWrite);
