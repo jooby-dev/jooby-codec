@@ -4,9 +4,9 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * ISetObisIdParameters command parameters
+ * ISetupObisParameters command parameters
  */
-interface ISetObisIdParameters extends ICommandParameters {
+interface ISetupObisParameters extends ICommandParameters {
     meterProfileId: number,
     obisId: number,
     obis: IObis
@@ -17,7 +17,7 @@ const COMMAND_ID = 0x44;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set obisId 240 for OBIS code 0.9.1 in meter profile 2',
+        name: 'setup obisId 240 for OBIS code 0.9.1 in meter profile 2',
         parameters: {
             requestId: 3,
             meterProfileId: 2,
@@ -38,7 +38,7 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import SetObisID from 'jooby-codec/obis-observer/commands/downlink/SetObisId.js';
+ * import SetupObisID from 'jooby-codec/obis-observer/commands/downlink/SetupObis.js';
  * const parameters = {
  *     meterProfileId: 2,
  *     obisId: 240,
@@ -48,17 +48,17 @@ const examples: TCommandExampleList = [
  *         e: 1
  *     }
  * };
- * const command = new SetObisId(parameters);
+ * const command = new SetupObis(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
  * // 44 06 02 f0 02 00 09 01
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObisId.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetupObis.md#request)
  */
-class SetObisId extends Command {
-    constructor ( public parameters: ISetObisIdParameters ) {
+class SetupObis extends Command {
+    constructor ( public parameters: ISetupObisParameters ) {
         super();
 
         // request id 1 byte + meterProfileId 1 byte + oibsId 1 byte + obis size
@@ -79,7 +79,7 @@ class SetObisId extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new SetObisId({
+        return new SetupObis({
             requestId: buffer.getUint8(),
             meterProfileId: buffer.getUint8(),
             obisId: buffer.getUint8(),
@@ -102,4 +102,4 @@ class SetObisId extends Command {
 }
 
 
-export default SetObisId;
+export default SetupObis;
