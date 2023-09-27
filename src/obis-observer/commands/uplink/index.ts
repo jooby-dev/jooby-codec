@@ -22,7 +22,6 @@ export {default as GetObisContentByIdResponse} from './GetObisContentByIdRespons
 export {default as GetObisContentByIdStringResponse} from './GetObisContentByIdStringResponse.js';
 export {default as GetObisContentResponse} from './GetObisContentResponse.js';
 export {default as GetObisIdListResponse} from './GetObisIdListResponse.js';
-export {default as GetObisInfoListResponse} from './GetObisInfoListResponse.js';
 export {default as GetObisInfoResponse} from './GetObisInfoResponse.js';
 export {default as GetObisProfileResponse} from './GetObisProfileResponse.js';
 export {default as GetObserverCapabilitiesResponse} from './GetObserverCapabilitiesResponse.js';

@@ -15,34 +15,23 @@ type TMessageList = Array<IMessage>;
 
 const downlinkMessages: TMessageList = [
     {
-        // GetObisIdList + GetObisIdList
-        hex: '40 07 03 01 02 02 00 09 01  40 07 04 07 03 02 00 09 01',
+        // GetObisIdList + GetMeterIdList
+        hex: '40 03 03 05 01  74 02 05 03',
         commands: [
             {
                 parameters: {
                     requestId: 3,
-                    meterProfileId: 1,
-                    index: 2,
-                    obis: {
-                        c: 0,
-                        d: 9,
-                        e: 1
-                    }
+                    meterProfileId: 5,
+                    index: 1
                 },
                 command: downlinkCommands.GetObisIdList
             },
             {
                 parameters: {
-                    requestId: 4,
-                    meterProfileId: 7,
-                    index: 3,
-                    obis: {
-                        c: 0,
-                        d: 9,
-                        e: 1
-                    }
+                    requestId: 5,
+                    index: 3
                 },
-                command: downlinkCommands.GetObisIdList
+                command: downlinkCommands.GetMeterIdList
             }
         ],
         isValid: true
@@ -79,26 +68,21 @@ const uplinkMessages: TMessageList = [
 const mixedMessages: TMessageList = [
     {
         // GetObisIdList + GetObisIdListResponse
-        hex: '40 07 07 09 01 02 00 09 01  41 04 07 01 c5 c6',
+        hex: '40 03 03 05 01  41 03 04 01',
         commands: [
             {
                 parameters: {
-                    requestId: 7,
-                    meterProfileId: 9,
-                    index: 1,
-                    obis: {
-                        c: 0,
-                        d: 9,
-                        e: 1
-                    }
+                    requestId: 3,
+                    meterProfileId: 5,
+                    index: 1
                 },
                 command: downlinkCommands.GetObisIdList
             },
             {
                 parameters: {
-                    requestId: 7,
+                    requestId: 4,
                     isCompleted: true,
-                    obisIdList: [197, 198]
+                    obisIdList: []
                 },
                 command: uplinkCommands.GetObisIdListResponse
             }
