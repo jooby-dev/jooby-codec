@@ -13,7 +13,6 @@ export const requestById = new Map();
 export const responseById = new Map();
 
 
-requestByResponse.set(uplinkCommands.AddMeterProfileResponse, downlinkCommands.AddMeterProfile);
 requestByResponse.set(uplinkCommands.SetObisProfileResponse, downlinkCommands.SetObisProfile);
 requestByResponse.set(uplinkCommands.GetArchiveStateResponse, downlinkCommands.GetArchiveState);
 requestByResponse.set(uplinkCommands.GetLorawanInfoResponse, downlinkCommands.GetLorawanInfo);
@@ -40,10 +39,10 @@ requestByResponse.set(uplinkCommands.RemoveMeterProfileResponse, downlinkCommand
 requestByResponse.set(uplinkCommands.RemoveMeterResponse, downlinkCommands.RemoveMeter);
 requestByResponse.set(uplinkCommands.RemoveObisResponse, downlinkCommands.RemoveObis);
 requestByResponse.set(uplinkCommands.SetLorawanActivationMethodResponse, downlinkCommands.SetLorawanActivationMethod);
-requestByResponse.set(uplinkCommands.SetMeterArchiveProfileResponse, downlinkCommands.SetMeterArchiveProfile);
 requestByResponse.set(uplinkCommands.SetObserverSingleModeResponse, downlinkCommands.SetObserverSingleMode);
 requestByResponse.set(uplinkCommands.SetSerialPortResponse, downlinkCommands.SetSerialPort);
 requestByResponse.set(uplinkCommands.SetupMeterResponse, downlinkCommands.SetupMeter);
+requestByResponse.set(uplinkCommands.SetupMeterProfileResponse, downlinkCommands.SetupMeterProfile);
 requestByResponse.set(uplinkCommands.SetupObisResponse, downlinkCommands.SetupObis);
 requestByResponse.set(uplinkCommands.UpdateImageVerifyResponse, downlinkCommands.UpdateImageVerify);
 requestByResponse.set(uplinkCommands.UpdateImageWriteResponse, downlinkCommands.UpdateImageWrite);

@@ -4,28 +4,28 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * ISetMeterArchiveProfileParameters command parameters
+ * ISetupMeterProfileParameters command parameters
  */
-interface ISetMeterArchiveProfileParameters extends ICommandParameters {
+interface ISetupMeterProfileParameters extends ICommandParameters {
     meterProfileId: number,
     archive1Period: number,
     archive2Period: number
 }
 
 
-const COMMAND_ID = 0x68;
+const COMMAND_ID = 0x60;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1 + 2 + 2;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set archive settings in meter profile 8',
+        name: 'setup meter profile with id 8',
         parameters: {
             requestId: 68,
             meterProfileId: 8,
             archive1Period: 2880,
             archive2Period: 30
         },
-        hex: {header: '68 06', body: '44 08 0b 40 00 1e'}
+        hex: {header: '60 06', body: '44 08 0b 40 00 1e'}
     }
 ];
 
@@ -35,24 +35,24 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import SetMeterArchiveProfile from 'jooby-codec/obis-observer/commands/downlink/SetMeterArchiveProfile.js';
+ * import SetupMeterProfile from 'jooby-codec/obis-observer/commands/downlink/SetupMeterProfile.js';
  * const parameters = {
  *     requestId: 68,
  *     meterProfileId: 8,
  *     archive1Period: 2880,
  *     archive2Period: 30
  * };
- * const command = new SetMeterArchiveProfile(parameters);
+ * const command = new SetupMeterProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 68 06 08 44 0b 40 00 1e
+ * // 60 06 08 44 0b 40 00 1e
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetMeterArchiveProfile.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetupMeterProfile.md#request)
  */
-class SetMeterArchiveProfile extends Command {
-    constructor ( public parameters: ISetMeterArchiveProfileParameters ) {
+class SetupMeterProfile extends Command {
+    constructor ( public parameters: ISetupMeterProfileParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -72,7 +72,7 @@ class SetMeterArchiveProfile extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new SetMeterArchiveProfile({
+        return new SetupMeterProfile({
             requestId: buffer.getUint8(),
             meterProfileId: buffer.getUint8(),
             archive1Period: buffer.getUint16(),
@@ -95,4 +95,4 @@ class SetMeterArchiveProfile extends Command {
 }
 
 
-export default SetMeterArchiveProfile;
+export default SetupMeterProfile;

@@ -5,8 +5,6 @@
  */
 
 
-export {default as AddMeterProfileResponse} from './AddMeterProfileResponse.js';
-export {default as SetObisProfileResponse} from './SetObisProfileResponse.js';
 export {default as ErrorResponse} from './ErrorResponse.js';
 export {default as GetArchiveStateResponse} from './GetArchiveStateResponse.js';
 export {default as GetLorawanInfoResponse} from './GetLorawanInfoResponse.js';
@@ -37,9 +35,10 @@ export {default as RemoveMeterProfileResponse} from './RemoveMeterProfileRespons
 export {default as RemoveMeterResponse} from './RemoveMeterResponse.js';
 export {default as RemoveObisResponse} from './RemoveObisResponse.js';
 export {default as SetLorawanActivationMethodResponse} from './SetLorawanActivationMethodResponse.js';
-export {default as SetMeterArchiveProfileResponse} from './SetMeterArchiveProfileResponse.js';
+export {default as SetObisProfileResponse} from './SetObisProfileResponse.js';
 export {default as SetObserverSingleModeResponse} from './SetObserverSingleModeResponse.js';
 export {default as SetSerialPortResponse} from './SetSerialPortResponse.js';
+export {default as SetupMeterProfileResponse} from './SetupMeterProfileResponse.js';
 export {default as SetupMeterResponse} from './SetupMeterResponse.js';
 export {default as SetupObisResponse} from './SetupObisResponse.js';
 export {default as UpdateImageVerifyResponse} from './UpdateImageVerifyResponse.js';

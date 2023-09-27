@@ -8,11 +8,11 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'add meter profile - succeed',
+        name: 'response to SetupMeterProfile - successful',
         parameters: {
-            requestId: 7
+            requestId: 156
         },
-        hex: {header: '61 01', body: '07'}
+        hex: {header: '61 01', body: '9c'}
     }
 ];
 
@@ -22,21 +22,21 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import AddMeterProfileResponse from 'jooby-codec/obis-observer/commands/uplink/AddMeterProfileResponse.js';
+ * import SetupMeterProfileResponse from 'jooby-codec/obis-observer/commands/uplink/SetupMeterProfileResponse.js';
  *
- * const commandBody = new Uint8Array([0x07]);
- * const command = AddMeterProfileResponse.fromBytes(commandBody);
+ * const commandBody = new Uint8Array([0x9c]);
+ * const command = SetupMeterProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 7,
+ *     requestId: 156
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddMeterProfile.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commads/SetupMeterProfile.md#response)
  */
-class AddMeterProfileResponse extends Command {
+class SetupMeterProfileResponse extends Command {
     constructor ( public parameters: ICommandParameters ) {
         super();
 
@@ -55,7 +55,7 @@ class AddMeterProfileResponse extends Command {
 
     // data - only body (without header)
     static fromBytes ( [requestId]: Uint8Array ) {
-        return new AddMeterProfileResponse({requestId});
+        return new SetupMeterProfileResponse({requestId});
     }
 
     // returns full message - header with body
@@ -70,4 +70,4 @@ class AddMeterProfileResponse extends Command {
 }
 
 
-export default AddMeterProfileResponse;
+export default SetupMeterProfileResponse;

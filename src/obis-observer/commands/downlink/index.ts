@@ -4,8 +4,6 @@
  * @packageDocumentation
  */
 
-export {default as AddMeterProfile} from './AddMeterProfile.js';
-export {default as SetObisProfile} from './SetObisProfile.js';
 export {default as GetArchiveState} from './GetArchiveState.js';
 export {default as GetLorawanInfo} from './GetLorawanInfo.js';
 export {default as GetLorawanState} from './GetLorawanState.js';
@@ -32,10 +30,11 @@ export {default as RemoveMeter} from './RemoveMeter.js';
 export {default as RemoveMeterProfile} from './RemoveMeterProfile.js';
 export {default as RemoveObis} from './RemoveObis.js';
 export {default as SetLorawanActivationMethod} from './SetLorawanActivationMethod.js';
-export {default as SetMeterArchiveProfile} from './SetMeterArchiveProfile.js';
+export {default as SetObisProfile} from './SetObisProfile.js';
 export {default as SetObserverSingleMode} from './SetObserverSingleMode.js';
 export {default as SetSerialPort} from './SetSerialPort.js';
 export {default as SetupMeter} from './SetupMeter.js';
+export {default as SetupMeterProfile} from './SetupMeterProfile.js';
 export {default as SetupObis} from './SetupObis.js';
 export {default as UpdateImageVerify} from './UpdateImageVerify.js';
 export {default as UpdateImageWrite} from './UpdateImageWrite.js';
