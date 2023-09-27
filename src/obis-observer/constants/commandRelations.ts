@@ -38,12 +38,13 @@ requestByResponse.set(uplinkCommands.ReadMeterArchiveWithDateResponse, downlinkC
 requestByResponse.set(uplinkCommands.RebootResponse, downlinkCommands.Reboot);
 requestByResponse.set(uplinkCommands.RemoveMeterProfileResponse, downlinkCommands.RemoveMeterProfile);
 requestByResponse.set(uplinkCommands.RemoveMeterResponse, downlinkCommands.RemoveMeter);
+requestByResponse.set(uplinkCommands.RemoveObisResponse, downlinkCommands.RemoveObis);
 requestByResponse.set(uplinkCommands.SetLorawanActivationMethodResponse, downlinkCommands.SetLorawanActivationMethod);
 requestByResponse.set(uplinkCommands.SetMeterArchiveProfileResponse, downlinkCommands.SetMeterArchiveProfile);
-requestByResponse.set(uplinkCommands.SetupObisResponse, downlinkCommands.SetupObis);
 requestByResponse.set(uplinkCommands.SetObserverSingleModeResponse, downlinkCommands.SetObserverSingleMode);
 requestByResponse.set(uplinkCommands.SetSerialPortResponse, downlinkCommands.SetSerialPort);
 requestByResponse.set(uplinkCommands.SetupMeterResponse, downlinkCommands.SetupMeter);
+requestByResponse.set(uplinkCommands.SetupObisResponse, downlinkCommands.SetupObis);
 requestByResponse.set(uplinkCommands.UpdateImageVerifyResponse, downlinkCommands.UpdateImageVerify);
 requestByResponse.set(uplinkCommands.UpdateImageWriteResponse, downlinkCommands.UpdateImageWrite);
 requestByResponse.set(uplinkCommands.UpdateRunResponse, downlinkCommands.UpdateRun);

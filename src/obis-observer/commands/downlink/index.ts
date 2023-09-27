@@ -30,12 +30,13 @@ export {default as ReadMeterArchiveWithDate} from './ReadMeterArchiveWithDate.js
 export {default as Reboot} from './Reboot.js';
 export {default as RemoveMeter} from './RemoveMeter.js';
 export {default as RemoveMeterProfile} from './RemoveMeterProfile.js';
+export {default as RemoveObis} from './RemoveObis.js';
 export {default as SetLorawanActivationMethod} from './SetLorawanActivationMethod.js';
 export {default as SetMeterArchiveProfile} from './SetMeterArchiveProfile.js';
-export {default as SetupObis} from './SetupObis.js';
 export {default as SetObserverSingleMode} from './SetObserverSingleMode.js';
 export {default as SetSerialPort} from './SetSerialPort.js';
 export {default as SetupMeter} from './SetupMeter.js';
+export {default as SetupObis} from './SetupObis.js';
 export {default as UpdateImageVerify} from './UpdateImageVerify.js';
 export {default as UpdateImageWrite} from './UpdateImageWrite.js';
 export {default as UpdateRun} from './UpdateRun.js';

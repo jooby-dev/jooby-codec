@@ -35,12 +35,13 @@ export {default as ReadMeterArchiveWithDateResponse} from './ReadMeterArchiveWit
 export {default as RebootResponse} from './RebootResponse.js';
 export {default as RemoveMeterProfileResponse} from './RemoveMeterProfileResponse.js';
 export {default as RemoveMeterResponse} from './RemoveMeterResponse.js';
+export {default as RemoveObisResponse} from './RemoveObisResponse.js';
 export {default as SetLorawanActivationMethodResponse} from './SetLorawanActivationMethodResponse.js';
 export {default as SetMeterArchiveProfileResponse} from './SetMeterArchiveProfileResponse.js';
-export {default as SetupObisResponse} from './SetupObisResponse.js';
 export {default as SetObserverSingleModeResponse} from './SetObserverSingleModeResponse.js';
 export {default as SetSerialPortResponse} from './SetSerialPortResponse.js';
 export {default as SetupMeterResponse} from './SetupMeterResponse.js';
+export {default as SetupObisResponse} from './SetupObisResponse.js';
 export {default as UpdateImageVerifyResponse} from './UpdateImageVerifyResponse.js';
 export {default as UpdateImageWriteResponse} from './UpdateImageWriteResponse.js';
 export {default as UpdateRunResponse} from './UpdateRunResponse.js';
