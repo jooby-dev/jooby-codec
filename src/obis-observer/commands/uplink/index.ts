@@ -35,7 +35,6 @@ export {default as ReadMeterArchiveWithDateResponse} from './ReadMeterArchiveWit
 export {default as RebootResponse} from './RebootResponse.js';
 export {default as RemoveMeterProfileResponse} from './RemoveMeterProfileResponse.js';
 export {default as RemoveMeterResponse} from './RemoveMeterResponse.js';
-export {default as RemoveObisProfileResponse} from './RemoveObisProfileResponse.js';
 export {default as SetLorawanActivationMethodResponse} from './SetLorawanActivationMethodResponse.js';
 export {default as SetMeterArchiveProfileResponse} from './SetMeterArchiveProfileResponse.js';
 export {default as SetObisIdResponse} from './SetObisIdResponse.js';
