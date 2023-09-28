@@ -62,9 +62,7 @@ class SetObserverSingleModeResponse extends Command {
     toBytes (): Uint8Array {
         return Command.toBytes(
             COMMAND_ID,
-            new Uint8Array(
-                [this.parameters.requestId]
-            )
+            new Uint8Array([this.parameters.requestId])
         );
     }
 }

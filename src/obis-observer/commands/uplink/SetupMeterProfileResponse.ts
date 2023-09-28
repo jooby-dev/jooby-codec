@@ -3,16 +3,16 @@ import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js'
 import {UPLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x69;
+const COMMAND_ID = 0x61;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'response to SetMeterArchiveProfile - successful',
+        name: 'response to SetupMeterProfile - successful',
         parameters: {
             requestId: 156
         },
-        hex: {header: '69 01', body: '9c'}
+        hex: {header: '61 01', body: '9c'}
     }
 ];
 
@@ -22,10 +22,10 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import SetMeterArchiveProfileResponse from 'jooby-codec/obis-observer/commands/uplink/SetMeterArchiveProfileResponse.js';
+ * import SetupMeterProfileResponse from 'jooby-codec/obis-observer/commands/uplink/SetupMeterProfileResponse.js';
  *
  * const commandBody = new Uint8Array([0x9c]);
- * const command = SetMeterArchiveProfileResponse.fromBytes(commandBody);
+ * const command = SetupMeterProfileResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -34,9 +34,9 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commads/SetMeterArchiveProfile.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commads/SetupMeterProfile.md#response)
  */
-class SetMeterArchiveProfileResponse extends Command {
+class SetupMeterProfileResponse extends Command {
     constructor ( public parameters: ICommandParameters ) {
         super();
 
@@ -55,19 +55,17 @@ class SetMeterArchiveProfileResponse extends Command {
 
     // data - only body (without header)
     static fromBytes ( [requestId]: Uint8Array ) {
-        return new SetMeterArchiveProfileResponse({requestId});
+        return new SetupMeterProfileResponse({requestId});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         return Command.toBytes(
             COMMAND_ID,
-            new Uint8Array(
-                [this.parameters.requestId]
-            )
+            new Uint8Array([this.parameters.requestId])
         );
     }
 }
 
 
-export default SetMeterArchiveProfileResponse;
+export default SetupMeterProfileResponse;

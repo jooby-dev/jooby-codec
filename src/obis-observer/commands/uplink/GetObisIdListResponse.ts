@@ -15,13 +15,22 @@ const COMMAND_ID = 0x41;
 
 const examples: TCommandExampleList = [
     {
-        name: 'response to GetObisIdList with two obis id',
+        name: 'response to GetObisIdList with two elements',
         parameters: {
             requestId: 3,
             isCompleted: true,
             obisIdList: [197, 198]
         },
         hex: {header: '41 04', body: '03 01 c5 c6'}
+    },
+    {
+        name: 'response to GetObisIdList without elements',
+        parameters: {
+            requestId: 3,
+            isCompleted: true,
+            obisIdList: []
+        },
+        hex: {header: '41 02', body: '03 01'}
     }
 ];
 
@@ -51,7 +60,6 @@ class GetObisIdListResponse extends Command {
     constructor ( public parameters: IGetObisIdListResponseParameters ) {
         super();
 
-        // body size = request id byte + isCompleted byte + obisIdList 0-n bytes
         this.size = REQUEST_ID_SIZE + 1 + parameters.obisIdList.length;
     }
 
@@ -68,7 +76,6 @@ class GetObisIdListResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-
         const requestId = buffer.getUint8();
         const isCompleted = buffer.isEmpty ? 1 : buffer.getUint8();
         const obisIdList = buffer.isEmpty

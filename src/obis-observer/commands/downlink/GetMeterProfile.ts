@@ -4,24 +4,24 @@ import {DOWNLINK} from '../../constants/directions.js';
 
 
 /**
- * IAddMeterProfileParameters command parameters
+ * IGetMeterProfileParameters command parameters
  */
-interface IAddMeterProfileParameters extends ICommandParameters {
+interface IGetMeterProfileParameters extends ICommandParameters {
     meterProfileId: number
 }
 
 
-const COMMAND_ID = 0x60;
+const COMMAND_ID = 0x66;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'add meter profile with Id 17',
+        name: 'get meter archive settings from meter profile 4',
         parameters: {
             requestId: 3,
-            meterProfileId: 17
+            meterProfileId: 4
         },
-        hex: {header: '60 02', body: '03 11'}
+        hex: {header: '66 02', body: '03 04'}
     }
 ];
 
@@ -31,23 +31,23 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import AddMeterProfile from 'jooby-codec/obis-observer/commands/downlink/AddMeterProfile.js';
+ * import GetMeterProfile from 'jooby-codec/obis-observer/commands/downlink/GetMeterProfile.js';
  *
  * const parameters = {
  *     requestId: 3,
- *     meterProfileId: 17
+ *     meterProfileId: 4
  * };
- * const command = new AddMeterProfile(parameters);
+ * const command = new GetMeterProfile(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 60 02 03 11
+ * // 66 02 03 04
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddMeterProfile.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterProfile.md#request)
  */
-class AddMeterProfile extends Command {
-    constructor ( public parameters: IAddMeterProfileParameters ) {
+class GetMeterProfile extends Command {
+    constructor ( public parameters: IGetMeterProfileParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -65,19 +65,19 @@ class AddMeterProfile extends Command {
 
     // data - only body (without header)
     static fromBytes ( [requestId, meterProfileId]: Uint8Array ) {
-        return new AddMeterProfile({requestId, meterProfileId});
+        return new GetMeterProfile({requestId, meterProfileId});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
+        const {parameters} = this;
+
         return Command.toBytes(
             COMMAND_ID,
-            new Uint8Array(
-                [this.parameters.requestId, this.parameters.meterProfileId]
-            )
+            new Uint8Array([parameters.requestId, parameters.meterProfileId])
         );
     }
 }
 
 
-export default AddMeterProfile;
+export default GetMeterProfile;

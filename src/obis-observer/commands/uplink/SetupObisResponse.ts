@@ -3,16 +3,16 @@ import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js'
 import {UPLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x61;
+const COMMAND_ID = 0x43;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'add meter profile - succeed',
+        name: 'response to SetupObis - succeed',
         parameters: {
-            requestId: 7
+            requestId: 2
         },
-        hex: {header: '61 01', body: '07'}
+        hex: {header: '43 01', body: '02'}
     }
 ];
 
@@ -22,21 +22,21 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import AddMeterProfileResponse from 'jooby-codec/obis-observer/commands/uplink/AddMeterProfileResponse.js';
+ * import SetupObisResponse from 'jooby-codec/obis-observer/commands/uplink/SetupObisResponse.js';
  *
- * const commandBody = new Uint8Array([0x07]);
- * const command = AddMeterProfileResponse.fromBytes(commandBody);
+ * const commandBody = new Uint8Array([0x02]);
+ * const command = SetupObisResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     requestId: 7,
+ *     requestId: 2,
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/AddMeterProfile.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetupObis.md#response)
  */
-class AddMeterProfileResponse extends Command {
+class SetupObisResponse extends Command {
     constructor ( public parameters: ICommandParameters ) {
         super();
 
@@ -55,19 +55,17 @@ class AddMeterProfileResponse extends Command {
 
     // data - only body (without header)
     static fromBytes ( [requestId]: Uint8Array ) {
-        return new AddMeterProfileResponse({requestId});
+        return new SetupObisResponse({requestId});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         return Command.toBytes(
             COMMAND_ID,
-            new Uint8Array(
-                [this.parameters.requestId]
-            )
+            new Uint8Array([this.parameters.requestId])
         );
     }
 }
 
 
-export default AddMeterProfileResponse;
+export default SetupObisResponse;

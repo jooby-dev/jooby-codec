@@ -70,10 +70,12 @@ class UpdateImageVerifyResponse extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
+        const {parameters} = this;
+
         return Command.toBytes(
             COMMAND_ID,
             new Uint8Array(
-                [this.parameters.requestId, this.parameters.isImageValid ? 1 : 0]
+                [parameters.requestId, parameters.isImageValid ? 1 : 0]
             )
         );
     }

@@ -6,7 +6,7 @@ import {UPLINK} from '../../constants/directions.js';
 /**
  * IGetArchiveProfileResponseParameters command parameters
  */
-interface IGetMeterArchiveProfileResponseParameters extends ICommandParameters {
+interface IGetMeterProfileResponseParameters extends ICommandParameters {
     archive1Period: number,
     archive2Period: number
 }
@@ -17,30 +17,15 @@ const COMMAND_SIZE = REQUEST_ID_SIZE + 4;
 
 const examples: TCommandExampleList = [
     {
-        name: 'response to GetMeterArchiveProfile',
+        name: 'response to GetMeterProfile',
         parameters: {
             requestId: 3,
             archive1Period: 600,
             archive2Period: 45
         },
         hex: {header: '67 05', body: '03 02 58 00 2d'}
-    },
-    {
-        name: 'response to GetMeterArchiveProfile without data',
-        parameters: {
-            requestId: 3
-        },
-        hex: {header: '67 01', body: '03'}
     }
 ];
-
-const isValidParameterSet = ( parameters: IGetMeterArchiveProfileResponseParameters | ICommandParameters ): boolean => {
-    const {requestId, archive1Period, archive2Period} = parameters as IGetMeterArchiveProfileResponseParameters;
-
-    return requestId !== undefined
-        && archive1Period !== undefined
-        && archive2Period !== undefined;
-};
 
 
 /**
@@ -64,11 +49,11 @@ const isValidParameterSet = ( parameters: IGetMeterArchiveProfileResponseParamet
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveProfile.md#response)
  */
-class GetMeterArchiveProfileResponse extends Command {
-    constructor ( public parameters: IGetMeterArchiveProfileResponseParameters | ICommandParameters ) {
+class GetMeterProfileResponse extends Command {
+    constructor ( public parameters: IGetMeterProfileResponseParameters ) {
         super();
 
-        this.size = isValidParameterSet(parameters) ? COMMAND_SIZE : REQUEST_ID_SIZE;
+        this.size = COMMAND_SIZE;
     }
 
 
@@ -84,24 +69,17 @@ class GetMeterArchiveProfileResponse extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-        const requestId = buffer.getUint8();
 
-        return buffer.isEmpty
-            ? new GetMeterArchiveProfileResponse({requestId})
-            : new GetMeterArchiveProfileResponse({
-                requestId,
-                archive1Period: buffer.getUint16(),
-                archive2Period: buffer.getUint16()
-            });
+        return new GetMeterProfileResponse({
+            requestId: buffer.getUint8(),
+            archive1Period: buffer.getUint16(),
+            archive2Period: buffer.getUint16()
+        });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        if ( !isValidParameterSet(this.parameters) ) {
-            return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId]));
-        }
-
-        const {requestId, archive1Period, archive2Period} = this.parameters as IGetMeterArchiveProfileResponseParameters;
+        const {requestId, archive1Period, archive2Period} = this.parameters;
         const buffer = new CommandBinaryBuffer(this.size as number);
 
         buffer.setUint8(requestId);
@@ -113,4 +91,4 @@ class GetMeterArchiveProfileResponse extends Command {
 }
 
 
-export default GetMeterArchiveProfileResponse;
+export default GetMeterProfileResponse;
