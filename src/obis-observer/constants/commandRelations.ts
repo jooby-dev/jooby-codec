@@ -26,7 +26,6 @@ requestByResponse.set(uplinkCommands.GetObisContentByIdResponse, downlinkCommand
 requestByResponse.set(uplinkCommands.GetObisContentResponse, downlinkCommands.GetObisContent);
 requestByResponse.set(uplinkCommands.GetObisIdListResponse, downlinkCommands.GetObisIdList);
 requestByResponse.set(uplinkCommands.GetObisInfoResponse, downlinkCommands.GetObisInfo);
-requestByResponse.set(uplinkCommands.GetObisProfileResponse, downlinkCommands.GetObisProfile);
 requestByResponse.set(uplinkCommands.GetObserverCapabilitiesResponse, downlinkCommands.GetObserverCapabilities);
 requestByResponse.set(uplinkCommands.GetObserverInfoResponse, downlinkCommands.GetObserverInfo);
 requestByResponse.set(uplinkCommands.GetObserverSingleModeResponse, downlinkCommands.GetObserverSingleMode);
@@ -38,7 +37,6 @@ requestByResponse.set(uplinkCommands.RemoveMeterProfileResponse, downlinkCommand
 requestByResponse.set(uplinkCommands.RemoveMeterResponse, downlinkCommands.RemoveMeter);
 requestByResponse.set(uplinkCommands.RemoveObisResponse, downlinkCommands.RemoveObis);
 requestByResponse.set(uplinkCommands.SetLorawanActivationMethodResponse, downlinkCommands.SetLorawanActivationMethod);
-requestByResponse.set(uplinkCommands.SetObisProfileResponse, downlinkCommands.SetObisProfile);
 requestByResponse.set(uplinkCommands.SetObserverSingleModeResponse, downlinkCommands.SetObserverSingleMode);
 requestByResponse.set(uplinkCommands.SetSerialPortResponse, downlinkCommands.SetSerialPort);
 requestByResponse.set(uplinkCommands.SetupMeterProfileResponse, downlinkCommands.SetupMeterProfile);

@@ -21,7 +21,6 @@ export {default as GetObisContentByIdStringResponse} from './GetObisContentByIdS
 export {default as GetObisContentResponse} from './GetObisContentResponse.js';
 export {default as GetObisIdListResponse} from './GetObisIdListResponse.js';
 export {default as GetObisInfoResponse} from './GetObisInfoResponse.js';
-export {default as GetObisProfileResponse} from './GetObisProfileResponse.js';
 export {default as GetObserverCapabilitiesResponse} from './GetObserverCapabilitiesResponse.js';
 export {default as GetObserverInfoResponse} from './GetObserverInfoResponse.js';
 export {default as GetObserverSingleModeResponse} from './GetObserverSingleModeResponse.js';
@@ -35,7 +34,6 @@ export {default as RemoveMeterProfileResponse} from './RemoveMeterProfileRespons
 export {default as RemoveMeterResponse} from './RemoveMeterResponse.js';
 export {default as RemoveObisResponse} from './RemoveObisResponse.js';
 export {default as SetLorawanActivationMethodResponse} from './SetLorawanActivationMethodResponse.js';
-export {default as SetObisProfileResponse} from './SetObisProfileResponse.js';
 export {default as SetObserverSingleModeResponse} from './SetObserverSingleModeResponse.js';
 export {default as SetSerialPortResponse} from './SetSerialPortResponse.js';
 export {default as SetupMeterProfileResponse} from './SetupMeterProfileResponse.js';
