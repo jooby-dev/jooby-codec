@@ -6,6 +6,7 @@ export default {
     [result.FORMAT_ERROR]: 'Format error',
     [result.ASSIGN_STATIC_OBIS_ID]: 'Try to assign static obis id',
     [result.OBIS_ID_ALLOCATION_FAILED]: 'Obis id allocation failed',
+    [result.OBIS_NOT_FOUND]: 'Obis not found',
     [result.OBIS_PROFILE_ALLOCATION_FAILED]: 'Obis profile allocation failed',
     [result.METER_ALLOCATION_FAILED]: 'Meter allocation failed',
     [result.METER_NOT_FOUND]: 'The meter not found',
