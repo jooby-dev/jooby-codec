@@ -12,7 +12,7 @@ interface IGetObisInfoResponseParameters extends ICommandParameters {
     obisProfile?: IObisProfile,
 }
 
-const COMMAND_ID = 0x4d;
+const COMMAND_ID = 0x47;
 
 const examples: TCommandExampleList = [
     {
@@ -36,7 +36,7 @@ const examples: TCommandExampleList = [
                 }
             }
         },
-        hex: {header: '4d 0b', body: '03 02 00 09 01 01 58 02 14 3d 15'}
+        hex: {header: '47 0b', body: '03 02 00 09 01 01 58 02 14 3d 15'}
     },
     {
         name: 'response to GetObisInfo with obis code 0.9.1 without obis profile',
@@ -48,14 +48,14 @@ const examples: TCommandExampleList = [
                 e: 1
             }
         },
-        hex: {header: '4d 05', body: '03 02 00 09 01'}
+        hex: {header: '47 05', body: '03 02 00 09 01'}
     },
     {
         name: 'response to GetObisInfo without data',
         parameters: {
             requestId: 3
         },
-        hex: {header: '4d 01', body: '03'}
+        hex: {header: '47 01', body: '03'}
     }
 ];
 
