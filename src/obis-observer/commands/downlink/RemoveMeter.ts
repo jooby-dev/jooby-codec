@@ -70,9 +70,11 @@ class RemoveMeter extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
+        const {parameters} = this;
+
         return Command.toBytes(
             COMMAND_ID,
-            new Uint8Array([this.parameters.requestId, this.parameters.meterId])
+            new Uint8Array([parameters.requestId, parameters.meterId])
         );
     }
 }

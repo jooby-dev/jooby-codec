@@ -37,13 +37,14 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     requestId: 3,
- *     meterProfileId: 17
+ *     meterProfileId: 17,
+ *     obisId: 2
  * };
  * const command = new RemoveObis(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 60 02 03 11
+ * // 44 03 03 11 02
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveObis.md#request)
@@ -72,10 +73,12 @@ class RemoveObis extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
+        const {parameters} = this;
+
         return Command.toBytes(
             COMMAND_ID,
             new Uint8Array(
-                [this.parameters.requestId, this.parameters.meterProfileId, this.parameters.obisId]
+                [parameters.requestId, parameters.meterProfileId, parameters.obisId]
             )
         );
     }

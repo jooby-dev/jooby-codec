@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import * as message from '../../src/obis-observer/message.js';
 import * as downlinkCommands from '../../src/obis-observer/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/obis-observer/commands/uplink/index.js';
@@ -40,14 +39,14 @@ const downlinkMessages: TMessageList = [
 
 const uplinkMessages: TMessageList = [
     {
-        // AddObisProfileResponse + ObservationReport
-        hex: '47 01 07 53 0f 04 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec',
+        // SetupObisResponse + ObservationReport
+        hex: '43 01 07 53 0f 04 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec',
         commands: [
             {
                 parameters: {
                     requestId: 7
                 },
-                command: uplinkCommands.SetObisProfileResponse
+                command: uplinkCommands.SetupObisResponse
             },
             {
                 parameters: {

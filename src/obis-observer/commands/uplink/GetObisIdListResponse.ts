@@ -77,7 +77,6 @@ class GetObisIdListResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
         const requestId = buffer.getUint8();
-
         const isCompleted = buffer.isEmpty ? 1 : buffer.getUint8();
         const obisIdList = buffer.isEmpty
             ? []

@@ -112,7 +112,6 @@ class SetupObis extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-
         const requestId = buffer.getUint8();
         const meterProfileId = buffer.getUint8();
         const obisId = buffer.getUint8();

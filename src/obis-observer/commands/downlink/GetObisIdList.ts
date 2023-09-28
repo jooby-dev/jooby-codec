@@ -34,15 +34,16 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetObisIdList from 'jooby-codec/obis-observer/commands/downlink/GetObisIdList.js';
  *
- * const parameters = {
+ * const parameters: {
  *     requestId: 3,
- *     meterProfileId: 5
+ *     meterProfileId: 5,
+ *     index: 0
  * };
  * const command = new GetObisIdList(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 40 02 03 05
+ * // 40 03 03 05 00
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisIdList.md#request)
@@ -71,9 +72,11 @@ class GetObisIdList extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
+        const {parameters} = this;
+
         return Command.toBytes(
             COMMAND_ID,
-            new Uint8Array([this.parameters.requestId, this.parameters.meterProfileId, this.parameters.index])
+            new Uint8Array([parameters.requestId, parameters.meterProfileId, parameters.index])
         );
     }
 }
