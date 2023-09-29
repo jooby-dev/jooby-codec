@@ -15,13 +15,20 @@ export const responseById = new Map();
 
 requestByResponse.set(uplinkCommands.ActivateRatePlanResponse, downlinkCommands.ActivateRatePlan);
 requestByResponse.set(uplinkCommands.GetDateTimeResponse, downlinkCommands.GetDateTime);
+requestByResponse.set(uplinkCommands.GetDeviceIdResponse, downlinkCommands.GetDeviceId);
 requestByResponse.set(uplinkCommands.GetDisplayParamResponse, downlinkCommands.GetDisplayParam);
 requestByResponse.set(uplinkCommands.GetOpParamsResponse, downlinkCommands.GetOpParams);
 requestByResponse.set(uplinkCommands.GetRatePlanInfoResponse, downlinkCommands.GetRatePlanInfo);
+requestByResponse.set(uplinkCommands.PrepareRatePlanResponse, downlinkCommands.PrepareRatePlan);
+requestByResponse.set(uplinkCommands.RunTariffPlanResponse, downlinkCommands.RunTariffPlan);
+requestByResponse.set(uplinkCommands.SetDayProfileResponse, downlinkCommands.SetDayProfile);
 requestByResponse.set(uplinkCommands.SetDisplayParamResponse, downlinkCommands.SetDisplayParam);
 requestByResponse.set(uplinkCommands.SetOpParamsResponse, downlinkCommands.SetOpParams);
+requestByResponse.set(uplinkCommands.SetSeasonProfileResponse, downlinkCommands.SetSeasonProfile);
+requestByResponse.set(uplinkCommands.SetSpecialDayResponse, downlinkCommands.SetSpecialDay);
 requestByResponse.set(uplinkCommands.TurnRelayOffResponse, downlinkCommands.TurnRelayOff);
 requestByResponse.set(uplinkCommands.TurnRelayOnResponse, downlinkCommands.TurnRelayOn);
+
 
 for ( const [response, request] of requestByResponse.entries() ) {
     // invert keys with values
