@@ -48,6 +48,8 @@ class SetDayProfileResponse extends Command {
 
     static readonly accessLevel = READ_WRITE;
 
+    static readonly maxSize = COMMAND_SIZE;
+
 
     // data - only body (without header)
     static fromBytes (): SetDayProfileResponse {

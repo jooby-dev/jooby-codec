@@ -109,6 +109,8 @@ class SetDayProfile extends Command {
 
     static readonly accessLevel = READ_WRITE;
 
+    static readonly maxSize = 2 + MAX_PERIODS_NUMBER;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

@@ -73,6 +73,8 @@ class SetDisplayParam extends Command {
 
     static readonly accessLevel = READ_WRITE;
 
+    static readonly maxSize = MAX_COMMAND_SIZE;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {

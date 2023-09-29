@@ -59,6 +59,8 @@ class GetDisplayParam extends Command {
 
     static readonly accessLevel = READ_ONLY;
 
+    static readonly maxSize = COMMAND_SIZE;
+
 
     // data - only body (without header)
     static fromBytes ( [displayMode]: Uint8Array ) {
