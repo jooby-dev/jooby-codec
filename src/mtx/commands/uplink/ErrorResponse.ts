@@ -66,6 +66,8 @@ class ErrorResponse extends Command {
 
     static readonly accessLevel = READ_ONLY;
 
+    static readonly maxSize = COMMAND_SIZE;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
