@@ -163,22 +163,22 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
         this.setUint8(bitSet.fromObject(obisBitMask, flags));
 
-        if ( obis.a ) {
+        if ( obis.a !== undefined ) {
             this.setUint8(obis.a);
         }
 
-        if ( obis.b ) {
+        if ( obis.b !== undefined ) {
             this.setUint8(obis.b);
         }
 
         this.setUint8(obis.c);
         this.setUint8(obis.d);
 
-        if ( obis.e ) {
+        if ( obis.e !== undefined ) {
             this.setUint8(obis.e);
         }
 
-        if ( obis.f ) {
+        if ( obis.f !== undefined ) {
             this.setUint8(obis.f);
         }
     }
