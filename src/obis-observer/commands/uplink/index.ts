@@ -27,6 +27,7 @@ export {default as GetObserverSingleModeResponse} from './GetObserverSingleModeR
 export {default as GetObserverUptimeResponse} from './GetObserverUptimeResponse.js';
 export {default as ObservationReport} from './ObservationReport.js';
 export {default as ObservationReportString} from './ObservationReportString.js';
+export {default as ReadArchiveResponse} from './ReadArchiveResponse.js';
 export {default as ReadMeterArchiveResponse} from './ReadMeterArchiveResponse.js';
 export {default as ReadMeterArchiveWithDateResponse} from './ReadMeterArchiveWithDateResponse.js';
 export {default as RebootResponse} from './RebootResponse.js';
