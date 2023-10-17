@@ -4,7 +4,6 @@ export default {
     [result.FAILURE]: 'General failure',
     [result.UNKNOWN_COMMAND]: 'Unknown command',
     [result.FORMAT_ERROR]: 'Format error',
-    [result.ASSIGN_STATIC_OBIS_ID]: 'Try to assign static obis id',
     [result.OBIS_ID_ALLOCATION_FAILED]: 'Obis id allocation failed',
     [result.OBIS_NOT_FOUND]: 'Obis not found',
     [result.OBIS_PROFILE_ALLOCATION_FAILED]: 'Obis profile allocation failed',

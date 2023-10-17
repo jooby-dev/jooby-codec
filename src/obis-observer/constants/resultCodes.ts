@@ -2,7 +2,6 @@ export const OK = 0;
 export const FAILURE = 1;
 export const UNKNOWN_COMMAND = 2;
 export const FORMAT_ERROR = 3;
-export const ASSIGN_STATIC_OBIS_ID = 4;
 export const OBIS_ID_ALLOCATION_FAILED = 5;
 export const OBIS_NOT_FOUND = 6;
 export const OBIS_PROFILE_ALLOCATION_FAILED = 7;
