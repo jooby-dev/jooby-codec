@@ -1,6 +1,8 @@
 import BinaryBuffer from '../utils/BinaryBuffer.js';
 //import {extractBits, fillBits} from '../utils/bitSet.js';
 import * as bitSet from '../utils/bitSet.js';
+import getHexFromBytes from '../utils/getHexFromBytes.js';
+import getBytesFromHex from '../utils/getBytesFromHex.js';
 
 
 export interface IDateTime {
@@ -346,23 +348,19 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     /** '001a79' -> [0x00, 0x1a, 0x79] */
     setHexString ( value: string ): void {
-        const bytes = value.toLowerCase().match(/[0-9a-f]{2}/g) || [];
-
-        for ( let index = 0; index < bytes.length; ++index ) {
-            this.setUint8(parseInt(bytes[index], 16));
-        }
+        getBytesFromHex(value).forEach(byte => this.setUint8(byte));
     }
 
     /** [0x00, 0x1a, 0x79] -> '001a79' */
     getHexString ( size: number ): string {
-        const endIndex = this.offset + size;
-        const chars = [];
+        const currentOffset = this.offset;
 
-        while ( this.offset < endIndex ) {
-            chars.push(this.getUint8().toString(16).padStart(2, '0'));
-        }
+        this.offset += size;
 
-        return chars.join('');
+        return getHexFromBytes(
+            this.toUint8Array().slice(currentOffset, this.offset),
+            {separator: ''}
+        );
     }
 
     static getDateFromDateTime ( dateTime: IDateTime ): Date {
