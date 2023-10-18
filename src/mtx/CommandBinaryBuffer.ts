@@ -185,6 +185,32 @@ export interface ISpecialDay {
     isPeriodic: boolean
 }
 
+export interface IDeviceId {
+    /** 001a79 */
+    manufacturer: string,
+    /**
+     * 01 – MTX 1;
+     * 02 – MTX 3 direct (old);
+     * 03 – MTX 3 transformer (old);
+     * 04 – MTX 3 direct;
+     * 05 – MTX 3 transformer;
+     * 11 – MTX 1 new (two shunts);
+     * 12 – MTX 3 direct new (shunts);
+     * 13 – MTX 3 transformer new;
+     * 14 – MTX 1 pole;
+     * 15 – MTX RD remote display;
+     * 16 – MTX RR repeater;
+     * 21 – MTX 1 new, current transformers;
+     * 22 – MTX 3 direct new, current transformers;
+     * 80 – RF module
+     * 81 - water meter
+     */
+    type: number,
+    year: number,
+    /** length is 6, for example 1b1d6a */
+    serial: string
+}
+
 
 export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
@@ -621,6 +647,23 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(specialDay.dayIndex);
         this.setUint8(+!specialDay.isPeriodic);
     }
+
+    getDeviceId (): IDeviceId {
+        const manufacturer = this.getHexString(3);
+        const type = this.getUint8();
+        const year = this.getUint8() + 2000;
+        const serial = this.getHexString(3);
+
+        return {manufacturer, type, year, serial};
+    }
+
+    setDeviceId ( {manufacturer, type, year, serial}: IDeviceId ) {
+        this.setHexString(manufacturer);
+        this.setUint8(type);
+        this.setUint8(year - 2000);
+        this.setHexString(serial);
+    }
+
 }
 
 

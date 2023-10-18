@@ -1,11 +1,7 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
+import CommandBinaryBuffer, {IDeviceId} from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../constants/directions.js';
-
-
-interface IGetDeviceIdResponseParameters {
-    id: Array<number>
-}
 
 
 const COMMAND_ID = 0x05;
@@ -15,9 +11,12 @@ const examples: TCommandExampleList = [
     {
         name: 'mode with order',
         parameters: {
-            id: [1, 2, 3, 4, 5, 6, 7, 8]
+            manufacturer: '001a79',
+            type: 23,
+            year: 2020,
+            serial: '1b1d6a'
         },
-        hex: {header: '05 08', body: '01 02 03 04 05 06 07 08'}
+        hex: {header: '05 08', body: '00 1a 79 17 14 1b 1d 6a'}
     }
 ];
 
@@ -29,20 +28,23 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetDeviceIdResponse from 'jooby-codec/obis-observer/commands/uplink/GetDeviceIdResponse.js';
  *
- * const commandBody = new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08]);
+ * const commandBody = new Uint8Array([0x00, 0x1a, 0x79, 0x17, 0x14, 0x1b, 0x1d, 0x6a]);
  * const command = GetDeviceIdResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     id: [1, 2, 3, 4, 5, 6, 7, 8]
+ *     manufacturer: '001a79',
+ *     type: 23,
+ *     year: 2020,
+ *     serial: '1b1d6a'
  * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDeviceIdResponse.md)
  */
 class GetDeviceIdResponse extends Command {
-    constructor ( public parameters: IGetDeviceIdResponseParameters ) {
+    constructor ( public parameters: IDeviceId ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -64,24 +66,23 @@ class GetDeviceIdResponse extends Command {
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
-        if ( data?.length !== COMMAND_SIZE ) {
-            throw new Error('Invalid GetDeviceIdResponse data size.');
-        }
+        const buffer = new CommandBinaryBuffer(data);
 
-        const [...id] = data;
-
-        return new GetDeviceIdResponse({id});
+        return new GetDeviceIdResponse(buffer.getDeviceId());
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {size, parameters} = this;
+        const buffer = new CommandBinaryBuffer(COMMAND_HEADER_SIZE + this.size);
 
-        return new Uint8Array([
-            COMMAND_ID,
-            size,
-            ...parameters.id
-        ]);
+        // header + size
+        buffer.setUint8(COMMAND_ID);
+        buffer.setUint8(this.size);
+
+        // body
+        buffer.setDeviceId(this.parameters);
+
+        return buffer.toUint8Array();
     }
 }
 
