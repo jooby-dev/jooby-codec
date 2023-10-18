@@ -343,6 +343,28 @@ class CommandBinaryBuffer extends BinaryBuffer {
         super(dataOrLength, false);
     }
 
+
+    /** '001a79' -> [0x00, 0x1a, 0x79] */
+    setHexString ( value: string ): void {
+        const bytes = value.toLowerCase().match(/[0-9a-f]{2}/g) || [];
+
+        for ( let index = 0; index < bytes.length; ++index ) {
+            this.setUint8(parseInt(bytes[index], 16));
+        }
+    }
+
+    /** [0x00, 0x1a, 0x79] -> '001a79' */
+    getHexString ( size: number ): string {
+        const endIndex = this.offset + size;
+        const chars = [];
+
+        while ( this.offset < endIndex ) {
+            chars.push(this.getUint8().toString(16).padStart(2, '0'));
+        }
+
+        return chars.join('');
+    }
+
     static getDateFromDateTime ( dateTime: IDateTime ): Date {
         return new Date(
             dateTime.year + 2000,
