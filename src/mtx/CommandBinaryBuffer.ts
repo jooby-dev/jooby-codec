@@ -685,7 +685,6 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(year - 2000);
         this.setHexString(serial);
     }
-
 }
 
 
