@@ -508,18 +508,21 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'GetDeviceIdResponse',
-        hex: '0a 13 e6 b8 3f 0d 93 e9 a6 ec de f8 56 f0 97 ef ec 09',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 e6 b8 3f 0d 93 e9 a6 ec de f8 56 f0 97 ef ec 09 ce a4 7e',
+        hex: '0a 13 cf 5f a5 a8 36 72 4f c9 7a 07 35 f8 17 d4 96 51',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 cf 5f a5 a8 36 72 4f c9 7a 07 35 f8 17 d4 96 51 fe 54 7e',
         messageId: 10,
         accessLevel: uplinkCommands.GetDeviceIdResponse.accessLevel,
         direction: directions.UPLINK,
         commands: [
             new uplinkCommands.GetDeviceIdResponse({
-                id: [1, 2, 3, 4, 5, 6, 7, 8]
+                manufacturer: '001a79',
+                type: 23,
+                year: 2020,
+                serial: '1b1d6a'
             })
         ],
-        lrc: 0x43,
-        crc: new Uint8Array([0xce, 0xa4]),
+        lrc: 0x47,
+        crc: new Uint8Array([0xfe, 0x54]),
         frameType: frameTypes.DATA_RESPONSE,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])
