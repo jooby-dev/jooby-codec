@@ -10,4 +10,5 @@ export {default as getBytesFromHex} from './getBytesFromHex.js';
 export {default as getHexFromBytes} from './getHexFromBytes.js';
 export {default as getHexFromNumber} from './getHexFromNumber.js';
 export {default as mergeUint8Arrays} from './mergeUint8Arrays.js';
+export {default as BinaryBuffer} from './BinaryBuffer.js';
 export * as time from './time.js';
