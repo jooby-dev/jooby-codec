@@ -5,8 +5,8 @@
  */
 
 export {default as CorrectTime2000Response} from './CorrectTime2000Response.js';
-export {default as CurrentMC} from './CurrentMC.js';
 export {default as Current} from './Current.js';
+export {default as CurrentMC} from './CurrentMC.js';
 export {default as Day} from './Day.js';
 export {default as DayMC} from './DayMC.js';
 export {default as ExAbsCurrentMC} from './ExAbsCurrentMC.js';
@@ -30,3 +30,6 @@ export {default as SetTime2000Response} from './SetTime2000Response.js';
 export {default as SoftRestartResponse} from './SoftRestartResponse.js';
 export {default as Status} from './Status.js';
 export {default as Time2000} from './Time2000.js';
+export {default as UpdateRunResponse} from './UpdateRunResponse.js';
+export {default as VerifyImageResponse} from './VerifyImageResponse.js';
+export {default as WriteImageResponse} from './WriteImageResponse.js';
