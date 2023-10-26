@@ -11,7 +11,7 @@ const INT32_SIZE = 4;
 
 const createView = ( buffer: BinaryBuffer, numberSize: number ): DataView => {
     if ( buffer.offset + numberSize > buffer.data.byteLength ) {
-        throw new Error('Invalid buffer size.');
+        throw new Error(`Wrong attempt to read ${numberSize} byte(s) from [${getHexFromBytes(buffer.toUint8Array())}] offset: ${buffer.offset}`);
     }
 
     return new DataView(buffer.data, buffer.offset, numberSize);
@@ -203,6 +203,27 @@ class BinaryBuffer {
         const bytes = this.toUint8Array();
 
         return bytes.slice(0, offset);
+    }
+
+    getBytes ( length: number, offset = this.offset ): Uint8Array {
+        const bytes = this.toUint8Array();
+
+        // move offset pointer
+        this.offset = offset + length;
+
+        return bytes.slice(offset, this.offset);
+    }
+
+    setBytes ( data: Uint8Array, offset = this.offset ) {
+        const bytes = this.toUint8Array();
+
+        // overwrite
+        bytes.set(data, offset);
+
+        this.data = bytes.buffer;
+
+        // move offset pointer
+        this.offset = offset + data.length;
     }
 }
 

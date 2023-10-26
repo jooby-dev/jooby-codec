@@ -148,4 +148,32 @@ describe('positive cases', () => {
             expect(buffer.getUint32()).toBe(UINT32_DATA[index]);
         });
     });
+
+    test('check getBytes/setBytes methods', () => {
+        const buffer = new BinaryBuffer(UINT8_DATA);
+        let part: Uint8Array;
+
+        // read 3 bytes from the buffer
+        part = buffer.getBytes(3);
+        expect(part).toStrictEqual(UINT8_DATA.slice(0, 3));
+        expect(buffer.offset).toBe(3);
+
+        // read 2 bytes more from the buffer
+        part = buffer.getBytes(2);
+        expect(part).toStrictEqual(UINT8_DATA.slice(3, 5));
+        expect(buffer.offset).toBe(5);
+
+        // read from position
+        part = buffer.getBytes(3, 4);
+        expect(part).toStrictEqual(UINT8_DATA.slice(4, 7));
+        expect(buffer.offset).toBe(7);
+
+        // write from current offset
+        buffer.setBytes(part);
+        expect(getHexFromBytes(buffer.toUint8Array())).toStrictEqual('02 05 0c 00 01 e2 40 01 e2 40 28 9b ae 63 f4 35');
+
+        // write from the given offset
+        buffer.setBytes(part, 1);
+        expect(getHexFromBytes(buffer.toUint8Array())).toStrictEqual('02 01 e2 40 01 e2 40 01 e2 40 28 9b ae 63 f4 35');
+    });
 });
