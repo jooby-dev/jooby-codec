@@ -79,6 +79,26 @@ const downlinkMessages: TMessageList = [
         destination: new Uint8Array([0xaa, 0xaa])
     },
     {
+        name: 'GetDayProfile',
+        hex: '0a 13 00 3f e4 e6 f8 7e 34 9d ba ee 69 dd 8a b9 32 78',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 00 3f e4 e6 f8 7d 5e 34 9d ba ee 69 dd 8a b9 32 78 e2 26 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.GetDayProfile.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.GetDayProfile({
+                tariffTable: 0,
+                index: 3,
+                isActive: true
+            })
+        ],
+        lrc: 0x7d,
+        crc: new Uint8Array([0xe2, 0x26]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
         name: 'GetDeviceId',
         hex: '0a 13 55 9e 05 01 4e 5c 2a 6c 0d 8a da 30 a7 4c 0f 86',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 55 9e 05 01 4e 5c 2a 6c 0d 8a da 30 a7 4c 0f 86 9c 30 7e',
@@ -90,6 +110,22 @@ const downlinkMessages: TMessageList = [
         ],
         lrc: 0x43,
         crc: new Uint8Array([0x9c, 0x30]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetDeviceType',
+        hex: '0a 13 e2 47 89 5f 0c d5 5f 65 5b 08 bc a0 42 cc b0 1f',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 e2 47 89 5f 0c d5 5f 65 5b 08 bc a0 42 cc b0 1f cf 3a 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.GetDeviceType.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.GetDeviceType()
+        ],
+        lrc: 0x42,
+        crc: new Uint8Array([0xcf, 0x3a]),
         frameType: frameTypes.DATA_REQUEST,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])
@@ -147,6 +183,46 @@ const downlinkMessages: TMessageList = [
         destination: new Uint8Array([0xaa, 0xaa])
     },
     {
+        name: 'GetSeasonProfile',
+        hex: '0a 13 00 d0 7e e7 8d eb 4c 39 05 4d 75 aa cf fd 4f 77',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 00 d0 7d 5e e7 8d eb 4c 39 05 4d 75 aa cf fd 4f 77 aa 4b 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.GetSeasonProfile.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.GetSeasonProfile({
+                tariffTable: 0,
+                index: 5,
+                isActive: false
+            })
+        ],
+        lrc: 0x7d,
+        crc: new Uint8Array([0xaa, 0x4b]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetSpecialDay',
+        hex: '0a 13 51 32 8d fe 15 42 ae 8b 62 d3 c6 72 12 b4 90 09',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 51 32 8d fe 15 42 ae 8b 62 d3 c6 72 12 b4 90 09 57 8a 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.GetSpecialDay.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.GetSpecialDay({
+                tariffTable: 0,
+                index: 5,
+                isActive: false
+            })
+        ],
+        lrc: 0x7c,
+        crc: new Uint8Array([0x57, 0x8a]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
         name: 'PrepareRatePlan',
         hex: '0a 12 de 91 0a aa 47 cd 42 c6 e1 05 ff 7e ca 61 55 97',
         frameHex: '7e 50 aa aa ff ff 0a 12 de 91 0a aa 47 cd 42 c6 e1 05 ff 7d 5e ca 61 55 97 55 96 7e',
@@ -179,6 +255,71 @@ const downlinkMessages: TMessageList = [
         ],
         lrc: 0x45,
         crc: new Uint8Array([0xd0, 0x84]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetAccessKey',
+        hex: '0a 12 f1 b6 e0 a9 84 51 a5 08 c7 b0 3b 82 6c 0b b1 a4 f3 45 64 f3 06 94 d4 a9 93 e3 ea 2c 8a 9b bc 8a',
+        frameHex: '7e 50 aa aa ff ff 0a 12 f1 b6 e0 a9 84 51 a5 08 c7 b0 3b 82 6c 0b b1 a4 f3 45 64 f3 06 94 d4 a9 93 e3 ea 2c 8a 9b bc 8a d2 28 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.SetAccessKey.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.SetAccessKey({
+                accessLevel: accessLevels.READ_ONLY,
+                key: new Uint8Array([
+                    0, 1, 2, 3, 4, 5, 6, 7,
+                    7, 6, 5, 4, 3, 2, 1, 0
+                ])
+            })
+        ],
+        lrc: 0x5c,
+        crc: new Uint8Array([0xd2, 0x28]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetCorrectDateTime',
+        hex: '0a 12 44 f7 b3 43 5a 72 9e 18 f3 22 8c 7c 30 7e 01 0a',
+        frameHex: '7e 50 aa aa ff ff 0a 12 44 f7 b3 43 5a 72 9e 18 f3 22 8c 7c 30 7d 5e 01 0a 56 ad 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.SetCorrectDateTime.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.SetCorrectDateTime({
+                seconds: -5
+            })
+        ],
+        lrc: 0x1d,
+        crc: new Uint8Array([0x56, 0xad]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetDateTime',
+        hex: '0a 13 8c 84 46 31 26 33 6b 32 4e 05 d5 9f 95 31 e2 b9',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 8c 84 46 31 26 33 6b 32 4e 05 d5 9f 95 31 e2 b9 7a 1c 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.SetDateTime.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.SetDateTime({
+                isSummerTime: false,
+                seconds: 25,
+                minutes: 30,
+                hours: 18,
+                day: 2,
+                date: 13,
+                month: 9,
+                year: 23
+            })
+        ],
+        lrc: 0x42,
+        crc: new Uint8Array([0x7a, 0x1c]),
         frameType: frameTypes.DATA_REQUEST,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])
@@ -507,6 +648,56 @@ const uplinkMessages: TMessageList = [
         destination: new Uint8Array([0xaa, 0xaa])
     },
     {
+        name: 'GetDayProfileResponse',
+        hex: '0a 13 69 11 3f 2e d8 4d d1 ba 20 c4 a1 ec ff 6b 38 74',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 69 7d 31 3f 2e d8 4d d1 ba 20 c4 a1 ec ff 6b 38 74 14 98 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.GetDayProfileResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.GetDayProfileResponse({
+                periods: [
+                    {tariff: 0, isFirstHalfHour: true, hour: 2},
+                    {tariff: 1, isFirstHalfHour: false, hour: 3},
+                    {tariff: 2, isFirstHalfHour: true, hour: 4},
+                    {tariff: 3, isFirstHalfHour: false, hour: 5},
+                    {tariff: 0, isFirstHalfHour: true, hour: 6},
+                    {tariff: 1, isFirstHalfHour: false, hour: 7},
+                    {tariff: 2, isFirstHalfHour: false, hour: 8},
+                    {tariff: 3, isFirstHalfHour: true, hour: 9}
+                ]
+            })
+        ],
+        lrc: 0x75,
+        crc: new Uint8Array([0x14, 0x98]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetDayProfileResponse (4 periods)',
+        hex: '0a 13 d6 40 91 21 77 5b ba 57 f9 92 50 42 4a 16 ae 82',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 d6 40 91 21 77 5b ba 57 f9 92 50 42 4a 16 ae 82 16 10 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.GetDayProfileResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.GetDayProfileResponse({
+                periods: [
+                    {tariff: 0, isFirstHalfHour: true, hour: 2},
+                    {tariff: 1, isFirstHalfHour: false, hour: 3},
+                    {tariff: 2, isFirstHalfHour: true, hour: 4},
+                    {tariff: 3, isFirstHalfHour: false, hour: 5}
+                ]
+            })
+        ],
+        lrc: 0x87,
+        crc: new Uint8Array([0x16, 0x10]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
         name: 'GetDeviceIdResponse',
         hex: '0a 13 cf 5f a5 a8 36 72 4f c9 7a 07 35 f8 17 d4 96 51',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 cf 5f a5 a8 36 72 4f c9 7a 07 35 f8 17 d4 96 51 fe 54 7e',
@@ -601,6 +792,26 @@ const uplinkMessages: TMessageList = [
         destination: new Uint8Array([0xaa, 0xaa])
     },
     {
+        name: 'GetSeasonProfileResponse',
+        hex: '0c 13 b6 6b 87 aa a9 25 92 39 df 19 ee f7 2c 1e 41 90',
+        frameHex: '7e 51 aa aa ff ff 0c 7d 33 b6 6b 87 aa a9 25 92 39 df 19 ee f7 2c 1e 41 90 ca 5a 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.GetSeasonProfileResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.GetSeasonProfileResponse({
+                month: 1,
+                date: 2,
+                dayIndexes: [0, 1, 0, 1, 0, 1, 0]
+            })
+        ],
+        lrc: 0x71,
+        crc: new Uint8Array([0xca, 0x5a]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
         name: 'PrepareRatePlanResponse',
         hex: '0c 12 0b 27 68 f1 39 fe 5c 32 9f 44 45 c3 03 60 a8 b6',
         frameHex: '7e 51 aa aa ff ff 0c 12 0b 27 68 f1 39 fe 5c 32 9f 44 45 c3 03 60 a8 b6 08 c3 7e',
@@ -628,6 +839,54 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x41,
         crc: new Uint8Array([0xe3, 0x19]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetAccessKeyResponse',
+        hex: '0c 12 e5 f3 8e 60 03 20 e1 2d df 5b b5 dc e1 5e 78 52',
+        frameHex: '7e 51 aa aa ff ff 0c 12 e5 f3 8e 60 03 20 e1 2d df 5b b5 dc e1 5e 78 52 a2 ac 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.SetAccessKeyResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.SetAccessKeyResponse()
+        ],
+        lrc: 0x4e,
+        crc: new Uint8Array([0xa2, 0xac]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetCorrectDateTimeResponse',
+        hex: '0c 12 14 dd 5a e1 9d b0 2f 3d d1 e0 53 b1 7e a3 4c 52',
+        frameHex: '7e 51 aa aa ff ff 0c 12 14 dd 5a e1 9d b0 2f 3d d1 e0 53 b1 7d 5e a3 4c 52 76 8a 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.SetCorrectDateTimeResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.SetCorrectDateTimeResponse()
+        ],
+        lrc: 0x1b,
+        crc: new Uint8Array([0x76, 0x8a]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetDateTimeResponse',
+        hex: '0c 12 7d 7c c3 a1 f1 1d 18 e0 19 bf be af 01 63 da 9b',
+        frameHex: '7e 51 aa aa ff ff 0c 12 7d 5d 7c c3 a1 f1 1d 18 e0 19 bf be af 01 63 da 9b 65 b1 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.SetDateTimeResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.SetDateTimeResponse()
+        ],
+        lrc: 0x4f,
+        crc: new Uint8Array([0x65, 0xb1]),
         frameType: frameTypes.DATA_RESPONSE,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])
@@ -692,6 +951,27 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x56,
         crc: new Uint8Array([0xd4, 0x6b]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetSpecialDayResponse',
+        hex: '0a 13 8e b0 81 8d 53 40 b4 1d 24 56 8e 0e 86 8c 89 8f',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 8e b0 81 8d 53 40 b4 1d 24 56 8e 0e 86 8c 89 8f 01 74 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.GetSpecialDayResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.GetSpecialDayResponse({
+                month: 1,
+                date: 9,
+                dayIndex: 3,
+                isPeriodic: true
+            })
+        ],
+        lrc: 0x74,
+        crc: new Uint8Array([0x01, 0x74]),
         frameType: frameTypes.DATA_RESPONSE,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])

@@ -6,14 +6,14 @@ import getBytesFromHex from '../utils/getBytesFromHex.js';
 
 
 export interface IDateTime {
+    isSummerTime: boolean,
     seconds: number,
     minutes: number,
     hours: number,
     day: number,
     date: number,
     month: number,
-    year: number,
-    isSummerTime: boolean
+    year: number
 }
 
 export interface ITariffPlan {
@@ -335,6 +335,11 @@ const define1Mask = {
     MAGNET_SCREEN_CONST: 0x20
 };
 
+const splitDeviceTypeByte = ( byte: number ): Array<number> => [
+    byte >> 4,
+    byte & 0x0F
+];
+
 
 /**
  * Command specific byte array manipulation.
@@ -343,24 +348,6 @@ class CommandBinaryBuffer extends BinaryBuffer {
     constructor ( dataOrLength: Uint8Array | number | string ) {
         // force BE for all numbers
         super(dataOrLength, false);
-    }
-
-
-    /** '001a79' -> [0x00, 0x1a, 0x79] */
-    setHexString ( value: string ): void {
-        getBytesFromHex(value).forEach(byte => this.setUint8(byte));
-    }
-
-    /** [0x00, 0x1a, 0x79] -> '001a79' */
-    getHexString ( size: number ): string {
-        const currentOffset = this.offset;
-
-        this.offset += size;
-
-        return getHexFromBytes(
-            this.toUint8Array().slice(currentOffset, this.offset),
-            {separator: ''}
-        );
     }
 
     static getDateFromDateTime ( dateTime: IDateTime ): Date {
@@ -377,14 +364,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
     // does not work fully for now
     static getDateTimeFromDate ( date: Date ): IDateTime {
         const dateTime: IDateTime = {
-            year: date.getFullYear() - 2000,
-            month: date.getMonth() + 1,
+            isSummerTime: false,
+            seconds: date.getSeconds(),
+            minutes: date.getMinutes(),
+            hours: date.getHours(),
             day: date.getDay(),
             date: date.getDate(),
-            hours: date.getHours(),
-            minutes: date.getMinutes(),
-            seconds: date.getSeconds(),
-            isSummerTime: false
+            month: date.getMonth() + 1,
+            year: date.getFullYear() - 2000
         };
 
         // todo
@@ -669,19 +656,113 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     getDeviceId (): IDeviceId {
-        const manufacturer = this.getHexString(3);
+        const manufacturer = getHexFromBytes(this.getBytes(3), {separator: ''});
         const type = this.getUint8();
         const year = this.getUint8() + 2000;
-        const serial = this.getHexString(3);
+        const serial = getHexFromBytes(this.getBytes(3), {separator: ''});
 
         return {manufacturer, type, year, serial};
     }
 
     setDeviceId ( {manufacturer, type, year, serial}: IDeviceId ) {
-        this.setHexString(manufacturer);
+        this.setBytes(getBytesFromHex(manufacturer));
         this.setUint8(type);
         this.setUint8(year - 2000);
-        this.setHexString(serial);
+        this.setBytes(getBytesFromHex(serial));
+    }
+
+    // draft
+    // should be reviewed
+    getDeviceTypeString (): string {
+        const result = ['MTX '];
+        let left;
+        let right;
+
+        const DEVICE_TYPE_2L_ACCOUNTING_PHASE = ['.', '1', '3', 'R'];
+        const DEVICE_TYPE_2R_ACCOUNTING_ENERGY = ['.', 'A', 'G', 'R', 'T', 'D'];
+        //const DEVICE_TYPE_3_ACCURACY = ['02', '05', '10', '20', '30'];
+        const DEVICE_TYPE_N3 = ['.', '0', '1', '2', '3', '4', '5'];
+        const DEVICE_TYPE_N4 = ['.', 'A', 'B', 'C', 'D', 'E', 'F'];
+        const DEVICE_TYPE_N5 = ['.', 'A', 'B', 'C', 'D', 'E', 'F', 'H', 'K', 'G'];
+        const DEVICE_TYPE_N6 = ['.', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        const DEVICE_TYPE_N7_BURDEN = ['.', 'L', 'M', 'Z', 'K'];
+        const DEVICE_TYPE_N8 = ['.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        const DEVICE_TYPE_N9 = ['.', 'D', 'B', 'C', 'E', 'P', 'R', 'O', 'L', 'F', 'S', 'M', 'Y', 'G', 'N', 'U'];
+        const DEVICE_TYPE_N11 = ['.', 'H', 'A', 'T', '0', '0', '0', '0', '0', '1', '2', '3', '4', '0', '0', '0'];
+        const DEVICE_TYPE_INVALID_CHAR = 'x';
+
+        // 1: not used
+        this.getUint8();
+
+        // 2: 1100.00.000-0000
+        [left, right] = splitDeviceTypeByte(this.getUint8());
+        result.push(DEVICE_TYPE_2L_ACCOUNTING_PHASE[left] ?? DEVICE_TYPE_INVALID_CHAR);
+        result.push(DEVICE_TYPE_2R_ACCOUNTING_ENERGY[right] ?? DEVICE_TYPE_INVALID_CHAR);
+
+        // 3: 0011.00.000-0000
+        [left, right] = splitDeviceTypeByte(this.getUint8());
+        result.push(DEVICE_TYPE_N3[left] ?? DEVICE_TYPE_INVALID_CHAR);
+        //result.push(DEVICE_TYPE_N3[right] ?? DEVICE_TYPE_INVALID_CHAR);
+
+        result.push('.');
+
+        // 4: 0000.11.000-0000
+        [left, right] = splitDeviceTypeByte(this.getUint8());
+        result.push(DEVICE_TYPE_N4[left] ?? DEVICE_TYPE_INVALID_CHAR);
+        result.push(DEVICE_TYPE_N5[right] ?? DEVICE_TYPE_INVALID_CHAR);
+
+        result.push('.');
+
+        // 5: 0000.00.110-0000
+        [left, right] = splitDeviceTypeByte(this.getUint8());
+        result.push(DEVICE_TYPE_N6[left] ?? DEVICE_TYPE_INVALID_CHAR);
+        result.push(DEVICE_TYPE_N7_BURDEN[right] ?? DEVICE_TYPE_INVALID_CHAR);
+
+        // 6: 0000.00.001-0000
+        [left, right] = splitDeviceTypeByte(this.getUint8());
+        result.push(DEVICE_TYPE_N8[right] ?? DEVICE_TYPE_INVALID_CHAR);
+
+        result.push('-');
+
+        // 7, 8 - some variants
+        const [upper7, lower7] = splitDeviceTypeByte(this.getUint8());
+        const [upper8, lower8] = splitDeviceTypeByte(this.getUint8());
+
+        if ( upper8 === 0 && lower8 === 0 ) {
+            // 0000.00.000-11
+            result.push(DEVICE_TYPE_N9[upper7] ?? DEVICE_TYPE_INVALID_CHAR);
+            result.push(DEVICE_TYPE_N11[lower7] ?? DEVICE_TYPE_INVALID_CHAR);
+        } else if ( lower8 === 0 ) {
+            // 0000.00.000-111
+            result.push(DEVICE_TYPE_N9[upper7] ?? DEVICE_TYPE_INVALID_CHAR);
+            result.push(DEVICE_TYPE_N9[lower7] ?? DEVICE_TYPE_INVALID_CHAR);
+            result.push(DEVICE_TYPE_N11[upper8] ?? DEVICE_TYPE_INVALID_CHAR);
+        } else {
+            // 0000.00.000-1111
+            result.push(DEVICE_TYPE_N9[upper7] ?? DEVICE_TYPE_INVALID_CHAR);
+            result.push(DEVICE_TYPE_N9[lower7] ?? DEVICE_TYPE_INVALID_CHAR);
+            result.push(DEVICE_TYPE_N9[upper8] ?? DEVICE_TYPE_INVALID_CHAR);
+            result.push(DEVICE_TYPE_N11[lower8] ?? DEVICE_TYPE_INVALID_CHAR);
+        }
+
+        return result.join('');
+    }
+
+    // draft
+    // not implemented
+    static getDeviceTypeString ( type: Uint8Array ): string {
+        const result = '';
+
+        console.log('type:', type);
+
+        return result;
+    }
+
+    static getDeviceTypeBytes ( type: string ): Uint8Array {
+        console.log('type:', type);
+        const bytes = new Uint8Array(8);
+
+        return bytes;
     }
 }
 

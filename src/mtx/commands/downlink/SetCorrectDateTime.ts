@@ -1,31 +1,31 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
-import CommandBinaryBuffer, {ISpecialDay} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
 
-interface ISetSpecialDayParameters extends ISpecialDay {
-    tariffTable: number,
-    index: number
+interface ISetCorrectDateTimeParameters {
+    seconds: number
 }
 
 
-const COMMAND_ID = 0x12;
-const COMMAND_SIZE = 6;
+const COMMAND_ID = 0x5c;
+const COMMAND_SIZE = 2;
 
 const examples: TCommandExampleList = [
     {
-        name: 'set special day',
+        name: 'shift device time 5 seconds forward',
         parameters: {
-            tariffTable: 1,
-            index: 5,
-            month: 1,
-            date: 9,
-            dayIndex: 3,
-            isPeriodic: true
-
+            seconds: 5
         },
-        hex: {header: '12 06', body: '01 05 01 09 03 00'}
+        hex: {header: '5c 02', body: '00 05'}
+    },
+    {
+        name: 'shift device time 5 seconds backward',
+        parameters: {
+            seconds: -5
+        },
+        hex: {header: '5c 02', body: 'ff fb'}
     }
 ];
 
@@ -35,27 +35,22 @@ const examples: TCommandExampleList = [
  *
  * @example
  * ```js
- * import SetSpecialDay from 'jooby-codec/mtx/commands/downlink/SetSpecialDay.js';
+ * import SetCorrectDateTime from 'jooby-codec/mtx/commands/downlink/SetCorrectDateTime.js';
  *
  * const parameters = {
- *     tariffTable: 1,
- *     index: 5,
- *     month: 1,
- *     date: 9,
- *     dayIndex: 3,
- *     isPeriodic: true
+ *     seconds: 5
  * };
- * const command = new SetSpecialDay(parameters);
+ * const command = new SetCorrectDateTime(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 12 06 01 05 01 09 03 00
+ * // 5c 02 00 05
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetSpecialDay.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetCorrectDateTime.md#request)
  */
-class SetSpecialDay extends Command {
-    constructor ( public parameters: ISetSpecialDayParameters ) {
+class SetCorrectDateTime extends Command {
+    constructor ( public parameters: ISetCorrectDateTimeParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -79,10 +74,8 @@ class SetSpecialDay extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new SetSpecialDay({
-            tariffTable: buffer.getUint8(),
-            index: buffer.getUint8(),
-            ...buffer.getSpecialDay()
+        return new SetCorrectDateTime({
+            seconds: buffer.getInt16()
         });
     }
 
@@ -96,13 +89,11 @@ class SetSpecialDay extends Command {
         buffer.setUint8(size);
 
         // body
-        buffer.setUint8(parameters.tariffTable);
-        buffer.setUint8(parameters.index);
-        buffer.setSpecialDay(parameters);
+        buffer.setInt16(parameters.seconds);
 
         return buffer.toUint8Array();
     }
 }
 
 
-export default SetSpecialDay;
+export default SetCorrectDateTime;

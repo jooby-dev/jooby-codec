@@ -4,7 +4,7 @@ import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../constants/directions.js';
 
 
-const COMMAND_ID = 0x07;
+const COMMAND_ID = 0x08;
 const COMMAND_SIZE = 8;
 
 const examples: TCommandExampleList = [
@@ -20,38 +20,38 @@ const examples: TCommandExampleList = [
             month: 9,
             year: 23
         },
-        hex: {header: '07 08', body: '00 19 1e 12 02 0d 09 17'}
+        hex: {header: '08 08', body: '00 19 1e 12 02 0d 09 17'}
     }
 ];
 
 
 /**
- * Uplink command.
+ * Downlink command.
  *
- * @example create command instance from command body hex dump
+ * @example
  * ```js
- * import GetDateTimeResponse from 'jooby-codec/obis-observer/commands/uplink/GetDateTimeResponse.js';
+ * import SetDateTime from 'jooby-codec/mtx/commands/downlink/SetDateTime.js';
  *
- * const commandBody = new Uint8Array([0x00, 0x19, 0x1e, 0x12, 0x02, 0x0d, 0x09, 0x17]);
- * const command = GetDateTimeResponse.fromBytes(commandBody);
- *
- * console.log(command.parameters);
- * // output:
- * {
+ * const parameters = {
+ *     isSummerTime: false,
  *     seconds: 25,
  *     minutes: 30,
  *     hours: 18,
  *     day: 2,
  *     date: 13,
  *     month: 9,
- *     year: 23,
- *     isSummerTime: false
- * }
+ *     year: 23
+ * };
+ * const command = new SetDateTime(parameters);
+ *
+ * // output command binary in hex representation
+ * console.log(command.toHex());
+ * // 08 08 00 19 1e 12 02 0d 09 17
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDateTimeResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetDateTime.md#request)
  */
-class GetDateTimeResponse extends Command {
+class SetDateTime extends Command {
     constructor ( public parameters: IDateTime ) {
         super();
 
@@ -76,7 +76,7 @@ class GetDateTimeResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetDateTimeResponse(buffer.getDateTime());
+        return new SetDateTime(buffer.getDateTime());
     }
 
     // returns full message - header with body
@@ -95,4 +95,4 @@ class GetDateTimeResponse extends Command {
 }
 
 
-export default GetDateTimeResponse;
+export default SetDateTime;
