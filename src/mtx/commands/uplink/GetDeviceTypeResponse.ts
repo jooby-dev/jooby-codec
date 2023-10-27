@@ -20,7 +20,7 @@ const examples: TCommandExampleList = [
             type: 'MTX 1A10.DG.2L5-LD4',
             flags: 255
         },
-        hex: {header: '04 09', body: '00 11 21 49 21 B6 81 C0  ff'}
+        hex: {header: '04 09', body: '00 11 21 49 21 b6 81 c0  ff'}
     },
     {
         name: 'type 1',
@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
             type: 'MTX 1G05.DH.2L2-DOB4',
             flags: 0
         },
-        hex: {header: '04 09', body: '00 12 16 47 21 B3 17 2C  00'}
+        hex: {header: '04 09', body: '00 12 16 47 21 b3 17 2c  00'}
     }
 ];
 
