@@ -1,6 +1,6 @@
 /* eslint-disable object-curly-newline */
 
-import * as bitSet from '../src/utils/bitSet.js';
+import * as bitSet from '../../src/utils/bitSet.js';
 
 
 interface IObjectTestCase {
