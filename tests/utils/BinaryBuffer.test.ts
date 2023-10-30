@@ -1,6 +1,6 @@
-import BinaryBuffer from '../src/utils/BinaryBuffer.js';
-import getBytesFromHex from '../src/utils/getBytesFromHex.js';
-import getHexFromBytes from '../src/utils/getHexFromBytes.js';
+import BinaryBuffer from '../../src/utils/BinaryBuffer.js';
+import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
+import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 
 
 const HEX_DATA = '02 05 0c 00 01 e2 40 ff 10 aa 28 9b ae 63 f4 35';

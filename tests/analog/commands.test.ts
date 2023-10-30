@@ -2,7 +2,7 @@
 
 import Command, {ICommandExample} from '../../src/analog/Command.js';
 import {commands} from '../../src/analog/index.js';
-import * as message from '../../src/analog/message.js';
+import calculateLrc from '../../src/utils/calculateLrc.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 import getBase64FromBytes from '../../src/utils/getBase64FromBytes.js';
@@ -15,7 +15,7 @@ const checkExample = ( constructor: any, {parameters, config, hex: {header, body
     const commandHex = getHexFromBytes(getBytesFromHex(`${header} ${body}`));
     const commandBytes = getBytesFromHex(commandHex);
     const commandBase64 = getBase64FromBytes(commandBytes);
-    const messageHex = `${commandHex} ${message.calculateLrc(commandBytes).toString(16)}`;
+    const messageHex = `${commandHex} ${calculateLrc(commandBytes).toString(16)}`;
     const command = new constructor(parameters, config);
     const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null, config);
 
@@ -32,6 +32,7 @@ const checkExample = ( constructor: any, {parameters, config, hex: {header, body
     expect(commandFromHex.parameters).toStrictEqual(parameters);
     expect(commandFromHex.getParameters()).toStrictEqual(parameters);
 };
+
 
 const processExamples = ( commands: Record<string, any> ) => {
     for ( const [name, constructor] of Object.entries(commands) ) {

@@ -1,4 +1,5 @@
 import crypto from 'crypto-js';
+import {calculateCrc16, Crc16Type} from '../../utils/calculateCrc16.js';
 import getBase64FromBytes from '../../utils/getBase64FromBytes.js';
 
 
@@ -68,47 +69,8 @@ export const aes = {
     )
 };
 
-/**
- * Calculate LRC
- *
- * @param data - byte array
- *
- * @return LRC
- */
-export const calculateLrc = ( data: Uint8Array, initialLrc = 0x55 ) => {
-    let lrc = initialLrc;
-
-    data.forEach(item => {
-        lrc ^= item;
-    });
-
-    return lrc;
-};
-
-/**
- * Calculate CRC
- *
- * @param value - byte array
- *
- * @return CRC value
- */
-export const calculateCrc = ( value: Uint8Array ): number => {
-    let crc = 0xFFFF;
-
-    for ( let index = 0; index < value.length; index++ ) {
-        // Compute combined value.
-        let data = value[index] ^ (crc & 0xFF);
-
-        data ^= (data << 4) & 0xFF;
-
-        crc = (data << 3) ^ (data << 8) ^ (crc >> 8) ^ (data >> 4);
-    }
-
-    return ((crc & 0xFF00) ^ 0xFF00) | ((crc & 0xFF) ^ 0xFF);
-};
-
 export const calculateCrcBytes = ( value: Uint8Array ): Uint8Array => {
-    const number = calculateCrc(value);
+    const number = calculateCrc16(Crc16Type.X25, value);
     const buffer = new ArrayBuffer(2);
     const view = new DataView(buffer);
 
