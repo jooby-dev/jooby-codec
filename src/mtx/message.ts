@@ -6,12 +6,13 @@ import * as downlinkCommands from './commands/downlink/index.js';
 import * as uplinkCommands from './commands/uplink/index.js';
 
 import {IHexFormatOptions} from '../config.js';
+import calculateLrc from '../utils/calculateLrc.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
 import getBytesFromBase64 from '../utils/getBytesFromBase64.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBase64FromBytes from '../utils/getBase64FromBytes.js';
 import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
-import {aes, arrayStuff, arrayUnstuff, calculateCrcBytes, calculateLrc} from './utils/crypto.js';
+import {aes, arrayStuff, arrayUnstuff, calculateCrcBytes} from './utils/crypto.js';
 
 import {READ_ONLY, MASK} from './constants/accessLevels.js';
 import * as accessLevels from './constants/accessLevels.js';

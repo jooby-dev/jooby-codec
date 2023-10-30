@@ -10,6 +10,7 @@ import {AUTO, DOWNLINK, UPLINK} from './constants/directions.js';
 
 import * as header from './header.js';
 import {IHexFormatOptions} from '../config.js';
+import calculateLrc from '../utils/calculateLrc.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
 import getBytesFromBase64 from '../utils/getBytesFromBase64.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
@@ -56,23 +57,6 @@ export const uplinkCommandsById = Object.fromEntries(
     Object.values(uplinkCommands).map(item => [item.id, item])
 );
 
-
-/**
- * Calculate LRC
- *
- * @param data - byte array
- *
- * @return LRC
- */
-export const calculateLrc = ( data: Uint8Array, initialLrc = 0x55 ) => {
-    let lrc = initialLrc;
-
-    data.forEach(item => {
-        lrc ^= item;
-    });
-
-    return lrc;
-};
 
 const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareType?: number ): Command => {
     if ( !directionTypeIds.has(direction) ) {
