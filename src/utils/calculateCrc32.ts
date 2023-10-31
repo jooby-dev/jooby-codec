@@ -1,7 +1,7 @@
-const updateCrc32 = ( startValue: number, data: Uint8Array ) => {
+const updateCrc32 = ( startValue: number, data: Uint8Array | Array<number> ) => {
     let crc = BigInt(startValue);
 
-    for ( let index = 0; index < data.byteLength; index++ ) {
+    for ( let index = 0; index < data.length; index++ ) {
         crc ^= BigInt(data[index]);
 
         for ( let bit = 0; bit < 8; bit++ ) {
@@ -32,7 +32,7 @@ export enum Crc32Type {
  * @return CRC32
  */
 
-export const calculateCrc32 = ( crc32type: Crc32Type, data: Uint8Array ) => {
+export const calculateCrc32 = ( crc32type: Crc32Type, data: Uint8Array | Array<number> ) => {
     if ( crc32type === Crc32Type.IEEE_8023) {
         const crc = updateCrc32(0xffffffff, data);
 
