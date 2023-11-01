@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {TEventStatus} from '../../CommandBinaryBuffer.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 
 

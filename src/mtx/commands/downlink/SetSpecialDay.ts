@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
 import CommandBinaryBuffer, {ISpecialDay} from '../../CommandBinaryBuffer.js';
-import {DOWNLINK} from '../../constants/directions.js';
+import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
 

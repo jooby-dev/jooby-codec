@@ -4,7 +4,7 @@ import getHexFromBytes from '../../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../../utils/getBytesFromHex.js';
 import {TTime2000} from '../../../utils/time.js';
 import * as events from '../../constants/events.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 
 

@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 
 
 interface IGetDisplayParamResponseParameters {

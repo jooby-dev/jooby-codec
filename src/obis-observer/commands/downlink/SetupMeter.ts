@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
-import {DOWNLINK} from '../../constants/directions.js';
+import {DOWNLINK} from '../../../constants/directions.js';
 
 
 /**

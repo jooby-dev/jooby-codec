@@ -1,4 +1,4 @@
-export const calculateX25 = ( data: Uint8Array ) => {
+export const calculateX25 = ( data: Uint8Array | Array<number> ) => {
     let crc = 0xFFFF;
 
     for ( let index = 0; index < data.length; index++ ) {
@@ -26,7 +26,7 @@ export enum Crc16Type {
  * @return CRC32
  */
 
-export const calculateCrc16 = ( crc16type: Crc16Type, data: Uint8Array ) => {
+export const calculateCrc16 = ( crc16type: Crc16Type, data: Uint8Array | Array<number> ) => {
     if ( crc16type === Crc16Type.X25 ) return calculateX25(data);
 
     throw new Error('unknown CRC16 type');

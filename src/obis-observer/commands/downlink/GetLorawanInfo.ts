@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js';
-import {DOWNLINK} from '../../constants/directions.js';
+import {DOWNLINK} from '../../../constants/directions.js';
 
 
 const COMMAND_ID = 0x20;

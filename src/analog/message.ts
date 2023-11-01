@@ -5,8 +5,8 @@ import UnknownCommand from './UnknownCommand.js';
 import * as downlinkCommands from './commands/downlink/index.js';
 import * as uplinkCommands from './commands/uplink/index.js';
 
-import * as directionTypes from './constants/directions.js';
-import {AUTO, DOWNLINK, UPLINK} from './constants/directions.js';
+import * as directionTypes from '../constants/directions.js';
+import {AUTO, DOWNLINK, UPLINK} from '../constants/directions.js';
 
 import * as header from './header.js';
 import {IHexFormatOptions} from '../config.js';

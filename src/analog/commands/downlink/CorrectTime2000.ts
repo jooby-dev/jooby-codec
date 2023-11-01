@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import BinaryBuffer from '../../../utils/BinaryBuffer.js';
-import {DOWNLINK} from '../../constants/directions.js';
+import {DOWNLINK} from '../../../constants/directions.js';
 
 
 /**

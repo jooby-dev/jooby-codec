@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IParameter} from '../../CommandBinaryBuffer.js';
-import {DOWNLINK} from '../../constants/directions.js';
+import {DOWNLINK} from '../../../constants/directions.js';
 import * as deviceParameters from '../../constants/deviceParameters.js';
 import * as rx2SpreadFactors from '../../constants/rx2SpreadFactors.js';
 

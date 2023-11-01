@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import {DOWNLINK} from '../../constants/directions.js';
+import {DOWNLINK} from '../../../constants/directions.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import mergeUint8Arrays from '../../../utils/mergeUint8Arrays.js';
 

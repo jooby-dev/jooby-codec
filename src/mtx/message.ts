@@ -16,9 +16,9 @@ import {aes, arrayStuff, arrayUnstuff, calculateCrcBytes} from './utils/crypto.j
 
 import {READ_ONLY, MASK} from './constants/accessLevels.js';
 import * as accessLevels from './constants/accessLevels.js';
-import * as directionTypes from './constants/directions.js';
-import {AUTO, DOWNLINK, UPLINK} from './constants/directions.js';
-import {START_BYTE, STOP_BYTE} from './constants/frameAttributes.js';
+import * as directionTypes from '../constants/directions.js';
+import {AUTO, DOWNLINK, UPLINK} from '../constants/directions.js';
+import {START_BYTE, STOP_BYTE} from '../constants/frameAttributes.js';
 import * as frameTypes from './constants/frameTypes.js';
 
 
