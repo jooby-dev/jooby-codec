@@ -1,7 +1,7 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../utils/time.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 
 
 /**

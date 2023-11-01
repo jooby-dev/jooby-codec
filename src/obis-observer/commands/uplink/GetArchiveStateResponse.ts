@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
 
 

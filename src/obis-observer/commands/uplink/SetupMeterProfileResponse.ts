@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 
 
 const COMMAND_ID = 0x61;

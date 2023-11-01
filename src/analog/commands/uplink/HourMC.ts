@@ -2,7 +2,7 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import CurrentMC from './CurrentMC.js';
 import {TTime2000} from '../../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 
 
 interface IHourMCParameters {

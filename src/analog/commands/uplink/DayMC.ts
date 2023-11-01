@@ -4,7 +4,7 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IChannelValue} from '../../CommandBinaryBuffer.js';
 import {getTime2000FromDate, TTime2000} from '../../../utils/time.js';
 import CurrentMC, {ICurrentMCParameters} from './CurrentMC.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 
 
 /**

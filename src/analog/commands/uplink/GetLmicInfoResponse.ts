@@ -1,7 +1,7 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import BinaryBuffer from '../../../utils/BinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 
 
 interface ILmicCapabilities extends bitSet.TBooleanObject {

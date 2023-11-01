@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 
 
 const COMMAND_ID = 0x19;

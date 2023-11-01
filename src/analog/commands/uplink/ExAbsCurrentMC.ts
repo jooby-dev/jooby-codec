@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IChannelAbsoluteValue} from '../../CommandBinaryBuffer.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 
 
 interface IExAbsCurrentMCParameters {

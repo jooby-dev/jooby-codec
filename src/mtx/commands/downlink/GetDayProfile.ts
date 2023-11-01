@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import {DOWNLINK} from '../../constants/directions.js';
+import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
 

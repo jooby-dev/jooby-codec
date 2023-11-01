@@ -1,7 +1,7 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
 import CommandBinaryBuffer, {ITariffPlan, TARIFF_PLAN_SIZE} from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 
 
 interface IGetRatePlanInfoResponseParameters {

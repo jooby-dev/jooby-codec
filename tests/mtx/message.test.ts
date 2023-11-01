@@ -10,7 +10,7 @@ import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import * as accessLevels from '../../src/mtx/constants/accessLevels.js';
 import * as frameTypes from '../../src/mtx/constants/frameTypes.js';
-import * as directions from '../../src/mtx/constants/directions.js';
+import * as directions from '../../src/constants/directions.js';
 import {ACCESS_DENIED} from '../../src/mtx/constants/resultCodes.js';
 
 

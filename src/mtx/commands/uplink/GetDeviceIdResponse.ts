@@ -1,7 +1,7 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
 import CommandBinaryBuffer, {IDeviceId} from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import {UPLINK} from '../../constants/directions.js';
+import {UPLINK} from '../../../constants/directions.js';
 
 
 const COMMAND_ID = 0x05;
