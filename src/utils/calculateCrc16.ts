@@ -1,4 +1,4 @@
-export const updateX25 = ( startValue: number, data: Uint8Array | Array<number> ) => {
+export const updateX25 = ( startValue: number, data: Uint8Array ) => {
     let crc = 0xFFFF;
 
     for ( let index = 0; index < data.length; index++ ) {
@@ -27,7 +27,7 @@ export enum Crc16Type {
  *
  * @return CRC32
  */
-export default ( data: Uint8Array | Array<number>, crc16type: Crc16Type = Crc16Type.X25 ) => {
+export default ( data: Uint8Array, crc16type: Crc16Type = Crc16Type.X25 ) => {
     if ( crc16type === Crc16Type.X25 ) {
         const crc = updateX25(0xFFFF, data);
 
