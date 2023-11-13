@@ -29,6 +29,7 @@ requestByResponse.set(uplinkCommands.SetParameterResponse, downlinkCommands.SetP
 requestByResponse.set(uplinkCommands.SetTime2000Response, downlinkCommands.SetTime2000);
 requestByResponse.set(uplinkCommands.SoftRestartResponse, downlinkCommands.SoftRestart);
 requestByResponse.set(uplinkCommands.Status, downlinkCommands.GetStatus);
+requestByResponse.set(uplinkCommands.Time2000, downlinkCommands.GetTime2000);
 requestByResponse.set(uplinkCommands.UpdateRunResponse, downlinkCommands.UpdateRun);
 requestByResponse.set(uplinkCommands.VerifyImageResponse, downlinkCommands.VerifyImage);
 requestByResponse.set(uplinkCommands.WriteImageResponse, downlinkCommands.WriteImage);

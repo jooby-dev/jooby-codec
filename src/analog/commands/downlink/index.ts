@@ -18,6 +18,7 @@ export {default as GetExAbsCurrentMC} from './GetExAbsCurrentMC.js';
 export {default as GetLmicInfo} from './GetLmicInfo.js';
 export {default as GetParameter} from './GetParameter.js';
 export {default as GetStatus} from './GetStatus.js';
+export {default as GetTime2000} from './GetTime2000.js';
 export {default as SetParameter} from './SetParameter.js';
 export {default as SetTime2000} from './SetTime2000.js';
 export {default as SoftRestart} from './SoftRestart.js';
