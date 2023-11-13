@@ -1,4 +1,4 @@
-const updateCrc32 = ( startValue: number, data: Uint8Array | Array<number> ) => {
+const updateIEEE8023 = ( startValue: number, data: Uint8Array | Array<number> ) => {
     let crc = BigInt(startValue);
 
     for ( let index = 0; index < data.length; index++ ) {
@@ -16,7 +16,7 @@ const updateCrc32 = ( startValue: number, data: Uint8Array | Array<number> ) => 
     return Number(crc);
 };
 
-const digestCrc32 = ( value: number ) => ~value >>> 0;
+const digestIEEE8023 = ( value: number ) => ~value >>> 0;
 
 
 export enum Crc32Type {
@@ -31,12 +31,11 @@ export enum Crc32Type {
  *
  * @return CRC32
  */
+export default ( data: Uint8Array | Array<number>, crc32type: Crc32Type = Crc32Type.IEEE_8023 ) => {
+    if ( crc32type === Crc32Type.IEEE_8023 ) {
+        const crc = updateIEEE8023(0xffffffff, data);
 
-export const calculateCrc32 = ( crc32type: Crc32Type, data: Uint8Array | Array<number> ) => {
-    if ( crc32type === Crc32Type.IEEE_8023) {
-        const crc = updateCrc32(0xffffffff, data);
-
-        return digestCrc32(crc);
+        return digestIEEE8023(crc);
     }
 
     throw new Error('unknown CRC32 type');
