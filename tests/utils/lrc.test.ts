@@ -1,12 +1,16 @@
 /* eslint-disable object-curly-newline */
 
 import calculateLrc from '../../src/utils/calculateLrc.js';
+import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 
 
 describe('check lrc calculation', () => {
-    test('check lrc calculation for simple sequence', () => {
-        const testSequence = new Uint8Array([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x55]);
+    test('simple sequence', () => {
+        const testSequence = '00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 55';
+        const testBytes = getBytesFromHex(testSequence);
+        const testArray = Array.from(testBytes);
 
-        expect(calculateLrc(testSequence)).toBe(0);
+        expect(calculateLrc(testBytes)).toBe(0);
+        expect(calculateLrc(testArray)).toBe(0);
     });
 });

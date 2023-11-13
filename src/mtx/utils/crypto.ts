@@ -1,5 +1,5 @@
 import crypto from 'crypto-js';
-import {calculateCrc16, Crc16Type} from '../../utils/calculateCrc16.js';
+import calculateCrc16 from '../../utils/calculateCrc16.js';
 import getBase64FromBytes from '../../utils/getBase64FromBytes.js';
 
 
@@ -70,7 +70,7 @@ export const aes = {
 };
 
 export const calculateCrcBytes = ( value: Uint8Array ): Uint8Array => {
-    const number = calculateCrc16(Crc16Type.X25, value);
+    const number = calculateCrc16(value);
     const buffer = new ArrayBuffer(2);
     const view = new DataView(buffer);
 
