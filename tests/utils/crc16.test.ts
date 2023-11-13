@@ -1,11 +1,15 @@
-import {calculateCrc16, Crc16Type} from '../../src/utils/calculateCrc16.js';
+import calculateCrc16 from '../../src/utils/calculateCrc16.js';
+import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 
 
 describe('check crc16 calculation', () => {
-    test('check crc16 x25 calculation', () => {
-        const testSequence = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f];
+    test('x25', () => {
+        const testSequence = '00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f';
+        const testBytes = getBytesFromHex(testSequence);
+        const testArray = Array.from(testBytes);
+        const expectedCrc = 0x13e9;
 
-        expect(calculateCrc16(Crc16Type.X25, testSequence)).toBe(0x13E9);
-        expect(calculateCrc16(Crc16Type.X25, new Uint8Array(testSequence))).toBe(0x13E9);
+        expect(calculateCrc16(testBytes)).toBe(expectedCrc);
+        expect(calculateCrc16(testArray)).toBe(expectedCrc);
     });
 });

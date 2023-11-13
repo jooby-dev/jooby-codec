@@ -1,4 +1,4 @@
-export const calculateX25 = ( data: Uint8Array | Array<number> ) => {
+export const updateX25 = ( startValue: number, data: Uint8Array | Array<number> ) => {
     let crc = 0xFFFF;
 
     for ( let index = 0; index < data.length; index++ ) {
@@ -10,8 +10,10 @@ export const calculateX25 = ( data: Uint8Array | Array<number> ) => {
         crc = (value << 3) ^ (value << 8) ^ (crc >> 8) ^ (value >> 4);
     }
 
-    return ((crc & 0xFF00) ^ 0xFF00) | ((crc & 0xFF) ^ 0xFF);
+    return crc;
 };
+
+const digestX25 = ( value: number ) => ((value & 0xFF00) ^ 0xFF00) | ((value & 0xFF) ^ 0xFF);
 
 export enum Crc16Type {
     X25 = 0
@@ -25,9 +27,12 @@ export enum Crc16Type {
  *
  * @return CRC32
  */
+export default ( data: Uint8Array | Array<number>, crc16type: Crc16Type = Crc16Type.X25 ) => {
+    if ( crc16type === Crc16Type.X25 ) {
+        const crc = updateX25(0xFFFF, data);
 
-export const calculateCrc16 = ( crc16type: Crc16Type, data: Uint8Array | Array<number> ) => {
-    if ( crc16type === Crc16Type.X25 ) return calculateX25(data);
+        return digestX25(crc);
+    }
 
     throw new Error('unknown CRC16 type');
 };
