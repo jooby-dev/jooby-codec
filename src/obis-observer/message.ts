@@ -2,9 +2,7 @@
 
 import Command from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
-import * as downlinkCommands from './commands/downlink/index.js';
-import * as uplinkCommands from './commands/uplink/index.js';
-
+import {requestById, responseById} from './constants/commandRelations.js';
 import {IHexFormatOptions} from '../config.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
 import getBytesFromBase64 from '../utils/getBytesFromBase64.js';
@@ -31,18 +29,9 @@ interface IMessage {
 
 const HEADER_SIZE = 1;
 
-// convert export namespace to dictionary {commandId: commandConstructor}
-export const downlinkCommandsById = Object.fromEntries(
-    Object.values(downlinkCommands).map(item => [item.id, item])
-);
-
-export const uplinkCommandsById = Object.fromEntries(
-    Object.values(uplinkCommands).map(item => [item.id, item])
-);
-
 const getCommand = ( id: number, data: Uint8Array ): Command => {
     // id is unique for all commands
-    const command = downlinkCommandsById[id] || uplinkCommandsById[id];
+    const command = requestById.get(id) || responseById.get(id);
 
     if ( command ) {
         return command.fromBytes(data) as Command;

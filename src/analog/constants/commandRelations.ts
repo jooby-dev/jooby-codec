@@ -9,8 +9,8 @@ export const requestByResponse = new Map();
 export const responseByRequest = new Map();
 
 // id to constructor
-export const requestById = new Map();
-export const responseById = new Map();
+export const requestById = new Map(Object.values(downlinkCommands).map(command => [command.id, command]));
+export const responseById = new Map(Object.values(uplinkCommands).map(command => [command.id, command]));
 
 
 requestByResponse.set(uplinkCommands.CorrectTime2000Response, downlinkCommands.CorrectTime2000);
@@ -37,7 +37,4 @@ requestByResponse.set(uplinkCommands.WriteImageResponse, downlinkCommands.WriteI
 for ( const [response, request] of requestByResponse.entries() ) {
     // invert keys with values
     responseByRequest.set(request, response);
-    // fill id to constructor dictionaries
-    responseById.set(response.id, response);
-    requestById.set(request.id, request);
 }
