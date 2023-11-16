@@ -17,6 +17,7 @@ export {default as GetArchiveDaysResponse} from './GetArchiveDaysResponse.js';
 export {default as GetArchiveEventsResponse} from './GetArchiveEventsResponse.js';
 export {default as GetArchiveHoursMCResponse} from './GetArchiveHoursMCResponse.js';
 export {default as GetArchiveHoursResponse} from './GetArchiveHoursResponse.js';
+export {default as GetBatteryStatusResponse} from './GetBatteryStatusResponse.js';
 export {default as GetExAbsArchiveDaysMCResponse} from './GetExAbsArchiveDaysMCResponse.js';
 export {default as GetExAbsArchiveHoursMCResponse} from './GetExAbsArchiveHoursMCResponse.js';
 export {default as GetLmicInfoResponse} from './GetLmicInfoResponse.js';
