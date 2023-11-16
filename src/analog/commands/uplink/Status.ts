@@ -60,7 +60,7 @@ const examples: TCommandExampleList = [
             software: {type: 2, version: 10},
             hardware: {type: hardwareTypes.GASI3, version: 1},
             data: {
-                batteryVoltage: {low: 3158, high: 3522},
+                batteryVoltage: {underLowLoad: 3158, underHighLoad: 3522},
                 batteryInternalResistance: 10034,
                 temperature: 14,
                 remainingBatteryCapacity: 41,
@@ -90,7 +90,7 @@ const examples: TCommandExampleList = [
  *     software: {type: 2, version: 10},
  *     hardware: {type: 3, version: 1},
  *     data: {
- *         batteryVoltage: {low: 3158, high: 3522},
+ *         batteryVoltage: {underLowLoad: 3158, underHighLoad: 3522},
  *         batteryInternalResistance: 10034,
  *         temperature: 14,
  *         remainingBatteryCapacity: 41,

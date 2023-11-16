@@ -11,18 +11,18 @@ import * as deviceParameters from './constants/deviceParameters.js';
 
 export interface IBatteryVoltage {
     /**
-     * battery voltage value at low consumption, in mV
+     * Battery voltage under minimum load (sleep mode), value in `mV`. Typical value is about `3600` `mV`.
      *
      * `4095` - unknown value and becomes `undefined`
      */
-    low: number | undefined,
+    underLowLoad: number | undefined,
 
     /**
-     * battery voltage value at hight consumption, in mV
+     * Battery voltage under load simulating transmission mode, value in `mV`. Typical value is about `3600` `mV`.
      *
      * `4095` - unknown value and becomes `undefined`
      */
-    high: number | undefined
+    underHighLoad: number | undefined
 }
 
 export interface IChannel {
@@ -898,43 +898,43 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     getBatteryVoltage (): IBatteryVoltage {
-        let high;
-        let low;
+        let underHighLoad;
+        let underLowLoad;
 
         const lowVoltageByte = this.getUint8();
         const lowAndHightVoltageByte = this.getUint8();
         const highVoltageByte = this.getUint8();
 
-        low = lowVoltageByte << 4;
-        low |= (lowAndHightVoltageByte & 0xf0) >> 4;
+        underLowLoad = lowVoltageByte << 4;
+        underLowLoad |= (lowAndHightVoltageByte & 0xf0) >> 4;
 
-        high = ((lowAndHightVoltageByte & 0x0f) << 8) | highVoltageByte;
+        underHighLoad = ((lowAndHightVoltageByte & 0x0f) << 8) | highVoltageByte;
 
-        if ( high === UNKNOWN_BATTERY_VOLTAGE ) {
-            high = undefined;
+        if ( underHighLoad === UNKNOWN_BATTERY_VOLTAGE ) {
+            underHighLoad = undefined;
         }
 
-        if ( low === UNKNOWN_BATTERY_VOLTAGE ) {
-            low = undefined;
+        if ( underLowLoad === UNKNOWN_BATTERY_VOLTAGE ) {
+            underLowLoad = undefined;
         }
 
-        return {low, high};
+        return {underLowLoad, underHighLoad};
     }
 
     setBatteryVoltage ( batteryVoltage: IBatteryVoltage ): void {
-        let {low, high} = batteryVoltage;
+        let {underLowLoad, underHighLoad} = batteryVoltage;
 
-        if ( low === undefined ) {
-            low = UNKNOWN_BATTERY_VOLTAGE;
+        if ( underLowLoad === undefined ) {
+            underLowLoad = UNKNOWN_BATTERY_VOLTAGE;
         }
 
-        if ( high === undefined ) {
-            high = UNKNOWN_BATTERY_VOLTAGE;
+        if ( underHighLoad === undefined ) {
+            underHighLoad = UNKNOWN_BATTERY_VOLTAGE;
         }
 
-        const lowVoltageByte = (low >> 4) & 0xff;
-        const lowAndHighVoltageByte = ((low & 0x0f) << 4) | ((high >> 8) & 0x0f);
-        const highVoltageByte = high & 0xff;
+        const lowVoltageByte = (underLowLoad >> 4) & 0xff;
+        const lowAndHighVoltageByte = ((underLowLoad & 0x0f) << 4) | ((underHighLoad >> 8) & 0x0f);
+        const highVoltageByte = underHighLoad & 0xff;
 
         [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
     }
