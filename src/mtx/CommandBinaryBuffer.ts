@@ -213,11 +213,31 @@ export interface IDeviceId {
     serial: string
 }
 
+export interface IDeviceType {
+    /** MTX 1A10.DG.2L5-LD4 */
+    type: string,
+    revision: number,
+    meterType: number
+}
+
 
 export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
 export const SEASON_PROFILE_DAYS_NUMBER = 7;
 export const SEASON_PROFILE_SIZE = 2 + SEASON_PROFILE_DAYS_NUMBER;
+
+const DEVICE_TYPE_INVALID_CHAR = 'x';
+const DEVICE_TYPE_1H_NIBBLE = ['.', '1', '3', 'R'];
+const DEVICE_TYPE_1L_NIBBLE = ['.', 'A', 'G', 'R', 'T', 'D'];
+const DEVICE_TYPE_2H_2L_NIBBLE = ['.', '0', '1', '2', '3', '4', '5'];
+const DEVICE_TYPE_3H_NIBBLE = ['.', 'A', 'B', 'C', 'D', 'E', 'F'];
+const DEVICE_TYPE_3L_NIBBLE = ['.', 'A', 'B', 'C', 'D', 'E', 'F', 'H', 'K', 'G'];
+const DEVICE_TYPE_4H_NIBBLE = ['.', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const DEVICE_TYPE_4L_NIBBLE = ['.', 'L', 'M', 'Z', 'K'];
+const DEVICE_TYPE_5L_NIBBLE = ['.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+const DEVICE_TYPE_N9 = ['.', 'D', 'B', 'C', 'E', 'P', 'R', 'O', 'L', 'F', 'S', 'M', 'Y', 'G', 'N', 'U'];
+const DEVICE_TYPE_N11 = ['0', 'H', 'A', 'T', '0', '0', '0', '0', '0', '1', '2', '3', '4', '0', '0', '0'];
+
 
 const displaySetMask = {
     TEST_D: 0x0001,
@@ -655,6 +675,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(+!specialDay.isPeriodic);
     }
 
+    // https://gitlab.infomir.dev/electric_meters/emdoc/-/blob/master/src/deviceInfo/deviceId.md
     getDeviceId (): IDeviceId {
         const manufacturer = getHexFromBytes(this.getBytes(3), {separator: ''});
         const type = this.getUint8();
@@ -671,98 +692,159 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setBytes(getBytesFromHex(serial));
     }
 
-    // draft
-    // should be reviewed
-    getDeviceTypeString (): string {
-        const result = ['MTX '];
-        let left;
-        let right;
+    // https://gitlab.infomir.dev/electric_meters/emdoc/-/blob/master/src/deviceInfo/deviceType.md
+    getDeviceType (): IDeviceType {
+        const type = ['MTX '];
+        let high;
+        let low;
 
-        const DEVICE_TYPE_2L_ACCOUNTING_PHASE = ['.', '1', '3', 'R'];
-        const DEVICE_TYPE_2R_ACCOUNTING_ENERGY = ['.', 'A', 'G', 'R', 'T', 'D'];
-        //const DEVICE_TYPE_3_ACCURACY = ['02', '05', '10', '20', '30'];
-        const DEVICE_TYPE_N3 = ['.', '0', '1', '2', '3', '4', '5'];
-        const DEVICE_TYPE_N4 = ['.', 'A', 'B', 'C', 'D', 'E', 'F'];
-        const DEVICE_TYPE_N5 = ['.', 'A', 'B', 'C', 'D', 'E', 'F', 'H', 'K', 'G'];
-        const DEVICE_TYPE_N6 = ['.', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        const DEVICE_TYPE_N7_BURDEN = ['.', 'L', 'M', 'Z', 'K'];
-        const DEVICE_TYPE_N8 = ['.', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-        const DEVICE_TYPE_N9 = ['.', 'D', 'B', 'C', 'E', 'P', 'R', 'O', 'L', 'F', 'S', 'M', 'Y', 'G', 'N', 'U'];
-        const DEVICE_TYPE_N11 = ['.', 'H', 'A', 'T', '0', '0', '0', '0', '0', '1', '2', '3', '4', '0', '0', '0'];
-        const DEVICE_TYPE_INVALID_CHAR = 'x';
-
-        // 1: not used
+        // 0: not used
         this.getUint8();
 
-        // 2: 1100.00.000-0000
-        [left, right] = splitDeviceTypeByte(this.getUint8());
-        result.push(DEVICE_TYPE_2L_ACCOUNTING_PHASE[left] ?? DEVICE_TYPE_INVALID_CHAR);
-        result.push(DEVICE_TYPE_2R_ACCOUNTING_ENERGY[right] ?? DEVICE_TYPE_INVALID_CHAR);
+        // 1: 1100.00.000-0000
+        [high, low] = splitDeviceTypeByte(this.getUint8());
+        type.push(DEVICE_TYPE_1H_NIBBLE[high] ?? DEVICE_TYPE_INVALID_CHAR);
+        type.push(DEVICE_TYPE_1L_NIBBLE[low] ?? DEVICE_TYPE_INVALID_CHAR);
 
-        // 3: 0011.00.000-0000
-        [left, right] = splitDeviceTypeByte(this.getUint8());
-        result.push(DEVICE_TYPE_N3[left] ?? DEVICE_TYPE_INVALID_CHAR);
-        //result.push(DEVICE_TYPE_N3[right] ?? DEVICE_TYPE_INVALID_CHAR);
+        // 2: 0011.00.000-0000
+        [high, low] = splitDeviceTypeByte(this.getUint8());
+        type.push(DEVICE_TYPE_2H_2L_NIBBLE[high] ?? DEVICE_TYPE_INVALID_CHAR);
+        type.push(DEVICE_TYPE_2H_2L_NIBBLE[low] ?? DEVICE_TYPE_INVALID_CHAR);
 
-        result.push('.');
+        type.push('.');
 
-        // 4: 0000.11.000-0000
-        [left, right] = splitDeviceTypeByte(this.getUint8());
-        result.push(DEVICE_TYPE_N4[left] ?? DEVICE_TYPE_INVALID_CHAR);
-        result.push(DEVICE_TYPE_N5[right] ?? DEVICE_TYPE_INVALID_CHAR);
+        // 3: 0000.11.000-0000
+        [high, low] = splitDeviceTypeByte(this.getUint8());
+        type.push(DEVICE_TYPE_3H_NIBBLE[high] ?? DEVICE_TYPE_INVALID_CHAR);
+        type.push(DEVICE_TYPE_3L_NIBBLE[low] ?? DEVICE_TYPE_INVALID_CHAR);
 
-        result.push('.');
+        type.push('.');
 
-        // 5: 0000.00.110-0000
-        [left, right] = splitDeviceTypeByte(this.getUint8());
-        result.push(DEVICE_TYPE_N6[left] ?? DEVICE_TYPE_INVALID_CHAR);
-        result.push(DEVICE_TYPE_N7_BURDEN[right] ?? DEVICE_TYPE_INVALID_CHAR);
+        // 4: 0000.00.110-0000
+        [high, low] = splitDeviceTypeByte(this.getUint8());
+        type.push(DEVICE_TYPE_4H_NIBBLE[high] ?? DEVICE_TYPE_INVALID_CHAR);
+        type.push(DEVICE_TYPE_4L_NIBBLE[low] ?? DEVICE_TYPE_INVALID_CHAR);
 
-        // 6: 0000.00.001-0000
-        [left, right] = splitDeviceTypeByte(this.getUint8());
-        result.push(DEVICE_TYPE_N8[right] ?? DEVICE_TYPE_INVALID_CHAR);
+        // 5: 0000.00.001-0000
+        [high, low] = splitDeviceTypeByte(this.getUint8());
+        type.push(DEVICE_TYPE_5L_NIBBLE[low] ?? DEVICE_TYPE_INVALID_CHAR);
+        const revision = high;
 
-        result.push('-');
+        type.push('-');
 
-        // 7, 8 - some variants
+        // 6, 7 - some variants
+        const [upper6, lower6] = splitDeviceTypeByte(this.getUint8());
         const [upper7, lower7] = splitDeviceTypeByte(this.getUint8());
-        const [upper8, lower8] = splitDeviceTypeByte(this.getUint8());
+        let deviceProtocol;
 
-        if ( upper8 === 0 && lower8 === 0 ) {
+        if ( upper7 === 0 && lower7 === 0 ) {
             // 0000.00.000-11
-            result.push(DEVICE_TYPE_N9[upper7] ?? DEVICE_TYPE_INVALID_CHAR);
-            result.push(DEVICE_TYPE_N11[lower7] ?? DEVICE_TYPE_INVALID_CHAR);
-        } else if ( lower8 === 0 ) {
+            type.push(DEVICE_TYPE_N9[upper6] ?? DEVICE_TYPE_INVALID_CHAR);
+            deviceProtocol = DEVICE_TYPE_N11[lower6];
+
+            if ( deviceProtocol && deviceProtocol !== '0' ) {
+                type.push(deviceProtocol);
+            }
+        } else if ( lower7 === 0 ) {
             // 0000.00.000-111
-            result.push(DEVICE_TYPE_N9[upper7] ?? DEVICE_TYPE_INVALID_CHAR);
-            result.push(DEVICE_TYPE_N9[lower7] ?? DEVICE_TYPE_INVALID_CHAR);
-            result.push(DEVICE_TYPE_N11[upper8] ?? DEVICE_TYPE_INVALID_CHAR);
+            type.push(DEVICE_TYPE_N9[upper6] ?? DEVICE_TYPE_INVALID_CHAR);
+            type.push(DEVICE_TYPE_N9[lower6] ?? DEVICE_TYPE_INVALID_CHAR);
+            deviceProtocol = DEVICE_TYPE_N11[upper7];
+
+            if ( deviceProtocol && deviceProtocol !== '0' ) {
+                type.push(deviceProtocol);
+            }
         } else {
             // 0000.00.000-1111
-            result.push(DEVICE_TYPE_N9[upper7] ?? DEVICE_TYPE_INVALID_CHAR);
-            result.push(DEVICE_TYPE_N9[lower7] ?? DEVICE_TYPE_INVALID_CHAR);
-            result.push(DEVICE_TYPE_N9[upper8] ?? DEVICE_TYPE_INVALID_CHAR);
-            result.push(DEVICE_TYPE_N11[lower8] ?? DEVICE_TYPE_INVALID_CHAR);
+            type.push(DEVICE_TYPE_N9[upper6] ?? DEVICE_TYPE_INVALID_CHAR);
+            type.push(DEVICE_TYPE_N9[lower6] ?? DEVICE_TYPE_INVALID_CHAR);
+            type.push(DEVICE_TYPE_N9[upper7] ?? DEVICE_TYPE_INVALID_CHAR);
+            deviceProtocol = DEVICE_TYPE_N11[lower7];
+
+            if ( deviceProtocol && deviceProtocol !== '0' ) {
+                type.push(deviceProtocol);
+            }
         }
 
-        return result.join('');
+        return {
+            type: type.join(''),
+            revision,
+            meterType: this.getUint8()
+        };
     }
 
-    // draft
-    // not implemented
-    static getDeviceTypeString ( type: Uint8Array ): string {
-        const result = '';
+    setDeviceType ( {type, revision, meterType}: IDeviceType ) {
+        let high;
+        let low;
 
-        console.log('type:', type);
+        // 0: not used
+        this.setUint8(0);
 
-        return result;
-    }
+        // strip prefix
+        const cleanType = type.replace('MTX ', '');
 
-    static getDeviceTypeBytes ( type: string ): Uint8Array {
-        console.log('type:', type);
-        const bytes = new Uint8Array(8);
+        // 1: 1100.00.000-0000
+        high = DEVICE_TYPE_1H_NIBBLE.indexOf(cleanType[0]);
+        low = DEVICE_TYPE_1L_NIBBLE.indexOf(cleanType[1]);
+        this.setUint8((high << 4) | low);
 
-        return bytes;
+        // 2: 0011.00.000-0000
+        high = DEVICE_TYPE_2H_2L_NIBBLE.indexOf(cleanType[2]);
+        low = DEVICE_TYPE_2H_2L_NIBBLE.indexOf(cleanType[3]);
+        this.setUint8((high << 4) | low);
+
+        // skip .
+
+        // 3: 0000.11.000-0000
+        high = DEVICE_TYPE_3H_NIBBLE.indexOf(cleanType[5]);
+        low = DEVICE_TYPE_3L_NIBBLE.indexOf(cleanType[6]);
+        this.setUint8((high << 4) | low);
+
+        // skip .
+
+        // 4: 0000.00.110-0000
+        high = DEVICE_TYPE_4H_NIBBLE.indexOf(cleanType[8]);
+        low = DEVICE_TYPE_4L_NIBBLE.indexOf(cleanType[9]);
+        this.setUint8((high << 4) | low);
+
+        // 5: 0000.00.001-0000
+        high = revision;
+        low = DEVICE_TYPE_5L_NIBBLE.indexOf(cleanType[10]);
+        this.setUint8((high << 4) | low);
+
+        // 6,7:
+        const [,typeLastPart] = cleanType.split('-');
+        if ( typeLastPart.length === 1 ) {
+            // 0000.00.000-1
+            high = DEVICE_TYPE_N9.indexOf(typeLastPart[0]);
+            low = 0;
+            this.setUint8((high << 4) | low);
+            this.setUint8(0);
+        } else if ( typeLastPart.length === 2 ) {
+            // 0000.00.000-11
+            high = DEVICE_TYPE_N9.indexOf(typeLastPart[0]);
+            low = DEVICE_TYPE_N11.indexOf(typeLastPart[1]);
+            this.setUint8((high << 4) | low);
+            this.setUint8(0);
+        } else if ( typeLastPart.length === 3 ) {
+            // 0000.00.000-111
+            high = DEVICE_TYPE_N9.indexOf(typeLastPart[0]);
+            low = DEVICE_TYPE_N9.indexOf(typeLastPart[1]);
+            this.setUint8((high << 4) | low);
+            high = DEVICE_TYPE_N11.indexOf(typeLastPart[2]);
+            low = 0;
+            this.setUint8((high << 4) | low);
+        } else if ( typeLastPart.length === 4 ) {
+            // 0000.00.000-1111
+            high = DEVICE_TYPE_N9.indexOf(typeLastPart[0]);
+            low = DEVICE_TYPE_N9.indexOf(typeLastPart[1]);
+            this.setUint8((high << 4) | low);
+            high = DEVICE_TYPE_N9.indexOf(typeLastPart[2]);
+            low = DEVICE_TYPE_N11.indexOf(typeLastPart[3]);
+            this.setUint8((high << 4) | low);
+        }
+
+        this.setUint8(meterType);
     }
 }
 

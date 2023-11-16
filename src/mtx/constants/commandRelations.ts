@@ -16,6 +16,7 @@ export const responseById = new Map(Object.values(uplinkCommands).map(command =>
 requestByResponse.set(uplinkCommands.ActivateRatePlanResponse, downlinkCommands.ActivateRatePlan);
 requestByResponse.set(uplinkCommands.GetDateTimeResponse, downlinkCommands.GetDateTime);
 requestByResponse.set(uplinkCommands.GetDeviceIdResponse, downlinkCommands.GetDeviceId);
+requestByResponse.set(uplinkCommands.GetDeviceTypeResponse, downlinkCommands.GetDeviceType);
 requestByResponse.set(uplinkCommands.GetDisplayParamResponse, downlinkCommands.GetDisplayParam);
 requestByResponse.set(uplinkCommands.GetOpParamsResponse, downlinkCommands.GetOpParams);
 requestByResponse.set(uplinkCommands.GetRatePlanInfoResponse, downlinkCommands.GetRatePlanInfo);
