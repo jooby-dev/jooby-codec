@@ -2,8 +2,7 @@
 
 import Command from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
-import * as downlinkCommands from './commands/downlink/index.js';
-import * as uplinkCommands from './commands/uplink/index.js';
+import {requestById, responseById} from './constants/commandRelations.js';
 
 import {IHexFormatOptions} from '../config.js';
 import calculateLrc from '../utils/calculateLrc.js';
@@ -79,22 +78,13 @@ const COMMANDS_END_MARK = new Uint8Array([0]);
 // all allowed types
 const directionTypeIds: Set<number> = new Set<number>(Object.values(directionTypes));
 
-// convert export namespace to dictionary {commandId: commandConstructor}
-export const downlinkCommandsById = Object.fromEntries(
-    Object.values(downlinkCommands).map(item => [item.id, item])
-);
-
-export const uplinkCommandsById = Object.fromEntries(
-    Object.values(uplinkCommands).map(item => [item.id, item])
-);
-
 const getCommand = ( id: number, size: number, data: Uint8Array, direction = AUTO ): Command => {
     if ( !directionTypeIds.has(direction) ) {
         throw new Error('wrong direction type');
     }
 
-    const downlinkCommand = downlinkCommandsById[id];
-    const uplinkCommand = uplinkCommandsById[id];
+    const downlinkCommand = requestById.get(id);
+    const uplinkCommand = responseById.get(id);
 
     // check command availability
     if (
@@ -110,15 +100,15 @@ const getCommand = ( id: number, size: number, data: Uint8Array, direction = AUT
     if ( direction === DOWNLINK || direction === UPLINK ) {
         const command = direction === UPLINK ? uplinkCommand : downlinkCommand;
 
-        return command.fromBytes(data) as Command;
+        return command!.fromBytes(data) as Command;
     }
 
     // direction autodetect
     try {
         // uplink should be more often
-        return uplinkCommand.fromBytes(data) as Command;
+        return uplinkCommand!.fromBytes(data) as Command;
     } catch {
-        return downlinkCommand.fromBytes(data) as Command;
+        return downlinkCommand!.fromBytes(data) as Command;
     }
 };
 

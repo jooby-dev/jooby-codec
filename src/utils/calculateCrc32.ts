@@ -1,4 +1,4 @@
-const updateIEEE8023 = ( startValue: number, data: Uint8Array | Array<number> ) => {
+const updateIEEE8023 = ( startValue: number, data: Uint8Array ) => {
     let crc = BigInt(startValue);
 
     for ( let index = 0; index < data.length; index++ ) {
@@ -31,7 +31,7 @@ export enum Crc32Type {
  *
  * @return CRC32
  */
-export default ( data: Uint8Array | Array<number>, crc32type: Crc32Type = Crc32Type.IEEE_8023 ) => {
+export default ( data: Uint8Array, crc32type: Crc32Type = Crc32Type.IEEE_8023 ) => {
     if ( crc32type === Crc32Type.IEEE_8023 ) {
         const crc = updateIEEE8023(0xffffffff, data);
 

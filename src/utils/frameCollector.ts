@@ -1,0 +1,58 @@
+import * as Frame from './frame.js';
+import {START_BYTE, STOP_BYTE} from '../constants/frameAttributes.js';
+
+
+class FrameCollector {
+    private frames: Array<Frame.IFrame> = [];
+
+    private buffer: Array<number> = [];
+
+    private isStartByteReceived: boolean = false;
+
+    constructor ( public frameBufferMaxSize: number = 256 ) {
+    }
+
+    process ( data: Uint8Array | Array<number> ) : Array<Frame.IFrame> {
+        data.forEach(value => this.processByte(value));
+
+        const result = this.frames;
+        this.frames = [];
+
+        return result;
+    }
+
+    processByte ( value: number ) {
+        const byte = value & 0xff;
+
+        if ( !this.isStartByteReceived ) {
+            if ( byte === START_BYTE ) {
+                this.isStartByteReceived = true;
+            }
+
+            return;
+        }
+
+        if ( byte === STOP_BYTE ) {
+            this.isStartByteReceived = false;
+            if ( this.buffer.length !== 0 ) {
+                this.frames.push(Frame.fromBytes(new Uint8Array(this.buffer)));
+                this.reset();
+
+                return;
+            }
+        }
+
+        this.buffer.push(byte);
+
+        if ( this.buffer.length === this.frameBufferMaxSize ) {
+            this.reset();
+        }
+    }
+
+    reset () {
+        this.buffer = [];
+        this.isStartByteReceived = false;
+    }
+}
+
+export default FrameCollector;

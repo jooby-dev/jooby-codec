@@ -5,7 +5,7 @@
  *
  * @return LRC
  */
-export default ( data: Uint8Array | Array<number>, initialLrc = 0x55 ) => {
+export default ( data: Uint8Array, initialLrc = 0x55 ) => {
     let lrc = initialLrc;
 
     data.forEach(item => {

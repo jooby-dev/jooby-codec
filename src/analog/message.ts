@@ -2,8 +2,7 @@
 
 import Command from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
-import * as downlinkCommands from './commands/downlink/index.js';
-import * as uplinkCommands from './commands/uplink/index.js';
+import {requestById, responseById} from './constants/commandRelations.js';
 
 import * as directionTypes from '../constants/directions.js';
 import {AUTO, DOWNLINK, UPLINK} from '../constants/directions.js';
@@ -49,22 +48,14 @@ const HEADER_MAX_SIZE = 3;
 // all allowed types
 const directionTypeIds: Set<number> = new Set<number>(Object.values(directionTypes));
 
-// convert export namespace to dictionary {commandId: commandConstructor}
-export const downlinkCommandsById = Object.fromEntries(
-    Object.values(downlinkCommands).map(item => [item.id, item])
-);
-export const uplinkCommandsById = Object.fromEntries(
-    Object.values(uplinkCommands).map(item => [item.id, item])
-);
-
 
 const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareType?: number ): Command => {
     if ( !directionTypeIds.has(direction) ) {
         throw new Error('wrong direction type');
     }
 
-    const downlinkCommand = downlinkCommandsById[id];
-    const uplinkCommand = uplinkCommandsById[id];
+    const downlinkCommand = requestById.get(id);
+    const uplinkCommand = responseById.get(id);
 
     // check command availability
     if (
@@ -80,15 +71,15 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareTyp
     if ( direction === DOWNLINK || direction === UPLINK ) {
         const command = direction === UPLINK ? uplinkCommand : downlinkCommand;
 
-        return command.fromBytes(data, {hardwareType}) as Command;
+        return command!.fromBytes(data, {hardwareType}) as Command;
     }
 
     // direction autodetect
     try {
         // uplink should be more often
-        return uplinkCommand.fromBytes(data, {hardwareType}) as Command;
+        return uplinkCommand!.fromBytes(data, {hardwareType}) as Command;
     } catch {
-        return downlinkCommand.fromBytes(data) as Command;
+        return downlinkCommand!.fromBytes(data) as Command;
     }
 };
 

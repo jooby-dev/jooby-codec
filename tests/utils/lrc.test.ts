@@ -8,9 +8,7 @@ describe('check lrc calculation', () => {
     test('simple sequence', () => {
         const testSequence = '00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 55';
         const testBytes = getBytesFromHex(testSequence);
-        const testArray = Array.from(testBytes);
 
         expect(calculateLrc(testBytes)).toBe(0);
-        expect(calculateLrc(testArray)).toBe(0);
     });
 });
