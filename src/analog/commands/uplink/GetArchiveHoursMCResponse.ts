@@ -35,6 +35,15 @@ const examples: TCommandExampleList = [
             ]
         },
         hex: {header: '1a 0d', body: '2f 97 2c 0f 83 01 0a 08 0a 08 0a 0c 0a'}
+    },
+    {
+        name: 'empty result at 2023.11.19 00:00:00 GMT',
+        parameters: {
+            startTime2000: 752889600,
+            hours: 0,
+            channelList: []
+        },
+        hex: {header: '1a 04', body: '2f 6a 00 00'}
     }
 ];
 
