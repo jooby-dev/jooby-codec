@@ -719,6 +719,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
             ++position;
         }
 
+        if ( value < 0 ) {
+            value = 0;
+        }
+
         return value;
     }
 
@@ -787,6 +791,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
      * Set array of channel indexes.
      */
     setChannels ( channelList: Array<IChannel> ) {
+        if ( channelList.length === 0 ) {
+            this.setUint8(0);
+
+            return;
+        }
+
         // sort channels by index
         channelList.sort((a, b) => a.index - b.index);
 
@@ -877,6 +887,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
      * 0xb8 = 0b10111000 will be {hours: 0b101, hour: 0b11000} i.e. {hours: 6, hour: 24}
      */
     getHours ( byte = this.getUint8() ) {
+        if ( byte === 0 ) {
+            return {hours: 0, hour: 0};
+        }
+
         // real/human hours number = 1 (hour counter value) + each hour diff
         const hours = ((byte & 0xe0) >> 5) + 1;
         const hour = byte & 0x1f;
@@ -885,6 +899,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     setHours ( hour: number, hours: number ): void {
+        if ( hour === 0 && hours === 0 ) {
+            this.setUint8(0);
+
+            return;
+        }
+
         // convert real/human to binary - only number of diff hours
         this.setUint8((((hours - 1) & 0x07) << 5) | (hour & 0x1f));
     }
