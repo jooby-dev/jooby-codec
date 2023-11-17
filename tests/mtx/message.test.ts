@@ -10,6 +10,7 @@ import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import * as accessLevels from '../../src/mtx/constants/accessLevels.js';
 import * as frameTypes from '../../src/mtx/constants/frameTypes.js';
+import * as meterTypes from '../../src/mtx/constants/meterTypes.js';
 import * as directions from '../../src/constants/directions.js';
 import {ACCESS_DENIED} from '../../src/mtx/constants/resultCodes.js';
 
@@ -714,6 +715,26 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x47,
         crc: new Uint8Array([0xfe, 0x54]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetDeviceTypeResponse',
+        hex: '0a 13 cf 02 a9 57 43 0a 46 e0 7a 34 22 b7 71 0c 19 29',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 cf 02 a9 57 43 0a 46 e0 7a 34 22 b7 71 0c 19 29 93 54 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.GetDeviceTypeResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.GetDeviceTypeResponse({
+                type: 'MTX 1G05.DH.2L2-DOB4',
+                revision: 0x0b,
+                meterType: meterTypes.G_FULL
+            })
+        ],
+        lrc: 0xb0,
+        crc: new Uint8Array([0x93, 0x54]),
         frameType: frameTypes.DATA_RESPONSE,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])

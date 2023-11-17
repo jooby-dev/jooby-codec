@@ -9,7 +9,7 @@ export {default as ErrorResponse} from './ErrorResponse.js';
 export {default as GetDateTimeResponse} from './GetDateTimeResponse.js';
 export {default as GetDayProfileResponse} from './GetDayProfileResponse.js';
 export {default as GetDeviceIdResponse} from './GetDeviceIdResponse.js';
-//export {default as GetDeviceTypeResponse} from './GetDeviceTypeResponse.js';
+export {default as GetDeviceTypeResponse} from './GetDeviceTypeResponse.js';
 export {default as GetDisplayParamResponse} from './GetDisplayParamResponse.js';
 export {default as GetOpParamsResponse} from './GetOpParamsResponse.js';
 export {default as GetRatePlanInfoResponse} from './GetRatePlanInfoResponse.js';
