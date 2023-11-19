@@ -1,9 +1,3 @@
-/**
- * [[include:commands/downlink/GetArchiveDaysMC.md]]
- *
- * @packageDocumentation
- */
-
 import Command, {TCommandExampleList} from '../../Command.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
