@@ -6,10 +6,6 @@ import {TTime2000} from '../../../utils/time.js';
 
 /**
  * Time2000 command parameters
- *
- * @example
- * // time: 2023-04-03T14:01:17.000Z
- * {sequenceNumber: 77, time2000: 733845677}
  */
 interface ITime2000Parameters {
     /** unique time manipulation operation number */
@@ -35,18 +31,18 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import CorrectTime2000Response from 'jooby-codec/analog/commands/uplink/CorrectTime2000Response.js';
+ * import Time2000 from 'jooby-codec/analog/commands/uplink/Time2000.js';
  *
  * // failure
  * const commandBody = new Uint8Array([0x4d, 0x2b, 0xbd, 0x98, 0xad]);
- * const command = CorrectTime2000Response.fromBytes(commandBody);
+ * const command = Time2000.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {sequenceNumber: 77, time2000: 733845677}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/Time2000.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetTime2000.md#response)
  */
 class Time2000 extends Command {
     constructor ( public parameters: ITime2000Parameters ) {
