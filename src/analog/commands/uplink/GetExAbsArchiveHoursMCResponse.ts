@@ -1,11 +1,11 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../utils/time.js';
-import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannelHourAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 
 
 interface IGetExAbsArchiveHoursMCResponseParameters {
-    channelList: Array<IChannelHours>,
+    channelList: Array<IChannelHourAbsoluteValue>,
     startTime2000: TTime2000
     hours: number
 }
@@ -20,15 +20,20 @@ const COMMAND_BODY_MAX_SIZE = 168;
 
 const examples: TCommandExampleList = [
     {
-        name: '1 channel at 2023.12.23 12:00:00 GMT',
+        name: '1 channel at 2023.03.10 12:00:00 GMT',
         parameters: {
-            startTime2000: 756648000,
+            startTime2000: 731764800,
             hours: 2,
             channelList: [
-                {value: 234, index: 2, diff: [2]}
+                {
+                    pulseCoefficient: 100,
+                    index: 1,
+                    value: 342457,
+                    diff: [128]
+                }
             ]
         },
-        hex: {header: '1f 0c 07', body: '2f 97 2c 02 ea 01 02'}
+        hex: {header: '1f 0c 0a', body: '2e 6a 2c 01 83 b9 f3 14 80 01'}
     }
 ];
 
@@ -41,17 +46,22 @@ const examples: TCommandExampleList = [
  * import GetExAbsArchiveHoursMCResponse from 'jooby-codec/analog/commands/uplink/GetExAbsArchiveHoursMCResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x2f, 0x97, 0x2c, 0x02, 0xea, 0x01, 0x02
+ *     0x2e, 0x6a, 0x2c, 0x01, 0x83, 0xb9, 0xf3, 0x14, 0x80, 0x01
  * ]);
  * const command = GetExAbsArchiveHoursMCResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     startTime2000: 756648000,
+ *     startTime2000: 731764800,
  *     hours: 2,
  *     channelList: [
- *         {value: 234, index: 2, diff: [2]}
+ *         {
+ *             pulseCoefficient: 100,
+ *             index: 1,
+ *             value: 342457,
+ *             diff: [128]
+ *         }
  *     ]
  * }
  * ```
@@ -80,25 +90,9 @@ class GetExAbsArchiveHoursMCResponse extends Command {
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
-        const channels = buffer.getChannels();
-        const channelList: Array<IChannelHours> = [];
+        const channelList = buffer.getChannelsAbsoluteValuesWithHourDiff(hours);
 
         date.setUTCHours(hour);
-
-        channels.forEach(channelIndex => {
-            const value = buffer.getExtendedValue();
-            const diff: Array<number> = [];
-
-            for ( let hourIndex = 1; hourIndex < hours; ++hourIndex ) {
-                diff.push(buffer.getExtendedValue());
-            }
-
-            channelList.push({
-                diff,
-                value,
-                index: channelIndex
-            });
-        });
 
         return new GetExAbsArchiveHoursMCResponse({startTime2000: getTime2000FromDate(date), hours, channelList});
     }
@@ -112,12 +106,7 @@ class GetExAbsArchiveHoursMCResponse extends Command {
 
         buffer.setDate(date);
         buffer.setHours(hour, hours);
-        buffer.setChannels(channelList);
-
-        for ( const {value, diff} of channelList ) {
-            buffer.setExtendedValue(value);
-            diff.forEach(diffValue => buffer.setExtendedValue(diffValue));
-        }
+        buffer.setChannelsAbsoluteValuesWithHourDiff(channelList);
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }

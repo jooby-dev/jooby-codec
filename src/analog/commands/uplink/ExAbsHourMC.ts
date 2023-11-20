@@ -16,10 +16,9 @@ interface IUplinkExAbsHourMCParameters {
 
 const COMMAND_ID = 0x0a1f;
 
-// date 2 bytes, hour 1 byte, channelList - 1 byte (max channelList: 4)
-// max hours diff - 7 (3 bit value)
-// 4 + (4 channelList * (1 byte pulse coefficient + 5 bytes of hour value)) + (4 * 2 bytes of diff * 7 max hours diff)
-const COMMAND_BODY_MAX_SIZE = 84;
+// date 2 bytes, hour 1 byte (max hours: 7), channelList 1 byte (max channelList: 4)
+// 4 + (4 channelList * 1 byte pulse coefficient) + (4 channelList * 5 bytes of hour values) + (4 * 5 bytes of diff * 7 max hours diff)
+const COMMAND_BODY_MAX_SIZE = 168;
 
 const examples: TCommandExampleList = [
     {
@@ -93,27 +92,9 @@ class ExAbsHourMC extends Command {
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
         const {hour, hours} = buffer.getHours();
-        const channels = buffer.getChannels();
-        const channelList: Array<IChannelHourAbsoluteValue> = [];
+        const channelList = buffer.getChannelsAbsoluteValuesWithHourDiff(hours);
 
         date.setUTCHours(hour);
-
-        channels.forEach(channelIndex => {
-            const pulseCoefficient = buffer.getPulseCoefficient();
-            const value = buffer.getExtendedValue();
-            const diff: Array<number> = [];
-
-            for ( let hourIndex = 1; hourIndex < hours; ++hourIndex ) {
-                diff.push(buffer.getExtendedValue());
-            }
-
-            channelList.push({
-                diff,
-                value,
-                pulseCoefficient,
-                index: channelIndex
-            });
-        });
 
         return new ExAbsHourMC({startTime2000: getTime2000FromDate(date), hours, channelList});
     }
@@ -128,13 +109,7 @@ class ExAbsHourMC extends Command {
 
         buffer.setDate(startTime2000);
         buffer.setHours(hour, hours);
-        buffer.setChannels(channelList);
-
-        for ( const {value, diff, pulseCoefficient} of channelList ) {
-            buffer.setPulseCoefficient(pulseCoefficient);
-            buffer.setExtendedValue(value);
-            diff.forEach(diffValue => buffer.setExtendedValue(diffValue));
-        }
+        buffer.setChannelsAbsoluteValuesWithHourDiff(channelList);
 
         return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
     }

@@ -1,11 +1,11 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {IChannelArchiveDays} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IChannelArchiveDaysAbsolute} from '../../CommandBinaryBuffer.js';
 import {getTime2000FromDate, TTime2000} from '../../../utils/time.js';
 import {UPLINK} from '../../../constants/directions.js';
 
 
 interface IGetExAbsArchiveDaysMCResponseParameters {
-    channelList: Array<IChannelArchiveDays>,
+    channelList: Array<IChannelArchiveDaysAbsolute>,
     startTime2000: TTime2000,
     days: number
 }
@@ -25,12 +25,13 @@ const examples: TCommandExampleList = [
             days: 2,
             channelList: [
                 {
+                    pulseCoefficient: 100,
                     index: 4,
                     dayList: [5524, 5674]
                 }
             ]
         },
-        hex: {header: '1f 0d 08', body: '2e 6a 08 02 94 2b aa 2c'}
+        hex: {header: '1f 0d 09', body: '2e 6a 08 02 83 94 2b aa 2c'}
     }
 ];
 
@@ -43,7 +44,7 @@ const examples: TCommandExampleList = [
  * import GetExAbsArchiveDaysMCResponse from 'jooby-codec/analog/commands/uplink/GetExAbsArchiveDaysMCResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x2e, 0x6a, 0x08, 0x02, 0x94, 0x2b, 0xaa, 0x2c
+ *     0x2e, 0x6a, 0x08, 0x02, 0x83, 0x94, 0x2b, 0xaa, 0x2c
  * ]);
  * const command = GetExAbsArchiveDaysMCResponse.fromBytes(commandBody);
  *
@@ -54,6 +55,7 @@ const examples: TCommandExampleList = [
  *     days: 2,
  *     channelList: [
  *         {
+ *             pulseCoefficient: 100,
  *             index: 4,
  *             dayList: [5524, 5674]
  *         }
@@ -86,12 +88,14 @@ class GetExAbsArchiveDaysMCResponse extends Command {
         const date = buffer.getDate();
         const channels = buffer.getChannels();
         const days = buffer.getUint8();
-        const channelList: Array<IChannelArchiveDays> = [];
+        const channelList: Array<IChannelArchiveDaysAbsolute> = [];
 
         channels.forEach(channelIndex => {
             const dayList: Array<number> = [];
+            const pulseCoefficient = buffer.getPulseCoefficient();
 
             channelList.push({
+                pulseCoefficient,
                 dayList,
                 index: channelIndex
             });
@@ -113,7 +117,8 @@ class GetExAbsArchiveDaysMCResponse extends Command {
         buffer.setChannels(channelList);
         buffer.setUint8(days);
 
-        channelList.forEach(({dayList}) => {
+        channelList.forEach(({pulseCoefficient, dayList}) => {
+            buffer.setPulseCoefficient(pulseCoefficient);
             dayList.forEach(value => buffer.setExtendedValue(value));
         });
 

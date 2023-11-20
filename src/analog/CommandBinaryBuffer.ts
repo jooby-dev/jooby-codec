@@ -62,11 +62,6 @@ export interface IChannelArchiveDaysAbsolute extends IChannel {
     pulseCoefficient: number
 }
 
-export interface IChannelArchiveDays extends IChannel {
-    /** values by days */
-    dayList: Array<number>
-}
-
 
 export interface IEventGasStatus {
     /** the battery voltage has dropped below the set threshold */
@@ -1024,6 +1019,40 @@ class CommandBinaryBuffer extends BinaryBuffer {
         for ( const {value, pulseCoefficient} of channelList ) {
             this.setPulseCoefficient(pulseCoefficient);
             this.setExtendedValue(value);
+        }
+    }
+
+    getChannelsAbsoluteValuesWithHourDiff ( hours: number ): Array<IChannelHourAbsoluteValue> {
+        const channels = this.getChannels();
+        const channelList: Array<IChannelHourAbsoluteValue> = [];
+
+        channels.forEach(channelIndex => {
+            const pulseCoefficient = this.getPulseCoefficient();
+            const value = this.getExtendedValue();
+            const diff: Array<number> = [];
+
+            for ( let hourIndex = 1; hourIndex < hours; ++hourIndex ) {
+                diff.push(this.getExtendedValue());
+            }
+
+            channelList.push({
+                diff,
+                value,
+                pulseCoefficient,
+                index: channelIndex
+            });
+        });
+
+        return channelList;
+    }
+
+    setChannelsAbsoluteValuesWithHourDiff ( channelList: Array<IChannelHourAbsoluteValue> ): void {
+        this.setChannels(channelList);
+
+        for ( const {value, diff, pulseCoefficient} of channelList ) {
+            this.setPulseCoefficient(pulseCoefficient);
+            this.setExtendedValue(value);
+            diff.forEach(diffValue => this.setExtendedValue(diffValue));
         }
     }
 
