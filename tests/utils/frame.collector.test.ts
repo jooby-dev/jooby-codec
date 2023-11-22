@@ -63,7 +63,7 @@ describe('frame collector tests', () => {
 
     test('test sequence with valid frame', () => {
         const frameBytes = getBytesFromHex(
-            '7d 31 20 ee 76 78 54 7f 48 3a b8 ed 69'
+            '7d 31 20 ee 76 78 54 7f 48 3a b8 69 ed'
         );
 
         const checkFrame = ( frame: IFrame ) => {
@@ -73,7 +73,7 @@ describe('frame collector tests', () => {
         };
 
         const sequence1 = [
-            '7e 7d 31 20 ee 76 78 54 7f 48 3a b8 ed 69 7e'
+            '7e 7d 31 20 ee 76 78 54 7f 48 3a b8 69 ed 7e'
         ];
 
         let frames = collectFrames(sequence1);
@@ -82,7 +82,7 @@ describe('frame collector tests', () => {
 
         const sequence2 = [
             '7e 7d 31 20 ee',
-            '76 78 54 7f 48 3a b8 ed 69 7e'
+            '76 78 54 7f 48 3a b8 69 ed 7e'
         ];
         frames = collectFrames(sequence2);
         expect(frames.length).toBe(1);
@@ -90,14 +90,14 @@ describe('frame collector tests', () => {
 
         const sequence3 = [
             '0f 7e 7d 31 20 ee',
-            '76 78 54 7f 48 3a b8 ed 69 7e 89 89'
+            '76 78 54 7f 48 3a b8 69 ed 7e 89 89'
         ];
         frames = collectFrames(sequence3);
         expect(frames.length).toBe(1);
         checkFrame(frames[0]);
 
         const sequence4 = [
-            '7e 7d 31 20 ee 76 78 54 7f 48 3a b8 ed 69 7e 7e 7d 31 20 ee 76 78 54 7f 48 3a b8 ed 69 7e'
+            '7e 7d 31 20 ee 76 78 54 7f 48 3a b8 69 ed 7e 7e 7d 31 20 ee 76 78 54 7f 48 3a b8 69 ed 7e'
         ];
         frames = collectFrames(sequence4);
         expect(frames.length).toBe(2);
@@ -107,9 +107,9 @@ describe('frame collector tests', () => {
         const sequence5 = [
             '89 88 7e 7d 31',
             '20 ee 76 78 54 7f 48 3a b8',
-            'ed 69 7e 90 90 09 7e 7d 31 20',
+            '69 ed 7e 90 90 09 7e 7d 31 20',
             'ee 76 78 54 7f',
-            '48 3a b8 ed 69 7e 06 08'
+            '48 3a b8 69 ed 7e 06 08'
         ];
         frames = collectFrames(sequence5);
         expect(frames.length).toBe(2);
