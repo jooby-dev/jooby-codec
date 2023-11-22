@@ -33,8 +33,13 @@ describe('frame collector tests', () => {
             '7e ff ff ff'
         ];
         const frames = collectFrames(sequence);
+        const [{content, buffer, crc: {actual, expected}}] = frames;
 
-        expect(frames.length).toBe(0);
+        expect(frames.length).toBe(1);
+        expect(content).toStrictEqual(new Uint8Array());
+        expect(buffer).toStrictEqual(new Uint8Array([0x7e, 0x7e]));
+        expect(actual).toBe(0);
+        expect(expected).toBe(undefined);
     });
 
     test('test sequence with small frame', () => {
@@ -63,7 +68,7 @@ describe('frame collector tests', () => {
 
     test('test sequence with valid frame', () => {
         const frameBytes = getBytesFromHex(
-            '7d 31 20 ee 76 78 54 7f 48 3a b8 69 ed'
+            '7e 7d 31 20 ee 76 78 54 7f 48 3a b8 69 ed 7e'
         );
 
         const checkFrame = ( frame: IFrame ) => {

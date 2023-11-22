@@ -2,6 +2,7 @@ import calculateCrc16 from './calculateCrc16.js';
 import getBytesFromHex from './getBytesFromHex.js';
 import getBytesFromBase64 from './getBytesFromBase64.js';
 import BinaryBuffer from './BinaryBuffer.js';
+import {START_BYTE, STOP_BYTE} from '../constants/frameAttributes.js';
 
 
 const STUFFING_BYTE = 0x7d;
@@ -85,19 +86,31 @@ export const toFrame = ( content: Uint8Array ): IFrame => {
     const crc = calculateCrc16(content);
     const crcBytes = convertCrcToBytes(crc);
     const stuffed = content.length === 0 ? [] : arrayStuff([...content, ...crcBytes]);
+    const buffer = content.length === 0 ? new Uint8Array() : new Uint8Array([0x7e, ...stuffed, 0x7e]);
 
     return {
         content,
-        buffer: new Uint8Array(stuffed),
+        buffer,
         crc: {
             actual: crc,
-            expected: undefined
+            expected: content.length === 0 ? undefined : crc
         }
     };
 };
 
 export const fromBytes = ( data: Uint8Array ): IFrame => {
-    const unstuffed = arrayUnstuff(data);
+    if ( data[0] !== START_BYTE || data[data.length - 1] !== STOP_BYTE ) {
+        return {
+            content: new Uint8Array(),
+            buffer: new Uint8Array(),
+            crc: {
+                actual: 0,
+                expected: undefined
+            }
+        };
+    }
+
+    const unstuffed = arrayUnstuff(data.slice(1, data.length - 1));
     const expectedCrc = getFrameCrc(unstuffed);
     const content = unstuffed.slice(0, unstuffed.length - 2);
     const actualCrc = calculateCrc16(content);
