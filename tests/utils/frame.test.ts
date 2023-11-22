@@ -45,12 +45,12 @@ describe('frame tests', () => {
         expect(frame.buffer).toStrictEqual(smallBytes);
         expect(frame.content).toStrictEqual(new Uint8Array());
         expect(frame.crc.actual).toBe(0);
-        expect(frame.crc.expected).toBe(0x0102);
+        expect(frame.crc.expected).toBe(0x0201);
     });
 
     test('fromBytes with invalid crc', () => {
         const frameBytes = getBytesFromHex(
-            '7d 31 20 ee 76 78 54 7f 48 3a b8 ed 69'
+            '7d 31 20 ee 76 78 54 7f 48 3a b8 69 ed'
         );
         const validFrame = Frame.fromBytes(frameBytes);
 
@@ -73,7 +73,7 @@ describe('frame tests', () => {
         );
         const expectedCrc = 0x13e9;
         const frameBytes = getBytesFromHex(
-            '00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f 7d 33 e9'
+            '00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f e9 7d 33 '
         );
         const frameTo = Frame.toFrame(contentBytes);
         const frameFrom = Frame.fromBytes(frameTo.buffer);
@@ -95,7 +95,7 @@ describe('frame tests', () => {
         );
         const expectedCrc = calculateCrc16(contentBytes);
         const frameBytes = getBytesFromHex(
-            '50 ff ff ff fe 25 7d 33 8c 0d ff a4 ee d7 59 71 d7 12 bd e8 e8 5c 7d 5e 2d a3 c3 0f 47'
+            '50 ff ff ff fe 25 7d 33 8c 0d ff a4 ee d7 59 71 d7 12 bd e8 e8 5c 7d 5e 2d a3 c3 47 0f'
         );
         const frameTo = Frame.toFrame(contentBytes);
         const frameFrom = Frame.fromBytes(frameTo.buffer);

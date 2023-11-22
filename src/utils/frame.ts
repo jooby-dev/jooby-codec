@@ -53,7 +53,7 @@ export const arrayUnstuff = ( data: Uint8Array | Array<number> ): Uint8Array => 
 const convertCrcToBytes = ( crc: number ) => {
     const buffer = new BinaryBuffer(2);
 
-    buffer.setUint16(crc, false);
+    buffer.setUint16(crc);
 
     return buffer.toUint8Array();
 };
@@ -64,7 +64,7 @@ const getFrameCrc = ( frame: Uint8Array ): number | undefined => {
     if ( frame.length >= 2 ) {
         const crcBuffer = new BinaryBuffer(frame.slice(-2));
 
-        crc = crcBuffer.getUint16(false);
+        crc = crcBuffer.getUint16();
     }
 
     return crc;
