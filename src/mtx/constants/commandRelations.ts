@@ -15,13 +15,19 @@ export const responseById = new Map(Object.values(uplinkCommands).map(command =>
 
 requestByResponse.set(uplinkCommands.ActivateRatePlanResponse, downlinkCommands.ActivateRatePlan);
 requestByResponse.set(uplinkCommands.GetDateTimeResponse, downlinkCommands.GetDateTime);
+requestByResponse.set(uplinkCommands.GetDayProfileResponse, downlinkCommands.GetDayProfile);
 requestByResponse.set(uplinkCommands.GetDeviceIdResponse, downlinkCommands.GetDeviceId);
 requestByResponse.set(uplinkCommands.GetDeviceTypeResponse, downlinkCommands.GetDeviceType);
 requestByResponse.set(uplinkCommands.GetDisplayParamResponse, downlinkCommands.GetDisplayParam);
 requestByResponse.set(uplinkCommands.GetOpParamsResponse, downlinkCommands.GetOpParams);
 requestByResponse.set(uplinkCommands.GetRatePlanInfoResponse, downlinkCommands.GetRatePlanInfo);
+requestByResponse.set(uplinkCommands.GetSeasonProfileResponse, downlinkCommands.GetSeasonProfile);
+requestByResponse.set(uplinkCommands.GetSpecialDayResponse, downlinkCommands.GetSpecialDay);
 requestByResponse.set(uplinkCommands.PrepareRatePlanResponse, downlinkCommands.PrepareRatePlan);
 requestByResponse.set(uplinkCommands.RunTariffPlanResponse, downlinkCommands.RunTariffPlan);
+requestByResponse.set(uplinkCommands.SetAccessKeyResponse, downlinkCommands.SetAccessKey);
+requestByResponse.set(uplinkCommands.SetCorrectDateTimeResponse, downlinkCommands.SetCorrectDateTime);
+requestByResponse.set(uplinkCommands.SetDateTimeResponse, downlinkCommands.SetDateTime);
 requestByResponse.set(uplinkCommands.SetDayProfileResponse, downlinkCommands.SetDayProfile);
 requestByResponse.set(uplinkCommands.SetDisplayParamResponse, downlinkCommands.SetDisplayParam);
 requestByResponse.set(uplinkCommands.SetOpParamsResponse, downlinkCommands.SetOpParams);
