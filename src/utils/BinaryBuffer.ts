@@ -205,6 +205,10 @@ class BinaryBuffer {
         return bytes.slice(0, offset);
     }
 
+    getBytesLeft (): Uint8Array {
+        return this.getBytes(this.bytesLeft);
+    }
+
     getBytes ( length: number, offset = this.offset ): Uint8Array {
         const bytes = this.toUint8Array();
 
