@@ -3,13 +3,13 @@ import {UPLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
 
-const COMMAND_ID = 0x5d;
+const COMMAND_ID = 0x1c;
 const COMMAND_SIZE = 0;
 
 const examples: TCommandExampleList = [
     {
         name: 'simple response',
-        hex: {header: '5d 00', body: ''}
+        hex: {header: '1c 00', body: ''}
     }
 ];
 
@@ -19,9 +19,9 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import SetDisplayParamResponse from 'jooby-codec/mtx/commands/uplink/SetDisplayParamResponse.js';
+ * import SetCorrectTimeResponse from 'jooby-codec/mtx/commands/uplink/SetCorrectTimeResponse.js';
  *
- * const command = SetDisplayParamResponse.fromBytes();
+ * const command = SetCorrectTimeResponse.fromBytes();
  *
  * console.log(command.parameters);
  * // output:
@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/TurnRelayOn.md#response)
  */
-class SetDisplayParamResponse extends Command {
+class SetCorrectTimeResponse extends Command {
     constructor () {
         super();
 
@@ -52,8 +52,8 @@ class SetDisplayParamResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes (): SetDisplayParamResponse {
-        return new SetDisplayParamResponse();
+    static fromBytes (): SetCorrectTimeResponse {
+        return new SetCorrectTimeResponse();
     }
 
     // returns full message - header with body
@@ -63,4 +63,4 @@ class SetDisplayParamResponse extends Command {
 }
 
 
-export default SetDisplayParamResponse;
+export default SetCorrectTimeResponse;
