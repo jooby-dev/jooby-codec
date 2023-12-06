@@ -1,5 +1,4 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-//import CommandBinaryBuffer, {ILegacyCounter} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
@@ -29,7 +28,7 @@ const examples: TCommandExampleList = [
  * undefined
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/TurnRelayOn.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetDisplayParam.md#response)
  */
 class SetDisplayParamResponse extends Command {
     constructor () {

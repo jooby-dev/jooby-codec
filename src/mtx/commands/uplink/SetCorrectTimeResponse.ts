@@ -3,13 +3,13 @@ import {UPLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
 
-const COMMAND_ID = 0x11;
+const COMMAND_ID = 0x1c;
 const COMMAND_SIZE = 0;
 
 const examples: TCommandExampleList = [
     {
         name: 'simple response',
-        hex: {header: '11 00', body: ''}
+        hex: {header: '1c 00', body: ''}
     }
 ];
 
@@ -19,18 +19,18 @@ const examples: TCommandExampleList = [
  *
  * @example create command instance from command body hex dump
  * ```js
- * import SetSeasonProfileResponse from 'jooby-codec/mtx/commands/uplink/SetSeasonProfileResponse.js';
+ * import SetCorrectTimeResponse from 'jooby-codec/mtx/commands/uplink/SetCorrectTimeResponse.js';
  *
- * const command = SetSeasonProfileResponse.fromBytes();
+ * const command = SetCorrectTimeResponse.fromBytes();
  *
  * console.log(command.parameters);
  * // output:
  * undefined
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetSeasonProfile.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetCorrectTime.md#response)
  */
-class SetSeasonProfileResponse extends Command {
+class SetCorrectTimeResponse extends Command {
     constructor () {
         super();
 
@@ -52,8 +52,8 @@ class SetSeasonProfileResponse extends Command {
 
 
     // data - only body (without header)
-    static fromBytes (): SetSeasonProfileResponse {
-        return new SetSeasonProfileResponse();
+    static fromBytes (): SetCorrectTimeResponse {
+        return new SetCorrectTimeResponse();
     }
 
     // returns full message - header with body
@@ -63,4 +63,4 @@ class SetSeasonProfileResponse extends Command {
 }
 
 
-export default SetSeasonProfileResponse;
+export default SetCorrectTimeResponse;

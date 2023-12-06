@@ -217,6 +217,31 @@ export interface IDeviceId {
 
 export {IDeviceType};
 
+export interface ITimeCorrectionParameters {
+    monthTransitionSummer: number,
+    dateTransitionSummer: number,
+    hoursTransitionSummer: number,
+    hoursCorrectSummer: number,
+    monthTransitionWinter: number,
+    dateTransitionWinter: number,
+    hoursTransitionWinter: number,
+    hoursCorrectWinter: number,
+    isCorrectionNeeded: boolean
+}
+
+export interface ISaldoParameters {
+    coefficients: Array<number>,
+    decimalPointTariff: number,
+    indicationThreshold: number,
+    relayThreshold: number,
+    mode: number,
+    saldoOffTimeBegin: number,
+    saldoOffTimeEnd: number,
+    decimalPointIndication: number,
+    powerThreshold: number,
+    creditThreshold: number
+}
+
 export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
 export const SEASON_PROFILE_DAYS_NUMBER = 7;
@@ -677,6 +702,74 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     setDeviceType ( deviceType: IDeviceType ) {
         this.setBytes(DeviceType.toBytes(deviceType));
+    }
+
+    static getDefaultTimeCorrectionParameters (): ITimeCorrectionParameters {
+        return {
+            monthTransitionSummer: 3,
+            dateTransitionSummer: 0,
+            hoursTransitionSummer: 3,
+            hoursCorrectSummer: 1,
+            monthTransitionWinter: 10,
+            dateTransitionWinter: 0,
+            hoursTransitionWinter: 4,
+            hoursCorrectWinter: 1,
+            isCorrectionNeeded: true
+        };
+    }
+
+    getTimeCorrectionParameters (): ITimeCorrectionParameters {
+        return {
+            monthTransitionSummer: this.getUint8(),
+            dateTransitionSummer: this.getUint8(),
+            hoursTransitionSummer: this.getUint8(),
+            hoursCorrectSummer: this.getUint8(),
+            monthTransitionWinter: this.getUint8(),
+            dateTransitionWinter: this.getUint8(),
+            hoursTransitionWinter: this.getUint8(),
+            hoursCorrectWinter: this.getUint8(),
+            isCorrectionNeeded: this.getUint8() === 1
+        };
+    }
+
+    setTimeCorrectionParameters ( parameters: ITimeCorrectionParameters ) {
+        this.setUint8(parameters.monthTransitionSummer);
+        this.setUint8(parameters.dateTransitionSummer);
+        this.setUint8(parameters.hoursTransitionSummer);
+        this.setUint8(parameters.hoursCorrectSummer);
+        this.setUint8(parameters.monthTransitionWinter);
+        this.setUint8(parameters.dateTransitionWinter);
+        this.setUint8(parameters.hoursTransitionWinter);
+        this.setUint8(parameters.hoursCorrectWinter);
+        this.setUint8(+parameters.isCorrectionNeeded);
+    }
+
+    getSaldoParameters (): ISaldoParameters {
+        return {
+            coefficients: Array.from({length: 4}, () => this.getUint32()),
+            decimalPointTariff: this.getUint8(),
+            indicationThreshold: this.getInt32(),
+            relayThreshold: this.getInt32(),
+            mode: this.getUint8(),
+            saldoOffTimeBegin: this.getUint8(),
+            saldoOffTimeEnd: this.getUint8(),
+            decimalPointIndication: this.getUint8(),
+            powerThreshold: this.getUint32(),
+            creditThreshold: this.getInt32()
+        };
+    }
+
+    setSaldoParameters ( saldoParameters: ISaldoParameters ) {
+        saldoParameters.coefficients.forEach(value => this.setUint32(value));
+        this.setUint8(saldoParameters.decimalPointTariff);
+        this.setInt32(saldoParameters.indicationThreshold);
+        this.setInt32(saldoParameters.relayThreshold);
+        this.setUint8(saldoParameters.mode);
+        this.setUint8(saldoParameters.saldoOffTimeBegin);
+        this.setUint8(saldoParameters.saldoOffTimeEnd);
+        this.setUint8(saldoParameters.decimalPointIndication);
+        this.setUint32(saldoParameters.powerThreshold);
+        this.setInt32(saldoParameters.creditThreshold);
     }
 }
 

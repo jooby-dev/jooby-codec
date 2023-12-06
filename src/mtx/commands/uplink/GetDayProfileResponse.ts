@@ -67,7 +67,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDayProfileResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDayProfile.md#response)
  */
 class GetDayProfileResponse extends Command {
     constructor ( public parameters: IGetDayProfileResponseParameters ) {

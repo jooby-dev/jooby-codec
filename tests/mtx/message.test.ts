@@ -64,6 +64,38 @@ const downlinkMessages: TMessageList = [
         destination: new Uint8Array([0xa8, 0xa9])
     },
     {
+        name: 'GetBuildVersion',
+        hex: '0a 13 2e a2 48 fd 55 cd 7b a3 d0 b0 c5 3d 2b 18 05 29',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 2e a2 48 fd 55 cd 7b a3 d0 b0 c5 3d 2b 18 05 29 30 fc 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.GetBuildVersion.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.GetBuildVersion()
+        ],
+        lrc: 0x36,
+        crc: new Uint8Array([0x30, 0xfc]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetCorrectTime',
+        hex: '0a 13 8d 17 1d ad d8 2f 50 e5 0f ca a3 20 8d 83 e8 4d',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 8d 17 1d ad d8 2f 50 e5 0f ca a3 20 8d 83 e8 4d 82 87 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.GetCorrectTime.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.GetCorrectTime()
+        ],
+        lrc: 0x78,
+        crc: new Uint8Array([0x82, 0x87]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
         name: 'GetDateTime',
         hex: '0a 13 47 04 a6 e5 e6 37 01 ad 37 a5 d5 71 92 14 3c 52',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 47 04 a6 e5 e6 37 01 ad 37 a5 d5 71 92 14 3c 52 b8 6e 7e',
@@ -184,6 +216,38 @@ const downlinkMessages: TMessageList = [
         destination: new Uint8Array([0xaa, 0xaa])
     },
     {
+        name: 'GetSaldo',
+        hex: '0a 13 c4 63 dc 84 55 42 73 2d f9 a4 59 86 a8 46 9c 66',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 c4 63 dc 84 55 42 73 2d f9 a4 59 86 a8 46 9c 66 39 12 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.GetSaldo.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.GetSaldo()
+        ],
+        lrc: 0x6f,
+        crc: new Uint8Array([0x39, 0x12]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetSaldoParameters',
+        hex: '0a 13 2f a5 23 de 3c bf bb 0d 6b f1 1f db 52 05 b4 ba',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 2f a5 23 de 3c bf bb 0d 6b f1 1f db 52 05 b4 ba 04 57 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.GetSaldoParameters.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.GetSaldoParameters()
+        ],
+        lrc: 0x68,
+        crc: new Uint8Array([0x04, 0x57]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
         name: 'GetSeasonProfile',
         hex: '0a 13 00 d0 7e e7 8d eb 4c 39 05 4d 75 aa cf fd 4f 77',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 00 d0 7d 5e e7 8d eb 4c 39 05 4d 75 aa cf fd 4f 77 aa 4b 7e',
@@ -219,6 +283,22 @@ const downlinkMessages: TMessageList = [
         ],
         lrc: 0x7c,
         crc: new Uint8Array([0x57, 0x8a]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetVersion',
+        hex: '0a 13 a8 5e b1 b5 57 0a b9 f2 27 3e 27 47 88 bc d3 83',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 a8 5e b1 b5 57 0a b9 f2 27 3e 27 47 88 bc d3 83 ee 5b 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.GetVersion.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.GetVersion()
+        ],
+        lrc: 0x6e,
+        crc: new Uint8Array([0xee, 0x5b]),
         frameType: frameTypes.DATA_REQUEST,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])
@@ -296,6 +376,32 @@ const downlinkMessages: TMessageList = [
         ],
         lrc: 0x1d,
         crc: new Uint8Array([0x56, 0xad]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetCorrectTime',
+        hex: '0a 12 9a 60 72 38 6a b3 c9 49 2f 6b 3d 32 4f 7f 7c 75',
+        frameHex: '7e 50 aa aa ff ff 0a 12 9a 60 72 38 6a b3 c9 49 2f 6b 3d 32 4f 7f 7c 75 85 db 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.SetCorrectTime.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.SetCorrectTime({
+                monthTransitionSummer: 3,
+                dateTransitionSummer: 0,
+                hoursTransitionSummer: 3,
+                hoursCorrectSummer: 1,
+                monthTransitionWinter: 10,
+                dateTransitionWinter: 0,
+                hoursTransitionWinter: 4,
+                hoursCorrectWinter: 1,
+                isCorrectionNeeded: true
+            })
+        ],
+        lrc: 0x5d,
+        crc: new Uint8Array([0x85, 0xdb]),
         frameType: frameTypes.DATA_REQUEST,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])
@@ -410,6 +516,58 @@ const downlinkMessages: TMessageList = [
         ],
         lrc: 0x7b,
         crc: new Uint8Array([0x36, 0xb9]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetSaldo',
+        hex: '0a 12 84 7a 49 26 56 ad 85 d8 fb ce 99 fb e8 09 62 92 14 37 ef 69 d6 c4 3e e6 00 9a b5 21 fc 27 2b c2',
+        frameHex: '7e 50 aa aa ff ff 0a 12 84 7a 49 26 56 ad 85 d8 fb ce 99 fb e8 09 62 92 14 37 ef 69 d6 c4 3e e6 00 9a b5 21 fc 27 2b c2 ab 08 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.SetSaldo.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.SetSaldo({
+                date: {
+                    month: 9,
+                    date: 23,
+                    hours: 6,
+                    minutes: 35
+                },
+                saldoNew: 2,
+                saldoOld: 5
+            })
+        ],
+        lrc: 0x5d,
+        crc: new Uint8Array([0xab, 0x08]),
+        frameType: frameTypes.DATA_REQUEST,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetSaldoParameters',
+        hex: '0a 12 0d fe 89 57 38 c7 9b 7b 77 14 bd 8b 9e f3 eb 44 1b 2e f6 c5 32 4d 34 24 14 15 55 c8 0f 13 cf bc 67 15 9e 5a 97 29 dc 1a 47 86 95 29 61 8d 58 ca',
+        frameHex: '7e 50 aa aa ff ff 0a 12 0d fe 89 57 38 c7 9b 7b 77 14 bd 8b 9e f3 eb 44 1b 2e f6 c5 32 4d 34 24 14 15 55 c8 0f 7d 33 cf bc 67 15 9e 5a 97 29 dc 1a 47 86 95 29 61 8d 58 ca a8 9f 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.SetSaldoParameters.accessLevel,
+        direction: directions.DOWNLINK,
+        commands: [
+            new downlinkCommands.SetSaldoParameters({
+                coefficients: [2, 3, 4, 5],
+                decimalPointTariff: 6,
+                indicationThreshold: 7,
+                relayThreshold: 8,
+                mode: 9,
+                saldoOffTimeBegin: 10,
+                saldoOffTimeEnd: 11,
+                decimalPointIndication: 12,
+                powerThreshold: 13,
+                creditThreshold: 14
+            })
+        ],
+        lrc: 0x43,
+        crc: new Uint8Array([0xa8, 0x9f]),
         frameType: frameTypes.DATA_REQUEST,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])
@@ -624,6 +782,53 @@ const uplinkMessages: TMessageList = [
         destination: new Uint8Array([0xaa, 0xaa])
     },
     {
+        name: 'GetBuildVersionResponse',
+        hex: '0a 13 9b 4b f7 2a d1 e5 49 a5 09 50 9a 59 7e c2 b5 88',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 9b 4b f7 2a d1 e5 49 a5 09 50 9a 59 7d 5e c2 b5 88 21 54 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.GetBuildVersionResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.GetBuildVersionResponse({
+                date: 16,
+                month: 9,
+                year: 21,
+                version: '0.0.9'
+            })
+        ],
+        lrc: 0x35,
+        crc: new Uint8Array([0x21, 0x54]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetCorrectTimeResponse',
+        hex: '0a 13 d4 93 ea 6a b2 92 f9 a6 23 76 16 fc 12 38 9f b6',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 d4 93 ea 6a b2 92 f9 a6 23 76 16 fc 12 38 9f b6 cc 0b 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.GetCorrectTimeResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.GetCorrectTimeResponse({
+                monthTransitionSummer: 3,
+                dateTransitionSummer: 0,
+                hoursTransitionSummer: 3,
+                hoursCorrectSummer: 1,
+                monthTransitionWinter: 10,
+                dateTransitionWinter: 0,
+                hoursTransitionWinter: 4,
+                hoursCorrectWinter: 1,
+                isCorrectionNeeded: true
+            })
+        ],
+        lrc: 0x7e,
+        crc: new Uint8Array([0xcc, 0x0b]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
         name: 'GetDateTimeResponse',
         hex: '0a 13 f0 3d 29 b1 49 51 a1 76 81 a0 ec 9e 1b 45 a7 40',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 f0 3d 29 b1 49 51 a1 76 81 a0 ec 9e 1b 45 a7 40 03 5d 7e',
@@ -813,6 +1018,60 @@ const uplinkMessages: TMessageList = [
         destination: new Uint8Array([0xaa, 0xaa])
     },
     {
+        name: 'GetSaldoParametersResponse',
+        hex: '0c 13 0d b0 25 08 91 ca 54 e3 a4 cc be a2 73 ae 54 bf a0 43 77 0d 98 4c 73 a6 4b 06 d7 22 9c 38 bb b8 50 4e ed 7a 9d 84 6f 85 b4 ee 57 2c fd 1f 7c 18',
+        frameHex: '7e 51 aa aa ff ff 0c 7d 33 0d b0 25 08 91 ca 54 e3 a4 cc be a2 73 ae 54 bf a0 43 77 0d 98 4c 73 a6 4b 06 d7 22 9c 38 bb b8 50 4e ed 7a 9d 84 6f 85 b4 ee 57 2c fd 1f 7c 18 65 40 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.GetSaldoParametersResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.GetSaldoParametersResponse({
+                coefficients: [2, 3, 4, 5],
+                decimalPointTariff: 6,
+                indicationThreshold: 7,
+                relayThreshold: 8,
+                mode: 90,
+                saldoOffTimeBegin: 10,
+                saldoOffTimeEnd: 11,
+                decimalPointIndication: 12,
+                powerThreshold: 13,
+                creditThreshold: 14
+            })
+        ],
+        lrc: 0x10,
+        crc: new Uint8Array([0x65, 0x40]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetSaldoResponse',
+        hex: '0c 13 b3 92 d2 17 c6 97 00 75 1a eb 35 dd 62 76 c4 3a d9 e5 b4 c7 af f2 3c 79 79 a6 08 37 2e dd 9e 07 8a 3f bc 8a bf d1 89 57 ad b5 42 7b 33 fc 35 f8',
+        frameHex: '7e 51 aa aa ff ff 0c 7d 33 b3 92 d2 17 c6 97 00 75 1a eb 35 dd 62 76 c4 3a d9 e5 b4 c7 af f2 3c 79 79 a6 08 37 2e dd 9e 07 8a 3f bc 8a bf d1 89 57 ad b5 42 7b 33 fc 35 f8 79 44 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.GetSaldoResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.GetSaldoResponse({
+                currentSaldo: 1,
+                count: 0,
+                energy: [2, 3, 4, 5],
+                beginSaldoOfPeriod: 7,
+                date: {
+                    month: 9,
+                    date: 23,
+                    hours: 6,
+                    minutes: 35
+                }
+            })
+        ],
+        lrc: 0x4f,
+        crc: new Uint8Array([0x79, 0x44]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
         name: 'GetSeasonProfileResponse',
         hex: '0c 13 b6 6b 87 aa a9 25 92 39 df 19 ee f7 2c 1e 41 90',
         frameHex: '7e 51 aa aa ff ff 0c 7d 33 b6 6b 87 aa a9 25 92 39 df 19 ee f7 2c 1e 41 90 ca 5a 7e',
@@ -828,6 +1087,24 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x71,
         crc: new Uint8Array([0xca, 0x5a]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'GetVersionResponse',
+        hex: '0c 13 8f d7 f5 0b b9 60 dc fc 45 73 a5 5b e8 4a 64 ae',
+        frameHex: '7e 51 aa aa ff ff 0c 7d 33 8f d7 f5 0b b9 60 dc fc 45 73 a5 5b e8 4a 64 ae 07 4a 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.GetVersionResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.GetVersionResponse({
+                version: '104.25.003'
+            })
+        ],
+        lrc: 0x65,
+        crc: new Uint8Array([0x07, 0x4a]),
         frameType: frameTypes.DATA_RESPONSE,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])
@@ -897,6 +1174,22 @@ const uplinkMessages: TMessageList = [
         destination: new Uint8Array([0xaa, 0xaa])
     },
     {
+        name: 'SetCorrectTimeResponse',
+        hex: '0c 12 26 85 8e bd de 25 89 90 68 46 6d b8 60 1c fc 83',
+        frameHex: '7e 51 aa aa ff ff 0c 12 26 85 8e bd de 25 89 90 68 46 6d b8 60 1c fc 83 f1 d6 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.SetCorrectTimeResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.SetCorrectTimeResponse()
+        ],
+        lrc: 0x5b,
+        crc: new Uint8Array([0xf1, 0xd6]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
         name: 'SetDateTimeResponse',
         hex: '0c 12 7d 7c c3 a1 f1 1d 18 e0 19 bf be af 01 63 da 9b',
         frameHex: '7e 51 aa aa ff ff 0c 12 7d 5d 7c c3 a1 f1 1d 18 e0 19 bf be af 01 63 da 9b 65 b1 7e',
@@ -939,7 +1232,7 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetDisplayParamResponse()
         ],
         lrc: 0x1a,
-        crc: new Uint8Array([0x7e, 0xd7]),
+        crc: new Uint8Array([0x7e, 0xd7]), // special case
         frameType: frameTypes.DATA_RESPONSE,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])
@@ -956,6 +1249,38 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x58,
         crc: new Uint8Array([0x01, 0xcb]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetSaldoParametersResponse',
+        hex: '0a 12 7b 8e 5b 7b 50 32 a8 b2 5b 46 69 04 a4 49 40 ff',
+        frameHex: '7e 51 aa aa ff ff 0a 12 7b 8e 5b 7b 50 32 a8 b2 5b 46 69 04 a4 49 40 ff 84 a3 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.SetSaldoParametersResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.SetSaldoParametersResponse()
+        ],
+        lrc: 0x68,
+        crc: new Uint8Array([0x84, 0xa3]),
+        frameType: frameTypes.DATA_RESPONSE,
+        source: new Uint8Array([0xff, 0xff]),
+        destination: new Uint8Array([0xaa, 0xaa])
+    },
+    {
+        name: 'SetSaldoResponse',
+        hex: '0a 12 a0 c5 af e7 f5 1a b0 89 a8 71 8f a2 e8 60 d8 f5',
+        frameHex: '7e 51 aa aa ff ff 0a 12 a0 c5 af e7 f5 1a b0 89 a8 71 8f a2 e8 60 d8 f5 2b 3e 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.SetSaldoResponse.accessLevel,
+        direction: directions.UPLINK,
+        commands: [
+            new uplinkCommands.SetSaldoResponse()
+        ],
+        lrc: 0x6d,
+        crc: new Uint8Array([0x2b, 0x3e]),
         frameType: frameTypes.DATA_RESPONSE,
         source: new Uint8Array([0xff, 0xff]),
         destination: new Uint8Array([0xaa, 0xaa])

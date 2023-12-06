@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetSpecialDayResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetSpecialDay.md#response)
  */
 class GetSpecialDayResponse extends Command {
     constructor ( public parameters: ISpecialDay ) {

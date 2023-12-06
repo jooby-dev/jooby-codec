@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  * // the same as CommandBinaryBuffer.getDefaultOperatorParameters()
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetOpParamsResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetOpParams.md#response)
  */
 class GetOpParamsResponse extends Command {
     constructor ( public parameters: IOperatorParameters ) {

@@ -49,7 +49,7 @@ const examples: TCommandExampleList = [
  * };
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDeviceTypeResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDeviceType.md#response)
  */
 class GetDeviceTypeResponse extends Command {
     constructor ( public parameters: IDeviceType ) {

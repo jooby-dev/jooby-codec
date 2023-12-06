@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
  * undefined
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/TurnRelayOn.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetOpParams.md#response)
  */
 class SetOpParamsResponse extends Command {
     constructor () {
