@@ -397,7 +397,7 @@ const downlinkMessages: TMessageList = [
                 dateTransitionWinter: 0,
                 hoursTransitionWinter: 4,
                 hoursCorrectWinter: 1,
-                needCorrection: true
+                isCorrectionNeeded: true
             })
         ],
         lrc: 0x5d,
@@ -819,7 +819,7 @@ const uplinkMessages: TMessageList = [
                 dateTransitionWinter: 0,
                 hoursTransitionWinter: 4,
                 hoursCorrectWinter: 1,
-                needCorrection: true
+                isCorrectionNeeded: true
             })
         ],
         lrc: 0x7e,

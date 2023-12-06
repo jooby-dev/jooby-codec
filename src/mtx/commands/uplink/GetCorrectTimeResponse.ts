@@ -19,7 +19,7 @@ const examples: TCommandExampleList = [
             dateTransitionWinter: 0,
             hoursTransitionWinter: 4,
             hoursCorrectWinter: 1,
-            needCorrection: true
+            isCorrectionNeeded: true
         },
         hex: {header: '3e 09', body: '03 00 03 01 0a 00 04 01 01'}
     }
@@ -47,11 +47,11 @@ const examples: TCommandExampleList = [
  *     dateTransitionWinter: 0,
  *     hoursTransitionWinter: 4,
  *     hoursCorrectWinter: 1,
- *     needCorrection: true
+ *     isCorrectionNeeded: true
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetCorrectTimeResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetCorrectTime.md#response)
  */
 class GetCorrectTimeResponse extends Command {
     constructor ( public parameters: ITimeCorrectionParameters ) {

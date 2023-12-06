@@ -226,7 +226,7 @@ export interface ITimeCorrectionParameters {
     dateTransitionWinter: number,
     hoursTransitionWinter: number,
     hoursCorrectWinter: number,
-    needCorrection: boolean
+    isCorrectionNeeded: boolean
 }
 
 export interface ISaldoParameters {
@@ -714,7 +714,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             dateTransitionWinter: 0,
             hoursTransitionWinter: 4,
             hoursCorrectWinter: 1,
-            needCorrection: true
+            isCorrectionNeeded: true
         };
     }
 
@@ -728,7 +728,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             dateTransitionWinter: this.getUint8(),
             hoursTransitionWinter: this.getUint8(),
             hoursCorrectWinter: this.getUint8(),
-            needCorrection: this.getUint8() === 1
+            isCorrectionNeeded: this.getUint8() === 1
         };
     }
 
@@ -741,7 +741,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(parameters.dateTransitionWinter);
         this.setUint8(parameters.hoursTransitionWinter);
         this.setUint8(parameters.hoursCorrectWinter);
-        this.setUint8(+parameters.needCorrection);
+        this.setUint8(+parameters.isCorrectionNeeded);
     }
 
     getSaldoParameters (): ISaldoParameters {

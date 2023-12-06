@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
  * undefined
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/TurnRelayOn.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetCorrectDateTime.md#response)
  */
 class SetCorrectDateTimeResponse extends Command {
     constructor () {

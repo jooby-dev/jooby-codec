@@ -78,7 +78,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetSaldoParametersResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetSaldoParameters.md#response)
  */
 class GetSaldoParametersResponse extends Command {
     constructor ( public parameters: ISaldoParameters ) {

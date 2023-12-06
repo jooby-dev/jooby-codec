@@ -49,7 +49,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDateTimeResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDateTime.md#response)
  */
 class GetDateTimeResponse extends Command {
     constructor ( public parameters: IDateTime ) {

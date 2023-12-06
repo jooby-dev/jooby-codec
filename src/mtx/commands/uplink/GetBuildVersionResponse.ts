@@ -48,7 +48,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetBuildVersionResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetBuildVersion.md#response)
  */
 class GetBuildVersionResponse extends Command {
     constructor ( public parameters: IGetBuildVersionResponseParameters ) {

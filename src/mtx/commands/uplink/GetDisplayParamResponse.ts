@@ -50,7 +50,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDisplayParamResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDisplayParam.md#response)
  */
 class GetDisplayParamResponse extends Command {
     constructor ( public parameters: IGetDisplayParamResponseParameters ) {

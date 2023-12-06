@@ -39,7 +39,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetVersionResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetVersion.md#response)
  */
 class GetVersionResponse extends Command {
     constructor ( public parameters: IGetVersionResponseParameters ) {

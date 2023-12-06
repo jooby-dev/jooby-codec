@@ -88,7 +88,7 @@ const examples: TCommandExampleList = [
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetRatePlanInfoResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetRatePlanInfo.md#response)
  */
 class GetRatePlanInfoResponse extends Command {
     constructor ( public parameters: IGetRatePlanInfoResponseParameters ) {

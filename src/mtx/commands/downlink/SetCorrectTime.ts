@@ -19,7 +19,7 @@ const examples: TCommandExampleList = [
             dateTransitionWinter: 0,
             hoursTransitionWinter: 4,
             hoursCorrectWinter: 1,
-            needCorrection: true
+            isCorrectionNeeded: true
         },
         hex: {header: '1c 09', body: '03 00 03 01 0a 00 04 01 01'}
     }
@@ -42,7 +42,7 @@ const examples: TCommandExampleList = [
  *     dateTransitionWinter: 0,
  *     hoursTransitionWinter: 4,
  *     hoursCorrectWinter: 1,
- *     needCorrection: true
+ *     isCorrectionNeeded: true
  * };
  * const command = new SetCorrectTime(parameters);
  *
