@@ -5,6 +5,7 @@ import {IDeviceType} from './utils/deviceType.js';
 import * as DeviceType from './utils/deviceType.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
+import {isDstObserved} from './utils/dateTime.js';
 
 
 export interface IDateTime {
@@ -397,8 +398,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             year: date.getFullYear() - 2000
         };
 
-        // todo
-        // dateTime.isSummerTime = getSummerTimeFlag(correction, dateTime);
+        dateTime.isSummerTime = isDstObserved(date);
 
         return dateTime;
     }
