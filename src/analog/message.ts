@@ -28,7 +28,7 @@ interface IMessageCommand {
     command: Command
 }
 
-interface IMessage {
+export interface IMessage {
     commands: Array<IMessageCommand>,
     lrc: {
         expected: number | undefined,
@@ -37,7 +37,7 @@ interface IMessage {
     isValid: boolean
 }
 
-interface IMessageConfig {
+export interface IMessageConfig {
     /** It is highly recommended to use a specific direction. */
     direction?: number,
     hardwareType?: number
@@ -84,7 +84,7 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareTyp
     }
 };
 
-export const fromBytes = ( data: Uint8Array, config?: IMessageConfig ) => {
+export const fromBytes = ( data: Uint8Array, config?: IMessageConfig ): IMessage => {
     const direction = config?.direction ?? AUTO;
     const hardwareType = config?.hardwareType;
     const commands: Array<IMessageCommand> = [];
