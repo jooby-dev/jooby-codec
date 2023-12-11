@@ -7,8 +7,6 @@ class FrameCollector {
 
     private buffer: Array<number> = [];
 
-    private isStartByteReceived: boolean = false;
-
     constructor ( public frameBufferMaxSize: number = 256 ) {
     }
 
@@ -24,25 +22,22 @@ class FrameCollector {
     processByte ( value: number ) {
         const byte = value & 0xff;
 
-        if ( !this.isStartByteReceived ) {
+        if ( this.buffer.length === 0 ) {
             if ( byte === START_BYTE ) {
-                this.isStartByteReceived = true;
+                this.buffer = [START_BYTE];
             }
 
             return;
         }
 
-        if ( byte === STOP_BYTE ) {
-            this.isStartByteReceived = false;
-            if ( this.buffer.length !== 0 ) {
-                this.frames.push(Frame.fromBytes(new Uint8Array(this.buffer)));
-                this.reset();
-
-                return;
-            }
-        }
-
         this.buffer.push(byte);
+
+        if ( byte === STOP_BYTE ) {
+            this.frames.push(Frame.fromBytes(new Uint8Array(this.buffer)));
+            this.reset();
+
+            return;
+        }
 
         if ( this.buffer.length === this.frameBufferMaxSize ) {
             this.reset();
@@ -51,7 +46,6 @@ class FrameCollector {
 
     reset () {
         this.buffer = [];
-        this.isStartByteReceived = false;
     }
 }
 

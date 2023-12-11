@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
-export type THashTable = Record<string, unknown>;
+export type THashTable = Record<string | number | symbol, unknown>;
 
 /*
     Swap keys and values

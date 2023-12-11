@@ -2,24 +2,35 @@ import calculateCrc16 from './calculateCrc16.js';
 import getBytesFromHex from './getBytesFromHex.js';
 import getBytesFromBase64 from './getBytesFromBase64.js';
 import BinaryBuffer from './BinaryBuffer.js';
+import {START_BYTE, STOP_BYTE} from '../constants/frameAttributes.js';
+import invertObject from './invertObject.js';
 
 
+const STUFFING_8BIT_BYTE = 0x7c;
 const STUFFING_BYTE = 0x7d;
 const byteStuffMap: Record<number, number> = {0x13: 0x33, 0x11: 0x31, 0x7d: 0x5d, 0x7e: 0x5e};
-const byteUnstuffMap: Record<number, number> = {0x33: 0x13, 0x31: 0x11, 0x5d: 0x7d, 0x5e: 0x7e};
+const byteUnstuffMap: Record<number, number> = invertObject(byteStuffMap) as Record<number, number>;
 
-const byteStuff = ( byte: number ): number => byteStuffMap[byte] || byte;
+const byteStuffMap7thBitSize: Record<number, number> = {...byteStuffMap, 0x7C: 0x5C};
+const byteUnstuffMap7thBitSize: Record<number, number> = invertObject(byteStuffMap7thBitSize) as Record<number, number>;
 
-const byteUnstuff = ( byte: number ): number => byteUnstuffMap[byte] || byte;
+const byteStuff = ( stuffingMap: Record<number, number>, byte: number ): number => stuffingMap[byte] || byte;
 
-export const arrayStuff = ( data: Uint8Array | Array<number> ): Uint8Array => {
+
+export const arrayStuff = ( data: Uint8Array | Array<number>, dataBits: 7 | 8 = 8 ): Uint8Array => {
+    const stuffingMap = dataBits === 7 ? byteStuffMap7thBitSize : byteStuffMap;
     const result: Array<number> = [];
 
     data.forEach(byte => {
-        const stuff = byteStuff(byte & 0xff);
+        const stuff = byteStuff(stuffingMap, byte & 0xff);
 
         if ( stuff === byte ) {
-            result.push(byte);
+            if ( dataBits === 7 && byte & 0x80 ) {
+                result.push(STUFFING_8BIT_BYTE);
+                result.push(byte & 0x7f);
+            } else {
+                result.push(byte);
+            }
         } else {
             result.push(STUFFING_BYTE);
             result.push(stuff);
@@ -29,19 +40,25 @@ export const arrayStuff = ( data: Uint8Array | Array<number> ): Uint8Array => {
     return new Uint8Array(result);
 };
 
-export const arrayUnstuff = ( data: Uint8Array | Array<number> ): Uint8Array => {
+export const arrayUnstuff = ( data: Uint8Array | Array<number>, dataBits: 7 | 8 = 8 ): Uint8Array => {
+    const unStuffingMap = dataBits === 7 ? byteUnstuffMap7thBitSize : byteUnstuffMap;
     const result: Array<number> = [];
     let position = 0;
-    let hasPrevStuffingByte = false;
+    let prevStuffingByte = 0;
 
     data.forEach(value => {
         const byte = value & 0xff;
 
-        if ( byte === STUFFING_BYTE ) {
-            hasPrevStuffingByte = true;
-        } else if ( hasPrevStuffingByte ) {
-            hasPrevStuffingByte = false;
-            result[position++] = byteUnstuff(byte);
+        if ( prevStuffingByte === STUFFING_BYTE) {
+            prevStuffingByte = 0;
+            result[position++] = byteStuff(unStuffingMap, byte);
+        } else if ( dataBits === 7 && prevStuffingByte === STUFFING_8BIT_BYTE) {
+            prevStuffingByte = 0;
+            result[position++] = byte | 0x80;
+        } else if ( byte === STUFFING_BYTE ) {
+            prevStuffingByte = STUFFING_BYTE;
+        } else if ( dataBits === 7 && byte === STUFFING_8BIT_BYTE ) {
+            prevStuffingByte = STUFFING_8BIT_BYTE;
         } else {
             result[position++] = byte;
         }
@@ -73,7 +90,7 @@ const getFrameCrc = ( frame: Uint8Array ): number | undefined => {
 
 export interface IFrame {
     content: Uint8Array,
-    buffer:Uint8Array,
+    buffer: Uint8Array,
     crc: {
         expected: number | undefined,
         actual: number
@@ -81,23 +98,35 @@ export interface IFrame {
 }
 
 
-export const toFrame = ( content: Uint8Array ): IFrame => {
+export const toFrame = ( content: Uint8Array, dataBits: 7 | 8 = 8 ): IFrame => {
     const crc = calculateCrc16(content);
     const crcBytes = convertCrcToBytes(crc);
-    const stuffed = content.length === 0 ? [] : arrayStuff([...content, ...crcBytes]);
+    const stuffed = content.length === 0 ? [] : arrayStuff([...content, ...crcBytes], dataBits);
+    const buffer = content.length === 0 ? new Uint8Array() : new Uint8Array([0x7e, ...stuffed, 0x7e]);
 
     return {
         content,
-        buffer: new Uint8Array(stuffed),
+        buffer,
         crc: {
             actual: crc,
-            expected: undefined
+            expected: content.length === 0 ? undefined : crc
         }
     };
 };
 
-export const fromBytes = ( data: Uint8Array ): IFrame => {
-    const unstuffed = arrayUnstuff(data);
+export const fromBytes = ( data: Uint8Array, dataBits: 7 | 8 = 8 ): IFrame => {
+    if ( data[0] !== START_BYTE || data[data.length - 1] !== STOP_BYTE ) {
+        return {
+            content: new Uint8Array(),
+            buffer: new Uint8Array(),
+            crc: {
+                actual: 0,
+                expected: undefined
+            }
+        };
+    }
+
+    const unstuffed = arrayUnstuff(data.slice(1, data.length - 1), dataBits);
     const expectedCrc = getFrameCrc(unstuffed);
     const content = unstuffed.slice(0, unstuffed.length - 2);
     const actualCrc = calculateCrc16(content);
@@ -112,10 +141,10 @@ export const fromBytes = ( data: Uint8Array ): IFrame => {
     };
 };
 
-export const fromHex = ( data: string ) => (
-    fromBytes(getBytesFromHex(data))
+export const fromHex = ( data: string, dataBits: 7 | 8 = 8 ) => (
+    fromBytes(getBytesFromHex(data), dataBits)
 );
 
-export const fromBase64 = ( data: string ) => (
-    fromBytes(getBytesFromBase64(data))
+export const fromBase64 = ( data: string, dataBits: 7 | 8 = 8 ) => (
+    fromBytes(getBytesFromBase64(data), dataBits)
 );
