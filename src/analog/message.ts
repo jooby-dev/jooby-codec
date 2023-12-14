@@ -18,7 +18,8 @@ import getBase64FromBytes from '../utils/getBase64FromBytes.js';
 import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
-interface IMessageCommand extends ICommandBinary {
+interface IMessageCommand {
+    data: ICommandBinary;
     command: Command;
 }
 
@@ -28,7 +29,7 @@ export interface IMessage {
         expected: number | undefined,
         actual: number
     },
-    buffer: Uint8Array,
+    bytes: Uint8Array,
     isValid: boolean
 }
 
@@ -87,7 +88,7 @@ export const fromBytes = ( data: Uint8Array, config?: IMessageConfig ): IMessage
         commands,
         lrc: {expected: undefined, actual: 0},
         isValid: false,
-        buffer: data
+        bytes: data
     };
     let processedBytes = 0;
     let expectedLrc;
@@ -110,9 +111,11 @@ export const fromBytes = ( data: Uint8Array, config?: IMessageConfig ): IMessage
         }
 
         commands.push({
-            header: headerData,
-            body: bodyData,
-            buffer: mergeUint8Arrays(headerData, bodyData),
+            data: {
+                header: headerData,
+                body: bodyData,
+                bytes: mergeUint8Arrays(headerData, bodyData)
+            },
             command
         });
     } while ( processedBytes < data.length - 1 );
@@ -148,19 +151,18 @@ export const toMessage = ( commands: Array<Command> ): IMessage => {
         ...command.toBinary()
     }));
 
-    const body = commandsBinary.reduce(
-        (accumulator, {buffer}) => mergeUint8Arrays(accumulator, buffer),
-        new Uint8Array()
+    const body = new Uint8Array(
+        commandsBinary.flatMap(({bytes}) => Array.from(bytes))
     );
     const actualLrc = calculateLrc(body);
 
     return {
-        commands: [], //commandsBinary,
+        commands: [],
         lrc: {
             expected: actualLrc,
             actual: actualLrc
         },
-        buffer: mergeUint8Arrays(body, new Uint8Array([actualLrc])),
+        bytes: new Uint8Array([...body, actualLrc]),
         isValid: true
     };
 };
@@ -169,7 +171,7 @@ export const toBytes = ( commands: Array<Command> ): Uint8Array => {
     const commandBytes = commands.map(command => command.toBytes());
     const body = mergeUint8Arrays(...commandBytes);
 
-    return mergeUint8Arrays(body, new Uint8Array([calculateLrc(body)]));
+    return new Uint8Array([...body, calculateLrc(body)]);
 };
 
 export const toHex = ( commands: Array<Command>, options: IHexFormatOptions = {} ): string => getHexFromBytes(toBytes(commands), options);

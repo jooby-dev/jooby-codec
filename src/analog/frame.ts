@@ -14,7 +14,7 @@ export const toFrame = ( commands: Array<Command> ): IAnalogFrame => {
 
     return {
         message,
-        frame: Frame.toFrame(message.buffer)
+        frame: Frame.toFrame(message.bytes)
     };
 };
 
