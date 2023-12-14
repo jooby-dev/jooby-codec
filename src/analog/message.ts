@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 
-import Command from './Command.js';
+import Command, {ICommandBinary} from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
 import {requestById, responseById} from './constants/commandRelations.js';
 
@@ -18,14 +18,8 @@ import getBase64FromBytes from '../utils/getBase64FromBytes.js';
 import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
-interface IMessageCommand {
-    /** command source binary data */
-    data: {
-        header: Uint8Array,
-        body: Uint8Array
-    },
-    /** specific command instance */
-    command: Command
+interface IMessageCommand extends ICommandBinary {
+    command: Command;
 }
 
 export interface IMessage {
@@ -34,6 +28,7 @@ export interface IMessage {
         expected: number | undefined,
         actual: number
     },
+    buffer: Uint8Array,
     isValid: boolean
 }
 
@@ -91,7 +86,8 @@ export const fromBytes = ( data: Uint8Array, config?: IMessageConfig ): IMessage
     const result: IMessage = {
         commands,
         lrc: {expected: undefined, actual: 0},
-        isValid: false
+        isValid: false,
+        buffer: data
     };
     let processedBytes = 0;
     let expectedLrc;
@@ -114,7 +110,9 @@ export const fromBytes = ( data: Uint8Array, config?: IMessageConfig ): IMessage
         }
 
         commands.push({
-            data: {header: headerData, body: bodyData},
+            header: headerData,
+            body: bodyData,
+            buffer: mergeUint8Arrays(headerData, bodyData),
             command
         });
     } while ( processedBytes < data.length - 1 );
@@ -143,6 +141,29 @@ export const fromHex = ( data: string, config?: IMessageConfig ) => (
 export const fromBase64 = ( data: string ) => (
     fromBytes(getBytesFromBase64(data))
 );
+
+export const toMessage = ( commands: Array<Command> ): IMessage => {
+    const commandsBinary = commands.map(command => ({
+        command,
+        ...command.toBinary()
+    }));
+
+    const body = commandsBinary.reduce(
+        (accumulator, {buffer}) => mergeUint8Arrays(accumulator, buffer),
+        new Uint8Array()
+    );
+    const actualLrc = calculateLrc(body);
+
+    return {
+        commands: [], //commandsBinary,
+        lrc: {
+            expected: actualLrc,
+            actual: actualLrc
+        },
+        buffer: mergeUint8Arrays(body, new Uint8Array([actualLrc])),
+        isValid: true
+    };
+};
 
 export const toBytes = ( commands: Array<Command> ): Uint8Array => {
     const commandBytes = commands.map(command => command.toBytes());

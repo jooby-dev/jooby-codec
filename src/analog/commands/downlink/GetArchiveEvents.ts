@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
@@ -69,16 +69,14 @@ class GetArchiveEvents extends Command {
         return new GetArchiveEvents({events, startTime2000});
     }
 
-    // returns full message - header with body
-    // eslint-disable-next-line class-methods-use-this
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
         const {startTime2000, events} = this.parameters;
 
         buffer.setTime(startTime2000);
         buffer.setUint8(events);
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBinary(COMMAND_ID, buffer.toUint8Array());
     }
 }
 

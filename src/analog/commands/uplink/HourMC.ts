@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CurrentMC from './CurrentMC.js';
 import {TTime2000} from '../../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
@@ -87,14 +87,13 @@ class HourMC extends CurrentMC {
         return new HourMC(buffer.getChannelsValuesWithHourDiff());
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {startTime2000, hours, channelList} = this.parameters;
 
         buffer.setChannelsValuesWithHourDiff(hours, startTime2000, channelList);
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

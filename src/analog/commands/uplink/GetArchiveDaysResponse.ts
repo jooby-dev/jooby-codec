@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {ILegacyCounter} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 import {getTime2000FromDate, TTime2000} from '../../../utils/time.js';
@@ -83,8 +83,7 @@ class GetArchiveDaysResponse extends Command {
         return new GetArchiveDaysResponse({startTime2000: getTime2000FromDate(date), dayList});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {startTime2000, dayList} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MIN_SIZE + (dayList.length * DAY_COUNTER_SIZE));
 
@@ -92,7 +91,7 @@ class GetArchiveDaysResponse extends Command {
 
         dayList.forEach(dayCounter => buffer.setLegacyCounter(dayCounter));
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

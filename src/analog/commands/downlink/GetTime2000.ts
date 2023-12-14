@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 
 
@@ -48,10 +48,9 @@ class GetTime2000 extends Command {
         return new GetTime2000();
     }
 
-    // returns full message - header with body
     // eslint-disable-next-line class-methods-use-this
-    toBytes (): Uint8Array {
-        return Command.toBytes(COMMAND_ID);
+    toBinary (): ICommandBinary {
+        return Command.toBinary(COMMAND_ID);
     }
 }
 

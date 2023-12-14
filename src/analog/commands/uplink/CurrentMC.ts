@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IChannelValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 
@@ -103,15 +103,14 @@ class CurrentMC extends Command {
         return new CurrentMC(parameters);
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList} = this.parameters;
 
         buffer.setChannels(channelList);
         channelList.forEach(({value}) => buffer.setExtendedValue(value));
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

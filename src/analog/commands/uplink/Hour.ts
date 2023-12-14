@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {ILegacyHourCounterWithDiff} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 
@@ -65,13 +65,12 @@ class Hour extends Command {
         return new Hour(buffer.getLegacyHourCounterWithDiff());
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(CommandBinaryBuffer.getLegacyHourCounterSize(this.parameters));
 
         buffer.setLegacyHourCounterWithDiff(this.parameters);
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

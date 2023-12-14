@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IChannelArchiveDaysAbsolute} from '../../CommandBinaryBuffer.js';
 import {getTime2000FromDate, TTime2000} from '../../../utils/time.js';
 import {UPLINK} from '../../../constants/directions.js';
@@ -108,8 +108,7 @@ class GetExAbsArchiveDaysMCResponse extends Command {
         return new GetExAbsArchiveDaysMCResponse({channelList, days, startTime2000: getTime2000FromDate(date)});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList, startTime2000, days} = this.parameters;
 
@@ -122,7 +121,7 @@ class GetExAbsArchiveDaysMCResponse extends Command {
             dayList.forEach(value => buffer.setExtendedValue(value));
         });
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

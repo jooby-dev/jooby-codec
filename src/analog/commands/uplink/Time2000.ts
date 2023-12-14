@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
@@ -78,15 +78,14 @@ class Time2000 extends Command {
         return new Time2000(parameters);
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {sequenceNumber, time2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
         buffer.setUint8(sequenceNumber);
         buffer.setTime(time2000);
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBinary(COMMAND_ID, buffer.toUint8Array());
     }
 }
 

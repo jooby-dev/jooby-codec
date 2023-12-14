@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 
@@ -74,8 +74,7 @@ class WriteImageResponse extends Command {
         });
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
         const {offset, status} = this.parameters;
 
@@ -83,7 +82,7 @@ class WriteImageResponse extends Command {
         buffer.setUint32(offset, false);
         buffer.setUint8(status);
 
-        return Command.toBytes(
+        return Command.toBinary(
             COMMAND_ID,
             buffer.toUint8Array()
         );

@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 
 
@@ -63,11 +63,10 @@ class VerifyImageResponse extends Command {
         return new VerifyImageResponse({status});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {parameters} = this;
 
-        return Command.toBytes(
+        return Command.toBinary(
             COMMAND_ID,
             new Uint8Array([parameters.status])
         );

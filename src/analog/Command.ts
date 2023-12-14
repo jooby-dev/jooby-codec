@@ -20,6 +20,12 @@ export interface ICommandExample {
 
 export type TCommandExampleList = Array<ICommandExample>;
 
+export interface ICommandBinary {
+    header: Uint8Array,
+    body?: Uint8Array,
+    buffer: Uint8Array
+}
+
 
 /**
  * private
@@ -87,22 +93,30 @@ abstract class Command {
     // }
 
     /**
-     * Build header with body.
+     * Build header, body and complete buffer.
      *
      * @param id command id
      * @param commandData optional command binary data
      * @returns merged data
      */
-    static toBytes ( id: number, commandData?: Uint8Array ): Uint8Array {
+
+    static toBinary ( id: number, commandData?: Uint8Array ): ICommandBinary {
         const commandLength = commandData?.length ?? 0;
         const headerData = header.toBytes(id, commandLength);
 
         if ( commandData && commandLength ) {
-            return mergeUint8Arrays(headerData, commandData);
+            return {
+                header: headerData,
+                body: commandData,
+                buffer: mergeUint8Arrays(headerData, commandData)
+            };
         }
 
         // simple command without body
-        return headerData;
+        return {
+            header: headerData,
+            buffer: headerData
+        };
     }
 
     /** Get command parameters. */
@@ -111,8 +125,13 @@ abstract class Command {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         throw new Error('not implemented!');
+    }
+
+    // returns full message - header with body
+    toBytes (): Uint8Array {
+        return this.toBinary().buffer;
     }
 
     toHex ( options: IHexFormatOptions = {} ) {

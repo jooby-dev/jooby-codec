@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 import * as events from '../../constants/events.js';
@@ -139,14 +139,13 @@ class GetArchiveEventsResponse extends Command {
         return new GetArchiveEventsResponse({eventList});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {eventList} = this.parameters;
         const buffer = new CommandBinaryBuffer(eventList.length * COMMAND_BODY_MIN_SIZE);
 
         eventList.forEach(event => setEvent(buffer, event));
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBinary(COMMAND_ID, buffer.toUint8Array());
     }
 }
 

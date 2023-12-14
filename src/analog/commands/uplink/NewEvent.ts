@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IEventMtxStatus} from '../../CommandBinaryBuffer.js';
 import getHexFromBytes from '../../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../../utils/getBytesFromHex.js';
@@ -251,8 +251,7 @@ class NewEvent extends Command {
         return new NewEvent({id, sequenceNumber, data: eventData});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {id, sequenceNumber, data} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         let eventData;
@@ -304,7 +303,7 @@ class NewEvent extends Command {
                 throw new Error(`${NewEvent.getId()}: event ${id} is not supported`);
         }
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

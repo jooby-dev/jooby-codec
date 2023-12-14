@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IRequestParameter} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import * as deviceParameters from '../../constants/deviceParameters.js';
@@ -81,13 +81,12 @@ class GetParameter extends Command {
         return new GetParameter(buffer.getRequestParameter());
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(CommandBinaryBuffer.getRequestParameterSize(this.parameters));
 
         buffer.setRequestParameter(this.parameters);
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

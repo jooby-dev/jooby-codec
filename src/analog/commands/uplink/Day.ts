@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../utils/time.js';
 import {UPLINK} from '../../../constants/directions.js';
@@ -80,8 +80,7 @@ class Day extends Command {
         return new Day({value, isMagneticInfluence, startTime2000: getTime2000FromDate(date)});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
         const {value, isMagneticInfluence, startTime2000} = this.parameters;
         const date = getDateFromTime2000(startTime2000);
@@ -98,7 +97,7 @@ class Day extends Command {
         buffer.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, isMagneticInfluence));
         buffer.setLegacyCounterValue(value);
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBinary(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
