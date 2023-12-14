@@ -9,10 +9,13 @@ interface IAnalogFrame {
 }
 
 
-export const toFrame = ( commands: Array<Command> ): Frame.IFrame => {
-    const content = Message.toBytes(commands);
+export const toFrame = ( commands: Array<Command> ): IAnalogFrame => {
+    const message = Message.toMessage(commands);
 
-    return Frame.toFrame(content);
+    return {
+        message,
+        frame: Frame.toFrame(message.buffer)
+    };
 };
 
 export const fromBytes = ( data: Uint8Array, config: Message.IMessageConfig ): IAnalogFrame => {
