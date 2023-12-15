@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import BinaryBuffer from '../../../utils/BinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
 import {UPLINK} from '../../../constants/directions.js';
@@ -115,15 +115,14 @@ class GetLmicInfoResponse extends Command {
         return new GetLmicInfoResponse({capabilities, version});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {capabilities, version} = this.parameters;
         const buffer = new BinaryBuffer(COMMAND_BODY_SIZE);
 
         buffer.setUint8(bitSet.fromObject(lmicCapabilitiesBitMask, capabilities));
         buffer.setUint8(version);
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBinary(COMMAND_ID, buffer.toUint8Array());
     }
 }
 

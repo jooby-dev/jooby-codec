@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 
@@ -107,8 +107,7 @@ class GetBatteryStatusResponse extends Command {
         return new GetBatteryStatusResponse(parameters);
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {parameters} = this;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
 
@@ -120,7 +119,7 @@ class GetBatteryStatusResponse extends Command {
         buffer.setUint8(parameters.isLastDayOverconsumption ? 1 : 0);
         buffer.setUint16(parameters.averageDailyOverconsumptionCounter);
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../utils/time.js';
@@ -83,8 +83,7 @@ class GetExAbsArchiveHoursMC extends Command {
         return new GetExAbsArchiveHoursMC({channelList, hours, startTime2000: getTime2000FromDate(date)});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {channelList, hours, startTime2000} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
         const date = getDateFromTime2000(startTime2000);
@@ -94,7 +93,7 @@ class GetExAbsArchiveHoursMC extends Command {
         buffer.setHours(hour, hours);
         buffer.setChannels(channelList.map(index => ({index} as IChannel)));
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBinary(COMMAND_ID, buffer.toUint8Array());
     }
 }
 

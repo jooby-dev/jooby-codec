@@ -1,4 +1,4 @@
-import Command from './Command.js';
+import Command, {ICommandBinary} from './Command.js';
 
 
 /**
@@ -27,11 +27,10 @@ class UnknownCommand extends Command {
         return new UnknownCommand(parameters);
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {id, data} = this.parameters;
 
-        return Command.toBytes(id, data);
+        return Command.toBinary(id, data);
     }
 }
 

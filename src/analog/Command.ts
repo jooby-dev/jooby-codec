@@ -3,7 +3,6 @@ import {IHexFormatOptions} from '../config.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getHexFromNumber from '../utils/getHexFromNumber.js';
 import getBase64FromBytes from '../utils/getBase64FromBytes.js';
-import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
 export interface ICommandExample {
@@ -19,6 +18,12 @@ export interface ICommandExample {
 }
 
 export type TCommandExampleList = Array<ICommandExample>;
+
+export interface ICommandBinary {
+    header: Uint8Array,
+    body?: Uint8Array,
+    bytes: Uint8Array
+}
 
 
 /**
@@ -87,22 +92,29 @@ abstract class Command {
     // }
 
     /**
-     * Build header with body.
+     * Build binary representation of commands header, body and complete buffer.
      *
      * @param id command id
      * @param commandData optional command binary data
-     * @returns merged data
+     * @returns commands header, body and complete buffer binary representation
      */
-    static toBytes ( id: number, commandData?: Uint8Array ): Uint8Array {
+    static toBinary ( id: number, commandData?: Uint8Array ): ICommandBinary {
         const commandLength = commandData?.length ?? 0;
         const headerData = header.toBytes(id, commandLength);
 
         if ( commandData && commandLength ) {
-            return mergeUint8Arrays(headerData, commandData);
+            return {
+                header: headerData,
+                body: commandData,
+                bytes: new Uint8Array([...headerData, ...commandData])
+            };
         }
 
         // simple command without body
-        return headerData;
+        return {
+            header: headerData,
+            bytes: headerData
+        };
     }
 
     /** Get command parameters. */
@@ -111,8 +123,13 @@ abstract class Command {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         throw new Error('not implemented!');
+    }
+
+    // returns full message - header with body
+    toBytes (): Uint8Array {
+        return this.toBinary().bytes;
     }
 
     toHex ( options: IHexFormatOptions = {} ) {

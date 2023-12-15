@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IChannelAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 
@@ -75,14 +75,13 @@ class ExAbsCurrentMC extends Command {
         return new ExAbsCurrentMC({channelList: buffer.getChannelsWithAbsoluteValues()});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList} = this.parameters;
 
         buffer.setChannelsWithAbsoluteValues(channelList);
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

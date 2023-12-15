@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import BinaryBuffer from '../../../utils/BinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 
@@ -76,14 +76,13 @@ class CorrectTime2000Response extends Command {
         return new CorrectTime2000Response(parameters);
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {status} = this.parameters;
         const buffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
         buffer.setUint8(status);
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBinary(COMMAND_ID, buffer.toUint8Array());
     }
 }
 

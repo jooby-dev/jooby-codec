@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import mergeUint8Arrays from '../../../utils/mergeUint8Arrays.js';
@@ -79,15 +79,14 @@ class WriteImage extends Command {
         return new WriteImage({offset, data: imageData});
     }
 
-    // returns full message - header with body
     // eslint-disable-next-line class-methods-use-this
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {offset, data} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_MIN_SIZE);
 
         buffer.setUint32(offset, false);
 
-        return Command.toBytes(
+        return Command.toBinary(
             COMMAND_ID,
             // combine header and image data
             mergeUint8Arrays(buffer.toUint8Array(), data)

@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IBatteryVoltage} from '../../CommandBinaryBuffer.js';
 import roundNumber from '../../../utils/roundNumber.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
@@ -166,8 +166,7 @@ class Status extends Command {
         return new Status({software, hardware, data: statusData});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {software, hardware, data} = this.parameters;
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         let statusData;
@@ -215,7 +214,7 @@ class Status extends Command {
                 throw new Error(`${Status.getId()}: hardware type ${hardware.type} is not supported`);
         }
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

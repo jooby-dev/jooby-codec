@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IChannelValue} from '../../CommandBinaryBuffer.js';
 import {getTime2000FromDate, TTime2000} from '../../../utils/time.js';
 import CurrentMC, {ICurrentMCParameters} from './CurrentMC.js';
@@ -93,8 +93,7 @@ class DayMC extends CurrentMC {
         return new DayMC({startTime2000: getTime2000FromDate(date), channelList});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {channelList, startTime2000} = this.parameters;
 
@@ -102,7 +101,7 @@ class DayMC extends CurrentMC {
         buffer.setChannels(channelList);
         channelList.forEach(({value}) => buffer.setExtendedValue(value));
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

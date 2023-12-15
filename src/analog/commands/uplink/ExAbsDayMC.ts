@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CurrentMC from './CurrentMC.js';
 import CommandBinaryBuffer, {IChannelAbsoluteValue} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
@@ -81,15 +81,14 @@ class ExAbsDayMC extends CurrentMC {
         return new ExAbsDayMC({startTime2000: getTime2000FromDate(date), channelList});
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {startTime2000, channelList} = this.parameters;
 
         buffer.setDate(startTime2000);
         buffer.setChannelsWithAbsoluteValues(channelList);
 
-        return Command.toBytes(COMMAND_ID, buffer.getBytesToOffset());
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 }
 

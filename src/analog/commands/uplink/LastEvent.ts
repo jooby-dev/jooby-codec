@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList} from '../../Command.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {TEventStatus} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
@@ -151,8 +151,7 @@ class LastEvent extends Command {
         return new LastEvent({sequenceNumber, status}, config);
     }
 
-    // returns full message - header with body
-    toBytes (): Uint8Array {
+    toBinary (): ICommandBinary {
         const {sequenceNumber, status} = this.parameters;
         const {hardwareType} = this.config;
         const buffer = new CommandBinaryBuffer(
@@ -163,7 +162,7 @@ class LastEvent extends Command {
         buffer.setUint8(sequenceNumber);
         buffer.setEventStatus(hardwareType!, status);
 
-        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
+        return Command.toBinary(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
