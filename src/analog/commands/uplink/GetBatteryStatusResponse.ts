@@ -23,8 +23,8 @@ interface IGetBatteryStatusResponse {
     internalResistance: number,
     temperature: number,
     remainingCapacity: number,
-    isLastDayOverconsumption: boolean,
-    averageDailyOverconsumptionCounter: number
+    isLastDayOverConsumption: boolean,
+    averageDailyOverConsumptionCounter: number
 }
 
 
@@ -40,8 +40,8 @@ const examples: TCommandExampleList = [
             internalResistance: 1034,
             temperature: 15,
             remainingCapacity: 41,
-            isLastDayOverconsumption: false,
-            averageDailyOverconsumptionCounter: 34
+            isLastDayOverConsumption: false,
+            averageDailyOverConsumptionCounter: 34
         },
         hex: {header: '1f 05 0b', body: '10 0e 10 0e 0a 04 0f 29 00 22 00'}
     }
@@ -68,8 +68,8 @@ const examples: TCommandExampleList = [
  *     internalResistance: 1034,
  *     temperature: 15,
  *     remainingCapacity: 41,
- *     isLastDayOverconsumption: false,
- *     averageDailyOverconsumptionCounter: 34
+ *     isLastDayOverConsumption: false,
+ *     averageDailyOverConsumptionCounter: 34
  * }
  * ```
  *
@@ -100,8 +100,8 @@ class GetBatteryStatusResponse extends Command {
             internalResistance: buffer.getUint16(),
             temperature: buffer.getUint8(),
             remainingCapacity: buffer.getUint8(),
-            isLastDayOverconsumption: buffer.getUint8() === 1,
-            averageDailyOverconsumptionCounter: buffer.getUint16()
+            isLastDayOverConsumption: buffer.getUint8() === 1,
+            averageDailyOverConsumptionCounter: buffer.getUint16()
         };
 
         return new GetBatteryStatusResponse(parameters);
@@ -116,8 +116,8 @@ class GetBatteryStatusResponse extends Command {
         buffer.setUint16(parameters.internalResistance);
         buffer.setUint8(parameters.temperature);
         buffer.setUint8(parameters.remainingCapacity);
-        buffer.setUint8(parameters.isLastDayOverconsumption ? 1 : 0);
-        buffer.setUint16(parameters.averageDailyOverconsumptionCounter);
+        buffer.setUint8(parameters.isLastDayOverConsumption ? 1 : 0);
+        buffer.setUint16(parameters.averageDailyOverConsumptionCounter);
 
         return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
