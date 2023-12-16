@@ -10,7 +10,7 @@ interface IAnalogFrame {
 
 
 export const getCommands = ( {frame, message}: IAnalogFrame, isStrict: boolean = false ): Array<Command> => {
-    if ( isStrict && frame.crc.actual !== frame.crc.expected ) {
+    if ( isStrict && !frame.isValid ) {
         return [];
     }
 

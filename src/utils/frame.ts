@@ -94,7 +94,8 @@ export interface IFrame {
     crc: {
         expected: number | undefined,
         actual: number
-    }
+    },
+    isValid: boolean
 }
 
 
@@ -110,7 +111,8 @@ export const toFrame = ( content: Uint8Array, dataBits: 7 | 8 = 8 ): IFrame => {
         crc: {
             actual: crc,
             expected: content.length === 0 ? undefined : crc
-        }
+        },
+        isValid: true
     };
 };
 
@@ -122,7 +124,8 @@ export const fromBytes = ( bytes: Uint8Array, dataBits: 7 | 8 = 8 ): IFrame => {
             crc: {
                 actual: 0,
                 expected: undefined
-            }
+            },
+            isValid: false
         };
     }
 
@@ -137,7 +140,8 @@ export const fromBytes = ( bytes: Uint8Array, dataBits: 7 | 8 = 8 ): IFrame => {
         crc: {
             actual: actualCrc,
             expected: expectedCrc
-        }
+        },
+        isValid: actualCrc === expectedCrc
     };
 };
 
