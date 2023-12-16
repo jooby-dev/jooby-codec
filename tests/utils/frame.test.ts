@@ -30,7 +30,7 @@ describe('frame tests', () => {
     test('toFrame on empty array', () => {
         const frame = Frame.toFrame(new Uint8Array());
 
-        expect(frame.buffer).toStrictEqual(new Uint8Array());
+        expect(frame.bytes).toStrictEqual(new Uint8Array());
         expect(frame.content).toStrictEqual(new Uint8Array());
         expect(frame.crc.actual).toBe(0);
         expect(frame.crc.expected).toBe(undefined);
@@ -39,7 +39,7 @@ describe('frame tests', () => {
     test('fromBytes on empty array', () => {
         const frame = Frame.fromBytes(new Uint8Array());
 
-        expect(frame.buffer).toStrictEqual(new Uint8Array());
+        expect(frame.bytes).toStrictEqual(new Uint8Array());
         expect(frame.content).toStrictEqual(new Uint8Array());
         expect(frame.crc.actual).toBe(0);
         expect(frame.crc.expected).toBe(undefined);
@@ -49,7 +49,7 @@ describe('frame tests', () => {
         const frameBytes = getBytesFromHex('7e 01 02 7e');
         const frame = Frame.fromBytes(frameBytes);
 
-        expect(frame.buffer).toStrictEqual(frameBytes);
+        expect(frame.bytes).toStrictEqual(frameBytes);
         expect(frame.content).toStrictEqual(new Uint8Array());
         expect(frame.crc.actual).toBe(0);
         expect(frame.crc.expected).toBe(0x0201);
@@ -61,7 +61,7 @@ describe('frame tests', () => {
         );
         const validFrame = Frame.fromBytes(frameBytes);
 
-        expect(validFrame.buffer).toStrictEqual(frameBytes);
+        expect(validFrame.bytes).toStrictEqual(frameBytes);
         expect(validFrame.crc.actual).toBe(validFrame.crc.expected);
 
         // broke crc value
@@ -69,7 +69,7 @@ describe('frame tests', () => {
 
         const invalidFrame = Frame.fromBytes(frameBytes);
 
-        expect(invalidFrame.buffer).toStrictEqual(frameBytes);
+        expect(invalidFrame.bytes).toStrictEqual(frameBytes);
         expect(invalidFrame.crc.actual === validFrame.crc.actual).toBe(true);
         expect(invalidFrame.crc.actual === invalidFrame.crc.expected).toBe(false);
     });
@@ -79,14 +79,14 @@ describe('frame tests', () => {
         const expectedCrc = calculateCrc16(contentBytes);
         const frameBytes = getBytesFromHex(frame);
         const frameTo = Frame.toFrame(contentBytes, dataBits);
-        const frameFrom = Frame.fromBytes(frameTo.buffer, dataBits);
+        const frameFrom = Frame.fromBytes(frameTo.bytes, dataBits);
 
-        expect(frameTo.buffer).toStrictEqual(frameBytes);
+        expect(frameTo.bytes).toStrictEqual(frameBytes);
         expect(frameTo.content).toStrictEqual(contentBytes);
         expect(frameTo.crc.actual).toBe(expectedCrc);
         expect(frameTo.crc.expected).toBe(expectedCrc);
 
-        expect(frameTo.buffer).toStrictEqual(frameFrom.buffer);
+        expect(frameTo.bytes).toStrictEqual(frameFrom.bytes);
         expect(frameTo.content).toStrictEqual(frameFrom.content);
         expect(frameTo.crc.actual).toBe(frameFrom.crc.actual);
         expect(frameFrom.crc.expected).toBe(expectedCrc);
@@ -122,7 +122,7 @@ describe('frame tests', () => {
             const contentBytes = new Uint8Array(randomArray(contentSize));
             const expectedCrc = calculateCrc16(contentBytes);
             const frameTo = Frame.toFrame(contentBytes);
-            const frameFrom = Frame.fromBytes(frameTo.buffer);
+            const frameFrom = Frame.fromBytes(frameTo.bytes);
 
             expect(frameTo.content).toStrictEqual(contentBytes);
             expect(frameTo.crc.actual).toBe(expectedCrc);

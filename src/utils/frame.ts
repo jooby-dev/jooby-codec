@@ -90,7 +90,7 @@ const getFrameCrc = ( frame: Uint8Array ): number | undefined => {
 
 export interface IFrame {
     content: Uint8Array,
-    buffer: Uint8Array,
+    bytes: Uint8Array,
     crc: {
         expected: number | undefined,
         actual: number
@@ -102,11 +102,11 @@ export const toFrame = ( content: Uint8Array, dataBits: 7 | 8 = 8 ): IFrame => {
     const crc = calculateCrc16(content);
     const crcBytes = convertCrcToBytes(crc);
     const stuffed = content.length === 0 ? [] : arrayStuff([...content, ...crcBytes], dataBits);
-    const buffer = content.length === 0 ? new Uint8Array() : new Uint8Array([0x7e, ...stuffed, 0x7e]);
+    const bytes = content.length === 0 ? new Uint8Array() : new Uint8Array([0x7e, ...stuffed, 0x7e]);
 
     return {
         content,
-        buffer,
+        bytes,
         crc: {
             actual: crc,
             expected: content.length === 0 ? undefined : crc
@@ -114,11 +114,11 @@ export const toFrame = ( content: Uint8Array, dataBits: 7 | 8 = 8 ): IFrame => {
     };
 };
 
-export const fromBytes = ( data: Uint8Array, dataBits: 7 | 8 = 8 ): IFrame => {
-    if ( data[0] !== START_BYTE || data[data.length - 1] !== STOP_BYTE ) {
+export const fromBytes = ( bytes: Uint8Array, dataBits: 7 | 8 = 8 ): IFrame => {
+    if ( bytes[0] !== START_BYTE || bytes[bytes.length - 1] !== STOP_BYTE ) {
         return {
             content: new Uint8Array(),
-            buffer: new Uint8Array(),
+            bytes: new Uint8Array(),
             crc: {
                 actual: 0,
                 expected: undefined
@@ -126,14 +126,14 @@ export const fromBytes = ( data: Uint8Array, dataBits: 7 | 8 = 8 ): IFrame => {
         };
     }
 
-    const unstuffed = arrayUnstuff(data.slice(1, data.length - 1), dataBits);
+    const unstuffed = arrayUnstuff(bytes.slice(1, bytes.length - 1), dataBits);
     const expectedCrc = getFrameCrc(unstuffed);
     const content = unstuffed.slice(0, unstuffed.length - 2);
     const actualCrc = calculateCrc16(content);
 
     return {
         content,
-        buffer: data,
+        bytes,
         crc: {
             actual: actualCrc,
             expected: expectedCrc

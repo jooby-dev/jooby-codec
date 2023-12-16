@@ -33,11 +33,11 @@ describe('frame collector tests', () => {
             '7e ff ff ff'
         ];
         const frames = collectFrames(sequence);
-        const [{content, buffer, crc: {actual, expected}}] = frames;
+        const [{content, bytes, crc: {actual, expected}}] = frames;
 
         expect(frames.length).toBe(1);
         expect(content).toStrictEqual(new Uint8Array());
-        expect(buffer).toStrictEqual(new Uint8Array([0x7e, 0x7e]));
+        expect(bytes).toStrictEqual(new Uint8Array([0x7e, 0x7e]));
         expect(actual).toBe(0);
         expect(expected).toBe(undefined);
     });
@@ -72,7 +72,7 @@ describe('frame collector tests', () => {
         );
 
         const checkFrame = ( frame: IFrame ) => {
-            expect(frame.buffer).toStrictEqual(frameBytes);
+            expect(frame.bytes).toStrictEqual(frameBytes);
             expect(frame.content.length !== 0).toBe(true);
             expect(frame.crc.actual).toStrictEqual(frame.crc.expected);
         };
