@@ -1,6 +1,8 @@
 import Command from './Command.js';
 import * as Frame from '../utils/frame.js';
 import * as Message from './message.js';
+import getBytesFromBase64 from '../utils/getBytesFromBase64.js';
+import getBytesFromHex from '../utils/getBytesFromHex.js';
 
 
 interface IAnalogFrame {
@@ -33,7 +35,15 @@ export const fromBytes = ( data: Uint8Array, config?: Message.IMessageConfig ): 
     return {frame, message};
 };
 
-export const fromFrames = ( frames: Array<Frame.IFrame>, config: Message.IMessageConfig ): Array<IAnalogFrame> => frames.map(frame => {
+export const fromHex = ( data: string, config?: Message.IMessageConfig ) => (
+    fromBytes(getBytesFromHex(data), config)
+);
+
+export const fromBase64 = ( data: string, config?: Message.IMessageConfig ) => (
+    fromBytes(getBytesFromBase64(data), config)
+);
+
+export const fromFrames = ( frames: Array<Frame.IFrame>, config?: Message.IMessageConfig ): Array<IAnalogFrame> => frames.map(frame => {
     const message = Message.fromBytes(frame.content, config);
 
     return {frame, message};
