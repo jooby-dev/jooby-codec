@@ -80,6 +80,14 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareTyp
     }
 };
 
+export const getCommands = ( message: IMessage, isStrict: boolean = false ): Array<Command> => {
+    if ( isStrict && !message.isValid ) {
+        return [];
+    }
+
+    return message.commands.map(({command}) => command);
+};
+
 export const fromBytes = ( data: Uint8Array, config?: IMessageConfig ): IMessage => {
     const direction = config?.direction ?? AUTO;
     const hardwareType = config?.hardwareType;
