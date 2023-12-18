@@ -114,9 +114,9 @@ class SetDayProfile extends Command {
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
-        const hasPeriodsFinalByte = data.includes(PERIODS_FINAL_BYTE);
+        const finalByteIndex = data.indexOf(PERIODS_FINAL_BYTE);
         // ignore final byte if present
-        const cleanData = data.slice(0, data.length - +hasPeriodsFinalByte);
+        const cleanData = finalByteIndex === -1 ? data : data.slice(0, finalByteIndex);
         const buffer = new CommandBinaryBuffer(cleanData);
 
         return new SetDayProfile({
