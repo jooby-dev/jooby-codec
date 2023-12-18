@@ -156,16 +156,16 @@ export const fromBase64 = ( data: string, config?: IMessageConfig ) => (
 export const toMessage = ( commands: Array<Command> ): IMessage => {
     const commandsBinary = commands.map(command => ({
         command,
-        ...command.toBinary()
+        data: command.toBinary()
     }));
 
     const body = new Uint8Array(
-        commandsBinary.flatMap(({bytes}) => Array.from(bytes))
+        commandsBinary.flatMap(({data: {bytes}}) => Array.from(bytes))
     );
     const actualLrc = calculateLrc(body);
 
     return {
-        commands: [],
+        commands: commandsBinary,
         lrc: {
             expected: actualLrc,
             actual: actualLrc
