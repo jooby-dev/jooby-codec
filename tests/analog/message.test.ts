@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import * as message from '../../src/analog/message.js';
+import * as Message from '../../src/analog/message.js';
 import * as downlinkCommands from '../../src/analog/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/analog/commands/uplink/index.js';
 
@@ -85,8 +85,8 @@ const uplinkMessages: TMessageList = [
 
 
 const checkMessage = ( {hex, commands, isValid}: IMessage ) => {
-    const messageDataFromHex = message.fromHex(hex);
-    const messageDataFromBase64 = message.fromBase64(Buffer.from(hex.replace(/\s/g, ''), 'hex').toString('base64'));
+    const messageDataFromHex = Message.fromHex(hex);
+    const messageDataFromBase64 = Message.fromBase64(Buffer.from(hex.replace(/\s/g, ''), 'hex').toString('base64'));
 
     messageDataFromHex.commands.forEach((messageCommand, index) => {
         expect(messageCommand.command.parameters).toStrictEqual(commands[index].parameters);
@@ -110,5 +110,57 @@ describe('uplink messages', () => {
         test(`test case #${index}`, () => {
             checkMessage(command);
         });
+    });
+});
+
+describe('message validation', () => {
+    test('test valid input', () => {
+        const hex = '02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6';
+        const message = Message.fromHex(hex);
+
+        expect(message.isValid).toBe(true);
+    });
+
+    test('test invalid input', () => {
+        const hex = '02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9 a6';
+        const message = Message.fromHex(hex);
+
+        expect(message.isValid).toBe(false);
+    });
+});
+
+describe('getCommands', () => {
+    test('test valid input', () => {
+        const hex = '02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6';
+        const message = Message.fromHex(hex);
+        const strictResult = Message.getCommands(message, true);
+
+        expect(strictResult.length).toBe(2);
+        expect(strictResult[0]).toBeInstanceOf(downlinkCommands.SetTime2000);
+        expect(strictResult[1]).toBeInstanceOf(downlinkCommands.SetParameter);
+
+        const nonStrictResult = Message.getCommands(message, false);
+
+        expect(nonStrictResult.length).toBe(2);
+        expect(nonStrictResult[0]).toBeInstanceOf(downlinkCommands.SetTime2000);
+        expect(nonStrictResult[1]).toBeInstanceOf(downlinkCommands.SetParameter);
+
+        expect(strictResult).toStrictEqual(strictResult);
+    });
+
+    describe('test invalid input', () => {
+        const hex = '02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9 a6';
+        const message = Message.fromHex(hex);
+        const strictResult = Message.getCommands(message, true);
+
+        expect(message.isValid).toBe(false);
+        expect(strictResult.length).toBe(0);
+
+        const nonStrictResult = Message.getCommands(message, false);
+
+        expect(message.isValid).toBe(false);
+        expect(nonStrictResult.length).toBe(2);
+        expect(nonStrictResult[0]).toBeInstanceOf(downlinkCommands.SetTime2000);
+        expect(nonStrictResult[1]).toBeInstanceOf(downlinkCommands.SetParameter);
     });
 });
