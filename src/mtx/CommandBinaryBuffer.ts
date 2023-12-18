@@ -180,6 +180,7 @@ export interface IDayProfile {
 export interface ISeasonProfile {
     month: number,
     date: number,
+    /** index 0 is for Sunday */
     dayIndexes: Array<number>
 }
 
