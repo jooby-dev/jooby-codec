@@ -28,19 +28,19 @@ export const toFrame = ( commands: Array<Command> ): IAnalogFrame => {
     };
 };
 
-export const fromBytes = ( data: Uint8Array, config?: Message.IMessageConfig ): IAnalogFrame => {
-    const frame = Frame.fromBytes(data);
+export const fromBytes = ( bytes: Uint8Array, config?: Message.IMessageConfig ): IAnalogFrame => {
+    const frame = Frame.fromBytes(bytes);
     const message = Message.fromBytes(frame.content, config);
 
     return {frame, message};
 };
 
-export const fromHex = ( data: string, config?: Message.IMessageConfig ) => (
-    fromBytes(getBytesFromHex(data), config)
+export const fromHex = ( hex: string, config?: Message.IMessageConfig ) => (
+    fromBytes(getBytesFromHex(hex), config)
 );
 
-export const fromBase64 = ( data: string, config?: Message.IMessageConfig ) => (
-    fromBytes(getBytesFromBase64(data), config)
+export const fromBase64 = ( base64: string, config?: Message.IMessageConfig ) => (
+    fromBytes(getBytesFromBase64(base64), config)
 );
 
 export const fromFrames = ( frames: Array<Frame.IFrame>, config?: Message.IMessageConfig ): Array<IAnalogFrame> => frames.map(frame => {
