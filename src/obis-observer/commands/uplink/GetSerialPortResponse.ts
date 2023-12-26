@@ -4,7 +4,7 @@ import {UPLINK} from '../../../constants/directions.js';
 import * as parityTypes from '../../constants/parityTypes.js';
 
 
-const COMMAND_ID = 0x06;
+const COMMAND_ID = 0x08;
 const COMMAND_SIZE = REQUEST_ID_SIZE + 3;
 
 const examples: TCommandExampleList = [
