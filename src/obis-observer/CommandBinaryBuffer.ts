@@ -243,15 +243,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
         const flags = this.getUint8();
 
         return {
-            fixed: !!bitSet.extractBits(flags, 1, 3),
             parity: bitSet.extractBits(flags, 2, 1)
         };
     }
 
-    setSerialPortFlags ( {fixed, parity}: {fixed: boolean, parity: number} ) {
+    setSerialPortFlags ( {parity}: {parity: number} ) {
         let flags = 0;
 
-        flags = bitSet.fillBits(flags, 1, 3, +fixed);
         flags = bitSet.fillBits(flags, 2, 1, parity);
 
         this.setUint8(flags);

@@ -10,8 +10,7 @@ import * as parityTypes from '../../constants/parityTypes.js';
 interface ISetSerialPortParameters extends ICommandParameters {
     baudRate: number,
     dataBits: number,
-    parity: number,
-    fixed: boolean
+    parity: number
 }
 
 
@@ -25,10 +24,9 @@ const examples: TCommandExampleList = [
             requestId: 52,
             baudRate: 5,
             dataBits: 8,
-            parity: parityTypes.ODD,
-            fixed: true
+            parity: parityTypes.ODD
         },
-        hex: {header: '09 04', body: '34 05 08 05'}
+        hex: {header: '09 04', body: '34 05 08 01'}
     },
     {
         name: 'set settings: 115200, 7, none',
@@ -36,8 +34,7 @@ const examples: TCommandExampleList = [
             requestId: 52,
             baudRate: 12,
             dataBits: 7,
-            parity: parityTypes.NONE,
-            fixed: false
+            parity: parityTypes.NONE
         },
         hex: {header: '09 04', body: '34 0c 07 00'}
     }
@@ -55,14 +52,13 @@ const examples: TCommandExampleList = [
  *     requestId: 52,
  *     baudRate: 5,
  *     dataBits: 8,
- *     parity: parityTypes.ODD,
- *     fixed: true
+ *     parity: parityTypes.ODD
  * };
  * const command = new SetSerialPort(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 09 04 34 05 08 05
+ * // 09 04 34 05 08 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetSerialPort.md#request)
@@ -92,7 +88,7 @@ class SetSerialPort extends Command {
             requestId: buffer.getUint8(),
             baudRate: buffer.getUint8(),
             dataBits: buffer.getUint8(),
-            // extend with parity and fixed flags
+            // extend with parity flag
             ...buffer.getSerialPortFlags()
         });
     }
@@ -104,14 +100,13 @@ class SetSerialPort extends Command {
             requestId,
             baudRate,
             dataBits,
-            parity,
-            fixed
+            parity
         } = this.parameters;
 
         buffer.setUint8(requestId);
         buffer.setUint8(baudRate);
         buffer.setUint8(dataBits);
-        buffer.setSerialPortFlags({parity, fixed});
+        buffer.setSerialPortFlags({parity});
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
