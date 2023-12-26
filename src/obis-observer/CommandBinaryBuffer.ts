@@ -72,6 +72,12 @@ export interface IVersion {
     minor: number
 }
 
+export interface ISerialPortParameters {
+    baudRate: number,
+    dataBits: number,
+    parity: number
+}
+
 
 export const REQUEST_ID_SIZE = 1;
 export const OBIS_PROFILE_SIZE = 6;
@@ -239,21 +245,24 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setFloat32(roundNumber(obisValue.content));
     }
 
-    getSerialPortFlags () {
-        const flags = this.getUint8();
-
+    getSerialPortParameters () {
         return {
-            fixed: !!bitSet.extractBits(flags, 1, 3),
-            parity: bitSet.extractBits(flags, 2, 1)
+            baudRate: this.getUint8(),
+            dataBits: this.getUint8(),
+            parity: bitSet.extractBits(this.getUint8(), 2, 1)
         };
     }
 
-    setSerialPortFlags ( {fixed, parity}: {fixed: boolean, parity: number} ) {
-        let flags = 0;
+    setSerialPortParameters ( parameters: ISerialPortParameters ) {
+        const {
+            baudRate,
+            dataBits,
+            parity
+        } = parameters;
+        const flags = bitSet.fillBits(0, 2, 1, parity);
 
-        flags = bitSet.fillBits(flags, 1, 3, +fixed);
-        flags = bitSet.fillBits(flags, 2, 1, parity);
-
+        this.setUint8(baudRate);
+        this.setUint8(dataBits);
         this.setUint8(flags);
     }
 
