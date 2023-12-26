@@ -30,6 +30,7 @@ requestByResponse.set(uplinkCommands.GetObserverCapabilitiesResponse, downlinkCo
 requestByResponse.set(uplinkCommands.GetObserverInfoResponse, downlinkCommands.GetObserverInfo);
 requestByResponse.set(uplinkCommands.GetObserverSingleModeResponse, downlinkCommands.GetObserverSingleMode);
 requestByResponse.set(uplinkCommands.GetObserverUptimeResponse, downlinkCommands.GetObserverUptime);
+requestByResponse.set(uplinkCommands.GetSerialPortResponse, downlinkCommands.GetSerialPort);
 requestByResponse.set(uplinkCommands.ReadArchiveResponse, downlinkCommands.ReadArchive);
 requestByResponse.set(uplinkCommands.ReadMeterArchiveResponse, downlinkCommands.ReadMeterArchive);
 requestByResponse.set(uplinkCommands.ReadMeterArchiveWithDateResponse, downlinkCommands.ReadMeterArchiveWithDate);
