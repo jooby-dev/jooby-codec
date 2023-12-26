@@ -1,17 +1,7 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, ISerialPortParameters, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import * as parityTypes from '../../constants/parityTypes.js';
-
-
-/**
- * ISetSerialPortParameters command parameters
- */
-interface ISetSerialPortParameters extends ICommandParameters {
-    baudRate: number,
-    dataBits: number,
-    parity: number
-}
 
 
 const COMMAND_ID = 0x09;
@@ -64,7 +54,7 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetSerialPort.md#request)
  */
 class SetSerialPort extends Command {
-    constructor ( public parameters: ISetSerialPortParameters ) {
+    constructor ( public parameters: ISerialPortParameters & ICommandParameters ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -86,27 +76,16 @@ class SetSerialPort extends Command {
 
         return new SetSerialPort({
             requestId: buffer.getUint8(),
-            baudRate: buffer.getUint8(),
-            dataBits: buffer.getUint8(),
-            // extend with parity flag
-            ...buffer.getSerialPortFlags()
+            ...buffer.getSerialPortParameters()
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(COMMAND_SIZE);
-        const {
-            requestId,
-            baudRate,
-            dataBits,
-            parity
-        } = this.parameters;
 
-        buffer.setUint8(requestId);
-        buffer.setUint8(baudRate);
-        buffer.setUint8(dataBits);
-        buffer.setSerialPortFlags({parity});
+        buffer.setUint8(this.parameters.requestId);
+        buffer.setSerialPortParameters(this.parameters);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
