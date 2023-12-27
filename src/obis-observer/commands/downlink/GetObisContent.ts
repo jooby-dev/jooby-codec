@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IObis} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, METER_ID_SIZE, ICommandParameters, IObis} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 
 
@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
                 e: 1
             }
         },
-        hex: {header: '4e 06', body: '03 08 02 00 09 01'}
+        hex: {header: '4e 09', body: '03 00 00 00 08 02 00 09 01'}
     }
 ];
 
@@ -51,7 +51,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 4e 06 03 08 02 00 09 01
+ * // 4e 09 03 00 00 00 08 02 00 09 01
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetContentByObis.md#request)
@@ -60,7 +60,7 @@ class GetContentByObis extends Command {
     constructor ( public parameters: IGetContentByObisParameters ) {
         super();
 
-        this.size = REQUEST_ID_SIZE + 1 + CommandBinaryBuffer.getObisSize(parameters.obis);
+        this.size = REQUEST_ID_SIZE + METER_ID_SIZE + CommandBinaryBuffer.getObisSize(parameters.obis);
     }
 
 
@@ -79,7 +79,7 @@ class GetContentByObis extends Command {
 
         return new GetContentByObis({
             requestId: buffer.getUint8(),
-            meterId: buffer.getUint8(),
+            meterId: buffer.getUint32(),
             obis: buffer.getObis()
         });
     }
@@ -90,7 +90,7 @@ class GetContentByObis extends Command {
         const buffer = new CommandBinaryBuffer(this.size as number);
 
         buffer.setUint8(requestId);
-        buffer.setUint8(meterId);
+        buffer.setUint32(meterId);
         buffer.setObis(obis);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

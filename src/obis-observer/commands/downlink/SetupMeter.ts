@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, METER_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 
 
@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
             meterId: 20,
             address: ''
         },
-        hex: {header: '70 02', body: '03 14'}
+        hex: {header: '70 05', body: '03 00 00 00 14'}
     },
     {
         name: 'setup meter with Id 20 without profile',
@@ -32,7 +32,7 @@ const examples: TCommandExampleList = [
             meterId: 20,
             address: 'ma2375'
         },
-        hex: {header: '70 09', body: '03 14 06 6d 61 32 33 37 35'}
+        hex: {header: '70 0c', body: '03 00 00 00 14 06 6d 61 32 33 37 35'}
     },
     {
         name: 'setup meter with Id 20',
@@ -42,12 +42,12 @@ const examples: TCommandExampleList = [
             address: 'ma2375',
             meterProfileId: 17
         },
-        hex: {header: '70 0a', body: '03 14 06 6d 61 32 33 37 35 11'}
+        hex: {header: '70 0d', body: '03 00 00 00 14 06 6d 61 32 33 37 35 11'}
     }
 ];
 
 const commandSize = ( parameters: ISetupMeterParameters ): number => {
-    let size = REQUEST_ID_SIZE + 1;
+    let size = REQUEST_ID_SIZE + METER_ID_SIZE;
 
     if ( parameters.address.length !== 0 || parameters.meterProfileId ) {
         size += 1 + parameters.address.length;
@@ -78,7 +78,7 @@ const commandSize = ( parameters: ISetupMeterParameters ): number => {
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 70 0a 03 14 11 06 6d 61 32 33 37 35
+ * // 70 0d 03 00 00 00 14 06 6d 61 32 33 37 35 11
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetupMeter.md#request)
@@ -105,7 +105,7 @@ class SetupMeter extends Command {
         const buffer = new CommandBinaryBuffer(data);
 
         const requestId = buffer.getUint8();
-        const meterId = buffer.getUint8();
+        const meterId = buffer.getUint32();
 
         if ( buffer.isEmpty ) {
             return new SetupMeter({requestId, meterId, address: ''});
@@ -124,7 +124,7 @@ class SetupMeter extends Command {
         const {requestId, meterId, meterProfileId, address} = this.parameters;
 
         buffer.setUint8(requestId);
-        buffer.setUint8(meterId);
+        buffer.setUint32(meterId);
 
         if ( address.length !== 0 || meterProfileId ) {
             buffer.setString(address);

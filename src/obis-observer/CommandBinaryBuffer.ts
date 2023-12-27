@@ -82,6 +82,7 @@ export interface ISerialPortParameters {
 export const REQUEST_ID_SIZE = 1;
 export const OBIS_PROFILE_SIZE = 6;
 export const DATE_TIME_SIZE = 4;
+export const METER_ID_SIZE = 4;
 export const EUI_SIZE = 8;
 
 
