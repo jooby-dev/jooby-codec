@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {IObisValueString, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IObisValueString, METER_ID_SIZE, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
 
@@ -29,8 +29,8 @@ const examples: TCommandExampleList = [
             ]
         },
         hex: {
-            header: '54 3b',
-            body: '02 2d 18 df 80 32 1a 72 65 61 63 74 69 76 65 20 70 6f 77 65'
+            header: '54 3e',
+            body: '00 00 00 02 2d 18 df 80 32 1a 72 65 61 63 74 69 76 65 20 70 6f 77 65'
                 + ' 72 20 51 49 2c 20 61 76 65 72 61 67 65 38 18 72 65 61 63 74 69 76'
                 + ' 65 20 70 6f 77 65 72 20 51 49 2c 20 74 6f 74 61 6c'
         }
@@ -46,11 +46,10 @@ const examples: TCommandExampleList = [
  * import ObservationReportString from 'jooby-codec/obis-observer/commands/uplink/ObservationReportString.js';
  *
  * const commandBody = new Uint8Array([
- *     0x2d, 0x18, 0xdf, 0x80, 0x32, 0x1a, 0x72, 0x65, 0x61, 0x63, 0x74, 0x69,
- *     0x76, 0x65, 0x20, 0x70, 0x6f, 0x77, 0x65, 0x72, 0x20, 0x51, 0x49, 0x2c, 0x20,
- *     0x61, 0x76, 0x65, 0x72, 0x61, 0x67, 0x65, 0x38, 0x18, 0x72, 0x65, 0x61, 0x63,
- *     0x74, 0x69, 0x76, 0x65, 0x20, 0x70, 0x6f, 0x77, 0x65, 0x72, 0x20, 0x51, 0x49,
- *     0x2c, 0x20, 0x74, 0x6f, 0x74, 0x61, 0x6c
+ *     0x00, 0x00, 0x00, 0x02, 0x2d, 0x18, 0xdf, 0x80, 0x32, 0x1a, 0x72, 0x65, 0x61, 0x63, 0x74, 0x69,
+ *     0x76, 0x65, 0x20, 0x70, 0x6f, 0x77, 0x65, 0x72, 0x20, 0x51, 0x49, 0x2c, 0x20, 0x61, 0x76, 0x65,
+ *     0x72, 0x61, 0x67, 0x65, 0x38, 0x18, 0x72, 0x65, 0x61, 0x63, 0x74, 0x69, 0x76, 0x65, 0x20, 0x70,
+ *     0x6f, 0x77, 0x65, 0x72, 0x20, 0x51, 0x49, 0x2c, 0x20, 0x74, 0x6f, 0x74, 0x61, 0x6c
  * ]);
  * const command = ObservationReportString.fromBytes(commandBody);
  *
@@ -71,7 +70,7 @@ class ObservationReportString extends Command {
     constructor ( public parameters: IObservationReportStringParameters ) {
         super();
 
-        let size = 1 + DATE_TIME_SIZE;
+        let size = METER_ID_SIZE + DATE_TIME_SIZE;
 
         this.parameters.obisValueList.forEach(obisValue => {
             size += CommandBinaryBuffer.getObisContentSize(obisValue);
@@ -93,7 +92,7 @@ class ObservationReportString extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-        const meterId = buffer.getUint8();
+        const meterId = buffer.getUint32();
         const time2000 = buffer.getUint32();
         const obisValueList = [];
 
@@ -111,7 +110,7 @@ class ObservationReportString extends Command {
         const buffer = new CommandBinaryBuffer(this.size as number);
         const {meterId, time2000, obisValueList} = this.parameters;
 
-        buffer.setUint8(meterId);
+        buffer.setUint32(meterId);
         buffer.setUint32(time2000);
         obisValueList.forEach(obisValue => buffer.setObisValueString(obisValue));
 

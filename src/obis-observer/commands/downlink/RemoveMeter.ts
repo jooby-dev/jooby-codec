@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, METER_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 
 
@@ -12,7 +12,7 @@ interface IRemoveMeterParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x72;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 1;
+const COMMAND_SIZE = REQUEST_ID_SIZE + METER_ID_SIZE;
 
 const examples: TCommandExampleList = [
     {
@@ -21,7 +21,7 @@ const examples: TCommandExampleList = [
             requestId: 3,
             meterId: 17
         },
-        hex: {header: '72 02', body: '03 11'}
+        hex: {header: '72 05', body: '03 00 00 00 11'}
     }
 ];
 
@@ -41,7 +41,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 72 02 03 11
+ * // 72 05 03 00 00 00 11
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveMeter.md#request)
@@ -64,18 +64,24 @@ class RemoveMeter extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( [requestId, meterId]: Uint8Array ) {
-        return new RemoveMeter({requestId, meterId});
+    static fromBytes ( data: Uint8Array ) {
+        const buffer = new CommandBinaryBuffer(data);
+
+        return new RemoveMeter({
+            requestId: buffer.getUint8(),
+            meterId: buffer.getUint32()
+        });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {parameters} = this;
+        const {requestId, meterId} = this.parameters;
+        const buffer = new CommandBinaryBuffer(this.size as number);
 
-        return Command.toBytes(
-            COMMAND_ID,
-            new Uint8Array([parameters.requestId, parameters.meterId])
-        );
+        buffer.setUint8(requestId);
+        buffer.setUint32(meterId);
+
+        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 

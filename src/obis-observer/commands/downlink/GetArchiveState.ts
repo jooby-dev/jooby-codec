@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, METER_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 
 
@@ -13,7 +13,6 @@ interface IGetArchiveStateParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x0f;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 2;
 
 const examples: TCommandExampleList = [
     {
@@ -31,7 +30,7 @@ const examples: TCommandExampleList = [
             archiveType: 1,
             meterId: 3
         },
-        hex: {header: '0f 03', body: '05 01 03'}
+        hex: {header: '0f 06', body: '05 01 00 00 00 03'}
     }
 ];
 
@@ -52,7 +51,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 0f 03 05 01 03
+ * // 0f 06 05 01 00 00 00 03
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveState.md#request)
@@ -61,7 +60,7 @@ class GetArchiveState extends Command {
     constructor ( public parameters: IGetArchiveStateParameters ) {
         super();
 
-        this.size = COMMAND_SIZE;
+        this.size = REQUEST_ID_SIZE + 1 + (parameters.meterId ? METER_ID_SIZE : 0);
     }
 
 
@@ -75,24 +74,29 @@ class GetArchiveState extends Command {
 
 
     // data - only body (without header)
-    static fromBytes ( [requestId, archiveType, meterId]: Uint8Array ) {
-        return meterId
-            ? new GetArchiveState({requestId, archiveType, meterId})
-            : new GetArchiveState({requestId, archiveType});
+    static fromBytes ( data: Uint8Array ) {
+        const buffer = new CommandBinaryBuffer(data);
+
+        const requestId = buffer.getUint8();
+        const archiveType = buffer.getUint8();
+
+        return buffer.isEmpty
+            ? new GetArchiveState({requestId, archiveType})
+            : new GetArchiveState({requestId, archiveType, meterId: buffer.getUint32()});
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
         const {requestId, archiveType, meterId} = this.parameters;
-        const content = meterId
-            ? [requestId, archiveType, meterId]
-            : [requestId, archiveType];
+        const buffer = new CommandBinaryBuffer(this.size as number);
 
+        buffer.setUint8(requestId);
+        buffer.setUint8(archiveType);
+        if ( meterId ) {
+            buffer.setUint32(meterId);
+        }
 
-        return Command.toBytes(
-            COMMAND_ID,
-            new Uint8Array(content)
-        );
+        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 

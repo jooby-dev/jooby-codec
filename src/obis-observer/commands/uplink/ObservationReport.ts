@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {DATE_TIME_SIZE, IObisValueFloat} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {METER_ID_SIZE, DATE_TIME_SIZE, IObisValueFloat} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
 
@@ -28,7 +28,7 @@ const examples: TCommandExampleList = [
                 {code: 56, content: 45.33}
             ]
         },
-        hex: {header: '53 0f', body: '02 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec'}
+        hex: {header: '53 12', body: '00 00 00 02 2d 18 df 80 32 42 09 51 ec 38 42 35 51 ec'}
     }
 ];
 
@@ -40,7 +40,7 @@ const examples: TCommandExampleList = [
  * ```js
  * import ObservationReport from 'jooby-codec/obis-observer/commands/uplink/ObservationReport.js';
  *
- * const commandBody = new Uint8Array([02, 0x2d, 0x18, 0xdf, 0x80, 0x32, 0x42, 0x09, 0x51, 0xec, 0x38, 0x42, 0x35, 0x51, 0xec]);
+ * const commandBody = new Uint8Array([0x00, 0x00, 0x00, 0x02, 0x2d, 0x18, 0xdf, 0x80, 0x32, 0x42, 0x09, 0x51, 0xec, 0x38, 0x42, 0x35, 0x51, 0xec]);
  * const command = ObservationReport.fromBytes(commandBody);
  *
  * console.log(command.parameters);
@@ -61,7 +61,7 @@ class ObservationReport extends Command {
     constructor ( public parameters: IObservationReportParameters ) {
         super();
 
-        let size = 1 + DATE_TIME_SIZE;
+        let size = METER_ID_SIZE + DATE_TIME_SIZE;
 
         this.parameters.obisValueList.forEach(obisValue => {
             size += CommandBinaryBuffer.getObisContentSize(obisValue);
@@ -83,7 +83,7 @@ class ObservationReport extends Command {
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
-        const meterId = buffer.getUint8();
+        const meterId = buffer.getUint32();
         const time2000 = buffer.getUint32();
         const obisValueList = [];
 
@@ -101,7 +101,7 @@ class ObservationReport extends Command {
         const buffer = new CommandBinaryBuffer(this.size as number);
         const {meterId, time2000, obisValueList} = this.parameters;
 
-        buffer.setUint8(meterId);
+        buffer.setUint32(meterId);
         buffer.setUint32(time2000);
         obisValueList.forEach(obisValue => buffer.setObisValueFloat(obisValue));
 

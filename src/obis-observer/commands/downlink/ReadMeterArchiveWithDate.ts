@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, METER_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
 
@@ -16,7 +16,7 @@ interface IReadMeterArchiveWithDateParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x13;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 10;
+const COMMAND_SIZE = REQUEST_ID_SIZE + METER_ID_SIZE + 9;
 
 const examples: TCommandExampleList = [
 
@@ -29,7 +29,7 @@ const examples: TCommandExampleList = [
             meterId: 1,
             time2000: 496333462
         },
-        hex: {header: '13 0b', body: '03 02 00 00 00 00 01 1d 95 72 96'}
+        hex: {header: '13 0e', body: '03 02 00 00 00 00 00 00 00 01 1d 95 72 96'}
     }
 ];
 
@@ -52,7 +52,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 13 0b 11 02 00 00 00 00 01 1d 95 72 96
+ * // 13 0e 03 02 00 00 00 00 00 00 00 01 1d 95 72 96
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadMeterArchiveWithDate.md#request)
@@ -82,7 +82,7 @@ class ReadMeterArchiveWithDate extends Command {
             requestId: buffer.getUint8(),
             archiveType: buffer.getUint8(),
             index: buffer.getUint32(),
-            meterId: buffer.getUint8(),
+            meterId: buffer.getUint32(),
             time2000: buffer.getUint32()
         });
     }
@@ -95,7 +95,7 @@ class ReadMeterArchiveWithDate extends Command {
         buffer.setUint8(requestId);
         buffer.setUint8(archiveType);
         buffer.setUint32(index);
-        buffer.setUint8(meterId);
+        buffer.setUint32(meterId);
         buffer.setUint32(time2000);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());

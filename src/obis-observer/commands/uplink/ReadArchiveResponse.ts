@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters, IObisValueFloat, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, METER_ID_SIZE, ICommandParameters, IObisValueFloat, DATE_TIME_SIZE} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
 import roundNumber from '../../../utils/roundNumber.js';
@@ -43,7 +43,7 @@ const examples: TCommandExampleList = [
                 }
             ]
         },
-        hex: {header: '16 17', body: '0c 01 01 1b b4 0c 60 08 3e cc cc cd 00 02 1b b4 0c 20 08 3e 4c cc cd'}
+        hex: {header: '16 1d', body: '0c 01 00 00 00 01 1b b4 0c 60 08 3e cc cc cd 00 00 00 00 02 1b b4 0c 20 08 3e 4c cc cd'}
     },
     {
         name: 'response to ReadArchive without data',
@@ -65,7 +65,7 @@ const commandSize = ( parameters: IReadArchiveResponseParameters ): number => {
 
         if ( obisValues.length !== 0 ) {
             // meterId + date
-            size += 1 + DATE_TIME_SIZE;
+            size += METER_ID_SIZE + DATE_TIME_SIZE;
             // 1 byte obis id + 4 byte float value for each obis value
             size += (1 + 4) * obisValues.length;
 
@@ -90,7 +90,10 @@ const commandSize = ( parameters: IReadArchiveResponseParameters ): number => {
  * import ReadArchiveResponse from 'jooby-codec/obis-observer/commands/uplink/ReadArchiveResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x0c, 0x01, 0x01, 0x1b, 0xb4, 0x0c, 0x60, 0x08, 0x3e, 0xcc, 0xcc, 0xcd, 0x00, 0x02, 0x1b, 0xb4, 0x0c, 0x20, 0x08, 0x3e, 0x4c, 0xcc, 0xcd
+ *     0x0c, 0x01, 0x00, 0x00, 0x00, 0x01, 0x1b, 0xb4,
+ *     0x0c, 0x60, 0x08, 0x3e, 0xcc, 0xcc, 0xcd, 0x00,
+ *     0x00, 0x00, 0x00, 0x02, 0x1b, 0xb4, 0x0c, 0x20,
+ *     0x08, 0x3e, 0x4c, 0xcc, 0xcd
  * ]);
  * const command = ReadArchiveResponse.fromBytes(commandBody);
  *
@@ -146,7 +149,7 @@ class ReadArchiveResponse extends Command {
 
         while ( !buffer.isEmpty ) {
             const record: IArchiveRecord = {
-                meterId: buffer.getUint8(),
+                meterId: buffer.getUint32(),
                 time2000: buffer.getUint32(),
                 obisValueList: []
             };
@@ -182,7 +185,7 @@ class ReadArchiveResponse extends Command {
 
             const {meterId, time2000, obisValueList} = content[it];
 
-            buffer.setUint8(meterId);
+            buffer.setUint32(meterId);
             buffer.setUint32(time2000);
             obisValueList.forEach(obisValue => buffer.setObisValueFloat(obisValue));
         }

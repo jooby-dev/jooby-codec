@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import CommandBinaryBuffer, {REQUEST_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {REQUEST_ID_SIZE, METER_ID_SIZE, ICommandParameters} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 
 
@@ -14,7 +14,7 @@ interface IReadMeterArchiveParameters extends ICommandParameters {
 
 
 const COMMAND_ID = 0x11;
-const COMMAND_SIZE = REQUEST_ID_SIZE + 6;
+const COMMAND_SIZE = REQUEST_ID_SIZE + METER_ID_SIZE + 5;
 
 const examples: TCommandExampleList = [
 
@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
             index: 4,
             meterId: 2
         },
-        hex: {header: '11 07', body: '03 01 00 00 00 04 02'}
+        hex: {header: '11 0a', body: '03 01 00 00 00 04 00 00 00 02'}
     }
 ];
 
@@ -48,7 +48,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 11 07 03 01 00 00 00 04 02
+ * // 11 0a 03 01 00 00 00 04 00 00 00 02
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ReadMeterArchive.md#request)
@@ -78,7 +78,7 @@ class ReadMeterArchive extends Command {
             requestId: buffer.getUint8(),
             archiveType: buffer.getUint8(),
             index: buffer.getUint32(),
-            meterId: buffer.getUint8()
+            meterId: buffer.getUint32()
         });
     }
 
@@ -90,7 +90,7 @@ class ReadMeterArchive extends Command {
         buffer.setUint8(requestId);
         buffer.setUint8(archiveType);
         buffer.setUint32(index);
-        buffer.setUint8(meterId);
+        buffer.setUint32(meterId);
 
         return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }

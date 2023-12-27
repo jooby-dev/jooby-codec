@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList} from '../../Command.js';
-import {ICommandParameters, REQUEST_ID_SIZE} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandParameters, REQUEST_ID_SIZE, METER_ID_SIZE} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 
 
@@ -22,7 +22,7 @@ const examples: TCommandExampleList = [
             meterId: 4,
             obisId: 50
         },
-        hex: {header: '50 03', body: '79 04 32'}
+        hex: {header: '50 06', body: '79 00 00 00 04 32'}
     }
 ];
 
@@ -43,7 +43,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 50 03 79 04 32
+ * // 50 06 79 00 00 00 04 32
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisContentById.md#request)
@@ -52,8 +52,8 @@ class GetObisContentById extends Command {
     constructor ( public parameters: IGetObisContentByIdParameters ) {
         super();
 
-        // request id size + meterId 1 byte + obisId 1 byte
-        this.size = REQUEST_ID_SIZE + 2;
+        // request id size + meterId size + obisId 1 byte
+        this.size = REQUEST_ID_SIZE + METER_ID_SIZE + 1;
     }
 
     static readonly id = COMMAND_ID;
@@ -65,18 +65,26 @@ class GetObisContentById extends Command {
     static readonly hasParameters = true;
 
     // data - only body (without header)
-    static fromBytes ( [requestId, meterId, obisId]: Uint8Array ) {
-        return new GetObisContentById({requestId, meterId, obisId});
+    static fromBytes ( data: Uint8Array ) {
+        const buffer = new CommandBinaryBuffer(data);
+
+        return new GetObisContentById({
+            requestId: buffer.getUint8(),
+            meterId: buffer.getUint32(),
+            obisId: buffer.getUint8()
+        });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {parameters} = this;
+        const {requestId, meterId, obisId} = this.parameters;
+        const buffer = new CommandBinaryBuffer(this.size as number);
 
-        return Command.toBytes(
-            COMMAND_ID,
-            new Uint8Array([parameters.requestId, parameters.meterId, parameters.obisId])
-        );
+        buffer.setUint8(requestId);
+        buffer.setUint32(meterId);
+        buffer.setUint8(obisId);
+
+        return Command.toBytes(COMMAND_ID, buffer.toUint8Array());
     }
 }
 
