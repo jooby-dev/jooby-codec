@@ -1,5 +1,4 @@
-import MtxCommandBase from '../../MtxCommandBase.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import MtxCommandBase from '../MtxCommandBase.js';
 import {UPLINK} from '../../../constants/directions.js';
 
 
@@ -25,15 +24,7 @@ import {UPLINK} from '../../../constants/directions.js';
  *     data: Uint8Array(3) [0, 1, 2, 3, 4, buffer: ...
  * }
  * ```
- *
  */
 export default class MtxCommand extends MtxCommandBase {
     static readonly directionType = UPLINK;
-
-    // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new MtxCommand(buffer.getMtxCommand());
-    }
 }

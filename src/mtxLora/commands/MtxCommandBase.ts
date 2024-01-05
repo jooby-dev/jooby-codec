@@ -1,6 +1,6 @@
-import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from './Command.js';
-import CommandBinaryBuffer, {IMtxCommand} from './CommandBinaryBuffer.js';
-import getBytesFromHex from '../utils/getBytesFromHex.js';
+import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../Command.js';
+import CommandBinaryBuffer, {IMtxCommand} from '../CommandBinaryBuffer.js';
+import getBytesFromHex from '../../utils/getBytesFromHex.js';
 
 
 const COMMAND_ID = 0x1e;
@@ -50,5 +50,12 @@ export default class MtxCommandBase extends Command {
         buffer.setMtxCommand(parameters);
 
         return buffer.toUint8Array();
+    }
+
+    // data - only body (without header)
+    static fromBytes ( data: Uint8Array ) {
+        const buffer = new CommandBinaryBuffer(data);
+
+        return new this(buffer.getMtxCommand());
     }
 }

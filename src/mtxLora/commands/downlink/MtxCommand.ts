@@ -1,5 +1,5 @@
-import MtxCommandBase from '../../MtxCommandBase.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import MtxCommandBase from '../MtxCommandBase.js';
+//import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 
 
@@ -22,15 +22,7 @@ import {DOWNLINK} from '../../../constants/directions.js';
  * console.log(command.toHex());
  * // 1e 07 02 53 00 01 02 03 04
  * ```
- *
  */
 export default class MtxCommand extends MtxCommandBase {
     static readonly directionType = DOWNLINK;
-
-    // data - only body (without header)
-    static fromBytes ( data: Uint8Array ) {
-        const buffer = new CommandBinaryBuffer(data);
-
-        return new MtxCommand(buffer.getMtxCommand());
-    }
 }
