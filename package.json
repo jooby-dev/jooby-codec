@@ -50,7 +50,7 @@
         "lint-cached": "npm run lint:tsc && npm run lint:eslint -- --cache --max-warnings=0",
         "lint:fix": "npm run lint:eslint -- --fix --max-warnings=0",
         "test": "npm run lint && jest",
-        "test:watch": "jest --watch",
+        "test:watch": "jest --watchAll",
         "preinstall": "git config core.hooksPath .githooks",
         "publish": "clean-publish",
         "publish:dev": "ts-node ./.bin/npm-develop.ts && clean-publish --access public"

@@ -22,7 +22,7 @@ jobs:
           - run: npm run build:docs
 
           - name: upload artifact
-            uses: actions/upload-pages-artifact@v2
+            uses: actions/upload-pages-artifact@v3
             with:
                 path: "./docs"
 
@@ -39,4 +39,4 @@ jobs:
         steps:
           - name: deploy to GitHub Pages
             id: deployment
-            uses: actions/deploy-pages@v3
+            uses: actions/deploy-pages@v4
