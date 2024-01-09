@@ -2,12 +2,14 @@
 import * as Message from '../../src/analog/message.js';
 import * as downlinkCommands from '../../src/analog/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/analog/commands/uplink/index.js';
+import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import {DOWNLINK, UPLINK} from '../../src/constants/directions.js';
+import {MTXLORA} from '../../src/analog/constants/hardwareTypes.js';
 
 
 interface IMessage {
     hex: string,
-    commands: Array<{parameters: object, command: unknown}>,
+    commands: Array<{parameters: object, command: unknown, config?: unknown}>,
     isValid: boolean
 }
 
@@ -84,6 +86,62 @@ const uplinkMessages: TMessageList = [
     }
 ];
 
+const mtxUplinkMessages: TMessageList = [
+    {
+        hex: '1e28c4314d1010796430280fff011d00000008001a00000008001d00000008011d00000008001a00000033',
+        commands: [
+            {
+                parameters: {
+                    sequence: 196,
+                    fragmentIndex: 1,
+                    fragmentsNumber: 3,
+                    last: false,
+                    data: getBytesFromHex('4d1010796430280fff011d00000008001a00000008001d00000008011d00000008001a000000')
+                },
+                command: uplinkCommands.MtxCommand
+            }
+        ],
+        isValid: true
+    },
+    {
+        hex: '1e21c4b31d00000008013a00000008013a00000008013a00000008013a00000008000063d0b9e5e7',
+        commands: [
+            {
+                parameters: {
+                    sequence: 196,
+                    fragmentIndex: 3,
+                    fragmentsNumber: 3,
+                    last: true,
+                    data: getBytesFromHex('1d00000008013a00000008013a00000008013a00000008013a000000080000')
+                },
+                command: uplinkCommands.MtxCommand
+            },
+            {
+                parameters: {
+                    sequenceNumber: 208,
+                    status: {
+                        isLockedOut: true,
+                        isMagneticInfluence: false,
+                        isMeterCaseOpen: true,
+                        isMeterFailure: true,
+                        isMeterProgramRestarted: true,
+                        isMeterTerminalBoxOpen: false,
+                        isModuleCompartmentOpen: true,
+                        isNewTariffPlanReceived: false,
+                        isParametersSetLocally: true,
+                        isParametersSetRemotely: false,
+                        isTariffPlanChanged: false,
+                        isTimeCorrected: true,
+                        isTimeSet: false
+                    }
+                },
+                config: {hardwareType: MTXLORA},
+                command: uplinkCommands.LastEvent
+            }
+        ],
+        isValid: true
+    }
+];
 
 const checkMessage = ( {hex, commands, isValid}: IMessage, config?: Message.IMessageConfig ) => {
     const messageDataFromHex = Message.fromHex(hex, config);
@@ -114,6 +172,7 @@ checkMessages('downlink messages with config', downlinkMessages, {direction: DOW
 checkMessages('uplink messages', uplinkMessages);
 checkMessages('uplink messages with config', uplinkMessages, {direction: UPLINK});
 
+checkMessages('mtx uplink messages', mtxUplinkMessages, {direction: UPLINK, hardwareType: MTXLORA});
 
 describe('message validation', () => {
     test('test valid input', () => {
