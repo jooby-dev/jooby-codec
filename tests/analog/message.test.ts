@@ -148,7 +148,7 @@ describe('getCommands', () => {
         expect(strictResult).toStrictEqual(strictResult);
     });
 
-    describe('test invalid input', () => {
+    test('test invalid input', () => {
         const hex = '02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9 a6';
         const message = Message.fromHex(hex);
         const strictResult = Message.getCommands(message, true);
