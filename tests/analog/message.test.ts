@@ -2,6 +2,7 @@
 import * as Message from '../../src/analog/message.js';
 import * as downlinkCommands from '../../src/analog/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/analog/commands/uplink/index.js';
+import {DOWNLINK, UPLINK} from '../../src/constants/directions.js';
 
 
 interface IMessage {
@@ -84,9 +85,9 @@ const uplinkMessages: TMessageList = [
 ];
 
 
-const checkMessage = ( {hex, commands, isValid}: IMessage ) => {
-    const messageDataFromHex = Message.fromHex(hex);
-    const messageDataFromBase64 = Message.fromBase64(Buffer.from(hex.replace(/\s/g, ''), 'hex').toString('base64'));
+const checkMessage = ( {hex, commands, isValid}: IMessage, config?: Message.IMessageConfig ) => {
+    const messageDataFromHex = Message.fromHex(hex, config);
+    const messageDataFromBase64 = Message.fromBase64(Buffer.from(hex.replace(/\s/g, ''), 'hex').toString('base64'), config);
 
     messageDataFromHex.commands.forEach((messageCommand, index) => {
         expect(messageCommand.command.parameters).toStrictEqual(commands[index].parameters);
@@ -96,22 +97,23 @@ const checkMessage = ( {hex, commands, isValid}: IMessage ) => {
     expect(messageDataFromHex.isValid).toBe(isValid);
 };
 
-
-describe('downlink messages', () => {
-    downlinkMessages.forEach((command, index) => {
-        test(`test case #${index}`, () => {
-            checkMessage(command);
+const checkMessages = ( description: string, messages: TMessageList, config?: Message.IMessageConfig ) => (
+    describe(description, () => {
+        messages.forEach((commands, index) => {
+            test(`test case #${index}`, () => {
+                checkMessage(commands, config);
+            });
         });
-    });
-});
+    })
+);
 
-describe('uplink messages', () => {
-    uplinkMessages.forEach((command, index) => {
-        test(`test case #${index}`, () => {
-            checkMessage(command);
-        });
-    });
-});
+
+checkMessages('downlink messages', downlinkMessages);
+checkMessages('downlink messages with config', downlinkMessages, {direction: DOWNLINK});
+
+checkMessages('uplink messages', uplinkMessages);
+checkMessages('uplink messages with config', uplinkMessages, {direction: UPLINK});
+
 
 describe('message validation', () => {
     test('test valid input', () => {
