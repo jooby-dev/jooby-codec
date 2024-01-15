@@ -391,7 +391,7 @@ export interface ILegacyHourCounterWithDiff {
     diff: Array<ILegacyCounter>
 }
 
-export interface IMtxCommand {
+export interface IDataSegment {
     sequence: number,
     fragmentIndex: number,
     fragmentsNumber: number,
@@ -632,7 +632,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return LEGACY_HOUR_COUNTER_SIZE + (hourCounter.diff.length * LEGACY_HOUR_DIFF_SIZE);
     }
 
-    getMtxCommand (): IMtxCommand {
+    getDataSegment (): IDataSegment {
         const sequence = this.getUint8();
         const flag = this.getUint8();
 
@@ -645,7 +645,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         };
     }
 
-    setMtxCommand ( value: IMtxCommand ) {
+    setDataSegment ( value: IDataSegment ) {
         let flag = fillBits(0, 3, 1, value.fragmentIndex);
         flag = fillBits(flag, 3, 5, value.fragmentsNumber);
         flag = fillBits(flag, 1, 8, +value.last);

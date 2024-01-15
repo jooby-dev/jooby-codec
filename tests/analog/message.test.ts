@@ -98,7 +98,7 @@ const mtxUplinkMessages: TMessageList = [
                     last: false,
                     data: getBytesFromHex('4d1010796430280fff011d00000008001a00000008001d00000008011d00000008001a000000')
                 },
-                command: uplinkCommands.MtxCommand
+                command: uplinkCommands.DataSegment
             }
         ],
         isValid: true
@@ -114,7 +114,7 @@ const mtxUplinkMessages: TMessageList = [
                     last: true,
                     data: getBytesFromHex('1d00000008013a00000008013a00000008013a00000008013a000000080000')
                 },
-                command: uplinkCommands.MtxCommand
+                command: uplinkCommands.DataSegment
             },
             {
                 parameters: {

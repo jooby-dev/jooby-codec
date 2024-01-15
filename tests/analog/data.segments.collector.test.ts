@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import {IMtxCommand} from '../../src/analog/CommandBinaryBuffer.js';
-import MtxCommandsCollector from '../../src/analog/MtxCommandsCollector.js';
+import {IDataSegment} from '../../src/analog/CommandBinaryBuffer.js';
+import DataSegmentsCollector from '../../src/analog/DataSegmentsCollector.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import permutations from '../../src/utils/permutations.js';
 
@@ -129,8 +129,8 @@ const invalidSequences = [
     ]
 ];
 
-const collectCommands = ( sequence: Array<IMtxCommand> ) => {
-    const collector = new MtxCommandsCollector();
+const collectCommands = ( sequence: Array<IDataSegment> ) => {
+    const collector = new DataSegmentsCollector();
 
     for ( let index = 0; index < sequence.length; index++ ) {
         const result = collector.push(sequence[index]);
@@ -145,7 +145,7 @@ const collectCommands = ( sequence: Array<IMtxCommand> ) => {
 
 
 describe('valid sequences', () => {
-    permutations<IMtxCommand>(validSequence).forEach((sequence, index) => {
+    permutations<IDataSegment>(validSequence).forEach((sequence, index) => {
         test(`test case #${index}`, () => {
             expect(collectCommands(sequence)).toStrictEqual(collectedData);
         });

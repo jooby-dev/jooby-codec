@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import * as Message from '../../src/analog/message.js';
 import * as uplinkCommands from '../../src/analog/commands/uplink/index.js';
-import MtxCommandsCollector from '../../src/analog/MtxCommandsCollector.js';
+import DataSegmentsCollector from '../../src/analog/DataSegmentsCollector.js';
 import {MTXLORA} from '../../src/analog/constants/hardwareTypes.js';
 import {UPLINK} from '../../src/constants/directions.js';
 import permutations from '../../src/utils/permutations.js';
@@ -44,7 +44,7 @@ const expectedCommands = {
 };
 
 const checkMessages = ( sequence: Array<string> ) => {
-    const collector = new MtxCommandsCollector();
+    const collector = new DataSegmentsCollector();
     const commands: Record<string, object | null> = {};
     let actualMtxBuffer = '';
 
@@ -54,7 +54,7 @@ const checkMessages = ( sequence: Array<string> ) => {
         expect(message.isValid).toBe(true);
 
         for ( const {command} of message.commands ) {
-            if ( command instanceof uplinkCommands.MtxCommand ) {
+            if ( command instanceof uplinkCommands.DataSegment ) {
                 actualMtxBuffer += getHexFromBytes(collector.push(command.parameters), {separator: ''});
             } else {
                 commands[command.constructor.name] = command.parameters || null;

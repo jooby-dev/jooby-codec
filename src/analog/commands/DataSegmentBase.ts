@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList, ICommandBinary} from '../Command.js';
-import CommandBinaryBuffer, {IMtxCommand} from '../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IDataSegment} from '../CommandBinaryBuffer.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
 
 
@@ -8,7 +8,7 @@ const MTX_COMMAND_HEADER_SIZE = 2;
 
 const examples: TCommandExampleList = [
     {
-        name: 'MtxCommand request',
+        name: 'DataSegment request',
         parameters: {
             sequence: 2,
             last: false,
@@ -24,8 +24,8 @@ const examples: TCommandExampleList = [
 ];
 
 
-export default class MtxCommandBase extends Command {
-    constructor ( public parameters: IMtxCommand ) {
+export default class DataSegmentBase extends Command {
+    constructor ( public parameters: IDataSegment ) {
         super();
     }
 
@@ -39,7 +39,7 @@ export default class MtxCommandBase extends Command {
     toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(MTX_COMMAND_HEADER_SIZE + this.parameters.data.length);
 
-        buffer.setMtxCommand(this.parameters);
+        buffer.setDataSegment(this.parameters);
 
         return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
@@ -48,6 +48,6 @@ export default class MtxCommandBase extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new this(buffer.getMtxCommand());
+        return new this(buffer.getDataSegment());
     }
 }

@@ -1,8 +1,8 @@
-import {IMtxCommand} from './CommandBinaryBuffer.js';
+import {IDataSegment} from './CommandBinaryBuffer.js';
 import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
-const isSegmentCorrect = ( segment: IMtxCommand ) => {
+const isSegmentCorrect = ( segment: IDataSegment ) => {
     if ( segment.fragmentIndex === 0 || segment.fragmentIndex > segment.fragmentsNumber ) {
         return false;
     }
@@ -11,10 +11,10 @@ const isSegmentCorrect = ( segment: IMtxCommand ) => {
 };
 
 
-class MtxCommandsCollector {
-    #segments: Array<IMtxCommand> = [];
+class DataSegmentsCollector {
+    #segments: Array<IDataSegment> = [];
 
-    push ( segment: IMtxCommand ): Uint8Array {
+    push ( segment: IDataSegment ): Uint8Array {
         if ( !isSegmentCorrect(segment)) {
             return new Uint8Array();
         }
@@ -61,4 +61,4 @@ class MtxCommandsCollector {
     }
 }
 
-export default MtxCommandsCollector;
+export default DataSegmentsCollector;

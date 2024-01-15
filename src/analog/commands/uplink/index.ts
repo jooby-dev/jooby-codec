@@ -7,6 +7,7 @@
 export {default as CorrectTime2000Response} from './CorrectTime2000Response.js';
 export {default as Current} from './Current.js';
 export {default as CurrentMC} from './CurrentMC.js';
+export {default as DataSegment} from './DataSegment.js';
 export {default as Day} from './Day.js';
 export {default as DayMC} from './DayMC.js';
 export {default as ExAbsCurrentMC} from './ExAbsCurrentMC.js';
@@ -25,7 +26,6 @@ export {default as GetParameterResponse} from './GetParameterResponse.js';
 export {default as Hour} from './Hour.js';
 export {default as HourMC} from './HourMC.js';
 export {default as LastEvent} from './LastEvent.js';
-export {default as MtxCommand} from './MtxCommand.js';
 export {default as NewEvent} from './NewEvent.js';
 export {default as SetParameterResponse} from './SetParameterResponse.js';
 export {default as SetTime2000Response} from './SetTime2000Response.js';
