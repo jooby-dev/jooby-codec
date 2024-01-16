@@ -391,6 +391,14 @@ export interface ILegacyHourCounterWithDiff {
     diff: Array<ILegacyCounter>
 }
 
+export interface IDataSegment {
+    sequence: number,
+    fragmentIndex: number,
+    fragmentsNumber: number,
+    last: boolean,
+    data: Uint8Array
+}
+
 
 export type TEventStatus =
     IEventGasStatus |
@@ -622,6 +630,29 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     static getLegacyHourCounterSize ( hourCounter: ILegacyHourCounterWithDiff ): number {
         return LEGACY_HOUR_COUNTER_SIZE + (hourCounter.diff.length * LEGACY_HOUR_DIFF_SIZE);
+    }
+
+    getDataSegment (): IDataSegment {
+        const sequence = this.getUint8();
+        const flag = this.getUint8();
+
+        return {
+            sequence,
+            fragmentIndex: extractBits(flag, 3, 1),
+            fragmentsNumber: extractBits(flag, 3, 5),
+            last: Boolean(extractBits(flag, 1, 8)),
+            data: this.getBytesLeft()
+        };
+    }
+
+    setDataSegment ( value: IDataSegment ) {
+        let flag = fillBits(0, 3, 1, value.fragmentIndex);
+        flag = fillBits(flag, 3, 5, value.fragmentsNumber);
+        flag = fillBits(flag, 1, 8, +value.last);
+
+        this.setUint8(value.sequence);
+        this.setUint8(flag);
+        this.setBytes(value.data);
     }
 
     setInt24 ( value: number, isLittleEndian = this.isLittleEndian ): void {

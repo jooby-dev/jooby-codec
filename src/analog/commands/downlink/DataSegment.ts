@@ -1,5 +1,4 @@
-import MtxCommandBase from '../MtxCommandBase.js';
-//import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import DataSegmentBase from '../DataSegmentBase.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 
 
@@ -8,9 +7,9 @@ import {DOWNLINK} from '../../../constants/directions.js';
  *
  * @example
  * ```js
- * import MtxCommand from 'jooby-codec/mtxLora/commands/downlink/MtxCommand.js';
+ * import DataSegment from 'jooby-codec/mtxLora/commands/downlink/DataSegment.js';
  *
- * const command = new MtxCommand({
+ * const command = new DataSegment({
  *     sequence: 2,
  *     last: false,
  *     fragmentsNumber: 5,
@@ -23,6 +22,6 @@ import {DOWNLINK} from '../../../constants/directions.js';
  * // 1e 07 02 53 00 01 02 03 04
  * ```
  */
-export default class MtxCommand extends MtxCommandBase {
+export default class DataSegment extends DataSegmentBase {
     static readonly directionType = DOWNLINK;
 }

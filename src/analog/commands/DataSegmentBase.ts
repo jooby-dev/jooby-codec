@@ -1,14 +1,14 @@
-import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../Command.js';
-import CommandBinaryBuffer, {IMtxCommand} from '../CommandBinaryBuffer.js';
+import Command, {TCommandExampleList, ICommandBinary} from '../Command.js';
+import CommandBinaryBuffer, {IDataSegment} from '../CommandBinaryBuffer.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
 
 
 const COMMAND_ID = 0x1e;
-
+const MTX_COMMAND_HEADER_SIZE = 2;
 
 const examples: TCommandExampleList = [
     {
-        name: 'MtxCommand request',
+        name: 'DataSegment request',
         parameters: {
             sequence: 2,
             last: false,
@@ -24,11 +24,9 @@ const examples: TCommandExampleList = [
 ];
 
 
-export default class MtxCommandBase extends Command {
-    constructor ( public parameters: IMtxCommand ) {
+export default class DataSegmentBase extends Command {
+    constructor ( public parameters: IDataSegment ) {
         super();
-
-        this.size = 2 + parameters.data.length;
     }
 
     static readonly id = COMMAND_ID;
@@ -38,24 +36,18 @@ export default class MtxCommandBase extends Command {
     static readonly hasParameters = true;
 
     // returns full message - header with body
-    toBytes (): Uint8Array {
-        const {size, parameters} = this;
-        const buffer = new CommandBinaryBuffer(COMMAND_HEADER_SIZE + size);
+    toBinary (): ICommandBinary {
+        const buffer = new CommandBinaryBuffer(MTX_COMMAND_HEADER_SIZE + this.parameters.data.length);
 
-        // header + size
-        buffer.setUint8(COMMAND_ID);
-        buffer.setUint8(size);
+        buffer.setDataSegment(this.parameters);
 
-        // body
-        buffer.setMtxCommand(parameters);
-
-        return buffer.toUint8Array();
+        return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new this(buffer.getMtxCommand());
+        return new this(buffer.getDataSegment());
     }
 }

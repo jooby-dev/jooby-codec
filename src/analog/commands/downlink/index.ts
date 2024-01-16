@@ -5,6 +5,7 @@
  */
 
 export {default as CorrectTime2000} from './CorrectTime2000.js';
+export {default as DataSegment} from './DataSegment.js';
 export {default as GetArchiveDays} from './GetArchiveDays.js';
 export {default as GetArchiveDaysMC} from './GetArchiveDaysMC.js';
 export {default as GetArchiveEvents} from './GetArchiveEvents.js';

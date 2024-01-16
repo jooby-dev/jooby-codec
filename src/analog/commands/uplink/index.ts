@@ -7,6 +7,7 @@
 export {default as CorrectTime2000Response} from './CorrectTime2000Response.js';
 export {default as Current} from './Current.js';
 export {default as CurrentMC} from './CurrentMC.js';
+export {default as DataSegment} from './DataSegment.js';
 export {default as Day} from './Day.js';
 export {default as DayMC} from './DayMC.js';
 export {default as ExAbsCurrentMC} from './ExAbsCurrentMC.js';

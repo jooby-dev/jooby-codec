@@ -16,6 +16,7 @@ export const responseById = new Map(Object.values(uplinkCommands).map(command =>
 requestByResponse.set(uplinkCommands.CorrectTime2000Response, downlinkCommands.CorrectTime2000);
 requestByResponse.set(uplinkCommands.Current, downlinkCommands.GetCurrent);
 requestByResponse.set(uplinkCommands.CurrentMC, downlinkCommands.GetCurrentMC);
+requestByResponse.set(uplinkCommands.DataSegment, downlinkCommands.DataSegment);
 requestByResponse.set(uplinkCommands.ExAbsCurrentMC, downlinkCommands.GetExAbsCurrentMC);
 requestByResponse.set(uplinkCommands.GetArchiveDaysMCResponse, downlinkCommands.GetArchiveDaysMC);
 requestByResponse.set(uplinkCommands.GetArchiveDaysResponse, downlinkCommands.GetArchiveDays);

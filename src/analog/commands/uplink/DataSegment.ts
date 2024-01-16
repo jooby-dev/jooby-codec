@@ -1,4 +1,4 @@
-import MtxCommandBase from '../MtxCommandBase.js';
+import DataSegmentBase from '../DataSegmentBase.js';
 import {UPLINK} from '../../../constants/directions.js';
 
 
@@ -7,12 +7,12 @@ import {UPLINK} from '../../../constants/directions.js';
  *
  * @example
  * ```js
- * import MtxCommand from 'jooby-codec/mtxLora/commands/uplink/MtxCommand.js';
+ * import DataSegment from 'jooby-codec/mtxLora/commands/uplink/DataSegment.js';
  *
  * const commandBody = new Uint8Array([
  *     0x1e, 0x07, 0x02, 0x53, 0x00, 0x01, 0x02, 0x03, 0x04
  * ]);
- * const command = MtxCommand.fromBytes(commandBody);
+ * const command = DataSegment.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
@@ -25,6 +25,6 @@ import {UPLINK} from '../../../constants/directions.js';
  * }
  * ```
  */
-export default class MtxCommand extends MtxCommandBase {
+export default class DataSegment extends DataSegmentBase {
     static readonly directionType = UPLINK;
 }
