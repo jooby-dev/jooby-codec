@@ -1,18 +1,18 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
 import CommandBinaryBuffer, {IDate, TTariffsPowerMax} from '../../CommandBinaryBuffer.js';
-import mergeUint8Arrays from '../../../utils/mergeUint8Arrays.js';
 import {UPLINK} from '../../../constants/directions.js';
+
+
+interface IGetDayMaxPower {
+    date: IDate,
+    powers: TTariffsPowerMax
+}
 
 
 const COMMAND_ID = 0x79;
 const DATE_SIZE = 3; // year, month, day
 const MAX_TARIFFS_ENERGIES_SIZE = 5 * 4 * (1 + 1 + 4); // 5 energy types, 4 tariffs, 1 hours, 1 minutes, 4 bytes - energy value
 const COMMAND_MAX_SIZE = DATE_SIZE + MAX_TARIFFS_ENERGIES_SIZE;
-
-interface IGetDayMaxPower {
-    date: IDate,
-    powers: TTariffsPowerMax
-}
 
 const examples: TCommandExampleList = [
     {
@@ -64,7 +64,7 @@ const examples: TCommandExampleList = [
  *         month: 2,
  *         day: 3
  *     },
- *     energies: [
+ *     powers: [
  *          {
  *              aPlus: 0x1000,
  *              aMinusRPlus: 0x2000
@@ -107,12 +107,11 @@ class GetDayMaxPower extends Command {
         buffer.setDate(date);
         buffer.setTariffsPowerMax(powers);
 
-        const header = new Uint8Array([
+        return new Uint8Array([
             COMMAND_ID,
-            buffer.position
+            buffer.position,
+            ...buffer.getBytesToOffset()
         ]);
-
-        return mergeUint8Arrays(header, buffer.getBytesToOffset());
     }
 }
 

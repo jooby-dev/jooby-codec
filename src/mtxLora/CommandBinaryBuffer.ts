@@ -8,15 +8,6 @@ export interface IDate {
     day: number
 }
 
-const energiesMask = {
-    aPlus: 0x01,
-    aPlusRPlus: 0x02,
-    aPlusRMinus: 0x04,
-    aMinus: 0x08,
-    aMinusRPlus: 0x10,
-    aMinusRMinus: 0x20
-};
-
 export interface IEnergies<T = number> {
     aPlus?: T,
     aPlusRPlus?: T,
@@ -26,21 +17,42 @@ export interface IEnergies<T = number> {
     aMinusRMinus?: T
 }
 
+interface IPowerMax {
+    hours: number,
+    minutes: number,
+    power: number
+}
+
+
 export type TEnergiesFlags = IEnergies<boolean>;
+
+type THalfhoursEnergy = Array<number | undefined>;
+
+export type THalfhoursEnergies = IEnergies<THalfhoursEnergy>;
+
+export type TTariffsEnergies = Array<IEnergies>;
+
+export type TTariffsPowerMax = Array<IEnergies<IPowerMax>>;
+
+
+const UNDEFINED_ENERGY_VALUE = 0xffffffff;
+
+const TARIFF_NUMBER = 4;
+
+const energiesMask = {
+    aPlus: 0x01,
+    aPlusRPlus: 0x02,
+    aPlusRMinus: 0x04,
+    aMinus: 0x08,
+    aMinusRPlus: 0x10,
+    aMinusRMinus: 0x20
+};
 
 const getEnergiesFlags = <T>( energies: IEnergies<T> ): number => {
     const booleanObject = Object.fromEntries(Object.entries(energies).map(([name, value]) => [name, !!value]));
 
     return bitSet.fromObject(energiesMask, (booleanObject as unknown) as bitSet.TBooleanObject);
 };
-
-type THalfhoursEnergy = Array<number | undefined>;
-
-export type THalfhoursEnergies = IEnergies<THalfhoursEnergy>;
-
-const UndefinedEnergyValue = 0xffffffff;
-
-const TARIFF_NUMBER = 4;
 
 const getAPlusTariffBit = ( tariff: number ) => (tariff < TARIFF_NUMBER ? (1 << tariff) : 0);
 
@@ -62,16 +74,6 @@ const getTariffEnergiesFlag = <T>( tariff: number, energies: IEnergies<T> ): num
     return flag;
 };
 
-export type TTariffsEnergies = Array<IEnergies>;
-
-interface IPowerMax {
-    hours: number,
-    minutes: number,
-    power: number
-}
-
-export type TTariffsPowerMax = Array<IEnergies<IPowerMax>>;
-
 
 /**
  * Command specific byte array manipulation.
@@ -83,13 +85,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     getDate (): IDate {
-        const date1 = this.getUint8();
-        const date2 = this.getUint8();
+        const datePart1 = this.getUint8();
+        const datePart2 = this.getUint8();
 
         return {
-            year: date1 >> 1,
-            month: ((date1 & 1) << 4) | (date2 >> 5),
-            day: date2 & 0x1f
+            year: datePart1 >> 1,
+            month: ((datePart1 & 1) << 4) | (datePart2 >> 5),
+            day: datePart2 & 0x1f
         };
     }
 
@@ -115,25 +117,22 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     getHalfhoursEnergy ( numberOfHalfhours: number ): THalfhoursEnergy {
         const halfhours = [];
-        let value;
 
         for ( let index = 0; index < numberOfHalfhours; index++ ) {
-            value = this.getUint32();
+            const value = this.getUint32();
 
-            halfhours.push(value === UndefinedEnergyValue ? undefined : value);
+            halfhours.push(value === UNDEFINED_ENERGY_VALUE ? undefined : value);
         }
 
         return halfhours;
     }
 
     setHalfhoursEnergy ( halfhours: THalfhoursEnergy | undefined ) {
-        let value;
-
         if ( halfhours ) {
             for ( let index = 0; index < halfhours.length; index++ ) {
-                value = halfhours[index];
+                const value = halfhours[index];
 
-                this.setUint32(value === undefined ? UndefinedEnergyValue : value);
+                this.setUint32(value === undefined ? UNDEFINED_ENERGY_VALUE : value);
             }
         }
     }
@@ -177,7 +176,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setHalfhoursEnergy(energies.aMinusRMinus);
     }
 
-    getAPlusTariffEnergies ( energyFlags: number ) : IEnergies {
+    getAPlusTariffEnergies ( energyFlags: number ): IEnergies {
         const energies: IEnergies = {};
 
         if ( energyFlags & energiesMask.aPlus ) {
@@ -211,7 +210,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
     }
 
-    getAMinusTariffEnergies ( energyFlags: number ) : IEnergies {
+    getAMinusTariffEnergies ( energyFlags: number ): IEnergies {
         const energies: IEnergies = {};
 
         if ( energyFlags & energiesMask.aMinus ) {
@@ -245,7 +244,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
     }
 
-    getTariffsEnergies () : TTariffsEnergies {
+    getTariffsEnergies (): TTariffsEnergies {
         const energyFlags = this.getUint8();
         const tariffFlags = this.getUint8();
         const tariffs: TTariffsEnergies = [];
@@ -269,7 +268,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         let energiesFlags = 0;
         let tariffsFlags = 0;
 
-        tariffs.forEach( (tariff, index) => {
+        tariffs.forEach((tariff, index) => {
             if ( tariff ) {
                 energiesFlags |= getEnergiesFlags(tariff);
                 tariffsFlags |= getTariffEnergiesFlag(index, tariff);
@@ -283,7 +282,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         tariffs.forEach(tariff => this.setAMinusTariffEnergies(tariff));
     }
 
-    getPowerMax () : IPowerMax {
+    getPowerMax (): IPowerMax {
         return {
             hours: this.getUint8(),
             minutes: this.getUint8(),
@@ -301,7 +300,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
     }
 
-    getAPlusTariffPowerMax ( energyFlags: number ) : IEnergies<IPowerMax> {
+    getAPlusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax> {
         const energies: IEnergies<IPowerMax> = {};
 
         if ( energyFlags & energiesMask.aPlus ) {
@@ -327,7 +326,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
     }
 
-    getAMinusTariffPowerMax ( energyFlags: number ) : IEnergies<IPowerMax> {
+    getAMinusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax> {
         const energies: IEnergies<IPowerMax> = {};
 
         if ( energyFlags & energiesMask.aMinus ) {
@@ -353,7 +352,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
     }
 
-    getTariffsPowerMax () : TTariffsPowerMax {
+    getTariffsPowerMax (): TTariffsPowerMax {
         const energyFlags = this.getUint8();
         const tariffFlags = this.getUint8();
         const tariffs: TTariffsPowerMax = [];

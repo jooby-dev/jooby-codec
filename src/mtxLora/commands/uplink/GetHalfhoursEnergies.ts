@@ -1,13 +1,7 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
 import CommandBinaryBuffer, {IDate, THalfhoursEnergies} from '../../CommandBinaryBuffer.js';
-import mergeUint8Arrays from '../../../utils/mergeUint8Arrays.js';
 import {UPLINK} from '../../../constants/directions.js';
 
-
-const COMMAND_ID = 0x69;
-const DATE_SIZE = 3; // year, month, day
-const MAX_HALFHOURS_ENERGY_SIZE = 5 * 3 * 4; // 5 energy types, 3 channels, 4 bytes - energy value
-const COMMAND_MAX_SIZE = DATE_SIZE + MAX_HALFHOURS_ENERGY_SIZE;
 
 interface IGetHalfhoursEnergies {
     date: IDate
@@ -15,6 +9,12 @@ interface IGetHalfhoursEnergies {
     numberOfHalfhours: number,
     energies: THalfhoursEnergies
 }
+
+
+const COMMAND_ID = 0x69;
+const DATE_SIZE = 3; // year, month, day
+const MAX_HALFHOURS_ENERGY_SIZE = 5 * 3 * 4; // 5 energy types, 3 channels, 4 bytes - energy value
+const COMMAND_MAX_SIZE = DATE_SIZE + MAX_HALFHOURS_ENERGY_SIZE;
 
 const examples: TCommandExampleList = [
     {
@@ -110,12 +110,11 @@ class GetHalfhoursEnergies extends Command {
         buffer.setUint8(numberOfHalfhours);
         buffer.setHalfhoursEnergies(energies);
 
-        const header = new Uint8Array([
+        return new Uint8Array([
             COMMAND_ID,
-            buffer.position
+            buffer.position,
+            ...buffer.getBytesToOffset()
         ]);
-
-        return mergeUint8Arrays(header, buffer.getBytesToOffset());
     }
 }
 

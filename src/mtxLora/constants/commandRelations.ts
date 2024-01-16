@@ -15,7 +15,6 @@ export const responseById = new Map(Object.values(uplinkCommands).map(command =>
 
 requestByResponse.set(uplinkCommands.GetHalfhoursEnergies, downlinkCommands.GetHalfhoursEnergies);
 
-
 for ( const [response, request] of requestByResponse.entries() ) {
     // invert keys with values
     responseByRequest.set(request, response);
