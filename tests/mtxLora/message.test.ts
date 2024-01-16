@@ -1,0 +1,116 @@
+/* eslint-disable max-len */
+/* eslint-disable object-curly-newline */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import * as message from '../../src/mtxLora/message.js';
+import Command from '../../src/mtxLora/Command.js';
+import * as downlinkCommands from '../../src/mtxLora/commands/downlink/index.js';
+import * as uplinkCommands from '../../src/mtxLora/commands/uplink/index.js';
+import {READ_ONLY} from '../../src/mtx/constants/accessLevels.js';
+import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
+import {DOWNLINK, UPLINK} from '../../src/constants/directions.js';
+
+
+interface IMessage {
+    name: string,
+    hex: string,
+    direction: number,
+    messageId: number,
+    accessLevel: number,
+    commands: Array<Command>
+}
+
+type TMessageList = Array<IMessage>;
+
+const downlinkMessages: TMessageList = [
+    {
+        name: 'Downlink command',
+        hex: '0a 13 13 69 05 2a 43 03 05 03',
+        messageId: 10,
+        direction: DOWNLINK,
+        accessLevel: READ_ONLY,
+        commands: [
+            new downlinkCommands.GetHalfhoursEnergies({
+                date: {
+                    year: 21,
+                    month: 2,
+                    day: 3
+                },
+                firstHalfhour: 5,
+                numberOfHalfhours: 3,
+                energies: {
+                    aPlus: true,
+                    aPlusRPlus: true,
+                    aPlusRMinus: false,
+                    aMinus: false,
+                    aMinusRPlus: false,
+                    aMinusRMinus: false
+                }
+            })
+        ]
+    }
+];
+
+const uplinkMessages: TMessageList = [
+    {
+        name: 'Uplink commands',
+        hex: '10 13 13 78 0c 2a 43 11 11 00 00 10 00 00 00 20 00 69 0d 2a 43 01 01 02 00 00 10 00 00 00 20 00',
+        messageId: 16,
+        direction: UPLINK,
+        accessLevel: READ_ONLY,
+        commands: [
+            new uplinkCommands.GetDayEnergies({
+                date: {
+                    year: 21,
+                    month: 2,
+                    day: 3
+                },
+                energies: [
+                    {
+                        aPlus: 0x1000,
+                        aMinusRPlus: 0x2000
+                    }
+                ]
+            }),
+            new uplinkCommands.GetHalfhoursEnergies({
+                date: {
+                    year: 21,
+                    month: 2,
+                    day: 3
+                },
+                firstHalfhour: 1,
+                numberOfHalfhours: 2,
+                energies: {
+                    aPlus: [0x1000, 0x2000]
+                }
+            })
+        ]
+    }];
+
+
+const checkMessage = ( messageParams: IMessage ) => {
+    const {hex, messageId, accessLevel, direction, commands} = messageParams;
+    const messageBytes = message.toBytes(messageId, accessLevel, commands);
+    const messageData = message.fromHex(hex, {direction});
+
+    expect(getHexFromBytes(messageBytes)).toEqual(hex);
+    expect(messageData.messageId).toEqual(messageId);
+    expect(messageData.accessLevel).toEqual(accessLevel);
+    expect(messageData.commands.map(item => item.command)).toStrictEqual(commands);
+};
+
+
+describe('downlink messages', () => {
+    downlinkMessages.forEach(messageData => {
+        test(messageData.name, () => {
+            checkMessage(messageData);
+        });
+    });
+});
+
+describe('uplink messages', () => {
+    uplinkMessages.forEach(messageData => {
+        test(messageData.name, () => {
+            checkMessage(messageData);
+        });
+    });
+});
