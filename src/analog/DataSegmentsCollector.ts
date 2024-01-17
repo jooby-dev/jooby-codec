@@ -3,11 +3,11 @@ import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
 const isSegmentCorrect = ( segment: IDataSegment ) => {
-    if ( segment.fragmentIndex === 0 || segment.fragmentIndex > segment.fragmentsNumber ) {
+    if ( segment.segmentIndex === 0 || segment.segmentIndex > segment.segmentsNumber ) {
         return false;
     }
 
-    return segment.fragmentIndex === segment.fragmentsNumber ? segment.last : !segment.last;
+    return segment.segmentIndex === segment.segmentsNumber ? segment.last : !segment.last;
 };
 
 
@@ -20,17 +20,17 @@ class DataSegmentsCollector {
         }
 
         if ( this.#segments.length !== 0 ) {
-            if ( this.#segments[0].sequence !== segment.sequence ) {
+            if ( this.#segments[0].segmentationSessionId !== segment.segmentationSessionId ) {
                 this.clear();
             }
         }
 
-        const index = this.#segments.findIndex(value => value.fragmentIndex >= segment.fragmentIndex);
+        const index = this.#segments.findIndex(value => value.segmentIndex >= segment.segmentIndex);
 
         if ( index === -1 ) {
             this.#segments.push(segment);
         } else {
-            if ( this.#segments[index].fragmentIndex === segment.fragmentIndex ) {
+            if ( this.#segments[index].segmentIndex === segment.segmentIndex ) {
                 this.clear();
 
                 return new Uint8Array();
@@ -39,7 +39,7 @@ class DataSegmentsCollector {
             this.#segments.splice(index, 0, segment);
         }
 
-        if ( this.#segments.length === 0 || this.#segments.length !== this.#segments[0].fragmentsNumber ) {
+        if ( this.#segments.length === 0 || this.#segments.length !== this.#segments[0].segmentsNumber ) {
             return new Uint8Array();
         }
 

@@ -392,9 +392,9 @@ export interface ILegacyHourCounterWithDiff {
 }
 
 export interface IDataSegment {
-    sequence: number,
-    fragmentIndex: number,
-    fragmentsNumber: number,
+    segmentationSessionId: number,
+    segmentIndex: number,
+    segmentsNumber: number,
     last: boolean,
     data: Uint8Array
 }
@@ -633,24 +633,24 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     getDataSegment (): IDataSegment {
-        const sequence = this.getUint8();
+        const segmentationSessionId = this.getUint8();
         const flag = this.getUint8();
 
         return {
-            sequence,
-            fragmentIndex: extractBits(flag, 3, 1),
-            fragmentsNumber: extractBits(flag, 3, 5),
+            segmentationSessionId,
+            segmentIndex: extractBits(flag, 3, 1),
+            segmentsNumber: extractBits(flag, 3, 5),
             last: Boolean(extractBits(flag, 1, 8)),
             data: this.getBytesLeft()
         };
     }
 
     setDataSegment ( value: IDataSegment ) {
-        let flag = fillBits(0, 3, 1, value.fragmentIndex);
-        flag = fillBits(flag, 3, 5, value.fragmentsNumber);
+        let flag = fillBits(0, 3, 1, value.segmentIndex);
+        flag = fillBits(flag, 3, 5, value.segmentsNumber);
         flag = fillBits(flag, 1, 8, +value.last);
 
-        this.setUint8(value.sequence);
+        this.setUint8(value.segmentationSessionId);
         this.setUint8(flag);
         this.setBytes(value.data);
     }

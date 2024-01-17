@@ -92,9 +92,9 @@ const mtxUplinkMessages: TMessageList = [
         commands: [
             {
                 parameters: {
-                    sequence: 196,
-                    fragmentIndex: 1,
-                    fragmentsNumber: 3,
+                    segmentationSessionId: 196,
+                    segmentIndex: 1,
+                    segmentsNumber: 3,
                     last: false,
                     data: getBytesFromHex('4d1010796430280fff011d00000008001a00000008001d00000008011d00000008001a000000')
                 },
@@ -108,9 +108,9 @@ const mtxUplinkMessages: TMessageList = [
         commands: [
             {
                 parameters: {
-                    sequence: 196,
-                    fragmentIndex: 3,
-                    fragmentsNumber: 3,
+                    segmentationSessionId: 196,
+                    segmentIndex: 3,
+                    segmentsNumber: 3,
                     last: true,
                     data: getBytesFromHex('1d00000008013a00000008013a00000008013a00000008013a000000080000')
                 },
