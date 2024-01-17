@@ -34,7 +34,8 @@ interface IMessageCommand {
 // to build IMessage from bytes
 interface IFromBytesOptions {
     direction?: number,
-    aesKey?: Uint8Array
+    aesKey?: Uint8Array,
+    skipLrcCheck?: boolean
 }
 
 // to serialize IMessage to bytes
@@ -143,15 +144,17 @@ export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IM
         messageBody = aes.decrypt(aesKey, messageBody);
     }
 
-    // take from the end
-    const lrc = messageBody[messageBody.length - 1];
+    if ( !config?.skipLrcCheck ) {
+        // take from the end
+        const lrc = messageBody[messageBody.length - 1];
 
-    // remove lrc from message
-    messageBody = messageBody.slice(0, -1);
-    result.lrc = calculateLrc(messageBody);
+        // remove lrc from message
+        messageBody = messageBody.slice(0, -1);
+        result.lrc = calculateLrc(messageBody);
 
-    if ( lrc !== result.lrc ) {
-        throw new Error('Mismatch LRC.');
+        if ( lrc !== result.lrc ) {
+            throw new Error('Mismatch LRC.');
+        }
     }
 
     const accessLevel2 = messageBody[0] & MASK;
@@ -216,8 +219,8 @@ export const fromHex = ( data: string, config?: IFromBytesOptions ) => (
     fromBytes(getBytesFromHex(data), config)
 );
 
-export const fromBase64 = ( data: string ) => (
-    fromBytes(getBytesFromBase64(data))
+export const fromBase64 = ( data: string, config?: IFromBytesOptions ) => (
+    fromBytes(getBytesFromBase64(data), config)
 );
 
 export const toBytes = ( commands: Array<Command>, {messageId, accessLevel = READ_ONLY, aesKey}: IToBytesOptions ): Uint8Array => {
