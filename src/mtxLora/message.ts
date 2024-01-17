@@ -3,6 +3,7 @@
 import Command from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
 import {requestById, responseById} from './constants/commandRelations.js';
+import {accessLevels} from '../mtx/constants/index.js';
 
 import getBytesFromHex from '../utils/getBytesFromHex.js';
 import getBytesFromBase64 from '../utils/getBytesFromBase64.js';
@@ -28,7 +29,7 @@ interface IMessageCommand {
 export interface IMessage {
     messageId: number,
     accessLevel: number,
-    commands: Array<IMessageCommand>
+    commands?: Array<IMessageCommand>
 }
 
 export interface IMessageConfig {
@@ -93,19 +94,22 @@ export const fromBytes = ( bytes: Uint8Array, config?: IMessageConfig ): IMessag
     const direction = config?.direction ?? AUTO;
     const commands: Array<IMessageCommand> = [];
     const [messageId, accessLevel1, accessLevel2] = bytes;
+    const result: IMessage = {
+        messageId,
+        accessLevel: (accessLevel1 & accessLevels.MASK)
+    };
+
+    if ( result.accessLevel !== accessLevels.UNENCRYPTED ) {
+        return result;
+    }
 
     if ( accessLevel1 !== accessLevel2 ) {
         throw new Error('wrong access level');
     }
 
-    const result: IMessage = {
-        messageId,
-        accessLevel: (accessLevel1 & (~PROTOCOL_VERSION)),
-        commands
-    };
+    result.commands = commands;
 
     const messageBody = bytes.slice(MESSAGE_HEADER_SIZE);
-
     let position = 0;
 
     do {
