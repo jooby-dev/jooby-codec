@@ -6,7 +6,7 @@ import {UPLINK} from '../../../constants/directions.js';
 interface IGetHalfhoursEnergies {
     date: IDate
     firstHalfhour: number,
-    numberOfHalfhours: number,
+    halfhoursNumber: number,
     energies: THalfhoursEnergies
 }
 
@@ -26,7 +26,7 @@ const examples: TCommandExampleList = [
                 day: 3
             },
             firstHalfhour: 1,
-            numberOfHalfhours: 2,
+            halfhoursNumber: 2,
             energies: {
                 aPlus: [0x1000, 0x2000],
                 aMinusRPlus: [0x3000, 0x4000]
@@ -59,7 +59,7 @@ const examples: TCommandExampleList = [
  *         day: 3
  *     },
  *     firstHalfhour: 1,
- *     numberOfHalfhours: 2,
+ *     halfhoursNumber: 2,
  *     energies: {
  *         aPlus: [0x1000, 0x2000],
  *         aMinusRPlus: [0x3000, 0x4000]
@@ -88,26 +88,26 @@ class GetHalfhoursEnergies extends Command {
         const date = buffer.getDate();
         const energiesFlags = buffer.getEnergiesFlags();
         const firstHalfhour = buffer.getUint8();
-        const numberOfHalfhours = buffer.getUint8();
+        const halfhoursNumber = buffer.getUint8();
 
         return new GetHalfhoursEnergies({
             date,
             firstHalfhour,
-            numberOfHalfhours,
-            energies: buffer.getHalfhoursEnergies(energiesFlags, numberOfHalfhours)
+            halfhoursNumber,
+            energies: buffer.getHalfhoursEnergies(energiesFlags, halfhoursNumber)
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {parameters: {date, firstHalfhour, numberOfHalfhours, energies}} = this;
+        const {parameters: {date, firstHalfhour, halfhoursNumber, energies}} = this;
         const buffer = new CommandBinaryBuffer(COMMAND_HEADER_SIZE + COMMAND_MAX_SIZE);
 
         // body
         buffer.setDate(date);
         buffer.setEnergiesFlags(energies);
         buffer.setUint8(firstHalfhour);
-        buffer.setUint8(numberOfHalfhours);
+        buffer.setUint8(halfhoursNumber);
         buffer.setHalfhoursEnergies(energies);
 
         return new Uint8Array([

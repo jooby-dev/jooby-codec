@@ -7,7 +7,7 @@ interface IGetHalfhoursEnergies {
     date: IDate,
     energies: TEnergiesFlags,
     firstHalfhour: number,
-    numberOfHalfhours: number
+    halfhoursNumber: number
 }
 
 
@@ -24,7 +24,7 @@ const examples: TCommandExampleList = [
                 day: 3
             },
             firstHalfhour: 5,
-            numberOfHalfhours: 4,
+            halfhoursNumber: 4,
             energies: {
                 aPlus: true,
                 aPlusRPlus: true,
@@ -53,7 +53,7 @@ const examples: TCommandExampleList = [
  *         day: 3,
  *     },
  *     firstHalfhour: 5,
- *     numberOfHalfhours: 4,
+ *     halfhoursNumber: 4,
  *     energies: {
  *         aPlus: true,
  *         aPlusRPlus: true,
@@ -92,7 +92,7 @@ class GetHalfhoursEnergies extends Command {
             date: buffer.getDate(),
             energies: buffer.getEnergiesFlags(),
             firstHalfhour: buffer.getUint8(),
-            numberOfHalfhours: buffer.getUint8()
+            halfhoursNumber: buffer.getUint8()
         });
     }
 
@@ -107,7 +107,7 @@ class GetHalfhoursEnergies extends Command {
         buffer.setDate(parameters.date);
         buffer.setEnergiesFlags(parameters.energies);
         buffer.setUint8(parameters.firstHalfhour);
-        buffer.setUint8(parameters.numberOfHalfhours);
+        buffer.setUint8(parameters.halfhoursNumber);
 
         return buffer.toUint8Array();
     }

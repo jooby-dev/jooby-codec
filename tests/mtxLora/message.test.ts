@@ -36,7 +36,7 @@ const downlinkMessages: TMessageList = [
                     day: 3
                 },
                 firstHalfhour: 5,
-                numberOfHalfhours: 3,
+                halfhoursNumber: 3,
                 energies: {
                     aPlus: true,
                     aPlusRPlus: true,
@@ -78,7 +78,7 @@ const uplinkMessages: TMessageList = [
                     day: 3
                 },
                 firstHalfhour: 1,
-                numberOfHalfhours: 2,
+                halfhoursNumber: 2,
                 energies: {
                     aPlus: [0x1000, 0x2000]
                 }
