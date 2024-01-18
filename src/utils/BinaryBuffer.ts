@@ -31,7 +31,7 @@ class BinaryBuffer {
     /**
      * Create a buffer stream.
      *
-     * @param data - the instance of Uint8Array or ArrayBuffer size
+     * @param dataOrLength - the instance of Uint8Array, ArrayBuffer size or data in hex format
      * @param isLittleEndian - if true then little endian will be used, big endian otherwise
      */
     constructor ( dataOrLength: Uint8Array | number | string, isLittleEndian = true ) {
