@@ -9,32 +9,32 @@ const collectedData = getBytesFromHex('00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d
 
 const validSequence = [
     {
-        sequence: 2,
+        segmentationSessionId: 2,
         last: false,
-        fragmentsNumber: 3,
-        fragmentIndex: 1,
+        segmentsNumber: 3,
+        segmentIndex: 1,
         data: getBytesFromHex('00 01 02 03 04')
     },
     {
         // invalid section
-        sequence: 2,
+        segmentationSessionId: 2,
         last: false,
-        fragmentsNumber: 3,
-        fragmentIndex: 10,
+        segmentsNumber: 3,
+        segmentIndex: 10,
         data: getBytesFromHex('00 01 02 03 04')
     },
     {
-        sequence: 2,
+        segmentationSessionId: 2,
         last: false,
-        fragmentsNumber: 3,
-        fragmentIndex: 2,
+        segmentsNumber: 3,
+        segmentIndex: 2,
         data: getBytesFromHex('05 06 07')
     },
     {
-        sequence: 2,
+        segmentationSessionId: 2,
         last: true,
-        fragmentsNumber: 3,
-        fragmentIndex: 3,
+        segmentsNumber: 3,
+        segmentIndex: 3,
         data: getBytesFromHex('08 09 0a 0b 0c 0d 0e 0f')
     }
 ];
@@ -42,88 +42,88 @@ const validSequence = [
 const invalidSequences = [
     [
         {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: false,
-            fragmentsNumber: 3,
-            fragmentIndex: 0,
+            segmentsNumber: 3,
+            segmentIndex: 0,
             data: getBytesFromHex('00 01 02 03 04')
         }
     ],
     [
         {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: false,
-            fragmentsNumber: 3,
-            fragmentIndex: 5,
+            segmentsNumber: 3,
+            segmentIndex: 5,
             data: getBytesFromHex('00 01 02 03 04')
         }
     ],
     [
         {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: false,
-            fragmentsNumber: 3,
-            fragmentIndex: 1,
+            segmentsNumber: 3,
+            segmentIndex: 1,
             data: getBytesFromHex('00 01 02 03 04')
         },
         {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: false,
-            fragmentsNumber: 3,
-            fragmentIndex: 2,
+            segmentsNumber: 3,
+            segmentIndex: 2,
             data: getBytesFromHex('05 06 07')
         },
         {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: false,
-            fragmentsNumber: 3,
-            fragmentIndex: 3,
+            segmentsNumber: 3,
+            segmentIndex: 3,
             data: getBytesFromHex('08 09 0a 0b 0c 0d 0e 0f')
         }
     ],
     [
         {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: false,
-            fragmentsNumber: 3,
-            fragmentIndex: 1,
+            segmentsNumber: 3,
+            segmentIndex: 1,
             data: getBytesFromHex('00 01 02 03 04')
         },
         {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: false,
-            fragmentsNumber: 3,
-            fragmentIndex: 2,
+            segmentsNumber: 3,
+            segmentIndex: 2,
             data: getBytesFromHex('05 06 07')
         },
         {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: false,
-            fragmentsNumber: 3,
-            fragmentIndex: 2,
+            segmentsNumber: 3,
+            segmentIndex: 2,
             data: getBytesFromHex('05 06 07')
         },
         {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: true,
-            fragmentsNumber: 3,
-            fragmentIndex: 3,
+            segmentsNumber: 3,
+            segmentIndex: 3,
             data: getBytesFromHex('08 09 0a 0b 0c 0d 0e 0f')
         }
     ],
     [
         {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: false,
-            fragmentsNumber: 3,
-            fragmentIndex: 1,
+            segmentsNumber: 3,
+            segmentIndex: 1,
             data: getBytesFromHex('00 01 02 03 04')
         },
         {
-            sequence: 3,
+            segmentationSessionId: 3,
             last: false,
-            fragmentsNumber: 3,
-            fragmentIndex: 1,
+            segmentsNumber: 3,
+            segmentIndex: 1,
             data: getBytesFromHex('00 01 02 03 04')
         }
     ]

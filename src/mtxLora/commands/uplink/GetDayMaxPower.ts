@@ -5,7 +5,7 @@ import {UPLINK} from '../../../constants/directions.js';
 
 interface IGetDayMaxPower {
     date: IDate,
-    powers: TTariffsPowerMax
+    tariffs: TTariffsPowerMax
 }
 
 
@@ -23,7 +23,7 @@ const examples: TCommandExampleList = [
                 month: 2,
                 day: 3
             },
-            powers: [
+            tariffs: [
                 {
                     aPlus: {
                         hours: 2,
@@ -64,7 +64,7 @@ const examples: TCommandExampleList = [
  *         month: 2,
  *         day: 3
  *     },
- *     powers: [
+ *     tariffs: [
  *          {
  *              aPlus: 0x1000,
  *              aMinusRPlus: 0x2000
@@ -94,13 +94,13 @@ class GetDayMaxPower extends Command {
 
         return new GetDayMaxPower({
             date: buffer.getDate(),
-            powers: buffer.getTariffsPowerMax()
+            tariffs: buffer.getTariffsPowerMax()
         });
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {parameters: {date, powers}} = this;
+        const {parameters: {date, tariffs: powers}} = this;
         const buffer = new CommandBinaryBuffer(COMMAND_HEADER_SIZE + COMMAND_MAX_SIZE);
 
         // body

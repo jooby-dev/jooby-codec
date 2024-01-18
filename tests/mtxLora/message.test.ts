@@ -5,7 +5,7 @@ import * as message from '../../src/mtxLora/message.js';
 import Command from '../../src/mtxLora/Command.js';
 import * as downlinkCommands from '../../src/mtxLora/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/mtxLora/commands/uplink/index.js';
-import {READ_ONLY} from '../../src/mtx/constants/accessLevels.js';
+import {UNENCRYPTED} from '../../src/mtx/constants/accessLevels.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 import {DOWNLINK, UPLINK} from '../../src/constants/directions.js';
 
@@ -24,10 +24,10 @@ type TMessageList = Array<IMessage>;
 const downlinkMessages: TMessageList = [
     {
         name: 'Downlink command',
-        hex: '0a 13 13 69 05 2a 43 03 05 03',
+        hex: '0a 10 10 69 05 2a 43 03 05 03',
         messageId: 10,
         direction: DOWNLINK,
-        accessLevel: READ_ONLY,
+        accessLevel: UNENCRYPTED,
         commands: [
             new downlinkCommands.GetHalfhoursEnergies({
                 date: {
@@ -36,7 +36,7 @@ const downlinkMessages: TMessageList = [
                     day: 3
                 },
                 firstHalfhour: 5,
-                numberOfHalfhours: 3,
+                halfhoursNumber: 3,
                 energies: {
                     aPlus: true,
                     aPlusRPlus: true,
@@ -53,10 +53,10 @@ const downlinkMessages: TMessageList = [
 const uplinkMessages: TMessageList = [
     {
         name: 'Uplink commands',
-        hex: '10 13 13 78 0c 2a 43 11 11 00 00 10 00 00 00 20 00 69 0d 2a 43 01 01 02 00 00 10 00 00 00 20 00',
+        hex: '10 10 10 78 0c 2a 43 11 11 00 00 10 00 00 00 20 00 69 0d 2a 43 01 01 02 00 00 10 00 00 00 20 00',
         messageId: 16,
         direction: UPLINK,
-        accessLevel: READ_ONLY,
+        accessLevel: UNENCRYPTED,
         commands: [
             new uplinkCommands.GetDayEnergies({
                 date: {
@@ -78,7 +78,7 @@ const uplinkMessages: TMessageList = [
                     day: 3
                 },
                 firstHalfhour: 1,
-                numberOfHalfhours: 2,
+                halfhoursNumber: 2,
                 energies: {
                     aPlus: [0x1000, 0x2000]
                 }
@@ -95,7 +95,7 @@ const checkMessage = ( messageParams: IMessage ) => {
     expect(getHexFromBytes(messageBytes)).toEqual(hex);
     expect(messageData.messageId).toEqual(messageId);
     expect(messageData.accessLevel).toEqual(accessLevel);
-    expect(messageData.commands.map(item => item.command)).toStrictEqual(commands);
+    expect(messageData.commands?.map(item => item.command)).toStrictEqual(commands);
 };
 
 

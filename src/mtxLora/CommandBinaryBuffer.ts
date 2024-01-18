@@ -115,10 +115,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
         );
     }
 
-    getHalfhoursEnergy ( numberOfHalfhours: number ): THalfhoursEnergy {
+    getHalfhoursEnergy ( halfhoursNumber: number ): THalfhoursEnergy {
         const halfhours = [];
 
-        for ( let index = 0; index < numberOfHalfhours; index++ ) {
+        for ( let index = 0; index < halfhoursNumber; index++ ) {
             const value = this.getUint32();
 
             halfhours.push(value === UNDEFINED_ENERGY_VALUE ? undefined : value);
@@ -137,31 +137,31 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
     }
 
-    getHalfhoursEnergies ( energiesFlags: TEnergiesFlags, numberOfHalfhours: number ): THalfhoursEnergies {
+    getHalfhoursEnergies ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfhoursEnergies {
         const energies: THalfhoursEnergies = {};
 
         if ( energiesFlags.aPlus ) {
-            energies.aPlus = this.getHalfhoursEnergy(numberOfHalfhours);
+            energies.aPlus = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
         if ( energiesFlags.aPlusRPlus ) {
-            energies.aPlusRPlus = this.getHalfhoursEnergy(numberOfHalfhours);
+            energies.aPlusRPlus = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
         if ( energiesFlags.aPlusRMinus ) {
-            energies.aPlusRMinus = this.getHalfhoursEnergy(numberOfHalfhours);
+            energies.aPlusRMinus = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
         if ( energiesFlags.aMinus ) {
-            energies.aMinus = this.getHalfhoursEnergy(numberOfHalfhours);
+            energies.aMinus = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
         if ( energiesFlags.aMinusRPlus ) {
-            energies.aMinusRPlus = this.getHalfhoursEnergy(numberOfHalfhours);
+            energies.aMinusRPlus = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
         if ( energiesFlags.aMinusRMinus ) {
-            energies.aMinusRMinus = this.getHalfhoursEnergy(numberOfHalfhours);
+            energies.aMinusRMinus = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
         return energies;

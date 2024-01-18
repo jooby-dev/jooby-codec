@@ -10,10 +10,10 @@ const examples: TCommandExampleList = [
     {
         name: 'DataSegment request',
         parameters: {
-            sequence: 2,
+            segmentationSessionId: 2,
             last: false,
-            fragmentsNumber: 5,
-            fragmentIndex: 3,
+            segmentsNumber: 5,
+            segmentIndex: 3,
             data: getBytesFromHex('00 01 02 03 04')
         },
         hex: {

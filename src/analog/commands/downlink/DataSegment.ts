@@ -10,10 +10,10 @@ import {DOWNLINK} from '../../../constants/directions.js';
  * import DataSegment from 'jooby-codec/mtxLora/commands/downlink/DataSegment.js';
  *
  * const command = new DataSegment({
- *     sequence: 2,
+ *     segmentationSessionId: 2,
  *     last: false,
- *     fragmentsNumber: 5,
- *     fragmentIndex: 3,
+ *     segmentsNumber: 5,
+ *     segmentIndex: 3,
  *     data: getBytesFromHex('00 01 02 03 04')
  * });
  *

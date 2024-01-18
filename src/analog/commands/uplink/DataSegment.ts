@@ -17,10 +17,10 @@ import {UPLINK} from '../../../constants/directions.js';
  * console.log(command.parameters);
  * // output:
  * {
- *     sequence: 2,
+ *     segmentationSessionId: 2,
  *     last: false,
- *     fragmentsNumber: 5,
- *     fragmentIndex: 3,
+ *     segmentsNumber: 5,
+ *     segmentIndex: 3,
  *     data: Uint8Array(3) [0, 1, 2, 3, 4, buffer: ...
  * }
  * ```
