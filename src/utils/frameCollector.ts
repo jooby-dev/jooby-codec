@@ -7,7 +7,7 @@ class FrameCollector {
 
     private buffer: Array<number> = [];
 
-    constructor ( public frameBufferMaxSize: number = 256 ) {
+    constructor ( public dataBits: Frame.DataBits = 8, public frameBufferMaxSize: number = 256 ) {
     }
 
     process ( data: Uint8Array | Array<number> ) : Array<Frame.IFrame> {
@@ -33,7 +33,7 @@ class FrameCollector {
         this.buffer.push(byte);
 
         if ( byte === STOP_BYTE ) {
-            this.frames.push(Frame.fromBytes(new Uint8Array(this.buffer)));
+            this.frames.push(Frame.fromBytes(new Uint8Array(this.buffer), this.dataBits));
             this.reset();
 
             return;
