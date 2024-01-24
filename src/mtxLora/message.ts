@@ -143,8 +143,8 @@ export const fromHex = ( data: string, config?: IMessageConfig ) => (
     fromBytes(getBytesFromHex(data), config)
 );
 
-export const fromBase64 = ( data: string ) => (
-    fromBytes(getBytesFromBase64(data))
+export const fromBase64 = ( data: string, config?: IMessageConfig ) => (
+    fromBytes(getBytesFromBase64(data), config)
 );
 
 export const toBytes = ( messageId: number, accessLevel: number, commands: Array<Command> ): Uint8Array => {
