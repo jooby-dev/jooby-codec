@@ -39,7 +39,7 @@ interface IGasStatus extends IStatusBase {
 interface IMtxStatus extends IStatusBase {
     /* device time since 2000 year in seconds */
     time2000: number,
-    /* reset indicator and its cause.  */
+    /* reset indicator and its cause. */
     resetReason: number,
     /* `dBm` represents the Received Signal Strength Indicator (RSSI) of the last received frame */
     rssiLastDWFrame: number,
@@ -53,13 +53,13 @@ interface IMtxStatus extends IStatusBase {
     uplinkResponsesNumber: number,
     /* number of sended uplink frames */
     uplinkFragmentsNumber: number,
-    /* signal margin indicator during Mote to Gateway transmission in `dB`. 0 indicates no margin, 255 is reserved. */
+    /* signal margin indicator during Mote to Gateway transmission in `dB`. 0 indicates no margin, 255 is reserved */
     signalMarginIndicatorFromMoteToGW: number,
-    /* signal margin indicator during GW to Mote transmission in `dB`. 0 indicates no margin, 255 is reserved." */
+    /* signal margin indicator during GW to Mote transmission in `dB`. 0 indicates no margin, 255 is reserved */
     signalMarginIndicatorFromGWToMote: number,
     /* indicates how many base stations the module can detect */
     detectedGatewaysNumber: number,
-    /* indicates the error rate in communication with the base station in percentage (downlink frames). */
+    /* indicates the error rate in communication with the base station in percentage (downlink frames) */
     gatewayDownlinkErrorRate: number,
 
     lastEventSequenceNumber: number
