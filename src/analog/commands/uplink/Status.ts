@@ -42,9 +42,9 @@ interface IMtxStatus extends IStatusBase {
     /* reset indicator and its cause. */
     resetReason: number,
     /* `dBm` represents the Received Signal Strength Indicator (RSSI) of the last received frame */
-    rssiLastDWFrame: number,
+    rssiLastDownlinkFrame: number,
     /* `dBm` value of the Signal-to-Noise Ratio (SNR) of the last received frame */
-    snrLastDWFrame: number,
+    snrLastDownlinkFrame: number,
     /* number of received downlink requests */
     downlinkRequestsNumber: number,
     /* number of received downlink frames */
@@ -106,8 +106,8 @@ const examples: TCommandExampleList = [
             data: {
                 time2000: 4444,
                 resetReason: 1,
-                rssiLastDWFrame: 2,
-                snrLastDWFrame: 6,
+                rssiLastDownlinkFrame: 2,
+                snrLastDownlinkFrame: 6,
                 downlinkRequestsNumber: 42,
                 downlinkFragmentsNumber: 83,
                 uplinkResponsesNumber: 143,
@@ -213,8 +213,8 @@ class Status extends Command {
                 statusData = {
                     time2000: buffer.getUint32(),
                     resetReason: buffer.getUint8(),
-                    rssiLastDWFrame: buffer.getUint8(),
-                    snrLastDWFrame: buffer.getUint8(),
+                    rssiLastDownlinkFrame: buffer.getUint8(),
+                    snrLastDownlinkFrame: buffer.getUint8(),
                     downlinkRequestsNumber: buffer.getUint8(),
                     downlinkFragmentsNumber: buffer.getUint8(),
                     uplinkResponsesNumber: buffer.getUint8(),
@@ -281,8 +281,8 @@ class Status extends Command {
                 statusData = data as IMtxStatus;
                 buffer.setUint32(statusData.time2000);
                 buffer.setUint8(statusData.resetReason);
-                buffer.setUint8(statusData.rssiLastDWFrame);
-                buffer.setUint8(statusData.snrLastDWFrame);
+                buffer.setUint8(statusData.rssiLastDownlinkFrame);
+                buffer.setUint8(statusData.snrLastDownlinkFrame);
                 buffer.setUint8(statusData.downlinkRequestsNumber);
                 buffer.setUint8(statusData.downlinkFragmentsNumber);
                 buffer.setUint8(statusData.uplinkResponsesNumber);
