@@ -7,7 +7,7 @@ import {DOWNLINK} from '../../../constants/directions.js';
  *
  * @example
  * ```js
- * import DataSegment from 'jooby-codec/mtxLora/commands/downlink/DataSegment.js';
+ * import DataSegment from 'jooby-codec/analog/commands/downlink/DataSegment.js';
  *
  * const command = new DataSegment({
  *     segmentationSessionId: 2,

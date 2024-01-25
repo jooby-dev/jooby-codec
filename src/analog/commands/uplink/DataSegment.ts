@@ -7,7 +7,7 @@ import {UPLINK} from '../../../constants/directions.js';
  *
  * @example
  * ```js
- * import DataSegment from 'jooby-codec/mtxLora/commands/uplink/DataSegment.js';
+ * import DataSegment from 'jooby-codec/analog/commands/uplink/DataSegment.js';
  *
  * const commandBody = new Uint8Array([
  *     0x1e, 0x07, 0x02, 0x53, 0x00, 0x01, 0x02, 0x03, 0x04
