@@ -363,10 +363,26 @@ interface IParameterPulseChannelsSetConfig {
 }
 
 /**
+ * Set configuration for battery depassivation.
+ * deviceParameters.BATTERY_DEPASSIVATION_CONFIG = `33`
+ */
+interface IParameterBatteryDepassivationConfig {
+    resistanceStartThreshold: number,
+    resistanceStopThreshold: number
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
     channel: number
+}
+
+/**
+ * Request status for device parameter.
+ */
+interface IRequestDeviceParameterStatus {
+    status: number
 }
 
 
@@ -377,7 +393,7 @@ export interface IParameter {
 
 export interface IRequestParameter {
     id: number,
-    data: IRequestChannelParameter | null
+    data: IRequestChannelParameter | IRequestDeviceParameterStatus | null
 }
 
 export interface ILegacyCounter {
@@ -426,7 +442,8 @@ type TParameterData =
     IParameterAbsoluteDataMC |
     IParameterAbsoluteDataEnableMC |
     IParameterPulseChannelsScanConfig |
-    IParameterPulseChannelsSetConfig;
+    IParameterPulseChannelsSetConfig |
+    IParameterBatteryDepassivationConfig;
 
 
 const INITIAL_YEAR = 2000;
@@ -540,7 +557,8 @@ const parametersSizeMap = new Map([
     [deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL, 1 + 10],
     [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL, 1 + 2],
     [deviceParameters.PULSE_CHANNELS_SCAN_CONFIG, 1 + 3],
-    [deviceParameters.PULSE_CHANNELS_SET_CONFIG, 1 + 1]
+    [deviceParameters.PULSE_CHANNELS_SET_CONFIG, 1 + 1],
+    [deviceParameters.BATTERY_DEPASSIVATION_CONFIG, 1 + 4]
 ]);
 
 const fourChannelsBitMask = {
@@ -1408,6 +1426,18 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }));
     }
 
+    private getBatteryDepassivationConfig (): IParameterBatteryDepassivationConfig {
+        return {
+            resistanceStartThreshold: this.getUint16(false),
+            resistanceStopThreshold: this.getUint16(false)
+        };
+    }
+
+    private setBatteryDepassivationConfig ( parameter: IParameterBatteryDepassivationConfig ): void {
+        this.setUint16(parameter.resistanceStartThreshold, false);
+        this.setUint16(parameter.resistanceStopThreshold, false);
+    }
+
     private getLegacyHourDiff (): ILegacyCounter {
         const stateWithValueByte = this.getUint8();
         const valueLowerByte = this.getUint8();
@@ -1503,6 +1533,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterPulseChannelsEnableConfig();
                 break;
 
+            case deviceParameters.BATTERY_DEPASSIVATION_CONFIG:
+                data = this.getBatteryDepassivationConfig();
+                break;
+
             default:
                 throw new Error(`parameter ${id} is not supported`);
         }
@@ -1586,6 +1620,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
             case deviceParameters.PULSE_CHANNELS_SET_CONFIG:
                 this.setParameterPulseChannelsEnableConfig(data as IParameterPulseChannelsSetConfig);
+                break;
+
+            case deviceParameters.BATTERY_DEPASSIVATION_CONFIG:
+                this.setBatteryDepassivationConfig(data as IParameterBatteryDepassivationConfig);
                 break;
 
             default:

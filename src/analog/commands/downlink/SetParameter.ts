@@ -148,6 +148,17 @@ const examples: TCommandExampleList = [
             data: {channel1: true, channel2: true, channel3: false, channel4: false}
         },
         hex: {header: '03 02', body: '20 03'}
+    },
+    {
+        name: 'set depassivation config for device',
+        parameters: {
+            id: deviceParameters.BATTERY_DEPASSIVATION_CONFIG,
+            data: {
+                resistanceStartThreshold: 36000,
+                resistanceStopThreshold: 26000
+            }
+        },
+        hex: {header: '03 05', body: '21 8c a0 65 90'}
     }
 ];
 

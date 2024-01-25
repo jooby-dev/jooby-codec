@@ -69,3 +69,10 @@ export const PULSE_CHANNELS_SCAN_CONFIG = 31;
  * HARDWARE_TYPE - 15 HARDWARE_VERSION - 2 and HARDWARE_TYPE - 6 HARDWARE_VERSION - 10
  */
 export const PULSE_CHANNELS_SET_CONFIG = 32;
+
+/**
+ * Set configuration for battery depassivation.
+ *
+ * This parameter replace BATTERY_DEPASSIVATION_INFO and BATTERY_MINIMAL_LOAD_TIME.
+ */
+export const BATTERY_DEPASSIVATION_CONFIG = 33;
