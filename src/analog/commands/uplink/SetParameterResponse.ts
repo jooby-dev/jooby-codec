@@ -23,6 +23,14 @@ const examples: TCommandExampleList = [
             status: 1
         },
         hex: {header: '03 02', body: '09 01'}
+    },
+    {
+        name: 'configuration for battery depassivation set successfully',
+        parameters: {
+            id: deviceParameters.BATTERY_DEPASSIVATION_CONFIG,
+            status: 1
+        },
+        hex: {header: '03 02', body: '21 01'}
     }
 ];
 
