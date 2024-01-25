@@ -54,9 +54,9 @@ interface IMtxStatus extends IStatusBase {
     /* number of sended uplink frames */
     uplinkFragmentsNumber: number,
     /* signal margin indicator during Mote to Gateway transmission in `dB`. 0 indicates no margin, 255 is reserved */
-    signalMarginIndicatorFromMoteToGW: number,
+    signalMarginToGateway: number,
     /* signal margin indicator during GW to Mote transmission in `dB`. 0 indicates no margin, 255 is reserved */
-    signalMarginIndicatorFromGWToMote: number,
+    signalMarginFromGateway: number,
     /* indicates how many base stations the module can detect */
     detectedGatewaysNumber: number,
     /* indicates the error rate in communication with the base station in percentage (downlink frames) */
@@ -112,8 +112,8 @@ const examples: TCommandExampleList = [
                 downlinkFragmentsNumber: 83,
                 uplinkResponsesNumber: 143,
                 uplinkFragmentsNumber: 2,
-                signalMarginIndicatorFromMoteToGW: 5,
-                signalMarginIndicatorFromGWToMote: 12,
+                signalMarginToGateway: 5,
+                signalMarginFromGateway: 12,
                 detectedGatewaysNumber: 10,
                 gatewayDownlinkErrorRate: 2,
                 lastEventSequenceNumber: 33
@@ -219,8 +219,8 @@ class Status extends Command {
                     downlinkFragmentsNumber: buffer.getUint8(),
                     uplinkResponsesNumber: buffer.getUint8(),
                     uplinkFragmentsNumber: buffer.getUint8(),
-                    signalMarginIndicatorFromMoteToGW: buffer.getUint8(),
-                    signalMarginIndicatorFromGWToMote: buffer.getUint8(),
+                    signalMarginToGateway: buffer.getUint8(),
+                    signalMarginFromGateway: buffer.getUint8(),
                     detectedGatewaysNumber: buffer.getUint8(),
                     gatewayDownlinkErrorRate: buffer.getUint8(),
                     lastEventSequenceNumber: buffer.getUint8()
@@ -287,8 +287,8 @@ class Status extends Command {
                 buffer.setUint8(statusData.downlinkFragmentsNumber);
                 buffer.setUint8(statusData.uplinkResponsesNumber);
                 buffer.setUint8(statusData.uplinkFragmentsNumber);
-                buffer.setUint8(statusData.signalMarginIndicatorFromMoteToGW);
-                buffer.setUint8(statusData.signalMarginIndicatorFromGWToMote);
+                buffer.setUint8(statusData.signalMarginToGateway);
+                buffer.setUint8(statusData.signalMarginFromGateway);
                 buffer.setUint8(statusData.detectedGatewaysNumber);
                 buffer.setUint8(statusData.gatewayDownlinkErrorRate);
                 buffer.setUint8(statusData.lastEventSequenceNumber);
