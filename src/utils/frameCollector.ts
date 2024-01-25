@@ -44,6 +44,10 @@ class FrameCollector {
         }
     }
 
+    isEmpty () {
+        return this.buffer.length === 0;
+    }
+
     reset () {
         this.buffer = [];
     }
