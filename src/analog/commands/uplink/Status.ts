@@ -36,6 +36,35 @@ interface IGasStatus extends IStatusBase {
     lastEventSequenceNumber: number
 }
 
+interface IMtxStatus extends IStatusBase {
+    /* device time since 2000 year in seconds */
+    time2000: number,
+    /* reset indicator and its cause. */
+    resetReason: number,
+    /* `dBm` represents the Received Signal Strength Indicator (RSSI) of the last received frame */
+    rssiLastDownlinkFrame: number,
+    /* `dBm` value of the Signal-to-Noise Ratio (SNR) of the last received frame */
+    snrLastDownlinkFrame: number,
+    /* number of received downlink requests */
+    downlinkRequestsNumber: number,
+    /* number of received downlink frames */
+    downlinkFragmentsNumber: number,
+    /* number of sended uplink requests */
+    uplinkResponsesNumber: number,
+    /* number of sended uplink frames */
+    uplinkFragmentsNumber: number,
+    /* signal margin indicator during Mote to Gateway transmission in `dB`. 0 indicates no margin, 255 is reserved */
+    signalMarginToGateway: number,
+    /* signal margin indicator during GW to Mote transmission in `dB`. 0 indicates no margin, 255 is reserved */
+    signalMarginFromGateway: number,
+    /* indicates how many base stations the module can detect */
+    detectedGatewaysNumber: number,
+    /* indicates the error rate in communication with the base station in percentage (downlink frames) */
+    gatewayDownlinkErrorRate: number,
+
+    lastEventSequenceNumber: number
+}
+
 /**
  * Status command parameters
  */
@@ -68,6 +97,29 @@ const examples: TCommandExampleList = [
             }
         },
         hex: {header: '14 0c', body: '02 0a 03 01 c5 6d c2 27 32 0e 68 22'}
+    },
+    {
+        name: 'status for MTX',
+        parameters: {
+            software: {type: 2, version: 10},
+            hardware: {type: hardwareTypes.MTXLORA, version: 1},
+            data: {
+                time2000: 4444,
+                resetReason: 1,
+                rssiLastDownlinkFrame: 2,
+                snrLastDownlinkFrame: 6,
+                downlinkRequestsNumber: 42,
+                downlinkFragmentsNumber: 83,
+                uplinkResponsesNumber: 143,
+                uplinkFragmentsNumber: 2,
+                signalMarginToGateway: 5,
+                signalMarginFromGateway: 12,
+                detectedGatewaysNumber: 10,
+                gatewayDownlinkErrorRate: 2,
+                lastEventSequenceNumber: 33
+            }
+        },
+        hex: {header: '14 14', body: '02 0a 07 01 5c 11 00 00 01 02 06 2a 53 8f 02 05 0c 0a 02 21'}
     }
 ];
 
@@ -158,6 +210,23 @@ class Status extends Command {
                 break;
 
             case hardwareTypes.MTXLORA:
+                statusData = {
+                    time2000: buffer.getUint32(),
+                    resetReason: buffer.getUint8(),
+                    rssiLastDownlinkFrame: buffer.getUint8(),
+                    snrLastDownlinkFrame: buffer.getUint8(),
+                    downlinkRequestsNumber: buffer.getUint8(),
+                    downlinkFragmentsNumber: buffer.getUint8(),
+                    uplinkResponsesNumber: buffer.getUint8(),
+                    uplinkFragmentsNumber: buffer.getUint8(),
+                    signalMarginToGateway: buffer.getUint8(),
+                    signalMarginFromGateway: buffer.getUint8(),
+                    detectedGatewaysNumber: buffer.getUint8(),
+                    gatewayDownlinkErrorRate: buffer.getUint8(),
+                    lastEventSequenceNumber: buffer.getUint8()
+                } as IMtxStatus;
+                break;
+
             case hardwareTypes.ELIMP:
             default:
                 throw new Error(`${this.getId()}: hardware type ${hardware.type} is not supported`);
@@ -209,6 +278,22 @@ class Status extends Command {
                 break;
 
             case hardwareTypes.MTXLORA:
+                statusData = data as IMtxStatus;
+                buffer.setUint32(statusData.time2000);
+                buffer.setUint8(statusData.resetReason);
+                buffer.setUint8(statusData.rssiLastDownlinkFrame);
+                buffer.setUint8(statusData.snrLastDownlinkFrame);
+                buffer.setUint8(statusData.downlinkRequestsNumber);
+                buffer.setUint8(statusData.downlinkFragmentsNumber);
+                buffer.setUint8(statusData.uplinkResponsesNumber);
+                buffer.setUint8(statusData.uplinkFragmentsNumber);
+                buffer.setUint8(statusData.signalMarginToGateway);
+                buffer.setUint8(statusData.signalMarginFromGateway);
+                buffer.setUint8(statusData.detectedGatewaysNumber);
+                buffer.setUint8(statusData.gatewayDownlinkErrorRate);
+                buffer.setUint8(statusData.lastEventSequenceNumber);
+                break;
+
             case hardwareTypes.ELIMP:
             default:
                 throw new Error(`${Status.getId()}: hardware type ${hardware.type} is not supported`);
