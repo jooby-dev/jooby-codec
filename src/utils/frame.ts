@@ -6,7 +6,7 @@ import {START_BYTE, STOP_BYTE} from '../constants/frameAttributes.js';
 import invertObject from './invertObject.js';
 
 
-export type DataBits = 7 | 8;
+export type TDataBits = 7 | 8;
 
 
 const STUFFING_8BIT_BYTE = 0x7c;
@@ -20,7 +20,7 @@ const byteUnstuffMap7thBitSize: Record<number, number> = invertObject(byteStuffM
 const byteStuff = ( stuffingMap: Record<number, number>, byte: number ): number => stuffingMap[byte] || byte;
 
 
-export const arrayStuff = ( data: Uint8Array | Array<number>, dataBits: DataBits = 8 ): Uint8Array => {
+export const arrayStuff = ( data: Uint8Array | Array<number>, dataBits: TDataBits = 8 ): Uint8Array => {
     const stuffingMap = dataBits === 7 ? byteStuffMap7thBitSize : byteStuffMap;
     const result: Array<number> = [];
 
@@ -43,7 +43,7 @@ export const arrayStuff = ( data: Uint8Array | Array<number>, dataBits: DataBits
     return new Uint8Array(result);
 };
 
-export const arrayUnstuff = ( data: Uint8Array | Array<number>, dataBits: DataBits = 8 ): Uint8Array => {
+export const arrayUnstuff = ( data: Uint8Array | Array<number>, dataBits: TDataBits = 8 ): Uint8Array => {
     const unStuffingMap = dataBits === 7 ? byteUnstuffMap7thBitSize : byteUnstuffMap;
     const result: Array<number> = [];
     let position = 0;
@@ -102,7 +102,7 @@ export interface IFrame {
 }
 
 
-export const toFrame = ( content: Uint8Array, dataBits: DataBits = 8 ): IFrame => {
+export const toFrame = ( content: Uint8Array, dataBits: TDataBits = 8 ): IFrame => {
     const crc = calculateCrc16(content);
     const crcBytes = convertCrcToBytes(crc);
     const stuffed = content.length === 0 ? [] : arrayStuff([...content, ...crcBytes], dataBits);
@@ -119,7 +119,7 @@ export const toFrame = ( content: Uint8Array, dataBits: DataBits = 8 ): IFrame =
     };
 };
 
-export const fromBytes = ( bytes: Uint8Array, dataBits: DataBits = 8 ): IFrame => {
+export const fromBytes = ( bytes: Uint8Array, dataBits: TDataBits = 8 ): IFrame => {
     if ( bytes[0] !== START_BYTE || bytes[bytes.length - 1] !== STOP_BYTE ) {
         return {
             content: new Uint8Array(),
@@ -148,10 +148,10 @@ export const fromBytes = ( bytes: Uint8Array, dataBits: DataBits = 8 ): IFrame =
     };
 };
 
-export const fromHex = ( data: string, dataBits: DataBits = 8 ) => (
+export const fromHex = ( data: string, dataBits: TDataBits = 8 ) => (
     fromBytes(getBytesFromHex(data), dataBits)
 );
 
-export const fromBase64 = ( data: string, dataBits: DataBits = 8 ) => (
+export const fromBase64 = ( data: string, dataBits: TDataBits = 8 ) => (
     fromBytes(getBytesFromBase64(data), dataBits)
 );

@@ -7,8 +7,7 @@ class FrameCollector {
 
     private buffer: Array<number> = [];
 
-    constructor ( public dataBits: Frame.DataBits = 8, public frameBufferMaxSize: number = 256 ) {
-    }
+    constructor ( public dataBits: Frame.TDataBits = 8, public frameBufferMaxSize: number = 256 ) {}
 
     process ( data: Uint8Array | Array<number> ) : Array<Frame.IFrame> {
         data.forEach(value => this.processByte(value));
