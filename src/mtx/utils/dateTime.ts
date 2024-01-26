@@ -75,8 +75,8 @@ export const getLastWinterHour = ( correction: ITimeCorrectionParameters, year: 
 const dateToNumber = ( dateTime: IDateTime ) => (dateTime.month << 24) | (dateTime.date << 16) | (dateTime.hours << 8) | dateTime.minutes;
 
 export const getSummerTimeFlag = ( correction: ITimeCorrectionParameters, dateTime: IDateTime ) => {
-    const lastSummerHour = dateToNumber(getLastWinterHour(correction, dateTime.year));
-    const lastWinterHour = dateToNumber(getLastSummerHour(correction, dateTime.year));
+    const lastWinterHour = dateToNumber(getLastWinterHour(correction, dateTime.year));
+    const lastSummerHour = dateToNumber(getLastSummerHour(correction, dateTime.year));
     const dateTimeNumber = dateToNumber(dateTime);
 
     return lastSummerHour <= dateTimeNumber && dateTimeNumber <= lastWinterHour;
