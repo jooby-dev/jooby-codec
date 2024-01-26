@@ -79,7 +79,7 @@ export const getSummerTimeFlag = ( correction: ITimeCorrectionParameters, dateTi
     const lastSummerHour = dateToNumber(getLastSummerHour(correction, dateTime.year));
     const dateTimeNumber = dateToNumber(dateTime);
 
-    return lastSummerHour <= dateTimeNumber && dateTimeNumber <= lastWinterHour;
+    return lastWinterHour <= dateTimeNumber && dateTimeNumber <= lastSummerHour;
 };
 
 export const getDateTimeFromDate = ( correction: ITimeCorrectionParameters, date: Date ) => {
