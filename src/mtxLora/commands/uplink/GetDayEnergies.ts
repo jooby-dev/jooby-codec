@@ -25,8 +25,8 @@ const examples: TCommandExampleList = [
             },
             energies: [
                 {
-                    aPlus: 0x1000,
-                    aMinusRPlus: 0x2000
+                    'A+': 0x1000,
+                    'A-R+': 0x2000
                 }
             ]
         },
@@ -58,8 +58,8 @@ const examples: TCommandExampleList = [
  *     },
  *     energies: [
  *          {
- *              aPlus: 0x1000,
- *              aMinusRPlus: 0x2000
+ *              'A+': 0x1000,
+ *              'A-R+': 0x2000
  *          }
  *     ]
  * }

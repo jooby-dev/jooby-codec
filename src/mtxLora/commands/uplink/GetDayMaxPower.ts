@@ -25,12 +25,12 @@ const examples: TCommandExampleList = [
             },
             tariffs: [
                 {
-                    aPlus: {
+                    'A+': {
                         hours: 2,
                         minutes: 3,
                         power: 0x1000
                     },
-                    aMinusRPlus: {
+                    'A-R+': {
                         hours: 4,
                         minutes: 5,
                         power: 0x2000
@@ -66,8 +66,8 @@ const examples: TCommandExampleList = [
  *     },
  *     tariffs: [
  *          {
- *              aPlus: 0x1000,
- *              aMinusRPlus: 0x2000
+ *              'A+': 0x1000,
+ *              'A-R+': 0x2000
  *          }
  *     ]
  * }

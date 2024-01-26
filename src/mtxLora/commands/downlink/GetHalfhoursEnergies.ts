@@ -26,12 +26,12 @@ const examples: TCommandExampleList = [
             firstHalfhour: 5,
             halfhoursNumber: 4,
             energies: {
-                aPlus: true,
-                aPlusRPlus: true,
-                aPlusRMinus: false,
-                aMinus: false,
-                aMinusRPlus: false,
-                aMinusRMinus: false
+                'A+': true,
+                'A+R+': true,
+                'A+R-': false,
+                'A-': false,
+                'A-R+': false,
+                'A-R-': false
             }
         },
         hex: {header: '69 05', body: '2a 43 03 05 04'}
@@ -55,8 +55,8 @@ const examples: TCommandExampleList = [
  *     firstHalfhour: 5,
  *     halfhoursNumber: 4,
  *     energies: {
- *         aPlus: true,
- *         aPlusRPlus: true,
+ *         'A+': true,
+ *         'A+R+': true,
  *     }
  *};
  *
