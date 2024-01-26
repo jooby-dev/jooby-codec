@@ -62,19 +62,24 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO ): Command =
         return UnknownCommand.fromBytes(id, data);
     }
 
-    // the specific direction
-    if ( direction === DOWNLINK || direction === UPLINK ) {
-        const command = direction === UPLINK ? uplinkCommand : downlinkCommand;
-
-        return command!.fromBytes(data) as Command;
-    }
-
-    // direction autodetect
     try {
-        // uplink should be more often
-        return uplinkCommand!.fromBytes(data) as Command;
+        // the specific direction
+        if ( direction === DOWNLINK || direction === UPLINK ) {
+            const command = direction === UPLINK ? uplinkCommand : downlinkCommand;
+
+            return command!.fromBytes(data) as Command;
+        }
+
+        // direction autodetect
+        try {
+            // uplink should be more often
+            return uplinkCommand!.fromBytes(data) as Command;
+        } catch {
+            return downlinkCommand!.fromBytes(data) as Command;
+        }
     } catch {
-        return downlinkCommand!.fromBytes(data) as Command;
+        // something wrong with command
+        return UnknownCommand.fromBytes(id, data);
     }
 };
 

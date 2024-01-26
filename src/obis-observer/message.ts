@@ -26,8 +26,12 @@ const getCommand = ( id: number, data: Uint8Array ): Command => {
     // id is unique for all commands
     const command = requestById.get(id) || responseById.get(id);
 
-    if ( command ) {
-        return command.fromBytes(data) as Command;
+    try {
+        if ( command ) {
+            return command.fromBytes(data) as Command;
+        }
+    } catch {
+        // something wrong with command
     }
 
     // missing command implementation

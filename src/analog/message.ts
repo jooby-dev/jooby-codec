@@ -64,19 +64,24 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO, hardwareTyp
         return new UnknownCommand({id, data});
     }
 
-    // the specific direction
-    if ( direction === DOWNLINK || direction === UPLINK ) {
-        const command = direction === UPLINK ? uplinkCommand : downlinkCommand;
-
-        return command!.fromBytes(data, {hardwareType}) as Command;
-    }
-
-    // direction autodetect
     try {
-        // uplink should be more often
-        return uplinkCommand!.fromBytes(data, {hardwareType}) as Command;
+        // the specific direction
+        if ( direction === DOWNLINK || direction === UPLINK ) {
+            const command = direction === UPLINK ? uplinkCommand : downlinkCommand;
+
+            return command!.fromBytes(data, {hardwareType}) as Command;
+        }
+
+        // direction autodetect
+        try {
+            // uplink should be more often
+            return uplinkCommand!.fromBytes(data, {hardwareType}) as Command;
+        } catch {
+            return downlinkCommand!.fromBytes(data) as Command;
+        }
     } catch {
-        return downlinkCommand!.fromBytes(data) as Command;
+        // something wrong with command
+        return new UnknownCommand({id, data});
     }
 };
 
