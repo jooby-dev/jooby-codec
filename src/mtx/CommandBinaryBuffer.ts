@@ -1,23 +1,11 @@
 import BinaryBuffer from '../utils/BinaryBuffer.js';
-//import {extractBits, fillBits} from '../utils/bitSet.js';
 import * as bitSet from '../utils/bitSet.js';
 import {IDeviceType} from './utils/deviceType.js';
 import * as DeviceType from './utils/deviceType.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
-import {isDstObserved} from './utils/dateTime.js';
+import {IDateTime, ITimeCorrectionParameters} from './utils/dateTime.js';
 
-
-export interface IDateTime {
-    isSummerTime: boolean,
-    seconds: number,
-    minutes: number,
-    hours: number,
-    day: number,
-    date: number,
-    month: number,
-    year: number
-}
 
 export interface ITariffPlan {
     id: number,
@@ -219,18 +207,6 @@ export interface IDeviceId {
 
 export {IDeviceType};
 
-export interface ITimeCorrectionParameters {
-    monthTransitionSummer: number,
-    dateTransitionSummer: number,
-    hoursTransitionSummer: number,
-    hoursCorrectSummer: number,
-    monthTransitionWinter: number,
-    dateTransitionWinter: number,
-    hoursTransitionWinter: number,
-    hoursCorrectWinter: number,
-    isCorrectionNeeded: boolean
-}
-
 export interface ISaldoParameters {
     coefficients: Array<number>,
     decimalPointTariff: number,
@@ -375,35 +351,6 @@ class CommandBinaryBuffer extends BinaryBuffer {
         super(dataOrLength, false);
     }
 
-    static getDateFromDateTime ( dateTime: IDateTime ): Date {
-        return new Date(
-            dateTime.year + 2000,
-            dateTime.month - 1,
-            dateTime.date,
-            dateTime.hours,
-            dateTime.minutes,
-            dateTime.seconds
-        );
-    }
-
-    // does not work fully for now
-    static getDateTimeFromDate ( date: Date ): IDateTime {
-        const dateTime: IDateTime = {
-            isSummerTime: false,
-            seconds: date.getSeconds(),
-            minutes: date.getMinutes(),
-            hours: date.getHours(),
-            day: date.getDay(),
-            date: date.getDate(),
-            month: date.getMonth() + 1,
-            year: date.getFullYear() - 2000
-        };
-
-        dateTime.isSummerTime = isDstObserved(date);
-
-        return dateTime;
-    }
-
     getDateTime (): IDateTime {
         return {
             isSummerTime: !!this.getUint8(),
@@ -422,7 +369,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(dateTime.seconds);
         this.setUint8(dateTime.minutes);
         this.setUint8(dateTime.hours);
-        this.setUint8(dateTime.day);
+        this.setUint8(dateTime.day || 0);
         this.setUint8(dateTime.date);
         this.setUint8(dateTime.month);
         this.setUint8(dateTime.year);
