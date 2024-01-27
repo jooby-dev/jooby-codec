@@ -7,6 +7,14 @@ import getBytesFromHex from '../utils/getBytesFromHex.js';
 import {IDateTime, ITimeCorrectionParameters} from './utils/dateTime.js';
 
 
+export const frameHeaderSize = 5;
+
+export interface IFrameHeader {
+    type: number,
+    source: number,
+    destination: number
+}
+
 export interface ITariffPlan {
     id: number,
     tariffSet: number,
@@ -349,6 +357,20 @@ class CommandBinaryBuffer extends BinaryBuffer {
     constructor ( dataOrLength: Uint8Array | number | string ) {
         // force BE for all numbers
         super(dataOrLength, false);
+    }
+
+    getFrameHeader (): IFrameHeader {
+        return {
+            type: this.getUint8(),
+            destination: this.getUint16(),
+            source: this.getUint16()
+        };
+    }
+
+    setFrameHeader ( frameHeader: IFrameHeader ) {
+        this.setUint8(frameHeader.type);
+        this.setUint16(frameHeader.destination);
+        this.setUint16(frameHeader.source);
     }
 
     getDateTime (): IDateTime {

@@ -3,6 +3,7 @@
 import Command from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
 import {requestById, responseById} from './constants/commandRelations.js';
+import CommandBinaryBuffer, {frameHeaderSize, IFrameHeader} from './CommandBinaryBuffer.js';
 
 import {IHexFormatOptions} from '../config.js';
 import calculateLrc from '../utils/calculateLrc.js';
@@ -50,13 +51,6 @@ interface IFromFrameOptions {
     aesKey?: Uint8Array
 }
 
-// to serialize IFrame to bytes
-interface IToFrameOptions {
-    frameType: number,
-    source: Uint8Array,
-    destination: Uint8Array
-}
-
 // message structure
 interface IMessage extends IToBytesOptions {
     commands: Array<IMessageCommand>,
@@ -64,8 +58,8 @@ interface IMessage extends IToBytesOptions {
 }
 
 // frame structure
-interface IFrame extends IMessage, IToFrameOptions {
-    crc: Uint8Array
+interface IFrame extends IMessage, IFrameHeader {
+    crc: number
 }
 
 
@@ -198,26 +192,25 @@ export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IM
     return result;
 };
 
-export const fromFrame = ( frame: Uint8Array, {aesKey}: IFromFrameOptions ): IFrame => {
-    let unstuffed = new Uint8Array(arrayUnstuff([...frame]));
+export const fromFrame = ( bytes: Uint8Array, {aesKey}: IFromFrameOptions ): IFrame => {
+    let unstuffed = new Uint8Array(arrayUnstuff([...bytes]));
 
-    if ( frame[0] === START_BYTE && frame[frame.length - 1] === STOP_BYTE ) {
+    if ( bytes[0] === START_BYTE && bytes[bytes.length - 1] === STOP_BYTE ) {
         unstuffed = new Uint8Array(unstuffed.slice(1, unstuffed.length - 1));
     }
 
-    const frameType = unstuffed[0];
-    const destination = unstuffed.slice(1, 3);
-    const source = unstuffed.slice(3, 5);
+    const buffer = new CommandBinaryBuffer(unstuffed);
+    const frameHeader = buffer.getFrameHeader();
+
+    const crc = new DataView(unstuffed.buffer).getUint16(unstuffed.length - 2, false);
     const messageData = new Uint8Array(unstuffed.slice(5, -2));
-    const crc = new Uint8Array(unstuffed.slice(-2));
-    const message = fromBytes(messageData, {direction: frameType === frameTypes.DATA_REQUEST ? DOWNLINK : UPLINK, aesKey}) as IFrame;
+    const message = fromBytes(messageData, {direction: frameHeader.type === frameTypes.DATA_REQUEST ? DOWNLINK : UPLINK, aesKey}) as IFrame;
 
-    message.crc = crc;
-    message.source = source;
-    message.destination = destination;
-    message.frameType = frameType;
-
-    return message;
+    return {
+        ...frameHeader,
+        ...message,
+        crc
+    };
 };
 
 export const fromHex = ( data: string, config?: IFromBytesOptions ) => (
@@ -254,8 +247,12 @@ export const toBytes = ( commands: Array<Command>, {messageId, accessLevel = REA
     return mergeUint8Arrays(header, body);
 };
 
-export const toFrame = ( message: Uint8Array, {frameType, source, destination}: IToFrameOptions ): Uint8Array => {
-    const unstuffed = new Uint8Array([frameType, ...destination, ...source, ...message]);
+export const toFrame = ( message: Uint8Array, frameHeader: IFrameHeader ): Uint8Array => {
+    const buffer = new CommandBinaryBuffer(frameHeaderSize);
+    buffer.setFrameHeader(frameHeader);
+    const headerBytes = buffer.toUint8Array();
+
+    const unstuffed = mergeUint8Arrays(headerBytes, message);
     const crc = calculateCrcBytes(unstuffed);
     const stuffed = arrayStuff([...unstuffed, ...crc]);
 
