@@ -88,7 +88,7 @@ const getCommand = ( id: number, size: number, data: Uint8Array, direction = AUT
         || (direction === UPLINK && !uplinkCommand)
     ) {
         // missing command implementation
-        return new UnknownCommand({id, size, data});
+        return new UnknownCommand({id, data});
     }
 
     try {
@@ -108,7 +108,7 @@ const getCommand = ( id: number, size: number, data: Uint8Array, direction = AUT
         }
     } catch {
         // something wrong with command
-        return new UnknownCommand({id, size, data});
+        return new UnknownCommand({id, data});
     }
 };
 

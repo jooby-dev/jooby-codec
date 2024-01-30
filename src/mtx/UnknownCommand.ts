@@ -7,8 +7,6 @@ import Command from './Command.js';
 interface IUnknownCommandParameters {
     /** command id */
     id: number,
-    /** command data size */
-    size: number,
     /** raw data */
     data: Uint8Array
 }
@@ -20,20 +18,22 @@ interface IUnknownCommandParameters {
 class UnknownCommand extends Command {
     constructor ( public parameters: IUnknownCommandParameters ) {
         super();
+
+        this.size = parameters.data.length;
     }
 
     // data - only body (without header)
-    static fromBytes ( id: number, size: number, data: Uint8Array ) {
-        const parameters: IUnknownCommandParameters = {id, size, data};
+    static fromBytes ( id: number, data: Uint8Array ) {
+        const parameters: IUnknownCommandParameters = {id, data};
 
         return new UnknownCommand(parameters);
     }
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const {id, size, data} = this.parameters;
+        const {id, data} = this.parameters;
 
-        return new Uint8Array([id, size, ...data]);
+        return new Uint8Array([id, data.length, ...data]);
     }
 }
 
