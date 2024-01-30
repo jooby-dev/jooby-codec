@@ -2,7 +2,8 @@
 
 import Command from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
-import {requestById, responseById} from './constants/commandRelations.js';
+import {requestById as mtxLoraRequestById, responseById as mtxLoraResponseById} from './constants/commandRelations.js';
+import {requestById as mtxRequestById, responseById as mtxResponseById} from '../mtx/constants/commandRelations.js';
 import {accessLevels} from '../mtx/constants/index.js';
 
 import getBytesFromHex from '../utils/getBytesFromHex.js';
@@ -10,9 +11,11 @@ import getBytesFromBase64 from '../utils/getBytesFromBase64.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBase64FromBytes from '../utils/getBase64FromBytes.js';
 import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
+import {aes} from '../mtx/utils/crypto.js';
 import {IHexFormatOptions} from '../config.js';
 import * as directionTypes from '../constants/directions.js';
 import {AUTO, DOWNLINK, UPLINK} from '../constants/directions.js';
+import {UNENCRYPTED} from '../mtx/constants/accessLevels.js';
 
 
 interface IMessageCommand {
@@ -29,17 +32,20 @@ interface IMessageCommand {
 export interface IMessage {
     messageId: number,
     accessLevel: number,
+    bytes: Uint8Array,
     commands?: Array<IMessageCommand>
 }
 
 export interface IMessageConfig {
     /** It is highly recommended to use a specific direction. */
     direction?: number,
+    accessLevel?: number,
+    aesKey?: Uint8Array
 }
 
-const MESSAGE_HEADER_SIZE = 3;
 const COMMAND_HEADER_SIZE = 2;
 const PROTOCOL_VERSION = 0x10;
+const BLOCK_SIZE = 16;
 
 
 // all allowed types
@@ -50,8 +56,8 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO ): Command =
         throw new Error('wrong direction type');
     }
 
-    const downlinkCommand = requestById.get(id);
-    const uplinkCommand = responseById.get(id);
+    const downlinkCommand = mtxLoraRequestById.get(id) || mtxRequestById.get(id);
+    const uplinkCommand = mtxLoraResponseById.get(id) || mtxResponseById.get(id);
 
     // check command availability
     if (
@@ -97,16 +103,26 @@ const getCommand = ( id: number, data: Uint8Array, direction = AUTO ): Command =
  */
 export const fromBytes = ( bytes: Uint8Array, config?: IMessageConfig ): IMessage => {
     const direction = config?.direction ?? AUTO;
+    const aesKey = config?.aesKey;
     const commands: Array<IMessageCommand> = [];
-    const [messageId, accessLevel1, accessLevel2] = bytes;
+    const [messageId, accessLevel1] = bytes;
+    let messageBody = bytes.slice(2);
     const result: IMessage = {
         messageId,
+        bytes,
         accessLevel: (accessLevel1 & accessLevels.MASK)
     };
 
     if ( result.accessLevel !== accessLevels.UNENCRYPTED ) {
-        return result;
+        if ( aesKey ) {
+            messageBody = aes.decrypt(aesKey, messageBody);
+        } else {
+            return result;
+        }
     }
+
+    const [accessLevel2] = messageBody;
+    messageBody = messageBody.slice(1);
 
     if ( accessLevel1 !== accessLevel2 ) {
         throw new Error('wrong access level');
@@ -114,7 +130,6 @@ export const fromBytes = ( bytes: Uint8Array, config?: IMessageConfig ): IMessag
 
     result.commands = commands;
 
-    const messageBody = bytes.slice(MESSAGE_HEADER_SIZE);
     let position = 0;
 
     do {
@@ -152,18 +167,34 @@ export const fromBase64 = ( data: string, config?: IMessageConfig ) => (
     fromBytes(getBytesFromBase64(data), config)
 );
 
-export const toBytes = ( messageId: number, accessLevel: number, commands: Array<Command> ): Uint8Array => {
+export const toBytes = ( messageId: number, commands: Array<Command>, config?: IMessageConfig ): Uint8Array => {
+    const accessLevel = config?.accessLevel || UNENCRYPTED;
+    const aesKey = config?.aesKey;
     const commandBytes = commands.map(command => command.toBytes());
     const maskedAccessLevel = accessLevel | PROTOCOL_VERSION;
-    const header = new Uint8Array([messageId, maskedAccessLevel, maskedAccessLevel]);
+    const header = new Uint8Array([messageId, maskedAccessLevel]);
 
-    return mergeUint8Arrays(header, ...commandBytes);
+    let body = mergeUint8Arrays(new Uint8Array([maskedAccessLevel]), ...commandBytes);
+
+    if ( accessLevel !== accessLevels.UNENCRYPTED ) {
+        const padding = (body.length + 1) % BLOCK_SIZE;
+
+        if ( padding ) {
+            body = mergeUint8Arrays(body, new Uint8Array(BLOCK_SIZE - padding).fill(0));
+        }
+
+        if ( aesKey ) {
+            body = aes.encrypt(aesKey, body);
+        }
+    }
+
+    return mergeUint8Arrays(header, body);
 };
 
-export const toHex = ( messageId: number, accessLevel: number, commands: Array<Command>, hexOptions: IHexFormatOptions = {} ): string => (
-    getHexFromBytes(toBytes(messageId, accessLevel, commands), hexOptions)
+export const toHex = ( messageId: number, commands: Array<Command>, config?: IMessageConfig, hexOptions: IHexFormatOptions = {} ): string => (
+    getHexFromBytes(toBytes(messageId, commands, config), hexOptions)
 );
 
-export const toBase64 = ( messageId: number, accessLevel: number, commands: Array<Command> ): string => (
-    getBase64FromBytes(toBytes(messageId, accessLevel, commands))
+export const toBase64 = ( messageId: number, commands: Array<Command>, config?: IMessageConfig ): string => (
+    getBase64FromBytes(toBytes(messageId, commands, config))
 );
