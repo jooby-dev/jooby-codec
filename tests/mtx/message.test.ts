@@ -25,9 +25,9 @@ interface IMessage {
     commands: Array<Command>,
     lrc: number,
     frameType: number,
-    source: Uint8Array,
-    destination: Uint8Array,
-    crc: Uint8Array
+    source: number,
+    destination: number,
+    crc: number
 }
 
 type TMessageList = Array<IMessage>;
@@ -58,10 +58,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x58,
-        crc: new Uint8Array([0x25, 0xf1]),
+        crc: 0x25f1,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xf5, 0xf6]),
-        destination: new Uint8Array([0xa8, 0xa9])
+        source: 0xf5f6,
+        destination: 0xa8a9
     },
     {
         name: 'GetBuildVersion',
@@ -74,10 +74,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.GetBuildVersion()
         ],
         lrc: 0x36,
-        crc: new Uint8Array([0x30, 0xfc]),
+        crc: 0x30fc,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetCorrectTime',
@@ -90,10 +90,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.GetCorrectTime()
         ],
         lrc: 0x78,
-        crc: new Uint8Array([0x82, 0x87]),
+        crc: 0x8287,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDateTime',
@@ -106,10 +106,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.GetDateTime()
         ],
         lrc: 0x41,
-        crc: new Uint8Array([0xb8, 0x6e]),
+        crc: 0xb86e,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDayProfile',
@@ -126,10 +126,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x7d,
-        crc: new Uint8Array([0xe2, 0x26]),
+        crc: 0xe226,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDeviceId',
@@ -142,10 +142,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.GetDeviceId()
         ],
         lrc: 0x43,
-        crc: new Uint8Array([0x9c, 0x30]),
+        crc: 0x9c30,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDeviceType',
@@ -158,10 +158,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.GetDeviceType()
         ],
         lrc: 0x42,
-        crc: new Uint8Array([0xcf, 0x3a]),
+        crc: 0xcf3a,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDisplayParam',
@@ -176,10 +176,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x1c,
-        crc: new Uint8Array([0x8a, 0xd6]),
+        crc: 0x8ad6,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetOpParams',
@@ -192,10 +192,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.GetOpParams()
         ],
         lrc: 0x58,
-        crc: new Uint8Array([0xa0, 0xc6]),
+        crc: 0xa0c6,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetRatePlanInfo',
@@ -210,10 +210,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x6e,
-        crc: new Uint8Array([0x5f, 0x81]),
+        crc: 0x5f81,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetSaldo',
@@ -226,10 +226,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.GetSaldo()
         ],
         lrc: 0x6f,
-        crc: new Uint8Array([0x39, 0x12]),
+        crc: 0x3912,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetSaldoParameters',
@@ -242,10 +242,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.GetSaldoParameters()
         ],
         lrc: 0x68,
-        crc: new Uint8Array([0x04, 0x57]),
+        crc: 0x0457,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetSeasonProfile',
@@ -262,10 +262,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x7d,
-        crc: new Uint8Array([0xaa, 0x4b]),
+        crc: 0xaa4b,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetSpecialDay',
@@ -282,10 +282,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x7c,
-        crc: new Uint8Array([0x57, 0x8a]),
+        crc: 0x578a,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetVersion',
@@ -298,10 +298,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.GetVersion()
         ],
         lrc: 0x6e,
-        crc: new Uint8Array([0xee, 0x5b]),
+        crc: 0xee5b,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'PrepareRatePlan',
@@ -317,10 +317,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x6b,
-        crc: new Uint8Array([0x55, 0x96]),
+        crc: 0x5596,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'RunTariffPlan',
@@ -335,10 +335,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x45,
-        crc: new Uint8Array([0xd0, 0x84]),
+        crc: 0xd084,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetAccessKey',
@@ -357,10 +357,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x5c,
-        crc: new Uint8Array([0xd2, 0x28]),
+        crc: 0xd228,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetCorrectDateTime',
@@ -375,10 +375,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x1d,
-        crc: new Uint8Array([0x56, 0xad]),
+        crc: 0x56ad,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetCorrectTime',
@@ -401,10 +401,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x5d,
-        crc: new Uint8Array([0x85, 0xdb]),
+        crc: 0x85db,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetDateTime',
@@ -426,10 +426,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x42,
-        crc: new Uint8Array([0x7a, 0x1c]),
+        crc: 0x7a1c,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetDayProfile (4 periods)',
@@ -451,10 +451,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0xaa,
-        crc: new Uint8Array([0x92, 0x76]),
+        crc: 0x9276,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetDayProfile (max periods)',
@@ -480,10 +480,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x5e,
-        crc: new Uint8Array([0x49, 0x70]),
+        crc: 0x4970,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetDisplayParam',
@@ -499,10 +499,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x17,
-        crc: new Uint8Array([0x40, 0xa9]),
+        crc: 0x40a9,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetOpParams',
@@ -515,10 +515,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.SetOpParams(CommandBinaryBuffer.getDefaultOperatorParameters())
         ],
         lrc: 0x7b,
-        crc: new Uint8Array([0x36, 0xb9]),
+        crc: 0x36b9,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetSaldo',
@@ -540,10 +540,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x5d,
-        crc: new Uint8Array([0xab, 0x08]),
+        crc: 0xab08,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetSaldoParameters',
@@ -567,10 +567,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x43,
-        crc: new Uint8Array([0xa8, 0x9f]),
+        crc: 0xa89f,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetSeasonProfile (default)',
@@ -589,10 +589,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x54,
-        crc: new Uint8Array([0xfd, 0xeb]),
+        crc: 0xfdeb,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetSeasonProfile',
@@ -611,10 +611,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x54,
-        crc: new Uint8Array([0xfa, 0xcb]),
+        crc: 0xfacb,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetSpecialDay',
@@ -634,10 +634,10 @@ const downlinkMessages: TMessageList = [
             })
         ],
         lrc: 0x5c,
-        crc: new Uint8Array([0x55, 0xf4]),
+        crc: 0x55f4,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'TurnRelayOff',
@@ -650,10 +650,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.TurnRelayOff()
         ],
         lrc: 0x5e,
-        crc: new Uint8Array([0xcb, 0x7f]),
+        crc: 0xcb7f,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'TurnRelayOn',
@@ -666,10 +666,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.TurnRelayOn()
         ],
         lrc: 0x5f,
-        crc: new Uint8Array([0xd2, 0x62]),
+        crc: 0xd262,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'two read-only encrypted commands',
@@ -683,10 +683,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.TurnRelayOff()
         ],
         lrc: 0x47,
-        crc: new Uint8Array([0x62, 0xd8]),
+        crc: 0x62d8,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xf1, 0xf1]),
-        destination: new Uint8Array([0xa1, 0xa1])
+        source: 0xf1f1,
+        destination: 0xa1a1
     },
     {
         name: 'many read-only encrypted commands',
@@ -705,10 +705,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.TurnRelayOn()
         ],
         lrc: 0x5e,
-        crc: new Uint8Array([0xfc, 0x35]),
+        crc: 0xfc35,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xf1, 0xf1]),
-        destination: new Uint8Array([0xa1, 0xa1])
+        source: 0xf1f1,
+        destination: 0xa1a1
     },
     {
         name: 'one unencrypted command',
@@ -721,10 +721,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.TurnRelayOn()
         ],
         lrc: 0x5d,
-        crc: new Uint8Array([0x3c, 0xd4]),
+        crc: 0x3cd4,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xf2, 0xf3]),
-        destination: new Uint8Array([0xa2, 0xa3])
+        source: 0xf2f3,
+        destination: 0xa2a3
     },
     {
         name: 'two unencrypted commands',
@@ -738,10 +738,10 @@ const downlinkMessages: TMessageList = [
             new downlinkCommands.TurnRelayOff()
         ],
         lrc: 0x44,
-        crc: new Uint8Array([0xc3, 0xd4]),
+        crc: 0xc3d4,
         frameType: frameTypes.DATA_REQUEST,
-        source: new Uint8Array([0xf3, 0xf4]),
-        destination: new Uint8Array([0xa3, 0xa4])
+        source: 0xf3f4,
+        destination: 0xa3a4
     }
 ];
 
@@ -757,10 +757,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.ActivateRatePlanResponse()
         ],
         lrc: 0x54,
-        crc: new Uint8Array([0x33, 0x9c]),
+        crc: 0x339c,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'ErrorResponse',
@@ -776,10 +776,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x31,
-        crc: new Uint8Array([0xa8, 0x1f]),
+        crc: 0xa81f,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetBuildVersionResponse',
@@ -797,10 +797,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x35,
-        crc: new Uint8Array([0x21, 0x54]),
+        crc: 0x2154,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetCorrectTimeResponse',
@@ -823,10 +823,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x7e,
-        crc: new Uint8Array([0xcc, 0x0b]),
+        crc: 0xcc0b,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDateTimeResponse',
@@ -848,10 +848,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x4d,
-        crc: new Uint8Array([0x03, 0x5d]),
+        crc: 0x035d,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDayProfileResponse',
@@ -875,10 +875,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x75,
-        crc: new Uint8Array([0x14, 0x98]),
+        crc: 0x1498,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDayProfileResponse (4 periods)',
@@ -898,10 +898,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x87,
-        crc: new Uint8Array([0x16, 0x10]),
+        crc: 0x1610,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDeviceIdResponse',
@@ -919,10 +919,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x47,
-        crc: new Uint8Array([0xfe, 0x54]),
+        crc: 0xfe54,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDeviceTypeResponse',
@@ -939,10 +939,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0xb0,
-        crc: new Uint8Array([0x93, 0x54]),
+        crc: 0x9354,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetDisplayParamResponse',
@@ -958,10 +958,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x15,
-        crc: new Uint8Array([0xd8, 0x41]),
+        crc: 0xd841,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetOpParamsResponse',
@@ -974,10 +974,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.GetOpParamsResponse(CommandBinaryBuffer.getDefaultOperatorParameters())
         ],
         lrc: 0x7b,
-        crc: new Uint8Array([0x9f, 0x27]),
+        crc: 0x9f27,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetRatePlanInfoResponse',
@@ -1012,10 +1012,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x4d,
-        crc: new Uint8Array([0x85, 0x8b]),
+        crc: 0x858b,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetSaldoParametersResponse',
@@ -1039,10 +1039,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x10,
-        crc: new Uint8Array([0x65, 0x40]),
+        crc: 0x6540,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetSaldoResponse',
@@ -1066,10 +1066,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x4f,
-        crc: new Uint8Array([0x79, 0x44]),
+        crc: 0x7944,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetSeasonProfileResponse',
@@ -1086,10 +1086,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x71,
-        crc: new Uint8Array([0xca, 0x5a]),
+        crc: 0xca5a,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetVersionResponse',
@@ -1104,10 +1104,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x65,
-        crc: new Uint8Array([0x07, 0x4a]),
+        crc: 0x074a,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'PrepareRatePlanResponse',
@@ -1120,10 +1120,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.PrepareRatePlanResponse()
         ],
         lrc: 0x53,
-        crc: new Uint8Array([0x08, 0xc3]),
+        crc: 0x08c3,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'RunTariffPlanResponse',
@@ -1136,10 +1136,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.RunTariffPlanResponse()
         ],
         lrc: 0x41,
-        crc: new Uint8Array([0xe3, 0x19]),
+        crc: 0xe319,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetAccessKeyResponse',
@@ -1152,10 +1152,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetAccessKeyResponse()
         ],
         lrc: 0x4e,
-        crc: new Uint8Array([0xa2, 0xac]),
+        crc: 0xa2ac,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetCorrectDateTimeResponse',
@@ -1168,10 +1168,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetCorrectDateTimeResponse()
         ],
         lrc: 0x1b,
-        crc: new Uint8Array([0x76, 0x8a]),
+        crc: 0x768a,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetCorrectTimeResponse',
@@ -1184,10 +1184,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetCorrectTimeResponse()
         ],
         lrc: 0x5b,
-        crc: new Uint8Array([0xf1, 0xd6]),
+        crc: 0xf1d6,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetDateTimeResponse',
@@ -1200,10 +1200,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetDateTimeResponse()
         ],
         lrc: 0x4f,
-        crc: new Uint8Array([0x65, 0xb1]),
+        crc: 0x65b1,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetDayProfileResponse',
@@ -1216,10 +1216,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetDayProfileResponse()
         ],
         lrc: 0x57,
-        crc: new Uint8Array([0x48, 0x83]),
+        crc: 0x4883,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetDisplayParamResponse',
@@ -1232,10 +1232,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetDisplayParamResponse()
         ],
         lrc: 0x1a,
-        crc: new Uint8Array([0x7e, 0xd7]), // special case
+        crc: 0x7ed7, // special case
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetOpParamsResponse',
@@ -1248,10 +1248,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetOpParamsResponse()
         ],
         lrc: 0x58,
-        crc: new Uint8Array([0x01, 0xcb]),
+        crc: 0x01cb,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetSaldoParametersResponse',
@@ -1264,10 +1264,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetSaldoParametersResponse()
         ],
         lrc: 0x68,
-        crc: new Uint8Array([0x84, 0xa3]),
+        crc: 0x84a3,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetSaldoResponse',
@@ -1280,10 +1280,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetSaldoResponse()
         ],
         lrc: 0x6d,
-        crc: new Uint8Array([0x2b, 0x3e]),
+        crc: 0x2b3e,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetSeasonProfileResponse',
@@ -1296,10 +1296,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetSeasonProfileResponse()
         ],
         lrc: 0x56,
-        crc: new Uint8Array([0xd4, 0x6b]),
+        crc: 0xd46b,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'GetSpecialDayResponse',
@@ -1317,10 +1317,10 @@ const uplinkMessages: TMessageList = [
             })
         ],
         lrc: 0x74,
-        crc: new Uint8Array([0x01, 0x74]),
+        crc: 0x0174,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'SetSpecialDayResponse',
@@ -1333,10 +1333,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.SetSpecialDayResponse()
         ],
         lrc: 0x55,
-        crc: new Uint8Array([0x32, 0x96]),
+        crc: 0x3296,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'TurnRelayOffResponse',
@@ -1349,10 +1349,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.TurnRelayOffResponse()
         ],
         lrc: 0x5e,
-        crc: new Uint8Array([0x02, 0xf6]),
+        crc: 0x02f6,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'TurnRelayOnResponse',
@@ -1365,10 +1365,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.TurnRelayOnResponse()
         ],
         lrc: 0x5f,
-        crc: new Uint8Array([0x1b, 0xeb]),
+        crc: 0x1beb,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xff, 0xff]),
-        destination: new Uint8Array([0xaa, 0xaa])
+        source: 0xffff,
+        destination: 0xaaaa
     },
     {
         name: 'two unencrypted commands',
@@ -1382,10 +1382,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.TurnRelayOnResponse()
         ],
         lrc: 0x45,
-        crc: new Uint8Array([0x1b, 0xa7]),
+        crc: 0x1ba7,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xf3, 0xf4]),
-        destination: new Uint8Array([0xa3, 0xa4])
+        source: 0xf3f4,
+        destination: 0xa3a4
     },
     {
         name: 'many unencrypted commands',
@@ -1405,10 +1405,10 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.TurnRelayOnResponse()
         ],
         lrc: 0x45,
-        crc: new Uint8Array([0x38, 0x67]),
+        crc: 0x3867,
         frameType: frameTypes.DATA_RESPONSE,
-        source: new Uint8Array([0xf3, 0xf4]),
-        destination: new Uint8Array([0xa3, 0xa4])
+        source: 0xf3f4,
+        destination: 0xa3a4
     }
 ];
 
@@ -1418,7 +1418,7 @@ const checkMessage = ( messageParams: IMessage ) => {
     const {frameHex, frameType, source, destination, crc} = messageParams;
     const messageBytes = message.toBytes(commands, {messageId, aesKey, accessLevel});
     const messageData = message.fromHex(hex, {aesKey, direction});
-    const frame = message.toFrame(messageBytes, {frameType, source, destination});
+    const frame = message.toFrame(messageBytes, {type: frameType, source, destination});
     const frameMessageData = message.fromFrame(getBytesFromHex(frameHex), {aesKey});
 
     expect(getHexFromBytes(messageBytes)).toEqual(hex);
@@ -1430,7 +1430,7 @@ const checkMessage = ( messageParams: IMessage ) => {
     expect(frameMessageData.crc).toStrictEqual(crc);
     expect(frameMessageData.source).toStrictEqual(source);
     expect(frameMessageData.destination).toStrictEqual(destination);
-    expect(frameMessageData.frameType).toStrictEqual(frameType);
+    expect(frameMessageData.type).toStrictEqual(frameType);
     expect(messageData.commands).toStrictEqual(frameMessageData.commands);
 };
 

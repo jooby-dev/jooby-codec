@@ -38,12 +38,12 @@ const downlinkMessages: TMessageList = [
                 firstHalfhour: 5,
                 halfhoursNumber: 3,
                 energies: {
-                    aPlus: true,
-                    aPlusRPlus: true,
-                    aPlusRMinus: false,
-                    aMinus: false,
-                    aMinusRPlus: false,
-                    aMinusRMinus: false
+                    'A+': true,
+                    'A+R+': true,
+                    'A+R-': false,
+                    'A-': false,
+                    'A-R+': false,
+                    'A-R-': false
                 }
             })
         ]
@@ -66,8 +66,8 @@ const uplinkMessages: TMessageList = [
                 },
                 energies: [
                     {
-                        aPlus: 0x1000,
-                        aMinusRPlus: 0x2000
+                        'A+': 0x1000,
+                        'A-R+': 0x2000
                     }
                 ]
             }),
@@ -80,7 +80,7 @@ const uplinkMessages: TMessageList = [
                 firstHalfhour: 1,
                 halfhoursNumber: 2,
                 energies: {
-                    aPlus: [0x1000, 0x2000]
+                    'A+': [0x1000, 0x2000]
                 }
             })
         ]

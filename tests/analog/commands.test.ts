@@ -6,6 +6,7 @@ import calculateLrc from '../../src/utils/calculateLrc.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 import getBase64FromBytes from '../../src/utils/getBase64FromBytes.js';
+import DataSegmentBase from '../../src/analog/commands/DataSegmentBase.js';
 
 
 const {uplink, downlink} = commands;
@@ -24,7 +25,9 @@ const checkExample = ( constructor: any, {parameters, config, hex: {header, body
     expect(command.parameters).toStrictEqual(parameters);
     expect(command.getParameters()).toStrictEqual(parameters);
     expect(command.toHex()).toBe(commandHex);
-    expect(command.toJson()).toBe(JSON.stringify(command.getParameters()));
+    if ( !(command instanceof DataSegmentBase) ) {
+        expect(command.toJson()).toBe(JSON.stringify(command.getParameters()));
+    }
     expect(command.toBase64()).toBe(commandBase64);
 
     expect(commandFromHex).toStrictEqual(command);

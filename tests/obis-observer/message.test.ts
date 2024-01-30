@@ -5,8 +5,7 @@ import * as uplinkCommands from '../../src/obis-observer/commands/uplink/index.j
 
 interface IMessage {
     hex: string,
-    commands: Array<{parameters: object, command: unknown}>,
-    isValid: boolean
+    commands: Array<{parameters: object, command: unknown}>
 }
 
 type TMessageList = Array<IMessage>;
@@ -32,8 +31,7 @@ const downlinkMessages: TMessageList = [
                 },
                 command: downlinkCommands.GetMeterIdList
             }
-        ],
-        isValid: true
+        ]
     }
 ];
 
@@ -59,8 +57,7 @@ const uplinkMessages: TMessageList = [
                 },
                 command: uplinkCommands.ObservationReport
             }
-        ],
-        isValid: true
+        ]
     }
 ];
 
@@ -85,13 +82,12 @@ const mixedMessages: TMessageList = [
                 },
                 command: uplinkCommands.GetObisIdListResponse
             }
-        ],
-        isValid: true
+        ]
     }
 ];
 
 
-const checkMessage = ( {hex, commands, isValid}: IMessage ) => {
+const checkMessage = ( {hex, commands}: IMessage ) => {
     const messageDataFromHex = message.fromHex(hex);
     const messageDataFromBase64 = message.fromBase64(Buffer.from(hex.replace(/\s/g, ''), 'hex').toString('base64'));
 
@@ -100,7 +96,6 @@ const checkMessage = ( {hex, commands, isValid}: IMessage ) => {
     });
 
     expect(messageDataFromHex).toStrictEqual(messageDataFromBase64);
-    expect(messageDataFromHex.isValid).toBe(isValid);
 };
 
 

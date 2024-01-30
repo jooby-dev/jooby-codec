@@ -12,58 +12,59 @@ import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
 interface IMessageCommand {
-    /** command source binary data */
-    data: {
-        header: Uint8Array,
-        body: Uint8Array
-    },
-    /** specific command instance */
+    bytes: Uint8Array,
     command: Command
 }
 
-interface IMessage {
+export interface IMessage {
     commands: Array<IMessageCommand>,
-    isValid: boolean
+    bytes: Uint8Array
 }
 
-
-const HEADER_SIZE = 1;
 
 const getCommand = ( id: number, data: Uint8Array ): Command => {
     // id is unique for all commands
     const command = requestById.get(id) || responseById.get(id);
 
-    if ( command ) {
-        return command.fromBytes(data) as Command;
+    try {
+        if ( command ) {
+            return command.fromBytes(data) as Command;
+        }
+    } catch {
+        // something wrong with command
     }
 
     // missing command implementation
     return new UnknownCommand({id, data});
 };
 
-export const fromBytes = ( commandsData: Uint8Array ) => {
+export const getCommands = ( message: IMessage ): Array<Command> => message.commands.map(({command}) => command);
+
+export const fromBytes = ( bytes: Uint8Array ) => {
     const commands: Array<IMessageCommand> = [];
     const result: IMessage = {
         commands,
-        isValid: true
+        bytes
     };
 
     let position = 0;
 
     do {
-        const headerData = commandsData.slice(position, position + HEADER_SIZE);
-        const commandSize = commandsData[position + HEADER_SIZE];
-        position += HEADER_SIZE + 1;
-        const bodyData = commandsData.slice(position, position + commandSize);
-        const command = getCommand(headerData[0], bodyData);
+        const commandId = bytes[position];
+        const commandSize = bytes[position + 1];
+        const commandBytes = bytes.slice(position, position + 2 + commandSize);
+
+        position += 2;
+
+        const command = getCommand(commandId, bytes.slice(position, position + commandSize));
 
         commands.push({
-            data: {header: headerData, body: bodyData},
+            bytes: commandBytes,
             command
         });
 
         position += commandSize;
-    } while ( position < commandsData.length );
+    } while ( position < bytes.length );
 
     return result;
 };

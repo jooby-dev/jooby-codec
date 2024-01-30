@@ -9,12 +9,12 @@ export interface IDate {
 }
 
 export interface IEnergies<T = number> {
-    aPlus?: T,
-    aPlusRPlus?: T,
-    aPlusRMinus?: T,
-    aMinus?: T,
-    aMinusRPlus?: T,
-    aMinusRMinus?: T
+    'A+'?: T,
+    'A+R+'?: T,
+    'A+R-'?: T,
+    'A-'?: T,
+    'A-R+'?: T,
+    'A-R-'?: T
 }
 
 interface IPowerMax {
@@ -40,12 +40,12 @@ const UNDEFINED_ENERGY_VALUE = 0xffffffff;
 const TARIFF_NUMBER = 4;
 
 const energiesMask = {
-    aPlus: 0x01,
-    aPlusRPlus: 0x02,
-    aPlusRMinus: 0x04,
-    aMinus: 0x08,
-    aMinusRPlus: 0x10,
-    aMinusRMinus: 0x20
+    'A+': 0x01,
+    'A+R+': 0x02,
+    'A+R-': 0x04,
+    'A-': 0x08,
+    'A-R+': 0x10,
+    'A-R-': 0x20
 };
 
 const getEnergiesFlags = <T>( energies: IEnergies<T> ): number => {
@@ -62,11 +62,11 @@ const getTariffEnergiesFlag = <T>( tariff: number, energies: IEnergies<T> ): num
     let flag = 0;
 
     if ( tariff < TARIFF_NUMBER ) {
-        if ( energies.aPlus || energies.aPlusRPlus || energies.aPlusRMinus ) {
+        if ( energies['A+'] || energies['A+R+'] || energies['A+R-'] ) {
             flag |= getAPlusTariffBit(tariff);
         }
 
-        if ( energies.aMinus || energies.aMinusRPlus || energies.aMinusRMinus ) {
+        if ( energies['A-'] || energies['A-R+'] || energies['A-R-'] ) {
             flag |= getAMinusTariffBit(tariff);
         }
     }
@@ -140,55 +140,55 @@ class CommandBinaryBuffer extends BinaryBuffer {
     getHalfhoursEnergies ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfhoursEnergies {
         const energies: THalfhoursEnergies = {};
 
-        if ( energiesFlags.aPlus ) {
-            energies.aPlus = this.getHalfhoursEnergy(halfhoursNumber);
+        if ( energiesFlags['A+'] ) {
+            energies['A+'] = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
-        if ( energiesFlags.aPlusRPlus ) {
-            energies.aPlusRPlus = this.getHalfhoursEnergy(halfhoursNumber);
+        if ( energiesFlags['A+R+'] ) {
+            energies['A+R+'] = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
-        if ( energiesFlags.aPlusRMinus ) {
-            energies.aPlusRMinus = this.getHalfhoursEnergy(halfhoursNumber);
+        if ( energiesFlags['A+R-'] ) {
+            energies['A+R-'] = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
-        if ( energiesFlags.aMinus ) {
-            energies.aMinus = this.getHalfhoursEnergy(halfhoursNumber);
+        if ( energiesFlags['A-'] ) {
+            energies['A-'] = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
-        if ( energiesFlags.aMinusRPlus ) {
-            energies.aMinusRPlus = this.getHalfhoursEnergy(halfhoursNumber);
+        if ( energiesFlags['A-R+'] ) {
+            energies['A-R+'] = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
-        if ( energiesFlags.aMinusRMinus ) {
-            energies.aMinusRMinus = this.getHalfhoursEnergy(halfhoursNumber);
+        if ( energiesFlags['A-R-'] ) {
+            energies['A-R-'] = this.getHalfhoursEnergy(halfhoursNumber);
         }
 
         return energies;
     }
 
     setHalfhoursEnergies ( energies: THalfhoursEnergies ) {
-        this.setHalfhoursEnergy(energies.aPlus);
-        this.setHalfhoursEnergy(energies.aPlusRPlus);
-        this.setHalfhoursEnergy(energies.aPlusRMinus);
-        this.setHalfhoursEnergy(energies.aMinus);
-        this.setHalfhoursEnergy(energies.aMinusRPlus);
-        this.setHalfhoursEnergy(energies.aMinusRMinus);
+        this.setHalfhoursEnergy(energies['A+']);
+        this.setHalfhoursEnergy(energies['A+R+']);
+        this.setHalfhoursEnergy(energies['A+R-']);
+        this.setHalfhoursEnergy(energies['A-']);
+        this.setHalfhoursEnergy(energies['A-R+']);
+        this.setHalfhoursEnergy(energies['A-R-']);
     }
 
     getAPlusTariffEnergies ( energyFlags: number ): IEnergies {
         const energies: IEnergies = {};
 
-        if ( energyFlags & energiesMask.aPlus ) {
-            energies.aPlus = this.getUint32();
+        if ( energyFlags & energiesMask['A+'] ) {
+            energies['A+'] = this.getUint32();
         }
 
-        if ( energyFlags & energiesMask.aPlusRPlus ) {
-            energies.aPlusRPlus = this.getUint32();
+        if ( energyFlags & energiesMask['A+R+'] ) {
+            energies['A+R+'] = this.getUint32();
         }
 
-        if ( energyFlags & energiesMask.aPlusRMinus ) {
-            energies.aPlusRMinus = this.getUint32();
+        if ( energyFlags & energiesMask['A+R-'] ) {
+            energies['A+R-'] = this.getUint32();
         }
 
         return energies;
@@ -196,16 +196,16 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     setAPlusTariffEnergies ( energies: IEnergies | undefined ) {
         if ( energies ) {
-            if ( energies.aPlus ) {
-                this.setUint32(energies.aPlus);
+            if ( energies['A+'] ) {
+                this.setUint32(energies['A+']);
             }
 
-            if ( energies.aPlusRPlus ) {
-                this.setUint32(energies.aPlusRPlus);
+            if ( energies['A+R+'] ) {
+                this.setUint32(energies['A+R+']);
             }
 
-            if ( energies.aPlusRMinus ) {
-                this.setUint32(energies.aPlusRMinus);
+            if ( energies['A+R-'] ) {
+                this.setUint32(energies['A+R-']);
             }
         }
     }
@@ -213,16 +213,16 @@ class CommandBinaryBuffer extends BinaryBuffer {
     getAMinusTariffEnergies ( energyFlags: number ): IEnergies {
         const energies: IEnergies = {};
 
-        if ( energyFlags & energiesMask.aMinus ) {
-            energies.aMinus = this.getUint32();
+        if ( energyFlags & energiesMask['A-'] ) {
+            energies['A-'] = this.getUint32();
         }
 
-        if ( energyFlags & energiesMask.aMinusRPlus ) {
-            energies.aMinusRPlus = this.getUint32();
+        if ( energyFlags & energiesMask['A-R+'] ) {
+            energies['A-R+'] = this.getUint32();
         }
 
-        if ( energyFlags & energiesMask.aMinusRMinus ) {
-            energies.aMinusRMinus = this.getUint32();
+        if ( energyFlags & energiesMask['A-R-'] ) {
+            energies['A-R-'] = this.getUint32();
         }
 
         return energies;
@@ -230,16 +230,16 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     setAMinusTariffEnergies ( energies: IEnergies | undefined ) {
         if ( energies ) {
-            if ( energies.aMinus ) {
-                this.setUint32(energies.aMinus);
+            if ( energies['A-'] ) {
+                this.setUint32(energies['A-']);
             }
 
-            if ( energies.aMinusRPlus ) {
-                this.setUint32(energies.aMinusRPlus);
+            if ( energies['A-R+'] ) {
+                this.setUint32(energies['A-R+']);
             }
 
-            if ( energies.aMinusRMinus ) {
-                this.setUint32(energies.aMinusRMinus);
+            if ( energies['A-R-'] ) {
+                this.setUint32(energies['A-R-']);
             }
         }
     }
@@ -303,16 +303,16 @@ class CommandBinaryBuffer extends BinaryBuffer {
     getAPlusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax> {
         const energies: IEnergies<IPowerMax> = {};
 
-        if ( energyFlags & energiesMask.aPlus ) {
-            energies.aPlus = this.getPowerMax();
+        if ( energyFlags & energiesMask['A+'] ) {
+            energies['A+'] = this.getPowerMax();
         }
 
-        if ( energyFlags & energiesMask.aPlusRPlus ) {
-            energies.aPlusRPlus = this.getPowerMax();
+        if ( energyFlags & energiesMask['A+R+'] ) {
+            energies['A+R+'] = this.getPowerMax();
         }
 
-        if ( energyFlags & energiesMask.aPlusRMinus ) {
-            energies.aPlusRMinus = this.getPowerMax();
+        if ( energyFlags & energiesMask['A+R-'] ) {
+            energies['A+R-'] = this.getPowerMax();
         }
 
         return energies;
@@ -320,25 +320,25 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     setAPlusTariffPowerMax ( energies: IEnergies<IPowerMax> | undefined ) {
         if ( energies ) {
-            this.setPowerMax(energies.aPlus);
-            this.setPowerMax(energies.aPlusRPlus);
-            this.setPowerMax(energies.aPlusRPlus);
+            this.setPowerMax(energies['A+']);
+            this.setPowerMax(energies['A+R+']);
+            this.setPowerMax(energies['A+R+']);
         }
     }
 
     getAMinusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax> {
         const energies: IEnergies<IPowerMax> = {};
 
-        if ( energyFlags & energiesMask.aMinus ) {
-            energies.aMinus = this.getPowerMax();
+        if ( energyFlags & energiesMask['A-'] ) {
+            energies['A-'] = this.getPowerMax();
         }
 
-        if ( energyFlags & energiesMask.aMinusRPlus ) {
-            energies.aMinusRPlus = this.getPowerMax();
+        if ( energyFlags & energiesMask['A-R+'] ) {
+            energies['A-R+'] = this.getPowerMax();
         }
 
-        if ( energyFlags & energiesMask.aMinusRMinus ) {
-            energies.aMinusRMinus = this.getPowerMax();
+        if ( energyFlags & energiesMask['A-R-'] ) {
+            energies['A-R-'] = this.getPowerMax();
         }
 
         return energies;
@@ -346,9 +346,9 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     setAMinusTariffPowerMax ( energies: IEnergies<IPowerMax> | undefined ) {
         if ( energies ) {
-            this.setPowerMax(energies.aMinus);
-            this.setPowerMax(energies.aMinusRPlus);
-            this.setPowerMax(energies.aMinusRMinus);
+            this.setPowerMax(energies['A-']);
+            this.setPowerMax(energies['A-R+']);
+            this.setPowerMax(energies['A-R-']);
         }
     }
 

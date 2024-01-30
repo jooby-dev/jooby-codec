@@ -28,8 +28,8 @@ const examples: TCommandExampleList = [
             firstHalfhour: 1,
             halfhoursNumber: 2,
             energies: {
-                aPlus: [0x1000, 0x2000],
-                aMinusRPlus: [0x3000, 0x4000]
+                'A+': [0x1000, 0x2000],
+                'A-R+': [0x3000, 0x4000]
             }
         },
         hex: {
@@ -61,8 +61,8 @@ const examples: TCommandExampleList = [
  *     firstHalfhour: 1,
  *     halfhoursNumber: 2,
  *     energies: {
- *         aPlus: [0x1000, 0x2000],
- *         aMinusRPlus: [0x3000, 0x4000]
+ *         'A+': [0x1000, 0x2000],
+ *         'A-R+': [0x3000, 0x4000]
  *     }
  * }
  * ```
