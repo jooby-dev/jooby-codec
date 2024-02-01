@@ -143,14 +143,16 @@ export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IM
     }
 
     // take from the end
-    const lrc = messageBody[messageBody.length - 1];
+    const expectedLrc = messageBody[messageBody.length - 1];
 
     // remove lrc from message
     messageBody = messageBody.slice(0, -1);
     result.lrc = calculateLrc(messageBody);
 
-    if ( lrc !== result.lrc ) {
-        throw new Error('Mismatch LRC.');
+    if ( accessLevel !== accessLevels.UNENCRYPTED || expectedLrc !== 0 ) {
+        if ( expectedLrc !== result.lrc ) {
+            throw new Error('Mismatch LRC.');
+        }
     }
 
     const accessLevel2 = messageBody[0] & MASK;
