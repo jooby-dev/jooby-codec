@@ -121,12 +121,13 @@ class GetMeterInfoResponse extends Command {
     toBytes (): Uint8Array {
         const buffer = new CommandBinaryBuffer(this.size as number);
         const {requestId, meterProfileId, address} = this.parameters;
+        const isMeterProfileIdExist = meterProfileId || meterProfileId === 0;
 
         buffer.setUint8(requestId);
 
-        if ( address.length !== 0 || meterProfileId ) {
+        if ( address.length !== 0 || isMeterProfileIdExist ) {
             buffer.setString(address);
-            if (meterProfileId) {
+            if ( isMeterProfileIdExist ) {
                 buffer.setUint8(meterProfileId);
             }
         }
