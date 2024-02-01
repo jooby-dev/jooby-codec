@@ -79,6 +79,8 @@ class GetDayEnergies extends Command {
 
     static readonly hasParameters = true;
 
+    static readonly maxSize = 100;
+
 
     // data - only body (without header)
     static fromBytes ( data: Uint8Array ) {
