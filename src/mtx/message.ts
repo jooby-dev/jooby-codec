@@ -35,8 +35,7 @@ interface IMessageCommand {
 // to build IMessage from bytes
 interface IFromBytesOptions {
     direction?: number,
-    aesKey?: Uint8Array,
-    skipLrcCheck?: boolean
+    aesKey?: Uint8Array
 }
 
 // to serialize IMessage to bytes
@@ -143,15 +142,15 @@ export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IM
         messageBody = aes.decrypt(aesKey, messageBody);
     }
 
-    if ( !config?.skipLrcCheck ) {
-        // take from the end
-        const lrc = messageBody[messageBody.length - 1];
+    // take from the end
+    const expectedLrc = messageBody[messageBody.length - 1];
 
-        // remove lrc from message
-        messageBody = messageBody.slice(0, -1);
-        result.lrc = calculateLrc(messageBody);
+    // remove lrc from message
+    messageBody = messageBody.slice(0, -1);
+    result.lrc = calculateLrc(messageBody);
 
-        if ( lrc !== result.lrc ) {
+    if ( accessLevel !== accessLevels.UNENCRYPTED || expectedLrc !== 0 ) {
+        if ( expectedLrc !== result.lrc ) {
             throw new Error('Mismatch LRC.');
         }
     }

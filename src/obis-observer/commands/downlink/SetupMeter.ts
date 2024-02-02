@@ -48,11 +48,13 @@ const examples: TCommandExampleList = [
 
 const commandSize = ( parameters: ISetupMeterParameters ): number => {
     let size = REQUEST_ID_SIZE + METER_ID_SIZE;
+    const {meterProfileId} = parameters;
+    const isMeterProfileIdExist = meterProfileId || meterProfileId === 0;
 
-    if ( parameters.address.length !== 0 || parameters.meterProfileId ) {
+    if ( parameters.address.length !== 0 || isMeterProfileIdExist ) {
         size += 1 + parameters.address.length;
 
-        if ( parameters.meterProfileId ) {
+        if ( isMeterProfileIdExist ) {
             size += 1;
         }
     }
@@ -123,12 +125,13 @@ class SetupMeter extends Command {
         const buffer = new CommandBinaryBuffer(this.size as number);
         const {requestId, meterId, meterProfileId, address} = this.parameters;
 
+        const isMeterProfileIdExist = meterProfileId || meterProfileId === 0;
         buffer.setUint8(requestId);
         buffer.setUint32(meterId);
 
-        if ( address.length !== 0 || meterProfileId ) {
+        if ( address.length !== 0 || isMeterProfileIdExist ) {
             buffer.setString(address);
-            if ( meterProfileId ) {
+            if ( isMeterProfileIdExist ) {
                 buffer.setUint8(meterProfileId);
             }
         }
