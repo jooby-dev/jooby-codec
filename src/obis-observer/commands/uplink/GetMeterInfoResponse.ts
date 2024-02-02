@@ -16,6 +16,15 @@ const COMMAND_ID = 0x79;
 
 const examples: TCommandExampleList = [
     {
+        name: 'get meter info response without address',
+        parameters: {
+            requestId: 25,
+            address: '',
+            meterProfileId: 0
+        },
+        hex: {header: '79 03', body: '19 00 00'}
+    },
+    {
         name: 'get meter info response without meterProfileId and without address',
         parameters: {
             requestId: 3,
@@ -53,11 +62,13 @@ const examples: TCommandExampleList = [
 
 const commandSize = ( parameters: IGetMeterInfoResponseParameters ): number => {
     let size = REQUEST_ID_SIZE;
+    const {meterProfileId} = parameters;
+    const isMeterProfileIdExist = meterProfileId || meterProfileId === 0;
 
-    if ( parameters.address.length !== 0 || parameters.meterProfileId ) {
+    if ( parameters.address.length !== 0 || isMeterProfileIdExist ) {
         size += 1 + parameters.address.length;
 
-        if ( parameters.meterProfileId ) {
+        if ( isMeterProfileIdExist ) {
             size += 1;
         }
     }
