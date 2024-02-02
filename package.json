@@ -53,7 +53,7 @@
         "test:watch": "jest --watchAll",
         "preinstall": "git config core.hooksPath .githooks",
         "publish": "clean-publish",
-        "publish:dev": "ts-node ./.bin/npm-develop.ts && clean-publish --access public"
+        "publish:dev": "node --loader ts-node/esm ./.bin/npm-develop.ts && clean-publish --access public"
     },
     "dependencies": {
         "crypto-js": "^4.1.1"
