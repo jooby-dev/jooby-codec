@@ -14,7 +14,7 @@ const STUFFING_BYTE = 0x7d;
 const byteStuffMap: Record<number, number> = {0x13: 0x33, 0x11: 0x31, 0x7d: 0x5d, 0x7e: 0x5e};
 const byteUnstuffMap: Record<number, number> = invertObject(byteStuffMap) as Record<number, number>;
 
-const byteStuffMap7thBitSize: Record<number, number> = {...byteStuffMap, 0x7C: 0x5C};
+const byteStuffMap7thBitSize: Record<number, number> = {...byteStuffMap, 0x7c: 0x5c, 0xfe: 0x5f};
 const byteUnstuffMap7thBitSize: Record<number, number> = invertObject(byteStuffMap7thBitSize) as Record<number, number>;
 
 const byteStuff = ( stuffingMap: Record<number, number>, byte: number ): number => stuffingMap[byte] || byte;
