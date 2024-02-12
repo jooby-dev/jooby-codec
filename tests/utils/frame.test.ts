@@ -20,8 +20,8 @@ describe('frame tests', () => {
     });
 
     test('test stuff/unstuff with 7 data bits wide', () => {
-        const unstuffedBytes = getBytesFromHex('65 03 02 01 82');
-        const stuffedBytes = getBytesFromHex('65 03 02 01 7c 02');
+        const unstuffedBytes = getBytesFromHex('65 03 02 01 82 7c fe');
+        const stuffedBytes = getBytesFromHex('65 03 02 01 7c 02 7d 5c 7d 5f');
 
         expect(Frame.arrayUnstuff(stuffedBytes, 7)).toStrictEqual(unstuffedBytes);
         expect(Frame.arrayStuff(unstuffedBytes, 7)).toStrictEqual(stuffedBytes);
