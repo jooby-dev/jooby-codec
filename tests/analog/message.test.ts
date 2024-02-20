@@ -95,7 +95,7 @@ const mtxUplinkMessages: TMessageList = [
                     segmentationSessionId: 196,
                     segmentIndex: 1,
                     segmentsNumber: 3,
-                    last: false,
+                    isLast: false,
                     data: getBytesFromHex('4d1010796430280fff011d00000008001a00000008001d00000008011d00000008001a000000')
                 },
                 command: uplinkCommands.DataSegment
@@ -111,7 +111,7 @@ const mtxUplinkMessages: TMessageList = [
                     segmentationSessionId: 196,
                     segmentIndex: 3,
                     segmentsNumber: 3,
-                    last: true,
+                    isLast: true,
                     data: getBytesFromHex('1d00000008013a00000008013a00000008013a00000008013a000000080000')
                 },
                 command: uplinkCommands.DataSegment

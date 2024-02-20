@@ -3,7 +3,7 @@
 import Command from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
 import {requestById, responseById} from './constants/commandRelations.js';
-import CommandBinaryBuffer, {frameHeaderSize, IFrameHeader} from './CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {frameHeaderSize, IFrameHeader, defaultFrameHeader} from './CommandBinaryBuffer.js';
 
 import {IHexFormatOptions} from '../config.js';
 import calculateLrc from '../utils/calculateLrc.js';
@@ -246,7 +246,7 @@ export const toBytes = ( commands: Array<Command>, {messageId, accessLevel = REA
     return mergeUint8Arrays(header, body);
 };
 
-export const toFrame = ( message: Uint8Array, frameHeader: IFrameHeader ): Uint8Array => {
+export const toFrame = ( message: Uint8Array, frameHeader: IFrameHeader = defaultFrameHeader ): Uint8Array => {
     const buffer = new CommandBinaryBuffer(frameHeaderSize);
     buffer.setFrameHeader(frameHeader);
     const headerBytes = buffer.toUint8Array();

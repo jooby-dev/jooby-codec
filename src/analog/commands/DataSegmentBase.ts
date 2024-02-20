@@ -13,7 +13,7 @@ const examples: TCommandExampleList = [
         name: 'DataSegment request',
         parameters: {
             segmentationSessionId: 2,
-            last: false,
+            isLast: false,
             segmentsNumber: 5,
             segmentIndex: 3,
             data: getBytesFromHex('00 01 02 03 04')

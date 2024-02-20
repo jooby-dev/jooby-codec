@@ -11,7 +11,7 @@ import {DOWNLINK} from '../../../constants/directions.js';
  *
  * const command = new DataSegment({
  *     segmentationSessionId: 2,
- *     last: false,
+ *     isLast: false,
  *     segmentsNumber: 5,
  *     segmentIndex: 3,
  *     data: getBytesFromHex('00 01 02 03 04')

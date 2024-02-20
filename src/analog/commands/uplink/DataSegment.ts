@@ -18,7 +18,7 @@ import {UPLINK} from '../../../constants/directions.js';
  * // output:
  * {
  *     segmentationSessionId: 2,
- *     last: false,
+ *     isLast: false,
  *     segmentsNumber: 5,
  *     segmentIndex: 3,
  *     data: Uint8Array(3) [0, 1, 2, 3, 4, buffer: ...

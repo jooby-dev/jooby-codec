@@ -5,6 +5,7 @@ import * as DeviceType from './utils/deviceType.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
 import {IDateTime, ITimeCorrectionParameters} from './utils/dateTime.js';
+import {DATA_REQUEST} from './constants/frameTypes.js';
 
 
 export const frameHeaderSize = 5;
@@ -14,6 +15,12 @@ export interface IFrameHeader {
     source: number,
     destination: number
 }
+
+export const defaultFrameHeader: IFrameHeader = {
+    type: DATA_REQUEST,
+    destination: 0xffff,
+    source: 0xfffe
+};
 
 export interface ITariffPlan {
     id: number,
@@ -367,10 +374,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
         };
     }
 
-    setFrameHeader ( frameHeader: IFrameHeader ) {
-        this.setUint8(frameHeader.type);
-        this.setUint16(frameHeader.destination);
-        this.setUint16(frameHeader.source);
+    setFrameHeader ( {
+        type = defaultFrameHeader.type,
+        destination = defaultFrameHeader.destination,
+        source = defaultFrameHeader.source
+    }: IFrameHeader ) {
+        this.setUint8(type);
+        this.setUint16(destination);
+        this.setUint16(source);
     }
 
     getDateTime (): IDateTime {
