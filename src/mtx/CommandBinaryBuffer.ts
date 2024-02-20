@@ -16,7 +16,7 @@ export interface IFrameHeader {
     destination: number
 }
 
-export const defaultFrameHeader = {
+export const defaultFrameHeader: IFrameHeader = {
     type: DATA_REQUEST,
     destination: 0xffff,
     source: 0xfffe
