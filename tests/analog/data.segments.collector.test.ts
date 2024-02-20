@@ -10,7 +10,7 @@ const collectedData = getBytesFromHex('00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d
 const validSequence = [
     {
         segmentationSessionId: 2,
-        last: false,
+        isLast: false,
         segmentsNumber: 3,
         segmentIndex: 1,
         data: getBytesFromHex('00 01 02 03 04')
@@ -18,21 +18,21 @@ const validSequence = [
     {
         // invalid section
         segmentationSessionId: 2,
-        last: false,
+        isLast: false,
         segmentsNumber: 3,
         segmentIndex: 10,
         data: getBytesFromHex('00 01 02 03 04')
     },
     {
         segmentationSessionId: 2,
-        last: false,
+        isLast: false,
         segmentsNumber: 3,
         segmentIndex: 2,
         data: getBytesFromHex('05 06 07')
     },
     {
         segmentationSessionId: 2,
-        last: true,
+        isLast: true,
         segmentsNumber: 3,
         segmentIndex: 3,
         data: getBytesFromHex('08 09 0a 0b 0c 0d 0e 0f')
@@ -43,7 +43,7 @@ const invalidSequences = [
     [
         {
             segmentationSessionId: 2,
-            last: false,
+            isLast: false,
             segmentsNumber: 3,
             segmentIndex: 0,
             data: getBytesFromHex('00 01 02 03 04')
@@ -52,7 +52,7 @@ const invalidSequences = [
     [
         {
             segmentationSessionId: 2,
-            last: false,
+            isLast: false,
             segmentsNumber: 3,
             segmentIndex: 5,
             data: getBytesFromHex('00 01 02 03 04')
@@ -61,21 +61,21 @@ const invalidSequences = [
     [
         {
             segmentationSessionId: 2,
-            last: false,
+            isLast: false,
             segmentsNumber: 3,
             segmentIndex: 1,
             data: getBytesFromHex('00 01 02 03 04')
         },
         {
             segmentationSessionId: 2,
-            last: false,
+            isLast: false,
             segmentsNumber: 3,
             segmentIndex: 2,
             data: getBytesFromHex('05 06 07')
         },
         {
             segmentationSessionId: 2,
-            last: false,
+            isLast: false,
             segmentsNumber: 3,
             segmentIndex: 3,
             data: getBytesFromHex('08 09 0a 0b 0c 0d 0e 0f')
@@ -84,28 +84,28 @@ const invalidSequences = [
     [
         {
             segmentationSessionId: 2,
-            last: false,
+            isLast: false,
             segmentsNumber: 3,
             segmentIndex: 1,
             data: getBytesFromHex('00 01 02 03 04')
         },
         {
             segmentationSessionId: 2,
-            last: false,
+            isLast: false,
             segmentsNumber: 3,
             segmentIndex: 2,
             data: getBytesFromHex('05 06 07')
         },
         {
             segmentationSessionId: 2,
-            last: false,
+            isLast: false,
             segmentsNumber: 3,
             segmentIndex: 2,
             data: getBytesFromHex('05 06 07')
         },
         {
             segmentationSessionId: 2,
-            last: true,
+            isLast: true,
             segmentsNumber: 3,
             segmentIndex: 3,
             data: getBytesFromHex('08 09 0a 0b 0c 0d 0e 0f')
@@ -114,14 +114,14 @@ const invalidSequences = [
     [
         {
             segmentationSessionId: 2,
-            last: false,
+            isLast: false,
             segmentsNumber: 3,
             segmentIndex: 1,
             data: getBytesFromHex('00 01 02 03 04')
         },
         {
             segmentationSessionId: 3,
-            last: false,
+            isLast: false,
             segmentsNumber: 3,
             segmentIndex: 1,
             data: getBytesFromHex('00 01 02 03 04')

@@ -25,7 +25,7 @@ export const splitBytesToDataSegments = ( bytes: Uint8Array, {segmentationSessio
             segmentationSessionId,
             segmentIndex,
             segmentsNumber,
-            last: false,
+            isLast: false,
             data: bytes.slice(position, position + maxSegmentSize)
         });
 

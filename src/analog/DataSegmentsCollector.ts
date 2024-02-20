@@ -7,7 +7,7 @@ const isSegmentCorrect = ( segment: IDataSegment ) => {
         return false;
     }
 
-    return segment.segmentIndex === segment.segmentsNumber ? segment.last : !segment.last;
+    return segment.segmentIndex === segment.segmentsNumber ? segment.isLast : !segment.isLast;
 };
 
 
@@ -43,7 +43,7 @@ class DataSegmentsCollector {
             return new Uint8Array();
         }
 
-        if ( !this.#segments[this.#segments.length - 1].last ) {
+        if ( !this.#segments[this.#segments.length - 1].isLast ) {
             this.clear();
 
             return new Uint8Array();

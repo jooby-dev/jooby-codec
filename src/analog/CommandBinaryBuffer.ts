@@ -411,7 +411,7 @@ export interface IDataSegment {
     segmentationSessionId: number,
     segmentIndex: number,
     segmentsNumber: number,
-    last: boolean,
+    isLast: boolean,
     data: Uint8Array
 }
 
@@ -658,7 +658,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             segmentationSessionId,
             segmentIndex: extractBits(flag, 3, 1),
             segmentsNumber: extractBits(flag, 3, 5),
-            last: Boolean(extractBits(flag, 1, 8)),
+            isLast: Boolean(extractBits(flag, 1, 8)),
             data: this.getBytesLeft()
         };
     }
@@ -666,7 +666,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
     setDataSegment ( value: IDataSegment ) {
         let flag = fillBits(0, 3, 1, value.segmentIndex);
         flag = fillBits(flag, 3, 5, value.segmentsNumber);
-        flag = fillBits(flag, 1, 8, +value.last);
+        flag = fillBits(flag, 1, 8, +value.isLast);
 
         this.setUint8(value.segmentationSessionId);
         this.setUint8(flag);
