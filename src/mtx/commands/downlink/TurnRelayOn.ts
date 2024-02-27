@@ -2,6 +2,9 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import TurnRelayOnResponse from '../uplink/TurnRelayOnResponse.js';
+
 
 const COMMAND_ID = 0x18;
 const COMMAND_SIZE = 0;
@@ -15,7 +18,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to turn the device relay on.
+ *
+ * The corresponding uplink command: {@link TurnRelayOnResponse}.
  *
  * @example
  * ```js

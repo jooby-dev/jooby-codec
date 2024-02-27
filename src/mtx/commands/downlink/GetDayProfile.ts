@@ -1,11 +1,27 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import GetDayProfileResponse from '../uplink/GetDayProfileResponse.js';
 
 
 interface IGetDayProfileParameters {
-    tariffTable: number,
-    index: number,
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8,
+
+    /**
+     * Day profile index in a list of all tariff days (max `32`).
+     */
+    index: TUint8,
+
+    /**
+     * Is it active or passive table.
+     */
     isActive: boolean
 }
 
@@ -27,7 +43,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to get day profile information for the given tariff table.
+ *
+ * The corresponding uplink command: {@link GetDayProfileResponse}.
  *
  * @example
  * ```js

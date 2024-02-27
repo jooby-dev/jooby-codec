@@ -1,23 +1,67 @@
+import {TYear2000, TMonth, TMonthDay, TWeekDay, TUint8} from '../../types.js';
+
+
 export interface IDateTime {
+    /**
+     * Is it DST or Standard time.
+     */
     isSummerTime: boolean,
-    seconds: number,
-    minutes: number,
-    hours: number,
-    day?: number,
-    date: number,
-    month: number,
-    year: number
+
+    seconds: TUint8,
+    minutes: TUint8,
+    hours: TUint8,
+    day?: TWeekDay,
+    date: TMonthDay,
+    month: TMonth,
+    year: TYear2000
 }
 
 export interface ITimeCorrectionParameters {
-    monthTransitionSummer: number,
-    dateTransitionSummer: number,
-    hoursTransitionSummer: number,
-    hoursCorrectSummer: number,
-    monthTransitionWinter: number,
-    dateTransitionWinter: number,
-    hoursTransitionWinter: number,
-    hoursCorrectWinter: number,
+    /**
+     * The month of transition to daylight saving time.
+     */
+    monthTransitionSummer: TMonth,
+
+    /**
+     * The date of transition to daylight saving time.
+     * If it is `0`, then it refers to the last Sunday of the month.
+     */
+    dateTransitionSummer: TMonthDay,
+
+    /**
+     * The hour of transition to daylight saving time.
+     */
+    hoursTransitionSummer: TUint8,
+
+    /**
+     * The adjustment in hours during the transition to daylight saving time.
+     */
+    hoursCorrectSummer: TUint8,
+
+    /**
+     * The month of transition to standard time.
+     */
+    monthTransitionWinter: TMonth,
+
+    /**
+     * The date of transition to standard time.
+     * If it is `0`, then it refers to the last Sunday of the month.
+     */
+    dateTransitionWinter: TMonthDay,
+
+    /**
+     * The hour of transition to standard time.
+     */
+    hoursTransitionWinter: TUint8,
+
+    /**
+     * The adjustment in hours during the transition to standard time.
+     */
+    hoursCorrectWinter: TUint8,
+
+    /**
+     * Does the transition to DST/Standard time occur?
+     */
     isCorrectionNeeded: boolean
 }
 

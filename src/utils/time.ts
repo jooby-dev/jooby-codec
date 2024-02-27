@@ -1,9 +1,5 @@
-/**
- * Helper to create special branded types from primitives.
- *
- * https://medium.com/@KevinBGreene/surviving-the-typescript-ecosystem-branding-and-type-tagging-6cf6e516523d
- */
-type BrandType<K, T> = K & {info?: T};
+import {BrandType} from '../types.js';
+
 
 /**
  * Seconds since year 2000.

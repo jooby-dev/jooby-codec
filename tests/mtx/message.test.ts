@@ -914,7 +914,7 @@ const uplinkMessages: TMessageList = [
             new uplinkCommands.GetDeviceIdResponse({
                 manufacturer: '001a79',
                 type: 23,
-                year: 2020,
+                year: 20,
                 serial: '1b1d6a'
             })
         ],

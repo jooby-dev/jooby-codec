@@ -1,10 +1,18 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import GetRatePlanInfoResponse from '../uplink/GetRatePlanInfoResponse.js';
 
 
 interface IGetRatePlanInfoParameters {
-    tariffTable: number
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8
 }
 
 
@@ -23,7 +31,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to get device rate plan information.
+ *
+ * The corresponding uplink command: {@link GetRatePlanInfoResponse}.
  *
  * @example
  * ```js

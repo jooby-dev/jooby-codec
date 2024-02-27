@@ -1,12 +1,28 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
+import {TYear2000, TMonth, TMonthDay} from '../../../types.js';
 
 
 interface IGetBuildVersionResponseParameters {
-    date: number,
-    month: number,
-    year: number
+    /**
+     * firmware build day of month
+     */
+    date: TMonthDay,
+
+    /**
+     * firmware build month
+     */
+    month: TMonth,
+
+    /**
+     * firmware build year
+     */
+    year: TYear2000
+
+    /**
+     * firmware build version
+     */
     version: string
 }
 
@@ -29,7 +45,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to get firmware build date and version from device.
+ *
+ * The corresponding downlink command: `GetBuildVersion`.
  *
  * @example create command instance from command body hex dump
  * ```js
@@ -39,7 +57,7 @@ const examples: TCommandExampleList = [
  * const command = GetBuildVersionResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
- * // output:
+ * // output for 2021.09.16/0.0.9:
  * {
  *     date: 16,
  *     month: 9,

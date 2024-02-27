@@ -15,7 +15,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command for precise date and time correction.
+ *
+ * The corresponding downlink command: `SetCorrectDateTime`.
  *
  * @example create command instance from command body hex dump
  * ```js

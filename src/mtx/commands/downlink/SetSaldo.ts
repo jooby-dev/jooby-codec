@@ -2,17 +2,35 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {TMonth, TMonthDay, TUint8, TInt32} from '../../../types.js';
+
+/* eslint-disable */
+import GetSaldo from '../downlink/GetSaldo.js';
+import SetSaldoResponse from '../uplink/SetSaldoResponse.js';
+import GetSaldoResponse from '../uplink/GetSaldoResponse.js';
+/* eslint-enable */
 
 
 interface ISetSaldoParameters {
+    /**
+     * Device date and time.
+     */
     date: {
-        month: number,
-        date: number,
-        hours: number,
-        minutes: number
+        month: TMonth,
+        date: TMonthDay,
+        hours: TUint8,
+        minutes: TUint8
     },
-    saldoNew: number,
-    saldoOld: number
+
+    /**
+     * Enter new prepayment.
+     */
+    saldoNew: TInt32,
+
+    /**
+     * Saldo value obtained through {@link GetSaldo}/{@link GetSaldoResponse}.
+     */
+    saldoOld: TInt32
 }
 
 
@@ -38,7 +56,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to set device current saldo information.
+ *
+ * The corresponding uplink command: {@link SetSaldoResponse}.
  *
  * @example
  * ```js

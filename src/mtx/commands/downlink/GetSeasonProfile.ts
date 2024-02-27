@@ -1,11 +1,27 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import GetSeasonProfileResponse from '../uplink/GetSeasonProfileResponse.js';
 
 
 interface IGetSeasonProfileParameters {
-    tariffTable: number,
-    index: number,
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8,
+
+    /**
+     * Season profile index in a list of all tariff seasons (max `14`).
+     */
+    index: TUint8,
+
+    /**
+     * Is it active or passive table.
+     */
     isActive: boolean
 }
 
@@ -27,7 +43,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to get season profile information for the given tariff table.
+ *
+ * The corresponding uplink command: {@link GetSeasonProfileResponse}.
  *
  * @example
  * ```js

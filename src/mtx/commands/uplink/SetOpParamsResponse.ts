@@ -15,7 +15,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to set device operator parameters.
+ *
+ * The corresponding downlink command: `SetOpParams`.
  *
  * @example create command instance from command body hex dump
  * ```js

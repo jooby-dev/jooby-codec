@@ -13,21 +13,23 @@ const examples: TCommandExampleList = [
         name: 'time response: 2023-09-13T15:30:25.000Z',
         parameters: {
             isSummerTime: false,
-            seconds: 25,
-            minutes: 30,
+            seconds: 55,
+            minutes: 31,
             hours: 18,
             day: 2,
-            date: 13,
-            month: 9,
-            year: 23
+            date: 19,
+            month: 2,
+            year: 24
         },
-        hex: {header: '07 08', body: '00 19 1e 12 02 0d 09 17'}
+        hex: {header: '07 08', body: '00 37 1f 12 02 13 02 18'}
     }
 ];
 
 
 /**
- * Uplink command.
+ * Uplink command to get full date from device.
+ *
+ * The corresponding downlink command: `GetDateTime`.
  *
  * @example create command instance from command body hex dump
  * ```js

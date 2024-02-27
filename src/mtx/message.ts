@@ -14,7 +14,7 @@ import getBase64FromBytes from '../utils/getBase64FromBytes.js';
 import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 import {aes, arrayStuff, arrayUnstuff, calculateCrcBytes} from './utils/crypto.js';
 
-import {READ_ONLY, MASK} from './constants/accessLevels.js';
+import {READ_ONLY} from './constants/accessLevels.js';
 import * as accessLevels from './constants/accessLevels.js';
 import * as directionTypes from '../constants/directions.js';
 import {AUTO, DOWNLINK, UPLINK} from '../constants/directions.js';
@@ -61,6 +61,9 @@ interface IFrame extends IMessage, IFrameHeader {
     crc: number
 }
 
+
+// bitmask to extract/apply access level
+const ACCESS_LEVEL_MASK = 0x03;
 
 const MESSAGE_HEADER_SIZE = 2;
 const COMMAND_HEADER_SIZE = 2;
@@ -129,7 +132,7 @@ export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IM
     const aesKey = config?.aesKey;
     const commands: Array<IMessageCommand> = [];
     const [messageId, maskedAccessLevel] = message;
-    const accessLevel = maskedAccessLevel & MASK;
+    const accessLevel = maskedAccessLevel & ACCESS_LEVEL_MASK;
     const result: IMessage = {
         messageId,
         accessLevel,
@@ -155,7 +158,7 @@ export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IM
         }
     }
 
-    const accessLevel2 = messageBody[0] & MASK;
+    const accessLevel2 = messageBody[0] & ACCESS_LEVEL_MASK;
     const commandsData = messageBody.slice(1);
 
     if ( accessLevel !== accessLevel2 ) {

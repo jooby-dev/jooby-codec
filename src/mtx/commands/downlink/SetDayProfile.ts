@@ -2,11 +2,24 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer, {IDayProfile} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import SetDayProfileResponse from '../uplink/SetDayProfileResponse.js';
 
 
 interface ISetDayProfileParameters {
-    tariffTable: number,
-    index: number,
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8,
+
+    /**
+     * Day profile index in a list of all tariff days (max `32`).
+     */
+    index: TUint8,
+
     periods: Array<IDayProfile>
 }
 
@@ -63,7 +76,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to set day profile for tariff plan.
+ *
+ * The corresponding uplink command: {@link SetDayProfileResponse}.
  *
  * @example
  * ```js

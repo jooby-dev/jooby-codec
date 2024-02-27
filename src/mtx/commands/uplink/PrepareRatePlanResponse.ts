@@ -15,7 +15,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to prepare device for rate plan application.
+ *
+ * The corresponding downlink command: `PrepareRatePlan`.
  *
  * @example create command instance from command body hex dump
  * ```js

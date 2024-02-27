@@ -22,7 +22,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to get device operator parameters.
+ *
+ * The corresponding downlink command: `GetOpParams`.
  *
  * @example create command instance from command body hex dump
  * ```js

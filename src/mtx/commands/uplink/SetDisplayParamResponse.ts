@@ -15,7 +15,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to set the meter displays sorting order.
+ *
+ * The corresponding downlink command: `SetDisplayParam`.
  *
  * @example create command instance from command body hex dump
  * ```js

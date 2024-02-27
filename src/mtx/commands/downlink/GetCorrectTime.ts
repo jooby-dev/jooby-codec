@@ -2,6 +2,9 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import GetCorrectTimeResponse from '../uplink/GetCorrectTimeResponse.js';
+
 
 const COMMAND_ID = 0x3e;
 const COMMAND_SIZE = 0;
@@ -15,7 +18,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to get [daylight saving time](https://en.wikipedia.org/wiki/Daylight_saving_time) options.
+ *
+ * The corresponding uplink command: {@link GetCorrectTimeResponse}.
  *
  * @example
  * ```js

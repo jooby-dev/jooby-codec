@@ -2,11 +2,23 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer, {ISpecialDay} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import SetSpecialDayResponse from '../uplink/SetSpecialDayResponse.js';
 
 
 interface ISetSpecialDayParameters extends ISpecialDay {
-    tariffTable: number,
-    index: number
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8,
+
+    /**
+     * Special day index in a list of all tariff special days (max `26`).
+     */
+    index: TUint8
 }
 
 
@@ -31,7 +43,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to set special day information for the given tariff table.
+ *
+ * The corresponding uplink command: {@link SetSpecialDayResponse}.
  *
  * @example
  * ```js

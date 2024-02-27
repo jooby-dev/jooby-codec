@@ -4,6 +4,12 @@ import {UPLINK} from '../../../constants/directions.js';
 
 
 interface IGetVersionResponseParameters {
+    /**
+     * Device version.
+     *
+     * @example
+     * '104.25.003'
+     */
     version: string
 }
 
@@ -23,7 +29,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to get device version information.
+ *
+ * The corresponding downlink command: `GetVersion`.
  *
  * @example create command instance from command body hex dump
  * ```js

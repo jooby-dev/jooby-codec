@@ -22,7 +22,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to get special day information for the given tariff table.
+ *
+ * The corresponding downlink command: `GetSpecialDay`.
  *
  * @example create command instance from command body hex dump
  * ```js

@@ -3,6 +3,9 @@ import CommandBinaryBuffer, {IOperatorParameters, OPERATOR_PARAMETERS_SIZE} from
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import SetOpParamsResponse from '../uplink/SetOpParamsResponse.js';
+
 
 const COMMAND_ID = 0x1f;
 const COMMAND_SIZE = OPERATOR_PARAMETERS_SIZE;
@@ -22,7 +25,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to set device operator parameters.
+ *
+ * The corresponding uplink command: {@link SetOpParamsResponse}.
  *
  * @example
  * ```js

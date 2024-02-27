@@ -2,18 +2,38 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
+import {TMonth, TMonthDay, TInt32, TUint8} from '../../../types.js';
 
 
 interface IGetSaldoResponseParameters {
-    currentSaldo: number,
-    count: number,
-    energy: Array<number>,
-    beginSaldoOfPeriod: number,
+    /**
+     * Current device saldo.
+     */
+    currentSaldo: TInt32,
+
+    /**
+     * Counter for saldo installations.
+     */
+    count: TUint8,
+
+    /**
+     * Energy for tariffs `1`-`4` at the moment of setting a new saldo.
+     */
+    energy: Array<TInt32>,
+
+    /**
+     * Current saldo after setting the saldo.
+     */
+    beginSaldoOfPeriod: TInt32,
+
+    /**
+     * Last saldo installations time.
+     */
     date: {
-        month: number,
-        date: number,
-        hours: number,
-        minutes: number
+        month: TMonth,
+        date: TMonthDay,
+        hours: TUint8,
+        minutes: TUint8
     }
 }
 
@@ -45,7 +65,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to get device current saldo information.
+ *
+ * The corresponding downlink command: `GetSaldo`.
  *
  * @example create command instance from command body hex dump
  * ```js
