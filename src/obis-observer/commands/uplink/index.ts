@@ -36,6 +36,7 @@ export {default as RebootResponse} from './RebootResponse.js';
 export {default as RemoveMeterProfileResponse} from './RemoveMeterProfileResponse.js';
 export {default as RemoveMeterResponse} from './RemoveMeterResponse.js';
 export {default as RemoveObisResponse} from './RemoveObisResponse.js';
+export {default as ResetSettingsResponse} from './ResetSettingsResponse.js';
 export {default as SetLorawanActivationMethodResponse} from './SetLorawanActivationMethodResponse.js';
 export {default as SetObserverSingleModeResponse} from './SetObserverSingleModeResponse.js';
 export {default as SetSerialPortResponse} from './SetSerialPortResponse.js';

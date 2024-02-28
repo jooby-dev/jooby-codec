@@ -39,6 +39,7 @@ requestByResponse.set(uplinkCommands.RebootResponse, downlinkCommands.Reboot);
 requestByResponse.set(uplinkCommands.RemoveMeterProfileResponse, downlinkCommands.RemoveMeterProfile);
 requestByResponse.set(uplinkCommands.RemoveMeterResponse, downlinkCommands.RemoveMeter);
 requestByResponse.set(uplinkCommands.RemoveObisResponse, downlinkCommands.RemoveObis);
+requestByResponse.set(uplinkCommands.ResetSettingsResponse, downlinkCommands.ResetSettings);
 requestByResponse.set(uplinkCommands.SetLorawanActivationMethodResponse, downlinkCommands.SetLorawanActivationMethod);
 requestByResponse.set(uplinkCommands.SetObserverSingleModeResponse, downlinkCommands.SetObserverSingleMode);
 requestByResponse.set(uplinkCommands.SetSerialPortResponse, downlinkCommands.SetSerialPort);
