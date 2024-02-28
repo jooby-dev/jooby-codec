@@ -80,7 +80,7 @@ class GetMeterProfileResponse extends Command {
     // returns full message - header with body
     toBytes (): Uint8Array {
         const {requestId, archive1Period, archive2Period} = this.parameters;
-        const buffer = new CommandBinaryBuffer(this.size as number);
+        const buffer = new CommandBinaryBuffer(this.size);
 
         buffer.setUint8(requestId);
         buffer.setUint16(archive1Period);

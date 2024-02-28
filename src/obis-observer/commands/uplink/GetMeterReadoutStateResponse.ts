@@ -179,7 +179,7 @@ class GetMeterReadoutStateResponse extends Command {
             return Command.toBytes(COMMAND_ID, new Uint8Array([this.parameters.requestId]));
         }
 
-        const buffer = new CommandBinaryBuffer(this.size as number);
+        const buffer = new CommandBinaryBuffer(this.size);
         const parameters = this.parameters as IGetMeterReadoutStateResponseParameters;
 
         buffer.setUint8(parameters.requestId);
