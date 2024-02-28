@@ -31,7 +31,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to get device type.
+ *
+ * The corresponding downlink command: `GetDeviceType`.
  *
  * @example create command instance from command body hex dump
  * ```js

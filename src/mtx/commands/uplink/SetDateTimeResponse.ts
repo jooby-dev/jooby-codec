@@ -15,7 +15,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to set full date and time on the meter.
+ *
+ * The corresponding downlink command: `SetDateTime`.
  *
  * @example create command instance from command body hex dump
  * ```js

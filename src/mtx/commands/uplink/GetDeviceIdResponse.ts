@@ -13,7 +13,7 @@ const examples: TCommandExampleList = [
         parameters: {
             manufacturer: '001a79',
             type: 23,
-            year: 2020,
+            year: 20,
             serial: '1b1d6a'
         },
         hex: {header: '05 08', body: '00 1a 79 17 14 1b 1d 6a'}
@@ -22,7 +22,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to get device identifier.
+ *
+ * The corresponding downlink command: `GetDeviceId`.
  *
  * @example create command instance from command body hex dump
  * ```js
@@ -36,7 +38,7 @@ const examples: TCommandExampleList = [
  * {
  *     manufacturer: '001a79',
  *     type: 23,
- *     year: 2020,
+ *     year: 20,
  *     serial: '1b1d6a'
  * }
  * ```

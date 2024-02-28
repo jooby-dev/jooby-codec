@@ -2,11 +2,23 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer, {ISeasonProfile, SEASON_PROFILE_SIZE} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import SetSeasonProfileResponse from '../uplink/SetSeasonProfileResponse.js';
 
 
 interface ISetSeasonProfileParameters extends ISeasonProfile {
-    tariffTable: number,
-    index: number
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8,
+
+    /**
+     * Season profile index in a list of all tariff seasons (max `14`).
+     */
+    index: TUint8
 }
 
 
@@ -40,7 +52,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to set season profile information for the given tariff table.
+ *
+ * The corresponding uplink command: {@link SetSeasonProfileResponse}.
  *
  * @example
  * ```js

@@ -1,10 +1,18 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import RunTariffPlanResponse from '../uplink/RunTariffPlanResponse.js';
 
 
 interface IRunTariffPlanParameters {
-    tariffTable: number
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8
 }
 
 
@@ -23,7 +31,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command for instant activation of the passive tariff plan.
+ *
+ * The corresponding uplink command: {@link RunTariffPlanResponse}.
  *
  * @example
  * ```js

@@ -2,10 +2,19 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer, {ITariffPlan, TARIFF_PLAN_SIZE} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import ActivateRatePlanResponse from '../uplink/ActivateRatePlanResponse.js';
 
 
 interface IActivateRatePlanParameters {
-    tariffTable: number,
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8,
+
     tariffPlan: ITariffPlan
 }
 
@@ -17,7 +26,7 @@ const examples: TCommandExampleList = [
     {
         name: 'set rate plan request',
         parameters: {
-            tariffTable: 8,
+            tariffTable: 0,
             tariffPlan: {
                 id: 1,
                 tariffSet: 2,
@@ -29,13 +38,15 @@ const examples: TCommandExampleList = [
                 dayProfilesArraySize: 8
             }
         },
-        hex: {header: '13 0c', body: '08 00 00 00 01 02 03 04 05 06 07 08'}
+        hex: {header: '13 0c', body: '00 00 00 00 01 02 03 04 05 06 07 08'}
     }
 ];
 
 
 /**
- * Downlink command.
+ * Downlink command to provide the date of tariff plan activation.
+ *
+ * The corresponding uplink command: {@link ActivateRatePlanResponse}.
  *
  * @example
  * ```js

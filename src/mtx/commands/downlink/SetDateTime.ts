@@ -4,6 +4,9 @@ import {IDateTime} from '../../utils/dateTime.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import SetDateTimeResponse from '../uplink/SetDateTimeResponse.js';
+
 
 const COMMAND_ID = 0x08;
 const COMMAND_SIZE = 8;
@@ -27,7 +30,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to set full date and time on the meter.
+ *
+ * The corresponding uplink command: {@link SetDateTimeResponse}.
  *
  * @example
  * ```js

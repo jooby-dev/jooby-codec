@@ -1,10 +1,19 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import GetDisplayParamResponse from '../uplink/GetDisplayParamResponse.js';
 
 
 interface IGetDisplayParamParameters {
-    displayMode: number
+    /**
+     * Display mode.
+     * (`0` - main, `1` - additional)
+     */
+    displayMode: TUint8
 }
 
 
@@ -13,17 +22,19 @@ const COMMAND_SIZE = 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'simple request',
+        name: 'get additional display parameters',
         parameters: {
-            displayMode: 5
+            displayMode: 1
         },
-        hex: {header: '5e 01', body: '05'}
+        hex: {header: '5e 01', body: '01'}
     }
 ];
 
 
 /**
- * Downlink command.
+ * Downlink command to get the meter displays sorting order.
+ *
+ * The corresponding uplink command: {@link GetDisplayParamResponse}.
  *
  * @example
  * ```js

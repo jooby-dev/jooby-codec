@@ -15,7 +15,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command for instant activation of the passive tariff plan.
+ *
+ * The corresponding downlink command: `RunTariffPlan`.
  *
  * @example create command instance from command body hex dump
  * ```js

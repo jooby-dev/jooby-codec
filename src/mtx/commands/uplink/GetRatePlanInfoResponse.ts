@@ -2,10 +2,16 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer, {ITariffPlan, TARIFF_PLAN_SIZE} from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
+import {TUint8} from '../../../types.js';
 
 
 interface IGetRatePlanInfoResponseParameters {
-    tariffTable: number,
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8,
+
     activePlan: ITariffPlan,
     passivePlan: ITariffPlan
 }
@@ -49,7 +55,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to get device rate plan information.
+ *
+ * The corresponding downlink command: `GetRatePlanInfo`.
  *
  * @example create command instance from command body hex dump
  * ```js

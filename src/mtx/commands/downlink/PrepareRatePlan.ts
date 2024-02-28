@@ -2,11 +2,23 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {TUint8, TUint32} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import PrepareRatePlanResponse from '../uplink/PrepareRatePlanResponse.js';
 
 
 interface IPrepareRatePlanParameters {
-    tariffTable: number,
-    id: number
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8,
+
+    /**
+     * Rate plan unique identifier.
+     */
+    id: TUint32
 }
 
 
@@ -26,7 +38,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to prepare device for rate plan application.
+ *
+ * The corresponding uplink command: {@link PrepareRatePlanResponse}.
  *
  * @example
  * ```js

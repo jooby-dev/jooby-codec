@@ -3,11 +3,26 @@ import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {ACCESS_DENIED} from '../../constants/resultCodes.js';
+import {TUint8} from '../../../types.js';
+
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as resultCodes from '../../constants/resultCodes.js';
 
 
 interface IErrorResponseParameters {
-    commandId: number,
-    errorCode: number
+    /**
+     * Downlink command id.
+     *
+     * @example
+     * 7 (GetDateTime)
+     */
+    commandId: TUint8,
+
+    /**
+     * Error code from the list of {@link resultCodes | available codes}.
+     */
+    errorCode: TUint8
 }
 
 
@@ -29,7 +44,7 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command that correspond to the failed downlink command.
  *
  * @example create command instance from command body hex dump
  * ```js

@@ -15,7 +15,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to set parameters for transitioning to winter/summer time.
+ *
+ * The corresponding downlink command: `SetCorrectTime`.
  *
  * @example create command instance from command body hex dump
  * ```js

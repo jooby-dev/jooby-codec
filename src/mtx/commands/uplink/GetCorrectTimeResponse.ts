@@ -28,7 +28,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to get [daylight saving time](https://en.wikipedia.org/wiki/Daylight_saving_time) options.
+ *
+ * The corresponding downlink command: `GetCorrectTime`.
  *
  * @example create command instance from command body hex dump
  * ```js

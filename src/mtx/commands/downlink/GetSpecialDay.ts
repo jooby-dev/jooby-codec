@@ -1,11 +1,27 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import GetSpecialDayResponse from '../uplink/GetSpecialDayResponse.js';
 
 
 interface IGetSpecialDayParameters {
-    tariffTable: number,
-    index: number,
+    /**
+     * tariff table identifier
+     * (`0` - table `A+`, `1` – table `A-`)
+     */
+    tariffTable: TUint8,
+
+    /**
+     * Special day index in a list of all tariff special days (max `26`).
+     */
+    index: TUint8,
+
+    /**
+     * Is it active or passive table.
+     */
     isActive: boolean
 }
 
@@ -27,7 +43,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to get special day information for the given tariff table.
+ *
+ * The corresponding uplink command: {@link GetSpecialDayResponse}.
  *
  * @example
  * ```js

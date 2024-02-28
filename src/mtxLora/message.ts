@@ -43,6 +43,10 @@ export interface IMessageConfig {
     aesKey?: Uint8Array
 }
 
+
+// bitmask to extract/apply access level
+const ACCESS_LEVEL_MASK = 0x03;
+
 const COMMAND_HEADER_SIZE = 2;
 const PROTOCOL_VERSION = 0x10;
 const BLOCK_SIZE = 16;
@@ -110,7 +114,7 @@ export const fromBytes = ( bytes: Uint8Array, config?: IMessageConfig ): IMessag
     const result: IMessage = {
         messageId,
         bytes,
-        accessLevel: (accessLevel1 & accessLevels.MASK)
+        accessLevel: (accessLevel1 & ACCESS_LEVEL_MASK)
     };
 
     if ( result.accessLevel !== accessLevels.UNENCRYPTED ) {

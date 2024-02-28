@@ -1,10 +1,38 @@
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
+import {TUint8} from '../../types.js';
+
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as meterTypes from '../constants/meterTypes.js';
 
 
 export interface IDeviceType {
+    /**
+     * Device type.
+     *
+     * @example
+     * 'MTX 1A10.DG.2L5-LD4'
+     */
     type: string,
-    revision?: number
-    meterType: number
+
+    /**
+     * Device revision.
+     *
+     * @example
+     * 0x0b
+     */
+    revision?: TUint8
+
+    /**
+     * Meter type from the list of {@link meterTypes | available types}.
+     *
+     * Value           | Name
+     * ----------------|------
+     * 0b00000000 (0)  | A
+     * 0b00010001 (17) | G_FULL
+     * 0b00000001 (1)  | G_RESTRICTED
+     */
+    meterType: TUint8
 }
 
 

@@ -15,7 +15,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to turn the device relay on.
+ *
+ * The corresponding downlink command: `TurnRelayOn`.
  *
  * @example create command instance from command body hex dump
  * ```js

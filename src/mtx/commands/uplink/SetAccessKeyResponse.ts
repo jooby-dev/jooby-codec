@@ -15,7 +15,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to set access key.
+ *
+ * The corresponding downlink command: `SetAccessKey`.
  *
  * @example create command instance from command body hex dump
  * ```js

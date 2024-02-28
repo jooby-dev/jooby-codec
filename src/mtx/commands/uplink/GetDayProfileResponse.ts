@@ -46,7 +46,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command.
+ * Uplink command to get day profile for the given tariff table.
+ *
+ * The corresponding downlink command: `GetDayProfile`.
  *
  * @example create command instance from command body hex dump
  * ```js

@@ -2,6 +2,9 @@ import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import GetBuildVersionResponse from '../uplink/GetBuildVersionResponse.js';
+
 
 const COMMAND_ID = 0x70;
 const COMMAND_SIZE = 0;
@@ -15,7 +18,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to get firmware build date and version from device.
+ *
+ * The corresponding uplink command: {@link GetBuildVersionResponse}.
  *
  * @example
  * ```js

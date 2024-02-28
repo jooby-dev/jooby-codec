@@ -2,10 +2,17 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {TInt16} from '../../../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import SetCorrectDateTimeResponse from '../uplink/SetCorrectDateTimeResponse.js';
 
 
 interface ISetCorrectDateTimeParameters {
-    seconds: number
+    /**
+     * Number of seconds to shift time.
+     */
+    seconds: TInt16
 }
 
 
@@ -31,7 +38,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command for precise date and time correction.
+ *
+ * The corresponding uplink command: {@link SetCorrectDateTimeResponse}.
  *
  * @example
  * ```js

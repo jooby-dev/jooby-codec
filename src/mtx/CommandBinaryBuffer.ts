@@ -6,31 +6,87 @@ import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
 import {IDateTime, ITimeCorrectionParameters} from './utils/dateTime.js';
 import {DATA_REQUEST} from './constants/frameTypes.js';
+import {
+    TUint8, TUint16, TUint32, TInt32, TYear2000, TMonth, TMonthDay
+} from '../types.js';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as frameTypes from './constants/frameTypes.js';
 
 
 export const frameHeaderSize = 5;
 
 export interface IFrameHeader {
+    /**
+     * Frame type from the list of {@link frameTypes | available types}.
+     */
     type: number,
+
+    /**
+     * Source device address.
+     *
+     * @example
+     * 0x238a
+     */
     source: number,
+
+    /**
+     * Destination device address.
+     *
+     * @example
+     * 0xffff
+     */
     destination: number
 }
 
-export const defaultFrameHeader: IFrameHeader = {
-    type: DATA_REQUEST,
-    destination: 0xffff,
-    source: 0xfffe
-};
-
+/**
+ * Day profiles, seasons and special days are grouped into a tariff plan.
+ * It allows determining the current tariff based on the date and time.
+ */
 export interface ITariffPlan {
-    id: number,
-    tariffSet: number,
-    activateYear: number,
-    activateMonth: number,
-    activateDay: number,
-    specialProfilesArraySize: number,
-    seasonProfilesArraySize: number,
-    dayProfilesArraySize: number
+    /**
+     * tariff plan identifier
+     */
+    id: TUint32,
+
+    /**
+     * indicates the state of this tariff plan
+     * (`1` - tariff table is valid, `0` - not valid)
+     */
+    tariffSet: TUint8,
+
+    /**
+     * the year when this plan is activated
+     */
+    activateYear: TYear2000,
+
+    /**
+     * the month when this plan is activated
+     */
+    activateMonth: TMonth,
+
+    /**
+     * the day of month when this plan is activated
+     */
+    activateDay: TMonthDay,
+
+    /**
+     * the number of special days in the tariff table
+     * (max `26`)
+     */
+    specialProfilesArraySize: TUint8,
+
+    /**
+     * the number of seasons in the tariff table
+     * (max `14`)
+     */
+    seasonProfilesArraySize: TUint8,
+
+    /**
+     * the number of days in the tariff table
+     * (max `32`)
+     */
+    dayProfilesArraySize: TUint8
 }
 
 export interface IDisplaySetBaseOperatorParameter {
@@ -74,166 +130,570 @@ export interface IDisplaySetExtOperatorParameter extends IDisplaySetBaseOperator
 }
 
 export interface IRelaySet1OperatorParameter {
+    /**
+     * Relay activation function (`1` - enabled, `0` - disabled).
+     */
     RELAY_ON_Y: boolean,
+
+    /**
+     * Turn on by command from the center.
+     */
     RELAY_ON_CENTER: boolean,
+
+    /**
+     * Turn on by button.
+     */
     RELAY_ON_PB: boolean,
+
+    /**
+     * Turn on by tariff `T1`.
+     */
     RELAY_ON_TARIFF_0: boolean,
+
+    /**
+     * Turn on by tariff `T2`.
+     */
     RELAY_ON_TARIFF_1: boolean,
+
+    /**
+     * Turn on by tariff `T3`.
+     */
     RELAY_ON_TARIFF_2: boolean,
+
+    /**
+     * Turn on by tariff `T4`.
+     */
     RELAY_ON_TARIFF_3: boolean,
+
+    /**
+     * Turn on by restoration of good voltage.
+     */
     RELAY_ON_V_GOOD: boolean
 }
 
 export interface IRelaySet2OperatorParameter {
+    /**
+     * Relay deactivation function (`1` - enabled, `0` - disabled).
+     */
     RELAY_OFF_Y: boolean,
+
+    /**
+     * Turn off by command from the center.
+     */
     RELAY_OFF_CENTER: boolean,
+
+    /**
+     * Turn off by tariff `T1`.
+     */
     RELAY_OFF_TARIFF_0: boolean,
+
+    /**
+     * Turn off by tariff `T2`.
+     */
     RELAY_OFF_TARIFF_1: boolean,
+
+    /**
+     * Turn off by tariff `T3`.
+     */
     RELAY_OFF_TARIFF_2: boolean,
+
+    /**
+     * Turn off by tariff `T4`.
+     */
     RELAY_OFF_TARIFF_3: boolean,
+
+    /**
+     * Turn off on load current exceeding.
+     */
     RELAY_OFF_I_LIMIT: boolean,
+
+    /**
+     * Turn off on poor voltage.
+     */
     RELAY_OFF_V_BAD: boolean
 }
 
 export interface IRelaySet3OperatorParameter {
+    /**
+     * Turn off on exceeding the power consumption limit for tariff `T1`.
+     */
     RELAY_OFF_LIM_TARIFF_0: boolean,
+
+    /**
+     * Turn off on exceeding the power consumption limit for tariff `T2`.
+     */
     RELAY_OFF_LIM_TARIFF_1: boolean,
+
+    /**
+     * Turn off on exceeding the power consumption limit for tariff `T3`.
+     */
     RELAY_OFF_LIM_TARIFF_2: boolean,
+
+    /**
+     * Turn off on exceeding the power consumption limit for tariff `T4`.
+     */
     RELAY_OFF_LIM_TARIFF_3: boolean,
+
+    /**
+     * Turn off on `cos(fi)`.
+     */
     RELAY_OFF_PF_MIN: boolean
 }
 
 export interface IRelaySet4OperatorParameter {
+    /**
+     * Turn on after timeout {@link IOperatorParameters.timeoutRelayOn}
+     */
     RELAY_ON_TIMEOUT: boolean,
+
+    /**
+     * Turn on based on saldo.
+     */
     RELAY_ON_SALDO: boolean,
+
+    /**
+     * Turn off based on saldo.
+     */
     RELAY_OFF_SALDO: boolean,
+
+    /**
+     * Turn off based on saldo with condition.
+     */
     RELAY_OFF_SALDO_SOFT: boolean,
+
+    /**
+     * Turn off relay upon detection of a magnetic field.
+     */
     RELAY_OFF_MAGNET: boolean,
+
+    /**
+     * Turn on after timeout {@link IOperatorParameters.timeoutRelayOn} (not used).
+     */
     RELAY_ON_MAGNET_TIMEOUT: boolean,
+
+    /**
+     * Turn on relay after removal of the magnetic field.
+     */
     RELAY_ON_MAGNET_AUTO: boolean
 }
 
 export interface IRelaySet5OperatorParameter {
+    /**
+     * Turn off relay upon detection of current inequality.
+     */
     RELAY_OFF_UNEQUAL_CURRENT: boolean,
+
+    /**
+     * Turn on relay after turning off due to current inequality.
+     */
     RELAY_ON_UNEQUAL_CURRENT: boolean,
+
+    /**
+     * Turn off relay upon detection of different-polarity powers in phase and neutral (only for `G` meter).
+     */
     RELAY_OFF_BIPOLAR_POWER: boolean,
+
+    /**
+     * Turn on relay after deactivation due to different-polarity powers in phase and neutral (only for `G` meter)
+     */
     RELAY_ON_BIPOLAR_POWER: boolean
 }
 
 export interface IDefine1OperatorParameter {
+    /**
+     * `1` - optoport is unlocked by button, `0` - optoport is unlocked (default is `0`).
+     */
     BLOCK_KEY_OPTOPORT: boolean,
+
+    /**
+     * `1` - constant magnetic field screen (`104.21.017`)
+     */
     MAGNET_SCREEN_CONST: boolean
 }
 
 export interface IOperatorParameters {
-    vpThreshold: number,
-    vThreshold: number,
-    ipThreshold: number,
-    pmaxThreshold0: number,
-    pmaxThreshold1: number,
-    pmaxThreshold2: number,
-    pmaxThreshold3: number,
-    speedOptoPort: number,
-    tint: number,
-    calcPeriodDate: number,
-    timeoutDisplay: number,
-    timeoutScreen: number,
+    /**
+     * Maximum voltage threshold, mV.
+     */
+    vpThreshold: TUint32,
+
+    /**
+     * Minimum voltage threshold, mV.
+     */
+    vThreshold: TUint32,
+
+    /**
+     * Maximum current threshold, mA.
+     */
+    ipThreshold: TUint32,
+
+    /**
+     * Maximum power threshold for tariff `T1`, Watts.
+     */
+    pmaxThreshold0: TUint32,
+
+    /**
+     * Maximum power threshold for tariff `T2`, Watts.
+     */
+    pmaxThreshold1: TUint32,
+
+    /**
+     * Maximum power threshold for tariff `T3`, Watts.
+     */
+    pmaxThreshold2: TUint32,
+
+    /**
+     * Maximum power threshold for tariff `T4`, Watts.
+     */
+    pmaxThreshold3: TUint32,
+
+    /**
+     * Reserved byte.
+     */
+    speedOptoPort: TUint8,
+
+    /**
+     * Power averaging interval, in minutes.
+     */
+    tint: TUint8,
+
+    /**
+     * Start date of the monthly billing period.
+     */
+    calcPeriodDate: TUint8,
+
+    /**
+     * Display active time.
+     */
+    timeoutDisplay: TUint8,
+
+    /**
+     * Display active time for each screen.
+     */
+    timeoutScreen: TUint8,
+
+    /**
+     * Display settings for meter readings.
+     */
     displaySet: IDisplaySetOperatorParameter,
+
+    /**
+     * Relay settings.
+     */
     relaySet4: IRelaySet4OperatorParameter,
+
+    /**
+     * Relay settings.
+     */
     relaySet3: IRelaySet3OperatorParameter,
+
+    /**
+     * Relay settings.
+     */
     relaySet2: IRelaySet2OperatorParameter,
+
+    /**
+     * Relay settings.
+     */
     relaySet1: IRelaySet1OperatorParameter,
-    displayType: number,
-    ten: number,
-    timeoutRefresh: number,
-    deltaCorMin: number,
-    timeoutMagnetOff: number,
-    timeoutMagnetOn: number,
+
+    /**
+     * Display type on the remote display (`0` - `OBIS`, `1` - symbolic (not used)).
+     */
+    displayType: TUint8,
+
+    /**
+     * Integration period for energy profiles `A+`, `A-`, voltage VA `0`, `30` - `30` minutes, `15` - `15` minutes, `60` - `60` minutes.
+     */
+    ten: TUint8,
+
+    /**
+     * Reserved byte.
+     */
+    timeoutRefresh: TUint8,
+
+    /**
+     * Allowed correction interval (`15` minutes by default).
+     */
+    deltaCorMin: TUint8,
+
+    /**
+     * Timeout for relay shutdown upon magnetic interference, seconds.
+     */
+    timeoutMagnetOff: TUint8,
+
+    /**
+     * Timeout for relay activation after magnetic field removal, seconds.
+     */
+    timeoutMagnetOn: TUint8,
+
+    /**
+     * Setting for optoport and constant magnetic field screen.
+     */
     define1: IDefine1OperatorParameter,
-    timeoutRelayOn: number,
-    timeoutRelayKey: number,
-    timeoutRelayAuto: number,
-    timeoutBadVAVB: number,
-    freqMax: number,
-    freqMin: number,
-    phMin: number,
-    year: number,
-    month: number,
-    date: number,
-    energyDecimalPoint: number,
-    typeMeter: number,
-    timeoutIMax: number,
-    timeoutPMax: number,
-    timeoutCos: number,
-    pMaxDef: number,
+
+    /**
+     * Timeout for automatic relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI`, minutes.
+     */
+    timeoutRelayOn: TUint8,
+
+    /**
+     * Timeout for relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI`, seconds.
+     */
+    timeoutRelayKey: TUint8,
+
+    /**
+     * Timeout for relay activation upon restoration of quality voltage, seconds.
+     */
+    timeoutRelayAuto: TUint8,
+
+    /**
+     * Timeout for relay deactivation due to poor voltage, seconds.
+     */
+    timeoutBadVAVB: TUint8,
+
+    /**
+     * Maximum threshold for the frequency of the grid voltage.
+     */
+    freqMax: TUint8,
+
+    /**
+     * Minimum threshold for the frequency of the grid voltage.
+     */
+    freqMin: TUint8,
+
+    /**
+     * Minimum threshold for the `cos(fi)` value.
+     */
+    phMin: TUint16,
+
+    /**
+     * Year of parameters recording.
+     */
+    year: TUint8,
+
+    /**
+     * Month of parameters recording.
+     */
+    month: TUint8,
+
+    /**
+     * Date of parameters recording.
+     */
+    date: TUint8,
+
+    /**
+     * The number of digits after the decimal point for displaying energy values.
+     * (`0x00` - no digits, `0x01` - `1` digit, `0x02` - `2` digits, `0x03` - `3` digits)
+     */
+    energyDecimalPoint: TUint8,
+
+    /**
+     * Measurement type.
+     * (`0` - active `|A|+`, `1` - active `A+`, `A-`)
+     */
+    typeMeter: TUint8,
+
+    /**
+     * Timeout for relay deactivation based on maximum current.
+     */
+    timeoutIMax: TUint8,
+
+    /**
+     * Timeout for relay deactivation based on maximum power.
+     */
+    timeoutPMax: TUint8,
+
+    /**
+     * Timeout for relay deactivation based on `cos(fi)`.
+     */
+    timeoutCos: TUint8,
+
+    /**
+     * `0` - `PMAX` = `POWER_A`; `1` - `PMAX` averaged power over the integration period.
+     */
+    pMaxDef: TUint8,
+
+    /**
+     * Setting for displaying meter readings on additional displays (long press).
+     */
     displaySetExt: IDisplaySetExtOperatorParameter,
-    timeoutUneqCurrent: number,
-    timeoutBipolarPower: number,
+
+    /**
+     * Timeout for relay deactivation based on current inequality (`5`).
+     */
+    timeoutUneqCurrent: TUint8,
+
+    /**
+     * Timeout for relay deactivation upon detection of power with different polarities (`5`).
+     */
+    timeoutBipolarPower: TUint8,
+
+    /**
+     * Relay settings.
+     */
     relaySet5: IRelaySet5OperatorParameter,
-    timeCorrectPeriod: number,
-    timeCorrectPassHalfhour: boolean,
+
+    /**
+     * Allowed correction period, in hours (`24` hours by default).
+     */
+    timeCorrectPeriod: TUint8,
+
+    /**
+     * Is the time correction with a transition across the half-hour boundary allowed.
+     */
+    timeCorrectPassHalfhour: boolean
 }
 
 export interface IDayProfile {
+    /**
+     * Period start hour.
+     */
     hour: number,
+
+    /**
+     * Is it the first half of the hour (second - otherwise).
+     */
     isFirstHalfHour: boolean,
+
+    /**
+     * Tariff number to apply for this period.
+     */
     tariff: number
 }
 
 export interface ISeasonProfile {
-    month: number,
-    date: number,
-    /** index 0 is for Sunday */
-    dayIndexes: Array<number>
+    month: TMonth,
+
+    date: TMonthDay,
+
+    /**
+     * List of day profile indexes.
+     */
+    dayIndexes: Array<TUint8>
 }
 
 export interface ISpecialDay {
-    month: number,
-    date: number,
-    dayIndex: number,
+    month: TMonth,
+
+    date: TMonthDay,
+
+    /**
+     * Day profile index.
+     */
+    dayIndex: TUint8,
+
+    /**
+     * Is it periodic or not.
+     */
     isPeriodic: boolean
 }
 
 export interface IDeviceId {
-    /** 001a79 */
-    manufacturer: string,
     /**
-     * 01 – MTX 1;
-     * 02 – MTX 3 direct (old);
-     * 03 – MTX 3 transformer (old);
-     * 04 – MTX 3 direct;
-     * 05 – MTX 3 transformer;
-     * 11 – MTX 1 new (two shunts);
-     * 12 – MTX 3 direct new (shunts);
-     * 13 – MTX 3 transformer new;
-     * 14 – MTX 1 pole;
-     * 15 – MTX RD remote display;
-     * 16 – MTX RR repeater;
-     * 21 – MTX 1 new, current transformers;
-     * 22 – MTX 3 direct new, current transformers;
-     * 80 – RF module
-     * 81 - water meter
+     * Device manufacturer (`001a79` at the moment)
+     */
+    manufacturer: string,
+
+    /**
+     * Device type.
+     *
+     * ID | Name
+     * ---|------
+     * 01 | MTX 1
+     * 02 | MTX 3 direct (old)
+     * 03 | MTX 3 transformer (old)
+     * 04 | MTX 3 direct
+     * 05 | MTX 3 transformer
+     * 11 | MTX 1 new (two shunts)
+     * 12 | MTX 3 direct new (shunts)
+     * 13 | MTX 3 transformer new
+     * 14 | MTX 1 pole
+     * 15 | MTX RD remote display
+     * 16 | MTX RR repeater
+     * 21 | MTX 1 new, current transformers
+     * 22 | MTX 3 direct new, current transformers
+     * 80 | RF module
+     * 81 | water meter
      */
     type: number,
-    year: number,
-    /** length is 6, for example 1b1d6a */
+
+    /**
+     * Device production year.
+     *
+     * @example
+     * 24
+     */
+    year: TYear2000,
+
+    /**
+     * Device serial number.
+     *
+     * @example
+     * '1b1d6a'
+     */
     serial: string
 }
 
 export {IDeviceType};
 
 export interface ISaldoParameters {
-    coefficients: Array<number>,
-    decimalPointTariff: number,
-    indicationThreshold: number,
-    relayThreshold: number,
-    mode: number,
-    saldoOffTimeBegin: number,
-    saldoOffTimeEnd: number,
-    decimalPointIndication: number,
-    powerThreshold: number,
-    creditThreshold: number
+    /**
+     * Saldo coefficients for tariffs `T1`-`T4`.
+     */
+    coefficients: Array<TUint32>,
+
+    /**
+     * Decimal point in the saldo coefficient for the tariff (default is `4`).
+     */
+    decimalPointTariff: TUint8,
+
+    /**
+     * Threshold at which the saldo is indicated.
+     */
+    indicationThreshold: TInt32,
+
+    /**
+     * Threshold at which relay turns off based on saldo.
+     */
+    relayThreshold: TInt32,
+
+    /**
+     * Definitions setting the operating mode based on saldo.
+     */
+    mode: TUint8,
+
+    /**
+     * Not to deactivate based on saldo after.
+     */
+    saldoOffTimeBegin: TUint8,
+
+    /**
+     * Not to deactivate based on saldo before.
+     */
+    saldoOffTimeEnd: TUint8,
+
+    /**
+     * Decimal point for saldo indication.
+     */
+    decimalPointIndication: TUint8,
+
+    /**
+     * Power limitation based on saldo.
+     */
+    powerThreshold: TUint32,
+
+    /**
+     * Saldo credit limit.
+     */
+    creditThreshold: TInt32
 }
+
+export const defaultFrameHeader: IFrameHeader = {
+    type: DATA_REQUEST,
+    destination: 0xffff,
+    source: 0xfffe
+};
 
 export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
@@ -663,7 +1123,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
     getDeviceId (): IDeviceId {
         const manufacturer = getHexFromBytes(this.getBytes(3), {separator: ''});
         const type = this.getUint8();
-        const year = this.getUint8() + 2000;
+        const year = this.getUint8();
         const serial = getHexFromBytes(this.getBytes(3), {separator: ''});
 
         return {manufacturer, type, year, serial};
@@ -672,7 +1132,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
     setDeviceId ( {manufacturer, type, year, serial}: IDeviceId ) {
         this.setBytes(getBytesFromHex(manufacturer));
         this.setUint8(type);
-        this.setUint8(year - 2000);
+        this.setUint8(year);
         this.setBytes(getBytesFromHex(serial));
     }
 

@@ -8,7 +8,7 @@
     "includes": "./src",
     "readme": "./readme.md",
     "sort": ["static-first", "alphabetical"],
-    "disableSources": false,
+    "disableSources": true,
     "plugin": ["typedoc-plugin-missing-exports", "@mxssfd/typedoc-theme"],
 	"theme": "my-theme"
 }

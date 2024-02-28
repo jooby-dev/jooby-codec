@@ -4,6 +4,9 @@ import {ITimeCorrectionParameters} from '../../utils/dateTime.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import SetCorrectTimeResponse from '../uplink/SetCorrectTimeResponse.js';
+
 
 const COMMAND_ID = 0x1c;
 const COMMAND_SIZE = 9;
@@ -28,7 +31,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to set parameters for transitioning to winter/summer time.
+ *
+ * The corresponding uplink command: {@link SetCorrectTimeResponse}.
  *
  * @example
  * ```js

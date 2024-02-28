@@ -1,11 +1,27 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {TUint8} from '../../../types.js';
+
+/* eslint-disable */
+import * as screenIds from '../../constants/screenIds.js';
+import SetDisplayParamResponse from '../uplink/SetDisplayParamResponse.js';
+/* eslint-enable */
 
 
 interface ISetDisplayParamParameters {
-    displayMode: number,
-    order: Array<number>
+    /**
+     * Display mode.
+     * (`0` - main, `1` - additional)
+     */
+    displayMode: TUint8,
+
+    /**
+     * List of display numbers.
+     *
+     * ({@link screenIds | display identifiers})
+     */
+    order: Array<TUint8>
 }
 
 
@@ -33,7 +49,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to set the meter displays sorting order.
+ *
+ * The corresponding uplink command: {@link SetDisplayParamResponse}.
  *
  * @example
  * ```js

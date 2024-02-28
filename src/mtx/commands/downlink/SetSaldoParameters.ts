@@ -3,6 +3,9 @@ import CommandBinaryBuffer, {ISaldoParameters} from '../../CommandBinaryBuffer.j
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import SetSaldoParametersResponse from '../uplink/SetSaldoParametersResponse.js';
+
 
 const COMMAND_ID = 0x2f;
 const COMMAND_SIZE = 37;
@@ -31,7 +34,9 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command.
+ * Downlink command to set device current saldo parameters.
+ *
+ * The corresponding uplink command: {@link SetSaldoParametersResponse}.
  *
  * @example
  * ```js
