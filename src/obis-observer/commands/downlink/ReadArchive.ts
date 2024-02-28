@@ -81,7 +81,7 @@ class ReadArchive extends Command {
     // returns full message - header with body
     toBytes (): Uint8Array {
         const {requestId, archiveType, index} = this.parameters;
-        const buffer = new CommandBinaryBuffer(this.size as number);
+        const buffer = new CommandBinaryBuffer(this.size);
 
         buffer.setUint8(requestId);
         buffer.setUint8(archiveType);

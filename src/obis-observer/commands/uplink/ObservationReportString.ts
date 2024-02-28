@@ -107,7 +107,7 @@ class ObservationReportString extends Command {
 
     // returns full message - header with body
     toBytes (): Uint8Array {
-        const buffer = new CommandBinaryBuffer(this.size as number);
+        const buffer = new CommandBinaryBuffer(this.size);
         const {meterId, time2000, obisValueList} = this.parameters;
 
         buffer.setUint32(meterId);

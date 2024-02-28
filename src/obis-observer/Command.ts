@@ -36,7 +36,7 @@ abstract class Command {
     parameters: unknown;
 
     /** whole command body size (without header) */
-    size: unknown;
+    size: number = 0;
 
 
     /** Get command ID in hex format. */
