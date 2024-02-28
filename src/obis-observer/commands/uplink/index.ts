@@ -26,6 +26,7 @@ export {default as GetObserverInfoResponse} from './GetObserverInfoResponse.js';
 export {default as GetObserverSingleModeResponse} from './GetObserverSingleModeResponse.js';
 export {default as GetObserverUptimeResponse} from './GetObserverUptimeResponse.js';
 export {default as GetSerialPortResponse} from './GetSerialPortResponse.js';
+export {default as GetSettingsMemoryResponse} from './GetSettingsMemoryResponse.js';
 export {default as ObservationReport} from './ObservationReport.js';
 export {default as ObservationReportString} from './ObservationReportString.js';
 export {default as ReadArchiveResponse} from './ReadArchiveResponse.js';

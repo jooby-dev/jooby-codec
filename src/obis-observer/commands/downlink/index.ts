@@ -23,6 +23,7 @@ export {default as GetObserverInfo} from './GetObserverInfo.js';
 export {default as GetObserverSingleMode} from './GetObserverSingleMode.js';
 export {default as GetObserverUptime} from './GetObserverUptime.js';
 export {default as GetSerialPort} from './GetSerialPort.js';
+export {default as GetSettingsMemory} from './GetSettingsMemory.js';
 export {default as ReadArchive} from './ReadArchive.js';
 export {default as ReadMeterArchive} from './ReadMeterArchive.js';
 export {default as ReadMeterArchiveWithDate} from './ReadMeterArchiveWithDate.js';
