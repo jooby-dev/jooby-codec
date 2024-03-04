@@ -11,7 +11,7 @@ interface IGetHalfhoursEnergies {
 }
 
 
-const COMMAND_ID = 0x69;
+const COMMAND_ID = 0x6f;
 const COMMAND_SIZE = 5;
 
 const examples: TCommandExampleList = [
@@ -34,7 +34,7 @@ const examples: TCommandExampleList = [
                 'A-R-': false
             }
         },
-        hex: {header: '69 05', body: '2a 43 03 05 04'}
+        hex: {header: '6f 05', body: '2a 43 03 05 04'}
     }
 ];
 
@@ -64,7 +64,7 @@ const examples: TCommandExampleList = [
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 69 05 2a 43 03 05 04
+ * // 6f 05 2a 43 03 05 04
  * ```
  */
 class GetHalfhoursEnergies extends Command {

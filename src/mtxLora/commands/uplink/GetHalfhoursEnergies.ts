@@ -11,7 +11,7 @@ interface IGetHalfhoursEnergies {
 }
 
 
-const COMMAND_ID = 0x69;
+const COMMAND_ID = 0x6f;
 const DATE_SIZE = 3; // year, month, day
 const MAX_HALFHOURS_ENERGY_SIZE = 5 * 3 * 4; // 5 energy types, 3 channels, 4 bytes - energy value
 const COMMAND_MAX_SIZE = DATE_SIZE + MAX_HALFHOURS_ENERGY_SIZE;
@@ -33,7 +33,7 @@ const examples: TCommandExampleList = [
             }
         },
         hex: {
-            header: '69 15',
+            header: '6f 15',
             body: '2a 43 11 01 02 00 00 10 00 00 00 20 00 00 00 30 00 00 00 40 00'
         }
     }
