@@ -35,5 +35,9 @@ export const splitBytesToDataSegments = ( bytes: Uint8Array, {segmentationSessio
         segments.push(segment);
     }
 
+    if ( segments.length !== 0 ) {
+        segments[segments.length - 1].parameters.isLast = true;
+    }
+
     return segments;
 };
