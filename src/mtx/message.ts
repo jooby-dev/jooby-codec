@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 
-import Command from './Command.js';
+import Command, {COMMAND_HEADER_SIZE} from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
 import {requestById, responseById} from './constants/commandRelations.js';
 import CommandBinaryBuffer, {frameHeaderSize, IFrameHeader, defaultFrameHeader} from './CommandBinaryBuffer.js';
@@ -66,7 +66,6 @@ interface IFrame extends IMessage, IFrameHeader {
 const ACCESS_LEVEL_MASK = 0x03;
 
 const MESSAGE_HEADER_SIZE = 2;
-const COMMAND_HEADER_SIZE = 2;
 const BLOCK_SIZE = 16;
 
 // should be places at the end of all command bodies

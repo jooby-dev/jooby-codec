@@ -1,23 +1,8 @@
 import * as header from './header.js';
-import {IHexFormatOptions} from '../config.js';
-import getHexFromBytes from '../utils/getHexFromBytes.js';
-import getHexFromNumber from '../utils/getHexFromNumber.js';
-import getBase64FromBytes from '../utils/getBase64FromBytes.js';
+import BaseCommand from '../Command.js';
 
 
-export interface ICommandExample {
-    name: string,
-    parameters?: object,
-    config?: {
-        hardwareType?: number
-    },
-    hex: {
-        header: string,
-        body: string
-    }
-}
-
-export type TCommandExampleList = Array<ICommandExample>;
+export {ICommandExample, TCommandExampleList} from '../Command.js';
 
 export interface ICommandBinary {
     header: Uint8Array,
@@ -29,67 +14,9 @@ export interface ICommandBinary {
 /**
  * private
  */
-abstract class Command {
-    static id: number;
-
-    static directionType: unknown;
-
-    static title: string;
-
-    static examples: TCommandExampleList;
-
-    static hasParameters = false;
-
-
-    /** base command parameters */
-    parameters: unknown;
-
+abstract class Command extends BaseCommand {
     /** additional/environment parameters */
     config: unknown;
-
-
-    /** Get command ID in hex format. */
-    static getId () {
-        return getHexFromNumber(this.id);
-    }
-
-    /**
-     * Parse body without header.
-     *
-     * @param data command in binary form
-     *
-     * @returns command instance
-     */
-    // static fromBytes ( data: Uint8Array ): Command {
-    //     throw new Error('not implemented!');
-    // }
-
-    // static fromHex ( data: string ): Command {
-    //     return this.fromBytes(getBytesFromHex(data));
-    // }
-
-    // static fromBytes ( data: Uint8Array, commandsById: any ): any {
-    //     const headerData = header.fromBytes(data);
-
-    //     if ( headerData.headerSize + headerData.commandSize < data.length ) {
-    //         throw new Error(
-    //             `Wrong header. Header size: ${headerData.headerSize}, command size: ${headerData.commandSize}, buffer size: ${data.length}.`
-    //         );
-    //     }
-
-    //     const command = commandsById[headerData.commandId];
-
-    //     if ( !command ) {
-    //         throw new Error(
-    //             `Unsupported command with id: ${headerData.commandId}.`
-    //         );
-    //     }
-
-    //     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    //     return command.fromBytes(
-    //         data.slice(headerData.headerSize, headerData.headerSize + headerData.commandSize)
-    //     );
-    // }
 
     /**
      * Build binary representation of commands header, body and complete buffer.
@@ -117,11 +44,6 @@ abstract class Command {
         };
     }
 
-    /** Get command parameters. */
-    getParameters () {
-        return this.parameters;
-    }
-
     // eslint-disable-next-line class-methods-use-this
     toBinary (): ICommandBinary {
         throw new Error('not implemented!');
@@ -130,23 +52,6 @@ abstract class Command {
     // returns full message - header with body
     toBytes (): Uint8Array {
         return this.toBinary().bytes;
-    }
-
-    toHex ( options: IHexFormatOptions = {} ) {
-        return getHexFromBytes(this.toBytes(), options);
-    }
-
-    toBase64 () {
-        return getBase64FromBytes(this.toBytes());
-    }
-
-    /**
-     * Returns the command in JSON format.
-     *
-     * @returns JSON string contains current parameters
-     */
-    toJson () {
-        return JSON.stringify(this.getParameters());
     }
 }
 
