@@ -1,5 +1,5 @@
-import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
-import CommandBinaryBuffer, {IDate, TTariffsPowerMax} from '../../CommandBinaryBuffer.js';
+import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../Command.js';
+import CommandBinaryBuffer, {IDate, TTariffsPowerMax, TARIFF_NUMBER} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 
 
@@ -44,6 +44,39 @@ const examples: TCommandExampleList = [
         }
     }
 ];
+
+const energiesToObis: Record<string, string> = {
+    'A+': '1.6.x',
+    'A+R+': '3.6.x',
+    'A+R-': '4.6.x',
+    'A-': '2.6.x',
+    'A-R+': '7.6.x',
+    'A-R-': '8.6.x'
+};
+
+const convertEnergyToObis = ( energy: string, tariff: number = 0 ) => {
+    const obis = energiesToObis[energy];
+
+    return obis ? obis.replace('x', tariff.toString(10)) : '';
+};
+
+const convertTariffsPowerMaxToDlms = ( energies: TTariffsPowerMax ) => {
+    const dlms: Record<string, number> = {};
+
+    for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
+        const tariffEnergies = energies[tariff];
+
+        if ( tariffEnergies ) {
+            for ( const [energy, value] of Object.entries(tariffEnergies) ) {
+                if ( value || value === 0 ) {
+                    dlms[convertEnergyToObis(energy, tariff + 1)] = value;
+                }
+            }
+        }
+    }
+
+    return dlms;
+};
 
 
 /**
@@ -114,6 +147,19 @@ class GetDayMaxPower extends Command {
             buffer.position,
             ...buffer.getBytesToOffset()
         ]);
+    }
+
+    toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
+        const {parameters} = this;
+        const {date, tariffs} = parameters;
+        const result = dlms
+            ? {
+                date,
+                ...convertTariffsPowerMaxToDlms(tariffs)
+            }
+            : parameters;
+
+        return JSON.stringify(result);
     }
 }
 
