@@ -7,7 +7,6 @@ import getBase64FromBytes from '../utils/getBase64FromBytes.js';
 export interface ICommandExample {
     name: string,
     parameters?: object,
-    hardwareType?: number,
     hex: {
         header: string,
         body: string

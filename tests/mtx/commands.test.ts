@@ -10,12 +10,12 @@ import getBase64FromBytes from '../../src/utils/getBase64FromBytes.js';
 const {uplink, downlink} = commands;
 
 
-const checkExample = ( constructor: any, {parameters, hardwareType, hex: {header, body} }: ICommandExample ) => {
+const checkExample = ( constructor: any, {parameters, hex: {header, body} }: ICommandExample ) => {
     const commandHex = getHexFromBytes(getBytesFromHex(`${header} ${body}`));
     const commandBytes = getBytesFromHex(commandHex);
     const commandBase64 = getBase64FromBytes(commandBytes);
-    const command = new constructor(parameters, hardwareType);
-    const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null, hardwareType);
+    const command = new constructor(parameters);
+    const commandFromHex = constructor.fromBytes(body ? getBytesFromHex(body) : null);
 
     expect(command).toBeInstanceOf(constructor);
     expect(command).toBeInstanceOf(Command);

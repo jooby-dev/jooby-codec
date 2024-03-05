@@ -8,7 +8,6 @@ import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 export interface ICommandExample {
     name: string,
     parameters?: object,
-    hardwareType?: number,
     hex: {
         header: string,
         body: string
