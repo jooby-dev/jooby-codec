@@ -90,43 +90,43 @@ export interface ITariffPlan {
 }
 
 export interface IDisplaySetBaseOperatorParameter {
-    TEST_D: boolean,
-    VERSION_D: boolean,
-    WH_D: boolean,
-    WH_T1_D: boolean,
-    WH_T2_D: boolean,
-    WH_T3_D: boolean,
-    WH_T4_D: boolean,
-    POWER_D: boolean,
-    POWERB_D: boolean,
-    IRMS_D: boolean,
-    IRMSB_D: boolean,
-    VRMS_D: boolean,
-    TIME_D: boolean,
-    DATE_D: boolean,
-    WH_EXP_D: boolean,
-    WH_EXP_T1_D: boolean,
-    WH_EXP_T2_D: boolean,
-    WH_EXP_T3_D: boolean,
-    WH_EXP_T4_D: boolean,
-    PF_A: boolean,
-    PF_B: boolean,
-    VBAT: boolean,
-    POWER_THRESHOLD_T0: boolean,
+    SET_ALL_SEGMENT_DISPLAY: boolean,
+    SOFTWARE_VERSION: boolean,
+    TOTAL_ACTIVE_ENERGY: boolean,
+    ACTIVE_ENERGY_T1: boolean,
+    ACTIVE_ENERGY_T2: boolean,
+    ACTIVE_ENERGY_T3: boolean,
+    ACTIVE_ENERGY_T4: boolean,
+    ACTIVE_POWER_PER_PHASE: boolean,
+    ACTIVE_POWER_IN_NEUTRAL: boolean,
+    CURRENT_IN_PHASE: boolean,
+    CURRENT_IN_NEUTRAL: boolean,
+    VOLTAGE: boolean,
+    HOUR_MINUTE_SECOND: boolean,
+    DATE_MONTH_YEAR: boolean,
+    TOTAL_EXPORTED_ACTIVE_ENERGY: boolean,
+    EXPORTED_ACTIVE_ENERGY_T1: boolean,
+    EXPORTED_ACTIVE_ENERGY_T2: boolean,
+    EXPORTED_ACTIVE_ENERGY_T3: boolean,
+    EXPORTED_ACTIVE_ENERGY_T4: boolean,
+    POWER_COEFFICIENT_PHASE_A: boolean,
+    POWER_COEFFICIENT_PHASE_B: boolean,
+    BATTERY_VOLTAGE: boolean,
     POWER_THRESHOLD_T1: boolean,
     POWER_THRESHOLD_T2: boolean,
     POWER_THRESHOLD_T3: boolean,
-    SALDO_D: boolean,
+    POWER_THRESHOLD_T4: boolean,
+    CURRENT_BALANCE: boolean,
 }
 
 export interface IDisplaySetOperatorParameter extends IDisplaySetBaseOperatorParameter {
-    SCROLL_D: boolean
+    AUTO_SCREEN_SCROLLING: boolean
 }
 
 export interface IDisplaySetExtOperatorParameter extends IDisplaySetBaseOperatorParameter {
-    MAGNET_TESLA: boolean,
-    SPEED_D: boolean,
-    NEW_SORT_DISPLAY: boolean
+    MAGNET_INDUCTION: boolean,
+    OPTOPORT_SPEED: boolean,
+    SORT_DISPLAY_SCREENS: boolean
 }
 
 export interface IRelaySet1OperatorParameter {
@@ -701,68 +701,46 @@ export const SEASON_PROFILE_DAYS_NUMBER = 7;
 export const SEASON_PROFILE_SIZE = 2 + SEASON_PROFILE_DAYS_NUMBER;
 
 
+const baseDisplaySetMask = {
+    SET_ALL_SEGMENT_DISPLAY: 0x0001,
+    SOFTWARE_VERSION: 0x0002,
+    TOTAL_ACTIVE_ENERGY: 0x0004,
+    ACTIVE_ENERGY_T1: 0x0008,
+    ACTIVE_ENERGY_T2: 0x0010,
+    ACTIVE_ENERGY_T3: 0x0020,
+    ACTIVE_ENERGY_T4: 0x0040,
+    ACTIVE_POWER_PER_PHASE: 0x0080,
+    ACTIVE_POWER_IN_NEUTRAL: 0x0100,
+    CURRENT_IN_PHASE: 0x0200,
+    CURRENT_IN_NEUTRAL: 0x0400,
+    VOLTAGE: 0x0800,
+    HOUR_MINUTE_SECOND: 0x1000,
+    DATE_MONTH_YEAR: 0x2000,
+    TOTAL_EXPORTED_ACTIVE_ENERGY: 0x4000,
+    EXPORTED_ACTIVE_ENERGY_T1: 0x8000,
+    EXPORTED_ACTIVE_ENERGY_T2: 0x00010000,
+    EXPORTED_ACTIVE_ENERGY_T3: 0x00020000,
+    EXPORTED_ACTIVE_ENERGY_T4: 0x00040000,
+    POWER_COEFFICIENT_PHASE_A: 0x00080000,
+    POWER_COEFFICIENT_PHASE_B: 0x00100000,
+    BATTERY_VOLTAGE: 0x00200000,
+    POWER_THRESHOLD_T1: 0x00400000,
+    POWER_THRESHOLD_T2: 0x00800000,
+    POWER_THRESHOLD_T3: 0x01000000,
+    POWER_THRESHOLD_T4: 0x02000000,
+    CURRENT_BALANCE: 0x20000000
+};
+
 const displaySetMask = {
-    TEST_D: 0x0001,
-    VERSION_D: 0x0002,
-    WH_D: 0x0004,
-    WH_T1_D: 0x0008,
-    WH_T2_D: 0x0010,
-    WH_T3_D: 0x0020,
-    WH_T4_D: 0x0040,
-    POWER_D: 0x0080,
-    POWERB_D: 0x0100,
-    IRMS_D: 0x0200,
-    IRMSB_D: 0x0400,
-    VRMS_D: 0x0800,
-    TIME_D: 0x1000,
-    DATE_D: 0x2000,
-    WH_EXP_D: 0x4000,
-    WH_EXP_T1_D: 0x8000,
-    WH_EXP_T2_D: 0x00010000,
-    WH_EXP_T3_D: 0x00020000,
-    WH_EXP_T4_D: 0x00040000,
-    PF_A: 0x00080000,
-    PF_B: 0x00100000,
-    VBAT: 0x00200000,
-    POWER_THRESHOLD_T0: 0x00400000,
-    POWER_THRESHOLD_T1: 0x00800000,
-    POWER_THRESHOLD_T2: 0x01000000,
-    POWER_THRESHOLD_T3: 0x02000000,
-    SALDO_D: 0x20000000,
-    SCROLL_D: 0x80000000
+    ...baseDisplaySetMask,
+    AUTO_SCREEN_SCROLLING: 0x80000000
 };
 
 const displaySetExtMask = {
-    TEST_D: 0x0001,
-    VERSION_D: 0x0002,
-    WH_D: 0x0004,
-    WH_T1_D: 0x0008,
-    WH_T2_D: 0x0010,
-    WH_T3_D: 0x0020,
-    WH_T4_D: 0x0040,
-    POWER_D: 0x0080,
-    POWERB_D: 0x0100,
-    IRMS_D: 0x0200,
-    IRMSB_D: 0x0400,
-    VRMS_D: 0x0800,
-    TIME_D: 0x1000,
-    DATE_D: 0x2000,
-    WH_EXP_D: 0x4000,
-    WH_EXP_T1_D: 0x8000,
-    WH_EXP_T2_D: 0x00010000,
-    WH_EXP_T3_D: 0x00020000,
-    WH_EXP_T4_D: 0x00040000,
-    PF_A: 0x00080000,
-    PF_B: 0x00100000,
-    VBAT: 0x00200000,
-    POWER_THRESHOLD_T0: 0x00400000,
-    POWER_THRESHOLD_T1: 0x00800000,
-    POWER_THRESHOLD_T2: 0x01000000,
-    POWER_THRESHOLD_T3: 0x02000000,
-    MAGNET_TESLA: 0x08000000,
-    SALDO_D: 0x20000000,
-    SPEED_D: 0x40000000,
-    NEW_SORT_DISPLAY: 0x80000000
+    ...baseDisplaySetMask,
+    MAGNET_INDUCTION: 0x08000000,
+    OPTOPORT_SPEED: 0x40000000,
+    SORT_DISPLAY_SCREENS: 0x80000000
 };
 
 const relaySet1Mask = {
