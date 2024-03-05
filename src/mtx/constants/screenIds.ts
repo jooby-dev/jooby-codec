@@ -134,7 +134,7 @@ export const POWER_THRESHOLD_T4 = 26;
 export const MAGNET_INDUCTION = 28;
 
 /**
- * Current balance
+ * Current balance (saldo)
  */
 export const CURRENT_BALANCE = 30;
 
