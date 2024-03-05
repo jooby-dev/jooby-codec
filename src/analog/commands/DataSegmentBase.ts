@@ -1,8 +1,7 @@
-import Command, {TCommandExampleList, ICommandBinary} from '../Command.js';
+import Command, {TCommandExampleList, ICommandBinary, TJsonOptions, defaultJsonOptions} from '../Command.js';
 import CommandBinaryBuffer, {IDataSegment} from '../CommandBinaryBuffer.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
-import {HEX} from '../../constants/bytesConversionFormats.js';
-import {TBytesConversionFormatOptions, getStringFromBytes} from '../../utils/bytesConversion.js';
+import {getStringFromBytes} from '../../utils/bytesConversion.js';
 
 
 const COMMAND_ID = 0x1e;
@@ -53,12 +52,12 @@ export default class DataSegmentBase extends Command {
         return new this(buffer.getDataSegment());
     }
 
-    toJson ( bytesConversionFormat: number = HEX, bytesConversionFormatOptions: TBytesConversionFormatOptions = {} ) {
+    toJson ( options: TJsonOptions = defaultJsonOptions ) {
         const {parameters} = this;
 
         return JSON.stringify({
             ...parameters,
-            data: getStringFromBytes(parameters.data, bytesConversionFormat, bytesConversionFormatOptions)
+            data: getStringFromBytes(parameters.data, options)
         });
     }
 }
