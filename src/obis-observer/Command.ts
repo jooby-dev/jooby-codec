@@ -2,7 +2,7 @@ import BaseCommand from '../Command.js';
 import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
-export {ICommandExample, TCommandExampleList} from '../Command.js';
+export {ICommandExample, TCommandExampleList, TJsonOptions, defaultJsonOptions} from '../Command.js';
 
 
 /**

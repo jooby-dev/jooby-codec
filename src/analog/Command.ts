@@ -2,7 +2,7 @@ import * as header from './header.js';
 import BaseCommand from '../Command.js';
 
 
-export {ICommandExample, TCommandExampleList} from '../Command.js';
+export {ICommandExample, TCommandExampleList, TJsonOptions, defaultJsonOptions} from '../Command.js';
 
 export interface ICommandBinary {
     header: Uint8Array,

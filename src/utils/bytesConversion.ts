@@ -11,15 +11,29 @@ interface IBase64FormatOptions {}
 
 export type TBytesConversionFormatOptions = IHexFormatOptions | IBase64FormatOptions;
 
+export interface IBytesConversionFormatOptions {
+    bytesConversionFormat: number,
+    bytesConversionFormatOptions: TBytesConversionFormatOptions
+}
+
+export const defaultFormatOptions: IBytesConversionFormatOptions = {
+    bytesConversionFormat: HEX,
+    bytesConversionFormatOptions: {}
+};
+
 export const getStringFromBytes = (
     bytes: Uint8Array,
-    bytesConversionFormat: number = HEX,
-    bytesConversionFormatOptions: TBytesConversionFormatOptions = {}
-) => (
-    bytesConversionFormat === HEX
+    options: IBytesConversionFormatOptions = defaultFormatOptions
+) => {
+    const {
+        bytesConversionFormat = defaultFormatOptions.bytesConversionFormat,
+        bytesConversionFormatOptions = defaultFormatOptions.bytesConversionFormatOptions
+    } = options;
+
+    return bytesConversionFormat === HEX
         ? getHexFromBytes(bytes, bytesConversionFormatOptions)
-        : getBase64FromBytes(bytes)
-);
+        : getBase64FromBytes(bytes);
+};
 
 export const getBytesFromString = ( data: string, bytesConversionFormat: number = HEX ) => (
     bytesConversionFormat === HEX ? getBytesFromHex(data) : getBytesFromBase64(data)

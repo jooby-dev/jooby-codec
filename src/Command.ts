@@ -2,6 +2,7 @@ import {IHexFormatOptions} from './config.js';
 import getHexFromBytes from './utils/getHexFromBytes.js';
 import getHexFromNumber from './utils/getHexFromNumber.js';
 import getBase64FromBytes from './utils/getBase64FromBytes.js';
+import {IBytesConversionFormatOptions, defaultFormatOptions} from './utils/bytesConversion.js';
 
 
 export interface ICommandExample {
@@ -17,6 +18,10 @@ export interface ICommandExample {
 }
 
 export type TCommandExampleList = Array<ICommandExample>;
+
+export type TJsonOptions = IBytesConversionFormatOptions;
+
+export const defaultJsonOptions = defaultFormatOptions;
 
 
 /**

@@ -1,6 +1,5 @@
-import Command from './Command.js';
-import {HEX} from '../constants/bytesConversionFormats.js';
-import {TBytesConversionFormatOptions, getStringFromBytes} from '../utils/bytesConversion.js';
+import Command, {TJsonOptions, defaultJsonOptions} from './Command.js';
+import {getStringFromBytes} from '../utils/bytesConversion.js';
 
 
 /**
@@ -38,12 +37,12 @@ class UnknownCommand extends Command {
         return new Uint8Array([id, data.length, ...data]);
     }
 
-    toJson ( bytesConversionFormat: number = HEX, bytesConversionFormatOptions: TBytesConversionFormatOptions = {} ) {
+    toJson ( options: TJsonOptions = defaultJsonOptions ) {
         const {id, data} = this.parameters;
 
         return JSON.stringify({
             id,
-            data: getStringFromBytes(data, bytesConversionFormat, bytesConversionFormatOptions)
+            data: getStringFromBytes(data, options)
         });
     }
 }
