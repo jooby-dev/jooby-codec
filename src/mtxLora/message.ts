@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-condition */
 
-import Command from './Command.js';
+import Command, {COMMAND_HEADER_SIZE} from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
 import {requestById as mtxLoraRequestById, responseById as mtxLoraResponseById} from './constants/commandRelations.js';
 import {requestById as mtxRequestById, responseById as mtxResponseById} from '../mtx/constants/commandRelations.js';
@@ -47,7 +47,6 @@ export interface IMessageConfig {
 // bitmask to extract/apply access level
 const ACCESS_LEVEL_MASK = 0x03;
 
-const COMMAND_HEADER_SIZE = 2;
 const PROTOCOL_VERSION = 0x10;
 const BLOCK_SIZE = 16;
 
