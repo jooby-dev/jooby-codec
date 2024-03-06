@@ -10,9 +10,10 @@ import {
     TUint8, TUint16, TUint32, TInt32, TYear2000, TMonth, TMonthDay
 } from '../types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+/* eslint-disable */
 import * as frameTypes from './constants/frameTypes.js';
-
+import * as screenIds from './constants/screenIds.js';
+/* eslint-enable */
 
 export const frameHeaderSize = 5;
 
@@ -89,6 +90,9 @@ export interface ITariffPlan {
     dayProfilesArraySize: TUint8
 }
 
+/**
+ * Flags to show/hide {@link screenIds | available screens}.
+ */
 export interface IDisplaySetBaseOperatorParameter {
     SET_ALL_SEGMENT_DISPLAY: boolean,
     SOFTWARE_VERSION: boolean,

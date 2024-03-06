@@ -1,6 +1,9 @@
 import * as screenIds from './screenIds.js';
 
 
+/**
+ * List of {@link screenIds | available screens}.
+ */
 export const main = [
     screenIds.SET_ALL_SEGMENT_DISPLAY,
     screenIds.SOFTWARE_VERSION,
@@ -31,6 +34,9 @@ export const main = [
     screenIds.CURRENT_BALANCE
 ];
 
+/**
+ * List of {@link screenIds | available screens}.
+ */
 export const extended = [
     ...main,
     screenIds.OPTOPORT_SPEED,
