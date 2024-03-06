@@ -1,5 +1,5 @@
-import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
-import CommandBinaryBuffer, {IDate, THalfhoursEnergies} from '../../CommandBinaryBuffer.js';
+import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../Command.js';
+import CommandBinaryBuffer, {IDate, THalfhoursEnergies, TARIFF_NUMBER} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 
 
@@ -38,6 +38,37 @@ const examples: TCommandExampleList = [
         }
     }
 ];
+
+const energiesToObis: Record<string, string> = {
+    'A+': '1.5.x',
+    'A+R+': '3.5.x',
+    'A+R-': '4.5.x',
+    'A-': '2.5.x',
+    'A-R+': '6.5.x',
+    'A-R-': '7.5.x'
+};
+
+const convertEnergyToObis = ( energy: string, tariff: number = 0 ) => {
+    const obis = energiesToObis[energy];
+
+    return obis ? obis.replace('x', tariff.toString(10)) : '';
+};
+
+const convertHalfhoursEnergiesToDlms = ( energies: THalfhoursEnergies ) => {
+    const dlms: Record<string, number> = {};
+
+    for ( const [energy, values] of Object.entries(energies) ) {
+        for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
+            const value = (values as Array<number | undefined>)[tariff];
+
+            if ( value || value === 0 ) {
+                dlms[convertEnergyToObis(energy, tariff + 1)] = value;
+            }
+        }
+    }
+
+    return dlms;
+};
 
 
 /**
@@ -117,6 +148,21 @@ class GetHalfhoursEnergies extends Command {
             buffer.position,
             ...buffer.getBytesToOffset()
         ]);
+    }
+
+    toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
+        const {parameters} = this;
+        const {date, firstHalfhour, halfhoursNumber, energies} = parameters;
+        const result = dlms
+            ? {
+                date,
+                firstHalfhour,
+                halfhoursNumber,
+                ...convertHalfhoursEnergiesToDlms(energies)
+            }
+            : parameters;
+
+        return JSON.stringify(result);
     }
 }
 

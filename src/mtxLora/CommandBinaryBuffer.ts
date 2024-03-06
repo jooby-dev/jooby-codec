@@ -34,10 +34,10 @@ export type TTariffsEnergies = Array<IEnergies>;
 
 export type TTariffsPowerMax = Array<IEnergies<IPowerMax>>;
 
+export const TARIFF_NUMBER = 4;
+
 
 const UNDEFINED_ENERGY_VALUE = 0xffffffff;
-
-const TARIFF_NUMBER = 4;
 
 const energiesMask = {
     'A+': 0x01,
