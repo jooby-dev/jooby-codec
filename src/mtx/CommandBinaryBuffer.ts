@@ -10,9 +10,10 @@ import {
     TUint8, TUint16, TUint32, TInt32, TYear2000, TMonth, TMonthDay
 } from '../types.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+/* eslint-disable */
 import * as frameTypes from './constants/frameTypes.js';
-
+import * as screenIds from './constants/screenIds.js';
+/* eslint-enable */
 
 export const frameHeaderSize = 5;
 
@@ -89,6 +90,9 @@ export interface ITariffPlan {
     dayProfilesArraySize: TUint8
 }
 
+/**
+ * Flags to show/hide {@link screenIds | available screens}.
+ */
 export interface IDisplaySetBaseOperatorParameter {
     SET_ALL_SEGMENT_DISPLAY: boolean,
     SOFTWARE_VERSION: boolean,
@@ -942,7 +946,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             relaySet1: (bitSet.toObject(relaySet1Mask, this.getUint8()) as unknown) as IRelaySet1OperatorParameter,
             displayType: this.getUint8(),
             ten: this.getUint8(),
-            timeoutRefresh: this.getInt16(),
+            timeoutRefresh: this.getUint16(),
             deltaCorMin: this.getUint8(),
             timeoutMagnetOff: this.getUint8(),
             timeoutMagnetOn: this.getUint8(),
@@ -951,12 +955,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
             timeoutRelayKey: this.getUint8(),
             timeoutRelayAuto: this.getUint8(),
             timeoutBadVAVB: this.getUint8(),
-            freqMax: this.getInt8(),
-            freqMin: this.getInt8(),
-            phMin: this.getInt16(),
-            year: this.getInt8(),
-            month: this.getInt8(),
-            date: this.getInt8(),
+            freqMax: this.getUint8(),
+            freqMin: this.getUint8(),
+            phMin: this.getUint16(),
+            year: this.getUint8(),
+            month: this.getUint8(),
+            date: this.getUint8(),
             energyDecimalPoint: this.getUint8(),
             typeMeter: this.getUint8(),
             timeoutIMax: this.getUint8(),
@@ -1011,12 +1015,12 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(operatorParameters.timeoutRelayKey);
         this.setUint8(operatorParameters.timeoutRelayAuto);
         this.setUint8(operatorParameters.timeoutBadVAVB);
-        this.setInt8(operatorParameters.freqMax);
-        this.setInt8(operatorParameters.freqMin);
-        this.setInt16(operatorParameters.phMin);
-        this.setInt8(operatorParameters.year);
-        this.setInt8(operatorParameters.month);
-        this.setInt8(operatorParameters.date);
+        this.setUint8(operatorParameters.freqMax);
+        this.setUint8(operatorParameters.freqMin);
+        this.setUint16(operatorParameters.phMin);
+        this.setUint8(operatorParameters.year);
+        this.setUint8(operatorParameters.month);
+        this.setUint8(operatorParameters.date);
         this.setUint8(operatorParameters.energyDecimalPoint);
         this.setUint8(operatorParameters.typeMeter);
         this.setUint8(operatorParameters.timeoutIMax);

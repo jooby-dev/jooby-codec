@@ -1,7 +1,7 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
-import {READ_WRITE} from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 import {TInt16} from '../../../types.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -38,7 +38,7 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command for precise date and time correction.
+ * Downlink command for incremental time correction.
  *
  * The corresponding uplink command: {@link SetCorrectDateTimeResponse}.
  *
@@ -74,7 +74,7 @@ class SetCorrectDateTime extends Command {
 
     static readonly hasParameters = true;
 
-    static readonly accessLevel = READ_WRITE;
+    static readonly accessLevel = READ_ONLY;
 
     static readonly maxSize = COMMAND_SIZE;
 

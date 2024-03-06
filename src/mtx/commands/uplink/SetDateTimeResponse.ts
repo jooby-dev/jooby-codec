@@ -1,6 +1,6 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {UPLINK} from '../../../constants/directions.js';
-import {READ_WRITE} from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
 const COMMAND_ID = 0x08;
@@ -48,7 +48,7 @@ class SetDateTimeResponse extends Command {
 
     static readonly hasParameters = false;
 
-    static readonly accessLevel = READ_WRITE;
+    static readonly accessLevel = READ_ONLY;
 
     static readonly maxSize = COMMAND_SIZE;
 

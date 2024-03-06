@@ -364,8 +364,8 @@ const downlinkMessages: TMessageList = [
     },
     {
         name: 'SetCorrectDateTime',
-        hex: '0a 12 44 f7 b3 43 5a 72 9e 18 f3 22 8c 7c 30 7e 01 0a',
-        frameHex: '7e 50 aa aa ff ff 0a 12 44 f7 b3 43 5a 72 9e 18 f3 22 8c 7c 30 7d 5e 01 0a 56 ad 7e',
+        hex: '0a 13 0e e0 63 a0 22 32 1c e0 84 dd 9e f7 da 78 55 77',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 0e e0 63 a0 22 32 1c e0 84 dd 9e f7 da 78 55 77 40 8e 7e',
         messageId: 10,
         accessLevel: downlinkCommands.SetCorrectDateTime.accessLevel,
         direction: directions.DOWNLINK,
@@ -374,8 +374,8 @@ const downlinkMessages: TMessageList = [
                 seconds: -5
             })
         ],
-        lrc: 0x1d,
-        crc: 0x56ad,
+        lrc: 0x1c,
+        crc: 0x408e,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -1159,16 +1159,16 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'SetCorrectDateTimeResponse',
-        hex: '0c 12 14 dd 5a e1 9d b0 2f 3d d1 e0 53 b1 7e a3 4c 52',
-        frameHex: '7e 51 aa aa ff ff 0c 12 14 dd 5a e1 9d b0 2f 3d d1 e0 53 b1 7d 5e a3 4c 52 76 8a 7e',
+        hex: '0c 13 b0 02 be f0 e6 77 f8 a2 b8 8e d8 a5 6c 0a 8a 1b',
+        frameHex: '7e 51 aa aa ff ff 0c 7d 33 b0 02 be f0 e6 77 f8 a2 b8 8e d8 a5 6c 0a 8a 1b 30 21 7e',
         messageId: 12,
         accessLevel: uplinkCommands.SetCorrectDateTimeResponse.accessLevel,
         direction: directions.UPLINK,
         commands: [
             new uplinkCommands.SetCorrectDateTimeResponse()
         ],
-        lrc: 0x1b,
-        crc: 0x768a,
+        lrc: 0x1a,
+        crc: 0x3021,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1191,16 +1191,16 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'SetDateTimeResponse',
-        hex: '0c 12 7d 7c c3 a1 f1 1d 18 e0 19 bf be af 01 63 da 9b',
-        frameHex: '7e 51 aa aa ff ff 0c 12 7d 5d 7c c3 a1 f1 1d 18 e0 19 bf be af 01 63 da 9b 65 b1 7e',
+        hex: '0c 13 96 f5 83 17 cf b5 6b 9d 94 fb b5 9c c9 e8 ea a6',
+        frameHex: '7e 51 aa aa ff ff 0c 7d 33 96 f5 83 17 cf b5 6b 9d 94 fb b5 9c c9 e8 ea a6 84 1e 7e',
         messageId: 12,
         accessLevel: uplinkCommands.SetDateTimeResponse.accessLevel,
         direction: directions.UPLINK,
         commands: [
             new uplinkCommands.SetDateTimeResponse()
         ],
-        lrc: 0x4f,
-        crc: 0x65b1,
+        lrc: 0x4e,
+        crc: 0x841e,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

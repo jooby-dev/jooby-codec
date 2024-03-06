@@ -13,18 +13,18 @@ const COMMAND_SIZE = 8;
 
 const examples: TCommandExampleList = [
     {
-        name: 'time response: 2023-09-13T15:30:25.000Z',
+        name: 'time: 2024.02.19 18:31:55',
         parameters: {
             isSummerTime: false,
-            seconds: 25,
-            minutes: 30,
+            seconds: 55,
+            minutes: 31,
             hours: 18,
             day: 2,
-            date: 13,
-            month: 9,
-            year: 23
+            date: 19,
+            month: 2,
+            year: 24
         },
-        hex: {header: '08 08', body: '00 19 1e 12 02 0d 09 17'}
+        hex: {header: '08 08', body: '00 37 1f 12 02 13 02 18'}
     }
 ];
 
@@ -40,19 +40,19 @@ const examples: TCommandExampleList = [
  *
  * const parameters = {
  *     isSummerTime: false,
- *     seconds: 25,
- *     minutes: 30,
+ *     seconds: 55,
+ *     minutes: 31,
  *     hours: 18,
  *     day: 2,
- *     date: 13,
- *     month: 9,
- *     year: 23
+ *     date: 19,
+ *     month: 2,
+ *     year: 24
  * };
  * const command = new SetDateTime(parameters);
  *
  * // output command binary in hex representation
  * console.log(command.toHex());
- * // 08 08 00 19 1e 12 02 0d 09 17
+ * // 08 08 00 37 1f 12 02 13 02 18
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetDateTime.md#request)

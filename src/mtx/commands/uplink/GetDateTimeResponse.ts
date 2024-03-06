@@ -10,7 +10,7 @@ const COMMAND_SIZE = 8;
 
 const examples: TCommandExampleList = [
     {
-        name: 'time response: 2023-09-13T15:30:25.000Z',
+        name: 'time: 2024.02.19 18:31:55',
         parameters: {
             isSummerTime: false,
             seconds: 55,
@@ -35,20 +35,20 @@ const examples: TCommandExampleList = [
  * ```js
  * import GetDateTimeResponse from 'jooby-codec/obis-observer/commands/uplink/GetDateTimeResponse.js';
  *
- * const commandBody = new Uint8Array([0x00, 0x19, 0x1e, 0x12, 0x02, 0x0d, 0x09, 0x17]);
+ * const commandBody = new Uint8Array([0x00, 0x37, 0x1f, 0x12, 0x02, 0x13, 0x02, 0x18]);
  * const command = GetDateTimeResponse.fromBytes(commandBody);
  *
  * console.log(command.parameters);
  * // output:
  * {
- *     seconds: 25,
- *     minutes: 30,
+ *     isSummerTime: false,
+ *     seconds: 55,
+ *     minutes: 31,
  *     hours: 18,
  *     day: 2,
- *     date: 13,
- *     month: 9,
- *     year: 23,
- *     isSummerTime: false
+ *     date: 19,
+ *     month: 2,
+ *     year: 24
  * }
  * ```
  *
