@@ -152,12 +152,7 @@ class GetHalfhoursEnergies extends Command {
 
     toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
         const {parameters} = this;
-        const {
-            date,
-            firstHalfhour,
-            halfhoursNumber,
-            energies
-        } = parameters;
+        const {date, firstHalfhour, halfhoursNumber, energies} = parameters;
         const result = dlms
             ? {
                 date,
