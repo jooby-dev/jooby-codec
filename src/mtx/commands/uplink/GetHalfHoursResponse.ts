@@ -90,22 +90,71 @@ const examples: TCommandExampleList = [
         }
     },
     {
-        name: 'empty data',
+        name: 'empty/invalid data',
         parameters: {
             date: {
                 year: 22,
                 month: 6,
                 date: 18
             },
-            periods: []
+            periods: [
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined},
+                {tariff: undefined, energy: undefined}
+            ]
         },
         hex: {
             header: '15 63',
-            body: `16 06 12 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-                   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-                   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-                   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-                   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00`
+            body: `16 06 12 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                   ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                   ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                   ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                   ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff`
         }
     },
     {
@@ -295,7 +344,7 @@ class GetHalfHoursResponse extends Command {
         const hasDst = data.byteLength > MIN_COMMAND_SIZE;
         const buffer = new CommandBinaryBuffer(data);
         const date = buffer.getDate();
-        const periods = buffer.getPeriods(hasDst ? MAX_PERIODS : MIN_PERIODS);
+        const periods = buffer.getEnergyPeriods(hasDst ? MAX_PERIODS : MIN_PERIODS);
 
         if ( hasDst ) {
             const dst = buffer.getUint8();
@@ -324,7 +373,7 @@ class GetHalfHoursResponse extends Command {
 
         // body
         buffer.setDate(parameters.date);
-        buffer.setPeriods(parameters.periods);
+        buffer.setEnergyPeriods(parameters.periods);
 
         if ( parameters.dst ) {
             buffer.setUint8(parameters.dst);

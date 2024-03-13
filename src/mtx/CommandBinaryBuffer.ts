@@ -695,9 +695,9 @@ export interface ISaldoParameters {
 
 export interface IPeriod {
     /** one of four tariffs (T1-T4) */
-    tariff: TUint8,
+    tariff?: TUint8,
     /** value for period */
-    energy: TUint16
+    energy?: TUint16
 }
 
 export const defaultFrameHeader: IFrameHeader = {
@@ -1233,29 +1233,37 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setInt32(saldoParameters.creditThreshold);
     }
 
-    getPeriods ( periodsNumber:number ): Array<IPeriod> {
-        const firstPeriod = this.getUint16();
-
-        if ( firstPeriod === 0xffff ) {
-            return [];
+    // eslint-disable-next-line class-methods-use-this
+    private getEnergyPeriod ( period: number ): IPeriod {
+        if ( period === 0xffff ) {
+            return {
+                tariff: undefined,
+                energy: undefined
+            };
         }
 
-        const periods = [firstPeriod, ...Array.from({length: periodsNumber - 1}, () => this.getUint16())];
-
-        return periods.map(period => ({
+        return {
             tariff: ((period >> 14) & 0x03),
             energy: (period & 0x3fff)
-        }));
+        };
     }
 
-    setPeriods ( periods: Array<IPeriod> ) {
-        if ( periods.length === 0 ) {
+    private setEnergyPeriod ( {tariff, energy}: IPeriod ) {
+        if ( tariff !== undefined && energy !== undefined ) {
+            this.setUint16((tariff << 14) | (energy & 0x3fff));
+        } else {
             this.setUint16(0xffff);
-
-            return;
         }
+    }
 
-        periods.forEach(period => this.setUint16((period.tariff << 14) | (period.energy & 0x3fff)));
+    getEnergyPeriods ( periodsNumber:number ): Array<IPeriod> {
+        const periods = Array.from({length: periodsNumber}, () => this.getUint16());
+
+        return periods.map(period => this.getEnergyPeriod(period));
+    }
+
+    setEnergyPeriods ( periods: Array<IPeriod> ) {
+        periods.forEach(period => this.setEnergyPeriod(period));
     }
 }
 

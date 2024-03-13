@@ -15,7 +15,6 @@ export {default as GetDeviceTypeResponse} from './GetDeviceTypeResponse.js';
 export {default as GetDisplayParamResponse} from './GetDisplayParamResponse.js';
 export {default as GetEnergyDayPreviousResponse} from './GetEnergyDayPreviousResponse.js';
 export {default as GetHalfHoursResponse} from './GetHalfHoursResponse.js';
-export {default as GetLastHalfHoursResponse} from './GetLastHalfHoursResponse.js';
 export {default as GetOpParamsResponse} from './GetOpParamsResponse.js';
 export {default as GetRatePlanInfoResponse} from './GetRatePlanInfoResponse.js';
 export {default as GetSaldoParametersResponse} from './GetSaldoParametersResponse.js';

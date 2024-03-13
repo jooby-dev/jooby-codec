@@ -19,6 +19,8 @@ requestByResponse.set(uplinkCommands.GetDayProfileResponse, downlinkCommands.Get
 requestByResponse.set(uplinkCommands.GetDeviceIdResponse, downlinkCommands.GetDeviceId);
 requestByResponse.set(uplinkCommands.GetDeviceTypeResponse, downlinkCommands.GetDeviceType);
 requestByResponse.set(uplinkCommands.GetDisplayParamResponse, downlinkCommands.GetDisplayParam);
+requestByResponse.set(uplinkCommands.GetEnergyDayPreviousResponse, downlinkCommands.GetEnergyDayPrevious);
+requestByResponse.set(uplinkCommands.GetHalfHoursResponse, downlinkCommands.GetHalfHours);
 requestByResponse.set(uplinkCommands.GetOpParamsResponse, downlinkCommands.GetOpParams);
 requestByResponse.set(uplinkCommands.GetRatePlanInfoResponse, downlinkCommands.GetRatePlanInfo);
 requestByResponse.set(uplinkCommands.GetSeasonProfileResponse, downlinkCommands.GetSeasonProfile);
