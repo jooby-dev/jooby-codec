@@ -35,11 +35,9 @@ const examples: TCommandExampleList = [
  * import GetHalfHours from 'jooby-codec/mtx/commands/downlink/GetHalfHours.js';
  *
  * const command = new GetHalfHours({
- *     date: {
- *         year: 24,
- *         month: 3,
- *         date: 22,
- *     }
+ *     year: 24,
+ *     month: 3,
+ *     date: 22,
  * });
  *
  * // output command binary in hex representation
