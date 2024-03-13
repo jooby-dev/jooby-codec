@@ -33,8 +33,8 @@ const examples: TCommandExampleList = [
             }
         },
         hex: {
-            header: '6f 15',
-            body: '2a 43 11 01 02 00 00 10 00 00 00 20 00 00 00 30 00 00 00 40 00'
+            header: '6f 0d',
+            body: '2a 43 11 01 02 10 00 20 00 30 00 40 00'
         }
     }
 ];
