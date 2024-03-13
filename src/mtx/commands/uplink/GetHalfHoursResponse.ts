@@ -1,5 +1,5 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
-import CommandBinaryBuffer, {IPeriod} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IEnergyPeriod} from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
 import {IDate} from '../../utils/dateTime.js';
@@ -8,9 +8,9 @@ import {TUint8} from '../../../types.js';
 
 interface IGetHalfHoursResponseParameters {
     date: IDate,
-    periods: Array<IPeriod>,
+    periods: Array<IEnergyPeriod>,
     /** if DST start/end of this day, contain DST hour */
-    dst?: TUint8
+    dstHour?: TUint8
 }
 
 
@@ -217,7 +217,7 @@ const examples: TCommandExampleList = [
                 {tariff: 1, energy: 6000},
                 {tariff: 1, energy: 6111}
             ],
-            dst: 3
+            dstHour: 3
         },
         hex: {
             header: '15 68',
@@ -347,12 +347,12 @@ class GetHalfHoursResponse extends Command {
         const periods = buffer.getEnergyPeriods(hasDst ? MAX_PERIODS : MIN_PERIODS);
 
         if ( hasDst ) {
-            const dst = buffer.getUint8();
+            const dstHour = buffer.getUint8();
 
             return new GetHalfHoursResponse({
                 date,
                 periods,
-                dst
+                dstHour
             });
         }
 
@@ -375,8 +375,8 @@ class GetHalfHoursResponse extends Command {
         buffer.setDate(parameters.date);
         buffer.setEnergyPeriods(parameters.periods);
 
-        if ( parameters.dst ) {
-            buffer.setUint8(parameters.dst);
+        if ( parameters.dstHour ) {
+            buffer.setUint8(parameters.dstHour);
         }
 
         return buffer.toUint8Array();

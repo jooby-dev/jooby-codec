@@ -693,7 +693,7 @@ export interface ISaldoParameters {
     creditThreshold: TInt32
 }
 
-export interface IPeriod {
+export interface IEnergyPeriod {
     /** one of four tariffs (T1-T4) */
     tariff?: TUint8,
     /** value for period */
@@ -1234,7 +1234,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     // eslint-disable-next-line class-methods-use-this
-    private getEnergyPeriod ( period: number ): IPeriod {
+    private getEnergyPeriod ( period: number ): IEnergyPeriod {
         if ( period === 0xffff ) {
             return {
                 tariff: undefined,
@@ -1248,7 +1248,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
         };
     }
 
-    private setEnergyPeriod ( {tariff, energy}: IPeriod ) {
+    private setEnergyPeriod ( {tariff, energy}: IEnergyPeriod ) {
         if ( tariff !== undefined && energy !== undefined ) {
             this.setUint16((tariff << 14) | (energy & 0x3fff));
         } else {
@@ -1256,13 +1256,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
         }
     }
 
-    getEnergyPeriods ( periodsNumber:number ): Array<IPeriod> {
+    getEnergyPeriods ( periodsNumber:number ): Array<IEnergyPeriod> {
         const periods = Array.from({length: periodsNumber}, () => this.getUint16());
 
         return periods.map(period => this.getEnergyPeriod(period));
     }
 
-    setEnergyPeriods ( periods: Array<IPeriod> ) {
+    setEnergyPeriods ( periods: Array<IEnergyPeriod> ) {
         periods.forEach(period => this.setEnergyPeriod(period));
     }
 }
