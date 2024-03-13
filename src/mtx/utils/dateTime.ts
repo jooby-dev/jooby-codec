@@ -16,6 +16,12 @@ export interface IDateTime {
     year: TYear2000
 }
 
+export interface IDate {
+    year: TYear2000,
+    month: TMonth,
+    date: TMonthDay
+}
+
 export interface ITimeCorrectionParameters {
     /**
      * The month of transition to daylight saving time.

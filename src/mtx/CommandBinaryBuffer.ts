@@ -4,7 +4,7 @@ import {IDeviceType} from './utils/deviceType.js';
 import * as DeviceType from './utils/deviceType.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
-import {IDateTime, ITimeCorrectionParameters} from './utils/dateTime.js';
+import {IDateTime, IDate, ITimeCorrectionParameters} from './utils/dateTime.js';
 import {DATA_REQUEST} from './constants/frameTypes.js';
 import {
     TUint8, TUint16, TUint32, TInt32, TYear2000, TMonth, TMonthDay
@@ -693,6 +693,13 @@ export interface ISaldoParameters {
     creditThreshold: TInt32
 }
 
+export interface IPeriod {
+    /** one of four tariffs (T1-T4) */
+    tariff: TUint8,
+    /** value for period */
+    energy: TUint16
+}
+
 export const defaultFrameHeader: IFrameHeader = {
     type: DATA_REQUEST,
     destination: 0xffff,
@@ -799,6 +806,7 @@ const define1Mask = {
     MAGNET_SCREEN_CONST: 0x20
 };
 
+
 /**
  * Command specific byte array manipulation.
  */
@@ -848,6 +856,36 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(dateTime.date);
         this.setUint8(dateTime.month);
         this.setUint8(dateTime.year);
+    }
+
+    getDate (): IDate {
+        return {
+            year: this.getUint8(),
+            month: this.getUint8(),
+            date: this.getUint8()
+        };
+    }
+
+    setDate ( date: IDate ) {
+        this.setUint8(date.year);
+        this.setUint8(date.month);
+        this.setUint8(date.date);
+    }
+
+    getPackedDate (): IDate {
+        const date0 = this.getUint8();
+        const date1 = this.getUint8();
+
+        return {
+            year: (date0 >> 1),
+            month: ((date0 << 3) & 0x0f) | (date1 >> 5),
+            date: date1 & 0x1f
+        };
+    }
+
+    setPackedDate ( date: IDate ) {
+        this.setUint8((date.year << 1) | ((date.month >> 3) & 0x01));
+        this.setUint8(((date.month << 5) & 0xe0) | (date.date & 0x1f));
     }
 
     getTariffPlan (): ITariffPlan {
@@ -1193,6 +1231,31 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(saldoParameters.decimalPointIndication);
         this.setUint32(saldoParameters.powerThreshold);
         this.setInt32(saldoParameters.creditThreshold);
+    }
+
+    getPeriods ( periodsNumber:number ): Array<IPeriod> {
+        const firstPeriod = this.getUint16();
+
+        if ( firstPeriod === 0xffff ) {
+            return [];
+        }
+
+        const periods = [firstPeriod, ...Array.from({length: periodsNumber - 1}, () => this.getUint16())];
+
+        return periods.map(period => ({
+            tariff: ((period >> 14) & 0x03),
+            energy: (period & 0x3fff)
+        }));
+    }
+
+    setPeriods ( periods: Array<IPeriod> ) {
+        if ( periods.length === 0 ) {
+            this.setUint16(0xffff);
+
+            return;
+        }
+
+        periods.forEach(period => this.setUint16((period.tariff << 14) | (period.energy & 0x3fff)));
     }
 }
 
