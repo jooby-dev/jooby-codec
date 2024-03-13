@@ -13,6 +13,8 @@ export {default as GetDayProfileResponse} from './GetDayProfileResponse.js';
 export {default as GetDeviceIdResponse} from './GetDeviceIdResponse.js';
 export {default as GetDeviceTypeResponse} from './GetDeviceTypeResponse.js';
 export {default as GetDisplayParamResponse} from './GetDisplayParamResponse.js';
+export {default as GetEnergyDayPreviousResponse} from './GetEnergyDayPreviousResponse.js';
+export {default as GetHalfHoursResponse} from './GetHalfHoursResponse.js';
 export {default as GetOpParamsResponse} from './GetOpParamsResponse.js';
 export {default as GetRatePlanInfoResponse} from './GetRatePlanInfoResponse.js';
 export {default as GetSaldoParametersResponse} from './GetSaldoParametersResponse.js';

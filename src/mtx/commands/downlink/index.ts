@@ -12,6 +12,8 @@ export {default as GetDayProfile} from './GetDayProfile.js';
 export {default as GetDeviceId} from './GetDeviceId.js';
 export {default as GetDeviceType} from './GetDeviceType.js';
 export {default as GetDisplayParam} from './GetDisplayParam.js';
+export {default as GetEnergyDayPrevious} from './GetEnergyDayPrevious.js';
+export {default as GetHalfHours} from './GetHalfHours.js';
 export {default as GetOpParams} from './GetOpParams.js';
 export {default as GetRatePlanInfo} from './GetRatePlanInfo.js';
 export {default as GetSaldo} from './GetSaldo.js';

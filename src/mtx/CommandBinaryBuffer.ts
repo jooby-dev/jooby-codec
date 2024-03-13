@@ -4,7 +4,7 @@ import {IDeviceType} from './utils/deviceType.js';
 import * as DeviceType from './utils/deviceType.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
-import {IDateTime, ITimeCorrectionParameters} from './utils/dateTime.js';
+import {IDateTime, IDate, ITimeCorrectionParameters} from './utils/dateTime.js';
 import {DATA_REQUEST} from './constants/frameTypes.js';
 import {
     TUint8, TUint16, TUint32, TInt32, TYear2000, TMonth, TMonthDay
@@ -693,6 +693,13 @@ export interface ISaldoParameters {
     creditThreshold: TInt32
 }
 
+export interface IEnergyPeriod {
+    /** one of four tariffs (T1-T4) */
+    tariff?: TUint8,
+    /** value for period */
+    energy?: TUint16
+}
+
 export const defaultFrameHeader: IFrameHeader = {
     type: DATA_REQUEST,
     destination: 0xffff,
@@ -799,6 +806,7 @@ const define1Mask = {
     MAGNET_SCREEN_CONST: 0x20
 };
 
+
 /**
  * Command specific byte array manipulation.
  */
@@ -848,6 +856,36 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(dateTime.date);
         this.setUint8(dateTime.month);
         this.setUint8(dateTime.year);
+    }
+
+    getDate (): IDate {
+        return {
+            year: this.getUint8(),
+            month: this.getUint8(),
+            date: this.getUint8()
+        };
+    }
+
+    setDate ( date: IDate ) {
+        this.setUint8(date.year);
+        this.setUint8(date.month);
+        this.setUint8(date.date);
+    }
+
+    getPackedDate (): IDate {
+        const date0 = this.getUint8();
+        const date1 = this.getUint8();
+
+        return {
+            year: (date0 >> 1),
+            month: ((date0 << 3) & 0x0f) | (date1 >> 5),
+            date: date1 & 0x1f
+        };
+    }
+
+    setPackedDate ( date: IDate ) {
+        this.setUint8((date.year << 1) | ((date.month >> 3) & 0x01));
+        this.setUint8(((date.month << 5) & 0xe0) | (date.date & 0x1f));
     }
 
     getTariffPlan (): ITariffPlan {
@@ -1193,6 +1231,39 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(saldoParameters.decimalPointIndication);
         this.setUint32(saldoParameters.powerThreshold);
         this.setInt32(saldoParameters.creditThreshold);
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    private getEnergyPeriod ( period: number ): IEnergyPeriod {
+        if ( period === 0xffff ) {
+            return {
+                tariff: undefined,
+                energy: undefined
+            };
+        }
+
+        return {
+            tariff: ((period >> 14) & 0x03),
+            energy: (period & 0x3fff)
+        };
+    }
+
+    private setEnergyPeriod ( {tariff, energy}: IEnergyPeriod ) {
+        if ( tariff !== undefined && energy !== undefined ) {
+            this.setUint16((tariff << 14) | (energy & 0x3fff));
+        } else {
+            this.setUint16(0xffff);
+        }
+    }
+
+    getEnergyPeriods ( periodsNumber:number ): Array<IEnergyPeriod> {
+        const periods = Array.from({length: periodsNumber}, () => this.getUint16());
+
+        return periods.map(period => this.getEnergyPeriod(period));
+    }
+
+    setEnergyPeriods ( periods: Array<IEnergyPeriod> ) {
+        periods.forEach(period => this.setEnergyPeriod(period));
     }
 }
 
