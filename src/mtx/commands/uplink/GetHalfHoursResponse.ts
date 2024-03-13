@@ -90,7 +90,7 @@ const examples: TCommandExampleList = [
         }
     },
     {
-        name: 'empty/invalid data',
+        name: 'response with no periods',
         parameters: {
             date: {
                 year: 22,
@@ -349,17 +349,10 @@ class GetHalfHoursResponse extends Command {
         if ( hasDst ) {
             const dstHour = buffer.getUint8();
 
-            return new GetHalfHoursResponse({
-                date,
-                periods,
-                dstHour
-            });
+            return new GetHalfHoursResponse({date, periods, dstHour});
         }
 
-        return new GetHalfHoursResponse({
-            date,
-            periods
-        });
+        return new GetHalfHoursResponse({date, periods});
     }
 
     // returns full message - header with body

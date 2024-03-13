@@ -9,7 +9,7 @@ import {IDate} from '../../utils/dateTime.js';
 interface IGetEnergyDayPreviousResponseParameters {
     date: IDate,
     /** active A+ energy by tariffs T1-T4 */
-    energy: Array<TInt32>
+    energies: Array<TInt32>
 }
 
 
@@ -25,7 +25,7 @@ const examples: TCommandExampleList = [
                 month: 3,
                 date: 22
             },
-            energy: [40301230, 3334244, 2333, 2145623]
+            energies: [40301230, 3334244, 2333, 2145623]
         },
         hex: {header: '03 13', body: '18 03 16 02 66 f2 ae 00 32 e0 64 00 00 09 1d 00 20 bd 57'}
     }
@@ -52,7 +52,7 @@ const examples: TCommandExampleList = [
  *         month: 3,
  *         date: 22
  *     },
- *     energy: [40301230, 3334244, 2333, 2145623]
+ *     energies: [40301230, 3334244, 2333, 2145623]
  * }
  * ```
  *
@@ -85,7 +85,7 @@ class GetEnergyDayPreviousResponse extends Command {
 
         return new GetEnergyDayPreviousResponse({
             date: buffer.getDate(),
-            energy: Array.from({length: 4}, () => buffer.getUint32())
+            energies: Array.from({length: 4}, () => buffer.getUint32())
         });
     }
 
@@ -100,7 +100,7 @@ class GetEnergyDayPreviousResponse extends Command {
 
         // body
         buffer.setDate(parameters.date);
-        parameters.energy.forEach(value => buffer.setUint32(value));
+        parameters.energies.forEach(value => buffer.setUint32(value));
 
         return buffer.toUint8Array();
     }

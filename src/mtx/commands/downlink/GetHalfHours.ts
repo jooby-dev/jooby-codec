@@ -18,7 +18,7 @@ const COMMAND_SIZE = 3;
 
 const examples: TCommandExampleList = [
     {
-        name: 'request half hour data for',
+        name: 'request half hour data for 2024.04.22 00:00:00 GMT',
         parameters: {
             date: {
                 year: 24,
