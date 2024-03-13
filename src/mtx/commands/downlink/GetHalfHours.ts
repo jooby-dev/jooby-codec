@@ -7,10 +7,6 @@ import {IDate} from '../../utils/dateTime.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import GetHalfHoursResponse from '../uplink/GetHalfHoursResponse.js';
 
-interface IGetHalfHoursParameters {
-    date: IDate
-}
-
 
 const COMMAND_ID = 0x15;
 const COMMAND_SIZE = 3;
@@ -20,11 +16,9 @@ const examples: TCommandExampleList = [
     {
         name: 'request half hour data for 2024.04.22 00:00:00 GMT',
         parameters: {
-            date: {
-                year: 24,
-                month: 3,
-                date: 22
-            }
+            year: 24,
+            month: 3,
+            date: 22
         },
         hex: {header: '15 03', body: '18 03 16'}
     }
@@ -56,7 +50,7 @@ const examples: TCommandExampleList = [
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetHalfHours.md#request)
  */
 class GetHalfHours extends Command {
-    constructor ( public parameters: IGetHalfHoursParameters ) {
+    constructor ( public parameters: IDate ) {
         super();
 
         this.size = COMMAND_SIZE;
@@ -80,7 +74,7 @@ class GetHalfHours extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetHalfHours({date: buffer.getDate()});
+        return new GetHalfHours(buffer.getDate());
     }
 
     // returns full message - header with body
@@ -93,7 +87,7 @@ class GetHalfHours extends Command {
         buffer.setUint8(size);
 
         // body
-        buffer.setDate(parameters.date);
+        buffer.setDate(parameters);
 
         return buffer.toUint8Array();
     }
