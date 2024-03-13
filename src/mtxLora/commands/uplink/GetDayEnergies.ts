@@ -31,8 +31,8 @@ const examples: TCommandExampleList = [
             ]
         },
         hex: {
-            header: '78 0c',
-            body: '2a 43 11 11 00 00 10 00 00 00 20 00'
+            header: '78 08',
+            body: '2a 43 11 11 10 00 20 00'
         }
     }
 ];
@@ -78,7 +78,7 @@ const convertTariffsEnergiesToDlms = ( energies: TTariffsEnergies ) => {
  * ```js
  * import GetDayEnergies from 'jooby-codec/obis-observer/commands/uplink/GetDayEnergies.js';
  *
- * const commandBody = new Uint8Array([0x2a, 0x43, 0x11, 0x11, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x20, 0x00]);
+ * const commandBody = new Uint8Array([0x2a, 0x43, 0x11, 0x11, 0x10, 0x00, 0x20, 0x00]);
  * const command = GetDayEnergies.fromBytes(commandBody);
  *
  * console.log(command.parameters);

@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
+import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
@@ -30,6 +30,24 @@ const examples: TCommandExampleList = [
         hex: {header: '03 13', body: '18 03 16 02 66 f2 ae 00 32 e0 64 00 00 09 1d 00 20 bd 57'}
     }
 ];
+
+const TARIFF_NUMBER = 4;
+
+const convertAPlusEnergyToObis = ( tariff: number = 0 ) => '1.8.x'.replace('x', tariff.toString(10));
+
+const convertEnergiesToDlms = ( energy: Array<TInt32> ) => {
+    const dlms: Record<string, number> = {};
+
+    for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
+        const value = energy[tariff];
+
+        if ( value || value === 0 ) {
+            dlms[convertAPlusEnergyToObis(tariff + 1)] = value;
+        }
+    }
+
+    return dlms;
+};
 
 
 /**
@@ -103,6 +121,19 @@ class GetEnergyDayPreviousResponse extends Command {
         parameters.energies.forEach(value => buffer.setUint32(value));
 
         return buffer.toUint8Array();
+    }
+
+    toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
+        const {parameters} = this;
+        const {date, energies: energy} = parameters;
+        const result = dlms
+            ? {
+                date,
+                ...convertEnergiesToDlms(energy)
+            }
+            : parameters;
+
+        return JSON.stringify(result);
     }
 }
 
