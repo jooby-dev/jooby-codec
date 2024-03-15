@@ -44,7 +44,7 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Downlink command to provide the date of tariff plan activation.
+ * Downlink command to provide the date and parameters of tariff plan activation.
  *
  * The corresponding uplink command: {@link ActivateRatePlanResponse}.
  *

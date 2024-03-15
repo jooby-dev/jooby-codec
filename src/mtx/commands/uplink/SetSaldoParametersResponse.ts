@@ -15,7 +15,7 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command to set device current saldo parameters.
+ * Uplink command to set device current saldo parameters information.
  *
  * The corresponding downlink command: `SetSaldoParameters`.
  *

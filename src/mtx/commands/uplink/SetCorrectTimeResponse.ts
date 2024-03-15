@@ -15,7 +15,7 @@ const examples: TCommandExampleList = [
 
 
 /**
- * Uplink command to set parameters for transitioning to winter/summer time.
+ * Uplink command to set [DST](https://en.wikipedia.org/wiki/Daylight_saving_time)/Standard time transition options.
  *
  * The corresponding downlink command: `SetCorrectTime`.
  *
