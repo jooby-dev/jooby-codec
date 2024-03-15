@@ -21,11 +21,11 @@ const COMMAND_SIZE = 1;
 
 const examples: TCommandExampleList = [
     {
-        name: 'simple request',
+        name: 'request for table A-',
         parameters: {
-            tariffTable: 5
+            tariffTable: 1
         },
-        hex: {header: '2c 01', body: '05'}
+        hex: {header: '2c 01', body: '01'}
     }
 ];
 

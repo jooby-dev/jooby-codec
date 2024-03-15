@@ -22,9 +22,9 @@ const COMMAND_SIZE = 1 + 2 * TARIFF_PLAN_SIZE;
 
 const examples: TCommandExampleList = [
     {
-        name: 'rate plan info response',
+        name: 'rate plan info response for A- table',
         parameters: {
-            tariffTable: 8,
+            tariffTable: 1,
             activePlan: {
                 id: 1,
                 tariffSet: 2,
@@ -48,7 +48,7 @@ const examples: TCommandExampleList = [
         },
         hex: {
             header: '2c 17',
-            body: '08 00 00 00 01 02 03 04 05 06 07 08 00 00 00 0a 14 1e 28 32 3c 46 50'
+            body: '01 00 00 00 01 02 03 04 05 06 07 08 00 00 00 0a 14 1e 28 32 3c 46 50'
         }
     }
 ];
