@@ -1,24 +1,14 @@
 import Command, {TCommandExampleList} from '../../Command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
-import {TYear2000, TMonth, TMonthDay} from '../../../types.js';
+import {IDate} from '../../../types.js';
 
 
 interface IGetBuildVersionResponseParameters {
     /**
-     * firmware build day of month
+     * firmware build date
      */
-    date: TMonthDay,
-
-    /**
-     * firmware build month
-     */
-    month: TMonth,
-
-    /**
-     * firmware build year
-     */
-    year: TYear2000
+    date: IDate,
 
     /**
      * firmware build version
@@ -34,9 +24,11 @@ const examples: TCommandExampleList = [
     {
         name: '2021.09.16/0.0.9',
         parameters: {
-            date: 16,
-            month: 9,
-            year: 21,
+            date: {
+                date: 16,
+                month: 9,
+                year: 21
+            },
             version: '0.0.9'
         },
         hex: {header: '70 06', body: '10 09 15 00 00 09'}
@@ -59,9 +51,11 @@ const examples: TCommandExampleList = [
  * console.log(command.parameters);
  * // output for 2021.09.16/0.0.9:
  * {
- *     date: 16,
- *     month: 9,
- *     year: 21,
+ *     date: {
+ *         date: 16,
+ *         month: 9,
+ *         year: 21
+ *     },
  *     version: '0.0.9'
  * }
  * ```
@@ -94,9 +88,11 @@ class GetBuildVersionResponse extends Command {
         const [date, month, year, n3, n2, n1] = data;
 
         return new GetBuildVersionResponse({
-            date,
-            month,
-            year,
+            date: {
+                date,
+                month,
+                year
+            },
             version: `${n3}.${n2}.${n1}`
         });
     }
@@ -109,9 +105,9 @@ class GetBuildVersionResponse extends Command {
         return new Uint8Array([
             COMMAND_ID,
             size,
-            parameters.date,
-            parameters.month,
-            parameters.year,
+            parameters.date.date,
+            parameters.date.month,
+            parameters.date.year,
             ...version
         ]);
     }

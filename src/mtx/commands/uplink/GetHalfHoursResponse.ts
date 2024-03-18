@@ -2,8 +2,7 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer, {IEnergyPeriod} from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
-import {IDate} from '../../utils/dateTime.js';
-import {TUint8} from '../../../types.js';
+import {IDate, TUint8} from '../../../types.js';
 
 
 interface IGetHalfHoursResponseParameters {
