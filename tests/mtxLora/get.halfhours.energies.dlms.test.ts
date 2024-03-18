@@ -9,7 +9,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             firstHalfhour: 1,
             halfhoursNumber: 2,
@@ -22,7 +22,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             firstHalfhour: 1,
             halfhoursNumber: 2,
@@ -38,7 +38,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             firstHalfhour: 1,
             halfhoursNumber: 2,
@@ -55,7 +55,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             firstHalfhour: 1,
             halfhoursNumber: 2,

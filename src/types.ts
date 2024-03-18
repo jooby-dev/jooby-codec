@@ -81,3 +81,12 @@ export type TMonthDay = BrandType<number, 'monthDay'>;
  * 1 - Sunday ... 7 - Saturday
  */
 export type TWeekDay = BrandType<number, 'weekDay'>;
+
+/**
+ * Date in a form `2024.03.15`.
+ */
+export interface IDate {
+    year: TYear2000,
+    month: TMonth,
+    date: TMonthDay
+}

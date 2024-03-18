@@ -2,8 +2,7 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, def
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
-import {TInt32} from '../../../types.js';
-import {IDate} from '../../utils/dateTime.js';
+import {IDate, TInt32} from '../../../types.js';
 
 
 interface IGetEnergyDayPreviousResponseParameters {

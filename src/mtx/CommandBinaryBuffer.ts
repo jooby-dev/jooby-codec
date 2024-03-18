@@ -4,10 +4,10 @@ import {IDeviceType} from './utils/deviceType.js';
 import * as DeviceType from './utils/deviceType.js';
 import getHexFromBytes from '../utils/getHexFromBytes.js';
 import getBytesFromHex from '../utils/getBytesFromHex.js';
-import {IDateTime, IDate, ITimeCorrectionParameters} from './utils/dateTime.js';
+import {IDateTime, ITimeCorrectionParameters} from './utils/dateTime.js';
 import {DATA_REQUEST} from './constants/frameTypes.js';
 import {
-    TUint8, TUint16, TUint32, TInt32, TYear2000, TMonth, TMonthDay
+    TUint8, TUint16, TUint32, TInt32, TYear2000, TMonth, TMonthDay, IDate
 } from '../types.js';
 
 /* eslint-disable */

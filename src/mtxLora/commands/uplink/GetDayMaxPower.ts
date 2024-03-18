@@ -1,6 +1,7 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../Command.js';
-import CommandBinaryBuffer, {IDate, TTariffsPowerMax, TARIFF_NUMBER} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {TTariffsPowerMax, TARIFF_NUMBER} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
+import {IDate} from '../../../types.js';
 
 
 interface IGetDayMaxPower {
@@ -10,7 +11,7 @@ interface IGetDayMaxPower {
 
 
 const COMMAND_ID = 0x79;
-const DATE_SIZE = 3; // year, month, day
+const DATE_SIZE = 3; // year, month, date
 const MAX_TARIFFS_ENERGIES_SIZE = 5 * 4 * (1 + 1 + 4); // 5 energy types, 4 tariffs, 1 hours, 1 minutes, 4 bytes - energy value
 const COMMAND_MAX_SIZE = DATE_SIZE + MAX_TARIFFS_ENERGIES_SIZE;
 
@@ -21,7 +22,7 @@ const examples: TCommandExampleList = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             tariffs: [
                 {
@@ -95,7 +96,7 @@ const convertTariffsPowerMaxToDlms = ( energies: TTariffsPowerMax ) => {
  *     date: {
  *         year: 21,
  *         month: 2,
- *         day: 3
+ *         date: 3
  *     },
  *     tariffs: [
  *          {

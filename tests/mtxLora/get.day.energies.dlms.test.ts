@@ -9,7 +9,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             tariffs: [
                 {
@@ -30,7 +30,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             '1.6.1': {
                 hours: 1,
@@ -50,7 +50,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             tariffs: [
                 {
@@ -101,7 +101,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             '1.6.1': {
                 hours: 0,
@@ -146,7 +146,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             tariffs: [
                 {
@@ -283,7 +283,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             '1.6.1': {
                 hours: 0,

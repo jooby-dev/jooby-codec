@@ -1,6 +1,7 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../Command.js';
-import CommandBinaryBuffer, {IDate, THalfhoursEnergies, TARIFF_NUMBER} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {THalfhoursEnergies, TARIFF_NUMBER} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
+import {IDate} from '../../../types.js';
 
 
 interface IGetHalfhoursEnergies {
@@ -12,7 +13,7 @@ interface IGetHalfhoursEnergies {
 
 
 const COMMAND_ID = 0x6f;
-const DATE_SIZE = 3; // year, month, day
+const DATE_SIZE = 3; // year, month, date
 const MAX_HALFHOURS_ENERGY_SIZE = 5 * 3 * 4; // 5 energy types, 3 channels, 4 bytes - energy value
 const COMMAND_MAX_SIZE = DATE_SIZE + MAX_HALFHOURS_ENERGY_SIZE;
 
@@ -23,7 +24,7 @@ const examples: TCommandExampleList = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             firstHalfhour: 1,
             halfhoursNumber: 2,
@@ -87,7 +88,7 @@ const convertHalfhoursEnergiesToDlms = ( energies: THalfhoursEnergies ) => {
  *     date: {
  *         year: 21,
  *         month: 2,
- *         day: 3
+ *         date: 3
  *     },
  *     firstHalfhour: 1,
  *     halfhoursNumber: 2,

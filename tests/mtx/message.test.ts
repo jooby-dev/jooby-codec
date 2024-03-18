@@ -790,9 +790,11 @@ const uplinkMessages: TMessageList = [
         direction: directions.UPLINK,
         commands: [
             new uplinkCommands.GetBuildVersionResponse({
-                date: 16,
-                month: 9,
-                year: 21,
+                date: {
+                    date: 16,
+                    month: 9,
+                    year: 21
+                },
                 version: '0.0.9'
             })
         ],

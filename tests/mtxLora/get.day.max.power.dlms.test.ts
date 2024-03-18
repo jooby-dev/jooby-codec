@@ -9,7 +9,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             energies: [
                 {
@@ -22,7 +22,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             '1.8.1': 0x1000,
             '7.8.1': 0x2000
@@ -34,7 +34,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             energies: [
                 {
@@ -60,7 +60,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             '1.8.1': 0,
             '2.8.1': 3,
@@ -80,7 +80,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             energies: [
                 {
@@ -121,7 +121,7 @@ const examples = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             '1.8.1': 0,
             '3.8.1': 1,

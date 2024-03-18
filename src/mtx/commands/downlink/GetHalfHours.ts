@@ -2,7 +2,7 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.j
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import {IDate} from '../../utils/dateTime.js';
+import {IDate} from '../../../types.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import GetHalfHoursResponse from '../uplink/GetHalfHoursResponse.js';

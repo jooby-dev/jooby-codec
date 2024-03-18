@@ -1,6 +1,7 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
 import {DOWNLINK} from '../../../constants/directions.js';
-import CommandBinaryBuffer, {IDate, TEnergiesFlags} from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {TEnergiesFlags} from '../../CommandBinaryBuffer.js';
+import {IDate} from '../../../types.js';
 
 
 interface IGetHalfhoursEnergies {
@@ -21,7 +22,7 @@ const examples: TCommandExampleList = [
             date: {
                 year: 21,
                 month: 2,
-                day: 3
+                date: 3
             },
             firstHalfhour: 5,
             halfhoursNumber: 4,
@@ -50,7 +51,7 @@ const examples: TCommandExampleList = [
  *     date: {
  *         year: 21,
  *         month: 2,
- *         day: 3,
+ *         date: 3,
  *     },
  *     firstHalfhour: 5,
  *     halfhoursNumber: 4,

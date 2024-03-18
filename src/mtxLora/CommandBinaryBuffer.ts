@@ -1,12 +1,7 @@
 import BinaryBuffer from '../utils/BinaryBuffer.js';
 import * as bitSet from '../utils/bitSet.js';
+import {IDate} from '../types.js';
 
-
-export interface IDate {
-    year: number,
-    month: number,
-    day: number
-}
 
 export interface IEnergies<T = number> {
     'A+'?: T,
@@ -91,13 +86,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return {
             year: datePart1 >> 1,
             month: ((datePart1 & 1) << 4) | (datePart2 >> 5),
-            day: datePart2 & 0x1f
+            date: datePart2 & 0x1f
         };
     }
 
-    setDate ( {year, month, day}: IDate ) {
+    setDate ( {year, month, date}: IDate ) {
         const date1 = (year << 1) | (month >> 3);
-        const date2 = ((month & 0x03) << 5) | (day & 0x1f);
+        const date2 = ((month & 0x03) << 5) | (date & 0x1f);
 
         this.setUint8(date1);
         this.setUint8(date2);
