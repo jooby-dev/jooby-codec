@@ -700,6 +700,9 @@ export interface IEnergyPeriod {
     energy?: TUint16
 }
 
+/** active A+ energy by tariffs T1-T4 */
+export interface IEnergies extends Array<TInt32> {}
+
 export const defaultFrameHeader: IFrameHeader = {
     type: DATA_REQUEST,
     destination: 0xffff,
@@ -1264,6 +1267,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     setEnergyPeriods ( periods: Array<IEnergyPeriod> ) {
         periods.forEach(period => this.setEnergyPeriod(period));
+    }
+
+    getEnergies (): IEnergies {
+        return Array.from({length: 4}, () => this.getUint32());
+    }
+
+    setEnergies ( energies: IEnergies ) {
+        energies.forEach(value => this.setUint32(value));
     }
 }
 
