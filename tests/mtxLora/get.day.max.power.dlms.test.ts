@@ -1,5 +1,5 @@
 import {GetDayEnergies} from '../../src/mtxLora/commands/uplink/index.js';
-import {runCommandDlmsTest} from './utils/runCommandDlmsTest.js';
+import {runCommandDlmsTest} from '../mtx/utils/runCommandDlmsTest.js';
 
 
 const examples = [
