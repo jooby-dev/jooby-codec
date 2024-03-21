@@ -1,14 +1,13 @@
 import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../Command.js';
-import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {IEnergies} from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
-import {IDate, TInt32} from '../../../types.js';
+import {IDate} from '../../../types.js';
 
 
 interface IGetEnergyDayPreviousResponseParameters {
     date: IDate,
-    /** active A+ energy by tariffs T1-T4 */
-    energies: Array<TInt32>
+    energies: IEnergies
 }
 
 
@@ -34,7 +33,7 @@ const TARIFF_NUMBER = 4;
 
 const convertAPlusEnergyToObis = ( tariff: number = 0 ) => '1.8.x'.replace('x', tariff.toString(10));
 
-const convertEnergiesToDlms = ( energy: Array<TInt32> ) => {
+const convertEnergiesToDlms = ( energy: IEnergies ) => {
     const dlms: Record<string, number> = {};
 
     for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
@@ -102,7 +101,7 @@ class GetEnergyDayPreviousResponse extends Command {
 
         return new GetEnergyDayPreviousResponse({
             date: buffer.getDate(),
-            energies: Array.from({length: 4}, () => buffer.getUint32())
+            energies: buffer.getEnergies()
         });
     }
 
@@ -117,7 +116,7 @@ class GetEnergyDayPreviousResponse extends Command {
 
         // body
         buffer.setDate(parameters.date);
-        parameters.energies.forEach(value => buffer.setUint32(value));
+        buffer.setEnergies(parameters.energies);
 
         return buffer.toUint8Array();
     }

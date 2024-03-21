@@ -700,6 +700,18 @@ export interface IEnergyPeriod {
     energy?: TUint16
 }
 
+/** active A+ energy by tariffs T1-T4 */
+export interface IEnergies extends Array<TInt32 | null> {}
+
+export interface IPackedEnergiesWithType {
+    energyType?: TEnergyType,
+    energies: IEnergies
+}
+
+/** `1` - `A+`, `2` - `A-` */
+export type TEnergyType = typeof A_PLUS_ENERGY_TYPE | typeof A_MINUS_ENERGY_TYPE;
+
+
 export const defaultFrameHeader: IFrameHeader = {
     type: DATA_REQUEST,
     destination: 0xffff,
@@ -710,6 +722,12 @@ export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
 export const SEASON_PROFILE_DAYS_NUMBER = 7;
 export const SEASON_PROFILE_SIZE = 2 + SEASON_PROFILE_DAYS_NUMBER;
+export const A_PLUS_ENERGY_TYPE = 1;
+export const A_MINUS_ENERGY_TYPE = 2;
+export const TARIFF_NUMBER = 4;
+export const PACKED_ENERGY_TYPE_SIZE = 1;
+export const ENERGY_SIZE = 4;
+export const DATE_SIZE = 3;
 
 
 const baseDisplaySetMask = {
@@ -1264,6 +1282,86 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     setEnergyPeriods ( periods: Array<IEnergyPeriod> ) {
         periods.forEach(period => this.setEnergyPeriod(period));
+    }
+
+    getEnergies (): IEnergies {
+        return Array.from({length: TARIFF_NUMBER}, () => this.getUint32());
+    }
+
+    setEnergies ( energies: IEnergies ) {
+        energies.forEach(value => this.setUint32(value as TInt32));
+    }
+
+    // eslint-disable-next-line class-methods-use-this
+    private getPackedEnergyType ( byte: number ): TEnergyType {
+        const isAPlus = !!bitSet.extractBits(byte, TARIFF_NUMBER, 1);
+
+        if ( isAPlus ) {
+            return A_PLUS_ENERGY_TYPE;
+        }
+
+        return A_MINUS_ENERGY_TYPE;
+    }
+
+    private getPackedEnergies ( energyType: TEnergyType, tariffMapByte: number ): IEnergies {
+        let byte = tariffMapByte;
+        const energies = Array.from({length: TARIFF_NUMBER}) as IEnergies;
+
+        if ( energyType === A_MINUS_ENERGY_TYPE ) {
+            byte >>= TARIFF_NUMBER;
+        }
+
+        energies.forEach((energy, index) => {
+            // read flags by one bit
+            const isTariffExists = !!bitSet.extractBits(byte, 1, index + 1);
+
+            if ( isTariffExists ) {
+                energies[index] = this.getUint32();
+            } else {
+                energies[index] = null;
+            }
+        });
+
+        return energies;
+    }
+
+    getPackedEnergyWithType (): IPackedEnergiesWithType {
+        const byte = this.getUint8();
+        const energyType = this.getPackedEnergyType(byte);
+        const energies = this.getPackedEnergies(energyType, byte);
+
+        return {
+            energyType,
+            energies
+        };
+    }
+
+    private setPackedEnergyType ( energyType: TEnergyType, energies: IEnergies ) {
+        let tariffsByte = 0;
+
+        energies.forEach((energy, index) => {
+            // set flags by one bit
+            tariffsByte = bitSet.fillBits(tariffsByte, 1, index + 1, Number(!!energy));
+        });
+
+        if ( energyType === A_MINUS_ENERGY_TYPE ) {
+            tariffsByte <<= TARIFF_NUMBER;
+        }
+
+        this.setUint8(tariffsByte);
+    }
+
+    setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ) {
+        console.log({energyType, energies});
+        if ( energyType ) {
+            this.setPackedEnergyType(energyType, energies);
+        }
+
+        energies.forEach(energy => {
+            if ( energy ) {
+                this.setUint32(energy);
+            }
+        });
     }
 }
 
