@@ -2,7 +2,7 @@ import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, def
 import CommandBinaryBuffer, {IEnergies} from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
-import {IDate, TInt32} from '../../../types.js';
+import {IDate} from '../../../types.js';
 
 
 interface IGetEnergyDayPreviousResponseParameters {
@@ -33,7 +33,7 @@ const TARIFF_NUMBER = 4;
 
 const convertAPlusEnergyToObis = ( tariff: number = 0 ) => '1.8.x'.replace('x', tariff.toString(10));
 
-const convertEnergiesToDlms = ( energy: Array<TInt32> ) => {
+const convertEnergiesToDlms = ( energy: IEnergies ) => {
     const dlms: Record<string, number> = {};
 
     for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
