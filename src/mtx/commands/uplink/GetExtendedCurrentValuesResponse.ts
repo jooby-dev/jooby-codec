@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
+import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
@@ -95,6 +95,20 @@ class GetExtendedCurrentValuesResponse extends Command {
         buffer.setUint16(parameters.frequency);
 
         return buffer.toUint8Array();
+    }
+
+    toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
+        const {parameters} = this;
+        const {temperature, frequency} = this.parameters;
+
+        const result = dlms
+            ? {
+                '0.11.0': temperature,
+                '14.7.0': frequency
+            }
+            : parameters;
+
+        return JSON.stringify(result);
     }
 }
 
