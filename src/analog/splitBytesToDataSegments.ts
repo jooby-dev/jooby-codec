@@ -13,7 +13,7 @@ const MAX_SEGMENTS_IN_SESSION = 7;
 export const splitBytesToDataSegments = ( bytes: Uint8Array, {segmentationSessionId, maxSegmentSize}: IDataSegmentSplitOptions ): Array<DataSegmentBase> => {
     const segmentsNumber = Math.ceil(bytes.length / maxSegmentSize);
     const segments = [];
-    let segmentIndex = 0;
+    let segmentIndex = 1;
     let position = 0;
 
     if ( segmentsNumber > MAX_SEGMENTS_IN_SESSION ) {
