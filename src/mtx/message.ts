@@ -3,6 +3,7 @@
 import Command, {COMMAND_HEADER_SIZE} from './Command.js';
 import UnknownCommand from './UnknownCommand.js';
 import {requestById, responseById} from './constants/commandRelations.js';
+import {requestById as mtxLoraRequestById, responseById as mtxLoraResponseById} from '../mtxLora/constants/commandRelations.js';
 import CommandBinaryBuffer, {frameHeaderSize, IFrameHeader, defaultFrameHeader} from './CommandBinaryBuffer.js';
 
 import {IHexFormatOptions} from '../config.js';
@@ -33,13 +34,14 @@ interface IMessageCommand {
 }
 
 // to build IMessage from bytes
-interface IFromBytesOptions {
+export interface IFromBytesOptions {
     direction?: number,
+    withMtxLora?: boolean,
     aesKey?: Uint8Array
 }
 
 // to serialize IMessage to bytes
-interface IToBytesOptions {
+export interface IToBytesOptions {
     messageId: number,
     accessLevel?: number,
     aesKey?: Uint8Array
@@ -51,7 +53,7 @@ interface IFromFrameOptions {
 }
 
 // message structure
-interface IMessage extends IToBytesOptions {
+export interface IMessage extends IToBytesOptions {
     commands: Array<IMessageCommand>,
     lrc: number
 }
@@ -74,13 +76,16 @@ const COMMANDS_END_MARK = new Uint8Array([0]);
 // all allowed types
 const directionTypeIds: Set<number> = new Set<number>(Object.values(directionTypes));
 
-const getCommand = ( id: number, size: number, data: Uint8Array, direction = AUTO ): Command => {
+const getCommand = ( id: number, size: number, data: Uint8Array, config?: IFromBytesOptions ): Command => {
+    const direction = config?.direction ?? AUTO;
+    const withMtxLora = config?.withMtxLora ?? false;
+
     if ( !directionTypeIds.has(direction) ) {
         throw new Error('wrong direction type');
     }
 
-    const downlinkCommand = requestById.get(id);
-    const uplinkCommand = responseById.get(id);
+    const downlinkCommand = requestById.get(id) || (withMtxLora ? mtxLoraRequestById.get(id) : null);
+    const uplinkCommand = responseById.get(id) || (withMtxLora ? mtxLoraResponseById.get(id) : null);
 
     // check command availability
     if (
@@ -127,7 +132,6 @@ const getCommand = ( id: number, size: number, data: Uint8Array, direction = AUT
  * @returns IMessage
  */
 export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IMessage => {
-    const direction = config?.direction ?? AUTO;
     const aesKey = config?.aesKey;
     const commands: Array<IMessageCommand> = [];
     const [messageId, maskedAccessLevel] = message;
@@ -180,7 +184,7 @@ export const fromBytes = ( message: Uint8Array, config?: IFromBytesOptions ): IM
             break;
         }
 
-        const command = getCommand(commandId, commandBodySize, commandBody, direction);
+        const command = getCommand(commandId, commandBodySize, commandBody, config);
 
         commands.push({
             data: {header: new Uint8Array([commandId]), body: commandBody},

@@ -13,8 +13,8 @@ import {DOWNLINK, UPLINK} from '../../src/constants/directions.js';
 interface IMessage {
     name: string,
     hex: string,
-    messageId: number,
-    config: message.IMessageConfig
+    fromBytesOptions: message.IFromBytesOptions,
+    toBytesOptions: message.IToBytesOptions,
     commands: Array<Command>
 }
 
@@ -23,11 +23,13 @@ type TMessageList = Array<IMessage>;
 const downlinkMessages: TMessageList = [
     {
         name: 'downlink command',
-        hex: '0a 10 10 6f 05 2a 43 03 05 03',
-        messageId: 10,
-        config: {
-            accessLevel: UNENCRYPTED,
+        hex: '0a 10 10 6f 05 2a 43 03 05 03 00 43',
+        fromBytesOptions: {
             direction: DOWNLINK
+        },
+        toBytesOptions: {
+            messageId: 10,
+            accessLevel: UNENCRYPTED
         },
         commands: [
             new downlinkCommands.GetHalfhoursEnergies({
@@ -54,11 +56,13 @@ const downlinkMessages: TMessageList = [
 const uplinkMessages: TMessageList = [
     {
         name: 'uplink commands',
-        hex: '10 10 10 78 08 2a 43 11 11 10 00 20 00 6f 09 2a 43 01 01 02 10 00 20 00',
-        messageId: 16,
-        config: {
-            accessLevel: UNENCRYPTED,
+        hex: '0a 10 10 78 08 2a 43 11 11 10 00 20 00 6f 09 2a 43 01 01 02 10 00 20 00 00 51',
+        fromBytesOptions: {
             direction: UPLINK
+        },
+        toBytesOptions: {
+            messageId: 10,
+            accessLevel: UNENCRYPTED
         },
         commands: [
             new uplinkCommands.GetDayEnergies({
@@ -91,13 +95,13 @@ const uplinkMessages: TMessageList = [
 
 
 const checkMessage = ( messageParams: IMessage ) => {
-    const {hex, messageId, config, commands} = messageParams;
-    const messageBytes = message.toBytes(messageId, commands, config);
+    const {hex, toBytesOptions, fromBytesOptions: config, commands} = messageParams;
+    const messageBytes = message.toBytes(commands, toBytesOptions);
     const messageData = message.fromHex(hex, config);
 
     expect(getHexFromBytes(messageBytes)).toEqual(hex);
-    expect(messageData.messageId).toEqual(messageId);
-    expect(messageData.accessLevel).toEqual(config.accessLevel);
+    expect(messageData.messageId).toEqual(toBytesOptions.messageId);
+    expect(messageData.accessLevel).toEqual(toBytesOptions.accessLevel);
     expect(messageData.commands?.map(item => item.command)).toStrictEqual(commands);
 };
 
