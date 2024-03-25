@@ -1,7 +1,14 @@
-import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
-import CommandBinaryBuffer, {IPackedEnergiesWithType, PACKED_ENERGY_TYPE_SIZE, ENERGY_SIZE} from '../../CommandBinaryBuffer.js';
+import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../Command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
+import {TInt32} from '../../../types.js';
+import CommandBinaryBuffer, {
+    IPackedEnergiesWithType,
+    PACKED_ENERGY_TYPE_SIZE,
+    ENERGY_SIZE,
+    A_MINUS_ENERGY_TYPE,
+    TARIFF_NUMBER
+} from '../../CommandBinaryBuffer.js';
 
 
 const COMMAND_ID = 0x0f;
@@ -27,6 +34,11 @@ const examples: TCommandExampleList = [
     }
 ];
 
+const getObisByEnergy = ( energy: number | undefined, tariff: number = 0 ): string => {
+    const obis = energy === A_MINUS_ENERGY_TYPE ? '2.8.x' : '1.8.x';
+
+    return obis.replace('x', tariff.toString(10));
+};
 
 /**
  * Uplink command to get current energy A+ by default or selected energy type for 4 tariffs (T1-T4).
@@ -106,6 +118,25 @@ class GetEnergyCurrentResponse extends Command {
         buffer.setPackedEnergyWithType(parameters);
 
         return buffer.toUint8Array();
+    }
+
+    toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
+        const {parameters} = this;
+
+        if ( !dlms ) {
+            return JSON.stringify(parameters);
+        }
+
+        const {energyType, energies} = parameters;
+        const result: Record<string, TInt32> = {};
+
+        for ( let i = 0; i < TARIFF_NUMBER; i += 1 ) {
+            if ( energies[i] || energies[i] === 0 ) {
+                result[getObisByEnergy(energyType, i + 1)] = energies[i] as TInt32;
+            }
+        }
+
+        return JSON.stringify(result);
     }
 }
 

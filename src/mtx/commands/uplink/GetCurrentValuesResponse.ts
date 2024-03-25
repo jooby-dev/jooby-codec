@@ -1,4 +1,4 @@
-import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
+import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../Command.js';
 import CommandBinaryBuffer from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
@@ -140,6 +140,32 @@ class GetCurrentValuesResponse extends Command {
         buffer.setUint16(parameters.pfB);
 
         return buffer.toUint8Array();
+    }
+
+    toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
+        const {parameters} = this;
+
+        if ( !dlms ) {
+            return JSON.stringify(parameters);
+        }
+
+        const result: Record<string, number> = {
+            '21.7.0': parameters.powerA,
+            '31.7.0': parameters.iaRms,
+            '32.7.0': parameters.vavbRms,
+            '33.7.0': parameters.pfA,
+            '51.7.0': parameters.ibRms,
+            '41.7.0': parameters.powerB,
+            '53.7.0': parameters.pfB
+        };
+
+        const varAKey = parameters.varA >= 0 ? '23.7.0' : '24.7.0';
+        const varBKey = parameters.varB >= 0 ? '43.7.0' : '44.7.0';
+
+        result[varAKey] = parameters.varA;
+        result[varBKey] = parameters.varB;
+
+        return JSON.stringify(result);
     }
 }
 

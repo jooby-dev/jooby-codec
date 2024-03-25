@@ -1,8 +1,15 @@
-import Command, {TCommandExampleList, COMMAND_HEADER_SIZE} from '../../Command.js';
-import CommandBinaryBuffer, {IPackedEnergiesWithType, DATE_SIZE, ENERGY_SIZE, PACKED_ENERGY_TYPE_SIZE} from '../../CommandBinaryBuffer.js';
+import Command, {TCommandExampleList, COMMAND_HEADER_SIZE, IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../Command.js';
+import CommandBinaryBuffer, {
+    IPackedEnergiesWithType,
+    DATE_SIZE,
+    ENERGY_SIZE,
+    PACKED_ENERGY_TYPE_SIZE,
+    A_MINUS_ENERGY_TYPE,
+    TARIFF_NUMBER
+} from '../../CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {UPLINK} from '../../../constants/directions.js';
-import {IDate} from '../../../types.js';
+import {TInt32, IDate} from '../../../types.js';
 
 
 interface IGetEnergyDayResponseParameters extends IPackedEnergiesWithType {
@@ -43,6 +50,11 @@ const examples: TCommandExampleList = [
     }
 ];
 
+const getObisByEnergy = ( energy: number | undefined, tariff: number = 0 ): string => {
+    const obis = energy === A_MINUS_ENERGY_TYPE ? '2.8.x' : '1.8.x';
+
+    return obis.replace('x', tariff.toString(10));
+};
 
 /**
  * Uplink command to get active A+ energy by date.
@@ -126,6 +138,28 @@ class GetEnergyDayResponse extends Command {
         buffer.setPackedEnergyWithType(parameters);
 
         return buffer.toUint8Array();
+    }
+
+    toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
+        const {parameters} = this;
+
+        if ( !dlms ) {
+            return JSON.stringify(parameters);
+        }
+
+        const {date, energyType, energies} = parameters;
+        const result: Record<string, TInt32> = {};
+
+        for ( let i = 0; i < TARIFF_NUMBER; i += 1 ) {
+            if ( energies[i] || energies[i] === 0 ) {
+                result[getObisByEnergy(energyType, i + 1)] = energies[i] as TInt32;
+            }
+        }
+
+        return JSON.stringify({
+            date,
+            ...result
+        });
     }
 }
 

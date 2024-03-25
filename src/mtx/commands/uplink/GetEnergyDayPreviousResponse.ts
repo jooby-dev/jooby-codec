@@ -123,11 +123,11 @@ class GetEnergyDayPreviousResponse extends Command {
 
     toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
         const {parameters} = this;
-        const {date, energies: energy} = parameters;
+        const {date, energies} = parameters;
         const result = dlms
             ? {
                 date,
-                ...convertEnergiesToDlms(energy)
+                ...convertEnergiesToDlms(energies)
             }
             : parameters;
 
