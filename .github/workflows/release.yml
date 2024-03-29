@@ -1,0 +1,71 @@
+name: release
+
+on:
+    release:
+        types:
+          - published
+    # allow to run manually
+    workflow_dispatch:
+        inputs:
+            provenance:
+                description: 'Use npm package provenance'
+                required: true
+                default: 'true'
+                type: choice
+                options:
+                  - 'true'
+                  - 'false'
+
+# allow only one concurrent run
+concurrency: "release"
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+            id-token: write
+
+        steps:
+          - uses: actions/checkout@v4
+
+          - uses: actions/setup-node@v4
+            with:
+                node-version: '18.x'
+                cache: npm
+                registry-url: https://registry.npmjs.org
+
+          - run: npm ci
+          - run: npm test
+
+          - run: npm run build:docs
+          - name: upload artifact
+            uses: actions/upload-pages-artifact@v3
+            with:
+                path: "./docs"
+
+          - run: npm run build:js:clean
+          - run: npm run publish
+            env:
+                NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+                NPM_CONFIG_PROVENANCE: ${{ github.event.inputs.provenance || 'true' }}
+          - run: cat /home/runner/.npm/_logs/*.log
+
+    deploy:
+        needs: build
+
+        permissions:
+            pages: write
+            id-token: write
+
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v4

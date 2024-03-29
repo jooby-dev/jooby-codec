@@ -1,0 +1,25 @@
+// https://www.typescriptlang.org/tsconfig
+{
+    "include": ["./src/**/*.ts"],
+
+    "compilerOptions": {
+        "incremental": true,
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "target": "es2020",
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "declaration": true,
+        "sourceMap": true,
+        "removeComments": true,
+        "strict": false,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "noImplicitAny": false  // to suppress TS7006
+    },
+
+    "ts-node": {
+        "esm": true
+    }
+}

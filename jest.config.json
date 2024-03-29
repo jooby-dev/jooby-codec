@@ -1,0 +1,10 @@
+{
+    "bail": 1,
+    "verbose": true,
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "rootDir": "./tests",
+    "moduleNameMapper": {
+        "(.+)\\.js$": "$1"
+    }
+}

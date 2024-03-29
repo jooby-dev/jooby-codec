@@ -1,0 +1,12 @@
+// https://typedoc.org/options/
+{
+    "entryPoints": ["./src/index.ts"],
+    "exclude": ["./src/test.ts"],
+    "out": "docs",
+    "includes": "./src",
+    "readme": "./readme.md",
+    "sort": ["static-first", "alphabetical"],
+    "disableSources": true,
+    "plugin": ["typedoc-plugin-missing-exports", "@mxssfd/typedoc-theme"],
+	"theme": "my-theme"
+}

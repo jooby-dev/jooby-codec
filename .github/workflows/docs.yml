@@ -1,0 +1,42 @@
+name: docs
+
+on:
+  - workflow_dispatch
+
+concurrency: "pages"
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+          - name: checkout
+            uses: actions/checkout@v4
+
+          - uses: actions/setup-node@v4
+            with:
+                node-version: '18.x'
+                cache: npm
+
+          - run: npm ci
+          - run: npm run build:docs
+
+          - name: upload artifact
+            uses: actions/upload-pages-artifact@v3
+            with:
+                path: "./docs"
+
+    deploy:
+        needs: build
+
+        permissions:
+            pages: write
+            id-token: write
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
+        runs-on: ubuntu-latest
+        steps:
+          - name: deploy to GitHub Pages
+            id: deployment
+            uses: actions/deploy-pages@v4
