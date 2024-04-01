@@ -118,3 +118,10 @@ export const GASIC = 12;
  * Jooby OMNI RM LoRaWAN 4PI 202 AS
  */
 export const IMP4AS = 15;
+
+/**
+ * NBIOT GAS module based on CPU STM32WLE5.
+ * 1 channel
+ *
+ */
+export const NBIOT = 24;
