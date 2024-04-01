@@ -1,7 +1,7 @@
 import {TBytes} from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
-import * as command from '../../command.js';
-import {ICommandParameters, TCommandExamples} from '../../command.js';
+import * as command from '../../utils/command.js';
+import {ICommandParameters, TCommandExamples} from '../../utils/command.js';
 
 
 /**

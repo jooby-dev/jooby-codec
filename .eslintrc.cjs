@@ -76,6 +76,7 @@ module.exports = {
         'no-restricted-syntax': 'off',
         'space-in-parens': 'off',
         'spaced-comment': 'off',
+        'prefer-object-spread': 'off',
 
         'object-curly-newline': [
             'error',

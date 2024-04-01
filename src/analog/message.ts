@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 
 import {TBytes} from '../types.js';
-import {TCommand, ICommandConfig} from './command.js';
+import {TCommand, ICommandConfig} from './utils/command.js';
 import * as downlinkCommands from './commands/downlink/index.js';
 import * as uplinkCommands from './commands/uplink/index.js';
 
@@ -15,7 +15,7 @@ import * as uplinkCommands from './commands/uplink/index.js';
 //import * as directionTypes from '../../.src/constants/directions.js';
 //import {AUTO, DOWNLINK, UPLINK} from '../../.src/constants/directions.js';
 
-import * as header from './header.js';
+import * as header from './utils/header.js';
 //import {IHexFormatOptions} from '../config.js';
 import calculateLrc from '../utils/calculateLrc.js';
 // import getBytesFromHex from '../utils/getBytesFromHex.js';
@@ -284,7 +284,7 @@ const getFromBytes = fromBytesMap => ( data: TBytes = [], config?: ICommandConfi
     // check the last byte left unprocessed
     if ( data.length - processedBytes === 1 ) {
         // LRC is present
-        expectedLrc = data.at(-1);
+        expectedLrc = data[data.length - 1];
         actualLrc = calculateLrc(data.slice(0, -1));
     } else {
         // LRC is absent
@@ -329,10 +329,9 @@ const getToMessage = toBytesMap => ( commands: Array<TCommand> ): IMessage => {
     const commandsWithBytes = commands.map(command => {
         // valid command
         if ( 'parameters' in command ) {
-            return {
-                ...command,
+            return Object.assign({}, command, {
                 bytes: toBytesMap[command.id](command.parameters, command.config)
-            };
+            });
         }
 
         // try {

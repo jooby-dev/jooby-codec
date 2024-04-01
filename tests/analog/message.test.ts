@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import * as message from '../../src/analog/message.js';
 import {IMessage, IInvalidMessage, TMessageExamples} from '../../src/analog/message.js';
-import {ICommandConfig} from '../../src/analog/command.js';
+import {ICommandConfig} from '../../src/analog/utils/command.js';
 //import * as downlinkCommands from '../../src/analog/commands/downlink/index.js';
 //import * as uplinkCommands from '../../src/analog/commands/uplink/index.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';

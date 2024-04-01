@@ -1,4 +1,4 @@
-import {TBytes} from '../types.js';
+import {TBytes} from '../../types.js';
 
 import * as header from './header.js';
 

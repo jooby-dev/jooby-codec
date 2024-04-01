@@ -1,4 +1,4 @@
-import {TBytes} from '../types.js';
+import {TBytes} from '../../types.js';
 // import {IHexFormatOptions} from '../config.js';
 // import getBytesFromHex from '../utils/getBytesFromHex.js';
 // import getHexFromBytes from '../utils/getHexFromBytes.js';

@@ -13,10 +13,9 @@ import {hexFormatOptions, IHexFormatOptions} from '../config.js';
  * output: '02 05 0c ff 69 8b 7d' or '0x02 0x05 0x0c 0xff 0x69 0x8b 0x7d'
  */
 export default ( bytes: TBytes, options: IHexFormatOptions = {} ): string => {
-    const {separator, prefix} = {...hexFormatOptions, ...options};
+    const {separator, prefix} = Object.assign({}, hexFormatOptions, options);
 
-    return [...bytes]
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        .map((byte: number) => `${prefix}${byte.toString(16).padStart(2, '0')}`)
+    return bytes
+        .map((byte: number) => `${prefix}${(byte < 16 ? '0' : '')}${byte.toString(16)}`)
         .join(separator);
 };
