@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import * as message from '../../src/analog/message.js';
-import {IMessage, IInvalidMessage, TMessageExamples} from '../../src/analog/message.js';
+import * as message from '../../src/analog/message/index.js';
+import {IMessage, IInvalidMessage, TMessageExamples} from '../../src/analog/message/types.js';
 import {ICommandConfig} from '../../src/analog/utils/command.js';
 //import * as downlinkCommands from '../../src/analog/commands/downlink/index.js';
 //import * as uplinkCommands from '../../src/analog/commands/uplink/index.js';

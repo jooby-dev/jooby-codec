@@ -3,10 +3,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 
-import {TBytes} from '../types.js';
-import {TCommand, ICommandConfig} from './utils/command.js';
-import * as downlinkCommands from './commands/downlink/index.js';
-import * as uplinkCommands from './commands/uplink/index.js';
+import {TBytes} from '../../types.js';
+import {IMessage, IInvalidMessage} from './types.js';
+import {TCommand, ICommandConfig} from '../utils/command.js';
+// import * as downlinkCommands from '../commands/downlink/index.js';
+//import * as uplinkCommands from '../commands/uplink/index.js';
 
 //import Command, {ICommandBinary} from '../../.src/analog/Command.js';
 //import UnknownCommand from '../../.src/analog/UnknownCommand.js';
@@ -15,31 +16,15 @@ import * as uplinkCommands from './commands/uplink/index.js';
 //import * as directionTypes from '../../.src/constants/directions.js';
 //import {AUTO, DOWNLINK, UPLINK} from '../../.src/constants/directions.js';
 
-import * as header from './utils/header.js';
+import * as header from '../utils/header.js';
 //import {IHexFormatOptions} from '../config.js';
-import calculateLrc from '../utils/calculateLrc.js';
+import calculateLrc from '../../utils/calculateLrc.js';
 // import getBytesFromHex from '../utils/getBytesFromHex.js';
 // import getBytesFromBase64 from '../utils/getBytesFromBase64.js';
 // import getHexFromBytes from '../utils/getHexFromBytes.js';
 // import getBase64FromBytes from '../utils/getBase64FromBytes.js';
 //import mergeUint8Arrays from '../../.src/utils/mergeUint8Arrays.js';
 
-export interface IMessage {
-    commands: Array<TCommand>,
-    bytes: TBytes,
-    lrc: {
-        expected: number,
-        actual: number
-    }
-}
-
-export interface IInvalidMessage {
-    message: IMessage,
-    error: string,
-}
-
-type TExampleName = string;
-export type TMessageExamples = Record<TExampleName, IMessage | IInvalidMessage>;
 
 // interface IMessageCommand {
 //     data: ICommandBinary;
@@ -65,11 +50,11 @@ export type TMessageExamples = Record<TExampleName, IMessage | IInvalidMessage>;
 
 const HEADER_MAX_SIZE = 3;
 
-export const downlinkCommandToBytes = {};
-export const downlinkCommandFromBytes = {};
+// export const downlinkCommandToBytes = {};
+// export const downlinkCommandFromBytes = {};
 
-export const uplinkCommandToBytes = {};
-export const uplinkCommandFromBytes = {};
+// export const uplinkCommandToBytes = {};
+// export const uplinkCommandFromBytes = {};
 
 // all allowed types
 //const directionTypeIds: Set<number> = new Set<number>(Object.values(directionTypes));
@@ -219,7 +204,7 @@ export const uplinkCommandFromBytes = {};
 // export const toBase64 = ( commands: Array<Command> ): string => getBase64FromBytes(toBytes(commands));
 
 
-const getFromBytes = fromBytesMap => ( data: TBytes = [], config?: ICommandConfig ): IMessage | IInvalidMessage => {
+export const getFromBytes = fromBytesMap => ( data: TBytes = [], config?: ICommandConfig ): IMessage | IInvalidMessage => {
     //const hardwareType = config?.hardwareType;
     const commands: Array<TCommand> = [];
     const message: IMessage = {
@@ -305,7 +290,7 @@ const getFromBytes = fromBytesMap => ( data: TBytes = [], config?: ICommandConfi
     };
 };
 
-const getToBytes = toBytesMap => ( commands: Array<TCommand> ): TBytes => {
+export const getToBytes = toBytesMap => ( commands: Array<TCommand> ): TBytes => {
     const commandBytes = commands.map(command => {
         // valid command
         if ( 'parameters' in command ) {
@@ -325,7 +310,7 @@ const getToBytes = toBytesMap => ( commands: Array<TCommand> ): TBytes => {
     return [...body, calculateLrc(body)];
 };
 
-const getToMessage = toBytesMap => ( commands: Array<TCommand> ): IMessage => {
+export const getToMessage = toBytesMap => ( commands: Array<TCommand> ): IMessage => {
     const commandsWithBytes = commands.map(command => {
         // valid command
         if ( 'parameters' in command ) {
@@ -357,29 +342,29 @@ const getToMessage = toBytesMap => ( commands: Array<TCommand> ): IMessage => {
     };
 };
 
-export const downlink = {
-    fromBytes: getFromBytes(downlinkCommandFromBytes),
-    toBytes: getToBytes(downlinkCommandToBytes),
-    toMessage: getToMessage(downlinkCommandToBytes)
-};
+// export const downlink = {
+//     fromBytes: getFromBytes(downlinkCommandFromBytes),
+//     toBytes: getToBytes(downlinkCommandToBytes),
+//     toMessage: getToMessage(downlinkCommandToBytes)
+// };
 
-export const uplink = {
-    fromBytes: getFromBytes(uplinkCommandFromBytes),
-    toBytes: getToBytes(uplinkCommandToBytes),
-    toMessage: getToMessage(uplinkCommandToBytes)
-};
+// export const uplink = {
+//     fromBytes: getFromBytes(uplinkCommandFromBytes),
+//     toBytes: getToBytes(uplinkCommandToBytes),
+//     toMessage: getToMessage(uplinkCommandToBytes)
+// };
 
 
 // for ( const commandName in uplinkCommands ) {
 //     uplinkCommands[]
 // }
 
-// fill maps
-// iteration should not be used because of webpack/rollup processing!
-downlinkCommandToBytes[downlinkCommands.correctTime2000.id] = downlinkCommands.correctTime2000.toBytes;
+// // fill maps
+// // iteration should not be used because of webpack/rollup processing!
+// downlinkCommandToBytes[downlinkCommands.correctTime2000.id] = downlinkCommands.correctTime2000.toBytes;
 
-uplinkCommandToBytes[uplinkCommands.correctTime2000.id] = uplinkCommands.correctTime2000.toBytes;
+// uplinkCommandToBytes[uplinkCommands.correctTime2000.id] = uplinkCommands.correctTime2000.toBytes;
 
-downlinkCommandFromBytes[downlinkCommands.correctTime2000.id] = downlinkCommands.correctTime2000.fromBytes;
+//downlinkCommandFromBytes[downlinkCommands.correctTime2000.id] = downlinkCommands.correctTime2000.fromBytes;
 
-uplinkCommandFromBytes[uplinkCommands.correctTime2000.id] = uplinkCommands.correctTime2000.fromBytes;
+// uplinkCommandFromBytes[uplinkCommands.correctTime2000.id] = uplinkCommands.correctTime2000.fromBytes;
