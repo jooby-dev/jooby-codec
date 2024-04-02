@@ -122,6 +122,5 @@ export const IMP4AS = 15;
 /**
  * NBIOT GAS module based on CPU STM32WLE5.
  * 1 channel
- *
  */
 export const NBIOT = 24;

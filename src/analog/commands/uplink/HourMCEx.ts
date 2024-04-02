@@ -3,13 +3,14 @@ import CurrentMC from './CurrentMC.js';
 import {TTime2000} from '../../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
+import {TUint8} from "../../../types";
 
 
 interface IHourMCExParameters {
     channelList: Array<IChannelHours>,
-    startTime2000: TTime2000
-    hour: number
-    hours: number
+    startTime2000: TTime2000,
+    hour: TUint8,
+    hours: TUint8
 }
 
 
@@ -94,7 +95,6 @@ class HourMCEx extends CurrentMC {
     toBinary (): ICommandBinary {
         const buffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
         const {startTime2000, hour, hours, channelList} = this.parameters;
-        // console.log(this.parameters)
 
         buffer.setChannelsValuesWithHourDiffExtended(hour, hours, startTime2000, channelList);
 

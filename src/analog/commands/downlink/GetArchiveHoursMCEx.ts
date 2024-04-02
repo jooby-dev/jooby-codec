@@ -2,15 +2,16 @@ import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../utils/time.js';
+import {TUint8} from "../../../types";
 
 
 /**
  * GetArchiveHoursMCEx command parameters
  */
 interface IGetArchiveHoursMCExParameters {
-    hour: number,
+    hour: TUint8,
     /** the number of hours to retrieve */
-    hours: number,
+    hours: TUint8,
     startTime2000: TTime2000,
     /** array of channelList index numbers */
     channelList: Array<number>

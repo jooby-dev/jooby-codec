@@ -2,6 +2,7 @@ import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
 import {TTime2000} from '../../../utils/time.js';
+import {TUint8} from "../../../types";
 
 
 /**
@@ -10,8 +11,8 @@ import {TTime2000} from '../../../utils/time.js';
 interface IGetArchiveHoursMCExResponseParameters {
     channelList: Array<IChannelHours>,
     startTime2000: TTime2000
-    hour: number,
-    hours: number
+    hour: TUint8,
+    hours: TUint8
 }
 
 

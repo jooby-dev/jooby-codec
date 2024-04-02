@@ -377,7 +377,7 @@ interface IParameterBatteryDepassivationConfig {
  */
 interface IParameterMqttSessionConfig {
     clientId: string,
-    userName: string,
+    username: string,
     password: string,
     cleanSession: number
 }
@@ -432,7 +432,7 @@ interface IParameterMqttDataSendConfig {
  * deviceParameters.NBIOT_SSL_CONFIG = `40`
  */
 interface IParameterNbiotSslConfig {
-    seclevel: number,
+    sslSecurityLevel: number,
     sslVersion: number
 }
 
@@ -442,7 +442,7 @@ interface IParameterNbiotSslConfig {
  */
 interface IParameterNbiotSslWrite {
     size: number,
-    pos: number,
+    position: number,
     chunk: Uint8Array
 }
 
@@ -756,14 +756,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
         let size;
         let data;
 
-        switch (parameter.id) {
+        switch ( parameter.id ) {
             case deviceParameters.MQTT_SESSION_CONFIG:
                 if ( parameter.data ) {
                     data = parameter.data as IParameterMqttSessionConfig;
                     // size: parameter id + cleanSession
                     size = 1 + 1;
                     size += data.clientId.length + 1;
-                    size += data.userName.length + 1;
+                    size += data.username.length + 1;
                     size += data.password.length + 1;
                 } else {
                     // size: parameter id
@@ -1703,7 +1703,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     private setMqttSessionConfig ( parameter: IParameterMqttSessionConfig ): void {
         this.setString(parameter.clientId);
-        this.setString(parameter.userName);
+        this.setString(parameter.username);
         this.setString(parameter.password);
         this.setUint8(parameter.cleanSession);
     }
@@ -1770,23 +1770,23 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     private getNbiotSslConfig (): IParameterNbiotSslConfig {
         return {
-            seclevel: this.getUint8(),
+            sslSecurityLevel: this.getUint8(),
             sslVersion: this.getUint8()
         };
     }
 
     private setNbiotSslConfig ( parameter: IParameterNbiotSslConfig ): void {
-        this.setUint8(parameter.seclevel);
+        this.setUint8(parameter.sslSecurityLevel);
         this.setUint8(parameter.sslVersion);
     }
 
     private setNbiotSslWrite ( parameter: IParameterNbiotSslWrite ): void {
-        if (parameter.size !== parameter.chunk.length) {
+        if ( parameter.size !== parameter.chunk.length ) {
             throw new Error('ssl chunk size parameter doesn\'t match actual ssl chunk size');
         }
 
         this.setUint16(parameter.size, false);
-        this.setUint16(parameter.pos, false);
+        this.setUint16(parameter.position, false);
         this.setBytes(parameter.chunk);
     }
 
