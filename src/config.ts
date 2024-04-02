@@ -7,11 +7,14 @@
  * ```js
  * import {config} from 'jooby-codec';
  *
- * const {hexFormatOptions} = config;
+ * const {hexFormatOptions, host} = config;
  *
- * // set format options for all library methods
+ * // set format options for all utils methods
  * hexFormatOptions.separator = '';
  * hexFormatOptions.prefix = '0x';
+ *
+ * // for some ARM
+ * host.isLittleEndian = false;
  * ```
  */
 
