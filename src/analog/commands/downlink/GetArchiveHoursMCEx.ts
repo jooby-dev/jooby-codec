@@ -2,7 +2,7 @@ import Command, {TCommandExampleList, ICommandBinary} from '../../Command.js';
 import CommandBinaryBuffer, {IChannel} from '../../CommandBinaryBuffer.js';
 import {DOWNLINK} from '../../../constants/directions.js';
 import {getTime2000FromDate, getDateFromTime2000, TTime2000} from '../../../utils/time.js';
-import {TUint8} from "../../../types";
+import {TUint8} from "../../../types.js";
 
 
 /**

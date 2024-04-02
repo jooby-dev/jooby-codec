@@ -3,7 +3,7 @@ import CurrentMC from './CurrentMC.js';
 import {TTime2000} from '../../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHours} from '../../CommandBinaryBuffer.js';
 import {UPLINK} from '../../../constants/directions.js';
-import {TUint8} from "../../../types";
+import {TUint8} from "../../../types.js";
 
 
 interface IHourMCExParameters {

@@ -432,8 +432,8 @@ interface IParameterMqttDataSendConfig {
  * deviceParameters.NBIOT_SSL_CONFIG = `40`
  */
 interface IParameterNbiotSslConfig {
-    sslSecurityLevel: number,
-    sslVersion: number
+    securityLevel: number,
+    version: number
 }
 
 /**
@@ -1770,14 +1770,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
     private getNbiotSslConfig (): IParameterNbiotSslConfig {
         return {
-            sslSecurityLevel: this.getUint8(),
-            sslVersion: this.getUint8()
+            securityLevel: this.getUint8(),
+            version: this.getUint8()
         };
     }
 
     private setNbiotSslConfig ( parameter: IParameterNbiotSslConfig ): void {
-        this.setUint8(parameter.sslSecurityLevel);
-        this.setUint8(parameter.sslVersion);
+        this.setUint8(parameter.securityLevel);
+        this.setUint8(parameter.version);
     }
 
     private setNbiotSslWrite ( parameter: IParameterNbiotSslWrite ): void {
