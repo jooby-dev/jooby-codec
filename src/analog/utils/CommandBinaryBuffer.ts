@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
+import {TBytes} from '../../types.js';
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
@@ -544,28 +546,28 @@ const mtxBitMask = {
 /**
  * device parameter data size + byte for parameter id
  */
-const parametersSizeMap = new Map([
-    /* size: 1 byte of parameter id + parameter data*/
-    [deviceParameters.REPORTING_DATA_INTERVAL, 1 + 4],
-    [deviceParameters.DAY_CHECKOUT_HOUR, 1 + 1],
-    [deviceParameters.REPORTING_DATA_TYPE, 1 + 1],
-    [deviceParameters.PRIORITY_DATA_DELIVERY_TYPE, 1 + 1],
-    [deviceParameters.ACTIVATION_METHOD, 1 + 1],
-    [deviceParameters.BATTERY_DEPASSIVATION_INFO, 1 + 6],
-    [deviceParameters.BATTERY_MINIMAL_LOAD_TIME, 1 + 4],
-    [deviceParameters.CHANNELS_CONFIG, 1 + 1],
-    [deviceParameters.RX2_CONFIG, 1 + 4],
-    [deviceParameters.ABSOLUTE_DATA, 1 + 9],
-    [deviceParameters.ABSOLUTE_DATA_ENABLE, 1 + 1],
-    [deviceParameters.SERIAL_NUMBER, 1 + 6],
-    [deviceParameters.GEOLOCATION, 1 + 10],
-    [deviceParameters.EXTRA_FRAME_INTERVAL, 1 + 2],
-    [deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL, 1 + 10],
-    [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL, 1 + 2],
-    [deviceParameters.PULSE_CHANNELS_SCAN_CONFIG, 1 + 3],
-    [deviceParameters.PULSE_CHANNELS_SET_CONFIG, 1 + 1],
-    [deviceParameters.BATTERY_DEPASSIVATION_CONFIG, 1 + 4]
-]);
+// const parametersSizeMap = new Map([
+//     /* size: 1 byte of parameter id + parameter data*/
+//     [deviceParameters.REPORTING_DATA_INTERVAL, 1 + 4],
+//     [deviceParameters.DAY_CHECKOUT_HOUR, 1 + 1],
+//     [deviceParameters.REPORTING_DATA_TYPE, 1 + 1],
+//     [deviceParameters.PRIORITY_DATA_DELIVERY_TYPE, 1 + 1],
+//     [deviceParameters.ACTIVATION_METHOD, 1 + 1],
+//     [deviceParameters.BATTERY_DEPASSIVATION_INFO, 1 + 6],
+//     [deviceParameters.BATTERY_MINIMAL_LOAD_TIME, 1 + 4],
+//     [deviceParameters.CHANNELS_CONFIG, 1 + 1],
+//     [deviceParameters.RX2_CONFIG, 1 + 4],
+//     [deviceParameters.ABSOLUTE_DATA, 1 + 9],
+//     [deviceParameters.ABSOLUTE_DATA_ENABLE, 1 + 1],
+//     [deviceParameters.SERIAL_NUMBER, 1 + 6],
+//     [deviceParameters.GEOLOCATION, 1 + 10],
+//     [deviceParameters.EXTRA_FRAME_INTERVAL, 1 + 2],
+//     [deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL, 1 + 10],
+//     [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL, 1 + 2],
+//     [deviceParameters.PULSE_CHANNELS_SCAN_CONFIG, 1 + 3],
+//     [deviceParameters.PULSE_CHANNELS_SET_CONFIG, 1 + 1],
+//     [deviceParameters.BATTERY_DEPASSIVATION_CONFIG, 1 + 4]
+// ]);
 
 const fourChannelsBitMask = {
     channel1: 2 ** 0,
@@ -574,19 +576,19 @@ const fourChannelsBitMask = {
     channel4: 2 ** 3
 };
 
-const byteToPulseCoefficientMap = new Map([
-    [0x80, 1],
-    [0x81, 5],
-    [0x82, 10],
-    [0x83, 100],
-    [0x84, 1000],
-    [0x85, 10000],
-    [0x86, 100000]
-]);
+// const byteToPulseCoefficientMap = new Map([
+//     [0x80, 1],
+//     [0x81, 5],
+//     [0x82, 10],
+//     [0x83, 100],
+//     [0x84, 1000],
+//     [0x85, 10000],
+//     [0x86, 100000]
+// ]);
 
-const pulseCoefficientToByteMap = new Map(
-    [...byteToPulseCoefficientMap.entries()].map(([key, value]) => [value, key])
-);
+// const pulseCoefficientToByteMap = new Map(
+//     [...byteToPulseCoefficientMap.entries()].map(([key, value]) => [value, key])
+// );
 
 const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 
@@ -595,26 +597,6 @@ const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
  * Command specific byte array manipulation.
  */
 // class CommandBinaryBuffer extends BinaryBuffer {
-//     /**
-//      * Get the number of bytes necessary to store an extended value.
-//      *
-//      * @param bits - the number of bits of original value
-//      *
-//      * @example
-//      * ```js
-//      * const bits = (16384).toString(2).length;
-//      * const bytes = CommandBinaryBuffer.getExtendedValueSize(bits);
-//      * // 16384 normally is stored in 2 bytes but for extended value 3 bytes are required
-//      * ```
-//      */
-//     static getExtendedValueSize ( bits: number ) {
-//         const extBits = Math.ceil(bits / 7);
-//         const totalBits = bits + extBits;
-//         const extBytes = Math.ceil(totalBits / 8);
-
-//         return extBytes;
-//     }
-
 //     static getParameterSize ( parameter: IParameter ): number {
 //         const size = parametersSizeMap.get(parameter.id);
 
@@ -936,14 +918,6 @@ const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 
 //         // convert real/human to binary - only number of diff hours
 //         this.setUint8((((hours - 1) & 0x07) << 5) | (hour & 0x1f));
-//     }
-
-//     getTime (): TTime2000 {
-//         return this.getUint32(false);
-//     }
-
-//     setTime ( value: TTime2000 ): void {
-//         return this.setUint32(value, false);
 //     }
 
 //     getBatteryVoltage (): IBatteryVoltage {
@@ -1716,13 +1690,20 @@ const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 
 export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getExtendedValue (): number,
+    getExtendedValueSize (bits: number): number,
+
+    getTime (): number,
+    setTime (value: TTime2000): void
 }
 
-function CommandBinaryBuffer ( this: ICommandBinaryBuffer ) {
-    BinaryBuffer.call(this);
+function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: TBytes | number, isLittleEndian = true ) {
+    BinaryBuffer.call(this, dataOrLength, isLittleEndian);
 }
 
+// extending
 CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
+CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
+
 
 // CommandBinaryBuffer.prototype.getLegacyCounterValue = (): number => {
 //     return this.getUint24(false);
@@ -1749,30 +1730,31 @@ CommandBinaryBuffer.prototype.getExtendedValue = function (): number {
     return value;
 };
 
+/**
+ * Get the number of bytes necessary to store an extended value.
+ *
+ * @param bits - the number of bits of original value
+ *
+ * @example
+ * ```js
+ * const bits = (16384).toString(2).length;
+ * const bytes = CommandBinaryBuffer.getExtendedValueSize(bits);
+ * // 16384 normally is stored in 2 bytes but for extended value 3 bytes are required
+ * ```
+ */
+CommandBinaryBuffer.prototype.getExtendedValueSize = function ( bits: number ): number {
+    const extBits = Math.ceil(bits / 7);
+    const totalBits = bits + extBits;
+    const extBytes = Math.ceil(totalBits / 8);
 
-CommandBinaryBuffer.prototype.getTime = function (): number {
-    let value = 0;
-    let isByteExtended = true;
-    // byte offset
-    let position = 0;
-
-    while ( isByteExtended && this.offset <= this.data.length ) {
-        const byte = this.getUint8();
-
-        isByteExtended = !!(byte & EXTEND_BIT_MASK);
-        value += (byte & 0x7f) << (7 * position);
-        ++position;
-    }
-
-    if ( value < 0 ) {
-        value = 0;
-    }
-
-    return value;
+    return extBytes;
 };
 
+CommandBinaryBuffer.prototype.getTime = function (): number {
+    return this.getUint32(false);
+};
 
-CommandBinaryBuffer.prototype.setTime = function ( value: TTime2000 ) {
+CommandBinaryBuffer.prototype.setTime = function ( value: TTime2000 ): void {
     this.setUint32(value, false);
 };
 

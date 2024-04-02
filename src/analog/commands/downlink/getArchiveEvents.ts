@@ -1,4 +1,4 @@
-import {TBytes} from '../../../types.js';
+import {TBytes, TUint8} from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {ICommandParameters, TCommandExamples} from '../../utils/command.js';
@@ -9,7 +9,7 @@ import {TTime2000} from '../../utils/time.js';
  */
 interface IGetArchiveEventsParameters extends ICommandParameters {
     startTime2000: TTime2000;
-    events: number;
+    events: TUint8;
 }
 
 
@@ -48,11 +48,10 @@ export const fromBytes = ( data: TBytes ): IGetArchiveEventsParameters => {
     return {startTime2000, events};
 };
 
-
 // returns full message - header with body
 export const toBytes = ( parameters: IGetArchiveEventsParameters ): TBytes => {
     const {startTime2000, events} = parameters;
-    const buffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
     buffer.setTime(startTime2000);
     buffer.setUint8(events);
