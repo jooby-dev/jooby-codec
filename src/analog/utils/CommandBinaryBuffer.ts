@@ -1750,4 +1750,31 @@ CommandBinaryBuffer.prototype.getExtendedValue = function (): number {
 };
 
 
+CommandBinaryBuffer.prototype.getTime = function (): number {
+    let value = 0;
+    let isByteExtended = true;
+    // byte offset
+    let position = 0;
+
+    while ( isByteExtended && this.offset <= this.data.length ) {
+        const byte = this.getUint8();
+
+        isByteExtended = !!(byte & EXTEND_BIT_MASK);
+        value += (byte & 0x7f) << (7 * position);
+        ++position;
+    }
+
+    if ( value < 0 ) {
+        value = 0;
+    }
+
+    return value;
+};
+
+
+CommandBinaryBuffer.prototype.setTime = function ( value: TTime2000 ) {
+    this.setUint32(value, false);
+};
+
+
 export default CommandBinaryBuffer;
