@@ -5,6 +5,13 @@
  */
 export type BrandType<K, T> = K & {info?: T};
 
+
+/**
+ * Unique command identifier.
+ * It is used in command header.
+ */
+export type TCommandId = BrandType<number, 'uint8 | uint16'>;
+
 /**
  * Array of bytes.
  * Each element is value [0..255].

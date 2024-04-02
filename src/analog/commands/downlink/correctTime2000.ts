@@ -1,4 +1,27 @@
-import {TBytes} from '../../../types.js';
+/**
+ * Time correction command.
+ *
+ * It is used when the time difference is up to 127 seconds. A device may apply it with a delay.
+ *
+ * @packageDocumentation
+ *
+ * @example
+ * ```js
+ * import * as correctTime2000 from 'jooby-codec/analog/commands/downlink/correctTime2000.js';
+ *
+ * // 120 seconds to the past
+ * const parameters = {sequenceNumber: 45, seconds: -120};
+ * const bytes = correctTime2000.toBytes(parameters);
+ *
+ * // command binary representation
+ * console.log(bytes);
+ * // [12, 2, 45, 136]
+ * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/CorrectTime2000.md#request)
+ */
+
+import {TCommandId, TBytes, TUint8, TInt8} from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {ICommandParameters, TCommandExamples} from '../../utils/command.js';
@@ -13,17 +36,17 @@ import {ICommandParameters, TCommandExamples} from '../../utils/command.js';
  */
 interface ICorrectTime2000Parameters extends ICommandParameters {
     /** unique time manipulation operation number */
-    sequenceNumber: number,
+    sequenceNumber: TUint8,
 
     /**
      * seconds
      * range: [-127..+127]
      */
-    seconds: number
+    seconds: TInt8
 }
 
 
-export const id = 0x0c;
+export const id: TCommandId = 0x0c;
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 2;
@@ -50,7 +73,12 @@ export const examples: TCommandExamples = {
 };
 
 
-// data - only body (without header)
+/**
+ * Decode command parameters.
+ *
+ * @param data - only body (without header)
+ * @returns command payload
+ */
 export const fromBytes = ( data: TBytes ): ICorrectTime2000Parameters => {
     if ( data.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
@@ -69,7 +97,13 @@ export const fromBytes = ( data: TBytes ): ICorrectTime2000Parameters => {
     return parameters;
 };
 
-// returns full message - header with body
+
+/**
+ * Encode command parameters.
+ *
+ * @param parameters - command payload
+ * @returns full message (header with body)
+ */
 export const toBytes = ( parameters: ICorrectTime2000Parameters ): TBytes => {
     const {sequenceNumber, seconds} = parameters;
     const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
