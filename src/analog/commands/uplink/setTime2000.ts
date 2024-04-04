@@ -38,6 +38,7 @@ interface ISetTime2000ResponseParameters {
 
 
 export const id: types.TCommandId = 0x02;
+export const name: types.TCommandName = 'setTime2000';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 1;
@@ -45,6 +46,7 @@ const COMMAND_BODY_SIZE = 1;
 export const examples: command.TCommandExamples = {
     success: {
         id,
+        name,
         headerSize,
         parameters: {status: 1},
         bytes: [

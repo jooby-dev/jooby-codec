@@ -500,46 +500,46 @@ const MTX_HARDWARE_TYPES = [
 const TWO_BYTES_HARDWARE_TYPES = [...FOUR_CHANNELS_HARDWARE_TYPES, ...MTX_HARDWARE_TYPES];
 
 const gasBitMask = {
-    isBatteryLow: 2 ** 0,
-    isMagneticInfluence: 2 ** 1,
-    isButtonReleased: 2 ** 2,
-    isConnectionLost: 2 ** 3
+    isBatteryLow: Math.pow(2, 0),
+    isMagneticInfluence: Math.pow(2, 1),
+    isButtonReleased: Math.pow(2, 2),
+    isConnectionLost: Math.pow(2, 3)
 };
 const twoChannelBitMask = {
-    isBatteryLow: 2 ** 0,
-    isConnectionLost: 2 ** 3,
-    isFirstChannelInactive: 2 ** 4,
-    isSecondChannelInactive: 2 ** 5
+    isBatteryLow: Math.pow(2, 0),
+    isConnectionLost: Math.pow(2, 3),
+    isFirstChannelInactive: Math.pow(2, 4),
+    isSecondChannelInactive: Math.pow(2, 5)
 };
 const elimpBitMask = {
-    isConnectionLost: 2 ** 3
+    isConnectionLost: Math.pow(2, 3)
 };
 // const waterBitMask = {
-//     isBatteryLow: 2 ** 0,
-//     isConnectionLost: 2 ** 3
+//     isBatteryLow: Math.pow(2, 0),
+//     isConnectionLost: Math.pow(2, 3)
 // };
 const fourChannelBitMask = {
-    isBatteryLow: 2 ** 0,
-    isConnectionLost: 2 ** 3,
-    isFirstChannelInactive: 2 ** 4,
-    isSecondChannelInactive: 2 ** 5,
-    isThirdChannelInactive: 2 ** 6,
-    isForthChannelInactive: 2 ** 7
+    isBatteryLow: Math.pow(2, 0),
+    isConnectionLost: Math.pow(2, 3),
+    isFirstChannelInactive: Math.pow(2, 4),
+    isSecondChannelInactive: Math.pow(2, 5),
+    isThirdChannelInactive: Math.pow(2, 6),
+    isForthChannelInactive: Math.pow(2, 7)
 };
 const mtxBitMask = {
-    isMeterCaseOpen: 2 ** 0,
-    isMagneticInfluence: 2 ** 1,
-    isParametersSetRemotely: 2 ** 2,
-    isParametersSetLocally: 2 ** 3,
-    isMeterProgramRestarted: 2 ** 4,
-    isLockedOut: 2 ** 5,
-    isTimeSet: 2 ** 6,
-    isTimeCorrected: 2 ** 7,
-    isMeterFailure: 2 ** 8,
-    isMeterTerminalBoxOpen: 2 ** 9,
-    isModuleCompartmentOpen: 2 ** 10,
-    isTariffPlanChanged: 2 ** 11,
-    isNewTariffPlanReceived: 2 ** 12
+    isMeterCaseOpen: Math.pow(2, 0),
+    isMagneticInfluence: Math.pow(2, 1),
+    isParametersSetRemotely: Math.pow(2, 2),
+    isParametersSetLocally: Math.pow(2, 3),
+    isMeterProgramRestarted: Math.pow(2, 4),
+    isLockedOut: Math.pow(2, 5),
+    isTimeSet: Math.pow(2, 6),
+    isTimeCorrected: Math.pow(2, 7),
+    isMeterFailure: Math.pow(2, 8),
+    isMeterTerminalBoxOpen: Math.pow(2, 9),
+    isModuleCompartmentOpen: Math.pow(2, 10),
+    isTariffPlanChanged: Math.pow(2, 11),
+    isNewTariffPlanReceived: Math.pow(2, 12)
 };
 
 
@@ -570,10 +570,10 @@ const mtxBitMask = {
 // ]);
 
 const fourChannelsBitMask = {
-    channel1: 2 ** 0,
-    channel2: 2 ** 1,
-    channel3: 2 ** 2,
-    channel4: 2 ** 3
+    channel1: Math.pow(2, 0),
+    channel2: Math.pow(2, 1),
+    channel3: Math.pow(2, 2),
+    channel4: Math.pow(2, 3)
 };
 
 // const byteToPulseCoefficientMap = new Map([

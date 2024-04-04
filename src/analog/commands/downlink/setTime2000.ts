@@ -3,16 +3,16 @@
  *
  * @example
  * ```js
- * import SetTime2000 from 'jooby-codec/analog/commands/downlink/SetTime2000.js';
+ * import * as setTime2000 from 'jooby-codec/analog/commands/downlink/setTime2000.js';
  *
  * // 240 seconds to the future
- * const parameters = {sequenceNumber: 45, seconds: -120};
- * const bytes = correctTime2000.toBytes(parameters);
+ * const parameters = {sequenceNumber: 78, seconds: 123456};
+ * const bytes = setTime2000.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [2, 5, 78, 43, 189, 152, 173]
+ * [2, 5, 78, 0, 1, 226, 64]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/SetTime2000.md#request)
@@ -32,6 +32,7 @@ interface ISetTime2000Parameters {
 
 
 export const id: types.TCommandId = 0x02;
+export const name: types.TCommandName = 'setTime2000';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 5;

@@ -36,6 +36,7 @@ interface IGetArchiveEventsParameters extends command.ICommandParameters {
 
 
 export const id: types.TCommandId = 0x0b;
+export const name: types.TCommandName = 'getArchiveEvents';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 5;
@@ -43,6 +44,7 @@ const COMMAND_BODY_SIZE = 5;
 export const examples: command.TCommandExamples = {
     'request 4 events from 2023.04.03 14:01:17 GMT': {
         id,
+        name,
         headerSize,
         parameters: {startTime2000: 733845677, events: 4},
         bytes: [

@@ -204,7 +204,7 @@ const HEADER_MAX_SIZE = 3;
 // export const toBase64 = ( commands: Array<Command> ): string => getBase64FromBytes(toBytes(commands));
 
 
-export const getFromBytes = fromBytesMap => ( data: TBytes = [], config?: ICommandConfig ): IMessage | IInvalidMessage => {
+export const getFromBytes = ( fromBytesMap, nameMap ) => ( data: TBytes = [], config?: ICommandConfig ): IMessage | IInvalidMessage => {
     //const hardwareType = config?.hardwareType;
     const commands: Array<TCommand> = [];
     const message: IMessage = {
@@ -223,6 +223,7 @@ export const getFromBytes = fromBytesMap => ( data: TBytes = [], config?: IComma
         const bodyData = data.slice(processedBytes + headerInfo.headerSize, processedBytes + headerInfo.headerSize + headerInfo.commandSize);
         const command: TCommand = {
             id: headerInfo.commandId,
+            name: nameMap[headerInfo.commandId],
             headerSize: headerInfo.headerSize,
             bytes: [...headerData, ...bodyData]
         };
