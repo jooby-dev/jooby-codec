@@ -13,24 +13,26 @@
  * console.log(bytes);
  * // [2, 5, 78, 43, 189, 152, 173]
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/SetTime2000.md#request)
  */
 
-import {TCommandId, TBytes, TUint8, TInt32} from '../../../types.js';
+import * as types from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 
 
 interface ISetTime2000Parameters {
     /** unique time manipulation operation number */
-    sequenceNumber: TUint8;
+    sequenceNumber: types.TUint8;
     /** seconds */
-    seconds: TInt32;
+    seconds: types.TInt32;
 }
 
 
-export const id: TCommandId = 0x02;
+export const id: types.TCommandId = 0x02;
 export const headerSize = 2;
+
 const COMMAND_BODY_SIZE = 5;
 
 export const examples = {
@@ -41,7 +43,10 @@ export const examples = {
             sequenceNumber: 78,
             seconds: 733845677
         },
-        bytes: [0x02, 0x05, 0x4e, 0x2b, 0xbd, 0x98, 0xad]
+        bytes: [
+            0x02, 0x05,
+            0x4e, 0x2b, 0xbd, 0x98, 0xad
+        ]
     }
 };
 
@@ -52,7 +57,7 @@ export const examples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: TBytes ): ISetTime2000Parameters => {
+export const fromBytes = ( data: types.TBytes ): ISetTime2000Parameters => {
     if (data.length !== COMMAND_BODY_SIZE) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -77,7 +82,7 @@ export const fromBytes = ( data: TBytes ): ISetTime2000Parameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: ISetTime2000Parameters ): TBytes => {
+export const toBytes = ( parameters: ISetTime2000Parameters ): types.TBytes => {
     const {sequenceNumber, seconds} = parameters;
     const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 

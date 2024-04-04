@@ -1724,17 +1724,13 @@ CommandBinaryBuffer.prototype.setTime = function ( value: TTime2000 ): void {
 
 
 CommandBinaryBuffer.prototype.getBatteryVoltage = function (): IBatteryVoltage {
-    let underHighLoad;
-    let underLowLoad;
-
     const lowVoltageByte = this.getUint8();
     const lowAndHightVoltageByte = this.getUint8();
     const highVoltageByte = this.getUint8();
 
-    underLowLoad = lowVoltageByte << 4;
+    let underLowLoad = lowVoltageByte << 4;
     underLowLoad |= (lowAndHightVoltageByte & 0xf0) >> 4;
-
-    underHighLoad = ((lowAndHightVoltageByte & 0x0f) << 8) | highVoltageByte;
+    let underHighLoad = ((lowAndHightVoltageByte & 0x0f) << 8) | highVoltageByte;
 
     if ( underHighLoad === UNKNOWN_BATTERY_VOLTAGE ) {
         underHighLoad = undefined;

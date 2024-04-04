@@ -28,7 +28,7 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveEvents.md#response)
  */
 
-import {TBytes, TCommandId} from '../../../types.js';
+import * as types from '../../../types.js';
 import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
@@ -44,7 +44,8 @@ interface IGetArchiveEventsResponseParameters {
     eventList: Array<IArchiveEvent>;
 }
 
-export const id: TCommandId = 0x0b;
+
+export const id: types.TCommandId = 0x0b;
 export const headerSize = 2;
 
 const COMMAND_BODY_MIN_SIZE = 4 + 1 + 1;
@@ -123,7 +124,7 @@ const setEvent = ( buffer: ICommandBinaryBuffer, event: IArchiveEvent ): void =>
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: TBytes ): IGetArchiveEventsResponseParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data, false);
     const eventList: Array<IArchiveEvent> = [];
 
@@ -140,7 +141,7 @@ export const fromBytes = ( data: TBytes ): IGetArchiveEventsResponseParameters =
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export function toBytes ( parameters: IGetArchiveEventsResponseParameters ): TBytes {
+export function toBytes ( parameters: IGetArchiveEventsResponseParameters ): types.TBytes {
     const {eventList} = parameters;
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(eventList.length * COMMAND_BODY_MIN_SIZE, false);
 

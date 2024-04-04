@@ -22,12 +22,13 @@
  *     }
  * }
  * ```
+ *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetLmicInfo.md#response)
  */
 
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
-import {TCommandId, TBytes, TUint8} from '../../../types.js';
+import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 
 
@@ -44,12 +45,13 @@ interface IGetLmicInfoResponseParameters {
      * @see https://lora-alliance.org/resource_hub/lorawan-fragmented-data-block-transport-specification-v1-0-0/
      */
     capabilities: ILmicCapabilities;
-    version: TUint8;
+    version: types.TUint8;
 }
 
 
-export const id: TCommandId = 0x021f;
+export const id: types.TCommandId = 0x021f;
 export const headerSize = 3;
+
 const COMMAND_BODY_SIZE = 2;
 
 const lmicCapabilitiesBitMask = {
@@ -97,7 +99,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: TBytes ): IGetLmicInfoResponseParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetLmicInfoResponseParameters => {
     if ( data.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -121,7 +123,7 @@ export const fromBytes = ( data: TBytes ): IGetLmicInfoResponseParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetLmicInfoResponseParameters ): TBytes => {
+export const toBytes = ( parameters: IGetLmicInfoResponseParameters ): types.TBytes => {
     const {capabilities, version} = parameters;
     const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE);
 

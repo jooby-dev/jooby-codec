@@ -5,15 +5,15 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import Status from 'jooby-codec/analog/commands/uplink/Status.js';
+ * import * as status from 'jooby-codec/analog/commands/uplink/status.js';
  *
- * const commandBody = new Uint8Array([
- *     0x02, 0x0a, 0x03, 0x01, 0xc5, 0x6d, 0xc2, 0x27, 0x32, 0x0e, 0x68, 0x22
- * ]);
- * const command = Status.fromBytes(commandBody);
+ * // status for GASI3
+ * const bytes = [0x02, 0x0a, 0x03, 0x01, 0xc5, 0x6d, 0xc2, 0x27, 0x32, 0x0e, 0x68, 0x22];
  *
- * console.log(command.parameters);
- * // output:
+ * // decoded payload
+ * const parameters = status.fromBytes(bytes);
+ *
+ * console.log(parameters);
  * {
  *     software: {type: 2, version: 10},
  *     hardware: {type: 3, version: 1},
@@ -32,11 +32,11 @@
 
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IBatteryVoltage} from '../../utils/CommandBinaryBuffer.js';
 import roundNumber from '../../../utils/roundNumber.js';
-import {TCommandId, TBytes, TUint16, TUint8} from '../../../types.js';
+import * as types from '../../../types.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 import * as command from '../../utils/command.js';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
+
 interface IStatusBase {}
 
 interface IProduct {
@@ -46,10 +46,10 @@ interface IProduct {
 
 interface IGasStatus extends IStatusBase {
     batteryVoltage: IBatteryVoltage;
-    batteryInternalResistance?: TUint16;
-    temperature: TUint8;
-    remainingBatteryCapacity?: TUint8;
-    lastEventSequenceNumber: TUint8;
+    batteryInternalResistance?: types.TUint16;
+    temperature: types.TUint8;
+    remainingBatteryCapacity?: types.TUint8;
+    lastEventSequenceNumber: types.TUint8;
 }
 
 interface IMtxStatus extends IStatusBase {
@@ -77,7 +77,8 @@ interface IStatusParameters {
     data: IStatusBase;
 }
 
-export const id: TCommandId = 0x14;
+
+export const id: types.TCommandId = 0x14;
 export const headerSize = 2;
 const COMMAND_BODY_MAX_SIZE = 20;
 const UNKNOWN_BATTERY_RESISTANCE = 65535;
@@ -136,36 +137,12 @@ export const examples: command.TCommandExamples = {
 
 
 /**
- * Uplink command.
+ * Decode command parameters.
  *
- * @example create command instance from command body hex dump
- * ```js
- * import Status from 'jooby-codec/analog/commands/uplink/Status.js';
-import { headerSize } from '../downlink/getStatus';
- *
- * const commandBody = new Uint8Array([
- *     0x02, 0x0a, 0x03, 0x01, 0xc5, 0x6d, 0xc2, 0x27, 0x32, 0x0e, 0x68, 0x22
- * ]);
- * const command = Status.fromBytes(commandBody);
- *
- * console.log(command.parameters);
- * // output:
- * {
- *     software: {type: 2, version: 10},
- *     hardware: {type: 3, version: 1},
- *     data: {
- *         batteryVoltage: {underLowLoad: 3158, underHighLoad: 3522},
- *         batteryInternalResistance: 10034,
- *         temperature: 14,
- *         remainingBatteryCapacity: 41,
- *         lastEventSequenceNumber: 34
- *     }
- * }
- * ```
- *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetStatus.md#response)
+ * @param data - only body (without header)
+ * @returns command payload
  */
-export const fromBytes = ( bytes: TBytes ): IStatusParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const software = {type: buffer.getUint8(), version: buffer.getUint8()};
     const hardware = {type: buffer.getUint8(), version: buffer.getUint8()};
@@ -234,7 +211,14 @@ export const fromBytes = ( bytes: TBytes ): IStatusParameters => {
     return {software, hardware, data};
 };
 
-export const toBytes = ( parameters: IStatusParameters ): TBytes => {
+
+/**
+ * Encode command parameters.
+ *
+ * @param parameters - command payload
+ * @returns full message (header with body)
+ */
+export const toBytes = ( parameters: IStatusParameters ): types.TBytes => {
     const {software, hardware, data} = parameters;
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
 
@@ -274,7 +258,6 @@ export const toBytes = ( parameters: IStatusParameters ): TBytes => {
 
                 buffer.setUint8(statusData.lastEventSequenceNumber);
             }
-
             break;
 
         case hardwareTypes.MTXLORA:
