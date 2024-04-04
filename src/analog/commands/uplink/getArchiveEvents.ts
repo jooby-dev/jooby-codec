@@ -47,6 +47,7 @@ interface IGetArchiveEventsResponseParameters {
 
 
 export const id: types.TCommandId = 0x0b;
+export const name: types.TCommandName = 'getArchiveEvents';
 export const headerSize = 2;
 
 const COMMAND_BODY_MIN_SIZE = 4 + 1 + 1;
@@ -54,6 +55,7 @@ const COMMAND_BODY_MIN_SIZE = 4 + 1 + 1;
 export const examples: command.TCommandExamples = {
     '1 event "MAGNET_ON" at 2023.04.05 13:17:20 GMT': {
         id,
+        name,
         headerSize,
         parameters: {
             eventList: [
@@ -71,6 +73,7 @@ export const examples: command.TCommandExamples = {
     },
     '4 events': {
         id,
+        name,
         headerSize,
         parameters: {
             eventList: [

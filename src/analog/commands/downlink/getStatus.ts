@@ -22,6 +22,7 @@ import * as command from '../../utils/command.js';
 
 
 export const id: types.TCommandId = 0x14;
+export const name: types.TCommandName = 'getStatus';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 0;
@@ -29,6 +30,7 @@ const COMMAND_BODY_SIZE = 0;
 export const examples: command.TCommandExamples = {
     'simple request': {
         id,
+        name,
         headerSize,
         parameters: {},
         bytes: [

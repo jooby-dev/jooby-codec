@@ -18,14 +18,15 @@ export type TBooleanObject = Record<string, boolean>;
  *
  * const result = fromObject(bitMask, {a: true, b: true, c: false, d: true, e: true, f: false, g: true});
  * console.log(result.toString(2));
- * // 1001011
+ * // output:
+ * '1001011'
  * ```
  */
 export const fromObject = ( bitMask: TBitSetMask = {}, booleanObject: TBooleanObject = {} ): number => {
     let result = 0;
 
-    for ( const [name, value] of Object.entries(booleanObject) ) {
-        if ( name in bitMask && value ) {
+    for ( const name in booleanObject ) {
+        if ( name in bitMask && booleanObject[name] ) {
             result |= bitMask[name];
         }
     }
@@ -49,14 +50,16 @@ export const fromObject = ( bitMask: TBitSetMask = {}, booleanObject: TBooleanOb
  *
  * const result = toObject(bitMask, parseInt('0110100', 2));
  * console.log(result);
- * // {a: false, b: false, c: true, d: false, g: false}
+ * // output:
+ * {a: false, b: false, c: true, d: false, g: false}
  * ```
  */
 export const toObject = ( bitMask: TBitSetMask = {}, value = 0 ): TBooleanObject => {
     const result: TBooleanObject = {};
 
-    for ( const [name, position] of Object.entries(bitMask) ) {
-        result[name] = (value & position) !== 0;
+    // eslint-disable-next-line guard-for-in
+    for ( const name in bitMask ) {
+        result[name] = (value & bitMask[name]) !== 0;
     }
 
     return result;

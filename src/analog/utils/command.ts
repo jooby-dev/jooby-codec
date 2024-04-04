@@ -1,4 +1,4 @@
-import {TBytes} from '../../types.js';
+import * as types from '../../types.js';
 
 import * as header from './header.js';
 
@@ -14,11 +14,12 @@ export interface ICommandConfig {
 }
 
 export interface ICommand {
-    id: number,
+    id: types.TCommandId,
+    name?: types.TCommandName,
     headerSize?: number,
     parameters?: object,
     config?: ICommandConfig,
-    bytes?: TBytes
+    bytes?: types.TBytes
 }
 
 export interface ICommandParameters {}
@@ -46,12 +47,13 @@ type TExampleName = string;
 export type TCommandExamples = Record<TExampleName, TCommand>;
 
 export interface ICommandImplementation {
-    id: number,
+    id: types.TCommandId,
+    name: types.TCommandName,
     headerSize: number,
     examples: TCommandExamples,
 
-    fromBytes ( data: TBytes, config?: ICommandConfig ): ICommandParameters,
-    toBytes ( parameters?: object, config?: ICommandConfig ): TBytes
+    fromBytes ( data: types.TBytes, config?: ICommandConfig ): ICommandParameters,
+    toBytes ( parameters?: object, config?: ICommandConfig ): types.TBytes
 }
 
 
@@ -59,7 +61,7 @@ export interface ICommandImplementation {
 
 // };
 
-export const toBytes = ( commandId: number, commandData: TBytes = [] ): TBytes => {
+export const toBytes = ( commandId: number, commandData: types.TBytes = [] ): types.TBytes => {
     const headerData = header.toBytes(commandId, commandData.length);
 
     return [...headerData, ...commandData];

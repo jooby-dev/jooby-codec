@@ -80,7 +80,9 @@ interface IStatusParameters {
 
 
 export const id: types.TCommandId = 0x14;
+export const name: types.TCommandName = 'status';
 export const headerSize = 2;
+
 const COMMAND_BODY_MAX_SIZE = 20;
 const UNKNOWN_BATTERY_RESISTANCE = 65535;
 const UNKNOWN_BATTERY_CAPACITY = 255;
@@ -88,6 +90,7 @@ const UNKNOWN_BATTERY_CAPACITY = 255;
 export const examples: command.TCommandExamples = {
     'status for GASI3': {
         id,
+        name,
         headerSize,
         parameters: {
             software: {type: 2, version: 10},
@@ -107,6 +110,7 @@ export const examples: command.TCommandExamples = {
     },
     'status for MTX': {
         id,
+        name,
         headerSize,
         parameters: {
             software: {type: 2, version: 10},

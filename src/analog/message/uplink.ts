@@ -15,14 +15,15 @@
  *     console.log('decode failure:', payload.error, payload.message);
  * } else {
  *     console.log('message decoded:', payload.commands);
- *     // [
- *     //     {
- *     //         id: 12,
- *     //         headerSize: 2,
- *     //         bytes: [ 12, 1, 0 ],
- *     //         parameters: { status: 0 }
- *     //     }
- *     // ]
+ *     // output:
+ *     [
+ *         {
+ *             id: 12,
+ *             headerSize: 2,
+ *             bytes: [ 12, 1, 0 ],
+ *             parameters: { status: 0 }
+ *         }
+ *     ]
  * }
  * ```
  *
@@ -35,8 +36,9 @@ import * as wrappers from './wrappers.js';
 
 export const toBytesMap = {};
 export const fromBytesMap = {};
+export const nameMap = {};
 
-export const fromBytes = wrappers.getFromBytes(fromBytesMap);
+export const fromBytes = wrappers.getFromBytes(fromBytesMap, nameMap);
 export const toBytes = wrappers.getToBytes(toBytesMap);
 export const toMessage = wrappers.getToMessage(toBytesMap);
 
@@ -44,6 +46,23 @@ export const toMessage = wrappers.getToMessage(toBytesMap);
 // fill maps
 // iteration should not be used
 toBytesMap[commands.correctTime2000.id] = commands.correctTime2000.toBytes;
+toBytesMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.toBytes;
+toBytesMap[commands.getLmicInfo.id] = commands.getLmicInfo.toBytes;
+toBytesMap[commands.setTime2000.id] = commands.setTime2000.toBytes;
+toBytesMap[commands.status.id] = commands.status.toBytes;
+toBytesMap[commands.time2000.id] = commands.time2000.toBytes;
 
 // because of webpack/rollup processing!
 fromBytesMap[commands.correctTime2000.id] = commands.correctTime2000.fromBytes;
+fromBytesMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.fromBytes;
+fromBytesMap[commands.getLmicInfo.id] = commands.getLmicInfo.fromBytes;
+fromBytesMap[commands.setTime2000.id] = commands.setTime2000.fromBytes;
+fromBytesMap[commands.status.id] = commands.status.fromBytes;
+fromBytesMap[commands.time2000.id] = commands.time2000.fromBytes;
+
+nameMap[commands.correctTime2000.id] = commands.correctTime2000.name;
+nameMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.name;
+nameMap[commands.getLmicInfo.id] = commands.getLmicInfo.name;
+nameMap[commands.setTime2000.id] = commands.setTime2000.name;
+nameMap[commands.status.id] = commands.status.name;
+nameMap[commands.time2000.id] = commands.time2000.name;

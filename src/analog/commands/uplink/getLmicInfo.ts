@@ -51,6 +51,7 @@ interface IGetLmicInfoResponseParameters {
 
 
 export const id: types.TCommandId = 0x021f;
+export const name: types.TCommandName = 'getLmicInfo';
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 2;
@@ -63,6 +64,7 @@ const lmicCapabilitiesBitMask = {
 export const examples: command.TCommandExamples = {
     'version: 5, support only multicast': {
         id,
+        name,
         headerSize,
         parameters: {
             version: 5,
@@ -78,6 +80,7 @@ export const examples: command.TCommandExamples = {
     },
     'version: 8, support multicast and fragmented data': {
         id,
+        name,
         headerSize,
         parameters: {
             version: 8,

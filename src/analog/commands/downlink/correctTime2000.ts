@@ -47,6 +47,7 @@ interface ICorrectTime2000Parameters extends command.ICommandParameters {
 
 
 export const id: types.TCommandId = 0x0c;
+export const name: types.TCommandName = 'correctTime2000';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 2;
@@ -54,6 +55,7 @@ const COMMAND_BODY_SIZE = 2;
 export const examples: command.TCommandExamples = {
     'correct time 120 seconds to the past': {
         id,
+        name,
         headerSize,
         parameters: {sequenceNumber: 45, seconds: -120},
         bytes: [
@@ -63,6 +65,7 @@ export const examples: command.TCommandExamples = {
     },
     'correct time 95 seconds to the future': {
         id,
+        name,
         headerSize,
         parameters: {sequenceNumber: 46, seconds: 95},
         bytes: [

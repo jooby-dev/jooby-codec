@@ -40,6 +40,7 @@ interface ICorrectTime2000ResponseParameters extends command.ICommandParameters 
 
 
 export const id: types.TCommandId = 0x0c;
+export const name: types.TCommandName = 'correctTime2000';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 1;
@@ -47,6 +48,7 @@ const COMMAND_BODY_SIZE = 1;
 export const examples: command.TCommandExamples = {
     'time correction failure': {
         id,
+        name,
         headerSize,
         parameters: {status: 0},
         bytes: [
@@ -56,6 +58,7 @@ export const examples: command.TCommandExamples = {
     },
     'time correction success': {
         id,
+        name,
         headerSize,
         parameters: {status: 1},
         bytes: [

@@ -74,9 +74,11 @@ module.exports = {
         'no-multiple-empty-lines': ['error', {max: 2, maxEOF: 0, maxBOF: 0}],
         'no-plusplus': 'off',
         'no-restricted-syntax': 'off',
+        'no-restricted-properties': 'off',
+        'prefer-exponentiation-operator': 'off',
+        'prefer-object-spread': 'off',
         'space-in-parens': 'off',
         'spaced-comment': 'off',
-        'prefer-object-spread': 'off',
 
         'object-curly-newline': [
             'error',

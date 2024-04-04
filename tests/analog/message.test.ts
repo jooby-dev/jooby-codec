@@ -61,6 +61,7 @@ const downlinkMessages: TMessageExamples = {
         commands: [
             {
                 id: 12,
+                name: 'correctTime2000',
                 headerSize: 2,
                 parameters: {sequenceNumber: 45, seconds: -120},
                 bytes: getBytesFromHex('0c 02 2d 88')
@@ -77,6 +78,7 @@ const downlinkMessages: TMessageExamples = {
             commands: [
                 {
                     id: 12,
+                    name: 'correctTime2000',
                     headerSize: 2,
                     parameters: {sequenceNumber: 45, seconds: -120},
                     bytes: getBytesFromHex('0c 02 2d 88')
@@ -97,6 +99,7 @@ const uplinkMessages: TMessageExamples = {
         commands: [
             {
                 id: 12,
+                name: 'correctTime2000',
                 headerSize: 2,
                 parameters: {status: 0},
                 bytes: getBytesFromHex('0c 01 00')
@@ -113,6 +116,7 @@ const uplinkMessages: TMessageExamples = {
             commands: [
                 {
                     id: 12,
+                    name: 'correctTime2000',
                     headerSize: 2,
                     parameters: {status: 0},
                     bytes: getBytesFromHex('0c 01 00')

@@ -3,7 +3,7 @@
  *
  * @example
  * ```js
- * import * as getTime2000 from 'jooby-codec/analog/commands/downlink/GetTime2000.js';
+ * import * as getTime2000 from 'jooby-codec/analog/commands/downlink/getTime2000.js';
  *
  * const bytes = getTime2000.toBytes();
  * // output: command binary in hex representation
@@ -20,6 +20,7 @@ import * as command from '../../utils/command.js';
 
 
 export const id: types.TCommandId = 0x09;
+export const name: types.TCommandName = 'getTime2000';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 0;
@@ -27,6 +28,7 @@ const COMMAND_BODY_SIZE = 0;
 export const examples: command.TCommandExamples = {
     'simple request': {
         id,
+        name,
         headerSize,
         parameters: {},
         bytes: [

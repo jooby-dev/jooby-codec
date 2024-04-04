@@ -41,6 +41,7 @@ interface ITime2000Parameters {
 
 
 export const id: types.TCommandId = 0x09;
+export const name: types.TCommandName = 'time2000';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 5;
@@ -48,6 +49,7 @@ const COMMAND_BODY_SIZE = 5;
 export const examples: command.TCommandExamples = {
     'time is 2023.04.03 14:01:17 GMT': {
         id,
+        name,
         headerSize,
         parameters: {sequenceNumber: 77, time2000: 733845677},
         bytes: [

@@ -172,7 +172,6 @@ const writeUint8 = ( buffer, offset, value ) => {
 };
 
 const writeUint16 = ( buffer, offset, value, isLittleEndian ) => {
-    //console.log('isLittleEndian:', isLittleEndian);
     const order = host.isLittleEndian && isLittleEndian ? le2 : be2;
 
     buffer[offset + order[0]] = value & 0xff;

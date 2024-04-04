@@ -20,6 +20,7 @@ import * as command from '../../utils/command.js';
 
 
 export const id: types.TCommandId = 0x021f;
+export const name: types.TCommandName = 'getLmicInfo';
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 0;
@@ -27,6 +28,7 @@ const COMMAND_BODY_SIZE = 0;
 export const examples: command.TCommandExamples = {
     'simple request': {
         id,
+        name,
         headerSize,
         parameters: {},
         bytes: [
