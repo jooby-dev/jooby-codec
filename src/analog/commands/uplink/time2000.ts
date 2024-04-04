@@ -17,7 +17,7 @@
  * const parameters = time2000.fromBytes(bytes);
  *
  * console.log(parameters);
- * // output
+ * // output:
  * {sequenceNumber: 77, time2000: 733845677}
  * ```
  *

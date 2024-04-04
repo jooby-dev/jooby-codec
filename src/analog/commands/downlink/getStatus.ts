@@ -10,7 +10,7 @@
  * const bytes = getStatus.toBytes();
  * // command binary representation
  * console.log(bytes);
- * // output
+ * // output:
  * [20, 0]
  * ```
  *

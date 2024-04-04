@@ -6,9 +6,9 @@
  * import * as getTime2000 from 'jooby-codec/analog/commands/downlink/GetTime2000.js';
  *
  * const bytes = getTime2000.toBytes();
- * // output command binary in hex representation
+ * // output: command binary in hex representation
  * console.log(bytes);
- * // output
+ * // output:
  * [9, 0]
  * ```
  *

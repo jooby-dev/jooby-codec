@@ -8,7 +8,7 @@
  * const bytes = getLmicInfo.toBytes();
  * // command binary representation
  * console.log(bytes);
- * // output
+ * // output:
  * [2, 31, 0]
  * ```
  *

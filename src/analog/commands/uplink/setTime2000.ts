@@ -14,7 +14,7 @@
  * const parameters = setTime2000.fromBytes(bytes);
  *
  * console.log(parameters);
- * // output
+ * // output:
  * {status: 1}
  * ```
  *

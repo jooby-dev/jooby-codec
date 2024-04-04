@@ -14,7 +14,7 @@
  * const parameters = getLmicInfo.fromBytes(bytes);
  *
  * console.log(parameters);
- * // output
+ * // output:
  * {
  *     version: 5,
  *     capabilities: {

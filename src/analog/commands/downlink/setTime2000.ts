@@ -11,7 +11,7 @@
  *
  * // command binary representation
  * console.log(bytes);
- * // output
+ * // output:
  * [2, 5, 78, 43, 189, 152, 173]
  * ```
  *
