@@ -16,6 +16,7 @@
  * const parameters = correctTime2000.fromBytes(bytes);
  *
  * console.log(parameters);
+ * // output
  * {status: 0}
  * ```
  *

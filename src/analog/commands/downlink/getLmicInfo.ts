@@ -8,7 +8,8 @@
  * const bytes = getLmicInfo.toBytes();
  * // command binary representation
  * console.log(bytes);
- * // [2, 31, 0]
+ * // output
+ * [2, 31, 0]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetLmicInfo.md#request)

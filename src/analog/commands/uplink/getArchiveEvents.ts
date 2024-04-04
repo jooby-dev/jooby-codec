@@ -14,6 +14,7 @@
  * const parameters = getArchiveEvents.fromBytes(bytes);
  *
  * console.log(parameters);
+ * // output
  * {
  *     eventList: [
  *         {

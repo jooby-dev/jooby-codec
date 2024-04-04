@@ -13,7 +13,8 @@
  *
  * // command binary representation
  * console.log(bytes);
- * // [11, 5, 43, 189, 152, 173, 4]
+ * // output
+ * [11, 5, 43, 189, 152, 173, 4]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveEvents.md#request)

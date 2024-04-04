@@ -15,7 +15,8 @@
  *
  * // command binary representation
  * console.log(bytes);
- * // [12, 2, 45, 136]
+ * // output
+ * [12, 2, 45, 136]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/CorrectTime2000.md#request)

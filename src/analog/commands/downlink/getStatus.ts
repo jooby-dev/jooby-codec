@@ -10,7 +10,8 @@
  * const bytes = getStatus.toBytes();
  * // command binary representation
  * console.log(bytes);
- * // [20, 0]
+ * // output
+ * [20, 0]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetStatus.md#request)

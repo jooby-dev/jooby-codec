@@ -11,7 +11,8 @@
  *
  * // command binary representation
  * console.log(bytes);
- * // [2, 5, 78, 43, 189, 152, 173]
+ * // output
+ * [2, 5, 78, 43, 189, 152, 173]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/SetTime2000.md#request)

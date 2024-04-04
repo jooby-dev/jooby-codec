@@ -14,6 +14,7 @@
  * const parameters = status.fromBytes(bytes);
  *
  * console.log(parameters);
+ * // output
  * {
  *     software: {type: 2, version: 10},
  *     hardware: {type: 3, version: 1},

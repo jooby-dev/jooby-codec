@@ -7,8 +7,9 @@
  *
  * const bytes = getTime2000.toBytes();
  * // output command binary in hex representation
- * console.log(command.toHex());
- * // [9, 0]
+ * console.log(bytes);
+ * // output
+ * [9, 0]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetTime2000.md#request)
