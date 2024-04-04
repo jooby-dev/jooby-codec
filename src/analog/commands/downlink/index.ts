@@ -6,6 +6,10 @@
 
 export * as correctTime2000 from './correctTime2000.js';
 export * as getArchiveEvents from './getArchiveEvents.js';
+export * as getLmicInfo from './getLmicInfo.js';
+export * as getStatus from './getStatus.js';
+export * as getTime2000 from './getTime2000.js';
+export * as setTime2000 from './setTime2000.js';
 // export {default as DataSegment} from './DataSegment.js';
 // export {default as GetArchiveDays} from './GetArchiveDays.js';
 // export {default as GetArchiveDaysMC} from './GetArchiveDaysMC.js';
@@ -18,12 +22,8 @@ export * as getArchiveEvents from './getArchiveEvents.js';
 // export {default as GetExAbsArchiveDaysMC} from './GetExAbsArchiveDaysMC.js';
 // export {default as GetExAbsArchiveHoursMC} from './GetExAbsArchiveHoursMC.js';
 // export {default as GetExAbsCurrentMC} from './GetExAbsCurrentMC.js';
-// export {default as GetLmicInfo} from './GetLmicInfo.js';
 // export {default as GetParameter} from './GetParameter.js';
-// export {default as GetStatus} from './GetStatus.js';
-// export {default as GetTime2000} from './GetTime2000.js';
 // export {default as SetParameter} from './SetParameter.js';
-// export {default as SetTime2000} from './SetTime2000.js';
 // export {default as SoftRestart} from './SoftRestart.js';
 // export {default as UpdateRun} from './UpdateRun.js';
 // export {default as VerifyImage} from './VerifyImage.js';

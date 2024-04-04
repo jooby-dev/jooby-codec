@@ -24,7 +24,6 @@
 import {TCommandId, TBytes, TUint8, TInt8} from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
-import {ICommandParameters, TCommandExamples} from '../../utils/command.js';
 
 
 /**
@@ -34,7 +33,7 @@ import {ICommandParameters, TCommandExamples} from '../../utils/command.js';
  * // 120 seconds to the past
  * {sequenceNumber: 45, seconds: -120}
  */
-interface ICorrectTime2000Parameters extends ICommandParameters {
+interface ICorrectTime2000Parameters extends command.ICommandParameters {
     /** unique time manipulation operation number */
     sequenceNumber: TUint8,
 
@@ -51,7 +50,7 @@ export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 2;
 
-export const examples: TCommandExamples = {
+export const examples: command.TCommandExamples = {
     'correct time 120 seconds to the past': {
         id,
         headerSize,

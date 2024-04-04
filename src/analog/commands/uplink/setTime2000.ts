@@ -1,69 +1,55 @@
 /**
- * Time correction command.
- *
- * It is used when the time difference is up to 127 seconds. A device may apply it with a delay.
+ * Time set command response.
  *
  * @packageDocumentation
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import * as correctTime2000 from 'jooby-codec/analog/commands/uplink/correctTime2000.js';
+ * import * as setTime2000 from 'jooby-codec/analog/commands/uplink/setTime2000.js';
  *
- * // failure response
- * const bytes = [0x00];
+ * // success response
+ * const bytes = [0x01];
  *
  * // decoded payload
- * const parameters = correctTime2000.fromBytes(bytes);
+ * const parameters = setTime2000.fromBytes(bytes);
  *
  * console.log(parameters);
- * // {status: 0}
+ * // {status: 1}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/CorrectTime2000.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/SetTime2000.md#response)
  */
 
-import {TCommandId, TBytes, TUint8} from '../../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {TBytes, TUint8, TCommandId} from '../../../types.js';
 import * as command from '../../utils/command.js';
-
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 
 /**
- * CorrectTime2000 response command parameters
+ * SetTime2000Response command parameters
  *
  * @example
  * {status: 1}
  */
-interface ICorrectTime2000ResponseParameters extends command.ICommandParameters {
-    status: TUint8
+interface ISetTime2000ResponseParameters {
+    status: TUint8;
 }
 
-
-export const id: TCommandId = 0x0c;
+export const id: TCommandId = 0x02;
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 1;
 
 export const examples: command.TCommandExamples = {
-    'time correction failure': {
-        id,
-        headerSize,
-        parameters: {status: 0},
-        bytes: [
-            0x0c, 0x01,
-            0x00
-        ]
-    },
-    'time correction success': {
+    success: {
         id,
         headerSize,
         parameters: {status: 1},
         bytes: [
-            0x0c, 0x01,
+            0x02, 0x01,
             0x01
         ]
     }
 };
-
 
 /**
  * Decode command parameters.
@@ -71,7 +57,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: TBytes ): ICorrectTime2000ResponseParameters => {
+export const fromBytes = ( data: TBytes ): ISetTime2000ResponseParameters => {
     if ( data.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -88,14 +74,13 @@ export const fromBytes = ( data: TBytes ): ICorrectTime2000ResponseParameters =>
     return parameters;
 };
 
-
 /**
  * Encode command parameters.
  *
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: ICorrectTime2000ResponseParameters ): TBytes => {
+export const toBytes = ( parameters: ISetTime2000ResponseParameters ): TBytes => {
     const {status} = parameters;
     const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 

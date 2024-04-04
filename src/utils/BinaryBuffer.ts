@@ -206,21 +206,23 @@ export interface IBinaryBuffer {
     setInt8 ( value: TInt8 ): void,
     getInt8 (): TInt8,
 
-    setUint16 ( value: TUint16 ): void,
-    getUint16 (): TUint16,
-    setInt16 ( value: TInt16 ): void,
-    getInt16 (): TInt16,
+    setUint16 ( value: TUint16, isLittleEndian?: boolean ): void,
+    getUint16 ( isLittleEndian?: boolean ): TUint16,
+    setInt16 ( value: TInt16, isLittleEndian?: boolean ): void,
+    getInt16 ( isLittleEndian?: boolean ): TInt16,
 
-    setUint32 ( value: TUint32 ): void,
-    getUint32 (): TUint32,
-    setInt32 ( value: TInt32 ): void,
-    getInt32 (): TInt32,
+    setUint32 ( value: TUint32, isLittleEndian?: boolean ): void,
+    getUint32 ( isLittleEndian?: boolean ): TUint32,
+    setInt32 ( value: TInt32, isLittleEndian?: boolean ): void,
+    getInt32 ( isLittleEndian?: boolean ): TInt32,
 
-    setFloat32 ( value: TFloat32 ): void,
-    getFloat32 (): TFloat32,
+    setFloat32 ( value: TFloat32, isLittleEndian?: boolean ): void,
+    getFloat32 ( isLittleEndian?: boolean ): TFloat32,
 
     getBytes ( length: number, offset?: number ): TBytes,
-    setBytes ( data: TBytes, offset?: number ): void
+    setBytes ( data: TBytes, offset?: number ): void,
+
+    getBytesToOffset ( offset?: number ): TBytes
 }
 
 function BinaryBuffer ( this: IBinaryBuffer, dataOrLength: TBytes | number, isLittleEndian = true ) {
@@ -379,7 +381,7 @@ BinaryBuffer.prototype = {
      *
      * @returns sliced byte array
      */
-    getBytesToOffset ( offset = this.offset ) {
+    getBytesToOffset ( offset = this.offset ): TBytes {
         return this.data.slice(0, offset);
     },
 
