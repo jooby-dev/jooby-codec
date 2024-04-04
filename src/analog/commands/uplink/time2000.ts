@@ -8,18 +8,7 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import Time2000 from 'jooby-codec/analog/commands/uplink/Time2000.js';
- *
- * // failure
- * const commandBody = new Uint8Array([0x4d, 0x2b, 0xbd, 0x98, 0xad]);
- * const command = Time2000.fromBytes(commandBody);
- *
- * console.log(command.parameters);
- * // output:
- * {sequenceNumber: 77, time2000: 733845677}
- * ```
- * ```js
- * import * as time2000 from 'jooby-codec/analog/commands/uplink/correctime2000tTime2000.js';
+ * import * as time2000 from 'jooby-codec/analog/commands/uplink/time2000.js';
  *
  * // device time is 2023.04.03 14:01:17 GMT
  * const bytes = [0x4d, 0x2b, 0xbd, 0x98, 0xad];
