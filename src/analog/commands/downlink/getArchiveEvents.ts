@@ -1,24 +1,46 @@
-import {TBytes, TUint8} from '../../../types.js';
+/**
+ * Command to receive events from device archive.
+ *
+ * @packageDocumentation
+ *
+ * @example
+ * ```js
+ * import * as getArchiveEvents from 'jooby-codec/analog/commands/downlink/getArchiveEvents.js';
+ *
+ * // request 4 events from 2023.04.03 14:01:17 GMT
+ * const parameters = {startTime2000: 733845677, events: 4};
+ * const bytes = getArchiveEvents.toBytes(parameters);
+ *
+ * // command binary representation
+ * console.log(bytes);
+ * // output:
+ * [11, 5, 43, 189, 152, 173, 4]
+ * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveEvents.md#request)
+ */
+
+import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
-import {ICommandParameters, TCommandExamples} from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
+
 
 /**
  * getArchiveEvents command parameters
  */
-interface IGetArchiveEventsParameters extends ICommandParameters {
+interface IGetArchiveEventsParameters extends command.ICommandParameters {
     startTime2000: TTime2000;
-    events: TUint8;
+    events: types.TUint8;
 }
 
 
-export const id = 0x0b;
+export const id: types.TCommandId = 0x0b;
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 5;
 
-export const examples: TCommandExamples = {
+export const examples: command.TCommandExamples = {
     'request 4 events from 2023.04.03 14:01:17 GMT': {
         id,
         headerSize,
@@ -32,7 +54,7 @@ export const examples: TCommandExamples = {
 
 
 // data - only body (without header)
-export const fromBytes = ( data: TBytes ): IGetArchiveEventsParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsParameters => {
     if ( data.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -49,7 +71,7 @@ export const fromBytes = ( data: TBytes ): IGetArchiveEventsParameters => {
 };
 
 // returns full message - header with body
-export const toBytes = ( parameters: IGetArchiveEventsParameters ): TBytes => {
+export const toBytes = ( parameters: IGetArchiveEventsParameters ): types.TBytes => {
     const {startTime2000, events} = parameters;
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 

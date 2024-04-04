@@ -920,48 +920,6 @@ const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 //         this.setUint8((((hours - 1) & 0x07) << 5) | (hour & 0x1f));
 //     }
 
-//     getBatteryVoltage (): IBatteryVoltage {
-//         let underHighLoad;
-//         let underLowLoad;
-
-//         const lowVoltageByte = this.getUint8();
-//         const lowAndHightVoltageByte = this.getUint8();
-//         const highVoltageByte = this.getUint8();
-
-//         underLowLoad = lowVoltageByte << 4;
-//         underLowLoad |= (lowAndHightVoltageByte & 0xf0) >> 4;
-
-//         underHighLoad = ((lowAndHightVoltageByte & 0x0f) << 8) | highVoltageByte;
-
-//         if ( underHighLoad === UNKNOWN_BATTERY_VOLTAGE ) {
-//             underHighLoad = undefined;
-//         }
-
-//         if ( underLowLoad === UNKNOWN_BATTERY_VOLTAGE ) {
-//             underLowLoad = undefined;
-//         }
-
-//         return {underLowLoad, underHighLoad};
-//     }
-
-//     setBatteryVoltage ( batteryVoltage: IBatteryVoltage ): void {
-//         let {underLowLoad, underHighLoad} = batteryVoltage;
-
-//         if ( underLowLoad === undefined ) {
-//             underLowLoad = UNKNOWN_BATTERY_VOLTAGE;
-//         }
-
-//         if ( underHighLoad === undefined ) {
-//             underHighLoad = UNKNOWN_BATTERY_VOLTAGE;
-//         }
-
-//         const lowVoltageByte = (underLowLoad >> 4) & 0xff;
-//         const lowAndHighVoltageByte = ((underLowLoad & 0x0f) << 4) | ((underHighLoad >> 8) & 0x0f);
-//         const highVoltageByte = underHighLoad & 0xff;
-
-//         [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
-//     }
-
 //     getChannelsValuesWithHourDiff (): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>} {
 //         const date = this.getDate();
 //         const {hour, hours} = this.getHours();
@@ -1693,7 +1651,10 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getExtendedValueSize (bits: number): number,
 
     getTime (): number,
-    setTime (value: TTime2000): void
+    setTime (value: TTime2000): void,
+
+    getBatteryVoltage (): IBatteryVoltage,
+    setBatteryVoltage ( batteryVoltage: IBatteryVoltage )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: TBytes | number, isLittleEndian = true ) {
@@ -1730,6 +1691,7 @@ CommandBinaryBuffer.prototype.getExtendedValue = function (): number {
     return value;
 };
 
+
 /**
  * Get the number of bytes necessary to store an extended value.
  *
@@ -1750,12 +1712,54 @@ CommandBinaryBuffer.prototype.getExtendedValueSize = function ( bits: number ): 
     return extBytes;
 };
 
+
 CommandBinaryBuffer.prototype.getTime = function (): number {
     return this.getUint32(false);
 };
 
+
 CommandBinaryBuffer.prototype.setTime = function ( value: TTime2000 ): void {
     this.setUint32(value, false);
+};
+
+
+CommandBinaryBuffer.prototype.getBatteryVoltage = function (): IBatteryVoltage {
+    const lowVoltageByte = this.getUint8();
+    const lowAndHightVoltageByte = this.getUint8();
+    const highVoltageByte = this.getUint8();
+
+    let underLowLoad = lowVoltageByte << 4;
+    underLowLoad |= (lowAndHightVoltageByte & 0xf0) >> 4;
+    let underHighLoad = ((lowAndHightVoltageByte & 0x0f) << 8) | highVoltageByte;
+
+    if ( underHighLoad === UNKNOWN_BATTERY_VOLTAGE ) {
+        underHighLoad = undefined;
+    }
+
+    if ( underLowLoad === UNKNOWN_BATTERY_VOLTAGE ) {
+        underLowLoad = undefined;
+    }
+
+    return {underLowLoad, underHighLoad};
+};
+
+
+CommandBinaryBuffer.prototype.setBatteryVoltage = function ( batteryVoltage: IBatteryVoltage ) {
+    let {underLowLoad, underHighLoad} = batteryVoltage;
+
+    if ( underLowLoad === undefined ) {
+        underLowLoad = UNKNOWN_BATTERY_VOLTAGE;
+    }
+
+    if ( underHighLoad === undefined ) {
+        underHighLoad = UNKNOWN_BATTERY_VOLTAGE;
+    }
+
+    const lowVoltageByte = (underLowLoad >> 4) & 0xff;
+    const lowAndHighVoltageByte = ((underLowLoad & 0x0f) << 4) | ((underHighLoad >> 8) & 0x0f);
+    const highVoltageByte = underHighLoad & 0xff;
+
+    [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
 };
 
 

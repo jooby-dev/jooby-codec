@@ -15,16 +15,16 @@
  *
  * // command binary representation
  * console.log(bytes);
- * // [12, 2, 45, 136]
+ * // output:
+ * [12, 2, 45, 136]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/CorrectTime2000.md#request)
  */
 
-import {TCommandId, TBytes, TUint8, TInt8} from '../../../types.js';
+import * as types from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
-import {ICommandParameters, TCommandExamples} from '../../utils/command.js';
 
 
 /**
@@ -34,24 +34,24 @@ import {ICommandParameters, TCommandExamples} from '../../utils/command.js';
  * // 120 seconds to the past
  * {sequenceNumber: 45, seconds: -120}
  */
-interface ICorrectTime2000Parameters extends ICommandParameters {
+interface ICorrectTime2000Parameters extends command.ICommandParameters {
     /** unique time manipulation operation number */
-    sequenceNumber: TUint8,
+    sequenceNumber: types.TUint8,
 
     /**
      * seconds
      * range: [-127..+127]
      */
-    seconds: TInt8
+    seconds: types.TInt8
 }
 
 
-export const id: TCommandId = 0x0c;
+export const id: types.TCommandId = 0x0c;
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 2;
 
-export const examples: TCommandExamples = {
+export const examples: command.TCommandExamples = {
     'correct time 120 seconds to the past': {
         id,
         headerSize,
@@ -79,7 +79,7 @@ export const examples: TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: TBytes ): ICorrectTime2000Parameters => {
+export const fromBytes = ( data: types.TBytes ): ICorrectTime2000Parameters => {
     if ( data.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -104,7 +104,7 @@ export const fromBytes = ( data: TBytes ): ICorrectTime2000Parameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: ICorrectTime2000Parameters ): TBytes => {
+export const toBytes = ( parameters: ICorrectTime2000Parameters ): types.TBytes => {
     const {sequenceNumber, seconds} = parameters;
     const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
