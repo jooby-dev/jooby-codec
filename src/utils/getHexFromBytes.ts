@@ -16,6 +16,6 @@ export default ( bytes: TBytes, options: IHexFormatOptions = {} ): string => {
     const {separator, prefix} = Object.assign({}, hexFormatOptions, options);
 
     return bytes
-        .map((byte: number) => `${prefix}${(byte < 16 ? '0' : '')}${byte.toString(16)}`)
+        .map((byte: number) => `${prefix}${byte.toString(16).padStart(2, '0')}`)
         .join(separator);
 };
