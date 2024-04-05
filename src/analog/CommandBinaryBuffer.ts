@@ -506,6 +506,19 @@ interface IRequestDeviceParameterStatus {
     status: number
 }
 
+/**
+ * Request parameter for specific data type.
+ */
+interface IRequestDataTypeParameter {
+    dataType: number
+}
+
+/**
+ * Request parameter for specific event id.
+ */
+interface IRequestEventIdParameter {
+    eventId: number
+}
 
 export interface IParameter {
     id: number,
@@ -514,7 +527,12 @@ export interface IParameter {
 
 export interface IRequestParameter {
     id: number,
-    data: IRequestChannelParameter | IRequestDeviceParameterStatus | null
+    data:
+    IRequestChannelParameter |
+    IRequestDeviceParameterStatus |
+    IRequestDataTypeParameter |
+    IRequestEventIdParameter |
+    null
 }
 
 export interface ILegacyCounter {
@@ -844,7 +862,9 @@ class CommandBinaryBuffer extends BinaryBuffer {
         switch ( parameter.id ) {
             case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
             case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
-                // 1 byte ID + channel 1 byte
+            case deviceParameters.REPORTING_DATA_CONFIG:
+            case deviceParameters.EVENTS_CONFIG:
+                // 1 byte ID + parameter 1 byte
                 size = 2;
                 break;
 
@@ -2137,6 +2157,26 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setChannelValue(parameter.channel);
     }
 
+    getRequestDataTypeParameter (): IRequestDataTypeParameter {
+        return {
+            dataType: this.getUint8()
+        };
+    }
+
+    setRequestDataTypeParameter ( parameter: IRequestDataTypeParameter ): void {
+        this.setUint8(parameter.dataType);
+    }
+
+    getRequestEventIdParameter (): IRequestEventIdParameter {
+        return {
+            eventId: this.getUint8()
+        };
+    }
+
+    setRequestEventIdParameter ( parameter: IRequestEventIdParameter ): void {
+        this.setUint8(parameter.eventId);
+    }
+
     getRequestParameter (): IRequestParameter {
         const id = this.getUint8();
         let data = null;
@@ -2145,6 +2185,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
             case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
             case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
                 data = this.getRequestChannelParameter();
+                break;
+
+            case deviceParameters.REPORTING_DATA_CONFIG:
+                data = this.getRequestDataTypeParameter();
+                break;
+
+            case deviceParameters.EVENTS_CONFIG:
+                data = this.getRequestEventIdParameter();
                 break;
 
             default:
@@ -2163,6 +2211,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
             case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
             case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
                 this.setRequestChannelParameter(data as IRequestChannelParameter);
+                break;
+
+            case deviceParameters.REPORTING_DATA_CONFIG:
+                this.setRequestDataTypeParameter(data as IRequestDataTypeParameter);
+                break;
+
+            case deviceParameters.EVENTS_CONFIG:
+                this.setRequestEventIdParameter(data as IRequestEventIdParameter);
                 break;
 
             default:
