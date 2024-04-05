@@ -159,6 +159,197 @@ const examples: TCommandExampleList = [
             }
         },
         hex: {header: '03 05', body: '21 8c a0 65 90'}
+    },
+    {
+        name: 'set configuration for session',
+        parameters: {
+            id: deviceParameters.MQTT_SESSION_CONFIG,
+            data: {
+                clientId: 'clientId',
+                username: 'username',
+                password: 'password',
+                cleanSession: 1
+            }
+        },
+        hex: {header: '03 1d', body: '22 08 63 6c 69 65 6e 74 49 64 08 75 73 65 72 6e 61 6d 65 08 70 61 73 73 77 6f 72 64 01'}
+    },
+    {
+        name: 'set broker address',
+        parameters: {
+            id: deviceParameters.MQTT_BROKER_ADDRESS,
+            data: {
+                hostName: 'chirpstack-example.com',
+                port: 1800
+            }
+        },
+        hex: {header: '03 1a', body: '23 16 63 68 69 72 70 73 74 61 63 6b 2d 65 78 61 6d 70 6c 65 2e 63 6f 6d 07 08'}
+    },
+    {
+        name: 'Enable ssl',
+        parameters: {
+            id: deviceParameters.MQTT_SSL_ENABLE,
+            data: {
+                enable: 1
+            }
+        },
+        hex: {header: '03 02', body: '24 01'}
+    },
+    {
+        name: 'set topic prefix',
+        parameters: {
+            id: deviceParameters.MQTT_TOPIC_PREFIX,
+            data: {
+                topicPrefix: '/nbiot/N0000000000001/cmd'
+            }
+        },
+        hex: {header: '03 1b', body: '25 19 2f 6e 62 69 6f 74 2f 4e 30 30 30 30 30 30 30 30 30 30 30 30 31 2f 63 6d 64'}
+    },
+    {
+        name: 'set configuration for data receive',
+        parameters: {
+            id: deviceParameters.MQTT_DATA_RECEIVE_CONFIG,
+            data: {
+                qos: 1
+            }
+        },
+        hex: {header: '03 02', body: '26 01'}
+    },
+    {
+        name: 'set configuration for data send',
+        parameters: {
+            id: deviceParameters.MQTT_DATA_SEND_CONFIG,
+            data: {
+                qos: 1,
+                retain: 1,
+                newestSendFirst: 1,
+                sendCountAttempts: 1,
+                sendTimeoutBetweenAttempts: 1
+            }
+        },
+        hex: {header: '03 06', body: '27 01 01 01 01 01'}
+    },
+    {
+        name: 'set configuration for ssl',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CONFIG,
+            data: {
+                securityLevel: 1,
+                version: 1
+            }
+        },
+        hex: {header: '03 03', body: '28 01 01'}
+    },
+    {
+        name: 'write ssl cacert',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CACERT_WRITE,
+            data: {
+                size: 10,
+                position: 0,
+                chunk: new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+            }
+        },
+        hex: {header: '03 0f', body: '29 00 0a 00 00 00 01 02 03 04 05 06 07 08 09'}
+    },
+    {
+        name: 'set ssl cacert crc32',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CACERT_SET,
+            data: {
+                crc32: 0x123456
+            }
+        },
+        hex: {header: '03 05', body: '2a 00 12 34 56'}
+    },
+    {
+        name: 'write ssl client cert',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE,
+            data: {
+                size: 10,
+                position: 0,
+                chunk: new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+            }
+        },
+        hex: {header: '03 0f', body: '2b 00 0a 00 00 00 01 02 03 04 05 06 07 08 09'}
+    },
+    {
+        name: 'set ssl client cert crc32',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CLIENT_CERT_SET,
+            data: {
+                crc32: 0x123456
+            }
+        },
+        hex: {header: '03 05', body: '2c 00 12 34 56'}
+    },
+    {
+        name: 'write ssl client key',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE,
+            data: {
+                size: 10,
+                position: 0,
+                chunk: new Uint8Array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+            }
+        },
+        hex: {header: '03 0f', body: '2d 00 0a 00 00 00 01 02 03 04 05 06 07 08 09'}
+    },
+    {
+        name: 'set ssl client key crc32',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CLIENT_KEY_SET,
+            data: {
+                crc32: 0x123456
+            }
+        },
+        hex: {header: '03 05', body: '2e 00 12 34 56'}
+    },
+    {
+        name: 'update device software',
+        parameters: {
+            id: deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE,
+            data: {
+                softwareImageUrl: 'http://infomir.com.ua/8.bin'
+            }
+        },
+        hex: {header: '03 1d', body: '2f 1b 68 74 74 70 3a 2f 2f 69 6e 66 6f 6d 69 72 2e 63 6f 6d 2e 75 61 2f 38 2e 62 69 6e'}
+    },
+    {
+        name: 'update module firmware',
+        parameters: {
+            id: deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE,
+            data: {
+                moduleFirmwareImageUrl: 'http://infomir.com.ua/8.bin'
+            }
+        },
+        hex: {header: '03 1d', body: '30 1b 68 74 74 70 3a 2f 2f 69 6e 66 6f 6d 69 72 2e 63 6f 6d 2e 75 61 2f 38 2e 62 69 6e'}
+    },
+    {
+        name: 'set configuration for reporting data',
+        parameters: {
+            id: deviceParameters.REPORTING_DATA_CONFIG,
+            data: {
+                dataType: 0,
+                hour: 6,
+                minutes: 10,
+                countToSend: 20
+            }
+        },
+        hex: {header: '03 05', body: '31 00 06 0a 14'}
+    },
+    {
+        name: 'set configuration for events',
+        parameters: {
+            id: deviceParameters.EVENTS_CONFIG,
+            data: {
+                eventId: 2,
+                enableEvent: 1,
+                sendEvent: 1,
+                saveEvent: 1
+            }
+        },
+        hex: {header: '03 05', body: '32 02 01 01 01'}
     }
 ];
 

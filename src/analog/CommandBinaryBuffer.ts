@@ -713,7 +713,7 @@ const parametersSizeMap = new Map([
     [deviceParameters.BATTERY_DEPASSIVATION_CONFIG, 1 + 4],
     [deviceParameters.MQTT_SSL_ENABLE, 1 + 1],
     [deviceParameters.MQTT_DATA_RECEIVE_CONFIG, 1 + 1],
-    [deviceParameters.MQTT_DATA_SEND_CONFIG, 1 + 4],
+    [deviceParameters.MQTT_DATA_SEND_CONFIG, 1 + 5],
     [deviceParameters.NBIOT_SSL_CONFIG, 1 + 2],
     [deviceParameters.NBIOT_SSL_CACERT_SET, 1 + 4],
     [deviceParameters.NBIOT_SSL_CLIENT_CERT_SET, 1 + 4],
@@ -1721,6 +1721,15 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint16(parameter.resistanceStopThreshold, false);
     }
 
+    private getMqttSessionConfig (): IParameterMqttSessionConfig {
+        return {
+            clientId: this.getString(),
+            username: this.getString(),
+            password: this.getString(),
+            cleanSession: this.getUint8()
+        };
+    }
+
     private setMqttSessionConfig ( parameter: IParameterMqttSessionConfig ): void {
         this.setString(parameter.clientId);
         this.setString(parameter.username);
@@ -1800,6 +1809,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(parameter.version);
     }
 
+    private getNbiotSslWrite (): IParameterNbiotSslWrite {
+        return {
+            size: this.getUint16(false),
+            position: this.getUint16(false),
+            chunk: this.getBytes(this.size, this.offset)
+        };
+    }
+
     private setNbiotSslWrite ( parameter: IParameterNbiotSslWrite ): void {
         if ( parameter.size !== parameter.chunk.length ) {
             throw new Error('ssl chunk size parameter doesn\'t match actual ssl chunk size');
@@ -1810,12 +1827,30 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setBytes(parameter.chunk);
     }
 
+    private getNbiotSslSet (): IParameterNbiotSslSet {
+        return {
+            crc32: this.getUint32(false)
+        };
+    }
+
     private setNbiotSslSet ( parameter: IParameterNbiotSslSet ): void {
         this.setUint32(parameter.crc32, false);
     }
 
+    private getNbiotDeviceSoftwareUpdate (): IParameterNbiotDeviceSoftwareUpdate {
+        return {
+            softwareImageUrl: this.getString()
+        };
+    }
+
     private setNbiotDeviceSoftwareUpdate ( parameter: IParameterNbiotDeviceSoftwareUpdate ): void {
         this.setString(parameter.softwareImageUrl);
+    }
+
+    private getNbiotModuleFirmwareUpdate (): IParameterNbiotModuleFirmwareUpdate {
+        return {
+            moduleFirmwareImageUrl: this.getString()
+        };
     }
 
     private setNbiotModuleFirmwareUpdate ( parameter: IParameterNbiotModuleFirmwareUpdate ): void {
@@ -1953,6 +1988,10 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getBatteryDepassivationConfig();
                 break;
 
+            case deviceParameters.MQTT_SESSION_CONFIG:
+                data = this.getMqttSessionConfig();
+                break;
+
             case deviceParameters.MQTT_BROKER_ADDRESS:
                 data = this.getMqttBrokerAddress();
                 break;
@@ -1977,24 +2016,32 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getNbiotSslConfig();
                 break;
 
+            case deviceParameters.NBIOT_SSL_CACERT_WRITE:
+            case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
+            case deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE:
+                data = this.getNbiotSslWrite();
+                break;
+
+            case deviceParameters.NBIOT_SSL_CACERT_SET:
+            case deviceParameters.NBIOT_SSL_CLIENT_CERT_SET:
+            case deviceParameters.NBIOT_SSL_CLIENT_KEY_SET:
+                data = this.getNbiotSslSet();
+                break;
+
+            case deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE:
+                data = this.getNbiotDeviceSoftwareUpdate();
+                break;
+
+            case deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE:
+                data = this.getNbiotModuleFirmwareUpdate();
+                break;
+
             case deviceParameters.REPORTING_DATA_CONFIG:
                 data = this.getReportingDataConfig();
                 break;
 
             case deviceParameters.EVENTS_CONFIG:
                 data = this.getEventsConfig();
-                break;
-
-            case deviceParameters.MQTT_SESSION_CONFIG:
-            case deviceParameters.NBIOT_SSL_CACERT_WRITE:
-            case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
-            case deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE:
-            case deviceParameters.NBIOT_SSL_CACERT_SET:
-            case deviceParameters.NBIOT_SSL_CLIENT_CERT_SET:
-            case deviceParameters.NBIOT_SSL_CLIENT_KEY_SET:
-            case deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE:
-            case deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE:
-                data = null;
                 break;
 
             default:
