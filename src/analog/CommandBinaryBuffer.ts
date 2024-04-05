@@ -527,12 +527,7 @@ export interface IParameter {
 
 export interface IRequestParameter {
     id: number,
-    data:
-    IRequestChannelParameter |
-    IRequestDeviceParameterStatus |
-    IRequestDataTypeParameter |
-    IRequestEventIdParameter |
-    null
+    data: TRequestParameterData | null
 }
 
 export interface ILegacyCounter {
@@ -597,6 +592,11 @@ type TParameterData =
     IParameterReportingDataConfig |
     IParameterEventsConfig;
 
+type TRequestParameterData =
+    IRequestChannelParameter |
+    IRequestDeviceParameterStatus |
+    IRequestDataTypeParameter |
+    IRequestEventIdParameter;
 
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
