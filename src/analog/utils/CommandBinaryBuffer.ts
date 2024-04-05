@@ -1727,10 +1727,10 @@ CommandBinaryBuffer.prototype.getChannelsWithAbsoluteValues = function (): Array
 CommandBinaryBuffer.prototype.setChannelsWithAbsoluteValues = function ( channelList: Array<IChannelAbsoluteValue> ) {
     this.setChannels(channelList);
 
-    for ( const {value, pulseCoefficient} of channelList ) {
+    channelList.forEach(({value, pulseCoefficient}) => {
         this.setPulseCoefficient(pulseCoefficient);
         this.setExtendedValue(value);
-    }
+    });
 };
 
 
@@ -1762,11 +1762,11 @@ CommandBinaryBuffer.prototype.getChannelsAbsoluteValuesWithHourDiff = function (
 CommandBinaryBuffer.prototype.setChannelsAbsoluteValuesWithHourDiff = function ( channelList: Array<IChannelHourAbsoluteValue> ) {
     this.setChannels(channelList);
 
-    for ( const {value, diff, pulseCoefficient} of channelList ) {
+    channelList.forEach(({value, diff, pulseCoefficient}) => {
         this.setPulseCoefficient(pulseCoefficient);
         this.setExtendedValue(value);
         diff.forEach(diffValue => this.setExtendedValue(diffValue));
-    }
+    });
 };
 
 
