@@ -226,12 +226,7 @@ export interface IBinaryBuffer {
 
 function BinaryBuffer ( this: IBinaryBuffer, dataOrLength: TBytes | number, isLittleEndian = true ) {
     if ( typeof dataOrLength === 'number' ) {
-        const bytes = new Array(dataOrLength);
-
-        // no support of Array.fill in Otto
-        for ( let i = 0; i < dataOrLength; ++i ) {
-            bytes[i] = 0;
-        }
+        const bytes = new Array(dataOrLength).fill(0);
 
         this.data = bytes;
     } else {
