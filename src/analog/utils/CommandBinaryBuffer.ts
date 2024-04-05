@@ -577,14 +577,15 @@ const fourChannelsBitMask = {
     channel4: Math.pow(2, 3)
 };
 
+// 0x80 - 0x86
 const byteToPulseCoefficientMap = {
-    0x80: 1,
-    0x81: 5,
-    0x82: 10,
-    0x83: 100,
-    0x84: 1000,
-    0x85: 10000,
-    0x86: 100000
+    128: 1,
+    129: 5,
+    130: 10,
+    131: 100,
+    132: 1000,
+    133: 10000,
+    134: 100000
 };
 
 const pulseCoefficientToByteMap = invertObject(byteToPulseCoefficientMap);
