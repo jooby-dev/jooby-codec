@@ -186,6 +186,7 @@ class Status extends Command {
             case hardwareTypes.IMP2IN:
             case hardwareTypes.IMP4IN:
             case hardwareTypes.GASIC:
+            case hardwareTypes.NBIOT:
                 statusData = {
                     batteryVoltage: buffer.getBatteryVoltage(),
                     batteryInternalResistance: buffer.getUint16(false),

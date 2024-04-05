@@ -22,6 +22,7 @@ requestByResponse.set(uplinkCommands.GetArchiveDaysMCResponse, downlinkCommands.
 requestByResponse.set(uplinkCommands.GetArchiveDaysResponse, downlinkCommands.GetArchiveDays);
 requestByResponse.set(uplinkCommands.GetArchiveEventsResponse, downlinkCommands.GetArchiveEvents);
 requestByResponse.set(uplinkCommands.GetArchiveHoursMCResponse, downlinkCommands.GetArchiveHoursMC);
+requestByResponse.set(uplinkCommands.GetArchiveHoursMCExResponse, downlinkCommands.GetArchiveHoursMCEx);
 requestByResponse.set(uplinkCommands.GetBatteryStatusResponse, downlinkCommands.GetBatteryStatus);
 requestByResponse.set(uplinkCommands.GetExAbsArchiveDaysMCResponse, downlinkCommands.GetExAbsArchiveDaysMC);
 requestByResponse.set(uplinkCommands.GetExAbsArchiveHoursMCResponse, downlinkCommands.GetExAbsArchiveHoursMC);

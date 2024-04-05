@@ -11,6 +11,7 @@ export {default as GetArchiveDaysMC} from './GetArchiveDaysMC.js';
 export {default as GetArchiveEvents} from './GetArchiveEvents.js';
 export {default as GetArchiveHours} from './GetArchiveHours.js';
 export {default as GetArchiveHoursMC} from './GetArchiveHoursMC.js';
+export {default as GetArchiveHoursMCEx} from './GetArchiveHoursMCEx.js';
 export {default as GetBatteryStatus} from './GetBatteryStatus.js';
 export {default as GetCurrent} from './GetCurrent.js';
 export {default as GetCurrentMC} from './GetCurrentMC.js';

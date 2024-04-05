@@ -372,6 +372,127 @@ interface IParameterBatteryDepassivationConfig {
 }
 
 /**
+ * Set configuration for session.
+ * deviceParameters.MQTT_SESSION_CONFIG = `34`
+ */
+interface IParameterMqttSessionConfig {
+    clientId: string,
+    username: string,
+    password: string,
+    cleanSession: number
+}
+
+/**
+ * Set broker address.
+ * deviceParameters.MQTT_BROKER_ADDRESS = `35`
+ */
+interface IParameterMqttBrokerAddress {
+    hostName: string,
+    port: number
+}
+
+/**
+ * Enable ssl.
+ * deviceParameters.MQTT_SSL_ENABLE = `36`
+ */
+interface IParameterMqttSslEnable {
+    enable: number
+}
+
+/**
+ * Set topic prefix.
+ * deviceParameters.MQTT_TOPIC_PREFIX = `37`
+ */
+interface IParameterMqttTopicPrefix {
+    topicPrefix: string
+}
+
+/**
+ * Set configuration for data receive.
+ * deviceParameters.MQTT_DATA_RECEIVE_CONFIG = `38`
+ */
+interface IParameterMqttDataReceiveConfig {
+    qos: number
+}
+
+/**
+ * Set configuration for data send.
+ * deviceParameters.MQTT_DATA_SEND_CONFIG = `39`
+ */
+interface IParameterMqttDataSendConfig {
+    qos: number,
+    retain: number,
+    newestSendFirst: number,
+    sendCountAttempts: number,
+    sendTimeoutBetweenAttempts: number
+}
+
+/**
+ * Set configuration for ssl.
+ * deviceParameters.NBIOT_SSL_CONFIG = `40`
+ */
+interface IParameterNbiotSslConfig {
+    securityLevel: number,
+    version: number
+}
+
+/**
+ * Write ssl.
+ * deviceParameters.NBIOT_SSL_CACERT_WRITE = `41`
+ */
+interface IParameterNbiotSslWrite {
+    size: number,
+    position: number,
+    chunk: Uint8Array
+}
+
+/**
+ * Set ssl crc32.
+ * deviceParameters.NBIOT_SSL_CACERT_SET = `42`
+ */
+interface IParameterNbiotSslSet {
+    crc32: number
+}
+
+/**
+ * Update device software.
+ * deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE = `47`
+ */
+interface IParameterNbiotDeviceSoftwareUpdate {
+    softwareImageUrl: string
+}
+
+/**
+ * Update module firmware.
+ * deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE = `48`
+ */
+interface IParameterNbiotModuleFirmwareUpdate {
+    moduleFirmwareImageUrl: string
+}
+
+/**
+ * Set configuration for reporting data.
+ * deviceParameters.REPORTING_DATA_CONFIG = `49`
+ */
+interface IParameterReportingDataConfig {
+    dataType: number,
+    hour: number,
+    minutes: number,
+    countToSend: number
+}
+
+/**
+ * Set configuration for events.
+ * deviceParameters.EVENTS_CONFIG = `50`
+ */
+interface IParameterEventsConfig {
+    eventId: number,
+    enableEvent: number,
+    sendEvent: number,
+    saveEvent: number
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -385,15 +506,28 @@ interface IRequestDeviceParameterStatus {
     status: number
 }
 
+/**
+ * Request parameter for specific data type.
+ */
+interface IRequestDataTypeParameter {
+    dataType: number
+}
+
+/**
+ * Request parameter for specific event id.
+ */
+interface IRequestEventIdParameter {
+    eventId: number
+}
 
 export interface IParameter {
     id: number,
-    data: TParameterData
+    data: TParameterData | null
 }
 
 export interface IRequestParameter {
     id: number,
-    data: IRequestChannelParameter | IRequestDeviceParameterStatus | null
+    data: TRequestParameterData | null
 }
 
 export interface ILegacyCounter {
@@ -443,8 +577,26 @@ type TParameterData =
     IParameterAbsoluteDataEnableMC |
     IParameterPulseChannelsScanConfig |
     IParameterPulseChannelsSetConfig |
-    IParameterBatteryDepassivationConfig;
+    IParameterBatteryDepassivationConfig |
+    IParameterMqttSessionConfig |
+    IParameterMqttBrokerAddress |
+    IParameterMqttSslEnable |
+    IParameterMqttTopicPrefix |
+    IParameterMqttDataReceiveConfig |
+    IParameterMqttDataSendConfig |
+    IParameterNbiotSslConfig |
+    IParameterNbiotSslWrite |
+    IParameterNbiotSslSet |
+    IParameterNbiotDeviceSoftwareUpdate |
+    IParameterNbiotModuleFirmwareUpdate |
+    IParameterReportingDataConfig |
+    IParameterEventsConfig;
 
+type TRequestParameterData =
+    IRequestChannelParameter |
+    IRequestDeviceParameterStatus |
+    IRequestDataTypeParameter |
+    IRequestEventIdParameter;
 
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
@@ -558,7 +710,16 @@ const parametersSizeMap = new Map([
     [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL, 1 + 2],
     [deviceParameters.PULSE_CHANNELS_SCAN_CONFIG, 1 + 3],
     [deviceParameters.PULSE_CHANNELS_SET_CONFIG, 1 + 1],
-    [deviceParameters.BATTERY_DEPASSIVATION_CONFIG, 1 + 4]
+    [deviceParameters.BATTERY_DEPASSIVATION_CONFIG, 1 + 4],
+    [deviceParameters.MQTT_SSL_ENABLE, 1 + 1],
+    [deviceParameters.MQTT_DATA_RECEIVE_CONFIG, 1 + 1],
+    [deviceParameters.MQTT_DATA_SEND_CONFIG, 1 + 4],
+    [deviceParameters.NBIOT_SSL_CONFIG, 1 + 2],
+    [deviceParameters.NBIOT_SSL_CACERT_SET, 1 + 4],
+    [deviceParameters.NBIOT_SSL_CLIENT_CERT_SET, 1 + 4],
+    [deviceParameters.NBIOT_SSL_CLIENT_KEY_SET, 1 + 4],
+    [deviceParameters.REPORTING_DATA_CONFIG, 1 + 4],
+    [deviceParameters.EVENTS_CONFIG, 1 + 4]
 ]);
 
 const fourChannelsBitMask = {
@@ -610,7 +771,83 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     static getParameterSize ( parameter: IParameter ): number {
-        const size = parametersSizeMap.get(parameter.id);
+        let size;
+        let data;
+
+        switch ( parameter.id ) {
+            case deviceParameters.MQTT_SESSION_CONFIG:
+                if ( parameter.data ) {
+                    data = parameter.data as IParameterMqttSessionConfig;
+                    // size: parameter id + cleanSession
+                    size = 1 + 1;
+                    size += data.clientId.length + 1;
+                    size += data.username.length + 1;
+                    size += data.password.length + 1;
+                } else {
+                    // size: parameter id
+                    size = 1;
+                }
+
+                break;
+
+            case deviceParameters.MQTT_BROKER_ADDRESS:
+                data = parameter.data as IParameterMqttBrokerAddress;
+                // size: parameter id + port
+                size = 1 + 2;
+                size += data.hostName.length + 1;
+                break;
+
+            case deviceParameters.MQTT_TOPIC_PREFIX:
+                data = parameter.data as IParameterMqttTopicPrefix;
+                // size: parameter id
+                size = 1;
+                size += data.topicPrefix.length + 1;
+                break;
+
+            case deviceParameters.NBIOT_SSL_CACERT_WRITE:
+            case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
+            case deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE:
+                if ( parameter.data ) {
+                    data = parameter.data as IParameterNbiotSslWrite;
+                    // size: parameter id + size + pos
+                    size = 1 + 2 + 2;
+                    size += data.chunk.length;
+                } else {
+                    // size: parameter id
+                    size = 1;
+                }
+
+                break;
+
+            case deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE:
+                if ( parameter.data ) {
+                    data = parameter.data as IParameterNbiotDeviceSoftwareUpdate;
+                    // size: parameter id
+                    size = 1;
+                    size += data.softwareImageUrl.length + 1;
+                } else {
+                    // size: parameter id
+                    size = 1;
+                }
+
+                break;
+
+            case deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE:
+                if ( parameter.data ) {
+                    data = parameter.data as IParameterNbiotModuleFirmwareUpdate;
+                    // size: parameter id
+                    size = 1;
+                    size += data.moduleFirmwareImageUrl.length + 1;
+                } else {
+                    // size: parameter id
+                    size = 1;
+                }
+
+                break;
+
+            default:
+                size = parametersSizeMap.get(parameter.id);
+        }
 
         if ( size === undefined ) {
             throw new Error('unknown parameter id');
@@ -625,7 +862,9 @@ class CommandBinaryBuffer extends BinaryBuffer {
         switch ( parameter.id ) {
             case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
             case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
-                // 1 byte ID + channel 1 byte
+            case deviceParameters.REPORTING_DATA_CONFIG:
+            case deviceParameters.EVENTS_CONFIG:
+                // 1 byte ID + parameter 1 byte
                 size = 2;
                 break;
 
@@ -1046,6 +1285,50 @@ class CommandBinaryBuffer extends BinaryBuffer {
         });
     }
 
+    getChannelsValuesWithHourDiffExtended (): {hour: number, hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>} {
+        const date = this.getDate();
+        const hour = this.getUint8();
+        const hours = this.getUint8();
+        const channels = this.getChannels();
+        const channelList: Array<IChannelHours> = [];
+
+        date.setUTCHours(hour);
+
+        channels.forEach(channelIndex => {
+            const diff: Array<number> = [];
+
+            // decode hour value for channel
+            const value = this.getExtendedValue();
+
+            // start from first diff hour
+            for ( let diffHour = 1; diffHour < hours; ++diffHour ) {
+                diff.push(this.getExtendedValue());
+            }
+
+            channelList.push({
+                value,
+                diff,
+                index: channelIndex
+            });
+        });
+
+        return {startTime2000: getTime2000FromDate(date), hour, hours, channelList};
+    }
+
+    setChannelsValuesWithHourDiffExtended ( hour: number, hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours> ): void {
+        const date = getDateFromTime2000(startTime2000);
+
+        this.setDate(date);
+        this.setUint8(hour);
+        this.setUint8(hours);
+        this.setChannels(channelList);
+
+        channelList.forEach(({value, diff}) => {
+            this.setExtendedValue(value);
+            diff.forEach(diffValue => this.setExtendedValue(diffValue));
+        });
+    }
+
     getChannelsWithAbsoluteValues (): Array<IChannelAbsoluteValue> {
         const channels = this.getChannels();
         const channelList: Array<IChannelAbsoluteValue> = [];
@@ -1438,6 +1721,139 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint16(parameter.resistanceStopThreshold, false);
     }
 
+    private setMqttSessionConfig ( parameter: IParameterMqttSessionConfig ): void {
+        this.setString(parameter.clientId);
+        this.setString(parameter.username);
+        this.setString(parameter.password);
+        this.setUint8(parameter.cleanSession);
+    }
+
+    private getMqttBrokerAddress (): IParameterMqttBrokerAddress {
+        return {
+            hostName: this.getString(),
+            port: this.getUint16(false)
+        };
+    }
+
+    private setMqttBrokerAddress ( parameter: IParameterMqttBrokerAddress ): void {
+        this.setString(parameter.hostName);
+        this.setUint16(parameter.port, false);
+    }
+
+    private getMqttSslEnable (): IParameterMqttSslEnable {
+        return {
+            enable: this.getUint8()
+        };
+    }
+
+    private setMqttSslEnable ( parameter: IParameterMqttSslEnable ): void {
+        this.setUint8(parameter.enable);
+    }
+
+    private getMqttTopicPrefix (): IParameterMqttTopicPrefix {
+        return {
+            topicPrefix: this.getString()
+        };
+    }
+
+    private setMqttTopicPrefix ( parameter: IParameterMqttTopicPrefix ): void {
+        this.setString(parameter.topicPrefix);
+    }
+
+    private getMqttDataReceiveConfig (): IParameterMqttDataReceiveConfig {
+        return {
+            qos: this.getUint8()
+        };
+    }
+
+    private setMqttDataReceiveConfig ( parameter: IParameterMqttDataReceiveConfig ): void {
+        this.setUint8(parameter.qos);
+    }
+
+    private getMqttDataSendConfig (): IParameterMqttDataSendConfig {
+        return {
+            qos: this.getUint8(),
+            retain: this.getUint8(),
+            newestSendFirst: this.getUint8(),
+            sendCountAttempts: this.getUint8(),
+            sendTimeoutBetweenAttempts: this.getUint8()
+        };
+    }
+
+    private setMqttDataSendConfig ( parameter: IParameterMqttDataSendConfig ): void {
+        this.setUint8(parameter.qos);
+        this.setUint8(parameter.retain);
+        this.setUint8(parameter.newestSendFirst);
+        this.setUint8(parameter.sendCountAttempts);
+        this.setUint8(parameter.sendTimeoutBetweenAttempts);
+    }
+
+    private getNbiotSslConfig (): IParameterNbiotSslConfig {
+        return {
+            securityLevel: this.getUint8(),
+            version: this.getUint8()
+        };
+    }
+
+    private setNbiotSslConfig ( parameter: IParameterNbiotSslConfig ): void {
+        this.setUint8(parameter.securityLevel);
+        this.setUint8(parameter.version);
+    }
+
+    private setNbiotSslWrite ( parameter: IParameterNbiotSslWrite ): void {
+        if ( parameter.size !== parameter.chunk.length ) {
+            throw new Error('ssl chunk size parameter doesn\'t match actual ssl chunk size');
+        }
+
+        this.setUint16(parameter.size, false);
+        this.setUint16(parameter.position, false);
+        this.setBytes(parameter.chunk);
+    }
+
+    private setNbiotSslSet ( parameter: IParameterNbiotSslSet ): void {
+        this.setUint32(parameter.crc32, false);
+    }
+
+    private setNbiotDeviceSoftwareUpdate ( parameter: IParameterNbiotDeviceSoftwareUpdate ): void {
+        this.setString(parameter.softwareImageUrl);
+    }
+
+    private setNbiotModuleFirmwareUpdate ( parameter: IParameterNbiotModuleFirmwareUpdate ): void {
+        this.setString(parameter.moduleFirmwareImageUrl);
+    }
+
+    private getReportingDataConfig (): IParameterReportingDataConfig {
+        return {
+            dataType: this.getUint8(),
+            hour: this.getUint8(),
+            minutes: this.getUint8(),
+            countToSend: this.getUint8()
+        };
+    }
+
+    private setReportingDataConfig ( parameter: IParameterReportingDataConfig ): void {
+        this.setUint8(parameter.dataType);
+        this.setUint8(parameter.hour);
+        this.setUint8(parameter.minutes);
+        this.setUint8(parameter.countToSend);
+    }
+
+    private getEventsConfig (): IParameterEventsConfig {
+        return {
+            eventId: this.getUint8(),
+            enableEvent: this.getUint8(),
+            sendEvent: this.getUint8(),
+            saveEvent: this.getUint8()
+        };
+    }
+
+    private setEventsConfig ( parameter: IParameterEventsConfig ): void {
+        this.setUint8(parameter.eventId);
+        this.setUint8(parameter.enableEvent);
+        this.setUint8(parameter.sendEvent);
+        this.setUint8(parameter.saveEvent);
+    }
+
     private getLegacyHourDiff (): ILegacyCounter {
         const stateWithValueByte = this.getUint8();
         const valueLowerByte = this.getUint8();
@@ -1537,6 +1953,50 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getBatteryDepassivationConfig();
                 break;
 
+            case deviceParameters.MQTT_BROKER_ADDRESS:
+                data = this.getMqttBrokerAddress();
+                break;
+
+            case deviceParameters.MQTT_SSL_ENABLE:
+                data = this.getMqttSslEnable();
+                break;
+
+            case deviceParameters.MQTT_TOPIC_PREFIX:
+                data = this.getMqttTopicPrefix();
+                break;
+
+            case deviceParameters.MQTT_DATA_RECEIVE_CONFIG:
+                data = this.getMqttDataReceiveConfig();
+                break;
+
+            case deviceParameters.MQTT_DATA_SEND_CONFIG:
+                data = this.getMqttDataSendConfig();
+                break;
+
+            case deviceParameters.NBIOT_SSL_CONFIG:
+                data = this.getNbiotSslConfig();
+                break;
+
+            case deviceParameters.REPORTING_DATA_CONFIG:
+                data = this.getReportingDataConfig();
+                break;
+
+            case deviceParameters.EVENTS_CONFIG:
+                data = this.getEventsConfig();
+                break;
+
+            case deviceParameters.MQTT_SESSION_CONFIG:
+            case deviceParameters.NBIOT_SSL_CACERT_WRITE:
+            case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
+            case deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE:
+            case deviceParameters.NBIOT_SSL_CACERT_SET:
+            case deviceParameters.NBIOT_SSL_CLIENT_CERT_SET:
+            case deviceParameters.NBIOT_SSL_CLIENT_KEY_SET:
+            case deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE:
+            case deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE:
+                data = null;
+                break;
+
             default:
                 throw new Error(`parameter ${id} is not supported`);
         }
@@ -1626,6 +2086,62 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 this.setBatteryDepassivationConfig(data as IParameterBatteryDepassivationConfig);
                 break;
 
+            case deviceParameters.MQTT_SESSION_CONFIG:
+                this.setMqttSessionConfig(data as IParameterMqttSessionConfig);
+                break;
+
+            case deviceParameters.MQTT_BROKER_ADDRESS:
+                this.setMqttBrokerAddress(data as IParameterMqttBrokerAddress);
+                break;
+
+            case deviceParameters.MQTT_SSL_ENABLE:
+                this.setMqttSslEnable(data as IParameterMqttSslEnable);
+                break;
+
+            case deviceParameters.MQTT_TOPIC_PREFIX:
+                this.setMqttTopicPrefix(data as IParameterMqttTopicPrefix);
+                break;
+
+            case deviceParameters.MQTT_DATA_RECEIVE_CONFIG:
+                this.setMqttDataReceiveConfig(data as IParameterMqttDataReceiveConfig);
+                break;
+
+            case deviceParameters.MQTT_DATA_SEND_CONFIG:
+                this.setMqttDataSendConfig(data as IParameterMqttDataSendConfig);
+                break;
+
+            case deviceParameters.NBIOT_SSL_CONFIG:
+                this.setNbiotSslConfig(data as IParameterNbiotSslConfig);
+                break;
+
+            case deviceParameters.NBIOT_SSL_CACERT_WRITE:
+            case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
+            case deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE:
+                this.setNbiotSslWrite(data as IParameterNbiotSslWrite);
+                break;
+
+            case deviceParameters.NBIOT_SSL_CACERT_SET:
+            case deviceParameters.NBIOT_SSL_CLIENT_CERT_SET:
+            case deviceParameters.NBIOT_SSL_CLIENT_KEY_SET:
+                this.setNbiotSslSet(data as IParameterNbiotSslSet);
+                break;
+
+            case deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE:
+                this.setNbiotDeviceSoftwareUpdate(data as IParameterNbiotDeviceSoftwareUpdate);
+                break;
+
+            case deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE:
+                this.setNbiotModuleFirmwareUpdate(data as IParameterNbiotModuleFirmwareUpdate);
+                break;
+
+            case deviceParameters.REPORTING_DATA_CONFIG:
+                this.setReportingDataConfig(data as IParameterReportingDataConfig);
+                break;
+
+            case deviceParameters.EVENTS_CONFIG:
+                this.setEventsConfig(data as IParameterEventsConfig);
+                break;
+
             default:
                 throw new Error(`parameter ${id} is not supported`);
         }
@@ -1641,6 +2157,26 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setChannelValue(parameter.channel);
     }
 
+    getRequestDataTypeParameter (): IRequestDataTypeParameter {
+        return {
+            dataType: this.getUint8()
+        };
+    }
+
+    setRequestDataTypeParameter ( parameter: IRequestDataTypeParameter ): void {
+        this.setUint8(parameter.dataType);
+    }
+
+    getRequestEventIdParameter (): IRequestEventIdParameter {
+        return {
+            eventId: this.getUint8()
+        };
+    }
+
+    setRequestEventIdParameter ( parameter: IRequestEventIdParameter ): void {
+        this.setUint8(parameter.eventId);
+    }
+
     getRequestParameter (): IRequestParameter {
         const id = this.getUint8();
         let data = null;
@@ -1649,6 +2185,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
             case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
             case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
                 data = this.getRequestChannelParameter();
+                break;
+
+            case deviceParameters.REPORTING_DATA_CONFIG:
+                data = this.getRequestDataTypeParameter();
+                break;
+
+            case deviceParameters.EVENTS_CONFIG:
+                data = this.getRequestEventIdParameter();
                 break;
 
             default:
@@ -1667,6 +2211,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
             case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
             case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
                 this.setRequestChannelParameter(data as IRequestChannelParameter);
+                break;
+
+            case deviceParameters.REPORTING_DATA_CONFIG:
+                this.setRequestDataTypeParameter(data as IRequestDataTypeParameter);
+                break;
+
+            case deviceParameters.EVENTS_CONFIG:
+                this.setRequestEventIdParameter(data as IRequestEventIdParameter);
                 break;
 
             default:
