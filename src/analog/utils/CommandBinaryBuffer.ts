@@ -1239,7 +1239,7 @@ const setMagneticInfluenceBit = ( byte: number, value: boolean ): number => (
 );
 
 export const getEventStatusSize = ( hardwareType: number ): number => (
-    TWO_BYTES_HARDWARE_TYPES.includes(hardwareType) ? 2 : 1
+    TWO_BYTES_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ? 2 : 1
 );
 
 
@@ -1773,17 +1773,17 @@ CommandBinaryBuffer.prototype.setChannelsAbsoluteValuesWithHourDiff = function (
 CommandBinaryBuffer.prototype.getEventStatus = function ( hardwareType: number ): TEventStatus {
     let status: TEventStatus;
 
-    if ( GAS_HARDWARE_TYPES.includes(hardwareType) ) {
+    if ( GAS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         status = bitSet.toObject(gasBitMask, this.getUint8());
-    } else if ( TWO_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
+    } else if ( TWO_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         status = bitSet.toObject(twoChannelBitMask, this.getUint8());
-    } else if ( ELIMP_HARDWARE_TYPES.includes(hardwareType) ) {
+    } else if ( ELIMP_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         status = bitSet.toObject(elimpBitMask, this.getUint8());
     // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
     //     status = bitSet.toObject(waterBitMask, this.getUint8());
-    } else if ( FOUR_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
+    } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         status = bitSet.toObject(fourChannelBitMask, this.getExtendedValue());
-    } else if ( MTX_HARDWARE_TYPES.includes(hardwareType) ) {
+    } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         status = bitSet.toObject(mtxBitMask, this.getUint16());
     } else {
         throw new Error('wrong hardwareType');
@@ -1794,17 +1794,17 @@ CommandBinaryBuffer.prototype.getEventStatus = function ( hardwareType: number )
 
 
 CommandBinaryBuffer.prototype.setEventStatus = function ( hardwareType: number, status: TEventStatus ) {
-    if ( GAS_HARDWARE_TYPES.includes(hardwareType) ) {
+    if ( GAS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         this.setUint8(bitSet.fromObject(gasBitMask, status as bitSet.TBooleanObject));
-    } else if ( TWO_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
+    } else if ( TWO_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         this.setUint8(bitSet.fromObject(twoChannelBitMask, status as bitSet.TBooleanObject));
-    } else if ( ELIMP_HARDWARE_TYPES.includes(hardwareType) ) {
+    } else if ( ELIMP_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         this.setUint8(bitSet.fromObject(elimpBitMask, status as bitSet.TBooleanObject));
     // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
     //     this.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
-    } else if ( FOUR_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
+    } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         this.setExtendedValue(bitSet.fromObject(fourChannelBitMask, status as bitSet.TBooleanObject));
-    } else if ( MTX_HARDWARE_TYPES.includes(hardwareType) ) {
+    } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         this.setUint16(bitSet.fromObject(mtxBitMask, status as bitSet.TBooleanObject));
     } else {
         throw new Error('wrong hardwareType');
