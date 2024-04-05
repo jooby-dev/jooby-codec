@@ -15,6 +15,7 @@ import roundNumber from '../../utils/roundNumber.js';
 import {extractBits, fillBits} from '../../utils/bitSet.js';
 import * as hardwareTypes from '../constants/hardwareTypes.js';
 import * as deviceParameters from '../constants/deviceParameters.js';
+import invertObject from '../../utils/invertObject.js';
 
 
 export interface IBatteryVoltage {
@@ -576,19 +577,17 @@ const fourChannelsBitMask = {
     channel4: Math.pow(2, 3)
 };
 
-const byteToPulseCoefficientMap = new Map([
-    [0x80, 1],
-    [0x81, 5],
-    [0x82, 10],
-    [0x83, 100],
-    [0x84, 1000],
-    [0x85, 10000],
-    [0x86, 100000]
-]);
+const byteToPulseCoefficientMap = {
+    0x80: 1,
+    0x81: 5,
+    0x82: 10,
+    0x83: 100,
+    0x84: 1000,
+    0x85: 10000,
+    0x86: 100000
+};
 
-const pulseCoefficientToByteMap = new Map(
-    [...byteToPulseCoefficientMap.entries()].map(([key, value]) => [value, key])
-);
+const pulseCoefficientToByteMap = invertObject(byteToPulseCoefficientMap);
 
 const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 
@@ -1680,7 +1679,7 @@ CommandBinaryBuffer.prototype.getPulseCoefficient = function (): number {
     const pulseCoefficient = this.getUint8();
 
     if ( isMSBSet(pulseCoefficient) ) {
-        const value = byteToPulseCoefficientMap.get(pulseCoefficient);
+        const value = byteToPulseCoefficientMap[pulseCoefficient];
 
         if ( value ) {
             return value;
@@ -1694,8 +1693,8 @@ CommandBinaryBuffer.prototype.getPulseCoefficient = function (): number {
 
 
 CommandBinaryBuffer.prototype.setPulseCoefficient = function ( value: number ) {
-    if ( pulseCoefficientToByteMap.has(value) ) {
-        const byte = pulseCoefficientToByteMap.get(value);
+    if ( value in pulseCoefficientToByteMap ) {
+        const byte = pulseCoefficientToByteMap[value];
 
         if ( byte ) {
             this.setUint8(byte);

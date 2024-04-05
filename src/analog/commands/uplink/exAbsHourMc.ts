@@ -8,9 +8,7 @@
  * import * as exAbsHourMC from 'jooby-codec/analog/commands/uplink/exAbsHourMC.js';
  *
  * // 1 channel at 2023.03.10 12:00:00 GMT
- * const bytes = [
- *     0x2e, 0x6a, 0x2c, 0x01, 0x83, 0xb9, 0xf3, 0x14, 0x80, 0x01
- * ];
+ * const bytes = [0x2e, 0x6a, 0x2c, 0x01, 0x83, 0xb9, 0xf3, 0x14, 0x80, 0x01];
  *
  * // decoded payload
  * const parameters = exAbsHourMC.fromBytes(bytes);

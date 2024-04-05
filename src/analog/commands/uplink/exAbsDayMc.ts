@@ -8,9 +8,7 @@
  * import * as exAbsDayMC from 'jooby-codec/analog/commands/uplink/exAbsDayMC.js';
  *
  * // absolute day value for 2023.03.10 00:00:00 GMT
- * const bytes = [
- *     0x2e, 0x6a, 0x01, 0x83, 0xd6, 0x02
- * ];
+ * const bytes = [0x2e, 0x6a, 0x01, 0x83, 0xd6, 0x02];
  *
  * // decoded payload
  * const parameters = exAbsDayMC.fromBytes(bytes);

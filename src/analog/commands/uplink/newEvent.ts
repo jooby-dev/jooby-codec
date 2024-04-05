@@ -8,9 +8,7 @@
  * import * as newEvent from 'jooby-codec/analog/commands/uplink/newEvent.js';
  *
  * // event for MAGNET_ON
- * const bytes = [
- *     0x01, 0x02, 0x2b, 0xc0, 0x31, 0x60
- * ];
+ * const bytes = [0x01, 0x02, 0x2b, 0xc0, 0x31, 0x60];
  *
  * // decoded payload
  * const parameters = newEvent.fromBytes(bytes);
@@ -214,7 +212,7 @@ const setDeviceId = ( buffer: ICommandBinaryBuffer, value: string ): void => {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = (data: types.TBytes): INewEventParameters => {
+export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
     if ( data.length > COMMAND_BODY_MAX_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -270,7 +268,7 @@ export const fromBytes = (data: types.TBytes): INewEventParameters => {
  * @param parameters - command payload
  * @returns encoded bytes
  */
-export const toBytes = (parameters: INewEventParameters): types.TBytes => {
+export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
     const {id: eventId, sequenceNumber, data} = parameters;
 
