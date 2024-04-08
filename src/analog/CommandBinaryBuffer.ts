@@ -953,49 +953,6 @@ class CommandBinaryBuffer extends BinaryBuffer {
         return size;
     }
 
-    static getResponseParameterSize ( parameter: IParameter ): number {
-        let size;
-        let data;
-
-        switch ( parameter.id ) {
-            case deviceParameters.MQTT_SESSION_CONFIG:
-            case deviceParameters.NBIOT_SSL_CACERT_WRITE:
-            case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
-            case deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE:
-            case deviceParameters.NBIOT_SSL_CACERT_SET:
-            case deviceParameters.NBIOT_SSL_CLIENT_CERT_SET:
-            case deviceParameters.NBIOT_SSL_CLIENT_KEY_SET:
-            case deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE:
-            case deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE:
-                // all parameters write only
-                size = 1;
-                break;
-
-            case deviceParameters.MQTT_BROKER_ADDRESS:
-                data = parameter.data as IParameterMqttBrokerAddress;
-                // size: parameter id + port
-                size = 1 + 2;
-                size += data.hostName.length + 1;
-                break;
-
-            case deviceParameters.MQTT_TOPIC_PREFIX:
-                data = parameter.data as IParameterMqttTopicPrefix;
-                // size: parameter id
-                size = 1;
-                size += data.topicPrefix.length + 1;
-                break;
-
-            default:
-                size = parametersSizeMap.get(parameter.id);
-        }
-
-        if ( size === undefined ) {
-            throw new Error('unknown parameter id');
-        }
-
-        return size;
-    }
-
     static getMagneticInfluenceBit ( byte: number ): boolean {
         return !!extractBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX);
     }
@@ -2470,39 +2427,39 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 break;
 
             case deviceParameters.BATTERY_DEPASSIVATION_CONFIG:
-                data = this.getBatteryDepassivationConfig();
+                data = this.getParameterBatteryDepassivationConfig();
                 break;
 
             case deviceParameters.MQTT_BROKER_ADDRESS:
-                data = this.getMqttBrokerAddress();
+                data = this.getParameterMqttBrokerAddress();
                 break;
 
             case deviceParameters.MQTT_SSL_ENABLE:
-                data = this.getMqttSslEnable();
+                data = this.getParameterMqttSslEnable();
                 break;
 
             case deviceParameters.MQTT_TOPIC_PREFIX:
-                data = this.getMqttTopicPrefix();
+                data = this.getParameterMqttTopicPrefix();
                 break;
 
             case deviceParameters.MQTT_DATA_RECEIVE_CONFIG:
-                data = this.getMqttDataReceiveConfig();
+                data = this.getParameterMqttDataReceiveConfig();
                 break;
 
             case deviceParameters.MQTT_DATA_SEND_CONFIG:
-                data = this.getMqttDataSendConfig();
+                data = this.getParameterMqttDataSendConfig();
                 break;
 
             case deviceParameters.NBIOT_SSL_CONFIG:
-                data = this.getNbiotSslConfig();
+                data = this.getParameterNbiotSslConfig();
                 break;
 
             case deviceParameters.REPORTING_DATA_CONFIG:
-                data = this.getReportingDataConfig();
+                data = this.getParameterReportingDataConfig();
                 break;
 
             case deviceParameters.EVENTS_CONFIG:
-                data = this.getEventsConfig();
+                data = this.getParameterEventsConfig();
                 break;
 
             case deviceParameters.MQTT_SESSION_CONFIG:
@@ -2603,39 +2560,39 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 break;
 
             case deviceParameters.BATTERY_DEPASSIVATION_CONFIG:
-                this.setBatteryDepassivationConfig(data as IParameterBatteryDepassivationConfig);
+                this.setParameterBatteryDepassivationConfig(data as IParameterBatteryDepassivationConfig);
                 break;
 
             case deviceParameters.MQTT_BROKER_ADDRESS:
-                this.setMqttBrokerAddress(data as IParameterMqttBrokerAddress);
+                this.setParameterMqttBrokerAddress(data as IParameterMqttBrokerAddress);
                 break;
 
             case deviceParameters.MQTT_SSL_ENABLE:
-                this.setMqttSslEnable(data as IParameterMqttSslEnable);
+                this.setParameterMqttSslEnable(data as IParameterMqttSslEnable);
                 break;
 
             case deviceParameters.MQTT_TOPIC_PREFIX:
-                this.setMqttTopicPrefix(data as IParameterMqttTopicPrefix);
+                this.setParameterMqttTopicPrefix(data as IParameterMqttTopicPrefix);
                 break;
 
             case deviceParameters.MQTT_DATA_RECEIVE_CONFIG:
-                this.setMqttDataReceiveConfig(data as IParameterMqttDataReceiveConfig);
+                this.setParameterMqttDataReceiveConfig(data as IParameterMqttDataReceiveConfig);
                 break;
 
             case deviceParameters.MQTT_DATA_SEND_CONFIG:
-                this.setMqttDataSendConfig(data as IParameterMqttDataSendConfig);
+                this.setParameterMqttDataSendConfig(data as IParameterMqttDataSendConfig);
                 break;
 
             case deviceParameters.NBIOT_SSL_CONFIG:
-                this.setNbiotSslConfig(data as IParameterNbiotSslConfig);
+                this.setParameterNbiotSslConfig(data as IParameterNbiotSslConfig);
                 break;
 
             case deviceParameters.REPORTING_DATA_CONFIG:
-                this.setReportingDataConfig(data as IParameterReportingDataConfig);
+                this.setParameterReportingDataConfig(data as IParameterReportingDataConfig);
                 break;
 
             case deviceParameters.EVENTS_CONFIG:
-                this.setEventsConfig(data as IParameterEventsConfig);
+                this.setParameterEventsConfig(data as IParameterEventsConfig);
                 break;
 
             case deviceParameters.MQTT_SESSION_CONFIG:
