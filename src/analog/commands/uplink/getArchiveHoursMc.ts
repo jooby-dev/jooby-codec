@@ -5,12 +5,14 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getArchiveHoursMCResponse from 'jooby-codec/analog/commands/uplink/getArchiveHoursMCResponse.js';
+ * import * as getArchiveHoursMc from 'jooby-codec/analog/commands/uplink/getArchiveHoursMc.js';
  *
  * const bytes = [0x2f, 0x97, 0x2c, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a];
- * const command = getArchiveHoursMCResponse.fromBytes(bytes);
  *
- * console.log(command.parameters);
+ * // decoded payload
+ * const parameters = getArchiveHoursMc.fromBytes(bytes);
+ *
+ * console.log(parameters);
  * // output:
  * {
  *     startTime2000: 756648000,
