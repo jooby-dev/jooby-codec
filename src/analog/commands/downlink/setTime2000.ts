@@ -70,7 +70,7 @@ export const fromBytes = ( data: types.TBytes ): ISetTime2000Parameters => {
         seconds: buffer.getInt32()
     };
 
-    if (!buffer.isEmpty) {
+    if ( !buffer.isEmpty ) {
         throw new Error('BinaryBuffer is not empty.');
     }
 
