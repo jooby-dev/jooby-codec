@@ -6,8 +6,10 @@
 
 export * as correctTime2000 from './correctTime2000.js';
 export * as getCurrent from './getCurrent.js';
-export * as getCurrentMc from './getCurrentMc.js';
+export * as getArchiveDaysMc from './getArchiveDaysMc.js';
 export * as getArchiveEvents from './getArchiveEvents.js';
+export * as getArchiveHoursMc from './getArchiveHoursMc.js';
+export * as getCurrentMc from './getCurrentMc.js';
 export * as getLmicInfo from './getLmicInfo.js';
 export * as getStatus from './getStatus.js';
 export * as getTime2000 from './getTime2000.js';
