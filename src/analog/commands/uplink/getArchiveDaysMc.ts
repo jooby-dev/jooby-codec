@@ -5,22 +5,20 @@
  *
  * @example
  * ```js
- * import * as getArchiveDaysMCResponse from 'jooby-codec/analog/commands/uplink/GetArchiveDaysMCResponse.js';
+ * import * as getArchiveDaysMc from 'jooby-codec/analog/commands/uplink/getArchiveDaysMc.js';
  *
- * const commandBody = new Uint8Array([0xa9, 0x6d, 0x01, 0x02, 0xea, 0x01, 0xcc, 0x02]);
- * const command = getArchiveDaysMCResponse.fromBytes(commandBody);
+ * // get day values from 2001.03.10 12:00:00 GMT for channel 1
+ * const bytes = [0xa9, 0x6d, 0x01, 0x02, 0xea, 0x01, 0xcc, 0x02];
  *
- * console.log(command.parameters);
+ * // decoded payload
+ * const parameters = getArchiveDaysMc.fromBytes(bytes);
+ *
+ * console.log(parameters);
  * // output:
  * {
  *     startTime2000: 2678227200,
  *     days: 2,
- *     channelList: [
- *         {
- *             index: 1,
- *             dayList: [234, 332]
- *         }
- *     ]
+ *     channelList: [{index: 1, dayList: [234, 332]}]
  * }
  * ```
  *
@@ -97,7 +95,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysMCResponseParame
 
         channelList.push({dayList, index: channelIndex});
 
-        for (let day = 0; day < days; ++day) {
+        for ( let day = 0; day < days; ++day ) {
             dayList.push(buffer.getExtendedValue());
         }
     });
