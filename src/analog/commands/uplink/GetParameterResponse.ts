@@ -38,6 +38,182 @@ const examples: TCommandExampleList = [
             data: {state: 1, channel: 2}
         },
         hex: {header: '04 03', body: '1e 01 01'}
+    },
+    {
+        name: 'mqtt session config',
+        parameters: {
+            id: deviceParameters.MQTT_SESSION_CONFIG,
+            data: null
+        },
+        hex: {header: '04 01', body: '22'}
+    },
+    {
+        name: 'nbiot ssl cacert write',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CACERT_WRITE,
+            data: null
+        },
+        hex: {header: '04 01', body: '29'}
+    },
+    {
+        name: 'nbiot ssl client cert write',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE,
+            data: null
+        },
+        hex: {header: '04 01', body: '2b'}
+    },
+    {
+        name: 'nbiot ssl client key write',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE,
+            data: null
+        },
+        hex: {header: '04 01', body: '2d'}
+    },
+    {
+        name: 'nbiot ssl cacert set',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CACERT_SET,
+            data: null
+        },
+        hex: {header: '04 01', body: '2a'}
+    },
+    {
+        name: 'nbiot ssl client cert set',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CLIENT_CERT_SET,
+            data: null
+        },
+        hex: {header: '04 01', body: '2c'}
+    },
+    {
+        name: 'nbiot ssl client key set',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CLIENT_KEY_SET,
+            data: null
+        },
+        hex: {header: '04 01', body: '2e'}
+    },
+    {
+        name: 'nbiot device software update',
+        parameters: {
+            id: deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE,
+            data: null
+        },
+        hex: {header: '04 01', body: '2f'}
+    },
+    {
+        name: 'empty nbiot module firmware update',
+        parameters: {
+            id: deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE,
+            data: null
+        },
+        hex: {header: '04 01', body: '30'}
+    },
+    {
+        name: 'mqtt broker address',
+        parameters: {
+            id: deviceParameters.MQTT_BROKER_ADDRESS,
+            data: {
+                hostName: 'mqtt-broker-address.dev',
+                port: 80
+            }
+        },
+        hex: {
+            header: '04 1b',
+            body: '23 17 6d 71 74 74 2d 62 72 6f 6b 65 72 2d 61 64 64 72 65 73 73 2e 64 65 76 00 50'
+        }
+    },
+    {
+        name: 'enabled mqtt ssl',
+        parameters: {
+            id: deviceParameters.MQTT_SSL_ENABLE,
+            data: {enable: 1}
+        },
+        hex: {header: '04 02', body: '24 01'}
+    },
+    {
+        name: 'mqtt topic prefix',
+        parameters: {
+            id: deviceParameters.MQTT_TOPIC_PREFIX,
+            data: {topicPrefix: 'test'}
+        },
+        hex: {header: '04 06', body: '25 04 74 65 73 74'}
+    },
+    {
+        name: 'mqtt data receive config',
+        parameters: {
+            id: deviceParameters.MQTT_DATA_RECEIVE_CONFIG,
+            data: {qos: 22}
+        },
+        hex: {
+            header: '04 02',
+            body: '26 16'
+        }
+    },
+    {
+        name: 'mqtt data send config',
+        parameters: {
+            id: deviceParameters.MQTT_DATA_SEND_CONFIG,
+            data: {
+                qos: 22,
+                retain: 1,
+                newestSendFirst: 1,
+                sendCountAttempts: 7,
+                sendTimeoutBetweenAttempts: 20
+            }
+        },
+        hex: {
+            header: '04 06',
+            body: '27 16 01 01 07 14'
+        }
+    },
+    {
+        name: 'nbiot ssl config',
+        parameters: {
+            id: deviceParameters.NBIOT_SSL_CONFIG,
+            data: {
+                securityLevel: 1,
+                version: 56
+            }
+        },
+        hex: {
+            header: '04 03',
+            body: '28 01 38'
+        }
+    },
+    {
+        name: 'reporting data config',
+        parameters: {
+            id: deviceParameters.REPORTING_DATA_CONFIG,
+            data: {
+                dataType: 1,
+                hour: 9,
+                minutes: 22,
+                countToSend: 3
+            }
+        },
+        hex: {
+            header: '04 05',
+            body: '31 01 09 16 03'
+        }
+    },
+    {
+        name: 'events config',
+        parameters: {
+            id: deviceParameters.EVENTS_CONFIG,
+            data: {
+                eventId: 72,
+                enableEvent: 1,
+                sendEvent: 3,
+                saveEvent: 4
+            }
+        },
+        hex: {
+            header: '04 05',
+            body: '32 48 01 03 04'
+        }
     }
 ];
 
@@ -83,13 +259,13 @@ class GetParameterResponse extends Command {
     static fromBytes ( data: Uint8Array ) {
         const buffer = new CommandBinaryBuffer(data);
 
-        return new GetParameterResponse(buffer.getParameter());
+        return new GetParameterResponse(buffer.getResponseParameter());
     }
 
     toBinary (): ICommandBinary {
-        const buffer = new CommandBinaryBuffer(CommandBinaryBuffer.getParameterSize(this.parameters));
+        const buffer = new CommandBinaryBuffer(CommandBinaryBuffer.getResponseParameterSize(this.parameters));
 
-        buffer.setParameter(this.parameters);
+        buffer.setResponseParameter(this.parameters);
 
         return Command.toBinary(COMMAND_ID, buffer.getBytesToOffset());
     }
