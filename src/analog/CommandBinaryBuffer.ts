@@ -1477,8 +1477,8 @@ class CommandBinaryBuffer extends BinaryBuffer {
             status = bitSet.toObject(twoChannelBitMask, this.getUint8());
         } else if ( ELIMP_HARDWARE_TYPES.includes(hardwareType) ) {
             status = bitSet.toObject(elimpBitMask, this.getUint8());
-            // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
-            //     status = bitSet.toObject(waterBitMask, this.getUint8());
+        // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
+        //     status = bitSet.toObject(waterBitMask, this.getUint8());
         } else if ( FOUR_CHANNELS_HARDWARE_TYPES.includes(hardwareType) ) {
             status = bitSet.toObject(fourChannelBitMask, this.getExtendedValue());
         } else if ( MTX_HARDWARE_TYPES.includes(hardwareType) ) {
