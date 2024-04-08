@@ -161,7 +161,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 05', body: '21 8c a0 65 90'}
     },
     {
-        name: 'set configuration for session',
+        name: 'set configuration for mqtt session',
         parameters: {
             id: deviceParameters.MQTT_SESSION_CONFIG,
             data: {
@@ -174,7 +174,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 1d', body: '22 08 63 6c 69 65 6e 74 49 64 08 75 73 65 72 6e 61 6d 65 08 70 61 73 73 77 6f 72 64 01'}
     },
     {
-        name: 'set broker address',
+        name: 'set mqtt broker address',
         parameters: {
             id: deviceParameters.MQTT_BROKER_ADDRESS,
             data: {
@@ -185,7 +185,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 1a', body: '23 16 63 68 69 72 70 73 74 61 63 6b 2d 65 78 61 6d 70 6c 65 2e 63 6f 6d 07 08'}
     },
     {
-        name: 'Enable ssl',
+        name: 'enable ssl for mqtt',
         parameters: {
             id: deviceParameters.MQTT_SSL_ENABLE,
             data: {
@@ -195,7 +195,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 02', body: '24 01'}
     },
     {
-        name: 'set topic prefix',
+        name: 'set mqtt topic prefix',
         parameters: {
             id: deviceParameters.MQTT_TOPIC_PREFIX,
             data: {
@@ -205,7 +205,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 1b', body: '25 19 2f 6e 62 69 6f 74 2f 4e 30 30 30 30 30 30 30 30 30 30 30 30 31 2f 63 6d 64'}
     },
     {
-        name: 'set configuration for data receive',
+        name: 'set mqtt configuration for data receive',
         parameters: {
             id: deviceParameters.MQTT_DATA_RECEIVE_CONFIG,
             data: {
@@ -215,7 +215,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 02', body: '26 01'}
     },
     {
-        name: 'set configuration for data send',
+        name: 'set mqtt configuration for data send',
         parameters: {
             id: deviceParameters.MQTT_DATA_SEND_CONFIG,
             data: {
@@ -229,7 +229,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 06', body: '27 01 01 01 01 01'}
     },
     {
-        name: 'set configuration for ssl',
+        name: 'set nbiot configuration for ssl',
         parameters: {
             id: deviceParameters.NBIOT_SSL_CONFIG,
             data: {
@@ -240,7 +240,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 03', body: '28 01 01'}
     },
     {
-        name: 'write ssl cacert',
+        name: 'write ssl cacert on nbiot module',
         parameters: {
             id: deviceParameters.NBIOT_SSL_CACERT_WRITE,
             data: {
@@ -252,7 +252,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 0f', body: '29 00 0a 00 00 00 01 02 03 04 05 06 07 08 09'}
     },
     {
-        name: 'set ssl cacert crc32',
+        name: 'set ssl cacert crc32 on nbiot module',
         parameters: {
             id: deviceParameters.NBIOT_SSL_CACERT_SET,
             data: {
@@ -262,7 +262,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 05', body: '2a 00 12 34 56'}
     },
     {
-        name: 'write ssl client cert',
+        name: 'write ssl client cert on nbiot module',
         parameters: {
             id: deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE,
             data: {
@@ -274,7 +274,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 0f', body: '2b 00 0a 00 00 00 01 02 03 04 05 06 07 08 09'}
     },
     {
-        name: 'set ssl client cert crc32',
+        name: 'set ssl client cert crc32 on nbiot module',
         parameters: {
             id: deviceParameters.NBIOT_SSL_CLIENT_CERT_SET,
             data: {
@@ -284,7 +284,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 05', body: '2c 00 12 34 56'}
     },
     {
-        name: 'write ssl client key',
+        name: 'write ssl client key on nbiot module',
         parameters: {
             id: deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE,
             data: {
@@ -296,7 +296,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 0f', body: '2d 00 0a 00 00 00 01 02 03 04 05 06 07 08 09'}
     },
     {
-        name: 'set ssl client key crc32',
+        name: 'set ssl client key crc32 on nbiot module',
         parameters: {
             id: deviceParameters.NBIOT_SSL_CLIENT_KEY_SET,
             data: {
@@ -306,7 +306,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 05', body: '2e 00 12 34 56'}
     },
     {
-        name: 'update device software',
+        name: 'update nbiot device software',
         parameters: {
             id: deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE,
             data: {
@@ -316,7 +316,7 @@ const examples: TCommandExampleList = [
         hex: {header: '03 1d', body: '2f 1b 68 74 74 70 3a 2f 2f 69 6e 66 6f 6d 69 72 2e 63 6f 6d 2e 75 61 2f 38 2e 62 69 6e'}
     },
     {
-        name: 'update module firmware',
+        name: 'update nbiot module firmware',
         parameters: {
             id: deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE,
             data: {
