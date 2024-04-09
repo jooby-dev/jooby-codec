@@ -51,10 +51,10 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             channelList: [
-                {index: 1, value: 131},
-                {index: 2, value: 8},
-                {index: 3, value: 10},
-                {index: 4, value: 12}
+                {value: 131, index: 1},
+                {value: 8, index: 2},
+                {value: 10, index: 3},
+                {value: 12, index: 4}
             ]
         },
         bytes: [
@@ -68,7 +68,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             channelList: [
-                {index: 2, value: 50}
+                {value: 50, index: 2}
             ]
         },
         bytes: [
@@ -82,9 +82,9 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             channelList: [
-                {index: 5, value: 8146},
-                {index: 6, value: 164},
-                {index: 12, value: 75}
+                {value: 8146, index: 5},
+                {value: 164, index: 6},
+                {value: 75, index: 12}
             ]
         },
         bytes: [

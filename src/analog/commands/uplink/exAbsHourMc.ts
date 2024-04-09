@@ -62,10 +62,10 @@ export const examples: command.TCommandExamples = {
             hours: 2,
             channelList: [
                 {
-                    pulseCoefficient: 100,
-                    index: 1,
+                    diff: [128],
                     value: 342457,
-                    diff: [128]
+                    pulseCoefficient: 100,
+                    index: 1
                 }
             ]
         },

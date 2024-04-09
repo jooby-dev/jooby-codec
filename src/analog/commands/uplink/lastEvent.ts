@@ -57,9 +57,9 @@ export const examples: command.TCommandExamples = {
             sequenceNumber: 32,
             status: {
                 isBatteryLow: true,
+                isMagneticInfluence: false,
                 isButtonReleased: false,
-                isConnectionLost: true,
-                isMagneticInfluence: false
+                isConnectionLost: true
             }
         },
         config: {
