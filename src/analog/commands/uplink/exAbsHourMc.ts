@@ -45,7 +45,7 @@ export interface IUplinkExAbsHourMCParameters {
 }
 
 export const id: types.TCommandId = 0x0a1f;
-export const name: types.TCommandName = 'exAbsHourMC';
+export const name: types.TCommandName = 'exAbsHourMc';
 export const headerSize = 3;
 
 // date 2 bytes, hour 1 byte (max hours: 7), channelList 1 byte (max channelList: 4)

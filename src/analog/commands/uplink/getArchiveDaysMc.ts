@@ -39,7 +39,7 @@ interface IGetArchiveDaysMCResponseParameters {
 
 
 export const id: types.TCommandId = 0x1b;
-export const name: types.TCommandName = 'getArchiveDaysMCResponse';
+export const name: types.TCommandName = 'getArchiveDaysMc';
 export const headerSize = 2;
 
 // date 2 bytes, channelList 1 byte (max channelList: 4), days 1 byte (max days - 255)

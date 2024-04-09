@@ -34,7 +34,7 @@ interface IGetArchiveHoursMCParameters {
 
 
 export const id: types.TCommandId = 0x1a;
-export const name: types.TCommandName = 'getArchiveHoursMC';
+export const name: types.TCommandName = 'getArchiveHoursMc';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 4;
