@@ -54,7 +54,7 @@ export const examples: command.TCommandExamples = {
         parameters: {
             startTime2000: 2678227200,
             days: 2,
-            channelList: [{index: 1, dayList: [234, 332]}]
+            channelList: [{dayList: [234, 332], index: 1}]
         },
         bytes: [
             0x1b, 0x08,
@@ -68,7 +68,7 @@ export const examples: command.TCommandExamples = {
         parameters: {
             startTime2000: 339897600,
             days: 1,
-            channelList: [{index: 1, dayList: [0]}]
+            channelList: [{dayList: [0], index: 1}]
         },
         bytes: [
             0x1b, 0x05,

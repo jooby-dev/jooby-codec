@@ -63,10 +63,10 @@ export const examples: command.TCommandExamples = {
             startTime2000: 756648000,
             hours: 2,
             channelList: [
-                {index: 1, value: 131, diff: [10]},
-                {index: 2, value: 832, diff: [12]},
-                {index: 3, value: 38, diff: [8]},
-                {index: 4, value: 234, diff: [11]}
+                {value: 131, diff: [10], index: 1},
+                {value: 832, diff: [12], index: 2},
+                {value: 38, diff: [8], index: 3},
+                {value: 234, diff: [11], index: 4}
             ]
         },
         bytes: [

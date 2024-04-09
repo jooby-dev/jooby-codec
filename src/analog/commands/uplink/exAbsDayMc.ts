@@ -57,7 +57,7 @@ export const examples: command.TCommandExamples = {
         parameters: {
             startTime2000: 731721600,
             channelList: [
-                {pulseCoefficient: 100, index: 1, value: 342}
+                {pulseCoefficient: 100, value: 342, index: 1}
             ]
         },
         bytes: [

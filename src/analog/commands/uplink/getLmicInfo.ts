@@ -67,11 +67,11 @@ export const examples: command.TCommandExamples = {
         name,
         headerSize,
         parameters: {
-            version: 5,
             capabilities: {
                 isMulticastSupported: true,
                 isFragmentedDataSupported: false
-            }
+            },
+            version: 5
         },
         bytes: [
             0x1f, 0x02, 0x02,
@@ -83,11 +83,11 @@ export const examples: command.TCommandExamples = {
         name,
         headerSize,
         parameters: {
-            version: 8,
             capabilities: {
                 isMulticastSupported: true,
                 isFragmentedDataSupported: true
-            }
+            },
+            version: 8
         },
         bytes: [
             0x1f, 0x02, 0x02,
