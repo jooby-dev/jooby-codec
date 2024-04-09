@@ -41,7 +41,7 @@ export interface IDayMCParameters extends ICurrentMCParameters {
 }
 
 export const id: types.TCommandId = 0x16;
-export const name: types.TCommandName = 'dayMC';
+export const name: types.TCommandName = 'dayMc';
 export const headerSize = 2;
 
 // 2 byte for date + 2 for channels (max channels: 7)

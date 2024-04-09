@@ -46,7 +46,7 @@ export interface IHourMCParameters {
 }
 
 export const id: types.TCommandId = 0x17;
-export const name: types.TCommandName = 'hourMC';
+export const name: types.TCommandName = 'hourMc';
 export const headerSize = 2;
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4

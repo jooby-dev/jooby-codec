@@ -32,7 +32,7 @@ interface IGetArchiveDaysMCParameters {
 }
 
 export const id: types.TCommandId = 0x1b;
-export const name: types.TCommandName = 'getArchiveDaysMC';
+export const name: types.TCommandName = 'getArchiveDaysMc';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 4;

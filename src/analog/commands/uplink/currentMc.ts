@@ -38,7 +38,7 @@ export interface ICurrentMCParameters {
 }
 
 export const id: types.TCommandId = 0x18;
-export const name: types.TCommandName = 'currentMC';
+export const name: types.TCommandName = 'currentMc';
 export const headerSize = 2;
 
 // 2 bytes for 7 channelList + (7 channelList * 5 byte for current value of channel)

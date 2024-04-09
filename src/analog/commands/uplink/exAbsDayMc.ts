@@ -42,7 +42,7 @@ interface IExAbsDayMCParameters {
 }
 
 export const id: types.TCommandId = 0x0b1f;
-export const name: types.TCommandName = 'exAbsDayMC';
+export const name: types.TCommandName = 'exAbsDayMc';
 export const headerSize = 3;
 
 // date 2 bytes, channelList 3 bytes (max channelList: 14)
