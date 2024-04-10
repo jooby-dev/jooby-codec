@@ -216,6 +216,10 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( data: TBytes = [], co
     let expectedLrc: number;
     let actualLrc: number;
 
+    if ( !data.length ) {
+        return message;
+    }
+
     // process the data except the last byte
     do {
         const headerInfo = header.fromBytes(data.slice(processedBytes, processedBytes + HEADER_MAX_SIZE));

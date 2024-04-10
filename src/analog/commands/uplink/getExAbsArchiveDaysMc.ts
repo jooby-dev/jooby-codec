@@ -57,15 +57,15 @@ export const examples: command.TCommandExamples = {
         name,
         headerSize,
         parameters: {
-            startTime2000: 731721600,
-            days: 2,
             channelList: [
                 {
                     pulseCoefficient: 100,
-                    index: 4,
-                    dayList: [5524, 5674]
+                    dayList: [5524, 5674],
+                    index: 4
                 }
-            ]
+            ],
+            days: 2,
+            startTime2000: 731721600
         },
         bytes: [
             0x1f, 0x0d, 0x09,
