@@ -43,7 +43,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {startTime2000: 756648000, hours: 1, channelList: [1]},
+        parameters: {channelList: [1], hours: 1, startTime2000: 756648000},
         bytes: [
             0x1f, 0x0c, 0x04,
             0x2f, 0x97, 0x0c, 0x01
