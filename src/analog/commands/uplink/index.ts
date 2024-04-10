@@ -12,6 +12,8 @@ export * as exAbsHourMc from './exAbsHourMc.js';
 export * as getArchiveDaysMc from './getArchiveDaysMc.js';
 export * as getArchiveEvents from './getArchiveEvents.js';
 export * as getArchiveHoursMc from './getArchiveHoursMc.js';
+export * as getExAbsArchiveDaysMc from './getExAbsArchiveDaysMc.js';
+export * as getExAbsArchiveHoursMc from './getExAbsArchiveHoursMc.js';
 export * as getLmicInfo from './getLmicInfo.js';
 export * as hourMc from './hourMc.js';
 export * as lastEvent from './lastEvent.js';
