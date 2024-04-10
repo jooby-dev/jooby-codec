@@ -1,6 +1,4 @@
 /**
- * ExAbsCurrentMC command.
- *
  * This command retrieves absolute current measurements from multiple channels.
  *
  * @packageDocumentation
