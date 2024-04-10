@@ -1,0 +1,37 @@
+name: netlify
+
+on:
+    push:
+        branches:
+          - 'v4'
+    # run only manually
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v4
+
+          - uses: actions/setup-node@v4
+            with:
+                node-version: '18.x'
+                cache: npm
+                registry-url: https://registry.npmjs.org
+
+          - run: npm ci
+          - run: npm run build:docs
+
+          - name: deploy to Netlify
+            uses: nwtgck/actions-netlify@v3.0
+            with:
+                publish-dir: "./docs"
+                production-branch: v4
+                deploy-message: "Deploy from GitHub Actions"
+                enable-pull-request-comment: false
+                enable-commit-comment: true
+                overwrites-pull-request-comment: true
+            env:
+                NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+                NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+            timeout-minutes: 1
