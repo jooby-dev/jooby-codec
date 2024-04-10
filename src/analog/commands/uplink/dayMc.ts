@@ -33,10 +33,10 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelValue} from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
-import {ICurrentMCParameters} from './currentMc.js';
+import {ICurrentMcParameters} from './currentMc.js';
 
 
-export interface IDayMCParameters extends ICurrentMCParameters {
+export interface IDayMcParameters extends ICurrentMcParameters {
     startTime2000: TTime2000;
 }
 
@@ -76,7 +76,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IDayMCParameters => {
+export const fromBytes = ( data: types.TBytes ): IDayMcParameters => {
     if ( data.length > COMMAND_BODY_MAX_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -99,7 +99,7 @@ export const fromBytes = ( data: types.TBytes ): IDayMCParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IDayMCParameters ): types.TBytes => {
+export const toBytes = ( parameters: IDayMcParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
     const {channelList, startTime2000} = parameters;
 
