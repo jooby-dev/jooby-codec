@@ -76,3 +76,54 @@ export const PULSE_CHANNELS_SET_CONFIG = 32;
  * This parameter replace BATTERY_DEPASSIVATION_INFO and BATTERY_MINIMAL_LOAD_TIME.
  */
 export const BATTERY_DEPASSIVATION_CONFIG = 33;
+
+/** Set configuration for session */
+export const MQTT_SESSION_CONFIG = 34;
+
+/** Set broker address */
+export const MQTT_BROKER_ADDRESS = 35;
+
+/** Enable ssl */
+export const MQTT_SSL_ENABLE = 36;
+
+/** Set topic prefix */
+export const MQTT_TOPIC_PREFIX = 37;
+
+/** Set configuration for data receive */
+export const MQTT_DATA_RECEIVE_CONFIG = 38;
+
+/** Set configuration for data send */
+export const MQTT_DATA_SEND_CONFIG = 39;
+
+/** Set configuration for ssl */
+export const NBIOT_SSL_CONFIG = 40;
+
+/** Write ssl cacert */
+export const NBIOT_SSL_CACERT_WRITE = 41;
+
+/** Set ssl cacert crc32 */
+export const NBIOT_SSL_CACERT_SET = 42;
+
+/** Write ssl client cert */
+export const NBIOT_SSL_CLIENT_CERT_WRITE = 43;
+
+/** Set ssl client cert crc32 */
+export const NBIOT_SSL_CLIENT_CERT_SET = 44;
+
+/** Write ssl client key */
+export const NBIOT_SSL_CLIENT_KEY_WRITE = 45;
+
+/** Set ssl client key crc32 */
+export const NBIOT_SSL_CLIENT_KEY_SET = 46;
+
+/** Update device software */
+export const NBIOT_DEVICE_SOFTWARE_UPDATE = 47;
+
+/** Update module firmware */
+export const NBIOT_MODULE_FIRMWARE_UPDATE = 48;
+
+/** Set configuration for reporting data */
+export const REPORTING_DATA_CONFIG = 49;
+
+/** Set configuration for events */
+export const EVENTS_CONFIG = 50;
