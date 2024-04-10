@@ -41,7 +41,7 @@ interface IChannelHours {
     diff: Array<number>;
 }
 
-interface IGetArchiveHoursMCResponseParameters {
+interface IGetArchiveHoursMcParameters {
     channelList: Array<IChannelHours>;
     startTime2000: TTime2000;
     hours: number;
@@ -99,7 +99,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMCResponseParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcParameters => {
     if ( data.length > COMMAND_BODY_MAX_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -115,7 +115,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMCResponseParam
  * @param parameters - command payload
  * @returns encoded bytes
  */
-export const toBytes = ( parameters: IGetArchiveHoursMCResponseParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetArchiveHoursMcParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
     const {hours, startTime2000, channelList} = parameters;
 

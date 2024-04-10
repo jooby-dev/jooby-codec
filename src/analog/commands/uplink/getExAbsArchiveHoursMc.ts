@@ -10,9 +10,9 @@
  * const bytes = [0x2f, 0x97, 0x2c, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a];
  *
  * // decoded payload
- * const command = getArchiveHoursMc.fromBytes(commandBody);
+ * const parameters = getArchiveHoursMc.fromBytes(commandBody);
  *
- * console.log(command.parameters);
+ * console.log(parameters);
  * // output:
  * {
  *     startTime2000: 756648000,
@@ -35,7 +35,7 @@ import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelHours} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IGetArchiveHoursMCResponseParameters {
+interface IGetArchiveHoursMcParameters {
     channelList: Array<IChannelHours>;
     startTime2000: TTime2000;
     hours: number;
@@ -94,7 +94,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMCResponseParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
 
     return buffer.getChannelsValuesWithHourDiff();
@@ -107,7 +107,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMCResponseParam
  * @param parameters - command payload
  * @returns encoded bytes
  */
-export const toBytes = ( parameters: IGetArchiveHoursMCResponseParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetArchiveHoursMcParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
 
     buffer.setChannelsValuesWithHourDiff(parameters.hours, parameters.startTime2000, parameters.channelList);

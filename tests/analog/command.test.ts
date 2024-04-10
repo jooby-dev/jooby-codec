@@ -26,6 +26,8 @@ const checkExample = (
         // console.log('parametersFromBytes:', parametersFromBytes);
         expect(getHexFromBytes(bytesFromParameters)).toBe(getHexFromBytes(commandExample.bytes || []));
         expect(parametersFromBytes).toStrictEqual(commandExample.parameters);
+        // testing parameters for full equality
+        expect(JSON.stringify(parametersFromBytes)).toBe(JSON.stringify(commandExample.parameters));
     } else {
         // everything else
         throw new Error('wrong command format');

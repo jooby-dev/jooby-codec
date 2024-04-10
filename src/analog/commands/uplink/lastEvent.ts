@@ -9,9 +9,9 @@
  * import * as hardwareTypes from 'jooby-codec/analog/constants/hardwareTypes.js';
  *
  * const bytes = [0x10, 0xe1, 0x01];
- * const command = lastEvent.fromBytes(bytes, {hardwareType: hardwareTypes.IMP4EU});
+ * const parameters = lastEvent.fromBytes(bytes, {hardwareType: hardwareTypes.IMP4EU});
  *
- * console.log(command.parameters);
+ * console.log(parameters);
  * // output:
  * {
  *     sequenceNumber: 16,
