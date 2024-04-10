@@ -25,7 +25,7 @@ import {TTime2000, getTime2000FromDate, getDateFromTime2000} from '../../utils/t
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannel} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IGetExAbsArchiveHoursMCParameters {
+interface IGetExAbsArchiveHoursMcParameters {
     hours: number;
     startTime2000: TTime2000;
     channelList: Array<number>;
@@ -58,7 +58,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveHoursMCParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveHoursMcParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const date = buffer.getDate();
     const {hour, hours} = buffer.getHours();
@@ -80,7 +80,7 @@ export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveHoursMCParamete
  * @param parameters - command payload
  * @returns encoded bytes
  */
-export const toBytes = ( parameters: IGetExAbsArchiveHoursMCParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetExAbsArchiveHoursMcParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
     const {startTime2000, hours, channelList} = parameters;
     const date = getDateFromTime2000(startTime2000);

@@ -43,7 +43,7 @@ interface IGetArchiveHoursMCResponseParameters {
 
 
 export const id: types.TCommandId = 0x1a;
-export const name: types.TCommandName = 'getArchiveHoursMCResponse';
+export const name: types.TCommandName = 'getArchiveHoursMc';
 export const headerSize = 2;
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4

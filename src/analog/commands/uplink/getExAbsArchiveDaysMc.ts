@@ -44,7 +44,7 @@ interface IGetExAbsArchiveDaysMCResponseParameters {
 
 
 export const id: types.TCommandId = 0x0d1f;
-export const name: types.TCommandName = 'getExAbsArchiveDaysMCResponse';
+export const name: types.TCommandName = 'getExAbsArchiveDaysMc';
 export const headerSize = 3;
 
 // date 2 bytes, channelList 1 byte (max channelList: 4), days 1 byte (max days - 255)

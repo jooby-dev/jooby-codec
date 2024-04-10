@@ -25,7 +25,7 @@ import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannel} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IGetExAbsArchiveDaysMCParameters {
+interface IGetExAbsArchiveDaysMcParameters {
     days: number;
     startTime2000: TTime2000;
     channelList: Array<number>;
@@ -57,7 +57,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveDaysMCParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveDaysMcParameters => {
     if ( data.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -81,9 +81,10 @@ export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveDaysMCParameter
  * @param parameters - command payload
  * @returns encoded bytes
  */
-export const toBytes = ( parameters: IGetExAbsArchiveDaysMCParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetExAbsArchiveDaysMcParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
     const {startTime2000, days, channelList} = parameters;
+
     buffer.setDate(startTime2000);
     buffer.setChannels(channelList.map(index => ({index} as IChannel)));
     buffer.setUint8(days);

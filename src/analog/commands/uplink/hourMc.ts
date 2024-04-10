@@ -39,7 +39,7 @@ import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHours, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
-export interface IHourMCParameters {
+export interface IHourMcParameters {
     channelList: Array<IChannelHours>;
     startTime2000: TTime2000;
     hours: number;
@@ -84,7 +84,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IHourMCParameters => {
+export const fromBytes = ( data: types.TBytes ): IHourMcParameters => {
     if ( data.length > COMMAND_BODY_MAX_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -101,7 +101,7 @@ export const fromBytes = ( data: types.TBytes ): IHourMCParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IHourMCParameters ): types.TBytes => {
+export const toBytes = ( parameters: IHourMcParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
     const {startTime2000, hours, channelList} = parameters;
 
