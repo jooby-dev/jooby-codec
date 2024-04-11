@@ -1370,11 +1370,11 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     // getUint24 ( isLittleEndian?: boolean ): number,
     // setUint24 ( value: number, isLittleEndian?: boolean ),
 
-    // getLegacyCounterValue (): number,
-    // setLegacyCounterValue ( value: number),
+    getLegacyCounterValue (): number,
+    setLegacyCounterValue ( value: number ),
 
-    // getLegacyCounter (): ILegacyCounter,
-    // setLegacyCounter ( counter: ILegacyCounter, byte: TUint8 ),
+    getLegacyCounter (): ILegacyCounter,
+    setLegacyCounter ( counter: ILegacyCounter, byte?: TUint8 ),
 
     getChannels (): Array<number>,
     setChannels ( channelList: Array<IChannel> )
@@ -1567,25 +1567,25 @@ CommandBinaryBuffer.prototype.setBatteryVoltage = function ( batteryVoltage: IBa
 // }
 
 
-// CommandBinaryBuffer.prototype.getLegacyCounterValue = (): number => {
-//     return this.getUint24(false);
-// };
+CommandBinaryBuffer.prototype.getLegacyCounterValue = function (): number {
+    return this.getUint24(false);
+};
 
-// CommandBinaryBuffer.prototype.setLegacyCounterValue ( value: number ) {
-//     this.setUint24(value, false);
-// }
+CommandBinaryBuffer.prototype.setLegacyCounterValue = function ( value: number ) {
+    this.setUint24(value, false);
+};
 
-// CommandBinaryBuffer.prototype.getLegacyCounter ( byte = this.getUint8() ): ILegacyCounter {
-//     return {
-//         isMagneticInfluence: getMagneticInfluenceBit(byte),
-//         value: this.getLegacyCounterValue()
-//     };
-// }
+CommandBinaryBuffer.prototype.getLegacyCounter = function ( byte = this.getUint8() ): ILegacyCounter {
+    return {
+        isMagneticInfluence: getMagneticInfluenceBit(byte),
+        value: this.getLegacyCounterValue()
+    };
+};
 
-// CommandBinaryBuffer.prototype.setLegacyCounter ( counter: ILegacyCounter, byte = 0 ) {
-//     this.setUint8(setMagneticInfluenceBit(byte, counter.isMagneticInfluence));
-//     this.setLegacyCounterValue(counter.value);
-// }
+CommandBinaryBuffer.prototype.setLegacyCounter = function ( counter: ILegacyCounter, byte = 0 ) {
+    this.setUint8(setMagneticInfluenceBit(byte, counter.isMagneticInfluence));
+    this.setLegacyCounterValue(counter.value);
+};
 
 
 /**

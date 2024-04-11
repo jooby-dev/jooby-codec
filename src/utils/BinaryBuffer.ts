@@ -14,15 +14,14 @@
 /* eslint-disable one-var-declaration-per-line */
 /* eslint-disable prefer-exponentiation-operator */
 
-import {
-    TBytes, TInt8, TInt16, TInt32, TUint8, TUint16, TUint32, TFloat32
-} from '../types.js';
+import * as types from '../types.js';
 import {host} from '../config.js';
 
 
 // number of bytes
 const INT8_SIZE = 1;
 const INT16_SIZE = 2;
+const INT24_SIZE = 3;
 const INT32_SIZE = 4;
 
 
@@ -143,8 +142,10 @@ const writeFloat = ( buffer, offset, value, isLittleEndian, mLen, bytes ) => {
 };
 
 const be2 = [1, 0];
+const be3 = [2, 1, 0];
 const be4 = [3, 2, 1, 0];
 const le2 = [0, 1];
+const le3 = [0, 1, 2];
 const le4 = [0, 1, 2, 3];
 
 const readUint8 = ( buffer, offset ) => buffer[offset];
@@ -155,6 +156,15 @@ const readUint16 = ( buffer, offset, isLittleEndian ) => {
     const b1 = buffer[offset + order[1]] << 8;
 
     return b0 | b1;
+};
+
+const readUint24 = ( buffer, offset, isLittleEndian ) => {
+    const order = host.isLittleEndian && isLittleEndian ? le3 : be3;
+    const b0 = buffer[offset + order[0]];
+    const b1 = buffer[offset + order[1]] << 8;
+    const b2 = buffer[offset + order[2]] << 16;
+
+    return b0 | b1 | b2;
 };
 
 const readUint32 = ( buffer, offset, isLittleEndian ) => {
@@ -178,6 +188,14 @@ const writeUint16 = ( buffer, offset, value, isLittleEndian ) => {
     buffer[offset + order[1]] = value >>> 8 & 0xff;
 };
 
+const writeUint24 = ( buffer, offset, value, isLittleEndian ) => {
+    const order = host.isLittleEndian && isLittleEndian ? le3 : be3;
+
+    buffer[offset + order[0]] = value & 0xff;
+    buffer[offset + order[1]] = value >>> 8 & 0xff;
+    buffer[offset + order[2]] = value >>> 16 & 0xff;
+};
+
 const writeUint32 = ( buffer, offset, value, isLittleEndian ) => {
     const order = host.isLittleEndian && isLittleEndian ? le4 : be4;
 
@@ -189,7 +207,7 @@ const writeUint32 = ( buffer, offset, value, isLittleEndian ) => {
 
 
 export interface IBinaryBuffer {
-    data: TBytes,
+    data: types.TBytes,
     offset: number,
     isLittleEndian: boolean,
 
@@ -200,31 +218,36 @@ export interface IBinaryBuffer {
 
     seek ( position: number ): void,
 
-    setUint8 ( value: TUint8 ): void,
-    getUint8 (): TUint8,
-    setInt8 ( value: TInt8 ): void,
-    getInt8 (): TInt8,
+    setUint8 ( value: types.TUint8 ): void,
+    getUint8 (): types.TUint8,
+    setInt8 ( value: types.TInt8 ): void,
+    getInt8 (): types.TInt8,
 
-    setUint16 ( value: TUint16, isLittleEndian?: boolean ): void,
-    getUint16 ( isLittleEndian?: boolean ): TUint16,
-    setInt16 ( value: TInt16, isLittleEndian?: boolean ): void,
-    getInt16 ( isLittleEndian?: boolean ): TInt16,
+    setUint16 ( value: types.TUint16, isLittleEndian?: boolean ): void,
+    getUint16 ( isLittleEndian?: boolean ): types.TUint16,
+    setInt16 ( value: types.TInt16, isLittleEndian?: boolean ): void,
+    getInt16 ( isLittleEndian?: boolean ): types.TInt16,
 
-    setUint32 ( value: TUint32, isLittleEndian?: boolean ): void,
-    getUint32 ( isLittleEndian?: boolean ): TUint32,
-    setInt32 ( value: TInt32, isLittleEndian?: boolean ): void,
-    getInt32 ( isLittleEndian?: boolean ): TInt32,
+    setUint24 ( value: types.TUint24, isLittleEndian?: boolean ): void,
+    getUint24 ( isLittleEndian?: boolean ): types.TUint24,
+    setInt24 ( value: types.TInt24, isLittleEndian?: boolean ): void,
+    getInt24 ( isLittleEndian?: boolean ): types.TInt24,
 
-    setFloat32 ( value: TFloat32, isLittleEndian?: boolean ): void,
-    getFloat32 ( isLittleEndian?: boolean ): TFloat32,
+    setUint32 ( value: types.TUint32, isLittleEndian?: boolean ): void,
+    getUint32 ( isLittleEndian?: boolean ): types.TUint32,
+    setInt32 ( value: types.TInt32, isLittleEndian?: boolean ): void,
+    getInt32 ( isLittleEndian?: boolean ): types.TInt32,
 
-    getBytes ( length: number, offset?: number ): TBytes,
-    setBytes ( data: TBytes, offset?: number ): void,
+    setFloat32 ( value: types.TFloat32, isLittleEndian?: boolean ): void,
+    getFloat32 ( isLittleEndian?: boolean ): types.TFloat32,
 
-    getBytesToOffset ( offset?: number ): TBytes
+    getBytes ( length: number, offset?: number ): types.TBytes,
+    setBytes ( data: types.TBytes, offset?: number ): void,
+
+    getBytesToOffset ( offset?: number ): types.TBytes
 }
 
-function BinaryBuffer ( this: IBinaryBuffer, dataOrLength: TBytes | number, isLittleEndian = true ) {
+function BinaryBuffer ( this: IBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = true ) {
     if ( typeof dataOrLength === 'number' ) {
         const bytes = new Array(dataOrLength).fill(0);
 
@@ -238,7 +261,7 @@ function BinaryBuffer ( this: IBinaryBuffer, dataOrLength: TBytes | number, isLi
 }
 
 BinaryBuffer.prototype = {
-    toUint8Array (): TBytes {
+    toUint8Array (): types.TBytes {
         return this.data;
     },
 
@@ -250,13 +273,13 @@ BinaryBuffer.prototype = {
         this.offset = position;
     },
 
-    setInt8 ( value: TInt8 ) {
+    setInt8 ( value: types.TInt8 ) {
         writeUint8(this.data, this.offset, value < 0 ? value | 0x100 : value);
 
         this.offset += INT8_SIZE;
     },
 
-    getInt8 (): TInt8 {
+    getInt8 (): types.TInt8 {
         const result = readUint8(this.data, this.offset);
 
         this.offset += INT8_SIZE;
@@ -264,13 +287,13 @@ BinaryBuffer.prototype = {
         return result & 0x80 ? result ^ -0x100 : result;
     },
 
-    setUint8 ( value: TUint8 ) {
+    setUint8 ( value: types.TUint8 ) {
         writeUint8(this.data, this.offset, value);
 
         this.offset += INT8_SIZE;
     },
 
-    getUint8 (): TUint8 {
+    getUint8 (): types.TUint8 {
         const result = readUint8(this.data, this.offset);
 
         this.offset += INT8_SIZE;
@@ -278,13 +301,13 @@ BinaryBuffer.prototype = {
         return result;
     },
 
-    setInt16 ( value: TInt16, isLittleEndian = this.isLittleEndian ) {
+    setInt16 ( value: types.TInt16, isLittleEndian = this.isLittleEndian ) {
         writeUint16(this.data, this.offset, value < 0 ? value | 0x10000 : value, isLittleEndian);
 
         this.offset += INT16_SIZE;
     },
 
-    getInt16 ( isLittleEndian = this.isLittleEndian ): TInt16 {
+    getInt16 ( isLittleEndian = this.isLittleEndian ): types.TInt16 {
         const result = readUint16(this.data, this.offset, isLittleEndian);
 
         this.offset += INT16_SIZE;
@@ -292,13 +315,13 @@ BinaryBuffer.prototype = {
         return result & 0x8000 ? result ^ -0x10000 : result;
     },
 
-    setUint16 ( value: TUint16, isLittleEndian = this.isLittleEndian ) {
+    setUint16 ( value: types.TUint16, isLittleEndian = this.isLittleEndian ) {
         writeUint16(this.data, this.offset, value, isLittleEndian);
 
         this.offset += INT16_SIZE;
     },
 
-    getUint16 ( isLittleEndian = this.isLittleEndian ): TUint16 {
+    getUint16 ( isLittleEndian = this.isLittleEndian ): types.TUint16 {
         const result = readUint16(this.data, this.offset, isLittleEndian);
 
         this.offset += INT16_SIZE;
@@ -306,13 +329,41 @@ BinaryBuffer.prototype = {
         return result;
     },
 
-    setInt32 ( value: TInt32, isLittleEndian = this.isLittleEndian ) {
+    setInt24 ( value: types.TInt24, isLittleEndian = this.isLittleEndian ) {
+        writeUint24(this.data, this.offset, value < 0 ? value | 0x1000000 : value, isLittleEndian);
+
+        this.offset += INT24_SIZE;
+    },
+
+    getInt24 ( isLittleEndian = this.isLittleEndian ): types.TInt24 {
+        const result = readUint24(this.data, this.offset, isLittleEndian);
+
+        this.offset += INT24_SIZE;
+
+        return result & 0x800000 ? result ^ -0x1000000 : result;
+    },
+
+    setUint24 ( value: types.TUint24, isLittleEndian = this.isLittleEndian ) {
+        writeUint24(this.data, this.offset, value, isLittleEndian);
+
+        this.offset += INT24_SIZE;
+    },
+
+    getUint24 ( isLittleEndian = this.isLittleEndian ): types.TUint24 {
+        const result = readUint24(this.data, this.offset, isLittleEndian);
+
+        this.offset += INT24_SIZE;
+
+        return result;
+    },
+
+    setInt32 ( value: types.TInt32, isLittleEndian = this.isLittleEndian ) {
         writeUint32(this.data, this.offset, value < 0 ? value | 0x100000000 : value, isLittleEndian);
 
         this.offset += INT32_SIZE;
     },
 
-    getInt32 ( isLittleEndian = this.isLittleEndian ): TInt32 {
+    getInt32 ( isLittleEndian = this.isLittleEndian ): types.TInt32 {
         const result = readUint32(this.data, this.offset, isLittleEndian);
 
         this.offset += INT32_SIZE;
@@ -320,13 +371,13 @@ BinaryBuffer.prototype = {
         return result & 0x80000000 ? result ^ -0x100000000 : result;
     },
 
-    setUint32 ( value: TUint32, isLittleEndian = this.isLittleEndian ) {
+    setUint32 ( value: types.TUint32, isLittleEndian = this.isLittleEndian ) {
         writeUint32(this.data, this.offset, value, isLittleEndian);
 
         this.offset += INT32_SIZE;
     },
 
-    getUint32 ( isLittleEndian = this.isLittleEndian ): TUint32 {
+    getUint32 ( isLittleEndian = this.isLittleEndian ): types.TUint32 {
         const result = readUint32(this.data, this.offset, isLittleEndian);
 
         this.offset += INT32_SIZE;
@@ -334,13 +385,13 @@ BinaryBuffer.prototype = {
         return result;
     },
 
-    setFloat32 ( value: TFloat32, isLittleEndian = this.isLittleEndian ) {
+    setFloat32 ( value: types.TFloat32, isLittleEndian = this.isLittleEndian ) {
         writeFloat(this.data, this.offset, value, isLittleEndian, 23, 4);
 
         this.offset += INT32_SIZE;
     },
 
-    getFloat32 ( isLittleEndian = this.isLittleEndian ): TFloat32 {
+    getFloat32 ( isLittleEndian = this.isLittleEndian ): types.TFloat32 {
         const result = readFloat(this.data, this.offset, isLittleEndian, 23, 4);
 
         this.offset += INT32_SIZE;
@@ -357,7 +408,7 @@ BinaryBuffer.prototype = {
     },
 
     getString (): string {
-        const size: TUint8 = this.getUint8();
+        const size: types.TUint8 = this.getUint8();
         const endIndex = this.offset + size;
         const chars = [];
 
@@ -375,7 +426,7 @@ BinaryBuffer.prototype = {
      *
      * @returns sliced byte array
      */
-    getBytesToOffset ( offset = this.offset ): TBytes {
+    getBytesToOffset ( offset = this.offset ): types.TBytes {
         return this.data.slice(0, offset);
     },
 
@@ -390,7 +441,7 @@ BinaryBuffer.prototype = {
         return this.data.slice(offset, this.offset);
     },
 
-    setBytes ( data: TBytes, offset = this.offset ) {
+    setBytes ( data: types.TBytes, offset = this.offset ) {
         const bytes = this.data;
 
         // overwrite

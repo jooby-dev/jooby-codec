@@ -44,6 +44,14 @@ export type TUint8 = BrandType<number, 'uint8'>;
 export type TUint16 = BrandType<number, 'uint16'>;
 
 /**
+ * Unsigned integer number (3 bytes).
+ *
+ * @example
+ * [0..16777216]
+ */
+export type TUint24 = BrandType<number, 'uint24'>;
+
+/**
  * Unsigned integer number (4 bytes).
  *
  * @example
@@ -66,6 +74,14 @@ export type TInt8 = BrandType<number, 'int8'>;
  * [-32768..32767]
  */
 export type TInt16 = BrandType<number, 'int16'>;
+
+/**
+ * Signed integer number (3 bytes).
+ *
+ * @example
+ * [-8388608..8388607]
+ */
+export type TInt24 = BrandType<number, 'int24'>;
 
 /**
  * Signed integer number (4 bytes).

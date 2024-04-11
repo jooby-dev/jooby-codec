@@ -46,6 +46,7 @@ export const toMessage = wrappers.getToMessage(toBytesMap);
 // fill maps
 // iteration should not be used
 toBytesMap[commands.correctTime2000.id] = commands.correctTime2000.toBytes;
+toBytesMap[commands.current.id] = commands.current.toBytes;
 toBytesMap[commands.currentMc.id] = commands.currentMc.toBytes;
 toBytesMap[commands.dayMc.id] = commands.dayMc.toBytes;
 toBytesMap[commands.exAbsDayMc.id] = commands.exAbsDayMc.toBytes;
@@ -65,6 +66,7 @@ toBytesMap[commands.time2000.id] = commands.time2000.toBytes;
 
 // because of webpack/rollup processing!
 fromBytesMap[commands.correctTime2000.id] = commands.correctTime2000.fromBytes;
+fromBytesMap[commands.current.id] = commands.current.fromBytes;
 fromBytesMap[commands.currentMc.id] = commands.currentMc.fromBytes;
 fromBytesMap[commands.dayMc.id] = commands.dayMc.fromBytes;
 fromBytesMap[commands.exAbsDayMc.id] = commands.exAbsDayMc.fromBytes;
@@ -83,6 +85,7 @@ fromBytesMap[commands.status.id] = commands.status.fromBytes;
 fromBytesMap[commands.time2000.id] = commands.time2000.fromBytes;
 
 nameMap[commands.correctTime2000.id] = commands.correctTime2000.name;
+nameMap[commands.current.id] = commands.current.name;
 nameMap[commands.currentMc.id] = commands.currentMc.name;
 nameMap[commands.dayMc.id] = commands.dayMc.name;
 nameMap[commands.exAbsDayMc.id] = commands.exAbsDayMc.name;
