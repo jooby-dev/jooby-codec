@@ -1276,29 +1276,6 @@ const deviceParameterConvertersMap = {
     }
 };
 
-const getRequestChannelParameter = ( buffer: ICommandBinaryBuffer ): IRequestChannelParameter => (
-    {channel: getChannelValue(buffer)}
-);
-
-const setRequestChannelParameter = ( buffer: ICommandBinaryBuffer, parameter: IRequestChannelParameter ) => {
-    setChannelValue(buffer, parameter.channel);
-};
-
-const getRequestDataTypeParameter = ( buffer: ICommandBinaryBuffer ): IRequestDataTypeParameter => (
-    {dataType: buffer.getUint8()}
-);
-
-const setRequestDataTypeParameter = ( buffer: ICommandBinaryBuffer, parameter: IRequestDataTypeParameter ) => {
-    buffer.setUint8(parameter.dataType);
-};
-
-const getRequestEventIdParameter = ( buffer: ICommandBinaryBuffer ): IRequestEventIdParameter => (
-    {eventId: buffer.getUint8()}
-);
-
-const setRequestEventIdParameter = ( buffer: ICommandBinaryBuffer, parameter: IRequestEventIdParameter ) => {
-    buffer.setUint8(parameter.eventId);
-};
 
 export const getEventStatusSize = ( hardwareType: number ): number => (
     TWO_BYTES_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ? 2 : 1
@@ -2034,15 +2011,15 @@ CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParamet
     switch ( id ) {
         case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
         case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
-            data = getRequestChannelParameter(this);
+            data = {channel: getChannelValue(this)};
             break;
 
         case deviceParameters.REPORTING_DATA_CONFIG:
-            data = getRequestDataTypeParameter(this);
+            data = {dataType: this.getUint8()};
             break;
 
         case deviceParameters.EVENTS_CONFIG:
-            data = getRequestEventIdParameter(this);
+            data = {eventId: this.getUint8()};
             break;
 
         default:
@@ -2054,22 +2031,26 @@ CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParamet
 
 
 CommandBinaryBuffer.prototype.setRequestParameter = function ( parameter: IRequestParameter ): void {
-    const {id, data} = parameter;
+    const {id, data: parameterData} = parameter;
+    let data;
 
     this.setUint8(id);
 
     switch ( id ) {
         case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
         case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
-            setRequestChannelParameter(this, data as IRequestChannelParameter);
+            data = parameterData as IRequestChannelParameter;
+            setChannelValue(this, data.channel);
             break;
 
         case deviceParameters.REPORTING_DATA_CONFIG:
-            setRequestDataTypeParameter(this, data as IRequestDataTypeParameter);
+            data = parameterData as IRequestDataTypeParameter;
+            this.setUint8(data.dataType);
             break;
 
         case deviceParameters.EVENTS_CONFIG:
-            setRequestEventIdParameter(this, data as IRequestEventIdParameter);
+            data = parameterData as IRequestEventIdParameter;
+            this.setUint8(data.eventId);
             break;
 
         default:

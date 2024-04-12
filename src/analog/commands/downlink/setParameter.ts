@@ -18,7 +18,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * // 03 0a 17 00 00 00 cc 83 00 00 07 e7
+ * [3, 10, 23, 0, 0, 0, 204, 131, 0, 0, 7, 231]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/SetParameter.md#request)
