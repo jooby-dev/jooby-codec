@@ -245,6 +245,11 @@ export interface IBinaryBuffer {
     setBytes ( data: types.TBytes, offset?: number ): void,
 
     getBytesToOffset ( offset?: number ): types.TBytes
+    setString ( value: string ): void,
+    getString (): string,
+
+    getBytesToOffset ( offset?: number ): types.TBytes,
+    getBytesLeft (): types.TBytes
 }
 
 function BinaryBuffer ( this: IBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = true ) {

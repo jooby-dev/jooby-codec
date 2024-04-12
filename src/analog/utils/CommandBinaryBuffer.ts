@@ -452,7 +452,7 @@ interface IParameterNbiotSslConfig {
 interface IParameterNbiotSslWrite {
     size: number,
     position: number,
-    chunk: Uint8Array
+    chunk: TBytes
 }
 
 /**
@@ -821,272 +821,6 @@ const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 //         this.setBytes(value.data);
 //     }
 
-//     setInt24 ( value: number, isLittleEndian = this.isLittleEndian ): void {
-//         const view = new DataView(this.data, this.offset, INT24_BYTE_SIZE);
-
-//         // set first byte as signed value
-//         if ( isLittleEndian ) {
-//             view.setInt8(2, (value >> 16) & 0xFF);
-//             view.setUint8(1, (value >> 8) & 0xFF);
-//             view.setUint8(0, value & 0xFF);
-//         } else {
-//             view.setInt8(0, (value >> 16) & 0xFF);
-//             view.setUint8(1, (value >> 8) & 0xFF);
-//             view.setUint8(2, value & 0xFF);
-//         }
-
-//         this.offset += INT24_BYTE_SIZE;
-//     }
-
-//     getInt24 ( isLittleEndian = this.isLittleEndian ): number {
-//         const view = new DataView(this.data, this.offset, INT24_BYTE_SIZE);
-//         let byte0;
-//         let byte1;
-//         let byte2;
-
-//         this.offset += INT24_BYTE_SIZE;
-
-//         if ( isLittleEndian ) {
-//             byte0 = view.getInt8(2);
-//             byte1 = view.getUint8(1);
-//             byte2 = view.getUint8(0);
-//         } else {
-//             byte0 = view.getInt8(0);
-//             byte1 = view.getUint8(1);
-//             byte2 = view.getUint8(2);
-//         }
-
-//         const value = (byte0 << 16) | (byte1 << 8) | byte2;
-
-//         // setup sign if value negative
-//         if ( byte0 & 0x80 ) {
-//             return value - (1 << 24);
-//         }
-
-//         return value;
-//     }
-
-//     private getParameterAbsoluteData (): IParameterAbsoluteData {
-//         return {
-//             meterValue: this.getUint32(false),
-//             pulseCoefficient: this.getPulseCoefficient(),
-//             value: this.getUint32(false)
-//         };
-//     }
-
-//     private setParameterAbsoluteData ( parameter: IParameterAbsoluteData ): void {
-//         this.setUint32(parameter.meterValue, false);
-//         this.setPulseCoefficient(parameter.pulseCoefficient);
-//         this.setUint32(parameter.value, false);
-//     }
-
-//     private getParameterAbsoluteDataMC (): IParameterAbsoluteDataMC {
-//         return {
-//             channel: this.getChannelValue(),
-//             meterValue: this.getUint32(false),
-//             pulseCoefficient: this.getPulseCoefficient(),
-//             value: this.getUint32(false)
-//         };
-//     }
-
-//     private setParameterAbsoluteDataMC ( parameter: IParameterAbsoluteDataMC ): void {
-//         this.setChannelValue(parameter.channel);
-//         this.setUint32(parameter.meterValue, false);
-//         this.setPulseCoefficient(parameter.pulseCoefficient);
-//         this.setUint32(parameter.value, false);
-//     }
-
-//     private getParameterAbsoluteDataEnable (): IParameterAbsoluteDataEnable {
-//         return {state: this.getUint8()};
-//     }
-
-//     private setParameterAbsoluteDataEnable ( parameter: IParameterAbsoluteDataEnable ): void {
-//         this.setUint8(parameter.state);
-//     }
-
-//     private getParameterAbsoluteDataEnableMC (): IParameterAbsoluteDataEnableMC {
-//         return {
-//             channel: this.getChannelValue(),
-//             state: this.getUint8()
-//         };
-//     }
-
-//     private setParameterAbsoluteDataEnableMC ( parameter: IParameterAbsoluteDataEnableMC ): void {
-//         this.setChannelValue(parameter.channel);
-//         this.setUint8(parameter.state);
-//     }
-
-//     private getParameterActivationMethod (): IParameterActivationMethod {
-//         return {
-//             type: this.getUint8()
-//         };
-//     }
-
-//     private setParameterActivationMethod ( parameter: IParameterActivationMethod ): void {
-//         this.setUint8(parameter.type);
-//     }
-
-//     private getParameterReportingDataType (): IParameterReportingDataType {
-//         return {
-//             type: this.getUint8()
-//         };
-//     }
-
-//     private setParameterReportingDataType ( parameter: IParameterReportingDataType ): void {
-//         this.setUint8(parameter.type);
-//     }
-
-//     private getParameterDayCheckoutHour (): IParameterDayCheckoutHour {
-//         return {
-//             value: this.getUint8()
-//         };
-//     }
-
-//     private setParameterDayCheckoutHour ( parameter: IParameterDayCheckoutHour ) {
-//         this.setUint8(parameter.value);
-//     }
-
-//     private getParameterDeliveryTypeOfPriorityData (): IParameterDeliveryTypeOfPriorityData {
-//         return {value: this.getUint8()};
-//     }
-
-//     private setParameterDeliveryTypeOfPriorityData ( parameter: IParameterDeliveryTypeOfPriorityData ): void {
-//         this.setUint8(parameter.value);
-//     }
-
-//     private getParameterChannelsConfig (): IParameterChannelsConfig {
-//         return {value: this.getUint8()};
-//     }
-
-//     private setParameterChannelsConfig ( parameter: IParameterChannelsConfig ): void {
-//         if ( parameter.value < 0 || parameter.value > 18 ) {
-//             throw new Error('channels config must be between 0-18');
-//         }
-
-//         this.setUint8(parameter.value);
-//     }
-
-//     private getParameterRx2Config (): IParameterRx2Config {
-//         return {
-//             spreadFactor: this.getUint8(),
-//             frequency: this.getUint24(false) * PARAMETER_RX2_FREQUENCY_COEFFICIENT
-//         };
-//     }
-
-//     private setParameterRx2Config ( parameter: IParameterRx2Config ): void {
-//         this.setUint8(parameter.spreadFactor);
-//         this.setUint24(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT, false);
-//     }
-
-//     private getParameterExtraFrameInterval (): IParameterExtraFrameInterval {
-//         return {value: this.getUint16()};
-//     }
-
-//     private setParameterExtraFrameInterval ( parameter: IParameterExtraFrameInterval ): void {
-//         this.setUint16(parameter.value);
-//     }
-
-//     private getParameterBatteryDepassivationInfo (): IParameterBatteryDepassivationInfo {
-//         return {
-//             loadTime: this.getUint16(false),
-//             internalResistance: this.getUint16(false),
-//             lowVoltage: this.getUint16(false)
-//         };
-//     }
-
-//     private setParameterBatteryDepassivationInfo ( parameter: IParameterBatteryDepassivationInfo ): void {
-//         this.setUint16(parameter.loadTime, false);
-//         this.setUint16(parameter.internalResistance, false);
-//         this.setUint16(parameter.lowVoltage, false);
-//     }
-
-//     private getParameterBatteryMinimalLoadTime (): IParameterBatteryMinimalLoadTime {
-//         return {
-//             value: this.getUint32(false)
-//         };
-//     }
-
-//     private setParameterBatteryMinimalLoadTime ( parameter: IParameterBatteryMinimalLoadTime ): void {
-//         this.setUint32(parameter.value, false);
-//     }
-
-//     private getParameterSerialNumber (): IParameterSerialNumber {
-//         const {offset} = this;
-
-//         this.offset += SERIAL_NUMBER_SIZE;
-
-//         return {
-//             value: getHexFromBytes(this.toUint8Array().slice(offset, this.offset))
-//         };
-//     }
-
-//     private setParameterSerialNumber ( parameter: IParameterSerialNumber ): void {
-//         getBytesFromHex(parameter.value).forEach(byte => this.setUint8(byte));
-//     }
-
-//     private getParameterGeolocation (): IParameterGeolocation {
-//         return {
-//             latitude: roundNumber(this.getFloat32()),
-//             longitude: roundNumber(this.getFloat32()),
-//             altitude: roundNumber(this.getUint16())
-//         };
-//     }
-
-//     private setParameterGeolocation ( parameter: IParameterGeolocation ): void {
-//         this.setFloat32(roundNumber(parameter.latitude));
-//         this.setFloat32(roundNumber(parameter.longitude));
-//         this.setUint16(roundNumber(parameter.altitude));
-//     }
-
-//     private getParameterPulseChannelsScanConfig (): IParameterPulseChannelsScanConfig {
-//         return {
-//             channelList: this.getChannels(),
-//             pullUpTime: this.getUint8(),
-//             scanTime: this.getUint8()
-//         };
-//     }
-
-//     private setParameterPulseChannelsScanConfig ( parameter: IParameterPulseChannelsScanConfig ): void {
-//         if ( parameter.pullUpTime < 17 ) {
-//             throw new Error('minimal value for pullUpTime - 17');
-//         }
-
-//         if ( parameter.scanTime < 15 ) {
-//             throw new Error('minimal value for scanTime - 15');
-//         }
-
-//         this.setChannels(parameter.channelList.map(index => ({index} as IChannel)));
-//         this.setUint8(parameter.pullUpTime);
-//         this.setUint8(parameter.scanTime);
-//     }
-
-//     private getParameterPulseChannelsEnableConfig (): IParameterPulseChannelsSetConfig {
-//         const object = bitSet.toObject(fourChannelsBitMask, this.getUint8());
-
-//         return {
-//             channel1: object.channel1,
-//             channel2: object.channel2,
-//             channel3: object.channel3,
-//             channel4: object.channel4
-//         };
-//     }
-
-//     private setParameterPulseChannelsEnableConfig ( parameter: IParameterPulseChannelsSetConfig ): void {
-//         const {
-//             channel1,
-//             channel2,
-//             channel3,
-//             channel4
-//         } = parameter;
-
-//         this.setUint8(bitSet.fromObject(fourChannelsBitMask, {
-//             channel1,
-//             channel2,
-//             channel3,
-//             channel4
-//         }));
-//     }
-
 //     private getBatteryDepassivationConfig (): IParameterBatteryDepassivationConfig {
 //         return {
 //             resistanceStartThreshold: this.getUint16(false),
@@ -1173,19 +907,373 @@ const setChannelValue = ( buffer: ICommandBinaryBuffer, value: number ) => {
     buffer.setUint8(value - 1);
 };
 
+const getNbiotSslWrite = ( buffer: ICommandBinaryBuffer ) => ({
+    size: buffer.getUint16(false),
+    position: buffer.getUint16(false),
+    chunk: buffer.getBytesLeft()
+});
 
-const getParameterReportingDataInterval = ( buffer: ICommandBinaryBuffer ): IParameterReportingDataInterval => {
-    buffer.seek(buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
+const setNbiotSslWrite = ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotSslWrite ) => {
+    if ( parameter.size !== parameter.chunk.length ) {
+        throw new Error('ssl chunk size parameter doesn\'t match actual ssl chunk size');
+    }
 
-    return {
-        value: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
-    };
+    buffer.setUint16(parameter.size, false);
+    buffer.setUint16(parameter.position, false);
+    buffer.setBytes(parameter.chunk);
 };
 
-const setParameterReportingDataInterval = ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataInterval ) => {
-    buffer.seek(buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
 
-    buffer.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
+const getNbiotSslSet = ( buffer: ICommandBinaryBuffer ) => ({crc32: buffer.getUint32(false)});
+
+const setNbiotSslSet = ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotSslSet ) => {
+    buffer.setUint32(parameter.crc32, false);
+};
+
+
+const deviceParameterConvertersMap = {
+    [deviceParameters.REPORTING_DATA_INTERVAL]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataInterval => {
+            buffer.seek( buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
+
+            return {
+                value: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
+            };
+        },
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataInterval ) => {
+            buffer.seek( buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
+
+            buffer.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
+        }
+    },
+    [deviceParameters.DAY_CHECKOUT_HOUR]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterDayCheckoutHour => ({
+            value: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterDayCheckoutHour ) => {
+            buffer.setUint8(parameter.value);
+        }
+    },
+    [deviceParameters.REPORTING_DATA_TYPE]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataType => ({
+            type: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataType ) => {
+            buffer.setUint8(parameter.type);
+        }
+    },
+    [deviceParameters.PRIORITY_DATA_DELIVERY_TYPE]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterDeliveryTypeOfPriorityData => ({value: buffer.getUint8()}),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterDeliveryTypeOfPriorityData ) => {
+            buffer.setUint8(parameter.value);
+        }
+    },
+    [deviceParameters.ACTIVATION_METHOD]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterActivationMethod => ({
+            type: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterActivationMethod ) => {
+            buffer.setUint8(parameter.type);
+        }
+    },
+    [deviceParameters.BATTERY_DEPASSIVATION_INFO]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryDepassivationInfo => ({
+            loadTime: buffer.getUint16(false),
+            internalResistance: buffer.getUint16(false),
+            lowVoltage: buffer.getUint16(false)
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterBatteryDepassivationInfo ) => {
+            buffer.setUint16(parameter.loadTime, false);
+            buffer.setUint16(parameter.internalResistance, false);
+            buffer.setUint16(parameter.lowVoltage, false);
+        }
+    },
+    [deviceParameters.BATTERY_MINIMAL_LOAD_TIME]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryMinimalLoadTime => ({
+            value: buffer.getUint32(false)
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterBatteryMinimalLoadTime ) => {
+            buffer.setUint32(parameter.value, false);
+        }
+    },
+    [deviceParameters.CHANNELS_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterChannelsConfig => ({value: buffer.getUint8()}),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterChannelsConfig ) => {
+            if ( parameter.value < 0 || parameter.value > 18 ) {
+                throw new Error('channels config must be between 0-18');
+            }
+
+            buffer.setUint8(parameter.value);
+        }
+    },
+    [deviceParameters.RX2_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterRx2Config => ({
+            spreadFactor: buffer.getUint8(),
+            frequency: buffer.getUint24(false) * PARAMETER_RX2_FREQUENCY_COEFFICIENT
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterRx2Config ) => {
+            buffer.setUint8(parameter.spreadFactor);
+            buffer.setUint24(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT, false);
+        }
+    },
+    [deviceParameters.ABSOLUTE_DATA]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteData => ({
+            meterValue: buffer.getUint32(false),
+            pulseCoefficient: buffer.getPulseCoefficient(),
+            value: buffer.getUint32(false)
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteData ) => {
+            buffer.setUint32(parameter.meterValue, false);
+            buffer.setPulseCoefficient(parameter.pulseCoefficient);
+            buffer.setUint32(parameter.value, false);
+        }
+    },
+    [deviceParameters.ABSOLUTE_DATA_ENABLE]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataEnable => ({state: buffer.getUint8()}),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteDataEnable ) => {
+            buffer.setUint8(parameter.state);
+        }
+    },
+    [deviceParameters.SERIAL_NUMBER]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterSerialNumber => (
+            {
+                value: getHexFromBytes(buffer.getBytes(SERIAL_NUMBER_SIZE))
+            }
+        ),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterSerialNumber ) => {
+            getBytesFromHex(parameter.value).forEach(byte => buffer.setUint8(byte));
+        }
+    },
+    [deviceParameters.GEOLOCATION]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterGeolocation => ({
+            latitude: roundNumber( buffer.getFloat32()),
+            longitude: roundNumber( buffer.getFloat32()),
+            altitude: roundNumber( buffer.getUint16())
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterGeolocation ) => {
+            buffer.setFloat32(roundNumber(parameter.latitude));
+            buffer.setFloat32(roundNumber(parameter.longitude));
+            buffer.setUint16(roundNumber(parameter.altitude));
+        }
+    },
+    [deviceParameters.EXTRA_FRAME_INTERVAL]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterExtraFrameInterval => ({value: buffer.getUint16()}),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterExtraFrameInterval ) => {
+            buffer.setUint16(parameter.value);
+        }
+    },
+    [deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataMC => ({
+            channel: getChannelValue(buffer),
+            meterValue: buffer.getUint32(false),
+            pulseCoefficient: buffer.getPulseCoefficient(),
+            value: buffer.getUint32(false)
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteDataMC ) => {
+            setChannelValue(buffer, parameter.channel);
+            buffer.setUint32(parameter.meterValue, false);
+            buffer.setPulseCoefficient(parameter.pulseCoefficient);
+            buffer.setUint32(parameter.value, false);
+        }
+    },
+    [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataEnableMC => ({
+            channel: getChannelValue(buffer),
+            state: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteDataEnableMC ) => {
+            setChannelValue(buffer, parameter.channel);
+            buffer.setUint8(parameter.state);
+        }
+    },
+    [deviceParameters.PULSE_CHANNELS_SCAN_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterPulseChannelsScanConfig => ({
+            channelList: buffer.getChannels(),
+            pullUpTime: buffer.getUint8(),
+            scanTime: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterPulseChannelsScanConfig ) => {
+            if ( parameter.pullUpTime < 17 ) {
+                throw new Error('minimal value for pullUpTime - 17');
+            }
+
+            if ( parameter.scanTime < 15 ) {
+                throw new Error('minimal value for scanTime - 15');
+            }
+
+            buffer.setChannels(parameter.channelList.map(index => ({index} as IChannel)));
+            buffer.setUint8(parameter.pullUpTime);
+            buffer.setUint8(parameter.scanTime);
+        }
+    },
+    [deviceParameters.PULSE_CHANNELS_SET_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterPulseChannelsSetConfig => {
+            const object = bitSet.toObject(fourChannelsBitMask, buffer.getUint8());
+
+            return {channel1: object.channel1, channel2: object.channel2, channel3: object.channel3, channel4: object.channel4};
+        },
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterPulseChannelsSetConfig ) => {
+            const {channel1, channel2, channel3, channel4} = parameter;
+
+            buffer.setUint8(bitSet.fromObject(fourChannelsBitMask, {channel1, channel2, channel3, channel4}));
+        }
+    },
+    [deviceParameters.BATTERY_DEPASSIVATION_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryDepassivationConfig => ({
+            resistanceStartThreshold: buffer.getUint16(false),
+            resistanceStopThreshold: buffer.getUint16(false)
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterBatteryDepassivationConfig ) => {
+            buffer.setUint16(parameter.resistanceStartThreshold, false);
+            buffer.setUint16(parameter.resistanceStopThreshold, false);
+        }
+    },
+    [deviceParameters.MQTT_SESSION_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttSessionConfig => ({
+            clientId: buffer.getString(),
+            username: buffer.getString(),
+            password: buffer.getString(),
+            cleanSession: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttSessionConfig ) => {
+            buffer.setString(parameter.clientId);
+            buffer.setString(parameter.username);
+            buffer.setString(parameter.password);
+            buffer.setUint8(parameter.cleanSession);
+        }
+    },
+    [deviceParameters.MQTT_BROKER_ADDRESS]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttBrokerAddress => ({
+            hostName: buffer.getString(),
+            port: buffer.getUint16(false)
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttBrokerAddress ) => {
+            buffer.setString(parameter.hostName);
+            buffer.setUint16(parameter.port, false);
+        }
+    },
+    [deviceParameters.MQTT_SSL_ENABLE]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttSslEnable => ({
+            enable: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttSslEnable ) => {
+            buffer.setUint8(parameter.enable);
+        }
+    },
+    [deviceParameters.MQTT_TOPIC_PREFIX]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttTopicPrefix => ({
+            topicPrefix: buffer.getString()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttTopicPrefix ) => {
+            buffer.setString(parameter.topicPrefix);
+        }
+    },
+    [deviceParameters.MQTT_DATA_RECEIVE_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttDataReceiveConfig => ({
+            qos: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttDataReceiveConfig ) => {
+            buffer.setUint8(parameter.qos);
+        }
+    },
+    [deviceParameters.MQTT_DATA_SEND_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttDataSendConfig => ({
+            qos: buffer.getUint8(),
+            retain: buffer.getUint8(),
+            newestSendFirst: buffer.getUint8(),
+            sendCountAttempts: buffer.getUint8(),
+            sendTimeoutBetweenAttempts: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttDataSendConfig ) => {
+            buffer.setUint8(parameter.qos);
+            buffer.setUint8(parameter.retain);
+            buffer.setUint8(parameter.newestSendFirst);
+            buffer.setUint8(parameter.sendCountAttempts);
+            buffer.setUint8(parameter.sendTimeoutBetweenAttempts);
+        }
+    },
+    [deviceParameters.NBIOT_SSL_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotSslConfig => ({
+            securityLevel: buffer.getUint8(),
+            version: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotSslConfig ) => {
+            buffer.setUint8(parameter.securityLevel);
+            buffer.setUint8(parameter.version);
+        }
+    },
+    [deviceParameters.NBIOT_SSL_CACERT_WRITE]: {
+        get: getNbiotSslWrite,
+        set: setNbiotSslWrite
+    },
+    [deviceParameters.NBIOT_SSL_CACERT_SET]: {
+        get: getNbiotSslSet,
+        set: setNbiotSslSet
+    },
+    [deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE]: {
+        get: getNbiotSslWrite,
+        set: setNbiotSslWrite
+    },
+    [deviceParameters.NBIOT_SSL_CLIENT_CERT_SET]: {
+        get: getNbiotSslSet,
+        set: setNbiotSslSet
+    },
+    [deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE]: {
+        get: getNbiotSslWrite,
+        set: setNbiotSslWrite
+    },
+    [deviceParameters.NBIOT_SSL_CLIENT_KEY_SET]: {
+        get: getNbiotSslSet,
+        set: setNbiotSslSet
+    },
+    [deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotDeviceSoftwareUpdate => (
+            {softwareImageUrl: buffer.getString()}
+        ),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotDeviceSoftwareUpdate ) => {
+            buffer.setString(parameter.softwareImageUrl);
+        }
+    },
+    [deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotModuleFirmwareUpdate => (
+            {moduleFirmwareImageUrl: buffer.getString()}
+        ),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotModuleFirmwareUpdate ) => {
+            buffer.setString(parameter.moduleFirmwareImageUrl);
+        }
+    },
+    [deviceParameters.REPORTING_DATA_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataConfig => (
+            {
+                dataType: buffer.getUint8(),
+                hour: buffer.getUint8(),
+                minutes: buffer.getUint8(),
+                countToSend: buffer.getUint8()
+            }
+        ),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataConfig ) => {
+            buffer.setUint8(parameter.dataType);
+            buffer.setUint8(parameter.hour);
+            buffer.setUint8(parameter.minutes);
+            buffer.setUint8(parameter.countToSend);
+        }
+    },
+    [deviceParameters.EVENTS_CONFIG]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterEventsConfig => (
+            {
+                eventId: buffer.getUint8(),
+                enableEvent: buffer.getUint8(),
+                sendEvent: buffer.getUint8(),
+                saveEvent: buffer.getUint8()
+            }
+        ),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterEventsConfig ) => {
+            buffer.setUint8(parameter.eventId);
+            buffer.setUint8(parameter.enableEvent);
+            buffer.setUint8(parameter.sendEvent);
+            buffer.setUint8(parameter.saveEvent);
+        }
+    }
 };
 
 const getRequestChannelParameter = ( buffer: ICommandBinaryBuffer ): IRequestChannelParameter => (
@@ -1367,9 +1455,6 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getBatteryVoltage (): IBatteryVoltage,
     setBatteryVoltage ( batteryVoltage: IBatteryVoltage ),
 
-    // getUint24 ( isLittleEndian?: boolean ): number,
-    // setUint24 ( value: number, isLittleEndian?: boolean ),
-
     getLegacyCounterValue (): number,
     setLegacyCounterValue ( value: number ),
 
@@ -1536,36 +1621,6 @@ CommandBinaryBuffer.prototype.setBatteryVoltage = function ( batteryVoltage: IBa
 
     [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
 };
-
-
-// CommandBinaryBuffer.prototype.getUint24 ( isLittleEndian = this.isLittleEndian ): number {
-//     const byte0 = this.data[this.offset++];
-//     const byte1 = this.data[this.offset++];
-//     const byte2 = this.data[this.offset++];
-
-//     if ( isLittleEndian ) {
-//         return byte0 + (byte1 << 8) + (byte2 << 16);
-//     }
-
-//     return (byte0 << 16) + (byte1 << 8) + byte2;
-// }
-
-// CommandBinaryBuffer.prototype.setUint24 ( value: number, isLittleEndian = this.isLittleEndian ): void {
-//     const view = new DataView(this.data, this.offset, INT24_BYTE_SIZE);
-
-//     if ( isLittleEndian ) {
-//         view.setUint8(2, (value >> 16) & 0xFF);
-//         view.setUint8(1, (value >> 8) & 0xFF);
-//         view.setUint8(0, value & 0xFF);
-//     } else {
-//         view.setUint8(0, (value >> 16) & 0xFF);
-//         view.setUint8(1, (value >> 8) & 0xFF);
-//         view.setUint8(2, value & 0xFF);
-//     }
-
-//     this.offset += INT24_BYTE_SIZE;
-// }
-
 
 CommandBinaryBuffer.prototype.getLegacyCounterValue = function (): number {
     return this.getUint24(false);
@@ -1936,132 +1991,12 @@ CommandBinaryBuffer.prototype.setEventStatus = function ( hardwareType: number, 
 
 CommandBinaryBuffer.prototype.getParameter = function (): IParameter {
     const id = this.getUint8();
-    let data;
 
-    switch ( id ) {
-        case deviceParameters.REPORTING_DATA_INTERVAL:
-            data = getParameterReportingDataInterval(this);
-            break;
-
-            // case deviceParameters.REPORTING_DATA_TYPE:
-            //     data = this.getParameterReportingDataType();
-            //     break;
-
-            // case deviceParameters.DAY_CHECKOUT_HOUR:
-            //     data = this.getParameterDayCheckoutHour();
-            //     break;
-
-            // case deviceParameters.PRIORITY_DATA_DELIVERY_TYPE:
-            //     data = this.getParameterDeliveryTypeOfPriorityData();
-            //     break;
-
-            // case deviceParameters.ACTIVATION_METHOD:
-            //     data = this.getParameterActivationMethod();
-            //     break;
-
-            // case deviceParameters.BATTERY_DEPASSIVATION_INFO:
-            //     data = this.getParameterBatteryDepassivationInfo();
-            //     break;
-
-            // case deviceParameters.BATTERY_MINIMAL_LOAD_TIME:
-            //     data = this.getParameterBatteryMinimalLoadTime();
-            //     break;
-
-            // case deviceParameters.CHANNELS_CONFIG:
-            //     data = this.getParameterChannelsConfig();
-            //     break;
-
-            // case deviceParameters.RX2_CONFIG:
-            //     data = this.getParameterRx2Config();
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA:
-            //     data = this.getParameterAbsoluteData();
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_ENABLE:
-            //     data = this.getParameterAbsoluteDataEnable();
-            //     break;
-
-            // case deviceParameters.SERIAL_NUMBER:
-            //     data = this.getParameterSerialNumber();
-            //     break;
-
-            // case deviceParameters.GEOLOCATION:
-            //     data = this.getParameterGeolocation();
-            //     break;
-
-            // case deviceParameters.EXTRA_FRAME_INTERVAL:
-            //     data = this.getParameterExtraFrameInterval();
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
-            //     data = this.getParameterAbsoluteDataMC();
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
-            //     data = this.getParameterAbsoluteDataEnableMC();
-            //     break;
-
-            // case deviceParameters.PULSE_CHANNELS_SCAN_CONFIG:
-            //     data = this.getParameterPulseChannelsScanConfig();
-            //     break;
-
-            // case deviceParameters.PULSE_CHANNELS_SET_CONFIG:
-            //     data = this.getParameterPulseChannelsEnableConfig();
-            //     break;
-
-            // case deviceParameters.BATTERY_DEPASSIVATION_CONFIG:
-            //     data = this.getBatteryDepassivationConfig();
-            //     break;
-
-            // case deviceParameters.MQTT_BROKER_ADDRESS:
-            //     data = this.getMqttBrokerAddress();
-            //     break;
-
-            // case deviceParameters.MQTT_SSL_ENABLE:
-            //     data = this.getMqttSslEnable();
-            //     break;
-
-            // case deviceParameters.MQTT_TOPIC_PREFIX:
-            //     data = this.getMqttTopicPrefix();
-            //     break;
-
-            // case deviceParameters.MQTT_DATA_RECEIVE_CONFIG:
-            //     data = this.getMqttDataReceiveConfig();
-            //     break;
-
-            // case deviceParameters.MQTT_DATA_SEND_CONFIG:
-            //     data = this.getMqttDataSendConfig();
-            //     break;
-
-            // case deviceParameters.NBIOT_SSL_CONFIG:
-            //     data = this.getNbiotSslConfig();
-            //     break;
-
-            // case deviceParameters.REPORTING_DATA_CONFIG:
-            //     data = this.getReportingDataConfig();
-            //     break;
-
-            // case deviceParameters.EVENTS_CONFIG:
-            //     data = this.getEventsConfig();
-            //     break;
-
-        case deviceParameters.MQTT_SESSION_CONFIG:
-        case deviceParameters.NBIOT_SSL_CACERT_WRITE:
-        case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
-        case deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE:
-        case deviceParameters.NBIOT_SSL_CACERT_SET:
-        case deviceParameters.NBIOT_SSL_CLIENT_CERT_SET:
-        case deviceParameters.NBIOT_SSL_CLIENT_KEY_SET:
-        case deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE:
-        case deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE:
-            data = null;
-            break;
-
-        default:
-            throw new Error(`parameter ${id} is not supported`);
+    if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].get ) {
+        throw new Error(`parameter ${id} is not supported`);
     }
+
+    const data = deviceParameterConvertersMap[id].get(this);
 
     return {id, data};
 };
@@ -2069,144 +2004,12 @@ CommandBinaryBuffer.prototype.getParameter = function (): IParameter {
 CommandBinaryBuffer.prototype.setParameter = function ( parameter: IParameter ): void {
     const {id, data} = parameter;
 
-    this.setUint8(id);
-
-    switch ( id ) {
-        case deviceParameters.REPORTING_DATA_INTERVAL:
-            setParameterReportingDataInterval(this, data as IParameterReportingDataInterval);
-            break;
-
-            // case deviceParameters.REPORTING_DATA_TYPE:
-            //     this.setParameterReportingDataType(data as IParameterReportingDataType);
-            //     break;
-
-            // case deviceParameters.DAY_CHECKOUT_HOUR:
-            //     this.setParameterDayCheckoutHour(data as IParameterDayCheckoutHour);
-            //     break;
-
-            // case deviceParameters.PRIORITY_DATA_DELIVERY_TYPE:
-            //     this.setParameterDeliveryTypeOfPriorityData(data as IParameterDeliveryTypeOfPriorityData);
-            //     break;
-
-            // case deviceParameters.ACTIVATION_METHOD:
-            //     this.setParameterActivationMethod(data as IParameterActivationMethod);
-            //     break;
-
-            // case deviceParameters.BATTERY_DEPASSIVATION_INFO:
-            //     this.setParameterBatteryDepassivationInfo(data as IParameterBatteryDepassivationInfo);
-            //     break;
-
-            // case deviceParameters.BATTERY_MINIMAL_LOAD_TIME:
-            //     this.setParameterBatteryMinimalLoadTime(data as IParameterBatteryMinimalLoadTime);
-            //     break;
-
-            // case deviceParameters.CHANNELS_CONFIG:
-            //     this.setParameterChannelsConfig(data as IParameterChannelsConfig);
-            //     break;
-
-            // case deviceParameters.RX2_CONFIG:
-            //     this.setParameterRx2Config(data as IParameterRx2Config);
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA:
-            //     this.setParameterAbsoluteData(data as IParameterAbsoluteData);
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_ENABLE:
-            //     this.setParameterAbsoluteDataEnable(data as IParameterAbsoluteDataEnable);
-            //     break;
-
-            // case deviceParameters.SERIAL_NUMBER:
-            //     this.setParameterSerialNumber(data as IParameterSerialNumber);
-            //     break;
-
-            // case deviceParameters.GEOLOCATION:
-            //     this.setParameterGeolocation(data as IParameterGeolocation);
-            //     break;
-
-            // case deviceParameters.EXTRA_FRAME_INTERVAL:
-            //     this.setParameterExtraFrameInterval(data as IParameterExtraFrameInterval);
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
-            //     this.setParameterAbsoluteDataMC(data as IParameterAbsoluteDataMC);
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
-            //     this.setParameterAbsoluteDataEnableMC(data as IParameterAbsoluteDataEnableMC);
-            //     break;
-
-            // case deviceParameters.PULSE_CHANNELS_SCAN_CONFIG:
-            //     this.setParameterPulseChannelsScanConfig(data as IParameterPulseChannelsScanConfig);
-            //     break;
-
-            // case deviceParameters.PULSE_CHANNELS_SET_CONFIG:
-            //     this.setParameterPulseChannelsEnableConfig(data as IParameterPulseChannelsSetConfig);
-            //     break;
-
-            // case deviceParameters.BATTERY_DEPASSIVATION_CONFIG:
-            //     this.setBatteryDepassivationConfig(data as IParameterBatteryDepassivationConfig);
-            //     break;
-
-            // case deviceParameters.MQTT_SESSION_CONFIG:
-            //     this.setMqttSessionConfig(data as IParameterMqttSessionConfig);
-            //     break;
-
-            // case deviceParameters.MQTT_BROKER_ADDRESS:
-            //     this.setMqttBrokerAddress(data as IParameterMqttBrokerAddress);
-            //     break;
-
-            // case deviceParameters.MQTT_SSL_ENABLE:
-            //     this.setMqttSslEnable(data as IParameterMqttSslEnable);
-            //     break;
-
-            // case deviceParameters.MQTT_TOPIC_PREFIX:
-            //     this.setMqttTopicPrefix(data as IParameterMqttTopicPrefix);
-            //     break;
-
-            // case deviceParameters.MQTT_DATA_RECEIVE_CONFIG:
-            //     this.setMqttDataReceiveConfig(data as IParameterMqttDataReceiveConfig);
-            //     break;
-
-            // case deviceParameters.MQTT_DATA_SEND_CONFIG:
-            //     this.setMqttDataSendConfig(data as IParameterMqttDataSendConfig);
-            //     break;
-
-            // case deviceParameters.NBIOT_SSL_CONFIG:
-            //     this.setNbiotSslConfig(data as IParameterNbiotSslConfig);
-            //     break;
-
-            // case deviceParameters.NBIOT_SSL_CACERT_WRITE:
-            // case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
-            // case deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE:
-            //     this.setNbiotSslWrite(data as IParameterNbiotSslWrite);
-            //     break;
-
-            // case deviceParameters.NBIOT_SSL_CACERT_SET:
-            // case deviceParameters.NBIOT_SSL_CLIENT_CERT_SET:
-            // case deviceParameters.NBIOT_SSL_CLIENT_KEY_SET:
-            //     this.setNbiotSslSet(data as IParameterNbiotSslSet);
-            //     break;
-
-            // case deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE:
-            //     this.setNbiotDeviceSoftwareUpdate(data as IParameterNbiotDeviceSoftwareUpdate);
-            //     break;
-
-            // case deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE:
-            //     this.setNbiotModuleFirmwareUpdate(data as IParameterNbiotModuleFirmwareUpdate);
-            //     break;
-
-            // case deviceParameters.REPORTING_DATA_CONFIG:
-            //     this.setReportingDataConfig(data as IParameterReportingDataConfig);
-            //     break;
-
-            // case deviceParameters.EVENTS_CONFIG:
-            //     this.setEventsConfig(data as IParameterEventsConfig);
-            //     break;
-
-        default:
-            throw new Error(`parameter ${id} is not supported`);
+    if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].set ) {
+        throw new Error(`parameter ${id} is not supported`);
     }
+
+    this.setUint8(id);
+    deviceParameterConvertersMap[id].set(this, data);
 };
 
 
@@ -2234,6 +2037,7 @@ CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParamet
 
     return {id, data};
 };
+
 
 CommandBinaryBuffer.prototype.setRequestParameter = function ( parameter: IRequestParameter ): void {
     const {id, data} = parameter;
@@ -2264,115 +2068,11 @@ CommandBinaryBuffer.prototype.getResponseParameter = function (): IParameter {
     const id = this.getUint8();
     let data;
 
+    if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].get ) {
+        throw new Error(`parameter ${id} is not supported`);
+    }
+
     switch ( id ) {
-        case deviceParameters.REPORTING_DATA_INTERVAL:
-            data = getParameterReportingDataInterval(this);
-            break;
-
-            // case deviceParameters.REPORTING_DATA_TYPE:
-            //     data = this.getParameterReportingDataType();
-            //     break;
-
-            // case deviceParameters.DAY_CHECKOUT_HOUR:
-            //     data = this.getParameterDayCheckoutHour();
-            //     break;
-
-            // case deviceParameters.PRIORITY_DATA_DELIVERY_TYPE:
-            //     data = this.getParameterDeliveryTypeOfPriorityData();
-            //     break;
-
-            // case deviceParameters.ACTIVATION_METHOD:
-            //     data = this.getParameterActivationMethod();
-            //     break;
-
-            // case deviceParameters.BATTERY_DEPASSIVATION_INFO:
-            //     data = this.getParameterBatteryDepassivationInfo();
-            //     break;
-
-            // case deviceParameters.BATTERY_MINIMAL_LOAD_TIME:
-            //     data = this.getParameterBatteryMinimalLoadTime();
-            //     break;
-
-            // case deviceParameters.CHANNELS_CONFIG:
-            //     data = this.getParameterChannelsConfig();
-            //     break;
-
-            // case deviceParameters.RX2_CONFIG:
-            //     data = this.getParameterRx2Config();
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA:
-            //     data = this.getParameterAbsoluteData();
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_ENABLE:
-            //     data = this.getParameterAbsoluteDataEnable();
-            //     break;
-
-            // case deviceParameters.SERIAL_NUMBER:
-            //     data = this.getParameterSerialNumber();
-            //     break;
-
-            // case deviceParameters.GEOLOCATION:
-            //     data = this.getParameterGeolocation();
-            //     break;
-
-            // case deviceParameters.EXTRA_FRAME_INTERVAL:
-            //     data = this.getParameterExtraFrameInterval();
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
-            //     data = this.getParameterAbsoluteDataMC();
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
-            //     data = this.getParameterAbsoluteDataEnableMC();
-            //     break;
-
-            // case deviceParameters.PULSE_CHANNELS_SCAN_CONFIG:
-            //     data = this.getParameterPulseChannelsScanConfig();
-            //     break;
-
-            // case deviceParameters.PULSE_CHANNELS_SET_CONFIG:
-            //     data = this.getParameterPulseChannelsEnableConfig();
-            //     break;
-
-            // case deviceParameters.BATTERY_DEPASSIVATION_CONFIG:
-            //     data = this.getBatteryDepassivationConfig();
-            //     break;
-
-            // case deviceParameters.MQTT_BROKER_ADDRESS:
-            //     data = this.getMqttBrokerAddress();
-            //     break;
-
-            // case deviceParameters.MQTT_SSL_ENABLE:
-            //     data = this.getMqttSslEnable();
-            //     break;
-
-            // case deviceParameters.MQTT_TOPIC_PREFIX:
-            //     data = this.getMqttTopicPrefix();
-            //     break;
-
-            // case deviceParameters.MQTT_DATA_RECEIVE_CONFIG:
-            //     data = this.getMqttDataReceiveConfig();
-            //     break;
-
-            // case deviceParameters.MQTT_DATA_SEND_CONFIG:
-            //     data = this.getMqttDataSendConfig();
-            //     break;
-
-            // case deviceParameters.NBIOT_SSL_CONFIG:
-            //     data = this.getNbiotSslConfig();
-            //     break;
-
-            // case deviceParameters.REPORTING_DATA_CONFIG:
-            //     data = this.getReportingDataConfig();
-            //     break;
-
-            // case deviceParameters.EVENTS_CONFIG:
-            //     data = this.getEventsConfig();
-            //     break;
-
         case deviceParameters.MQTT_SESSION_CONFIG:
         case deviceParameters.NBIOT_SSL_CACERT_WRITE:
         case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
@@ -2386,7 +2086,7 @@ CommandBinaryBuffer.prototype.getResponseParameter = function (): IParameter {
             break;
 
         default:
-            throw new Error(`parameter ${id} is not supported`);
+            data = deviceParameterConvertersMap[id].get(this);
     }
 
     return {id, data};
@@ -2396,117 +2096,13 @@ CommandBinaryBuffer.prototype.getResponseParameter = function (): IParameter {
 CommandBinaryBuffer.prototype.setResponseParameter = function ( parameter: IParameter ) {
     const {id, data} = parameter;
 
+    if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].set ) {
+        throw new Error(`parameter ${id} is not supported`);
+    }
+
     this.setUint8(id);
 
     switch ( id ) {
-        case deviceParameters.REPORTING_DATA_INTERVAL:
-            setParameterReportingDataInterval(this, data as IParameterReportingDataInterval);
-            break;
-
-            // case deviceParameters.REPORTING_DATA_TYPE:
-            //     this.setParameterReportingDataType(data as IParameterReportingDataType);
-            //     break;
-
-            // case deviceParameters.DAY_CHECKOUT_HOUR:
-            //     this.setParameterDayCheckoutHour(data as IParameterDayCheckoutHour);
-            //     break;
-
-            // case deviceParameters.PRIORITY_DATA_DELIVERY_TYPE:
-            //     this.setParameterDeliveryTypeOfPriorityData(data as IParameterDeliveryTypeOfPriorityData);
-            //     break;
-
-            // case deviceParameters.ACTIVATION_METHOD:
-            //     this.setParameterActivationMethod(data as IParameterActivationMethod);
-            //     break;
-
-            // case deviceParameters.BATTERY_DEPASSIVATION_INFO:
-            //     this.setParameterBatteryDepassivationInfo(data as IParameterBatteryDepassivationInfo);
-            //     break;
-
-            // case deviceParameters.BATTERY_MINIMAL_LOAD_TIME:
-            //     this.setParameterBatteryMinimalLoadTime(data as IParameterBatteryMinimalLoadTime);
-            //     break;
-
-            // case deviceParameters.CHANNELS_CONFIG:
-            //     this.setParameterChannelsConfig(data as IParameterChannelsConfig);
-            //     break;
-
-            // case deviceParameters.RX2_CONFIG:
-            //     this.setParameterRx2Config(data as IParameterRx2Config);
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA:
-            //     this.setParameterAbsoluteData(data as IParameterAbsoluteData);
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_ENABLE:
-            //     this.setParameterAbsoluteDataEnable(data as IParameterAbsoluteDataEnable);
-            //     break;
-
-            // case deviceParameters.SERIAL_NUMBER:
-            //     this.setParameterSerialNumber(data as IParameterSerialNumber);
-            //     break;
-
-            // case deviceParameters.GEOLOCATION:
-            //     this.setParameterGeolocation(data as IParameterGeolocation);
-            //     break;
-
-            // case deviceParameters.EXTRA_FRAME_INTERVAL:
-            //     this.setParameterExtraFrameInterval(data as IParameterExtraFrameInterval);
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
-            //     this.setParameterAbsoluteDataMC(data as IParameterAbsoluteDataMC);
-            //     break;
-
-            // case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
-            //     this.setParameterAbsoluteDataEnableMC(data as IParameterAbsoluteDataEnableMC);
-            //     break;
-
-            // case deviceParameters.PULSE_CHANNELS_SCAN_CONFIG:
-            //     this.setParameterPulseChannelsScanConfig(data as IParameterPulseChannelsScanConfig);
-            //     break;
-
-            // case deviceParameters.PULSE_CHANNELS_SET_CONFIG:
-            //     this.setParameterPulseChannelsEnableConfig(data as IParameterPulseChannelsSetConfig);
-            //     break;
-
-            // case deviceParameters.BATTERY_DEPASSIVATION_CONFIG:
-            //     this.setBatteryDepassivationConfig(data as IParameterBatteryDepassivationConfig);
-            //     break;
-
-            // case deviceParameters.MQTT_BROKER_ADDRESS:
-            //     this.setMqttBrokerAddress(data as IParameterMqttBrokerAddress);
-            //     break;
-
-            // case deviceParameters.MQTT_SSL_ENABLE:
-            //     this.setMqttSslEnable(data as IParameterMqttSslEnable);
-            //     break;
-
-            // case deviceParameters.MQTT_TOPIC_PREFIX:
-            //     this.setMqttTopicPrefix(data as IParameterMqttTopicPrefix);
-            //     break;
-
-            // case deviceParameters.MQTT_DATA_RECEIVE_CONFIG:
-            //     this.setMqttDataReceiveConfig(data as IParameterMqttDataReceiveConfig);
-            //     break;
-
-            // case deviceParameters.MQTT_DATA_SEND_CONFIG:
-            //     this.setMqttDataSendConfig(data as IParameterMqttDataSendConfig);
-            //     break;
-
-            // case deviceParameters.NBIOT_SSL_CONFIG:
-            //     this.setNbiotSslConfig(data as IParameterNbiotSslConfig);
-            //     break;
-
-            // case deviceParameters.REPORTING_DATA_CONFIG:
-            //     this.setReportingDataConfig(data as IParameterReportingDataConfig);
-            //     break;
-
-            // case deviceParameters.EVENTS_CONFIG:
-            //     this.setEventsConfig(data as IParameterEventsConfig);
-            //     break;
-
         case deviceParameters.MQTT_SESSION_CONFIG:
         case deviceParameters.NBIOT_SSL_CACERT_WRITE:
         case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
@@ -2519,7 +2115,7 @@ CommandBinaryBuffer.prototype.setResponseParameter = function ( parameter: IPara
             break;
 
         default:
-            throw new Error(`parameter ${id} is not supported`);
+            deviceParameterConvertersMap[id].set(this, data);
     }
 };
 
