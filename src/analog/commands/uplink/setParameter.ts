@@ -8,7 +8,7 @@
  * import * as setParameter from 'jooby-codec/analog/commands/uplink/setParameter.js';
  *
  * // configuration for battery depassivation set successfully
- * const bytes = [0x03, 0x02, 0x21, 0x01];
+ * const bytes = [0x21, 0x01];
  *
  * // decoded payload
  * const parameters = newEvent.setParameter(bytes);

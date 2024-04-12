@@ -8,7 +8,7 @@
  * import * as exAbsCurrentMc from 'jooby-codec/analog/commands/uplink/exAbsCurrentMc.js';
  *
  * // absolute current value from channel 3
- * const bytes = [0x04, 0x82, 0xd6, 0x02'];
+ * const bytes = [0x04, 0x83, 0xd6, 0x02];
  *
  * // decoded payload
  * const parameters = exAbsCurrentMc.fromBytes(bytes);
