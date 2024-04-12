@@ -794,10 +794,6 @@ const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
  * Command specific byte array manipulation.
  */
 // class CommandBinaryBuffer extends BinaryBuffer {
-//     static getLegacyHourCounterSize ( hourCounter: ILegacyHourCounterWithDiff ): number {
-//         return LEGACY_HOUR_COUNTER_SIZE + (hourCounter.diff.length * LEGACY_HOUR_DIFF_SIZE);
-//     }
-
 //     getDataSegment (): IDataSegment {
 //         const segmentationSessionId = this.getUint8();
 //         const flag = this.getUint8();
@@ -832,62 +828,7 @@ const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 //         this.setUint16(parameter.resistanceStartThreshold, false);
 //         this.setUint16(parameter.resistanceStopThreshold, false);
 //     }
-
-//     private getLegacyHourDiff (): ILegacyCounter {
-//         const stateWithValueByte = this.getUint8();
-//         const valueLowerByte = this.getUint8();
-
-//         return {
-//             isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(stateWithValueByte),
-//             value: ((stateWithValueByte & 0x1f) << 8) | valueLowerByte
-//         };
-//     }
-
-//     private setLegacyHourDiff ( diff: ILegacyCounter ): void {
-//         const bytes = [diff.value >> 8, diff.value & 0xff];
-
-//         bytes[0] = CommandBinaryBuffer.setMagneticInfluenceBit(bytes[0], diff.isMagneticInfluence);
-
-//         bytes.forEach(byte => this.setUint8(byte));
-//     }
-
-//     getLegacyHourCounterWithDiff (): ILegacyHourCounterWithDiff {
-//         const date = this.getDate();
-//         const byte = this.getUint8();
-//         const {hour} = this.getHours(byte);
-//         const counter = {
-//             isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(byte),
-//             value: this.getLegacyCounterValue()
-//         };
-//         const diff = [];
-
-//         while ( this.offset < this.data.byteLength ) {
-//             diff.push(this.getLegacyHourDiff());
-//         }
-
-//         date.setUTCHours(hour);
-
-//         return {startTime2000: getTime2000FromDate(date), counter, diff};
-//     }
-
-//     setLegacyHourCounterWithDiff ( hourCounter: ILegacyHourCounterWithDiff ): void {
-//         const date = getDateFromTime2000(hourCounter.startTime2000);
-//         const hour = date.getUTCHours();
-
-//         this.setDate(date);
-//         // force hours to 0
-//         this.setHours(hour, 1);
-
-//         // reset byte with isMagneticInfluence bit
-//         this.seek(this.offset - 1);
-//         const byte = this.getUint8();
-//         this.seek(this.offset - 1);
-//         this.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, hourCounter.counter.isMagneticInfluence));
-
-//         this.setLegacyCounterValue(hourCounter.counter.value);
-//         hourCounter.diff.forEach(diffItem => this.setLegacyHourDiff(diffItem));
-//     }
-// }
+//}
 
 
 const getChannelValue = ( buffer: ICommandBinaryBuffer ): number => buffer.getUint8() + 1;
@@ -1432,6 +1373,7 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     // static methods
     getMagneticInfluenceBit ( byte: number ): boolean,
     setMagneticInfluenceBit ( byte: number, value: boolean ): number,
+    getLegacyHourCounterSize ( hourCounter: ILegacyHourCounterWithDiff ): number,
 
     // instance methods
     getExtendedValue (): number,
@@ -1451,7 +1393,7 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setLegacyCounter ( counter: ILegacyCounter, byte?: TUint8 ),
 
     getChannels (): Array<number>,
-    setChannels ( channelList: Array<IChannel> )
+    setChannels ( channelList: Array<IChannel> );
 
     getChannelsValuesWithHourDiff (): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>},
     setChannelsValuesWithHourDiff ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours> ),
@@ -1481,7 +1423,13 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setRequestParameter ( parameter: IRequestParameter ),
 
     getResponseParameter (): IResponseParameter,
-    setResponseParameter ( parameter: IResponseParameter )
+    setResponseParameter ( parameter: IResponseParameter ),
+
+    getLegacyHourDiff (): ILegacyCounter,
+    setLegacyHourDiff ( diff: ILegacyCounter ): void,
+
+    getLegacyHourCounterWithDiff (): ILegacyHourCounterWithDiff,
+    setLegacyHourCounterWithDiff ( hourCounter: ILegacyHourCounterWithDiff ): void
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: TBytes | number, isLittleEndian = true ) {
@@ -1499,6 +1447,10 @@ CommandBinaryBuffer.getMagneticInfluenceBit = ( byte: number ): boolean => (
 
 CommandBinaryBuffer.setMagneticInfluenceBit = ( byte: number, value: boolean ): number => (
     fillBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX, +value)
+);
+
+CommandBinaryBuffer.getLegacyHourCounterSize = ( hourCounter: ILegacyHourCounterWithDiff ): number => (
+    LEGACY_HOUR_COUNTER_SIZE + (hourCounter.diff.length * LEGACY_HOUR_DIFF_SIZE)
 );
 
 
@@ -2119,6 +2071,65 @@ CommandBinaryBuffer.prototype.setResponseParameter = function ( parameter: IPara
         default:
             deviceParameterConvertersMap[id].set(this, data);
     }
+};
+
+
+CommandBinaryBuffer.prototype.getLegacyHourDiff = function (): ILegacyCounter {
+    const stateWithValueByte = this.getUint8();
+    const valueLowerByte = this.getUint8();
+
+    return {
+        isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(stateWithValueByte),
+        value: ((stateWithValueByte & 0x1f) << 8) | valueLowerByte
+    };
+};
+
+
+CommandBinaryBuffer.prototype.setLegacyHourDiff = function ( diff: ILegacyCounter ): void {
+    const bytes = [diff.value >> 8, diff.value & 0xff];
+
+    bytes[0] = CommandBinaryBuffer.setMagneticInfluenceBit(bytes[0], diff.isMagneticInfluence);
+
+    bytes.forEach(byte => this.setUint8(byte));
+};
+
+
+CommandBinaryBuffer.prototype.getLegacyHourCounterWithDiff = function (): ILegacyHourCounterWithDiff {
+    const date = this.getDate();
+    const byte = this.getUint8();
+    const {hour} = this.getHours(byte);
+    const counter = {
+        isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(byte),
+        value: this.getLegacyCounterValue()
+    };
+    const diff = [];
+
+    while ( this.offset < this.data.length ) {
+        diff.push(this.getLegacyHourDiff());
+    }
+
+    date.setUTCHours(hour);
+
+    return {startTime2000: getTime2000FromDate(date), counter, diff};
+};
+
+
+CommandBinaryBuffer.prototype.setLegacyHourCounterWithDiff = function ( hourCounter: ILegacyHourCounterWithDiff ): void {
+    const date = getDateFromTime2000(hourCounter.startTime2000);
+    const hour = date.getUTCHours();
+
+    this.setDate(date);
+    // force hours to 0
+    this.setHours(hour, 1);
+
+    // reset byte with isMagneticInfluence bit
+    this.seek(this.offset - 1);
+    const byte = this.getUint8();
+    this.seek(this.offset - 1);
+    this.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, hourCounter.counter.isMagneticInfluence));
+
+    this.setLegacyCounterValue(hourCounter.counter.value);
+    hourCounter.diff.forEach(diffItem => this.setLegacyHourDiff(diffItem));
 };
 
 
