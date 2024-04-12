@@ -23,47 +23,37 @@ import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IRequestParameter, getRequestParameterSize} from '../../utils/CommandBinaryBuffer.js';
 
-const COMMAND_ID: types.TCommandId = 0x04;
 
-export const id: types.TCommandId = COMMAND_ID;
+export const id: types.TCommandId = 0x04;
 export const name: types.TCommandName = 'getParameter';
 export const headerSize: number = 2;
 
 export const examples: command.TCommandExamples = {
-    // 'request absolute data (not multichannel device)': {
-    //     id,
-    //     name,
-    //     headerSize,
-    //     parameters: {
-    //         id: 23,
-    //         data: null
-    //     },
-    //     bytes: [
-    //         0x04, 0x01,
-    //         0x17
-    //     ]
-    // },
-    // 'request for state of absolute data (not multichannel device)': {
-    //     id,
-    //     name,
-    //     headerSize,
-    //     parameters: {
-    //         id: 24,
-    //         data: null
-    //     },
-    //     bytes: [
-    //         0x04, 0x01,
-    //         0x18
-    //     ]
-    // },
+    'request absolute data (not multichannel device)': {
+        id,
+        name,
+        headerSize,
+        parameters: {id: 23, data: null},
+        bytes: [
+            0x04, 0x01,
+            0x17
+        ]
+    },
+    'request for state of absolute data (not multichannel device)': {
+        id,
+        name,
+        headerSize,
+        parameters: {id: 24, data: null},
+        bytes: [
+            0x04, 0x01,
+            0x18
+        ]
+    },
     'request for state of absolute for multichannel device (1 channel)': {
         id,
         name,
         headerSize,
-        parameters: {
-            id: 29,
-            data: {channel: 1}
-        },
+        parameters: {id: 29, data: {channel: 1}},
         bytes: [
             0x04, 0x02,
             0x1d, 0x00
@@ -73,10 +63,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {
-            id: 30,
-            data: {channel: 1}
-        },
+        parameters: {id: 30, data: {channel: 1}},
         bytes: [
             0x04, 0x02,
             0x1e, 0x00
@@ -96,6 +83,7 @@ export const fromBytes = ( data: types.TBytes ): IRequestParameter => {
 
     return buffer.getRequestParameter();
 };
+
 
 /**
  * Encode command parameters.

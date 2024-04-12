@@ -17,6 +17,7 @@ export * as getLmicInfo from './getLmicInfo.js';
 export * as getParameter from './getParameter.js';
 export * as getStatus from './getStatus.js';
 export * as getTime2000 from './getTime2000.js';
+export * as setParameter from './setParameter.js';
 export * as setTime2000 from './setTime2000.js';
 export * as softRestart from './softRestart.js';
 // export {default as DataSegment} from './DataSegment.js';

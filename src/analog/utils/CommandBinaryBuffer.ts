@@ -537,7 +537,7 @@ export interface IParameter {
 
 export interface IRequestParameter {
     id: number,
-    data: IRequestChannelParameter | IRequestDeviceParameterStatus | null
+    data: TRequestParameterData | null
 }
 
 export interface IResponseParameter {
@@ -1277,13 +1277,27 @@ const deviceParameterConvertersMap = {
 };
 
 const getRequestChannelParameter = ( buffer: ICommandBinaryBuffer ): IRequestChannelParameter => (
-    {
-        channel: getChannelValue(buffer)
-    }
+    {channel: getChannelValue(buffer)}
 );
 
 const setRequestChannelParameter = ( buffer: ICommandBinaryBuffer, parameter: IRequestChannelParameter ) => {
     setChannelValue(buffer, parameter.channel);
+};
+
+const getRequestDataTypeParameter = ( buffer: ICommandBinaryBuffer ): IRequestDataTypeParameter => (
+    {dataType: buffer.getUint8()}
+);
+
+const setRequestDataTypeParameter = ( buffer: ICommandBinaryBuffer, parameter: IRequestDataTypeParameter ) => {
+    buffer.setUint8(parameter.dataType);
+};
+
+const getRequestEventIdParameter = ( buffer: ICommandBinaryBuffer ): IRequestEventIdParameter => (
+    {eventId: buffer.getUint8()}
+);
+
+const setRequestEventIdParameter = ( buffer: ICommandBinaryBuffer, parameter: IRequestEventIdParameter ) => {
+    buffer.setUint8(parameter.eventId);
 };
 
 export const getEventStatusSize = ( hardwareType: number ): number => (
@@ -2023,13 +2037,13 @@ CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParamet
             data = getRequestChannelParameter(this);
             break;
 
-            // case deviceParameters.REPORTING_DATA_CONFIG:
-            //     data = this.getRequestDataTypeParameter();
-            //     break;
+        case deviceParameters.REPORTING_DATA_CONFIG:
+            data = getRequestDataTypeParameter(this);
+            break;
 
-            // case deviceParameters.EVENTS_CONFIG:
-            //     data = this.getRequestEventIdParameter();
-            //     break;
+        case deviceParameters.EVENTS_CONFIG:
+            data = getRequestEventIdParameter(this);
+            break;
 
         default:
             break;
@@ -2050,13 +2064,13 @@ CommandBinaryBuffer.prototype.setRequestParameter = function ( parameter: IReque
             setRequestChannelParameter(this, data as IRequestChannelParameter);
             break;
 
-            // case deviceParameters.REPORTING_DATA_CONFIG:
-            //     this.setRequestDataTypeParameter(data as IRequestDataTypeParameter);
-            //     break;
+        case deviceParameters.REPORTING_DATA_CONFIG:
+            setRequestDataTypeParameter(this, data as IRequestDataTypeParameter);
+            break;
 
-            // case deviceParameters.EVENTS_CONFIG:
-            //     this.setRequestEventIdParameter(data as IRequestEventIdParameter);
-            //     break;
+        case deviceParameters.EVENTS_CONFIG:
+            setRequestEventIdParameter(this, data as IRequestEventIdParameter);
+            break;
 
         default:
             break;
