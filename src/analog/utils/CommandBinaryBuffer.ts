@@ -932,21 +932,21 @@ const setNbiotSslSet = ( buffer: ICommandBinaryBuffer, parameter: IParameterNbio
 
 
 const deviceParameterConvertersMap = {
-    1: { // deviceParameters.REPORTING_DATA_INTERVAL
+    [deviceParameters.REPORTING_DATA_INTERVAL]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataInterval => {
-            buffer.seek(buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
+            buffer.seek( buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
 
             return {
                 value: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
             };
         },
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataInterval ) => {
-            buffer.seek(buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
+            buffer.seek( buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
 
             buffer.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
         }
     },
-    4: { // deviceParameters.DAY_CHECKOUT_HOUR
+    [deviceParameters.DAY_CHECKOUT_HOUR]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterDayCheckoutHour => ({
             value: buffer.getUint8()
         }),
@@ -954,7 +954,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.value);
         }
     },
-    5: { // deviceParameters.REPORTING_DATA_TYPE
+    [deviceParameters.REPORTING_DATA_TYPE]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataType => ({
             type: buffer.getUint8()
         }),
@@ -962,13 +962,13 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.type);
         }
     },
-    8: { // deviceParameters.PRIORITY_DATA_DELIVERY_TYPE
+    [deviceParameters.PRIORITY_DATA_DELIVERY_TYPE]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterDeliveryTypeOfPriorityData => ({value: buffer.getUint8()}),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterDeliveryTypeOfPriorityData ) => {
             buffer.setUint8(parameter.value);
         }
     },
-    9: { // deviceParameters.ACTIVATION_METHOD
+    [deviceParameters.ACTIVATION_METHOD]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterActivationMethod => ({
             type: buffer.getUint8()
         }),
@@ -976,7 +976,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.type);
         }
     },
-    10: { // deviceParameters.BATTERY_DEPASSIVATION_INFO
+    [deviceParameters.BATTERY_DEPASSIVATION_INFO]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryDepassivationInfo => ({
             loadTime: buffer.getUint16(false),
             internalResistance: buffer.getUint16(false),
@@ -988,7 +988,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint16(parameter.lowVoltage, false);
         }
     },
-    11: { // BATTERY_MINIMAL_LOAD_TIME
+    [deviceParameters.BATTERY_MINIMAL_LOAD_TIME]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryMinimalLoadTime => ({
             value: buffer.getUint32(false)
         }),
@@ -996,7 +996,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint32(parameter.value, false);
         }
     },
-    13: { // deviceParameters.CHANNELS_CONFIG
+    [deviceParameters.CHANNELS_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterChannelsConfig => ({value: buffer.getUint8()}),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterChannelsConfig ) => {
             if ( parameter.value < 0 || parameter.value > 18 ) {
@@ -1006,7 +1006,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.value);
         }
     },
-    18: { // deviceParameters.RX2_CONFIG
+    [deviceParameters.RX2_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterRx2Config => ({
             spreadFactor: buffer.getUint8(),
             frequency: buffer.getUint24(false) * PARAMETER_RX2_FREQUENCY_COEFFICIENT
@@ -1016,7 +1016,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint24(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT, false);
         }
     },
-    23: { // deviceParameters.ABSOLUTE_DATA
+    [deviceParameters.ABSOLUTE_DATA]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteData => ({
             meterValue: buffer.getUint32(false),
             pulseCoefficient: buffer.getPulseCoefficient(),
@@ -1028,13 +1028,13 @@ const deviceParameterConvertersMap = {
             buffer.setUint32(parameter.value, false);
         }
     },
-    24: { // deviceParameters.ABSOLUTE_DATA_ENABLE
+    [deviceParameters.ABSOLUTE_DATA_ENABLE]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataEnable => ({state: buffer.getUint8()}),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteDataEnable ) => {
             buffer.setUint8(parameter.state);
         }
     },
-    25: { // deviceParameters.SERIAL_NUMBER
+    [deviceParameters.SERIAL_NUMBER]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterSerialNumber => (
             {
                 value: getHexFromBytes(buffer.getBytes(SERIAL_NUMBER_SIZE))
@@ -1044,7 +1044,7 @@ const deviceParameterConvertersMap = {
             getBytesFromHex(parameter.value).forEach(byte => buffer.setUint8(byte));
         }
     },
-    26: { // deviceParameters.GEOLOCATION
+    [deviceParameters.GEOLOCATION]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterGeolocation => ({
             latitude: roundNumber( buffer.getFloat32()),
             longitude: roundNumber( buffer.getFloat32()),
@@ -1056,13 +1056,13 @@ const deviceParameterConvertersMap = {
             buffer.setUint16(roundNumber(parameter.altitude));
         }
     },
-    28: { // deviceParameters.EXTRA_FRAME_INTERVAL
+    [deviceParameters.EXTRA_FRAME_INTERVAL]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterExtraFrameInterval => ({value: buffer.getUint16()}),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterExtraFrameInterval ) => {
             buffer.setUint16(parameter.value);
         }
     },
-    29: { // deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL
+    [deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataMC => ({
             channel: getChannelValue(buffer),
             meterValue: buffer.getUint32(false),
@@ -1076,7 +1076,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint32(parameter.value, false);
         }
     },
-    30: { // deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL
+    [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataEnableMC => ({
             channel: getChannelValue(buffer),
             state: buffer.getUint8()
@@ -1086,7 +1086,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.state);
         }
     },
-    31: { // deviceParameters.PULSE_CHANNELS_SCAN_CONFIG
+    [deviceParameters.PULSE_CHANNELS_SCAN_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterPulseChannelsScanConfig => ({
             channelList: buffer.getChannels(),
             pullUpTime: buffer.getUint8(),
@@ -1106,7 +1106,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.scanTime);
         }
     },
-    32: { // deviceParameters.PULSE_CHANNELS_SET_CONFIG
+    [deviceParameters.PULSE_CHANNELS_SET_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterPulseChannelsSetConfig => {
             const object = bitSet.toObject(fourChannelsBitMask, buffer.getUint8());
 
@@ -1118,7 +1118,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(bitSet.fromObject(fourChannelsBitMask, {channel1, channel2, channel3, channel4}));
         }
     },
-    33: { // deviceParameters.BATTERY_DEPASSIVATION_CONFIG
+    [deviceParameters.BATTERY_DEPASSIVATION_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryDepassivationConfig => ({
             resistanceStartThreshold: buffer.getUint16(false),
             resistanceStopThreshold: buffer.getUint16(false)
@@ -1128,7 +1128,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint16(parameter.resistanceStopThreshold, false);
         }
     },
-    34: { // deviceParameters.MQTT_SESSION_CONFIG
+    [deviceParameters.MQTT_SESSION_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterMqttSessionConfig => ({
             clientId: buffer.getString(),
             username: buffer.getString(),
@@ -1142,7 +1142,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.cleanSession);
         }
     },
-    35: { // deviceParameters.MQTT_BROKER_ADDRESS
+    [deviceParameters.MQTT_BROKER_ADDRESS]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterMqttBrokerAddress => ({
             hostName: buffer.getString(),
             port: buffer.getUint16(false)
@@ -1152,7 +1152,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint16(parameter.port, false);
         }
     },
-    36: { // deviceParameters.MQTT_SSL_ENABLE
+    [deviceParameters.MQTT_SSL_ENABLE]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterMqttSslEnable => ({
             enable: buffer.getUint8()
         }),
@@ -1160,7 +1160,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.enable);
         }
     },
-    37: { // deviceParameters.MQTT_TOPIC_PREFIX
+    [deviceParameters.MQTT_TOPIC_PREFIX]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterMqttTopicPrefix => ({
             topicPrefix: buffer.getString()
         }),
@@ -1168,7 +1168,7 @@ const deviceParameterConvertersMap = {
             buffer.setString(parameter.topicPrefix);
         }
     },
-    38: { // deviceParameters.MQTT_DATA_RECEIVE_CONFIG
+    [deviceParameters.MQTT_DATA_RECEIVE_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterMqttDataReceiveConfig => ({
             qos: buffer.getUint8()
         }),
@@ -1176,7 +1176,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.qos);
         }
     },
-    39: { // deviceParameters.MQTT_DATA_SEND_CONFIG
+    [deviceParameters.MQTT_DATA_SEND_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterMqttDataSendConfig => ({
             qos: buffer.getUint8(),
             retain: buffer.getUint8(),
@@ -1192,7 +1192,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.sendTimeoutBetweenAttempts);
         }
     },
-    40: { // deviceParameters.NBIOT_SSL_CONFIG
+    [deviceParameters.NBIOT_SSL_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotSslConfig => ({
             securityLevel: buffer.getUint8(),
             version: buffer.getUint8()
@@ -1202,31 +1202,31 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.version);
         }
     },
-    41: { // deviceParameters.NBIOT_SSL_CACERT_WRITE
+    [deviceParameters.NBIOT_SSL_CACERT_WRITE]: {
         get: getNbiotSslWrite,
         set: setNbiotSslWrite
     },
-    42: { // deviceParameters.NBIOT_SSL_CACERT_SET
+    [deviceParameters.NBIOT_SSL_CACERT_SET]: {
         get: getNbiotSslSet,
         set: setNbiotSslSet
     },
-    43: { // deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE
+    [deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE]: {
         get: getNbiotSslWrite,
         set: setNbiotSslWrite
     },
-    44: { // deviceParameters.NBIOT_SSL_CLIENT_CERT_SET
+    [deviceParameters.NBIOT_SSL_CLIENT_CERT_SET]: {
         get: getNbiotSslSet,
         set: setNbiotSslSet
     },
-    45: { // deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE
+    [deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE]: {
         get: getNbiotSslWrite,
         set: setNbiotSslWrite
     },
-    46: { // deviceParameters.NBIOT_SSL_CLIENT_KEY_SET
+    [deviceParameters.NBIOT_SSL_CLIENT_KEY_SET]: {
         get: getNbiotSslSet,
         set: setNbiotSslSet
     },
-    47: { // deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE
+    [deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotDeviceSoftwareUpdate => (
             {softwareImageUrl: buffer.getString()}
         ),
@@ -1234,7 +1234,7 @@ const deviceParameterConvertersMap = {
             buffer.setString(parameter.softwareImageUrl);
         }
     },
-    48: { // deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE
+    [deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotModuleFirmwareUpdate => (
             {moduleFirmwareImageUrl: buffer.getString()}
         ),
@@ -1242,7 +1242,7 @@ const deviceParameterConvertersMap = {
             buffer.setString(parameter.moduleFirmwareImageUrl);
         }
     },
-    49: { // deviceParameters.REPORTING_DATA_CONFIG
+    [deviceParameters.REPORTING_DATA_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataConfig => (
             {
                 dataType: buffer.getUint8(),
@@ -1258,7 +1258,7 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.countToSend);
         }
     },
-    50: { // deviceParameters.EVENTS_CONFIG
+    [deviceParameters.EVENTS_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterEventsConfig => (
             {
                 eventId: buffer.getUint8(),
@@ -1455,9 +1455,6 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getBatteryVoltage (): IBatteryVoltage,
     setBatteryVoltage ( batteryVoltage: IBatteryVoltage ),
 
-    // getUint24 ( isLittleEndian?: boolean ): number,
-    // setUint24 ( value: number, isLittleEndian?: boolean ),
-
     getLegacyCounterValue (): number,
     setLegacyCounterValue ( value: number ),
 
@@ -1624,36 +1621,6 @@ CommandBinaryBuffer.prototype.setBatteryVoltage = function ( batteryVoltage: IBa
 
     [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
 };
-
-
-// CommandBinaryBuffer.prototype.getUint24 ( isLittleEndian = this.isLittleEndian ): number {
-//     const byte0 = this.data[this.offset++];
-//     const byte1 = this.data[this.offset++];
-//     const byte2 = this.data[this.offset++];
-
-//     if ( isLittleEndian ) {
-//         return byte0 + (byte1 << 8) + (byte2 << 16);
-//     }
-
-//     return (byte0 << 16) + (byte1 << 8) + byte2;
-// }
-
-// CommandBinaryBuffer.prototype.setUint24 ( value: number, isLittleEndian = this.isLittleEndian ): void {
-//     const view = new DataView(this.data, this.offset, INT24_BYTE_SIZE);
-
-//     if ( isLittleEndian ) {
-//         view.setUint8(2, (value >> 16) & 0xFF);
-//         view.setUint8(1, (value >> 8) & 0xFF);
-//         view.setUint8(0, value & 0xFF);
-//     } else {
-//         view.setUint8(0, (value >> 16) & 0xFF);
-//         view.setUint8(1, (value >> 8) & 0xFF);
-//         view.setUint8(2, value & 0xFF);
-//     }
-
-//     this.offset += INT24_BYTE_SIZE;
-// }
-
 
 CommandBinaryBuffer.prototype.getLegacyCounterValue = function (): number {
     return this.getUint24(false);
