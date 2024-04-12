@@ -21,6 +21,7 @@ export * as getParameter from './getParameter.js';
 export * as hourMc from './hourMc.js';
 export * as lastEvent from './lastEvent.js';
 export * as newEvent from './newEvent.js';
+export * as setParameter from './setParameter.js';
 export * as setTime2000 from './setTime2000.js';
 export * as softRestart from './softRestart.js';
 export * as status from './status.js';

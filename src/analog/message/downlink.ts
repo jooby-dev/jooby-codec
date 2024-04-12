@@ -51,9 +51,12 @@ toBytesMap[commands.getCurrentMc.id] = commands.getCurrentMc.toBytes;
 toBytesMap[commands.getExAbsArchiveDaysMc.id] = commands.getExAbsArchiveDaysMc.toBytes;
 toBytesMap[commands.getExAbsArchiveHoursMc.id] = commands.getExAbsArchiveHoursMc.toBytes;
 toBytesMap[commands.getLmicInfo.id] = commands.getLmicInfo.toBytes;
+toBytesMap[commands.getParameter.id] = commands.getParameter.toBytes;
 toBytesMap[commands.getStatus.id] = commands.getStatus.toBytes;
 toBytesMap[commands.getTime2000.id] = commands.getTime2000.toBytes;
+toBytesMap[commands.setParameter.id] = commands.setParameter.toBytes;
 toBytesMap[commands.setTime2000.id] = commands.setTime2000.toBytes;
+toBytesMap[commands.softRestart.id] = commands.softRestart.toBytes;
 
 // because of webpack/rollup processing!
 fromBytesMap[commands.correctTime2000.id] = commands.correctTime2000.fromBytes;
@@ -65,9 +68,12 @@ fromBytesMap[commands.getCurrentMc.id] = commands.getCurrentMc.fromBytes;
 fromBytesMap[commands.getExAbsArchiveDaysMc.id] = commands.getExAbsArchiveDaysMc.fromBytes;
 fromBytesMap[commands.getExAbsArchiveHoursMc.id] = commands.getExAbsArchiveHoursMc.fromBytes;
 fromBytesMap[commands.getLmicInfo.id] = commands.getLmicInfo.fromBytes;
+fromBytesMap[commands.getParameter.id] = commands.getParameter.fromBytes;
 fromBytesMap[commands.getStatus.id] = commands.getStatus.fromBytes;
 fromBytesMap[commands.getTime2000.id] = commands.getTime2000.fromBytes;
+fromBytesMap[commands.setParameter.id] = commands.setParameter.fromBytes;
 fromBytesMap[commands.setTime2000.id] = commands.setTime2000.fromBytes;
+fromBytesMap[commands.softRestart.id] = commands.softRestart.fromBytes;
 
 nameMap[commands.correctTime2000.id] = commands.correctTime2000.name;
 nameMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.name;
@@ -78,6 +84,9 @@ nameMap[commands.getCurrentMc.id] = commands.getCurrentMc.name;
 nameMap[commands.getExAbsArchiveDaysMc.id] = commands.getExAbsArchiveDaysMc.name;
 nameMap[commands.getExAbsArchiveHoursMc.id] = commands.getExAbsArchiveHoursMc.name;
 nameMap[commands.getLmicInfo.id] = commands.getLmicInfo.name;
+nameMap[commands.getParameter.id] = commands.getParameter.name;
 nameMap[commands.getStatus.id] = commands.getStatus.name;
 nameMap[commands.getTime2000.id] = commands.getTime2000.name;
+nameMap[commands.setParameter.id] = commands.setParameter.name;
 nameMap[commands.setTime2000.id] = commands.setTime2000.name;
+nameMap[commands.softRestart.id] = commands.softRestart.name;
