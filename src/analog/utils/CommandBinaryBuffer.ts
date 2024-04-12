@@ -889,13 +889,6 @@ const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 //     }
 // }
 
-const getMagneticInfluenceBit = ( byte: number ): boolean => (
-    !!extractBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX)
-);
-
-const setMagneticInfluenceBit = ( byte: number, value: boolean ): number => (
-    fillBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX, +value)
-);
 
 const getChannelValue = ( buffer: ICommandBinaryBuffer ): number => buffer.getUint8() + 1;
 
@@ -1436,6 +1429,11 @@ export const getResponseParameterSize = ( parameter: IParameter ): number => {
 
 
 export interface ICommandBinaryBuffer extends IBinaryBuffer {
+    // static methods
+    getMagneticInfluenceBit ( byte: number ): boolean,
+    setMagneticInfluenceBit ( byte: number, value: boolean ): number,
+
+    // instance methods
     getExtendedValue (): number,
     setExtendedValue ( value: number ),
     getExtendedValueSize (bits: number): number,
@@ -1493,6 +1491,15 @@ function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: TBytes 
 // extending
 CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
 CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
+
+
+CommandBinaryBuffer.getMagneticInfluenceBit = ( byte: number ): boolean => (
+    !!extractBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX)
+);
+
+CommandBinaryBuffer.setMagneticInfluenceBit = ( byte: number, value: boolean ): number => (
+    fillBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX, +value)
+);
 
 
 CommandBinaryBuffer.prototype.getExtendedValue = function (): number {
@@ -1623,13 +1630,13 @@ CommandBinaryBuffer.prototype.setLegacyCounterValue = function ( value: number )
 
 CommandBinaryBuffer.prototype.getLegacyCounter = function ( byte = this.getUint8() ): ILegacyCounter {
     return {
-        isMagneticInfluence: getMagneticInfluenceBit(byte),
+        isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(byte),
         value: this.getLegacyCounterValue()
     };
 };
 
 CommandBinaryBuffer.prototype.setLegacyCounter = function ( counter: ILegacyCounter, byte = 0 ) {
-    this.setUint8(setMagneticInfluenceBit(byte, counter.isMagneticInfluence));
+    this.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, counter.isMagneticInfluence));
     this.setLegacyCounterValue(counter.value);
 };
 

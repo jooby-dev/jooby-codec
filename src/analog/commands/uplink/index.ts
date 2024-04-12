@@ -7,6 +7,7 @@
 export * as correctTime2000 from './correctTime2000.js';
 export * as current from './current.js';
 export * as currentMc from './currentMc.js';
+export * as day from './day.js';
 export * as dayMc from './dayMc.js';
 export * as exAbsCurrentMc from './exAbsCurrentMc.js';
 export * as exAbsDayMc from './exAbsDayMc.js';
