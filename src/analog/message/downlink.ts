@@ -43,8 +43,10 @@ export const toMessage = wrappers.getToMessage(toBytesMap);
 // fill maps
 // iteration should not be used
 toBytesMap[commands.correctTime2000.id] = commands.correctTime2000.toBytes;
+toBytesMap[commands.getArchiveDays.id] = commands.getArchiveDays.toBytes;
 toBytesMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.toBytes;
 toBytesMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.toBytes;
+toBytesMap[commands.getArchiveHours.id] = commands.getArchiveHours.toBytes;
 toBytesMap[commands.getArchiveHoursMc.id] = commands.getArchiveHoursMc.toBytes;
 toBytesMap[commands.getBatteryStatus.id] = commands.getBatteryStatus.toBytes;
 toBytesMap[commands.getCurrent.id] = commands.getCurrent.toBytes;
@@ -62,8 +64,10 @@ toBytesMap[commands.softRestart.id] = commands.softRestart.toBytes;
 
 // because of webpack/rollup processing!
 fromBytesMap[commands.correctTime2000.id] = commands.correctTime2000.fromBytes;
+fromBytesMap[commands.getArchiveDays.id] = commands.getArchiveDays.fromBytes;
 fromBytesMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.fromBytes;
 fromBytesMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.fromBytes;
+fromBytesMap[commands.getArchiveHours.id] = commands.getArchiveHours.fromBytes;
 fromBytesMap[commands.getArchiveHoursMc.id] = commands.getArchiveHoursMc.fromBytes;
 fromBytesMap[commands.getBatteryStatus.id] = commands.getBatteryStatus.fromBytes;
 fromBytesMap[commands.getCurrent.id] = commands.getCurrent.fromBytes;
@@ -80,8 +84,10 @@ fromBytesMap[commands.setTime2000.id] = commands.setTime2000.fromBytes;
 fromBytesMap[commands.softRestart.id] = commands.softRestart.fromBytes;
 
 nameMap[commands.correctTime2000.id] = commands.correctTime2000.name;
+nameMap[commands.getArchiveDays.id] = commands.getArchiveDays.name;
 nameMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.name;
 nameMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.name;
+nameMap[commands.getArchiveHours.id] = commands.getArchiveHours.name;
 nameMap[commands.getArchiveHoursMc.id] = commands.getArchiveHoursMc.name;
 nameMap[commands.getBatteryStatus.id] = commands.getBatteryStatus.name;
 nameMap[commands.getCurrent.id] = commands.getCurrent.name;

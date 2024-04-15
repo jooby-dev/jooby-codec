@@ -5,8 +5,10 @@
  */
 
 export * as correctTime2000 from './correctTime2000.js';
+export * as getArchiveDays from './getArchiveDays.js';
 export * as getArchiveDaysMc from './getArchiveDaysMc.js';
 export * as getArchiveEvents from './getArchiveEvents.js';
+export * as getArchiveHours from './getArchiveHours.js';
 export * as getArchiveHoursMc from './getArchiveHoursMc.js';
 export * as getBatteryStatus from './getBatteryStatus.js';
 export * as getCurrent from './getCurrent.js';
