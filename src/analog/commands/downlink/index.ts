@@ -13,6 +13,7 @@ export * as getCurrent from './getCurrent.js';
 export * as getCurrentMc from './getCurrentMc.js';
 export * as getExAbsArchiveDaysMc from './getExAbsArchiveDaysMc.js';
 export * as getExAbsArchiveHoursMc from './getExAbsArchiveHoursMc.js';
+export * as getExAbsArchiveHoursMcEx from './getExAbsArchiveHoursMcEx.js';
 export * as getExAbsCurrentMc from './getExAbsCurrentMc.js';
 export * as getLmicInfo from './getLmicInfo.js';
 export * as getParameter from './getParameter.js';
