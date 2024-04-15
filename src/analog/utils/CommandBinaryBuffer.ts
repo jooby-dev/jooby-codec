@@ -564,6 +564,13 @@ export interface IDataSegment {
     data: Uint8Array
 }
 
+export interface IChannelValuesWithHourDiffExtended {
+    channelList: Array<IChannelHours>,
+    startTime2000: TTime2000
+    hour: TUint8,
+    hours: TUint8
+}
+
 
 export type TEventStatus =
     IEventGasStatus |
@@ -1426,10 +1433,13 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setResponseParameter ( parameter: IResponseParameter ),
 
     getLegacyHourDiff (): ILegacyCounter,
-    setLegacyHourDiff ( diff: ILegacyCounter ): void,
+    setLegacyHourDiff ( diff: ILegacyCounter ),
 
     getLegacyHourCounterWithDiff (): ILegacyHourCounterWithDiff,
-    setLegacyHourCounterWithDiff ( hourCounter: ILegacyHourCounterWithDiff ): void
+    setLegacyHourCounterWithDiff ( hourCounter: ILegacyHourCounterWithDiff )
+
+    getChannelsValuesWithHourDiffExtended (): IChannelValuesWithHourDiffExtended,
+    setChannelsValuesWithHourDiffExtended ( parameters: IChannelValuesWithHourDiffExtended )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: TBytes | number, isLittleEndian = true ) {
@@ -2130,6 +2140,53 @@ CommandBinaryBuffer.prototype.setLegacyHourCounterWithDiff = function ( hourCoun
 
     this.setLegacyCounterValue(hourCounter.counter.value);
     hourCounter.diff.forEach(diffItem => this.setLegacyHourDiff(diffItem));
+};
+
+
+CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiffExtended = function (): IChannelValuesWithHourDiffExtended {
+    const date = this.getDate();
+    const hour = this.getUint8();
+    const hours = this.getUint8();
+    const channels = this.getChannels();
+    const channelList: Array<IChannelHours> = [];
+
+    date.setUTCHours(hour);
+
+    channels.forEach(channelIndex => {
+        const diff: Array<number> = [];
+
+        // decode hour value for channel
+        const value = this.getExtendedValue();
+
+        // start from first diff hour
+        for ( let diffHour = 1; diffHour < hours; ++diffHour ) {
+            diff.push(this.getExtendedValue());
+        }
+
+        channelList.push({
+            value,
+            diff,
+            index: channelIndex
+        });
+    });
+
+    return {startTime2000: getTime2000FromDate(date), hour, hours, channelList};
+};
+
+
+// eslint-disable-next-line function-paren-newline
+CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiffExtended = function ( parameters: IChannelValuesWithHourDiffExtended ): void {
+    const date = getDateFromTime2000(parameters.startTime2000);
+
+    this.setDate(date);
+    this.setUint8(parameters.hour);
+    this.setUint8(parameters.hours);
+    this.setChannels(parameters.channelList);
+
+    parameters.channelList.forEach(({value, diff}) => {
+        this.setExtendedValue(value);
+        diff.forEach(diffValue => this.setExtendedValue(diffValue));
+    });
 };
 
 
