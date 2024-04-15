@@ -24,12 +24,8 @@ export * as getTime2000 from './getTime2000.js';
 export * as setParameter from './setParameter.js';
 export * as setTime2000 from './setTime2000.js';
 export * as softRestart from './softRestart.js';
+export * as updateRun from './updateRun.js';
+
 // export {default as DataSegment} from './DataSegment.js';
-// export {default as GetArchiveDays} from './GetArchiveDays.js';
-// export {default as GetArchiveHours} from './GetArchiveHours.js';
-// export {default as GetBatteryStatus} from './GetBatteryStatus.js';
-// export {default as GetCurrent} from './GetCurrent.js';
-// export {default as SetParameter} from './SetParameter.js';
-// export {default as UpdateRun} from './UpdateRun.js';
 // export {default as VerifyImage} from './VerifyImage.js';
 // export {default as WriteImage} from './WriteImage.js';

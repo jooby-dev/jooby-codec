@@ -61,6 +61,7 @@ toBytesMap[commands.getTime2000.id] = commands.getTime2000.toBytes;
 toBytesMap[commands.setParameter.id] = commands.setParameter.toBytes;
 toBytesMap[commands.setTime2000.id] = commands.setTime2000.toBytes;
 toBytesMap[commands.softRestart.id] = commands.softRestart.toBytes;
+toBytesMap[commands.updateRun.id] = commands.updateRun.toBytes;
 
 // because of webpack/rollup processing!
 fromBytesMap[commands.correctTime2000.id] = commands.correctTime2000.fromBytes;
@@ -82,6 +83,7 @@ fromBytesMap[commands.getTime2000.id] = commands.getTime2000.fromBytes;
 fromBytesMap[commands.setParameter.id] = commands.setParameter.fromBytes;
 fromBytesMap[commands.setTime2000.id] = commands.setTime2000.fromBytes;
 fromBytesMap[commands.softRestart.id] = commands.softRestart.fromBytes;
+fromBytesMap[commands.updateRun.id] = commands.updateRun.fromBytes;
 
 nameMap[commands.correctTime2000.id] = commands.correctTime2000.name;
 nameMap[commands.getArchiveDays.id] = commands.getArchiveDays.name;
@@ -102,3 +104,4 @@ nameMap[commands.getTime2000.id] = commands.getTime2000.name;
 nameMap[commands.setParameter.id] = commands.setParameter.name;
 nameMap[commands.setTime2000.id] = commands.setTime2000.name;
 nameMap[commands.softRestart.id] = commands.softRestart.name;
+nameMap[commands.updateRun.id] = commands.updateRun.name;
