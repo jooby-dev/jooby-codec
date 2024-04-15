@@ -1352,7 +1352,6 @@ class CommandBinaryBuffer extends BinaryBuffer {
     }
 
     setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ) {
-        console.log({energyType, energies});
         if ( energyType ) {
             this.setPackedEnergyType(energyType, energies);
         }

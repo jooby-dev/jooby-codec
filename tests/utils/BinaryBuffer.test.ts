@@ -33,7 +33,7 @@ const checkBuffer = ( buffer: BinaryBuffer, dataOrHex: Uint8Array | string, offs
     expect(buffer.bytesLeft).toBe(data.length - offset);
 
     // content
-    expect(buffer.data).toStrictEqual(data.buffer);
+    expect(buffer.data).toEqual(data.buffer);
     expect(buffer.toUint8Array()).toStrictEqual(data);
     expect(buffer.toHex()).toBe(hex);
     expect(buffer.isEmpty).toBe(offset === data.length);
@@ -101,6 +101,33 @@ describe('positive cases', () => {
             checkBuffer(buffer, UINT8_DATA, index);
             expect(buffer.getUint8()).toBe(UINT8_DATA[index]);
         });
+    });
+
+    test('check LE/BE uint16', () => {
+        const bufferLE = new BinaryBuffer(2);
+        const bufferBE = new BinaryBuffer(2, false);
+
+        // 0x0200
+        bufferLE.setUint16(512);
+        bufferBE.setUint16(512);
+
+        console.log('bufferLE:', bufferLE);
+        console.log('bufferBE:', bufferBE);
+
+        checkBuffer(bufferLE, new Uint8Array([0x00, 0x02]), bufferLE.offset);
+        checkBuffer(bufferBE, new Uint8Array([0x02, 0x00]), bufferBE.offset, false);
+    });
+
+    test('check LE/BE uint32', () => {
+        const bufferLE = new BinaryBuffer(4);
+        const bufferBE = new BinaryBuffer(4, false);
+
+        // 0xfe822005
+        bufferLE.setUint32(4269940741);
+        bufferBE.setUint32(4269940741);
+
+        checkBuffer(bufferLE, '05 20 82 fe', bufferLE.offset);
+        checkBuffer(bufferBE, 'fe 82 20 05', bufferBE.offset, false);
     });
 
     test('check Uint16 methods', () => {
