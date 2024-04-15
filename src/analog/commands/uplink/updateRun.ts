@@ -15,7 +15,7 @@
  * // this command doesn't have any parameters
  * console.log(parameters);
  * // output:
- * undefined
+ * {}
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/UpdateRun.md#response)
