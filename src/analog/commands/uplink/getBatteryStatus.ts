@@ -59,9 +59,9 @@ export interface IGetBatteryStatusResponse {
 }
 
 
-export const id = 0x051f;
-export const name: string = 'getBatteryStatus';
-export const headerSize: number = 3;
+export const id: types.TCommandId = 0x051f;
+export const name: types.TCommandName = 'getBatteryStatus';
+export const headerSize = 3;
 
 const COMMAND_BODY_SIZE: number = 11;
 

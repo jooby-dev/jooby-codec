@@ -35,8 +35,8 @@ interface ISetParameterResponseParameters {
 }
 
 
-export const id: number = 0x03;
-export const name: string = 'setParameter';
+export const id: types.TCommandId = 0x03;
+export const name: types.TCommandName = 'setParameter';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 2;
