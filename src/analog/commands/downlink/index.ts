@@ -5,6 +5,7 @@
  */
 
 export * as correctTime2000 from './correctTime2000.js';
+export * as dataSegment from './dataSegment.js';
 export * as getArchiveDays from './getArchiveDays.js';
 export * as getArchiveDaysMc from './getArchiveDaysMc.js';
 export * as getArchiveEvents from './getArchiveEvents.js';
@@ -24,12 +25,6 @@ export * as getTime2000 from './getTime2000.js';
 export * as setParameter from './setParameter.js';
 export * as setTime2000 from './setTime2000.js';
 export * as softRestart from './softRestart.js';
-// export {default as DataSegment} from './DataSegment.js';
-// export {default as GetArchiveDays} from './GetArchiveDays.js';
-// export {default as GetArchiveHours} from './GetArchiveHours.js';
-// export {default as GetBatteryStatus} from './GetBatteryStatus.js';
-// export {default as GetCurrent} from './GetCurrent.js';
-// export {default as SetParameter} from './SetParameter.js';
+export * as writeImage from './writeImage.js';
 // export {default as UpdateRun} from './UpdateRun.js';
 // export {default as VerifyImage} from './VerifyImage.js';
-// export {default as WriteImage} from './WriteImage.js';

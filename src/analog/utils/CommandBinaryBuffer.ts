@@ -796,48 +796,6 @@ const pulseCoefficientToByteMap = invertObject(byteToPulseCoefficientMap);
 
 const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 
-
-/**
- * Command specific byte array manipulation.
- */
-// class CommandBinaryBuffer extends BinaryBuffer {
-//     getDataSegment (): IDataSegment {
-//         const segmentationSessionId = this.getUint8();
-//         const flag = this.getUint8();
-
-//         return {
-//             segmentationSessionId,
-//             segmentIndex: extractBits(flag, 3, 1),
-//             segmentsNumber: extractBits(flag, 3, 5),
-//             isLast: Boolean(extractBits(flag, 1, 8)),
-//             data: this.getBytesLeft()
-//         };
-//     }
-
-//     setDataSegment ( value: IDataSegment ) {
-//         let flag = fillBits(0, 3, 1, value.segmentIndex);
-//         flag = fillBits(flag, 3, 5, value.segmentsNumber);
-//         flag = fillBits(flag, 1, 8, +value.isLast);
-
-//         this.setUint8(value.segmentationSessionId);
-//         this.setUint8(flag);
-//         this.setBytes(value.data);
-//     }
-
-//     private getBatteryDepassivationConfig (): IParameterBatteryDepassivationConfig {
-//         return {
-//             resistanceStartThreshold: this.getUint16(false),
-//             resistanceStopThreshold: this.getUint16(false)
-//         };
-//     }
-
-//     private setBatteryDepassivationConfig ( parameter: IParameterBatteryDepassivationConfig ): void {
-//         this.setUint16(parameter.resistanceStartThreshold, false);
-//         this.setUint16(parameter.resistanceStopThreshold, false);
-//     }
-//}
-
-
 const getChannelValue = ( buffer: ICommandBinaryBuffer ): number => buffer.getUint8() + 1;
 
 const setChannelValue = ( buffer: ICommandBinaryBuffer, value: number ) => {
@@ -1440,6 +1398,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getChannelsValuesWithHourDiffExtended (): IChannelValuesWithHourDiffExtended,
     setChannelsValuesWithHourDiffExtended ( parameters: IChannelValuesWithHourDiffExtended )
+
+    getDataSegment (): IDataSegment,
+    setDataSegment ( parameters: IDataSegment )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: TBytes | number, isLittleEndian = true ) {
@@ -2174,7 +2135,6 @@ CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiffExtended = function (
 };
 
 
-// eslint-disable-next-line function-paren-newline
 CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiffExtended = function ( parameters: IChannelValuesWithHourDiffExtended ): void {
     const date = getDateFromTime2000(parameters.startTime2000);
 
@@ -2187,6 +2147,31 @@ CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiffExtended = function (
         this.setExtendedValue(value);
         diff.forEach(diffValue => this.setExtendedValue(diffValue));
     });
+};
+
+
+CommandBinaryBuffer.prototype.getDataSegment = function (): IDataSegment {
+    const segmentationSessionId = this.getUint8();
+    const flag = this.getUint8();
+
+    return {
+        segmentationSessionId,
+        segmentIndex: extractBits(flag, 3, 1),
+        segmentsNumber: extractBits(flag, 3, 5),
+        isLast: Boolean(extractBits(flag, 1, 8)),
+        data: this.getBytesLeft()
+    };
+};
+
+
+CommandBinaryBuffer.prototype.setDataSegment = function ( parameters: IDataSegment ) {
+    let flag = fillBits(0, 3, 1, parameters.segmentIndex);
+    flag = fillBits(flag, 3, 5, parameters.segmentsNumber);
+    flag = fillBits(flag, 1, 8, +parameters.isLast);
+
+    this.setUint8(parameters.segmentationSessionId);
+    this.setUint8(flag);
+    this.setBytes(parameters.data);
 };
 
 

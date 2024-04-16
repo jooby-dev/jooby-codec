@@ -43,6 +43,7 @@ export const toMessage = wrappers.getToMessage(toBytesMap);
 // fill maps
 // iteration should not be used
 toBytesMap[commands.correctTime2000.id] = commands.correctTime2000.toBytes;
+toBytesMap[commands.dataSegment.id] = commands.dataSegment.toBytes;
 toBytesMap[commands.getArchiveDays.id] = commands.getArchiveDays.toBytes;
 toBytesMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.toBytes;
 toBytesMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.toBytes;
@@ -61,9 +62,11 @@ toBytesMap[commands.getTime2000.id] = commands.getTime2000.toBytes;
 toBytesMap[commands.setParameter.id] = commands.setParameter.toBytes;
 toBytesMap[commands.setTime2000.id] = commands.setTime2000.toBytes;
 toBytesMap[commands.softRestart.id] = commands.softRestart.toBytes;
+toBytesMap[commands.writeImage.id] = commands.writeImage.toBytes;
 
 // because of webpack/rollup processing!
 fromBytesMap[commands.correctTime2000.id] = commands.correctTime2000.fromBytes;
+fromBytesMap[commands.dataSegment.id] = commands.dataSegment.fromBytes;
 fromBytesMap[commands.getArchiveDays.id] = commands.getArchiveDays.fromBytes;
 fromBytesMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.fromBytes;
 fromBytesMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.fromBytes;
@@ -82,8 +85,10 @@ fromBytesMap[commands.getTime2000.id] = commands.getTime2000.fromBytes;
 fromBytesMap[commands.setParameter.id] = commands.setParameter.fromBytes;
 fromBytesMap[commands.setTime2000.id] = commands.setTime2000.fromBytes;
 fromBytesMap[commands.softRestart.id] = commands.softRestart.fromBytes;
+fromBytesMap[commands.writeImage.id] = commands.writeImage.fromBytes;
 
 nameMap[commands.correctTime2000.id] = commands.correctTime2000.name;
+nameMap[commands.dataSegment.id] = commands.dataSegment.name;
 nameMap[commands.getArchiveDays.id] = commands.getArchiveDays.name;
 nameMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.name;
 nameMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.name;
@@ -102,3 +107,4 @@ nameMap[commands.getTime2000.id] = commands.getTime2000.name;
 nameMap[commands.setParameter.id] = commands.setParameter.name;
 nameMap[commands.setTime2000.id] = commands.setTime2000.name;
 nameMap[commands.softRestart.id] = commands.softRestart.name;
+nameMap[commands.writeImage.id] = commands.writeImage.name;

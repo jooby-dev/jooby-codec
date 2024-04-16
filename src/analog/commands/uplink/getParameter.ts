@@ -30,7 +30,7 @@ import CommandBinaryBuffer, {IResponseParameter, getResponseParameterSize, IComm
 
 export const id: types.TCommandId = 0x04;
 export const name: types.TCommandName = 'getParameter';
-export const headerSize: number = 2;
+export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {
     'reporting data interval': {

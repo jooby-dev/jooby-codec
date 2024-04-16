@@ -7,6 +7,7 @@
 export * as correctTime2000 from './correctTime2000.js';
 export * as current from './current.js';
 export * as currentMc from './currentMc.js';
+export * as dataSegment from './dataSegment.js';
 export * as day from './day.js';
 export * as dayMc from './dayMc.js';
 export * as exAbsCurrentMc from './exAbsCurrentMc.js';
@@ -33,6 +34,7 @@ export * as setTime2000 from './setTime2000.js';
 export * as softRestart from './softRestart.js';
 export * as status from './status.js';
 export * as time2000 from './time2000.js';
+export * as writeImage from './writeImage.js';
 
 // export {default as DataSegment} from './DataSegment.js';
 // export {default as GetArchiveDays} from './GetArchiveDays.js';
