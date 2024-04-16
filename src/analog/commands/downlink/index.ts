@@ -26,6 +26,5 @@ export * as setParameter from './setParameter.js';
 export * as setTime2000 from './setTime2000.js';
 export * as softRestart from './softRestart.js';
 export * as writeImage from './writeImage.js';
+export * as verifyImage from './verifyImage.js';
 export * as updateRun from './updateRun.js';
-
-// export {default as VerifyImage} from './VerifyImage.js';

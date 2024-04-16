@@ -75,6 +75,7 @@ toBytesMap[commands.softRestart.id] = commands.softRestart.toBytes;
 toBytesMap[commands.status.id] = commands.status.toBytes;
 toBytesMap[commands.time2000.id] = commands.time2000.toBytes;
 toBytesMap[commands.updateRun.id] = commands.updateRun.toBytes;
+toBytesMap[commands.verifyImage.id] = commands.verifyImage.toBytes;
 toBytesMap[commands.writeImage.id] = commands.writeImage.toBytes;
 
 // because of webpack/rollup processing!
@@ -108,6 +109,7 @@ fromBytesMap[commands.softRestart.id] = commands.softRestart.fromBytes;
 fromBytesMap[commands.status.id] = commands.status.fromBytes;
 fromBytesMap[commands.time2000.id] = commands.time2000.fromBytes;
 fromBytesMap[commands.updateRun.id] = commands.updateRun.fromBytes;
+fromBytesMap[commands.verifyImage.id] = commands.verifyImage.fromBytes;
 fromBytesMap[commands.writeImage.id] = commands.writeImage.fromBytes;
 
 nameMap[commands.correctTime2000.id] = commands.correctTime2000.name;
@@ -140,4 +142,5 @@ nameMap[commands.softRestart.id] = commands.softRestart.name;
 nameMap[commands.status.id] = commands.status.name;
 nameMap[commands.time2000.id] = commands.time2000.name;
 nameMap[commands.updateRun.id] = commands.updateRun.name;
+nameMap[commands.verifyImage.id] = commands.verifyImage.name;
 nameMap[commands.writeImage.id] = commands.writeImage.name;
