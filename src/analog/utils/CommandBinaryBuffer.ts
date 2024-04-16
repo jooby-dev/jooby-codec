@@ -5,7 +5,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import {TBytes, TUint8} from '../../types.js';
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import {getDateFromTime2000, getTime2000FromDate, TTime2000} from './time.js';
@@ -661,7 +660,6 @@ const DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT = 600;
 /** 'reserved' bytes which not used */
 const DATA_SENDING_INTERVAL_RESERVED_BYTES = 3;
 const PARAMETER_RX2_FREQUENCY_COEFFICIENT = 100;
-const INT24_BYTE_SIZE = 3;
 const SERIAL_NUMBER_SIZE = 6;
 const MAGNETIC_INFLUENCE_BIT_INDEX = 8;
 const LEGACY_HOUR_COUNTER_SIZE = 2 + 4;

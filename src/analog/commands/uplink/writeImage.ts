@@ -35,7 +35,7 @@ export const id: types.TCommandId = 0x2a1f;
 export const name: types.TCommandName = 'writeImage';
 export const headerSize = 3;
 
-const COMMAND_SIZE = 5;
+const COMMAND_BODY_SIZE = 5;
 
 export const examples: command.TCommandExamples = {
     'write image': {
@@ -74,7 +74,7 @@ export const fromBytes = ( data: types.TBytes ): IWriteImageParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IWriteImageParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_SIZE);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
     buffer.setUint32(parameters.offset, false);
     buffer.setUint8(parameters.status);
