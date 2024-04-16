@@ -28,5 +28,4 @@ export * as softRestart from './softRestart.js';
 export * as writeImage from './writeImage.js';
 export * as updateRun from './updateRun.js';
 
-// export {default as DataSegment} from './DataSegment.js';
 // export {default as VerifyImage} from './VerifyImage.js';

@@ -1,6 +1,5 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import getBytesFromHex from '../../../utils/getBytesFromHex.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IDataSegment} from '../../utils/CommandBinaryBuffer.js';
 
 
@@ -20,7 +19,7 @@ export const examples: command.TCommandExamples = {
             segmentIndex: 3,
             segmentsNumber: 5,
             isLast: false,
-            data: getBytesFromHex('00 01 02 03 04')
+            data: [0x00, 0x01, 0x02, 0x03, 0x04]
         },
         bytes: [
             0x1e, 0x07,
