@@ -1,5 +1,6 @@
 /**
- * Command to verify the update image on the device. This command is part of update procedure.
+ * Command to verify the update image on the device.
+ * This command is part of update procedure.
  *
  * @packageDocumentation
  *
@@ -25,8 +26,12 @@ import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IVerifyImageParameters {
-    status: number
+interface IVerifyImageResponseParameters {
+    /**
+     * `1` - the image is correct <br>
+     * `0` - the image is incorrect
+     */
+    status: types.TUint8
 }
 
 
@@ -55,7 +60,7 @@ export const examples: command.TCommandExamples = {
  *
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IVerifyImageParameters => {
+export const fromBytes = ( data: types.TBytes ): IVerifyImageResponseParameters => {
     if ( data.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -72,7 +77,7 @@ export const fromBytes = ( data: types.TBytes ): IVerifyImageParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IVerifyImageParameters ): types.TBytes => {
+export const toBytes = ( parameters: IVerifyImageResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
     buffer.setUint8(parameters.status);

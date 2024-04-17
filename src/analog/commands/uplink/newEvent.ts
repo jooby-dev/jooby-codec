@@ -78,7 +78,7 @@ type TEventData =
  */
 interface INewEventParameters {
     id: number;
-    sequenceNumber: number;
+    sequenceNumber: types.TUint8;
     data: TEventData;
 }
 

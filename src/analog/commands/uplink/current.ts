@@ -1,5 +1,5 @@
 /**
- * Information about current value.
+ * Information about the current pulse counter readings from the sensor.
  *
  * @packageDocumentation
  *

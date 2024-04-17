@@ -33,7 +33,10 @@ import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {IChannelValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
-export interface ICurrentMcParameters {
+export interface ICurrentMcResponseParameters {
+    /**
+     * Max channels: `32`.
+     */
     channelList: Array<IChannelValue>;
 }
 
@@ -101,12 +104,12 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): ICurrentMcParameters => {
+export const fromBytes = ( data: types.TBytes ): ICurrentMcResponseParameters => {
     if ( data.length > COMMAND_BODY_MAX_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
 
-    const parameters: ICurrentMcParameters = {channelList: []};
+    const parameters: ICurrentMcResponseParameters = {channelList: []};
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const channelList = buffer.getChannels();
 
@@ -125,7 +128,7 @@ export const fromBytes = ( data: types.TBytes ): ICurrentMcParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: ICurrentMcParameters ): types.TBytes => {
+export const toBytes = ( parameters: ICurrentMcResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
     const {channelList} = parameters;
 

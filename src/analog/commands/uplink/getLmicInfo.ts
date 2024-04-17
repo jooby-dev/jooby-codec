@@ -1,5 +1,5 @@
 /**
- * Information about LMIC from device.
+ * Information about LMiC (IBM LoRaWAN in C) information from device.
  *
  * @packageDocumentation
  *
@@ -36,16 +36,21 @@ import * as command from '../../utils/command.js';
 interface ILmicCapabilities extends bitSet.TBooleanObject {
     /** @see https://lora-alliance.org/resource_hub/lorawan-remote-multicast-setup-specification-v1-0-0/ */
     isMulticastSupported: boolean,
+
+    /** @see https://lora-alliance.org/resource_hub/lorawan-fragmented-data-block-transport-specification-v1-0-0/ */
     isFragmentedDataSupported: boolean;
 }
 
 interface IGetLmicInfoResponseParameters {
-
     /**
      * LoRaWAN Fragmented Data Block Transport
      * @see https://lora-alliance.org/resource_hub/lorawan-fragmented-data-block-transport-specification-v1-0-0/
      */
     capabilities: ILmicCapabilities;
+
+    /**
+     * LMiC version.
+     */
     version: types.TUint8;
 }
 

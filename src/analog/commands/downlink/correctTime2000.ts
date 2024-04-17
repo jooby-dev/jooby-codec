@@ -1,7 +1,8 @@
 /**
  * Time correction command.
  *
- * It is used when the time difference is up to 127 seconds. A device may apply it with a delay.
+ * It is used when the time difference is up to 127 seconds.
+ * A device may apply it with a delay.
  *
  * @packageDocumentation
  *
@@ -34,13 +35,12 @@ import * as command from '../../utils/command.js';
  * // 120 seconds to the past
  * {sequenceNumber: 45, seconds: -120}
  */
-interface ICorrectTime2000Parameters extends command.ICommandParameters {
+interface ICorrectTime2000Parameters {
     /** unique time manipulation operation number */
     sequenceNumber: types.TUint8,
 
     /**
-     * seconds
-     * range: [-127..+127]
+     * accepted range: [-127..+127]
      */
     seconds: types.TInt8
 }

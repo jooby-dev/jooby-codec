@@ -1,5 +1,5 @@
 /**
- * Command for requesting archive hours data from MC.
+ * Command to request hour pulse counter's values from device archive.
  *
  * @packageDocumentation
  *
@@ -27,9 +27,17 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 
 
 interface IGetArchiveHoursMcParameters {
-    hours: number;
+    /**
+     * Number of hours.
+     */
+    hours: types.TUint8;
+
+    /**
+     * Start date for requested day pulse counter's values.
+     */
     startTime2000: TTime2000;
-    channelList: Array<number>;
+
+    channelList: Array<types.TInt32>;
 }
 
 

@@ -1,5 +1,5 @@
 /**
- * Command for receiving archive hours data from MC.
+ * Command to receive hour pulse counter's values from device archive.
  *
  * @packageDocumentation
  *
@@ -32,19 +32,21 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelHours} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IChannelHours {
-    index: number;
-    value: number;
-    diff: Array<number>;
-}
-
-interface IGetArchiveHoursMcParameters {
+interface IGetArchiveHoursMcResponseParameters {
     channelList: Array<IChannelHours>;
+
+    /**
+     * Start date for requested data.
+     */
     startTime2000: TTime2000;
-    hours: number;
+
+    /**
+     * Number of hours.
+     */
+    hours: types.TUint8;
 }
 
 
@@ -99,7 +101,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcResponseParameters => {
     if ( data.length > COMMAND_BODY_MAX_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -115,7 +117,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcParameters =>
  * @param parameters - command payload
  * @returns encoded bytes
  */
-export const toBytes = ( parameters: IGetArchiveHoursMcParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetArchiveHoursMcResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
     const {hours, startTime2000, channelList} = parameters;
 

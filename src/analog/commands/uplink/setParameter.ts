@@ -1,5 +1,5 @@
 /**
- * Command for reporting new events.
+ * Device parameters setup command.
  *
  * @packageDocumentation
  *
@@ -28,10 +28,19 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as deviceParameters from '../../constants/deviceParameters.js';
+
 
 interface ISetParameterResponseParameters {
-    id: number;
-    status: number;
+    /** One of the {@link deviceParameters | parameter types}. */
+    id: types.TUint8;
+
+    /**
+     * `1` - parameter setup was successful <br>
+     * `0` - parameter setting failed, parameter was not changed
+     */
+    status: types.TUint8;
 }
 
 

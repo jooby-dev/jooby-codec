@@ -41,8 +41,8 @@ import * as command from '../../utils/command.js';
 interface IStatusBase {}
 
 interface IProduct {
-    version: number;
-    type: number;
+    version: types.TUint8;
+    type: types.TUint8;
 }
 
 interface IGasStatus extends IStatusBase {
@@ -54,26 +54,30 @@ interface IGasStatus extends IStatusBase {
 }
 
 interface IMtxStatus extends IStatusBase {
-    time2000: number;
-    resetReason: number;
-    rssiLastDownlinkFrame: number;
-    snrLastDownlinkFrame: number;
-    downlinkRequestsNumber: number;
-    downlinkFragmentsNumber: number;
-    uplinkResponsesNumber: number;
-    uplinkFragmentsNumber: number;
-    signalMarginToGateway: number;
-    signalMarginFromGateway: number;
-    detectedGatewaysNumber: number;
-    gatewayDownlinkErrorRate: number;
-    lastEventSequenceNumber: number;
+    time2000: types.TUint32;
+    resetReason: types.TUint8;
+    rssiLastDownlinkFrame: types.TUint8;
+    snrLastDownlinkFrame: types.TUint8;
+    downlinkRequestsNumber: types.TUint8;
+    downlinkFragmentsNumber: types.TUint8;
+    uplinkResponsesNumber: types.TUint8;
+    uplinkFragmentsNumber: types.TUint8;
+    signalMarginToGateway: types.TUint8;
+    signalMarginFromGateway: types.TUint8;
+    detectedGatewaysNumber: types.TUint8;
+    gatewayDownlinkErrorRate: types.TUint8;
+    lastEventSequenceNumber: types.TUint8;
 }
 
 /**
  * Status command parameters
  */
 interface IStatusParameters {
+    /**
+     * Software type at the moment is always `2`.
+     */
     software: IProduct;
+
     hardware: IProduct;
     data: IStatusBase;
 }

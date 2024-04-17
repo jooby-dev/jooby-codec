@@ -1,5 +1,8 @@
 /**
- * Time set command response.
+ * Time correction command.
+ *
+ * It is used when the time difference is more than `127` seconds.
+ * A device should apply it immediately.
  *
  * @packageDocumentation
  *
@@ -33,6 +36,10 @@ import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
  * {status: 1}
  */
 interface ISetTime2000ResponseParameters {
+    /**
+     * `1` - the time setting was successful<br>
+     * `0` - time setting failed (the `sequence number` parameter was not changed)
+     */
     status: types.TUint8;
 }
 

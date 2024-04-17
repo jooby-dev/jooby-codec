@@ -26,9 +26,21 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannel} from '../../utils/C
 
 
 interface IGetExAbsArchiveDaysMcParameters {
-    days: number;
+    /**
+     * The number of days to get data from archive.
+     */
+    days: types.TUint8;
+
+    /**
+     * Start date for requested day pulse counter's values.
+     */
     startTime2000: TTime2000;
-    channelList: Array<number>;
+
+    /**
+     * List of channel numbers to retrieve.
+     * Max channels: `32`.
+     */
+    channelList: Array<types.TUint8>;
 }
 
 

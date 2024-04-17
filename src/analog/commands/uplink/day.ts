@@ -37,10 +37,18 @@ import {TTime2000, getDateFromTime2000, getTime2000FromDate} from '../../utils/t
 /**
  * Day command parameters.
  */
-interface IDayParameters {
+interface IDayResponseParameters {
+    /**
+     * Start date for requested data.
+     */
     startTime2000: TTime2000,
+
+    /**
+     * The magnetic influence flag indicates that there was a magnet intervention.
+     */
     isMagneticInfluence: boolean,
-    value: number
+
+    value: types.TUint24
 }
 
 
@@ -74,7 +82,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IDayParameters => {
+export const fromBytes = ( data: types.TBytes ): IDayResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const date = buffer.getDate();
     const byte = buffer.getUint8();
@@ -94,7 +102,7 @@ export const fromBytes = ( data: types.TBytes ): IDayParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IDayParameters ): types.TBytes => {
+export const toBytes = ( parameters: IDayResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
     const {value, isMagneticInfluence, startTime2000} = parameters;
     const date = getDateFromTime2000(startTime2000);

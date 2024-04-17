@@ -1,5 +1,8 @@
 /**
- * Command used to set time on device.
+ * Time correction command.
+ *
+ * It is used when the time difference is more than `127` seconds.
+ * A device should apply it immediately.
  *
  * @example
  * ```js
@@ -26,6 +29,7 @@ import * as command from '../../utils/command.js';
 interface ISetTime2000Parameters {
     /** unique time manipulation operation number */
     sequenceNumber: types.TUint8;
+
     /** seconds */
     seconds: types.TInt32;
 }
