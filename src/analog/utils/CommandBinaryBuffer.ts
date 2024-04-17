@@ -4,7 +4,7 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import {TBytes, TUint8} from '../../types.js';
+import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import {getDateFromTime2000, getTime2000FromDate, TTime2000} from './time.js';
@@ -40,7 +40,7 @@ export interface IChannel {
 
 export interface IChannelValue extends IChannel {
     /** pulse counter or absolute value of device channel */
-    value: number
+    value: types.TInt32
 }
 
 export interface IChannelHours extends IChannelValue {
@@ -48,9 +48,23 @@ export interface IChannelHours extends IChannelValue {
     diff: Array<number>
 }
 
+/**
+ * It's `1`-byte value of the pulse coefficient for a metering device, which determines the correspondence of consumed resources to 1 pulse.
+ *
+ * | Pulse coefficient | dm<sup>3</sup> | m<sup>3</sup> |
+ * | ----------------- | -------------- | ------------- |
+ * | `0х80`            | `1`            | `0.001`       |
+ * | `0х81`            | `5`            | `0.005`       |
+ * | `0х82`            | `10`           | `0.01`        |
+ * | `0х83`            | `100`          | `0.1`         |
+ * | `0х84`            | `1000`         | `1`           |
+ * | `0х85`            | `10000`        | `10`          |
+ * | `0х86`            | `100000`       | `100`         |
+ */
+export type TPulseCoefficient = types.BrandType<number, 'uint8'>;
+
 export interface IChannelHourAbsoluteValue extends IChannelHours {
-    /** channel pulse coefficient */
-    pulseCoefficient: number
+    pulseCoefficient: TPulseCoefficient
 }
 
 export interface IChannelDays extends IChannel {
@@ -59,7 +73,7 @@ export interface IChannelDays extends IChannel {
 
 export interface IChannelAbsoluteValue extends IChannelValue {
     /** channel pulse coefficient */
-    pulseCoefficient: number
+    pulseCoefficient: TPulseCoefficient
 }
 
 export interface IChannelArchiveDaysAbsolute extends IChannel {
@@ -67,7 +81,7 @@ export interface IChannelArchiveDaysAbsolute extends IChannel {
     dayList: Array<number>,
 
     /** Channel pulse coefficient */
-    pulseCoefficient: number
+    pulseCoefficient: TPulseCoefficient
 }
 
 
@@ -167,7 +181,10 @@ interface IParameterReportingDataInterval {
  * deviceParameters.DAY_CHECKOUT_HOUR = `4`.
  */
 interface IParameterDayCheckoutHour {
-    value: number
+    /**
+     * The value from `0` to `23`. The default calculation hour is `0`.
+     */
+    value: types.TUint8
 }
 
 /**
@@ -181,7 +198,7 @@ interface IParameterReportingDataType {
      * `2` - current
      * `3` - hour + day
      */
-    type: number
+    type: types.TUint8
 }
 
 /**
@@ -194,7 +211,7 @@ interface IParameterDeliveryTypeOfPriorityData {
      * `0` - delivery with confirmation
      * `1` - delivery without confirmation
      */
-    value: number
+    value: types.TUint8
 }
 
 /**
@@ -208,7 +225,7 @@ interface IParameterActivationMethod {
      *
      * @see https://www.thethingsindustries.com/docs/devices/abp-vs-otaa/
      */
-    type: number
+    type: types.TUint8
 }
 
 /**
@@ -219,7 +236,7 @@ interface IParameterChannelsConfig {
     /**
      * value from 0 to 18, [values description](https://github.com/jooby-dev/jooby-docs/blob/main/docs/parameter-types.md#channels-config)
      */
-    value: number
+    value: types.TUint8
 }
 
 /**
@@ -236,7 +253,7 @@ interface IParameterRx2Config {
      *
      * @see https://www.thethingsnetwork.org/docs/lorawan/spreading-factors/
      */
-    spreadFactor: number
+    spreadFactor: types.TUint8
 
     /**
      * RX2 data rate frequency.
@@ -244,7 +261,7 @@ interface IParameterRx2Config {
      * This value configures the frequency to use in RX2.
      * Changing the desired value makes the Network Server transmit the RXParamSetupReq MAC command.
      */
-    frequency: number
+    frequency: types.TUint24
 }
 
 /**
@@ -253,11 +270,11 @@ interface IParameterRx2Config {
  */
 interface IParameterBatteryDepassivationInfo {
     /** battery load time in milliseconds */
-    loadTime: number,
+    loadTime: types.TUint16,
     /** battery internal resistance, in mΩ */
-    internalResistance: number,
+    internalResistance: types.TUint16,
     /** battery low voltage, in mV  */
-    lowVoltage: number
+    lowVoltage: types.TUint16
 }
 
 /**
@@ -265,7 +282,7 @@ interface IParameterBatteryDepassivationInfo {
  * deviceParameters.BATTERY_MINIMAL_LOAD_TIME = `11`.
  */
 interface IParameterBatteryMinimalLoadTime {
-    value: number
+    value: types.TUint32
 }
 
 /**
@@ -273,12 +290,13 @@ interface IParameterBatteryMinimalLoadTime {
  * deviceParameters.ABSOLUTE_DATA = `23`.
  */
 interface IParameterAbsoluteData {
-    /** 4 byte int BE */
-    value: number,
+    /** BE */
+    value: types.TUint32,
 
-    /** 4 byte int BE */
-    meterValue: number,
-    pulseCoefficient: number
+    /** BE */
+    meterValue: types.TUint32,
+
+    pulseCoefficient: TPulseCoefficient
 }
 
 /**
@@ -290,7 +308,7 @@ interface IParameterAbsoluteDataEnable {
      * `1` - absolute data enabled
      * `0` - absolute data disabled, device send pulse counter
      */
-    state: number
+    state: types.TUint8
 }
 
 /**
@@ -309,9 +327,9 @@ interface IParameterSerialNumber {
  * deviceParameters.GEOLOCATION = `26`
  */
 interface IParameterGeolocation {
-    latitude: number,
-    longitude: number,
-    altitude: number
+    latitude: types.TFloat32,
+    longitude: types.TFloat32,
+    altitude: types.TInt16
 }
 
 /**
@@ -320,12 +338,17 @@ interface IParameterGeolocation {
  */
 interface IParameterExtraFrameInterval {
     /**
-     * If value is `0` EXTRA FRAME disabled.
+     * The parameter is `2` bytes long and measured in seconds.
+     * Its value must not be less than `90` seconds.
+     * If the parameter is set to `0`, it means that the issuance of `ExtraFrames` will be prohibited.
+     * GazMoldova modules provide for issuing `ExtraFrame` `UPLINK` frames in case of loss of communication with `NS`.
+     * This will happen after transmitting `16` standard `UPLINK` frames without receiving a confirmation from `NS`.
+     * In `OTAA` connection mode, after more than `5` unsuccessful attempts to connect via `JOINREQ`, the `ExtraFrame` `UPLINK` frame transmission mode will be initiated.
      *
      * minimal: `90`
      * maximum: `65535`, i.e. two byte unsigned int
      */
-    value: number
+    value: types.TUint16
 }
 
 /**
@@ -334,7 +357,7 @@ interface IParameterExtraFrameInterval {
  */
 interface IParameterAbsoluteDataMC extends IParameterAbsoluteData {
     /** set data for specific channel */
-    channel: number
+    channel: types.TUint8
 }
 
 /**
@@ -343,7 +366,7 @@ interface IParameterAbsoluteDataMC extends IParameterAbsoluteData {
  */
 interface IParameterAbsoluteDataEnableMC extends IParameterAbsoluteDataEnable {
     /** channel that accept status changing */
-    channel: number
+    channel: types.TUint8
 }
 
 /**
@@ -351,12 +374,25 @@ interface IParameterAbsoluteDataEnableMC extends IParameterAbsoluteDataEnable {
  * deviceParameters.PULSE_CHANNELS_SCAN_CONFIG = `31`
  */
 interface IParameterPulseChannelsScanConfig {
-    /** channels to set configuration */
-    channelList: Array<number>,
-    /** channel pull up time in microseconds */
-    pullUpTime: number,
-    /** channel scan time in microseconds */
-    scanTime: number
+    /**
+     * List of channel numbers to configure.
+     * Max channels: `32`.
+     */
+    channelList: Array<types.TUint8>;
+
+    /**
+     * Channel pull up time in microseconds.
+     * <br>
+     * Minimal value - `17` `μs`, maximum - `255` `μs`, `18` `μs` by default.
+     */
+    pullUpTime: types.TUint8,
+
+    /**
+     * Channel scan time in microseconds `μs`.
+     * <br>
+     * Minimal value - `15` `μs`, maximum - `255` `μs`, `50` `μs` by default.
+     */
+    scanTime: types.TUint8
 }
 
 /**
@@ -375,8 +411,18 @@ interface IParameterPulseChannelsSetConfig {
  * deviceParameters.BATTERY_DEPASSIVATION_CONFIG = `33`
  */
 interface IParameterBatteryDepassivationConfig {
-    resistanceStartThreshold: number,
-    resistanceStopThreshold: number
+    /**
+     * Represents the value of the internal resistance of the battery (in `mΩ`) upon exceeding which the depassivation process will be initiated.
+     * For WLE modules, this value is set by default to `35000` `mΩ`, and for modules using the `SX1276` transceiver, this value is set to `16000` `mΩ`.
+     */
+    resistanceStartThreshold: types.TUint16,
+
+    /**
+     * Represents the value of the internal resistance of the battery (in `mΩ`).
+     * If the internal resistance of the battery falls below this threshold, the depassivation process will stop.
+     * For WLE modules, this value is set by default to `25000` `mΩ`, and for modules using the `SX1276` transceiver, this value is set to `10350` `mΩ`.
+     */
+    resistanceStopThreshold: types.TUint16
 }
 
 /**
@@ -451,7 +497,7 @@ interface IParameterNbiotSslConfig {
 interface IParameterNbiotSslWrite {
     size: number,
     position: number,
-    chunk: TBytes
+    chunk: types.TBytes
 }
 
 /**
@@ -530,23 +576,35 @@ interface IRequestEventIdParameter {
 
 
 export interface IParameter {
-    id: number,
+    id: types.TUint8,
+
     data: TParameterData
 }
 
 export interface IRequestParameter {
-    id: number,
+    /** One of the {@link deviceParameters | parameter types}. */
+    id: types.TUint8,
+
     data: TRequestParameterData | null
 }
 
 export interface IResponseParameter {
-    id: number,
+    /** One of the {@link deviceParameters | parameter types}. */
+    id: types.TUint8,
+
     data: TResponseParameterData | null
 }
 
 export interface ILegacyCounter {
+    /**
+     * The magnetic influence flag indicates that there was a magnet intervention.
+     */
     isMagneticInfluence: boolean,
-    value: number
+
+    /**
+     * It's a pulse counter value packed in `3` bytes.
+     */
+    value: types.TUint24
 }
 
 export interface ILegacyHourCounterWithDiff {
@@ -565,9 +623,18 @@ export interface IDataSegment {
 
 export interface IChannelValuesWithHourDiffExtended {
     channelList: Array<IChannelHours>,
+
+    /**
+     * Start date for requested day pulse counter's values.
+     */
     startTime2000: TTime2000
-    hour: TUint8,
-    hours: TUint8
+
+    hour: types.TUint8,
+
+    /**
+     * The number of hours to retrieve.
+     */
+    hours: types.TUint8
 }
 
 
@@ -1349,11 +1416,11 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getBatteryVoltage (): IBatteryVoltage,
     setBatteryVoltage ( batteryVoltage: IBatteryVoltage ),
 
-    getLegacyCounterValue (): number,
-    setLegacyCounterValue ( value: number ),
+    getLegacyCounterValue (): types.TUint24,
+    setLegacyCounterValue ( value: types.TUint24 ),
 
     getLegacyCounter (): ILegacyCounter,
-    setLegacyCounter ( counter: ILegacyCounter, byte?: TUint8 ),
+    setLegacyCounter ( counter: ILegacyCounter, byte?: types.TUint8 ),
 
     getChannels (): Array<number>,
     setChannels ( channelList: Array<IChannel> );
@@ -1361,14 +1428,14 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getChannelsValuesWithHourDiff (): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>},
     setChannelsValuesWithHourDiff ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours> ),
 
-    getHours ( byte?: TUint8 ): {hour: number, hours: number},
+    getHours ( byte?: types.TUint8 ): {hour: number, hours: number},
     setHours ( hour: number, hours: number ),
 
     getDate (): Date,
     setDate ( dateOrTime: Date | TTime2000 ),
 
-    getPulseCoefficient (): number,
-    setPulseCoefficient ( value: number ),
+    getPulseCoefficient (): TPulseCoefficient,
+    setPulseCoefficient ( value: TPulseCoefficient ),
 
     getChannelsWithAbsoluteValues (): Array<IChannelAbsoluteValue>,
     setChannelsWithAbsoluteValues ( channelList: Array<IChannelAbsoluteValue> ),
@@ -1401,7 +1468,7 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setDataSegment ( parameters: IDataSegment )
 }
 
-function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: TBytes | number, isLittleEndian = true ) {
+function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = true ) {
     BinaryBuffer.call(this, dataOrLength, isLittleEndian);
 }
 
@@ -1541,11 +1608,11 @@ CommandBinaryBuffer.prototype.setBatteryVoltage = function ( batteryVoltage: IBa
     [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
 };
 
-CommandBinaryBuffer.prototype.getLegacyCounterValue = function (): number {
+CommandBinaryBuffer.prototype.getLegacyCounterValue = function (): types.TUint24 {
     return this.getUint24(false);
 };
 
-CommandBinaryBuffer.prototype.setLegacyCounterValue = function ( value: number ) {
+CommandBinaryBuffer.prototype.setLegacyCounterValue = function ( value: types.TUint24 ) {
     this.setUint24(value, false);
 };
 
@@ -1771,7 +1838,7 @@ CommandBinaryBuffer.prototype.setDate = function ( dateOrTime: Date | TTime2000 
 };
 
 
-CommandBinaryBuffer.prototype.getPulseCoefficient = function (): number {
+CommandBinaryBuffer.prototype.getPulseCoefficient = function (): TPulseCoefficient {
     const pulseCoefficient = this.getUint8();
 
     if ( isMSBSet(pulseCoefficient) ) {
@@ -1788,7 +1855,7 @@ CommandBinaryBuffer.prototype.getPulseCoefficient = function (): number {
 };
 
 
-CommandBinaryBuffer.prototype.setPulseCoefficient = function ( value: number ) {
+CommandBinaryBuffer.prototype.setPulseCoefficient = function ( value: TPulseCoefficient ) {
     if ( value in pulseCoefficientToByteMap ) {
         const byte = pulseCoefficientToByteMap[value];
 

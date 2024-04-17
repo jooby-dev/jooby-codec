@@ -1,6 +1,6 @@
 /**
  * The command for requesting the archive of daily data from the pulse counter sensor.
- * If there is no data available in the archive, 0xffffffff will be returned.
+ * If there is no data available in the archive, `0xffffffff` will be returned.
  * Due to the limited length of transmitted data from the sensor, not all requested data will be transferred.
  *
  * @packageDocumentation
@@ -28,8 +28,12 @@ import {TTime2000, getDateFromTime2000, getTime2000FromDate} from '../../utils/t
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 interface IGetArchiveDaysParameters {
-    /** the number of days to retrieve */
-    days: number,
+    /** the number of days to retrieve from archive */
+    days: types.TUint8,
+
+    /**
+     * Start date for requested day pulse counter's values.
+     */
     startTime2000: TTime2000
 }
 

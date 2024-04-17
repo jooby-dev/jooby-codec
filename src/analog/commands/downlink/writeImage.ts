@@ -1,5 +1,6 @@
 /**
- * Command to write the block of the new image to the device. This command is part of update procedure.
+ * Command to write the block of the new image to the device.
+ * This command is part of update procedure.
  *
  * @packageDocumentation
  *
@@ -28,7 +29,16 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 
 
 export interface IWriteImageParameters {
+    /**
+     * The offset at which to write the image content to the device's flash memory.
+     */
     offset: types.TUint32,
+
+    /**
+     * The image content size should be a multiple of `8`.
+     * <br>
+     * In case there is less data it should be padded with zeros.
+     */
     data: types.TBytes
 }
 
@@ -37,7 +47,7 @@ export const id: types.TCommandId = 0x2a1f;
 export const name: types.TCommandName = 'writeImage';
 export const headerSize = 3;
 
-const COMMAND_MIN_SIZE: number = 4;
+const COMMAND_BODY_MIN_SIZE: number = 4;
 
 export const examples: command.TCommandExamples = {
     'write image': {
@@ -63,14 +73,14 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( data: types.TBytes ): IWriteImageParameters => {
-    if ( data.length < COMMAND_MIN_SIZE ) {
+    if ( data.length < COMMAND_BODY_MIN_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const offset = buffer.getUint32(false);
 
-    return {offset, data: data.slice(COMMAND_MIN_SIZE)};
+    return {offset, data: data.slice(COMMAND_BODY_MIN_SIZE)};
 };
 
 
@@ -81,7 +91,7 @@ export const fromBytes = ( data: types.TBytes ): IWriteImageParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IWriteImageParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_MIN_SIZE);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MIN_SIZE);
 
     buffer.setUint32(parameters.offset, false);
     buffer.setBytes(parameters.data);

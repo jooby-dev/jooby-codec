@@ -35,10 +35,18 @@ import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelHours} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IGetArchiveHoursMcParameters {
+interface IGetArchiveHoursMcResponseParameters {
     channelList: Array<IChannelHours>;
+
+    /**
+     * Start date for requested day pulse counter's values.
+     */
     startTime2000: TTime2000;
-    hours: number;
+
+    /**
+     * It`s full value of pulse counter with diff for each previous hours (8 hours if reporting data interval is set to 4 hours).
+     */
+    hours: types.TUint8;
 }
 
 
@@ -94,7 +102,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
 
     return buffer.getChannelsValuesWithHourDiff();
@@ -107,7 +115,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcParameters =>
  * @param parameters - command payload
  * @returns encoded bytes
  */
-export const toBytes = ( parameters: IGetArchiveHoursMcParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetArchiveHoursMcResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
 
     buffer.setChannelsValuesWithHourDiff(parameters.hours, parameters.startTime2000, parameters.channelList);

@@ -1,7 +1,4 @@
 import {TBytes} from '../../types.js';
-// import {IHexFormatOptions} from '../config.js';
-// import getBytesFromHex from '../utils/getBytesFromHex.js';
-// import getHexFromBytes from '../utils/getHexFromBytes.js';
 
 
 const shortCommandMask = 0xe0;
@@ -50,8 +47,6 @@ export const fromBytes = ( data: TBytes ) => {
     };
 };
 
-//export const fromHex = ( data: string ) => fromBytes(getBytesFromHex(data));
-
 export const toBytes = ( commandId: number, commandSize: number ): TBytes => {
     if ( (commandId & extraCommandMask) === 0 ) {
         if ( commandSize > extraCommandMask ) {
@@ -74,7 +69,3 @@ export const toBytes = ( commandId: number, commandSize: number ): TBytes => {
         commandSize
     ];
 };
-
-// export const toHex = ( commandId: number, commandSize: number, options: IHexFormatOptions = {} ): string => (
-//     getHexFromBytes(toBytes(commandId, commandSize), options)
-// );

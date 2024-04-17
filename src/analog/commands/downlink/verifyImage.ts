@@ -1,5 +1,6 @@
 /**
- * Command to verify the update image on the device. This command is part of update procedure.
+ * Command to verify the update image on the device.
+ * This command is part of update procedure.
  *
  * @packageDocumentation
  *
@@ -46,7 +47,7 @@ export const examples: command.TCommandExamples = {
  *
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): command.ICommandParameters => {
+export const fromBytes = ( data: types.TBytes ): command.IEmptyCommandParameters => {
     if ( data.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }

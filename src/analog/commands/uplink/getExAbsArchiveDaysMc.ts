@@ -36,10 +36,20 @@ import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelArchiveDaysAbsolute} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IGetExAbsArchiveDaysMcParameters {
+interface IGetExAbsArchiveDaysMcResponseParameters {
     channelList: Array<IChannelArchiveDaysAbsolute>;
+
+    /**
+     * Start date for requested day pulse counter's values.
+     */
     startTime2000: TTime2000;
-    days: number;
+
+    /**
+     * The number of days from archive.
+     *
+     * It's pulse counter's values by days for each channel.
+     */
+    days: types.TUint8;
 }
 
 
@@ -81,7 +91,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveDaysMcParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveDaysMcResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const date = buffer.getDate();
     const channels = buffer.getChannels();
@@ -113,7 +123,7 @@ export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveDaysMcParameter
  * @param parameters - command payload
  * @returns encoded bytes
  */
-export const toBytes = ( parameters: IGetExAbsArchiveDaysMcParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetExAbsArchiveDaysMcResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
     const {channelList, startTime2000, days} = parameters;
 

@@ -1,6 +1,6 @@
 /**
  * The command for requesting the archive of daily data from the pulse counter sensor.
- * If there is no data available in the archive, 0xffffffff will be returned.
+ * If there is no data available in the archive, `0xffffffff` will be returned.
  * Due to the limited length of transmitted data from the sensor, not all requested data will be transferred.
  *
  * @packageDocumentation
@@ -34,8 +34,12 @@ import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, ILegacyCounter} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IGetArchiveDaysParameters {
+interface IGetArchiveDaysResponseParameters {
+    /**
+     * Start date for requested data.
+     */
     startTime2000: TTime2000,
+
     dayList: Array<ILegacyCounter>
 }
 
@@ -72,7 +76,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysParameters => {
+export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const date = buffer.getDate();
     const dayList = [];
@@ -91,7 +95,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysParameters => {
  * @param parameters - command payload
  * @returns encoded bytes
  */
-export const toBytes = ( parameters: IGetArchiveDaysParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetArchiveDaysResponseParameters ): types.TBytes => {
     const {startTime2000, dayList} = parameters;
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MIN_SIZE + (dayList.length * DAY_COUNTER_SIZE));
 

@@ -1,5 +1,6 @@
 /**
- * Command to write the block of the new image to the device. This command is part of update procedure.
+ * Command to write the block of the new image to the device.
+ * This command is part of update procedure.
  *
  * @packageDocumentation
  *
@@ -25,8 +26,16 @@ import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
-export interface IWriteImageParameters {
+export interface IWriteImageResponseParameters {
+    /**
+     * The offset at which to write the image content to the device's flash memory.
+     */
     offset: types.TUint32,
+
+    /**
+     * `1` - the writing was successful <br>
+     * `0` - the writing failed
+     */
     status: types.TUint8
 }
 
@@ -57,7 +66,7 @@ export const examples: command.TCommandExamples = {
  * @param data - command body bytes
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IWriteImageParameters => {
+export const fromBytes = ( data: types.TBytes ): IWriteImageResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
 
     return {
@@ -73,7 +82,7 @@ export const fromBytes = ( data: types.TBytes ): IWriteImageParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IWriteImageParameters ): types.TBytes => {
+export const toBytes = ( parameters: IWriteImageResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
     buffer.setUint32(parameters.offset, false);
@@ -89,4 +98,4 @@ export const toBytes = ( parameters: IWriteImageParameters ): types.TBytes => {
  * @param parameters - command payload
  * @returns JSON representation of command parameters
  */
-export const toJson = ( parameters: IWriteImageParameters ): string => JSON.stringify(parameters);
+export const toJson = ( parameters: IWriteImageResponseParameters ): string => JSON.stringify(parameters);

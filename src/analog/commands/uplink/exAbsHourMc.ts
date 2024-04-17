@@ -38,10 +38,18 @@ import {TTime2000, getTime2000FromDate, getDateFromTime2000} from '../../utils/t
 import CommandBinaryBuffer, {IChannelHourAbsoluteValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
-export interface IUplinkExAbsHourMcParameters {
+export interface IUplinkExAbsHourMcResponseParameters {
     channelList: Array<IChannelHourAbsoluteValue>;
+
+    /**
+     * Start date for requested data.
+     */
     startTime2000: TTime2000;
-    hours: number;
+
+    /**
+     * Number of hours.
+     */
+    hours: types.TUint8;
 }
 
 export const id: types.TCommandId = 0x0a1f;
@@ -83,7 +91,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IUplinkExAbsHourMcParameters => {
+export const fromBytes = ( data: types.TBytes ): IUplinkExAbsHourMcResponseParameters => {
     if ( data.length > COMMAND_BODY_MAX_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
@@ -105,7 +113,7 @@ export const fromBytes = ( data: types.TBytes ): IUplinkExAbsHourMcParameters =>
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IUplinkExAbsHourMcParameters ): types.TBytes => {
+export const toBytes = ( parameters: IUplinkExAbsHourMcResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
     const {startTime2000, hours, channelList} = parameters;
 

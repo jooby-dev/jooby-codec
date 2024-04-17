@@ -37,25 +37,48 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 /**
  * GetBatteryStatusResponse command parameters
  */
-export interface IGetBatteryStatusResponse {
+export interface IGetBatteryStatusResponseParameters {
     /**
-     * battery voltage value at low consumption, in mV
-     *
-     * `4095` - unknown value and becomes `undefined`
+     * Voltage under minimum load (sleep mode), value in `mV`.
+     * Typical value is about `3600` `mV`.
+     * If the voltage value is `4095` `mV`, then the value is unknown.
      */
-    voltageUnderLowLoad: number;
+    voltageUnderLowLoad: types.TUint16;
 
     /**
-     * battery voltage value at high consumption, in mV
-     *
-     * `4095` - unknown value and becomes `undefined`
+     * Voltage under load simulating transmission mode, value in `mV`.
+     * Typical value is about `3600` `mV`.
+     * If the voltage value is `4095` `mV`, then the value is unknown.
      */
-    voltageUnderHighLoad: number;
-    internalResistance: number;
-    temperature: number;
-    remainingCapacity: number;
+    voltageUnderHighLoad: types.TUint16;
+
+    /**
+     * Internal resistance of the battery in `mΩ`.
+     * If the value of the internal resistance is `65535` `mOhm`, then the resistance is unknown.
+     * Max value is about `60000` `mOhm`. Typical range is about `5000..28000` `mOhm`.
+     */
+    internalResistance: types.TUint16;
+
+    /**
+     * It's a signed number in degrees Celsius.
+     */
+    temperature: types.TUint8;
+
+    /**
+     * It's the remaining battery capacity, where `254` is `100%`.
+     * A value of `255` means that the remaining battery capacity is unknown.
+     */
+    remainingCapacity: types.TUint8;
+
+    /**
+     * Flag is set when consumption over the last 24 hours was higher than estimated.
+     */
     isLastDayOverconsumption: boolean;
-    averageDailyOverconsumptionCounter: number;
+
+    /**
+     * Counter for exceeding average daily consumption.
+     */
+    averageDailyOverconsumptionCounter: types.TUint16;
 }
 
 
@@ -93,7 +116,7 @@ export const examples: command.TCommandExamples = {
  * @param data - command body bytes
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetBatteryStatusResponse => {
+export const fromBytes = ( data: types.TBytes ): IGetBatteryStatusResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
 
     return {
@@ -114,7 +137,7 @@ export const fromBytes = ( data: types.TBytes ): IGetBatteryStatusResponse => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetBatteryStatusResponse ): types.TBytes => {
+export const toBytes = ( parameters: IGetBatteryStatusResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
     buffer.setUint16(parameters.voltageUnderLowLoad);

@@ -27,11 +27,22 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannel} from '../../utils/C
 
 interface IGetExAbsArchiveHoursMcExParameters {
     hour: types.TUint8,
-    /** the number of hours to retrieve */
+
+    /**
+     * The number of hours to retrieve.
+     */
     hours: types.TUint8,
+
+    /**
+     * Start date for requested day pulse counter's values.
+     */
     startTime2000: TTime2000,
-    /** array of channelList index numbers */
-    channelList: Array<number>
+
+    /**
+     * List of channel numbers to retrieve.
+     * Max channels: `32`.
+     */
+    channelList: Array<types.TUint8>;
 }
 
 

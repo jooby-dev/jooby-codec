@@ -1,5 +1,5 @@
 /**
- * Command to receive events from device archive.
+ * Command to request events from device archive.
  *
  * @packageDocumentation
  *
@@ -29,8 +29,15 @@ import {TTime2000} from '../../utils/time.js';
 /**
  * getArchiveEvents command parameters
  */
-interface IGetArchiveEventsParameters extends command.ICommandParameters {
+interface IGetArchiveEventsParameters {
+    /**
+     * Start date for requested archive events.
+     */
     startTime2000: TTime2000;
+
+    /**
+     * The number of events to get from archive.
+     */
     events: types.TUint8;
 }
 

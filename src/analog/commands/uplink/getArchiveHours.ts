@@ -1,7 +1,7 @@
 /**
  * Command to request/receive the archive data of hourly consumption.
  * In the data field of the command, it is necessary to set the start date and hour for reading the archive.
- * In case there is no data in the archive, a base value of 0xffffffff will be provided.
+ * In case there is no data in the archive, a base value of `0xffffffff` will be provided.
  * Since the length of the transmitted data from the sensor is limited, not all requested data will be transferred.
  *
  * @packageDocumentation

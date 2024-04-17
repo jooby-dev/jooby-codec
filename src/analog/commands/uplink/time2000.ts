@@ -2,7 +2,8 @@
  * Sensor current time.
  *
  * It's a mandatory confirmation to getTime2000 request.
- * It is sent immediately after device power on. After it a device sends it periodically (once per 24 hours).
+ * It is sent immediately after device power on.
+ * After it a device sends it periodically (once per 24 hours).
  *
  * @packageDocumentation
  *
@@ -35,7 +36,9 @@ import * as types from '../../../types.js';
  */
 interface ITime2000Parameters {
     /** unique time manipulation operation number */
-    sequenceNumber: number;
+    sequenceNumber: types.TUint8;
+
+    /** current device time */
     time2000: TTime2000;
 }
 

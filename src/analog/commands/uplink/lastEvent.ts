@@ -36,7 +36,7 @@ import * as hardwareTypes from '../../constants/hardwareTypes.js';
 
 
 interface ILastEventParameters {
-    sequenceNumber: number;
+    sequenceNumber: types.TUint8;
     status: TEventStatus;
 }
 

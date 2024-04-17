@@ -34,7 +34,7 @@ import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {IChannelAbsoluteValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IExAbsCurrentMcParameters {
+interface IExAbsCurrentMcResponseParameters {
     channelList: Array<IChannelAbsoluteValue>;
 }
 
@@ -71,7 +71,7 @@ export const examples: command.TCommandExamples = {
  * @param data - binary data containing command parameters
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IExAbsCurrentMcParameters => {
+export const fromBytes = ( data: types.TBytes ): IExAbsCurrentMcResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
 
     return {channelList: buffer.getChannelsWithAbsoluteValues()};
@@ -84,7 +84,7 @@ export const fromBytes = ( data: types.TBytes ): IExAbsCurrentMcParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IExAbsCurrentMcParameters ): types.TBytes => {
+export const toBytes = ( parameters: IExAbsCurrentMcResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
 
     buffer.setChannelsWithAbsoluteValues(parameters.channelList);

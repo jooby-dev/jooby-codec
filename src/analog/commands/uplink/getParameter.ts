@@ -1,6 +1,9 @@
 /**
  * The command to read the parameter set in the sensor.
  *
+ * In the body of the command, you must specify the type of the parameter.
+ * In response, the sensor will transmit the current value of the requested parameter.
+ *
  * @packageDocumentation
  *
  * @example

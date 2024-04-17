@@ -1,5 +1,7 @@
 /**
  * Device parameters. Used in SetParameter/GetParameter.
+ *
+ * https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/parameter-types.md
  */
 
 /** reporting data interval from device */

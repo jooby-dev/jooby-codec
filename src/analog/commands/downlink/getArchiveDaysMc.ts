@@ -1,5 +1,5 @@
 /**
- * Command for requesting archive days data from MC.
+ * Command to request day pulse counter's values from device archive.
  *
  * @packageDocumentation
  *
@@ -26,9 +26,19 @@ import {TTime2000, getDateFromTime2000, getTime2000FromDate} from '../../utils/t
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 interface IGetArchiveDaysMcParameters {
+    /**
+     * Start date for requested day pulse counter's values.
+     */
     startTime2000: TTime2000;
-    days: number;
-    channelList: Array<number>;
+
+    /** The number of days to get data from archive. */
+    days: types.TUint8;
+
+    /**
+     * List of channel numbers to retrieve.
+     * Max channels: `32`.
+     */
+    channelList: Array<types.TUint8>;
 }
 
 export const id: types.TCommandId = 0x1b;
