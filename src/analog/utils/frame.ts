@@ -14,14 +14,6 @@ interface IAnalogFrame {
 }
 
 
-// export const getCommands = ( {frame, message}: IAnalogFrame, isStrict: boolean = false ): Array<ICommand> => {
-//     if ( isStrict && !frame.isValid ) {
-//         return [];
-//     }
-
-//     return Message.getCommands(message, isStrict);
-// };
-
 export const toFrame = ( messageImplementation, commands: Array<TCommand> ): IAnalogFrame => {
     const message: IMessage = messageImplementation.toMessage(commands);
 
