@@ -618,7 +618,7 @@ export interface IDataSegment {
     segmentIndex: number,
     segmentsNumber: number,
     isLast: boolean,
-    data: Uint8Array
+    data: types.TBytes
 }
 
 export interface IChannelValuesWithHourDiffExtended {

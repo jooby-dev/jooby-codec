@@ -1,4 +1,6 @@
-export const updateX25 = ( startValue: number, data: Uint8Array ) => {
+import {TBytes} from '../types.js';
+
+export const updateX25 = ( startValue: number, data: TBytes ) => {
     let crc = 0xFFFF;
 
     for ( let index = 0; index < data.length; index++ ) {
@@ -27,7 +29,7 @@ export enum Crc16Type {
  *
  * @return CRC32
  */
-export default ( data: Uint8Array, crc16type: Crc16Type = Crc16Type.X25 ) => {
+export default ( data: TBytes, crc16type: Crc16Type = Crc16Type.X25 ) => {
     if ( crc16type === Crc16Type.X25 ) {
         const crc = updateX25(0xFFFF, data);
 

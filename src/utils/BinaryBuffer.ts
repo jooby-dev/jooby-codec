@@ -216,6 +216,7 @@ export interface IBinaryBuffer {
     bytesLeft: number,
     position: number,
 
+    toUint8Array (): types.TBytes,
     seek ( position: number ): void,
 
     setUint8 ( value: types.TUint8 ): void,
