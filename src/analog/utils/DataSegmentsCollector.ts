@@ -1,5 +1,5 @@
+import * as types from '../../types.js';
 import {IDataSegment} from './CommandBinaryBuffer.js';
-import mergeUint8Arrays from '../utils/mergeUint8Arrays.js';
 
 
 const isSegmentCorrect = ( segment: IDataSegment ) => {
@@ -12,52 +12,55 @@ const isSegmentCorrect = ( segment: IDataSegment ) => {
 
 
 class DataSegmentsCollector {
-    #segments: Array<IDataSegment> = [];
+    segments: Array<IDataSegment> = [];
 
-    push ( segment: IDataSegment ): Uint8Array {
+    push ( segment: IDataSegment ): types.TBytes {
         if ( !isSegmentCorrect(segment)) {
-            return new Uint8Array();
+            return [];
         }
 
-        if ( this.#segments.length !== 0 ) {
-            if ( this.#segments[0].segmentationSessionId !== segment.segmentationSessionId ) {
+        if ( this.segments.length !== 0 ) {
+            if ( this.segments[0].segmentationSessionId !== segment.segmentationSessionId ) {
                 this.clear();
             }
         }
 
-        const index = this.#segments.findIndex(value => value.segmentIndex >= segment.segmentIndex);
+        const index = this.segments.findIndex(value => value.segmentIndex >= segment.segmentIndex);
 
         if ( index === -1 ) {
-            this.#segments.push(segment);
+            this.segments.push(segment);
         } else {
-            if ( this.#segments[index].segmentIndex === segment.segmentIndex ) {
+            if ( this.segments[index].segmentIndex === segment.segmentIndex ) {
                 this.clear();
 
-                return new Uint8Array();
+                return [];
             }
 
-            this.#segments.splice(index, 0, segment);
+            this.segments.splice(index, 0, segment);
         }
 
-        if ( this.#segments.length === 0 || this.#segments.length !== this.#segments[0].segmentsNumber ) {
-            return new Uint8Array();
+        if ( this.segments.length === 0 || this.segments.length !== this.segments[0].segmentsNumber ) {
+            return [];
         }
 
-        if ( !this.#segments[this.#segments.length - 1].isLast ) {
+        if ( !this.segments[this.segments.length - 1].isLast ) {
             this.clear();
 
-            return new Uint8Array();
+            return [];
         }
 
-        const result = this.#segments.map(({data}) => data);
+        let result: types.TBytes = [];
+        this.segments.forEach(({data}) => {
+            result = result.concat(data);
+        });
 
         this.clear();
 
-        return mergeUint8Arrays(...result);
+        return result;
     }
 
     clear () {
-        this.#segments = [];
+        this.segments = [];
     }
 }
 
