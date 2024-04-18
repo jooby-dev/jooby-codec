@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import {IDataSegment} from '../../src/analog/CommandBinaryBuffer.js';
-import DataSegmentsCollector from '../../src/analog/DataSegmentsCollector.js';
-import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
+import {IDataSegment} from '../../src/analog/utils/CommandBinaryBuffer.js';
+import DataSegmentsCollector from '../../src/analog/utils/DataSegmentsCollector.js';
 import permutations from '../../src/utils/permutations.js';
+import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 
 
 const collectedData = getBytesFromHex('00 01 02 03 04 05 06 07 08 09 0a 0b 0c 0d 0e 0f');
@@ -140,7 +140,7 @@ const collectCommands = ( sequence: Array<IDataSegment> ) => {
         }
     }
 
-    return new Uint8Array();
+    return [];
 };
 
 
@@ -153,7 +153,7 @@ describe('valid sequences', () => {
 });
 
 describe('invalid sequences', () => {
-    const emptyArray = new Uint8Array();
+    const emptyArray = [];
     invalidSequences.forEach((sequence, index) => {
         test(`test case #${index}`, () => {
             expect(collectCommands(sequence)).toStrictEqual(emptyArray);
