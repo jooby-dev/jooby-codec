@@ -1,26 +1,29 @@
-import Command from './Command.js';
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import {TBytes} from '../../types.js';
+import {ICommandConfig, TCommand} from './command.js';
 import * as Frame from '../../utils/frame.js';
-import * as Message from './message.js';
+import {IMessage, IInvalidMessage} from '../message/types.js';
 import getBytesFromBase64 from '../../utils/getBytesFromBase64.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
 
 
 interface IAnalogFrame {
     frame: Frame.IFrame,
-    message: Message.IMessage
+    message: IMessage | IInvalidMessage
 }
 
 
-export const getCommands = ( {frame, message}: IAnalogFrame, isStrict: boolean = false ): Array<Command> => {
-    if ( isStrict && !frame.isValid ) {
-        return [];
-    }
+// export const getCommands = ( {frame, message}: IAnalogFrame, isStrict: boolean = false ): Array<ICommand> => {
+//     if ( isStrict && !frame.isValid ) {
+//         return [];
+//     }
 
-    return Message.getCommands(message, isStrict);
-};
+//     return Message.getCommands(message, isStrict);
+// };
 
-export const toFrame = ( commands: Array<Command> ): IAnalogFrame => {
-    const message = Message.toMessage(commands);
+export const toFrame = ( messageImplementation, commands: Array<TCommand> ): IAnalogFrame => {
+    const message: IMessage = messageImplementation.toMessage(commands);
 
     return {
         message,
@@ -28,23 +31,23 @@ export const toFrame = ( commands: Array<Command> ): IAnalogFrame => {
     };
 };
 
-export const fromBytes = ( bytes: Uint8Array, config?: Message.IMessageConfig ): IAnalogFrame => {
+export const fromBytes = ( messageImplementation, bytes: TBytes, config?: ICommandConfig ): IAnalogFrame => {
     const frame = Frame.fromBytes(bytes);
-    const message = Message.fromBytes(frame.content, config);
+    const message = messageImplementation.fromBytes(frame.content, config);
 
     return {frame, message};
 };
 
-export const fromHex = ( hex: string, config?: Message.IMessageConfig ) => (
-    fromBytes(getBytesFromHex(hex), config)
+export const fromHex = ( messageImplementation, hex: string, config?: ICommandConfig ) => (
+    fromBytes(messageImplementation, getBytesFromHex(hex), config)
 );
 
-export const fromBase64 = ( base64: string, config?: Message.IMessageConfig ) => (
-    fromBytes(getBytesFromBase64(base64), config)
+export const fromBase64 = ( messageImplementation, base64: string, config?: ICommandConfig ) => (
+    fromBytes(messageImplementation, getBytesFromBase64(base64), config)
 );
 
-export const fromFrames = ( frames: Array<Frame.IFrame>, config?: Message.IMessageConfig ): Array<IAnalogFrame> => frames.map(frame => {
-    const message = Message.fromBytes(frame.content, config);
+export const fromFrames = ( messageImplementation, frames: Array<Frame.IFrame>, config?: ICommandConfig ): Array<IAnalogFrame> => frames.map(frame => {
+    const message = messageImplementation.fromBytes(frame.content, config);
 
     return {frame, message};
 });
