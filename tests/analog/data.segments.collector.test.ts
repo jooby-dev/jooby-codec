@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {IDataSegment} from '../../src/analog/utils/CommandBinaryBuffer.js';
 import DataSegmentsCollector from '../../src/analog/utils/DataSegmentsCollector.js';
 import permutations from '../../src/utils/permutations.js';
