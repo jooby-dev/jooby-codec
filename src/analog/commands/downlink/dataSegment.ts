@@ -1,3 +1,34 @@
+/**
+ * Transfer data by breaking it into segments.
+ *
+ * This command is currently used only in module with hardware type MTXLora.
+ * This command could be used as uplink or downlink command.
+ * The module can send DataSegment command as the response to the request or without any request.
+ *
+ * @packageDocumentation
+ *
+ * @example
+ * ```js
+ * import * as dataSegment from 'jooby-codec/analog/commands/downlink/dataSegment.js';
+ *
+ * const parameters = {
+ *     segmentationSessionId: 2,
+ *     segmentIndex: 3,
+ *     segmentsNumber: 5,
+ *     isLast: false,
+ *     data: [0x00, 0x01, 0x02, 0x03, 0x04]
+ * };
+ * const bytes = dataSegment.toBytes(parameters);
+ *
+ * // command binary representation
+ * console.log(bytes);
+ * // output:
+ * [30, 7, 2, 83, 0, 1, 2, 3, 4]
+ * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/DataSegment.md#request)
+ */
+
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IDataSegment} from '../../utils/CommandBinaryBuffer.js';
