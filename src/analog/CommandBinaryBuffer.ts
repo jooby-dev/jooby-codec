@@ -493,6 +493,23 @@ interface IParameterEventsConfig {
 }
 
 /**
+ * Get nbiot module info.
+ * deviceParameters.NBIOT_MODULE_INFO = `51`
+ */
+interface IParameterNbiotModuleInfo {
+    moduleInfo: string
+}
+
+/**
+ * Set preferred nbiot bands to be searched for.
+ * deviceParameters.NBIOT_BANDS = `52`
+ */
+interface IParameterNbiotBands {
+    count: number,
+    bands: Array<number>
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -595,7 +612,9 @@ type TParameterData =
     IParameterNbiotDeviceSoftwareUpdate |
     IParameterNbiotModuleFirmwareUpdate |
     IParameterReportingDataConfig |
-    IParameterEventsConfig;
+    IParameterEventsConfig |
+    IParameterNbiotModuleInfo |
+    IParameterNbiotBands;
 
 type TRequestParameterData =
     IRequestChannelParameter |
@@ -629,7 +648,9 @@ type TResponseParameterData =
     IParameterMqttDataSendConfig |
     IParameterNbiotSslConfig |
     IParameterReportingDataConfig |
-    IParameterEventsConfig;
+    IParameterEventsConfig |
+    IParameterNbiotModuleInfo |
+    IParameterNbiotBands;
 
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
@@ -878,6 +899,26 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
                 break;
 
+            case deviceParameters.NBIOT_BANDS:
+                if ( parameter.data ) {
+                    data = parameter.data as IParameterNbiotBands;
+                    // size: parameter id + count
+                    size = 1 + 1;
+                    size += data.bands.length;
+                } else {
+                    // size: parameter id
+                    size = 1;
+                }
+
+                break;
+
+            case deviceParameters.NBIOT_MODULE_INFO:
+                // all parameters read only
+                // size: parameter id
+                size = 1;
+
+                break;
+
             default:
                 size = parametersSizeMap.get(parameter.id);
         }
@@ -940,6 +981,22 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 // size: parameter id
                 size = 1;
                 size += data.topicPrefix.length + 1;
+                break;
+
+            case deviceParameters.NBIOT_MODULE_INFO:
+                data = parameter.data as IParameterNbiotModuleInfo;
+                // size: parameter id
+                size = 1;
+                size += data.moduleInfo.length + 1;
+
+                break;
+
+            case deviceParameters.NBIOT_BANDS:
+                data = parameter.data as IParameterNbiotBands;
+                // size: parameter id + count
+                size = 1 + 1;
+                size += data.bands.length;
+
                 break;
 
             default:
@@ -1965,6 +2022,39 @@ class CommandBinaryBuffer extends BinaryBuffer {
         this.setUint8(parameter.saveEvent);
     }
 
+    private getParameterNbiotModuleInfo (): IParameterNbiotModuleInfo {
+        return {
+            moduleInfo: this.getString()
+        };
+    }
+
+    private setParameterNbiotModuleInfo ( parameter: IParameterNbiotModuleInfo ): void {
+        this.setString(parameter.moduleInfo);
+    }
+
+    private getParameterNbiotBands (): IParameterNbiotBands {
+        const count = this.getUint8();
+        const bands: Array<number> = [];
+
+        for ( let index = 0; index < count; index++ ) {
+            bands.push(this.getUint8());
+        }
+
+        return {count, bands};
+    }
+
+    private setParameterNbiotBands ( parameter: IParameterNbiotBands ): void {
+        if ( parameter.count !== parameter.bands.length ) {
+            throw new Error('bands count parameter doesn\'t match actual bands size');
+        }
+
+        this.setUint8(parameter.count);
+
+        for ( const band of parameter.bands ) {
+            this.setUint8(band);
+        }
+    }
+
     private getLegacyHourDiff (): ILegacyCounter {
         const stateWithValueByte = this.getUint8();
         const valueLowerByte = this.getUint8();
@@ -2120,6 +2210,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterEventsConfig();
                 break;
 
+            case deviceParameters.NBIOT_BANDS:
+                data = this.getParameterNbiotBands();
+                break;
+
+            case deviceParameters.NBIOT_MODULE_INFO:
+                data = null;
+                break;
+
             default:
                 throw new Error(`parameter ${id} is not supported`);
         }
@@ -2263,6 +2361,13 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
             case deviceParameters.EVENTS_CONFIG:
                 this.setParameterEventsConfig(data as IParameterEventsConfig);
+                break;
+
+            case deviceParameters.NBIOT_BANDS:
+                this.setParameterNbiotBands(data as IParameterNbiotBands);
+                break;
+
+            case deviceParameters.NBIOT_MODULE_INFO:
                 break;
 
             default:
@@ -2462,6 +2567,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
                 data = this.getParameterEventsConfig();
                 break;
 
+            case deviceParameters.NBIOT_MODULE_INFO:
+                data = this.getParameterNbiotModuleInfo();
+                break;
+
+            case deviceParameters.NBIOT_BANDS:
+                data = this.getParameterNbiotBands();
+                break;
+
             case deviceParameters.MQTT_SESSION_CONFIG:
             case deviceParameters.NBIOT_SSL_CACERT_WRITE:
             case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
@@ -2593,6 +2706,14 @@ class CommandBinaryBuffer extends BinaryBuffer {
 
             case deviceParameters.EVENTS_CONFIG:
                 this.setParameterEventsConfig(data as IParameterEventsConfig);
+                break;
+
+            case deviceParameters.NBIOT_MODULE_INFO:
+                this.setParameterNbiotModuleInfo(data as IParameterNbiotModuleInfo);
+                break;
+
+            case deviceParameters.NBIOT_BANDS:
+                this.setParameterNbiotBands(data as IParameterNbiotBands);
                 break;
 
             case deviceParameters.MQTT_SESSION_CONFIG:

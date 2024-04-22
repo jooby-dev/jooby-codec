@@ -38,6 +38,22 @@ const examples: TCommandExampleList = [
             data: {channel: 1}
         },
         hex: {header: '04 02', body: '1e 00'}
+    },
+    {
+        name: 'request for configuration for specific reporting data type',
+        parameters: {
+            id: deviceParameters.REPORTING_DATA_CONFIG,
+            data: {dataType: 0}
+        },
+        hex: {header: '04 02', body: '31 00'}
+    },
+    {
+        name: 'request for configuration for specific event id',
+        parameters: {
+            id: deviceParameters.EVENTS_CONFIG,
+            data: {eventId: 1}
+        },
+        hex: {header: '04 02', body: '32 01'}
     }
 ];
 
