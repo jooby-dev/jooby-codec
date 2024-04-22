@@ -127,3 +127,9 @@ export const REPORTING_DATA_CONFIG = 49;
 
 /** Set configuration for events */
 export const EVENTS_CONFIG = 50;
+
+/** Get NBIOT module info */
+export const NBIOT_MODULE_INFO = 51;
+
+/** Set preferred NB-IoT bands to be searched for */
+export const NBIOT_BANDS = 52;

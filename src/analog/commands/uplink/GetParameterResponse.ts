@@ -214,6 +214,36 @@ const examples: TCommandExampleList = [
             header: '04 05',
             body: '32 48 01 03 04'
         }
+    },
+    {
+        name: 'nbiot module info',
+        parameters: {
+            id: deviceParameters.NBIOT_MODULE_INFO,
+            data: {
+                moduleInfo: 'BC660KGLAAR01A05'
+            }
+        },
+        hex: {
+            header: '04 12',
+            body: '33 10 42 43 36 36 30 4b 47 4c 41 41 52 30 31 41 30 35'
+        }
+    },
+    {
+        name: 'nbiot bands',
+        parameters: {
+            id: deviceParameters.NBIOT_BANDS,
+            data: {
+                count: 2,
+                bands: [
+                    3,
+                    20
+                ]
+            }
+        },
+        hex: {
+            header: '04 04',
+            body: '34 02 03 14'
+        }
     }
 ];
 
