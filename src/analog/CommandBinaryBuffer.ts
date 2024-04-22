@@ -2040,10 +2040,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             bands.push(this.getUint8());
         }
 
-        return {
-            count,
-            bands
-        };
+        return {count, bands};
     }
 
     private setParameterNbiotBands ( parameter: IParameterNbiotBands ): void {

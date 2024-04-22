@@ -234,10 +234,7 @@ const examples: TCommandExampleList = [
             id: deviceParameters.NBIOT_BANDS,
             data: {
                 count: 2,
-                bands: [
-                    3,
-                    20
-                ]
+                bands: [3, 20]
             }
         },
         hex: {
