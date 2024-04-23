@@ -1434,7 +1434,7 @@ class CommandBinaryBuffer extends BinaryBuffer {
             const value = this.getExtendedValue();
 
             // start from first diff hour
-            for ( let diffHour = 1; diffHour < hours; ++diffHour ) {
+            for ( let diffHour = 0; diffHour < hours; ++diffHour ) {
                 diff.push(this.getExtendedValue());
             }
 
