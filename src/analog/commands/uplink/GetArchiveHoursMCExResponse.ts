@@ -30,7 +30,7 @@ const examples: TCommandExampleList = [
         parameters: {
             startTime2000: 756648000,
             hour: 12,
-            hours: 2,
+            hours: 1,
             channelList: [
                 {index: 1, value: 131, diff: [10]},
                 {index: 2, value: 8, diff: [10]},
@@ -38,7 +38,7 @@ const examples: TCommandExampleList = [
                 {index: 4, value: 12, diff: [10]}
             ]
         },
-        hex: {header: '1f 30 0e', body: '2f 97 0c 02 0f 83 01 0a 08 0a 08 0a 0c 0a'}
+        hex: {header: '1f 30 0e', body: '2f 97 0c 01 0f 83 01 0a 08 0a 08 0a 0c 0a'}
     },
     {
         name: 'empty result at 2023.11.19 00:00:00 GMT',
@@ -61,7 +61,7 @@ const examples: TCommandExampleList = [
  * import GetArchiveHoursMCExResponse from 'jooby-codec/analog/commands/uplink/GetArchiveHoursMCExResponse.js';
  *
  * const commandBody = new Uint8Array([
- *     0x2f, 0x97, 0x0c, 0x02, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a
+ *     0x2f, 0x97, 0x0c, 0x01, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a
  * ]);
  * const command = GetArchiveHoursMCExResponse.fromBytes(commandBody);
  *
@@ -70,7 +70,7 @@ const examples: TCommandExampleList = [
  * {
  *     startTime2000: 756648000,
  *     hour: 16,
- *     hours: 2,
+ *     hours: 1,
  *     channelList: [
  *         {index: 1, value: 131, diff: [10]},
  *         {index: 2, value: 8, diff: [10]},

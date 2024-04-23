@@ -23,20 +23,17 @@ const COMMAND_BODY_MAX_SIZE = 5125;
 
 const examples: TCommandExampleList = [
     {
-        name: '4 first channels at 2023.12.23 12:00:00 GMT',
+        name: '1 channel at 2023.12.23 12:00:00 GMT',
         parameters: {
             startTime2000: 756648000,
             hour: 12,
-            hours: 2,
+            hours: 7,
             channelList: [
-                {index: 1, value: 131, diff: [10]},
-                {index: 2, value: 832, diff: [12]},
-                {index: 3, value: 38, diff: [8]},
-                {index: 4, value: 234, diff: [11]}
+                {index: 1, value: 131, diff: [10, 10, 10, 10, 10, 10, 10]}
             ]
         },
 
-        hex: {header: '1f 31 10', body: '2f 97 0c 02 0f 83 01 0a c0 06 0c 26 08 ea 01 0b'}
+        hex: {header: '1f 31 0e', body: '2f 97 0c 07 01 83 01 0a 0a 0a 0a 0a 0a 0a'}
     }
 ];
 
@@ -49,7 +46,7 @@ const examples: TCommandExampleList = [
  * import HourMCEx from 'jooby-codec/analog/commands/uplink/HourMCEx.js';
  *
  * const commandBody = new Uint8Array([
- *    0x2f, 0x97, 0x0c, 0x02, 0x0f, 0x83, 0x01, 0x0a, 0xc0, 0x06, 0x0c, 0x26, 0x08, 0xea, 0x01, 0x0b
+ *    0x2f, 0x97, 0x0c, 0x07, 0x01, 0x83, 0x01, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a
  * ]);
  * const command = HourMCEx.fromBytes(commandBody);
  *
@@ -58,12 +55,9 @@ const examples: TCommandExampleList = [
  * {
  *     startTime2000: 756648000,
  *     hour: 12,
- *     hours: 2,
+ *     hours: 7,
  *     channelList: [
- *         {value: 131, index: 1, diff: [10]},
- *         {value: 832, index: 2, diff: [12]},
- *         {value: 38, index: 3, diff: [8]},
- *         {value: 234, index: 4, diff: [11]}
+ *         {value: 131, index: 1, diff: [10, 10, 10, 10, 10, 10, 10]}
  *     ]
  * }
  * ```
