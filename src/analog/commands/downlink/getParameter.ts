@@ -71,6 +71,26 @@ export const examples: command.TCommandExamples = {
             0x04, 0x02,
             0x1e, 0x00
         ]
+    },
+    'request for configuration for specific reporting data type': {
+        id,
+        name,
+        headerSize,
+        parameters: {id: 49, data: {dataType: 0}},
+        bytes: [
+            0x04, 0x02,
+            0x31, 0x00
+        ]
+    },
+    'request for configuration for specific event id': {
+        id,
+        name,
+        headerSize,
+        parameters: {id: 50, data: {eventId: 1}},
+        bytes: [
+            0x04, 0x02,
+            0x32, 0x01
+        ]
     }
 };
 

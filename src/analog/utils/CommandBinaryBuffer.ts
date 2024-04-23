@@ -547,6 +547,22 @@ interface IParameterEventsConfig {
 }
 
 /**
+ * Get nbiot module info.
+ * deviceParameters.NBIOT_MODULE_INFO = `51`
+ */
+interface IParameterNbiotModuleInfo {
+    moduleInfo: string
+}
+
+/**
+ * Set preferred nbiot bands to be searched for.
+ * deviceParameters.NBIOT_BANDS = `52`
+ */
+interface IParameterNbiotBands {
+    bands: Array<number>
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -678,7 +694,9 @@ type TParameterData =
     IParameterNbiotDeviceSoftwareUpdate |
     IParameterNbiotModuleFirmwareUpdate |
     IParameterReportingDataConfig |
-    IParameterEventsConfig;
+    IParameterEventsConfig |
+    IParameterNbiotModuleInfo |
+    IParameterNbiotBands;
 
 
 type TRequestParameterData =
@@ -713,8 +731,9 @@ type TResponseParameterData =
     IParameterMqttDataSendConfig |
     IParameterNbiotSslConfig |
     IParameterReportingDataConfig |
-    IParameterEventsConfig;
-
+    IParameterEventsConfig |
+    IParameterNbiotModuleInfo |
+    IParameterNbiotBands;
 
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
@@ -1237,6 +1256,33 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.sendEvent);
             buffer.setUint8(parameter.saveEvent);
         }
+    },
+    [deviceParameters.NBIOT_MODULE_INFO]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotModuleInfo => (
+            {moduleInfo: buffer.getString()}
+        ),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotModuleInfo ) => {
+            buffer.setString(parameter.moduleInfo);
+        }
+    },
+    [deviceParameters.NBIOT_BANDS]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotBands => {
+            const count = buffer.getUint8();
+            const bands: Array<number> = [];
+
+            for ( let index = 0; index < count; index++ ) {
+                bands.push(buffer.getUint8());
+            }
+
+            return {bands};
+        },
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotBands ) => {
+            buffer.setUint8(parameter.bands.length);
+
+            for ( const band of parameter.bands ) {
+                buffer.setUint8(band);
+            }
+        }
     }
 };
 
@@ -1252,17 +1298,12 @@ export const getParameterSize = ( parameter: IParameter ): number => {
 
     switch ( parameter.id ) {
         case deviceParameters.MQTT_SESSION_CONFIG:
-            if ( parameter.data ) {
-                data = parameter.data as IParameterMqttSessionConfig;
-                // size: parameter id + cleanSession
-                size = 1 + 1;
-                size += data.clientId.length + 1;
-                size += data.username.length + 1;
-                size += data.password.length + 1;
-            } else {
-                // size: parameter id
-                size = 1;
-            }
+            data = parameter.data as IParameterMqttSessionConfig;
+            // size: parameter id + cleanSession
+            size = 1 + 1;
+            size += data.clientId.length + 1;
+            size += data.username.length + 1;
+            size += data.password.length + 1;
 
             break;
 
@@ -1283,41 +1324,41 @@ export const getParameterSize = ( parameter: IParameter ): number => {
         case deviceParameters.NBIOT_SSL_CACERT_WRITE:
         case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
         case deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE:
-            if ( parameter.data ) {
-                data = parameter.data as IParameterNbiotSslWrite;
-                // size: parameter id + size + pos
-                size = 1 + 2 + 2;
-                size += data.chunk.length;
-            } else {
-                // size: parameter id
-                size = 1;
-            }
+            data = parameter.data as IParameterNbiotSslWrite;
+            // size: parameter id + size + pos
+            size = 1 + 2 + 2;
+            size += data.chunk.length;
 
             break;
 
         case deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE:
-            if ( parameter.data ) {
-                data = parameter.data as IParameterNbiotDeviceSoftwareUpdate;
-                // size: parameter id
-                size = 1;
-                size += data.softwareImageUrl.length + 1;
-            } else {
-                // size: parameter id
-                size = 1;
-            }
+            data = parameter.data as IParameterNbiotDeviceSoftwareUpdate;
+            // size: parameter id
+            size = 1;
+            size += data.softwareImageUrl.length + 1;
 
             break;
 
         case deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE:
-            if ( parameter.data ) {
-                data = parameter.data as IParameterNbiotModuleFirmwareUpdate;
-                // size: parameter id
-                size = 1;
-                size += data.moduleFirmwareImageUrl.length + 1;
-            } else {
-                // size: parameter id
-                size = 1;
-            }
+            data = parameter.data as IParameterNbiotModuleFirmwareUpdate;
+            // size: parameter id
+            size = 1;
+            size += data.moduleFirmwareImageUrl.length + 1;
+
+            break;
+
+        case deviceParameters.NBIOT_MODULE_INFO:
+            data = parameter.data as IParameterNbiotModuleInfo;
+            // size: parameter id + string length + moduleInfo string
+            size = 1 + 1 + data.moduleInfo.length;
+
+            break;
+
+        case deviceParameters.NBIOT_BANDS:
+            data = parameter.data as IParameterNbiotBands;
+            // size: parameter id + number of bands, one band - one byte
+            size = 1 + 1;
+            size += data.bands.length;
 
             break;
 
@@ -1357,7 +1398,6 @@ export const getRequestParameterSize = ( parameter: IRequestParameter ): number 
 
 export const getResponseParameterSize = ( parameter: IParameter ): number => {
     let size;
-    let data;
 
     switch ( parameter.id ) {
         case deviceParameters.MQTT_SESSION_CONFIG:
@@ -1373,18 +1413,13 @@ export const getResponseParameterSize = ( parameter: IParameter ): number => {
             size = 1;
             break;
 
+        // dynamic but same data for parameter in response
         case deviceParameters.MQTT_BROKER_ADDRESS:
-            data = parameter.data as IParameterMqttBrokerAddress;
-            // size: parameter id + port
-            size = 1 + 2;
-            size += data.hostName.length + 1;
-            break;
-
         case deviceParameters.MQTT_TOPIC_PREFIX:
-            data = parameter.data as IParameterMqttTopicPrefix;
-            // size: parameter id
-            size = 1;
-            size += data.topicPrefix.length + 1;
+        case deviceParameters.NBIOT_MODULE_INFO:
+        case deviceParameters.NBIOT_BANDS:
+            size = getParameterSize(parameter);
+
             break;
 
         default:
@@ -2185,7 +2220,7 @@ CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiffExtended = function (
         const value = this.getExtendedValue();
 
         // start from first diff hour
-        for ( let diffHour = 1; diffHour < hours; ++diffHour ) {
+        for ( let diffHour = 0; diffHour < hours; ++diffHour ) {
             diff.push(this.getExtendedValue());
         }
 

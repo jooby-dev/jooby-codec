@@ -1,14 +1,14 @@
 /**
- * Command to request hourly consumption (absolute values) of device channels from the archive.
+ * Command to request hour pulse counter's values from device archive.
  *
  * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getExAbsArchiveHoursMcEx from 'jooby-codec/analog/commands/downlink/getExAbsArchiveHoursMcEx.js';
+ * import * as getArchiveHoursMcEx from 'jooby-codec/analog/commands/downlink/getArchiveHoursMcEx.js';
  *
  * const parameters = {startTime2000: 756648000, hour: 12, hours: 2, channelList: [1]};
- * const bytes = getExAbsArchiveHoursMcEx.toBytes(parameters);
+ * const bytes = getArchiveHoursMcEx.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
@@ -16,7 +16,7 @@
  * [31, 48, 5, 47, 151, 12, 2, 1]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/getExAbsArchiveHoursMcEx.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMcEx.md#request)
  */
 
 import * as types from '../../../types.js';
@@ -47,7 +47,7 @@ interface IGetExAbsArchiveHoursMcExParameters {
 
 
 export const id: types.TCommandId = 0x301f;
-export const name: types.TCommandName = 'getExAbsArchiveHoursMcEx';
+export const name: types.TCommandName = 'getArchiveHoursMcEx';
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 5;
