@@ -8,11 +8,8 @@
  * ```js
  * import * as hourMcEx from 'jooby-codec/analog/commands/uplink/hourMcEx.js';
  *
- * // 4 first channels at 2023.12.23 12:00:00 GMT
- * const bytes = [
- *     0x2f, 0x97, 0x2c, 0x0f, 0x83, 0x01, 0x0a, 0xc0,
- *     0x06, 0x0c, 0x26, 0x08, 0xea, 0x01, 0x0b
- * ];
+ * // 1 channel at 2023.12.23 12:00:00 GMT
+ * const bytes = [0x2f, 0x97, 0x0c, 0x07, 0x01, 0x83, 0x01, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a];
  *
  * // decoded payload
  * const parameters = hourMcEx.fromBytes(bytes);
@@ -22,12 +19,9 @@
  * {
  *     startTime2000: 756648000,
  *     hour: 12,
- *     hours: 2,
+ *     hours: 7,
  *     channelList: [
- *         {value: 131, diff: [10], index: 1},
- *         {value: 832, diff: [12], index: 2},
- *         {value: 38, diff: [8], index: 3},
- *         {value: 234, diff: [11], index: 4}
+ *         {value: 131, diff: [10, 10, 10, 10, 10, 10, 10], index: 1}
  *     ]
  * }
  * ```
@@ -50,24 +44,21 @@ export const headerSize = 3;
 const COMMAND_BODY_MAX_SIZE = 5125;
 
 export const examples: command.TCommandExamples = {
-    '4 first channels at 2023.12.23 12:00:00 GMT': {
+    '1 channel at 2023.12.23 12:00:00 GMT': {
         id,
         name,
         headerSize,
         parameters: {
             startTime2000: 756648000,
             hour: 12,
-            hours: 2,
+            hours: 7,
             channelList: [
-                {value: 131, diff: [10], index: 1},
-                {value: 832, diff: [12], index: 2},
-                {value: 38, diff: [8], index: 3},
-                {value: 234, diff: [11], index: 4}
+                {value: 131, diff: [10, 10, 10, 10, 10, 10, 10], index: 1}
             ]
         },
         bytes: [
-            0x1f, 0x31, 0x10,
-            0x2f, 0x97, 0x0c, 0x02, 0x0f, 0x83, 0x01, 0x0a, 0xc0, 0x06, 0x0c, 0x26, 0x08, 0xea, 0x01, 0x0b
+            0x1f, 0x31, 0x0e,
+            0x2f, 0x97, 0x0c, 0x07, 0x01, 0x83, 0x01, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a, 0x0a
         ]
     }
 };
