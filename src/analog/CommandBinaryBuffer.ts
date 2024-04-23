@@ -505,7 +505,6 @@ interface IParameterNbiotModuleInfo {
  * deviceParameters.NBIOT_BANDS = `52`
  */
 interface IParameterNbiotBands {
-    count: number,
     bands: Array<number>
 }
 
@@ -2040,15 +2039,11 @@ class CommandBinaryBuffer extends BinaryBuffer {
             bands.push(this.getUint8());
         }
 
-        return {count, bands};
+        return {bands};
     }
 
     private setParameterNbiotBands ( parameter: IParameterNbiotBands ): void {
-        if ( parameter.count !== parameter.bands.length ) {
-            throw new Error('bands count parameter doesn\'t match actual bands size');
-        }
-
-        this.setUint8(parameter.count);
+        this.setUint8(parameter.bands.length);
 
         for ( const band of parameter.bands ) {
             this.setUint8(band);
