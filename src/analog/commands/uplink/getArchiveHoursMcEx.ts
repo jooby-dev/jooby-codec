@@ -1,23 +1,23 @@
 /**
- * Command for retrieving hourly consumption (absolute values) of device channels from the archive.
+ * Command to receive hour pulse counter's values from device archive.
  *
  * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getExAbsArchiveHoursMcEx from 'jooby-codec/analog/commands/uplink/getExAbsArchiveHoursMcEx.js';
+ * import * as getArchiveHoursMcEx from 'jooby-codec/analog/commands/uplink/getArchiveHoursMcEx.js';
  *
  * const bytes = [0x2f, 0x97, 0x0c, 0x02, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a];
  *
  * // decoded payload
- * const parameters = getExAbsArchiveHoursMcEx.fromBytes(commandBody);
+ * const parameters = getArchiveHoursMcEx.fromBytes(commandBody);
  *
  * console.log(parameters);
  * // output:
  * {
  *     startTime2000: 756648000,
  *     hour: 16,
- *     hours: 2,
+ *     hours: 1,
  *     channelList: [
  *         {value: 131, diff: [10], index: 1},
  *         {value: 8, diff: [10], index: 2},
@@ -35,7 +35,7 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelValuesWithHourDiffExt
 
 
 export const id: types.TCommandId = 0x301f;
-export const name: types.TCommandName = 'getExAbsArchiveHoursMcEx';
+export const name: types.TCommandName = 'getArchiveHoursMcEx';
 export const headerSize = 3;
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
@@ -51,7 +51,7 @@ export const examples: command.TCommandExamples = {
         parameters: {
             startTime2000: 756648000,
             hour: 12,
-            hours: 2,
+            hours: 1,
             channelList: [
                 {value: 131, diff: [10], index: 1},
                 {value: 8, diff: [10], index: 2},
@@ -61,7 +61,7 @@ export const examples: command.TCommandExamples = {
         },
         bytes: [
             0x1f, 0x30, 0x0e,
-            0x2f, 0x97, 0x0c, 0x02, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a
+            0x2f, 0x97, 0x0c, 0x01, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a
         ]
     },
     'empty result at 2023.11.19 00:00:00 GMT': {
