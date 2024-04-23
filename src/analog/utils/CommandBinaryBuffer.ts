@@ -559,7 +559,6 @@ interface IParameterNbiotModuleInfo {
  * deviceParameters.NBIOT_BANDS = `52`
  */
 interface IParameterNbiotBands {
-    count: number,
     bands: Array<number>
 }
 
@@ -1275,14 +1274,10 @@ const deviceParameterConvertersMap = {
                 bands.push(buffer.getUint8());
             }
 
-            return {count, bands};
+            return {bands};
         },
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotBands ) => {
-            if ( parameter.count !== parameter.bands.length ) {
-                throw new Error('bands count parameter doesn\'t match actual bands size');
-            }
-
-            buffer.setUint8(parameter.count);
+            buffer.setUint8(parameter.bands.length);
 
             for ( const band of parameter.bands ) {
                 buffer.setUint8(band);
@@ -1303,17 +1298,12 @@ export const getParameterSize = ( parameter: IParameter ): number => {
 
     switch ( parameter.id ) {
         case deviceParameters.MQTT_SESSION_CONFIG:
-            if ( parameter.data ) {
-                data = parameter.data as IParameterMqttSessionConfig;
-                // size: parameter id + cleanSession
-                size = 1 + 1;
-                size += data.clientId.length + 1;
-                size += data.username.length + 1;
-                size += data.password.length + 1;
-            } else {
-                // size: parameter id
-                size = 1;
-            }
+            data = parameter.data as IParameterMqttSessionConfig;
+            // size: parameter id + cleanSession
+            size = 1 + 1;
+            size += data.clientId.length + 1;
+            size += data.username.length + 1;
+            size += data.password.length + 1;
 
             break;
 
@@ -1334,67 +1324,41 @@ export const getParameterSize = ( parameter: IParameter ): number => {
         case deviceParameters.NBIOT_SSL_CACERT_WRITE:
         case deviceParameters.NBIOT_SSL_CLIENT_CERT_WRITE:
         case deviceParameters.NBIOT_SSL_CLIENT_KEY_WRITE:
-            if ( parameter.data ) {
-                data = parameter.data as IParameterNbiotSslWrite;
-                // size: parameter id + size + pos
-                size = 1 + 2 + 2;
-                size += data.chunk.length;
-            } else {
-                // size: parameter id
-                size = 1;
-            }
+            data = parameter.data as IParameterNbiotSslWrite;
+            // size: parameter id + size + pos
+            size = 1 + 2 + 2;
+            size += data.chunk.length;
 
             break;
 
         case deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE:
-            if ( parameter.data ) {
-                data = parameter.data as IParameterNbiotDeviceSoftwareUpdate;
-                // size: parameter id
-                size = 1;
-                size += data.softwareImageUrl.length + 1;
-            } else {
-                // size: parameter id
-                size = 1;
-            }
+            data = parameter.data as IParameterNbiotDeviceSoftwareUpdate;
+            // size: parameter id
+            size = 1;
+            size += data.softwareImageUrl.length + 1;
 
             break;
 
         case deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE:
-            if ( parameter.data ) {
-                data = parameter.data as IParameterNbiotModuleFirmwareUpdate;
-                // size: parameter id
-                size = 1;
-                size += data.moduleFirmwareImageUrl.length + 1;
-            } else {
-                // size: parameter id
-                size = 1;
-            }
+            data = parameter.data as IParameterNbiotModuleFirmwareUpdate;
+            // size: parameter id
+            size = 1;
+            size += data.moduleFirmwareImageUrl.length + 1;
 
             break;
 
         case deviceParameters.NBIOT_MODULE_INFO:
-            if ( parameter.data ) {
-                data = parameter.data as IParameterNbiotBands;
-                // size: parameter id + count
-                size = 1 + 1;
-                size += data.bands.length;
-            } else {
-                // size: parameter id
-                size = 1;
-            }
+            data = parameter.data as IParameterNbiotModuleInfo;
+            // size: parameter id + string length + moduleInfo string
+            size = 1 + 1 + data.moduleInfo.length;
 
             break;
 
         case deviceParameters.NBIOT_BANDS:
-            if ( parameter.data ) {
-                data = parameter.data as IParameterNbiotBands;
-                // size: parameter id + count
-                size = 1 + 1;
-                size += data.bands.length;
-            } else {
-                // size: parameter id
-                size = 1;
-            }
+            data = parameter.data as IParameterNbiotBands;
+            // size: parameter id + number of bands, one band - one byte
+            size = 1 + 1;
+            size += data.bands.length;
 
             break;
 
@@ -1434,7 +1398,6 @@ export const getRequestParameterSize = ( parameter: IRequestParameter ): number 
 
 export const getResponseParameterSize = ( parameter: IParameter ): number => {
     let size;
-    let data;
 
     switch ( parameter.id ) {
         case deviceParameters.MQTT_SESSION_CONFIG:
@@ -1450,33 +1413,12 @@ export const getResponseParameterSize = ( parameter: IParameter ): number => {
             size = 1;
             break;
 
+        // dynamic but same data for parameter in response
         case deviceParameters.MQTT_BROKER_ADDRESS:
-            data = parameter.data as IParameterMqttBrokerAddress;
-            // size: parameter id + port
-            size = 1 + 2;
-            size += data.hostName.length + 1;
-            break;
-
         case deviceParameters.MQTT_TOPIC_PREFIX:
-            data = parameter.data as IParameterMqttTopicPrefix;
-            // size: parameter id
-            size = 1;
-            size += data.topicPrefix.length + 1;
-            break;
-
         case deviceParameters.NBIOT_MODULE_INFO:
-            data = parameter.data as IParameterNbiotModuleInfo;
-            // size: parameter id + moduleInfo length
-            size = 1;
-            size += data.moduleInfo.length + 1;
-
-            break;
-
         case deviceParameters.NBIOT_BANDS:
-            data = parameter.data as IParameterNbiotBands;
-            // size: parameter id + number of bands, one band - one byte
-            size = 1 + 1;
-            size += data.bands.length;
+            size = getParameterSize(parameter);
 
             break;
 

@@ -122,10 +122,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 52,
-            data: {
-                count: 2,
-                bands: [3, 20]
-            }
+            data: {bands: [3, 20]}
         },
         bytes: [
             0x04, 0x04,
