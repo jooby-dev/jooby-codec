@@ -100,6 +100,37 @@ export const examples: command.TCommandExamples = {
             0x04, 0x03,
             0x1e, 0x01, 0x01
         ]
+    },
+    'nbiot module info': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 51,
+            data: {
+                moduleInfo: 'BC660KGLAAR01A05'
+            }
+        },
+        bytes: [
+            0x04, 0x12,
+            0x33, 0x10, 0x42, 0x43, 0x36, 0x36, 0x30, 0x4B, 0x47, 0x4C, 0x41, 0x41, 0x52, 0x30, 0x31, 0x41, 0x30, 0x35
+        ]
+    },
+    'nbiot bands': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 52,
+            data: {
+                count: 2,
+                bands: [3, 20]
+            }
+        },
+        bytes: [
+            0x04, 0x04,
+            0x34, 0x02, 0x03, 0x14
+        ]
     }
 };
 

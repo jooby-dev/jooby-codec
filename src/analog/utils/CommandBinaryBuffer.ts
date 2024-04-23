@@ -547,6 +547,23 @@ interface IParameterEventsConfig {
 }
 
 /**
+ * Get nbiot module info.
+ * deviceParameters.NBIOT_MODULE_INFO = `51`
+ */
+interface IParameterNbiotModuleInfo {
+    moduleInfo: string
+}
+
+/**
+ * Set preferred nbiot bands to be searched for.
+ * deviceParameters.NBIOT_BANDS = `52`
+ */
+interface IParameterNbiotBands {
+    count: number,
+    bands: Array<number>
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -678,7 +695,9 @@ type TParameterData =
     IParameterNbiotDeviceSoftwareUpdate |
     IParameterNbiotModuleFirmwareUpdate |
     IParameterReportingDataConfig |
-    IParameterEventsConfig;
+    IParameterEventsConfig |
+    IParameterNbiotModuleInfo |
+    IParameterNbiotBands;
 
 
 type TRequestParameterData =
@@ -713,8 +732,9 @@ type TResponseParameterData =
     IParameterMqttDataSendConfig |
     IParameterNbiotSslConfig |
     IParameterReportingDataConfig |
-    IParameterEventsConfig;
-
+    IParameterEventsConfig |
+    IParameterNbiotModuleInfo |
+    IParameterNbiotBands;
 
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
@@ -1237,6 +1257,37 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.sendEvent);
             buffer.setUint8(parameter.saveEvent);
         }
+    },
+    [deviceParameters.NBIOT_MODULE_INFO]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotModuleInfo => (
+            {moduleInfo: buffer.getString()}
+        ),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotModuleInfo ) => {
+            buffer.setString(parameter.moduleInfo);
+        }
+    },
+    [deviceParameters.NBIOT_BANDS]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotBands => {
+            const count = buffer.getUint8();
+            const bands: Array<number> = [];
+
+            for ( let index = 0; index < count; index++ ) {
+                bands.push(buffer.getUint8());
+            }
+
+            return {count, bands};
+        },
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotBands ) => {
+            if ( parameter.count !== parameter.bands.length ) {
+                throw new Error('bands count parameter doesn\'t match actual bands size');
+            }
+
+            buffer.setUint8(parameter.count);
+
+            for ( const band of parameter.bands ) {
+                buffer.setUint8(band);
+            }
+        }
     }
 };
 
@@ -1321,6 +1372,32 @@ export const getParameterSize = ( parameter: IParameter ): number => {
 
             break;
 
+        case deviceParameters.NBIOT_MODULE_INFO:
+            if ( parameter.data ) {
+                data = parameter.data as IParameterNbiotBands;
+                // size: parameter id + count
+                size = 1 + 1;
+                size += data.bands.length;
+            } else {
+                // size: parameter id
+                size = 1;
+            }
+
+            break;
+
+        case deviceParameters.NBIOT_BANDS:
+            if ( parameter.data ) {
+                data = parameter.data as IParameterNbiotBands;
+                // size: parameter id + count
+                size = 1 + 1;
+                size += data.bands.length;
+            } else {
+                // size: parameter id
+                size = 1;
+            }
+
+            break;
+
         default:
             size = parametersSizeMap[parameter.id];
     }
@@ -1385,6 +1462,22 @@ export const getResponseParameterSize = ( parameter: IParameter ): number => {
             // size: parameter id
             size = 1;
             size += data.topicPrefix.length + 1;
+            break;
+
+        case deviceParameters.NBIOT_MODULE_INFO:
+            data = parameter.data as IParameterNbiotModuleInfo;
+            // size: parameter id + moduleInfo length
+            size = 1;
+            size += data.moduleInfo.length + 1;
+
+            break;
+
+        case deviceParameters.NBIOT_BANDS:
+            data = parameter.data as IParameterNbiotBands;
+            // size: parameter id + number of bands, one band - one byte
+            size = 1 + 1;
+            size += data.bands.length;
+
             break;
 
         default:
