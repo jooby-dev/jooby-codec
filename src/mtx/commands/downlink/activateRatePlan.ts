@@ -47,11 +47,12 @@ interface IActivateRatePlanParameters {
     tariffPlan: ITariffPlan
 }
 
+
 export const id: types.TCommandId = 0x13;
 export const name: types.TCommandName = 'activateRatePlan';
 export const headerSize = 2;
 
-const COMMAND_SIZE = 1 + TARIFF_PLAN_SIZE;
+const COMMAND_BODY_SIZE = 1 + TARIFF_PLAN_SIZE;
 
 export const examples: command.TCommandExamples = {
     'set rate plan request': {
@@ -85,7 +86,7 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = (data: types.TBytes): IActivateRatePlanParameters => {};
+export const fromBytes = ( data: types.TBytes ): IActivateRatePlanParameters => {};
 
 
 /**
@@ -94,4 +95,4 @@ export const fromBytes = (data: types.TBytes): IActivateRatePlanParameters => {}
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = (parameters: IActivateRatePlanParameters): types.TBytes => {};
+export const toBytes = ( parameters: IActivateRatePlanParameters ): types.TBytes => {};
