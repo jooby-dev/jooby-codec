@@ -1,4 +1,4 @@
-import * as types from '../../types.js';
+import * as types from '../types.js';
 
 
 /**
@@ -42,7 +42,7 @@ export interface ICommandImplementation {
     id: types.TCommandId,
     name: types.TCommandName,
     maxSize: number,
-    accessLevel: number,
+    accessLevel: types.TAccessLevel,
     examples: TCommandExamples,
 
     fromBytes ( data: types.TBytes ),
