@@ -10,8 +10,8 @@ import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 // import {IDeviceType} from './utils/deviceType.js';
 // import * as DeviceType from './utils/deviceType.js';
-// import getHexFromBytes from '../../utils/getHexFromBytes.js';
-// import getBytesFromHex from '../../utils/getBytesFromHex.js';
+import getHexFromBytes from '../../utils/getHexFromBytes.js';
+import getBytesFromHex from '../../utils/getBytesFromHex.js';
 // import {IDateTime, ITimeCorrectionParameters} from './utils/dateTime.js';
 import {DATA_REQUEST} from '../constants/frameTypes.js';
 
@@ -834,6 +834,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     // instance methods
     getFrameHeader (): IFrameHeader,
     setFrameHeader ( frameHeader: IFrameHeader ),
+
+    getDeviceId (): IDeviceId,
+    setDeviceId ( {manufacturer, type, year, serial}: IDeviceId )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = true ) {
@@ -877,6 +880,24 @@ CommandBinaryBuffer.prototype.setFrameHeader = function ( {
     this.setUint8(type);
     this.setUint16(destination);
     this.setUint16(source);
+};
+
+
+// https://gitlab.infomir.dev/electric_meters/emdoc/-/blob/master/src/deviceInfo/deviceId.md
+CommandBinaryBuffer.prototype.getDeviceId = function (): IDeviceId {
+    const manufacturer = getHexFromBytes(this.getBytes(3), {separator: ''});
+    const type = this.getUint8();
+    const year = this.getUint8();
+    const serial = getHexFromBytes(this.getBytes(3), {separator: ''});
+
+    return {manufacturer, type, year, serial};
+};
+
+CommandBinaryBuffer.prototype.setDeviceId = function ( {manufacturer, type, year, serial}: IDeviceId ) {
+    this.setBytes(getBytesFromHex(manufacturer));
+    this.setUint8(type);
+    this.setUint8(year);
+    this.setBytes(getBytesFromHex(serial));
 };
 
 
@@ -1201,23 +1222,6 @@ CommandBinaryBuffer.prototype.setFrameHeader = function ( {
 //         this.setUint8(specialDay.date);
 //         this.setUint8(specialDay.dayIndex);
 //         this.setUint8(+!specialDay.isPeriodic);
-//     }
-
-//     // https://gitlab.infomir.dev/electric_meters/emdoc/-/blob/master/src/deviceInfo/deviceId.md
-//     getDeviceId (): IDeviceId {
-//         const manufacturer = getHexFromBytes(this.getBytes(3), {separator: ''});
-//         const type = this.getUint8();
-//         const year = this.getUint8();
-//         const serial = getHexFromBytes(this.getBytes(3), {separator: ''});
-
-//         return {manufacturer, type, year, serial};
-//     }
-
-//     setDeviceId ( {manufacturer, type, year, serial}: IDeviceId ) {
-//         this.setBytes(getBytesFromHex(manufacturer));
-//         this.setUint8(type);
-//         this.setUint8(year);
-//         this.setBytes(getBytesFromHex(serial));
 //     }
 
 //     // https://gitlab.infomir.dev/electric_meters/emdoc/-/blob/master/src/deviceInfo/deviceType.md

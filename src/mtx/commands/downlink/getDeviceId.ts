@@ -1,44 +1,46 @@
 /**
- * Downlink command to get firmware build date and version from device.
- *
- * The corresponding uplink command: {@link GetBuildVersionResponse}.
+ * Downlink command to get device identifier.
  *
  * @example
  * ```js
- * import * as getBuildVersion from 'jooby-codec/mtx/commands/downlink/getBuildVersion.js';
+ * import * as getDeviceId from 'jooby-codec/mtx/commands/downlink/getDeviceId.js';
  *
- * const bytes = getBuildVersion.toBytes();
+ * const bytes = getDeviceId.toBytes();
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [121, 0]
+ * [5, 0]
  * ```
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetBuildVersion.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDeviceId.md#request)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import * as command from '../../utils/command.js';
+import * as accessLevels from '../../constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x70;
-export const name: types.TCommandName = 'getBuildVersion';
+const COMMAND_BODY_SIZE = 0;
+
+export const id: types.TCommandId = 0x05;
+export const name: types.TCommandName = 'getDeviceId';
 export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = READ_ONLY;
-export const maxSize = 0;
+export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
+export const maxSize = COMMAND_BODY_SIZE;
+
 
 export const examples: command.TCommandExamples = {
     'simple request': {
         id,
         name,
-        maxSize,
+        headerSize,
         accessLevel,
+        maxSize,
         parameters: {},
         bytes: [
-            0x70, 0x00
+            0x05, 0x00
         ]
     }
 };
@@ -51,7 +53,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( data: types.TBytes ): command.IEmptyCommandParameters => {
-    if ( data.length !== maxSize ) {
+    if ( data.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
 
