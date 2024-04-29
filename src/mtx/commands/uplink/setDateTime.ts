@@ -1,43 +1,46 @@
 /**
- * Downlink command to get firmware build date and version from device.
+ * Uplink command to set full date and time on the meter.
  *
- * The corresponding uplink command: {@link GetBuildVersionResponse}.
+ * The corresponding downlink command: `SetDateTime`.
+ *
+ * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getBuildVersion from 'jooby-codec/mtx/commands/downlink/getBuildVersion.js';
+ * import * as setDateTime from 'jooby-codec/mtx/commands/uplink/setDateTime.js';
  *
- * const bytes = getBuildVersion.toBytes();
+ * // empty response
+ * const bytes = [];
+ * const parameters = setDateTime.fromBytes(bytes);
  *
- * // command binary representation
- * console.log(bytes);
+ * // this command doesn't have any parameters
+ * console.log(parameters);
  * // output:
- * [121, 0]
+ * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetBuildVersion.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetDateTime.md#response)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
-
-export const id: types.TCommandId = 0x70;
-export const name: types.TCommandName = 'getBuildVersion';
+export const id: types.TCommandId = 0x08;
+export const name: types.TCommandName = 'setDateTime';
 export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 0;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 
 export const examples: command.TCommandExamples = {
-    'simple request': {
+    'simple response': {
         id,
         name,
         maxSize,
         accessLevel,
         parameters: {},
         bytes: [
-            0x70, 0x00
+            0x08, 0x00
         ]
     }
 };
@@ -46,7 +49,6 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
  * @returns command payload
  */
 export const fromBytes = ( data: types.TBytes ): command.IEmptyCommandParameters => {
@@ -54,7 +56,6 @@ export const fromBytes = ( data: types.TBytes ): command.IEmptyCommandParameters
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
 
-    // no parameters to decode
     return {};
 };
 
@@ -62,7 +63,6 @@ export const fromBytes = ( data: types.TBytes ): command.IEmptyCommandParameters
 /**
  * Encode command parameters.
  *
- * @param parameters - command payload
  * @returns full message (header with body)
  */
 export const toBytes = (): types.TBytes => command.toBytes(id);

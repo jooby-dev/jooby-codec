@@ -12,7 +12,6 @@
  * // output:
  * [5, 0]
  * ```
- * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDeviceId.md#request)
  */
