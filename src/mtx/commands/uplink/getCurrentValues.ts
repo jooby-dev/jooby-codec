@@ -5,7 +5,7 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getCurrentValues from 'jooby-codec/obis-observer/commands/uplink/getCurrentValues.js';
+ * import * as getCurrentValues from 'jooby-codec/mtx/commands/uplink/getCurrentValues.js';
  *
  * // simple response
  * const bytes = [
@@ -34,8 +34,10 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetCurrentValues.md#response)
  */
 
-import * as types from '../../../types.js';
+import * as types from '../../types.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
 interface IGetCurrentValuesResponseParameters {
@@ -63,14 +65,16 @@ interface IGetCurrentValuesResponseParameters {
 export const id: types.TCommandId = 0x0d;
 export const name: types.TCommandName = 'getCurrentValues';
 export const headerSize = 2;
-
-const COMMAND_BODY_SIZE = 32;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const maxSize = 32;
 
 export const examples: command.TCommandExamples = {
     'simple response': {
         id,
         name,
+        maxSize,
         headerSize,
+        accessLevel,
         parameters: {
             powerA: 2349234,
             iaRms: 4061779,
@@ -83,7 +87,7 @@ export const examples: command.TCommandExamples = {
             pfB: 3767
         },
         bytes: [
-            0x0d, 0x00,
+            0x0d, 0x20,
             0x00, 0x23, 0xd8, 0xb2, 0x00, 0x3d, 0xfa, 0x53, 0x00, 0x04, 0x9e, 0x89, 0x00, 0x01, 0xa1, 0x25,
             0x0c, 0xc3, 0x00, 0x04, 0xa6, 0x8b, 0x00, 0x01, 0x9f, 0x28, 0x00, 0x01, 0xa3, 0x1c, 0x0e, 0xb7
         ]
@@ -97,7 +101,21 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetCurrentValuesResponseParameters => {};
+export const fromBytes = ( data: types.TBytes ): IGetCurrentValuesResponseParameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+
+    return {
+        powerA: buffer.getInt32(),
+        iaRms: buffer.getInt32(),
+        vavbRms: buffer.getInt32(),
+        varA: buffer.getInt32(),
+        pfA: buffer.getInt16(),
+        ibRms: buffer.getInt32(),
+        powerB: buffer.getInt32(),
+        varB: buffer.getInt32(),
+        pfB: buffer.getInt16()
+    };
+};
 
 
 /**
@@ -106,7 +124,22 @@ export const fromBytes = ( data: types.TBytes ): IGetCurrentValuesResponseParame
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetCurrentValuesResponseParameters ): types.TBytes => {};
+export const toBytes = ( parameters: IGetCurrentValuesResponseParameters ): types.TBytes => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+
+    // body
+    buffer.setInt32(parameters.powerA);
+    buffer.setInt32(parameters.iaRms);
+    buffer.setInt32(parameters.vavbRms);
+    buffer.setInt32(parameters.varA);
+    buffer.setInt16(parameters.pfA);
+    buffer.setInt32(parameters.ibRms);
+    buffer.setInt32(parameters.powerB);
+    buffer.setInt32(parameters.varB);
+    buffer.setInt16(parameters.pfB);
+
+    return command.toBytes(id, buffer.data);
+};
 
 
 // TODO: add implementation

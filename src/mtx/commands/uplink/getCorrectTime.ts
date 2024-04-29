@@ -5,7 +5,7 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getCorrectTime from 'jooby-codec/obis-observer/commands/uplink/getCorrectTime.js';
+ * import * as getCorrectTime from 'jooby-codec/mtx/commands/uplink/getCorrectTime.js';
  *
  * // default parameters
  * const bytes = [0x03, 0x00, 0x03, 0x01, 0x0a, 0x00, 0x04, 0x01, 0x01];
@@ -31,71 +31,26 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetCorrectTime.md#response)
  */
 
-import * as types from '../../../types.js';
+import * as types from '../../types.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {ITimeCorrectionParameters} from '../../utils/dateTime.js';
 import * as command from '../../utils/command.js';
-
-
-interface ITimeCorrectionParameters {
-    /**
-     * The month of transition to daylight saving time.
-     */
-    monthTransitionSummer: types.TMonth,
-
-    /**
-     * The date of transition to daylight saving time.
-     * If it is `0`, then it refers to the last Sunday of the month.
-     */
-    dateTransitionSummer: types.TMonthDay,
-
-    /**
-     * The hour of transition to daylight saving time.
-     */
-    hoursTransitionSummer: types.TUint8,
-
-    /**
-     * The adjustment in hours during the transition to daylight saving time.
-     */
-    hoursCorrectSummer: types.TUint8,
-
-    /**
-     * The month of transition to standard time.
-     */
-    monthTransitionWinter: types.TMonth,
-
-    /**
-     * The date of transition to standard time.
-     * If it is `0`, then it refers to the last Sunday of the month.
-     */
-    dateTransitionWinter: types.TMonthDay,
-
-    /**
-     * The hour of transition to standard time.
-     */
-    hoursTransitionWinter: types.TUint8,
-
-    /**
-     * The adjustment in hours during the transition to standard time.
-     */
-    hoursCorrectWinter: types.TUint8,
-
-    /**
-     * Does the transition to DST/Standard time occur?
-     */
-    isCorrectionNeeded: boolean
-}
+import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
 export const id: types.TCommandId = 0x3e;
 export const name: types.TCommandName = 'getCorrectTime';
 export const headerSize = 2;
-
-const COMMAND_BODY_SIZE = 9;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const maxSize = 9;
 
 export const examples: command.TCommandExamples = {
     'default parameters': {
         id,
         name,
         headerSize,
+        maxSize,
+        accessLevel,
         parameters: {
             monthTransitionSummer: 3,
             dateTransitionSummer: 0,
@@ -121,7 +76,11 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): ITimeCorrectionParameters => {};
+export const fromBytes = ( data: types.TBytes ): ITimeCorrectionParameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+
+    return buffer.getTimeCorrectionParameters();
+};
 
 
 /**
@@ -130,4 +89,11 @@ export const fromBytes = ( data: types.TBytes ): ITimeCorrectionParameters => {}
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: ITimeCorrectionParameters ): types.TBytes => {};
+export const toBytes = ( parameters: ITimeCorrectionParameters ): types.TBytes => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+
+    // body
+    buffer.setTimeCorrectionParameters(parameters);
+
+    return command.toBytes(id, buffer.data);
+};

@@ -836,13 +836,19 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setFrameHeader ( frameHeader: IFrameHeader ),
 
     getDeviceId (): IDeviceId,
-    setDeviceId ( {manufacturer, type, year, serial}: IDeviceId )
+    setDeviceId ( {manufacturer, type, year, serial}: IDeviceId ),
 
     getDateTime (): IDateTime,
-    setDateTime ( dateTime: IDateTime )
+    setDateTime ( dateTime: IDateTime ),
+
+    getTariffPlan(): ITariffPlan,
+    setTariffPlan ( tariffPlan: ITariffPlan ),
+
+    getTimeCorrectionParameters (): ITimeCorrectionParameters,
+    setTimeCorrectionParameters ( parameters: ITimeCorrectionParameters )
 }
 
-function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = true ) {
+function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
     BinaryBuffer.call(this, dataOrLength, isLittleEndian);
 }
 
@@ -927,6 +933,56 @@ CommandBinaryBuffer.prototype.setDateTime = function ( dateTime: IDateTime ) {
     this.setUint8(dateTime.year);
 };
 
+CommandBinaryBuffer.prototype.getTariffPlan = function (): ITariffPlan {
+    return {
+        id: this.getUint32(),
+        tariffSet: this.getUint8(),
+        activateYear: this.getUint8(),
+        activateMonth: this.getUint8(),
+        activateDay: this.getUint8(),
+        specialProfilesArraySize: this.getUint8(),
+        seasonProfilesArraySize: this.getUint8(),
+        dayProfilesArraySize: this.getUint8()
+    };
+};
+
+CommandBinaryBuffer.prototype.setTariffPlan = function ( tariffPlan: ITariffPlan ) {
+    this.setUint32(tariffPlan.id);
+    this.setUint8(tariffPlan.tariffSet);
+    this.setUint8(tariffPlan.activateYear);
+    this.setUint8(tariffPlan.activateMonth);
+    this.setUint8(tariffPlan.activateDay);
+    this.setUint8(tariffPlan.specialProfilesArraySize);
+    this.setUint8(tariffPlan.seasonProfilesArraySize);
+    this.setUint8(tariffPlan.dayProfilesArraySize);
+};
+
+CommandBinaryBuffer.prototype.getTimeCorrectionParameters = function (): ITimeCorrectionParameters {
+    return {
+        monthTransitionSummer: this.getUint8(),
+        dateTransitionSummer: this.getUint8(),
+        hoursTransitionSummer: this.getUint8(),
+        hoursCorrectSummer: this.getUint8(),
+        monthTransitionWinter: this.getUint8(),
+        dateTransitionWinter: this.getUint8(),
+        hoursTransitionWinter: this.getUint8(),
+        hoursCorrectWinter: this.getUint8(),
+        isCorrectionNeeded: this.getUint8() === 1
+    };
+};
+
+CommandBinaryBuffer.prototype.setTimeCorrectionParameters = function ( parameters: ITimeCorrectionParameters ) {
+    this.setUint8(parameters.monthTransitionSummer);
+    this.setUint8(parameters.dateTransitionSummer);
+    this.setUint8(parameters.hoursTransitionSummer);
+    this.setUint8(parameters.hoursCorrectSummer);
+    this.setUint8(parameters.monthTransitionWinter);
+    this.setUint8(parameters.dateTransitionWinter);
+    this.setUint8(parameters.hoursTransitionWinter);
+    this.setUint8(parameters.hoursCorrectWinter);
+    this.setUint8(+parameters.isCorrectionNeeded);
+};
+
 
 //     getDate (): IDate {
 //         return {
@@ -956,30 +1012,6 @@ CommandBinaryBuffer.prototype.setDateTime = function ( dateTime: IDateTime ) {
 //     setPackedDate ( date: IDate ) {
 //         this.setUint8((date.year << 1) | ((date.month >> 3) & 0x01));
 //         this.setUint8(((date.month << 5) & 0xe0) | (date.date & 0x1f));
-//     }
-
-//     getTariffPlan (): ITariffPlan {
-//         return {
-//             id: this.getUint32(),
-//             tariffSet: this.getUint8(),
-//             activateYear: this.getUint8(),
-//             activateMonth: this.getUint8(),
-//             activateDay: this.getUint8(),
-//             specialProfilesArraySize: this.getUint8(),
-//             seasonProfilesArraySize: this.getUint8(),
-//             dayProfilesArraySize: this.getUint8()
-//         };
-//     }
-
-//     setTariffPlan ( tariffPlan: ITariffPlan ) {
-//         this.setUint32(tariffPlan.id);
-//         this.setUint8(tariffPlan.tariffSet);
-//         this.setUint8(tariffPlan.activateYear);
-//         this.setUint8(tariffPlan.activateMonth);
-//         this.setUint8(tariffPlan.activateDay);
-//         this.setUint8(tariffPlan.specialProfilesArraySize);
-//         this.setUint8(tariffPlan.seasonProfilesArraySize);
-//         this.setUint8(tariffPlan.dayProfilesArraySize);
 //     }
 
 //     static getDefaultOperatorParameters (): IOperatorParameters {
@@ -1230,32 +1262,6 @@ CommandBinaryBuffer.prototype.setDateTime = function ( dateTime: IDateTime ) {
 //             hoursCorrectWinter: 1,
 //             isCorrectionNeeded: true
 //         };
-//     }
-
-//     getTimeCorrectionParameters (): ITimeCorrectionParameters {
-//         return {
-//             monthTransitionSummer: this.getUint8(),
-//             dateTransitionSummer: this.getUint8(),
-//             hoursTransitionSummer: this.getUint8(),
-//             hoursCorrectSummer: this.getUint8(),
-//             monthTransitionWinter: this.getUint8(),
-//             dateTransitionWinter: this.getUint8(),
-//             hoursTransitionWinter: this.getUint8(),
-//             hoursCorrectWinter: this.getUint8(),
-//             isCorrectionNeeded: this.getUint8() === 1
-//         };
-//     }
-
-//     setTimeCorrectionParameters ( parameters: ITimeCorrectionParameters ) {
-//         this.setUint8(parameters.monthTransitionSummer);
-//         this.setUint8(parameters.dateTransitionSummer);
-//         this.setUint8(parameters.hoursTransitionSummer);
-//         this.setUint8(parameters.hoursCorrectSummer);
-//         this.setUint8(parameters.monthTransitionWinter);
-//         this.setUint8(parameters.dateTransitionWinter);
-//         this.setUint8(parameters.hoursTransitionWinter);
-//         this.setUint8(parameters.hoursCorrectWinter);
-//         this.setUint8(+parameters.isCorrectionNeeded);
 //     }
 
 //     getSaldoParameters (): ISaldoParameters {

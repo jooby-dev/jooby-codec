@@ -32,9 +32,10 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/ActivateRatePlan.md#request)
  */
 
-import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ITariffPlan, TARIFF_PLAN_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import * as types from '../../types.js';
+import CommandBinaryBuffer, {ITariffPlan, ICommandBinaryBuffer, TARIFF_PLAN_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {READ_WRITE} from '../../constants/accessLevels.js';
 
 
 interface IActivateRatePlanParameters {
@@ -51,14 +52,16 @@ interface IActivateRatePlanParameters {
 export const id: types.TCommandId = 0x13;
 export const name: types.TCommandName = 'activateRatePlan';
 export const headerSize = 2;
-
-const COMMAND_BODY_SIZE = 1 + TARIFF_PLAN_SIZE;
+export const maxSize = 1 + TARIFF_PLAN_SIZE;
+export const accessLevel: types.TAccessLevel = READ_WRITE;
 
 export const examples: command.TCommandExamples = {
     'set rate plan request': {
         id,
         name,
         headerSize,
+        maxSize,
+        accessLevel,
         parameters: {
             tariffTable: 0,
             tariffPlan: {
@@ -86,7 +89,14 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IActivateRatePlanParameters => {};
+export const fromBytes = ( data: types.TBytes ): IActivateRatePlanParameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+
+    return {
+        tariffTable: buffer.getUint8(),
+        tariffPlan: buffer.getTariffPlan()
+    };
+};
 
 
 /**
@@ -95,4 +105,12 @@ export const fromBytes = ( data: types.TBytes ): IActivateRatePlanParameters => 
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IActivateRatePlanParameters ): types.TBytes => {};
+export const toBytes = ( parameters: IActivateRatePlanParameters ): types.TBytes => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+
+    // body
+    buffer.setUint8(parameters.tariffTable);
+    buffer.setTariffPlan(parameters.tariffPlan);
+
+    return command.toBytes(id, buffer.data);
+};
