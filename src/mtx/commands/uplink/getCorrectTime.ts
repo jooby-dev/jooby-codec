@@ -7,7 +7,7 @@
  * ```js
  * import * as getCorrectTime from 'jooby-codec/obis-observer/commands/uplink/getCorrectTime.js';
  *
-  * // default parameters
+ * // default parameters
  * const bytes = [0x03, 0x00, 0x03, 0x01, 0x0a, 0x00, 0x04, 0x01, 0x01];
  *
  * // decoded payload
