@@ -26,7 +26,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * []
+ * [19, 12, 8, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/ActivateRatePlan.md#request)
