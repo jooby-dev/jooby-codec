@@ -5,7 +5,7 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getBuildVersion from 'jooby-codec/analog/commands/uplink/getBuildVersion.js';
+ * import * as getBuildVersion from 'jooby-codec/mtx/commands/uplink/getBuildVersion.js';
  *
  * // build version is 2021.09.16/0.0.9
  * const bytes = [0x10, 0x09, 0x15, 0x00, 0x00, 0x09];
@@ -25,7 +25,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetTime2000.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetBuildVersion.md#response)
  */
 
 import * as command from '../../utils/command.js';

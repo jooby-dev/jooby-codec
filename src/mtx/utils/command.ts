@@ -7,6 +7,7 @@ import * as types from '../types.js';
 export interface ICommand {
     id: types.TCommandId,
     name: types.TCommandName,
+    headerSize?: number,
     maxSize: number,
     accessLevel: number,
     parameters?: object,
@@ -41,6 +42,7 @@ export type TCommandExamples = Record<TExampleName, TCommand>;
 export interface ICommandImplementation {
     id: types.TCommandId,
     name: types.TCommandName,
+    headerSize: number,
     maxSize: number,
     accessLevel: types.TAccessLevel,
     examples: TCommandExamples,
