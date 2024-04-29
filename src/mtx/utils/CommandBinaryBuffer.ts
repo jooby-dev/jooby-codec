@@ -12,7 +12,7 @@ import * as bitSet from '../../utils/bitSet.js';
 // import * as DeviceType from './utils/deviceType.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
-// import {IDateTime, ITimeCorrectionParameters} from './utils/dateTime.js';
+import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
 import {DATA_REQUEST} from '../constants/frameTypes.js';
 
 
@@ -837,6 +837,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getDeviceId (): IDeviceId,
     setDeviceId ( {manufacturer, type, year, serial}: IDeviceId )
+
+    getDateTime (): IDateTime,
+    setDateTime ( dateTime: IDateTime )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = true ) {
@@ -900,48 +903,30 @@ CommandBinaryBuffer.prototype.setDeviceId = function ( {manufacturer, type, year
     this.setBytes(getBytesFromHex(serial));
 };
 
+CommandBinaryBuffer.prototype.getDateTime = function (): IDateTime {
+    return {
+        isSummerTime: !!this.getUint8(),
+        seconds: this.getUint8(),
+        minutes: this.getUint8(),
+        hours: this.getUint8(),
+        day: this.getUint8(),
+        date: this.getUint8(),
+        month: this.getUint8(),
+        year: this.getUint8()
+    };
+};
 
-//     getFrameHeader (): IFrameHeader {
-//         return {
-//             type: this.getUint8(),
-//             destination: this.getUint16(),
-//             source: this.getUint16()
-//         };
-//     }
+CommandBinaryBuffer.prototype.setDateTime = function ( dateTime: IDateTime ) {
+    this.setUint8(dateTime.isSummerTime ? 1 : 0);
+    this.setUint8(dateTime.seconds);
+    this.setUint8(dateTime.minutes);
+    this.setUint8(dateTime.hours);
+    this.setUint8(dateTime.day || 0);
+    this.setUint8(dateTime.date);
+    this.setUint8(dateTime.month);
+    this.setUint8(dateTime.year);
+};
 
-//     setFrameHeader ( {
-//         type = defaultFrameHeader.type,
-//         destination = defaultFrameHeader.destination,
-//         source = defaultFrameHeader.source
-//     }: IFrameHeader ) {
-//         this.setUint8(type);
-//         this.setUint16(destination);
-//         this.setUint16(source);
-//     }
-
-//     getDateTime (): IDateTime {
-//         return {
-//             isSummerTime: !!this.getUint8(),
-//             seconds: this.getUint8(),
-//             minutes: this.getUint8(),
-//             hours: this.getUint8(),
-//             day: this.getUint8(),
-//             date: this.getUint8(),
-//             month: this.getUint8(),
-//             year: this.getUint8()
-//         };
-//     }
-
-//     setDateTime ( dateTime: IDateTime ) {
-//         this.setUint8(dateTime.isSummerTime ? 1 : 0);
-//         this.setUint8(dateTime.seconds);
-//         this.setUint8(dateTime.minutes);
-//         this.setUint8(dateTime.hours);
-//         this.setUint8(dateTime.day || 0);
-//         this.setUint8(dateTime.date);
-//         this.setUint8(dateTime.month);
-//         this.setUint8(dateTime.year);
-//     }
 
 //     getDate (): IDate {
 //         return {
