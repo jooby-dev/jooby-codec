@@ -1,41 +1,42 @@
 /**
- * Downlink command to get full date from device.
+ * Downlink command to set the meter displays sorting order.
  *
- * @example
+ * The corresponding downlink command: `SetDisplayParam`.
+ *
+ * @example create command instance from command body hex dump
  * ```js
- * import * as getDateTime from 'jooby-codec/mtx/commands/downlink/getDateTime.js';
+ * import * as setDisplayParam from 'jooby-codec/mtx/commands/uplink/setDisplayParam.js';
  *
- * const bytes = getDateTime.toBytes();
+ * // decoded payload
+ * const command = setDisplayParam.fromBytes();
  *
- * // command binary representation
- * console.log(bytes);
+ * console.log(command.parameters);
  * // output:
- * [7, 0]
+ * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetBuildVersion.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetDisplayParam.md#response)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import {READ_WRITE} from '../../constants/accessLevels.js';
 
-
-export const id: types.TCommandId = 0x07;
-export const name: types.TCommandName = 'getDateTime';
+export const id: types.TCommandId = 0x5d;
+export const name: types.TCommandName = 'setDisplayParam';
 export const headerSize = 2;
 export const maxSize = 0;
-export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const accessLevel: types.TAccessLevel = READ_WRITE;
 
 export const examples: command.TCommandExamples = {
-    'simple request': {
+    'simple response': {
         id,
         name,
         maxSize,
         accessLevel,
         parameters: {},
         bytes: [
-            0x07, 0x00
+            0x5d, 0x00
         ]
     }
 };
@@ -44,7 +45,6 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - only body (without header)
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameters => {
