@@ -51,6 +51,7 @@ export const examples: command.TCommandExamples = {
     'set params with order': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {
@@ -65,6 +66,7 @@ export const examples: command.TCommandExamples = {
     'set params without order': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

@@ -1,6 +1,8 @@
 /**
  * Downlink command to get device identifier.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as getDeviceId from 'jooby-codec/mtx/commands/downlink/getDeviceId.js';

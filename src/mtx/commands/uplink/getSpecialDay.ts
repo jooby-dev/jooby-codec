@@ -42,6 +42,7 @@ export const examples: command.TCommandExamples = {
     'special day response': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

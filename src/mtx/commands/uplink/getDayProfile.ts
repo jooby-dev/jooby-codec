@@ -52,6 +52,7 @@ export const examples: command.TCommandExamples = {
     'full periods response': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {
@@ -71,6 +72,7 @@ export const examples: command.TCommandExamples = {
     'response with 4 periods': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

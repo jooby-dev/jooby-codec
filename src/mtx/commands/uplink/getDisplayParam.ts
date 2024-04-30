@@ -55,6 +55,7 @@ export const examples: command.TCommandExamples = {
     'mode with order': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

@@ -8,7 +8,9 @@ export const nameMap = {};
 
 export const fromBytes = wrappers.getFromBytes(fromBytesMap, nameMap);
 export const toBytes = wrappers.getToBytes(toBytesMap);
-export const toMessage = wrappers.getToMessage(toBytesMap);
+//export const toMessage = wrappers.getToMessage(toBytesMap);
+export const fromFrame = wrappers.getFromFrame(fromBytes);
+export const toFrame = wrappers.getToFrame;
 
 
 // fill maps

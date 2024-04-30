@@ -44,6 +44,7 @@ export const examples: command.TCommandExamples = {
     'get additional display parameters': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {
