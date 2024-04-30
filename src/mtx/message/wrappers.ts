@@ -7,7 +7,8 @@
 import {TBytes} from '../../types.js';
 import {IMessage, IInvalidMessage} from './types.js';
 import {TCommand} from '../utils/command.js';
-import {aes, arrayStuff, arrayUnstuff, calculateCrcBytes} from '../utils/crypto.js';
+import {aes, calculateCrcBytes} from '../utils/crypto.js';
+import {arrayStuff, arrayUnstuff} from '../../utils/frame.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, frameHeaderSize, IFrameHeader, defaultFrameHeader} from '../utils/CommandBinaryBuffer.js';
 import * as accessLevels from '../constants/accessLevels.js';
 import {START_BYTE, STOP_BYTE} from '../../constants/frameAttributes.js';
