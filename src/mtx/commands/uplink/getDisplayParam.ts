@@ -86,11 +86,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( data: types.TBytes ): IGetDisplayParamResponseParameters => {
-    const [displayMode, ...order] = data;
+export const fromBytes = ( bytes: types.TBytes ): IGetDisplayParamResponseParameters => {
+    const [displayMode, ...order] = bytes;
 
     return {displayMode, order};
 };

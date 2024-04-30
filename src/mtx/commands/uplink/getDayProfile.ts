@@ -89,13 +89,13 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( data: types.TBytes ): IGetDayProfileResponseParameters => {
-    const finalByteIndex = data.indexOf(PERIODS_FINAL_BYTE);
+export const fromBytes = ( bytes: types.TBytes ): IGetDayProfileResponseParameters => {
+    const finalByteIndex = bytes.indexOf(PERIODS_FINAL_BYTE);
     // ignore final byte if present
-    const cleanData = finalByteIndex === -1 ? data : data.slice(0, finalByteIndex);
+    const cleanData = finalByteIndex === -1 ? bytes : bytes.slice(0, finalByteIndex);
 
     return {
         periods: [...cleanData].map(CommandBinaryBuffer.getDayProfileFromByte)

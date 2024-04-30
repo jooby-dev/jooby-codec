@@ -77,15 +77,15 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( data: types.TBytes ): IGetBuildVersionResponseParameters => {
-    if ( data.length !== maxSize ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IGetBuildVersionResponseParameters => {
+    if ( bytes.length !== maxSize ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const [date, month, year, n3, n2, n1] = data;
+    const [date, month, year, n3, n2, n1] = bytes;
 
     return {
         date: {

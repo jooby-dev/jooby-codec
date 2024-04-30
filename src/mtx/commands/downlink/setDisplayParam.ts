@@ -82,15 +82,15 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( data: types.TBytes ): ISetDisplayParamParameters => {
-    if ( data.length < 1 || data.length > maxSize ) {
+export const fromBytes = ( bytes: types.TBytes ): ISetDisplayParamParameters => {
+    if ( bytes.length < 1 || bytes.length > maxSize ) {
         throw new Error('Invalid SetDisplayParam data size.');
     }
 
-    const [displayMode, ...order] = data;
+    const [displayMode, ...order] = bytes;
 
     return {displayMode, order};
 };
