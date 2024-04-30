@@ -19,6 +19,7 @@ toBytesMap[commands.getCorrectTime.id] = commands.getCorrectTime.toBytes;
 toBytesMap[commands.getCurrentValues.id] = commands.getCurrentValues.toBytes;
 toBytesMap[commands.getDateTime.id] = commands.getDateTime.toBytes;
 toBytesMap[commands.getDeviceId.id] = commands.getDeviceId.toBytes;
+toBytesMap[commands.getDeviceType.id] = commands.getDeviceType.toBytes;
 toBytesMap[commands.setDateTime.id] = commands.setDateTime.toBytes;
 
 // because of webpack/rollup processing!
@@ -28,6 +29,7 @@ fromBytesMap[commands.getCorrectTime.id] = commands.getCorrectTime.fromBytes;
 fromBytesMap[commands.getCurrentValues.id] = commands.getCurrentValues.fromBytes;
 fromBytesMap[commands.getDateTime.id] = commands.getDateTime.fromBytes;
 fromBytesMap[commands.getDeviceId.id] = commands.getDeviceId.fromBytes;
+fromBytesMap[commands.getDeviceType.id] = commands.getDeviceType.fromBytes;
 fromBytesMap[commands.setDateTime.id] = commands.setDateTime.fromBytes;
 
 nameMap[commands.activateRatePlan.id] = commands.activateRatePlan.name;
@@ -36,4 +38,5 @@ nameMap[commands.getCorrectTime.id] = commands.getCorrectTime.name;
 nameMap[commands.getCurrentValues.id] = commands.getCurrentValues.name;
 nameMap[commands.getDateTime.id] = commands.getDateTime.name;
 nameMap[commands.getDeviceId.id] = commands.getDeviceId.name;
+nameMap[commands.getDeviceType.id] = commands.getDeviceType.name;
 nameMap[commands.setDateTime.id] = commands.setDateTime.name;

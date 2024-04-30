@@ -8,8 +8,8 @@
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
-// import {IDeviceType} from './utils/deviceType.js';
-// import * as DeviceType from './utils/deviceType.js';
+import {IDeviceType} from './deviceType.js';
+import * as DeviceType from './deviceType.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
 import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
@@ -640,7 +640,7 @@ export interface IDeviceId {
     serial: string
 }
 
-// export {IDeviceType};
+export {IDeviceType};
 
 export interface ISaldoParameters {
     /**
@@ -845,7 +845,10 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setTariffPlan ( tariffPlan: ITariffPlan ),
 
     getTimeCorrectionParameters (): ITimeCorrectionParameters,
-    setTimeCorrectionParameters ( parameters: ITimeCorrectionParameters )
+    setTimeCorrectionParameters ( parameters: ITimeCorrectionParameters ),
+
+    getDeviceType (): IDeviceType,
+    setDeviceType ( deviceType: IDeviceType )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -981,6 +984,15 @@ CommandBinaryBuffer.prototype.setTimeCorrectionParameters = function ( parameter
     this.setUint8(parameters.hoursTransitionWinter);
     this.setUint8(parameters.hoursCorrectWinter);
     this.setUint8(+parameters.isCorrectionNeeded);
+};
+
+// https://gitlab.infomir.dev/electric_meters/emdoc/-/blob/master/src/deviceInfo/deviceType.md
+CommandBinaryBuffer.prototype.getDeviceType = function (): IDeviceType {
+    return DeviceType.fromBytes(this.getBytes(9));
+};
+
+CommandBinaryBuffer.prototype.setDeviceType = function ( deviceType: IDeviceType ) {
+    this.setBytes(DeviceType.toBytes(deviceType));
 };
 
 
@@ -1239,15 +1251,6 @@ CommandBinaryBuffer.prototype.setTimeCorrectionParameters = function ( parameter
 //         this.setUint8(specialDay.date);
 //         this.setUint8(specialDay.dayIndex);
 //         this.setUint8(+!specialDay.isPeriodic);
-//     }
-
-//     // https://gitlab.infomir.dev/electric_meters/emdoc/-/blob/master/src/deviceInfo/deviceType.md
-//     getDeviceType (): IDeviceType {
-//         return DeviceType.fromBytes(this.getBytes(9));
-//     }
-
-//     setDeviceType ( deviceType: IDeviceType ) {
-//         this.setBytes(DeviceType.toBytes(deviceType));
 //     }
 
 //     static getDefaultTimeCorrectionParameters (): ITimeCorrectionParameters {
