@@ -2,10 +2,6 @@ import getBytesFromHex from '../../utils/getBytesFromHex.js';
 import {TUint8, TBytes} from '../../types.js';
 
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import * as meterTypes from '../constants/meterTypes.js';
-
-
 export interface IDeviceType {
     /**
      * Device type.
@@ -24,7 +20,7 @@ export interface IDeviceType {
     revision?: TUint8
 
     /**
-     * Meter type from the list of {@link meterTypes | available types}.
+     * Meter type from the list of [available types](../constants/meterTypes.ts).
      *
      * Value           | Name
      * ----------------|------
