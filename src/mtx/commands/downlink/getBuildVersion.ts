@@ -46,12 +46,12 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): command.IEmptyCommandParameters => {
-    if ( data.length !== maxSize ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameters => {
+    if ( bytes.length !== maxSize ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
     // no parameters to decode

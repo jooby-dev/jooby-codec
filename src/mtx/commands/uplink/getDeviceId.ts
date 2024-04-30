@@ -33,14 +33,11 @@ import * as accessLevels from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IDeviceId} from '../../utils/CommandBinaryBuffer.js';
 
 
-const COMMAND_BODY_SIZE = 8;
-
 export const id: types.TCommandId = 0x05;
 export const name: types.TCommandName = 'getDeviceId';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
-export const maxSize = COMMAND_BODY_SIZE;
-
+export const maxSize = 8;
 
 export const examples: command.TCommandExamples = {
     'simple response': {
@@ -66,11 +63,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( data: types.TBytes ): IDeviceId => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IDeviceId => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return buffer.getDeviceId();
 };
@@ -83,14 +80,10 @@ export const fromBytes = ( data: types.TBytes ): IDeviceId => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IDeviceId ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(headerSize + COMMAND_BODY_SIZE);
-
-    // header + size
-    buffer.setUint8(id as number);
-    buffer.setUint8(COMMAND_BODY_SIZE);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
 
     // body
     buffer.setDeviceId(parameters);
 
-    return buffer.data;
+    return command.toBytes(id, buffer.data);
 };

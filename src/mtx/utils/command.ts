@@ -47,9 +47,9 @@ export interface ICommandImplementation {
     accessLevel: types.TAccessLevel,
     examples: TCommandExamples,
 
-    fromBytes ( data: types.TBytes ),
+    fromBytes ( bytes: types.TBytes ),
     toBytes ( parameters?: object ): types.TBytes
 }
 
 
-export const toBytes = ( commandId: number, commandData: types.TBytes = [] ): types.TBytes => [commandId, commandData.length, ...commandData];
+export const toBytes = ( commandId: number, commandBytes: types.TBytes = [] ): types.TBytes => [commandId, commandBytes.length, ...commandBytes];
