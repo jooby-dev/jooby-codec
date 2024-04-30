@@ -845,7 +845,16 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setTariffPlan ( tariffPlan: ITariffPlan ),
 
     getTimeCorrectionParameters (): ITimeCorrectionParameters,
-    setTimeCorrectionParameters ( parameters: ITimeCorrectionParameters )
+    setTimeCorrectionParameters ( parameters: ITimeCorrectionParameters ),
+
+    getDayProfile (): IDayProfile,
+    setDayProfile ( dayProfile: IDayProfile ),
+
+    getSeasonProfile (): ISeasonProfile,
+    setSeasonProfile ( seasonProfile: ISeasonProfile ),
+
+    getSpecialDay (): ISpecialDay,
+    setSpecialDay ( specialDay: ISpecialDay )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -981,6 +990,48 @@ CommandBinaryBuffer.prototype.setTimeCorrectionParameters = function ( parameter
     this.setUint8(parameters.hoursTransitionWinter);
     this.setUint8(parameters.hoursCorrectWinter);
     this.setUint8(+parameters.isCorrectionNeeded);
+};
+
+CommandBinaryBuffer.prototype.getDayProfile = function (): IDayProfile {
+    return CommandBinaryBuffer.getDayProfileFromByte(this.getUint8());
+};
+
+CommandBinaryBuffer.prototype.setDayProfile = function ( dayProfile: IDayProfile ) {
+    this.setUint8(CommandBinaryBuffer.getByteFromDayProfile(dayProfile));
+};
+
+
+CommandBinaryBuffer.prototype.getSeasonProfile = function (): ISeasonProfile {
+    return {
+        month: this.getUint8(),
+        date: this.getUint8(),
+        dayIndexes: Array.from(
+            {length: SEASON_PROFILE_DAYS_NUMBER},
+            () => this.getUint8()
+        )
+    };
+};
+
+CommandBinaryBuffer.prototype.setSeasonProfile = function ( seasonProfile: ISeasonProfile ) {
+    this.setUint8(seasonProfile.month);
+    this.setUint8(seasonProfile.date);
+    seasonProfile.dayIndexes.forEach(value => this.setUint8(value));
+};
+
+CommandBinaryBuffer.prototype.getSpecialDay = function (): ISpecialDay {
+    return {
+        month: this.getUint8(),
+        date: this.getUint8(),
+        dayIndex: this.getUint8(),
+        isPeriodic: this.getUint8() === 0
+    };
+};
+
+CommandBinaryBuffer.prototype.setSpecialDay = function ( specialDay: ISpecialDay ) {
+    this.setUint8(specialDay.month);
+    this.setUint8(specialDay.date);
+    this.setUint8(specialDay.dayIndex);
+    this.setUint8(+!specialDay.isPeriodic);
 };
 
 
@@ -1174,71 +1225,12 @@ CommandBinaryBuffer.prototype.setTimeCorrectionParameters = function ( parameter
 //         this.setUint8(timeCorrectPeriod);
 //     }
 
-//     static getDayProfileFromByte ( value: number ): IDayProfile {
-//         return {
-//             tariff: bitSet.extractBits(value, 2, 1),
-//             isFirstHalfHour: !bitSet.extractBits(value, 1, 3),
-//             hour: bitSet.extractBits(value, 5, 4)
-//         };
-//     }
-
-//     static getByteFromDayProfile ( dayProfile: IDayProfile ): number {
-//         let value = 0;
-
-//         value = bitSet.fillBits(value, 2, 1, dayProfile.tariff);
-//         value = bitSet.fillBits(value, 1, 3, +!dayProfile.isFirstHalfHour);
-//         value = bitSet.fillBits(value, 5, 4, dayProfile.hour);
-
-//         return value;
-//     }
-
-//     getDayProfile (): IDayProfile {
-//         return CommandBinaryBuffer.getDayProfileFromByte(this.getUint8());
-//     }
-
-//     setDayProfile ( dayProfile: IDayProfile ) {
-//         this.setUint8(CommandBinaryBuffer.getByteFromDayProfile(dayProfile));
-//     }
-
 //     static getDefaultSeasonProfile (): ISeasonProfile {
 //         return {
 //             month: 1,
 //             date: 1,
 //             dayIndexes: [0, 0, 0, 0, 0, 0, 0]
 //         };
-//     }
-
-//     getSeasonProfile (): ISeasonProfile {
-//         return {
-//             month: this.getUint8(),
-//             date: this.getUint8(),
-//             dayIndexes: Array.from(
-//                 {length: SEASON_PROFILE_DAYS_NUMBER},
-//                 () => this.getUint8()
-//             )
-//         };
-//     }
-
-//     setSeasonProfile ( seasonProfile: ISeasonProfile ) {
-//         this.setUint8(seasonProfile.month);
-//         this.setUint8(seasonProfile.date);
-//         seasonProfile.dayIndexes.forEach(value => this.setUint8(value));
-//     }
-
-//     getSpecialDay (): ISpecialDay {
-//         return {
-//             month: this.getUint8(),
-//             date: this.getUint8(),
-//             dayIndex: this.getUint8(),
-//             isPeriodic: this.getUint8() === 0
-//         };
-//     }
-
-//     setSpecialDay ( specialDay: ISpecialDay ) {
-//         this.setUint8(specialDay.month);
-//         this.setUint8(specialDay.date);
-//         this.setUint8(specialDay.dayIndex);
-//         this.setUint8(+!specialDay.isPeriodic);
 //     }
 
 //     // https://gitlab.infomir.dev/electric_meters/emdoc/-/blob/master/src/deviceInfo/deviceType.md

@@ -83,14 +83,10 @@ export const fromBytes = ( data: types.TBytes ): IDeviceId => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IDeviceId ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(headerSize + COMMAND_BODY_SIZE);
-
-    // header + size
-    buffer.setUint8(id as number);
-    buffer.setUint8(COMMAND_BODY_SIZE);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
     // body
     buffer.setDeviceId(parameters);
 
-    return buffer.data;
+    return command.toBytes(id, buffer.data);
 };
