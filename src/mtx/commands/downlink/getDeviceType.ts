@@ -1,21 +1,21 @@
 /**
- * Downlink command to get firmware build date and version from device.
+ * Downlink command to get device type.
  *
  * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getBuildVersion from 'jooby-codec/mtx/commands/downlink/getBuildVersion.js';
+ * import * as getDeviceType from 'jooby-codec/mtx/commands/downlink/getDeviceType.js';
  *
- * const bytes = getBuildVersion.toBytes();
+ * const bytes = getDeviceType.toBytes();
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [112, 0]
+ * [4, 0]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetBuildVersion.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDeviceType.md#request)
  */
 
 import * as command from '../../utils/command.js';
@@ -23,8 +23,8 @@ import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x70;
-export const name: types.TCommandName = 'getBuildVersion';
+export const id: types.TCommandId = 0x04;
+export const name: types.TCommandName = 'getDeviceType';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 0;
@@ -37,7 +37,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x70, 0x00
+            0x04, 0x00
         ]
     }
 };
@@ -46,12 +46,12 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - only body (without header)
+ * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
+export const fromBytes = ( data: types.TBytes ): command.IEmptyCommandParameters => {
+    if ( data.length !== maxSize ) {
+        throw new Error(`Wrong buffer size: ${data.length}.`);
     }
 
     // no parameters to decode

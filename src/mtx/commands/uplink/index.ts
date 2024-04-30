@@ -16,3 +16,4 @@ export * as getSeasonProfile from './getSeasonProfile.js';
 export * as getSpecialDay from './getSpecialDay.js';
 export * as setDateTime from './setDateTime.js';
 export * as setDisplayParam from './setDisplayParam.js';
+export * as getDeviceType from './getDeviceType.js';

@@ -23,6 +23,7 @@ toBytesMap[commands.getDeviceId.id] = commands.getDeviceId.toBytes;
 toBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.toBytes;
 toBytesMap[commands.getSeasonProfile.id] = commands.getSeasonProfile.toBytes;
 toBytesMap[commands.getSpecialDay.id] = commands.getSpecialDay.toBytes;
+toBytesMap[commands.getDeviceType.id] = commands.getDeviceType.toBytes;
 toBytesMap[commands.setDateTime.id] = commands.setDateTime.toBytes;
 toBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.toBytes;
 
@@ -37,6 +38,7 @@ fromBytesMap[commands.getDeviceId.id] = commands.getDeviceId.fromBytes;
 fromBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.fromBytes;
 fromBytesMap[commands.getSeasonProfile.id] = commands.getSeasonProfile.fromBytes;
 fromBytesMap[commands.getSpecialDay.id] = commands.getSpecialDay.fromBytes;
+fromBytesMap[commands.getDeviceType.id] = commands.getDeviceType.fromBytes;
 fromBytesMap[commands.setDateTime.id] = commands.setDateTime.fromBytes;
 fromBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.fromBytes;
 
@@ -50,5 +52,6 @@ nameMap[commands.getDeviceId.id] = commands.getDeviceId.name;
 nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;
 nameMap[commands.getSeasonProfile.id] = commands.getSeasonProfile.name;
 nameMap[commands.getSpecialDay.id] = commands.getSpecialDay.name;
+nameMap[commands.getDeviceType.id] = commands.getDeviceType.name;
 nameMap[commands.setDateTime.id] = commands.setDateTime.name;
 nameMap[commands.setDisplayParam.id] = commands.setDisplayParam.name;
