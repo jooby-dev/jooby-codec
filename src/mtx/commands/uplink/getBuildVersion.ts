@@ -56,6 +56,7 @@ export const examples: command.TCommandExamples = {
     '2021.09.16/0.0.9': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

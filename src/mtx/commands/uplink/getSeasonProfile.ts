@@ -41,6 +41,7 @@ export const examples: command.TCommandExamples = {
     'simple response': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

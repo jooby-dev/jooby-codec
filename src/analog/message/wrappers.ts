@@ -12,26 +12,26 @@ import calculateLrc from '../../utils/calculateLrc.js';
 const HEADER_MAX_SIZE = 3;
 
 
-export const getFromBytes = ( fromBytesMap, nameMap ) => ( data: TBytes = [], config?: ICommandConfig ): IMessage | IInvalidMessage => {
+export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], config?: ICommandConfig ): IMessage | IInvalidMessage => {
     const commands: Array<TCommand> = [];
     const message: IMessage = {
         commands,
-        bytes: data,
+        bytes,
         lrc: {expected: undefined, actual: 0}
     };
     let processedBytes = 0;
     let expectedLrc: number;
     let actualLrc: number;
 
-    if ( !data.length ) {
+    if ( !bytes.length ) {
         return message;
     }
 
     // process the data except the last byte
     do {
-        const headerInfo = header.fromBytes(data.slice(processedBytes, processedBytes + HEADER_MAX_SIZE));
-        const headerData = data.slice(processedBytes, processedBytes + headerInfo.headerSize);
-        const bodyData = data.slice(processedBytes + headerInfo.headerSize, processedBytes + headerInfo.headerSize + headerInfo.commandSize);
+        const headerInfo = header.fromBytes(bytes.slice(processedBytes, processedBytes + HEADER_MAX_SIZE));
+        const headerData = bytes.slice(processedBytes, processedBytes + headerInfo.headerSize);
+        const bodyData = bytes.slice(processedBytes + headerInfo.headerSize, processedBytes + headerInfo.headerSize + headerInfo.commandSize);
         const command: TCommand = {
             id: headerInfo.commandId,
             name: nameMap[headerInfo.commandId],
@@ -55,16 +55,16 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( data: TBytes = [], co
                 error: error.message
             });
         }
-    } while ( processedBytes < data.length - 1 );
+    } while ( processedBytes < bytes.length - 1 );
 
     // check the last byte left unprocessed
-    if ( data.length - processedBytes === 1 ) {
+    if ( bytes.length - processedBytes === 1 ) {
         // LRC is present
-        expectedLrc = data[data.length - 1];
-        actualLrc = calculateLrc(data.slice(0, -1));
+        expectedLrc = bytes[bytes.length - 1];
+        actualLrc = calculateLrc(bytes.slice(0, -1));
     } else {
         // LRC is absent
-        actualLrc = calculateLrc(data);
+        actualLrc = calculateLrc(bytes);
     }
 
     message.lrc.actual = actualLrc;

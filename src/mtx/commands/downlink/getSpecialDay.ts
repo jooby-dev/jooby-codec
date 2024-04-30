@@ -54,6 +54,7 @@ export const examples: command.TCommandExamples = {
     'request for passive tariff table A+': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

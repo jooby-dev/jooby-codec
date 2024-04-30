@@ -42,6 +42,7 @@ export const examples: command.TCommandExamples = {
     'type 1': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {
@@ -57,6 +58,7 @@ export const examples: command.TCommandExamples = {
     'type 2': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {
