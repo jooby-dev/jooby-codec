@@ -1,38 +1,34 @@
 /**
- * Uplink command to provide the date and parameters of tariff plan activation.
- *
- * @packageDocumentation
+ * Downlink command to turn the device relay on.
  *
  * @example
  * ```js
- * import * as activateRatePlan from 'jooby-codec/mtx/commands/uplink/activateRatePlan.js';
+ * import * as turnRelayOn from 'jooby-codec/mtx/commands/downlink/turnRelayOn.js';
  *
- * // empty response
- * const bytes = [];
- * const parameters = activateRatePlan.fromBytes(bytes);
+ * const bytes = turnRelayOn.toBytes();
  *
- * // this command doesn't have any parameters
- * console.log(parameters);
+ * // command binary representation
+ * console.log(bytes);
  * // output:
- * {}
+ * [24, 0]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/ActivateRatePlan.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/TurnRelayOn.md#request)
  */
 
-import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
+import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x13;
-export const name: types.TCommandName = 'activateRatePlan';
+export const id: types.TCommandId = 0x18;
+export const name: types.TCommandName = 'turnRelayOn';
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
 
 export const examples: command.TCommandExamples = {
-    'simple response': {
+    'simple request': {
         id,
         name,
         headerSize,
@@ -40,7 +36,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x13, 0x00
+            0x18, 0x00
         ]
     }
 };
@@ -57,6 +53,7 @@ export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameter
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
+    // no parameters to decode
     return {};
 };
 
