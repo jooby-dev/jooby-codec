@@ -1,6 +1,8 @@
 /**
  * Downlink command to get full date from device.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as getDateTime from 'jooby-codec/mtx/commands/downlink/getDateTime.js';

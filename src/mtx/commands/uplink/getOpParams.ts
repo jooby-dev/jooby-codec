@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `GetOpParams`.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as getOpParams from 'jooby-codec/obis-observer/commands/uplink/getOpParams.js';
@@ -223,8 +225,6 @@ export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
  */
 export const toBytes = ( parameters: IOperatorParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
-
-    console.log({parameters});
 
     buffer.setOperatorParameters(parameters);
 

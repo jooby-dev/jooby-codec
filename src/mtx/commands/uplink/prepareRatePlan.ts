@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `PrepareRatePlan`.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as prepareRatePlan from 'jooby-codec/mtx/commands/uplink/prepareRatePlan.js';

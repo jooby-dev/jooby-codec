@@ -1,6 +1,8 @@
 /**
  * Downlink command to get the meter displays sorting order.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as getDisplayParam from 'jooby-codec/mtx/commands/downlink/getDisplayParam.js';

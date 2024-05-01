@@ -66,7 +66,7 @@ export const maxSize = 19;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 
 export const examples: command.TCommandExamples = {
-    'simple request': {
+    'simple response': {
         id,
         name,
         headerSize,

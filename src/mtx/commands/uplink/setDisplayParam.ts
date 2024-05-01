@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `SetDisplayParam`.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as setDisplayParam from 'jooby-codec/mtx/commands/uplink/setDisplayParam.js';

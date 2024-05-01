@@ -1,6 +1,8 @@
 /**
  * Downlink command to get special day information for the given tariff table.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as getSpecialDay from 'jooby-codec/mtx/commands/downlink/getSpecialDay.js';

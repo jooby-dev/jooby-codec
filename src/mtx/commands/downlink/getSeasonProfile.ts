@@ -1,6 +1,8 @@
 /**
  * Downlink command to get season profile information for the given tariff table.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as getSeasonProfile from 'jooby-codec/mtx/commands/downlink/getSeasonProfile.js';

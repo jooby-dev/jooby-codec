@@ -1,6 +1,8 @@
 /**
  * Downlink command to set day profile for tariff plan.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as setDayProfile from 'jooby-codec/mtx/commands/downlink/setDayProfile.js';
@@ -98,6 +100,7 @@ export const examples: command.TCommandExamples = {
     'set day profile with max periods': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

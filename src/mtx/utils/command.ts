@@ -6,7 +6,7 @@ import * as types from '../types.js';
  */
 export interface ICommand {
     id: types.TCommandId,
-    name: types.TCommandName,
+    name?: types.TCommandName,
     headerSize?: number,
     maxSize?: number,
     accessLevel?: number,
