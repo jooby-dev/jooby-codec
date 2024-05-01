@@ -26,7 +26,7 @@ import {READ_WRITE} from '../../constants/accessLevels.js';
 
 
 export const id: types.TCommandId = 0x13;
-export const name: types.TCommandName = 'activateRatePlanResponse';
+export const name: types.TCommandName = 'activateRatePlan';
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

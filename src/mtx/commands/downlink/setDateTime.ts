@@ -43,6 +43,7 @@ export const examples: command.TCommandExamples = {
     'time: 2024.02.19 18:31:55': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

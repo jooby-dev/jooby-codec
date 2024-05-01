@@ -55,6 +55,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         maxSize,
+        headerSize,
         accessLevel,
         parameters: {
             tariffTable: 0,

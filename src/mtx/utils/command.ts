@@ -8,8 +8,8 @@ export interface ICommand {
     id: types.TCommandId,
     name: types.TCommandName,
     headerSize?: number,
-    maxSize: number,
-    accessLevel: number,
+    maxSize?: number,
+    accessLevel?: number,
     parameters?: object,
     bytes?: types.TBytes
 }
