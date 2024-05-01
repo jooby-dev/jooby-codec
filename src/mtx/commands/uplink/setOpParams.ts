@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `SetOpParams`.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as setOpParams from 'jooby-codec/mtx/commands/uplink/setOpParams.js';

@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `TurnRelayOn`.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as turnRelayOn from 'jooby-codec/mtx/commands/uplink/turnRelayOn.js';

@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `SetDayProfile`.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as setDayProfile from 'jooby-codec/mtx/commands/uplink/setDayProfile.js';

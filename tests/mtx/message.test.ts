@@ -10,7 +10,7 @@ import * as downlinkCommands from '../../src/mtx/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/mtx/commands/uplink/index.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
-//import * as accessLevels from '../../src/mtx/constants/accessLevels.js';
+import * as accessLevels from '../../src/mtx/constants/accessLevels.js';
 import * as frameTypes from '../../src/mtx/constants/frameTypes.js';
 //import * as meterTypes from '../../src/mtx/constants/meterTypes.js';
 //import * as directions from '../../src/constants/directions.js';
@@ -174,22 +174,68 @@ const downlinkMessages: TMessageList = [
         source: 0xffff,
         destination: 0xaaaa
     },
-    // {
-    //     name: 'getOpParams',
-    //     hex: '0a 13 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22',
-    //     frameHex: '7e 50 aa aa ff ff 0a 7d 33 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22 a0 c6 7e',
-    //     messageId: 10,
-    //     accessLevel: downlinkCommands.GetOpParams.accessLevel,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.GetOpParams()
-    //     ],
-    //     lrc: 0x58,
-    //     crc: 0xa0c6,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
+    {
+        name: 'getEnergyCurrent',
+        hex: '0a 13 76 59 e7 62 c0 67 e8 39 0e ed b1 5f e6 11 c0 aa',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 76 59 e7 62 c0 67 e8 39 0e ed b1 5f e6 7d 31 c0 aa 71 1e 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getEnergyCurrent.accessLevel,
+        commands: [
+            downlinkCommands.getEnergyCurrent.examples['simple request'],
+            downlinkCommands.getEnergyCurrent.examples['get A+ energy']
+        ],
+        lrc: 0x46,
+        crc: 0x711e,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEnergyDay',
+        hex: '0a 13 68 a5 76 4f 3b ee b4 d7 2e 2a 7c f6 ee 41 92 06',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 68 a5 76 4f 3b ee b4 d7 2e 2a 7c f6 ee 41 92 06 a6 71 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getEnergyDay.accessLevel,
+        commands: [
+            downlinkCommands.getEnergyDay.examples['request day values for 2024.03.22 00:00:00 GMT'],
+            downlinkCommands.getEnergyDay.examples['request day values with energy type for 2024.03.22 00:00:00 GMT']
+        ],
+        lrc: 0x40,
+        crc: 0xa671,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEnergyDayPrevious',
+        hex: '0a 13 cc 4b 4e f3 a2 5d e3 e4 05 cc ad 32 60 01 4a ad',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 cc 4b 4e f3 a2 5d e3 e4 05 cc ad 32 60 01 4a ad da a9 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getEnergyDayPrevious.accessLevel,
+        commands: [
+            downlinkCommands.getEnergyDayPrevious.examples['simple request']
+        ],
+        lrc: 0x45,
+        crc: 0xdaa9,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getOpParams',
+        hex: '0a 13 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22 a0 c6 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getOpParams.accessLevel,
+        commands: [
+            downlinkCommands.getOpParams.examples['simple request']
+        ],
+        lrc: 0x58,
+        crc: 0xa0c6,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
     // {
     //     name: 'getRatePlanInfo',
     //     hex: '0a 13 f1 f3 f2 80 ae 7a 4d 0b 50 a7 fa 3e 0d 6c 44 33',
@@ -286,25 +332,21 @@ const downlinkMessages: TMessageList = [
     //     source: 0xffff,
     //     destination: 0xaaaa
     // },
-    // {
-    //     name: 'prepareRatePlan',
-    //     hex: '0a 12 de 91 0a aa 47 cd 42 c6 e1 05 ff 7e ca 61 55 97',
-    //     frameHex: '7e 50 aa aa ff ff 0a 12 de 91 0a aa 47 cd 42 c6 e1 05 ff 7d 5e ca 61 55 97 55 96 7e',
-    //     messageId: 10,
-    //     accessLevel: downlinkCommands.PrepareRatePlan.accessLevel,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.PrepareRatePlan({
-    //             tariffTable: 0,
-    //             id: 987654321
-    //         })
-    //     ],
-    //     lrc: 0x6b,
-    //     crc: 0x5596,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
+    {
+        name: 'prepareRatePlan',
+        hex: '0a 12 de 91 0a aa 47 cd 42 c6 e1 05 ff 7e ca 61 55 97',
+        frameHex: '7e 50 aa aa ff ff 0a 12 de 91 0a aa 47 cd 42 c6 e1 05 ff 7d 5e ca 61 55 97 55 96 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.prepareRatePlan.accessLevel,
+        commands: [
+            downlinkCommands.prepareRatePlan.examples['prepare rate plan request']
+        ],
+        lrc: 0x6b,
+        crc: 0x5596,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
     // {
     //     name: 'runTariffPlan',
     //     hex: '0a 12 b4 52 a3 9e 75 02 fd 91 7f ec 66 c1 c1 8b ec 53',
@@ -404,60 +446,36 @@ const downlinkMessages: TMessageList = [
         source: 0xffff,
         destination: 0xaaaa
     },
-    // {
-    //     name: 'setDayProfile (4 periods)',
-    //     hex: '0a 12 4f e8 4c 59 76 3d b5 fb dd dd 6d f3 8d 0b 69 b8',
-    //     frameHex: '7e 50 aa aa ff ff 0a 12 4f e8 4c 59 76 3d b5 fb dd dd 6d f3 8d 0b 69 b8 92 76 7e',
-    //     messageId: 10,
-    //     accessLevel: downlinkCommands.SetDayProfile.accessLevel,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.SetDayProfile({
-    //             tariffTable: 0,
-    //             index: 5,
-    //             periods: [
-    //                 {tariff: 0, isFirstHalfHour: true, hour: 2},
-    //                 {tariff: 1, isFirstHalfHour: false, hour: 3},
-    //                 {tariff: 2, isFirstHalfHour: true, hour: 4},
-    //                 {tariff: 3, isFirstHalfHour: false, hour: 5}
-    //             ]
-    //         })
-    //     ],
-    //     lrc: 0xaa,
-    //     crc: 0x9276,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
-    // {
-    //     name: 'setDayProfile (max periods)',
-    //     hex: '0a 12 6d 4b 7a 82 06 2a de a1 79 ff 49 9b a9 c4 cc b4',
-    //     frameHex: '7e 50 aa aa ff ff 0a 12 6d 4b 7a 82 06 2a de a1 79 ff 49 9b a9 c4 cc b4 49 70 7e',
-    //     messageId: 10,
-    //     accessLevel: downlinkCommands.SetDayProfile.accessLevel,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.SetDayProfile({
-    //             tariffTable: 0,
-    //             index: 3,
-    //             periods: [
-    //                 {tariff: 0, isFirstHalfHour: true, hour: 2},
-    //                 {tariff: 1, isFirstHalfHour: false, hour: 3},
-    //                 {tariff: 2, isFirstHalfHour: true, hour: 4},
-    //                 {tariff: 3, isFirstHalfHour: false, hour: 5},
-    //                 {tariff: 0, isFirstHalfHour: true, hour: 6},
-    //                 {tariff: 1, isFirstHalfHour: false, hour: 7},
-    //                 {tariff: 2, isFirstHalfHour: false, hour: 8},
-    //                 {tariff: 3, isFirstHalfHour: true, hour: 9}
-    //             ]
-    //         })
-    //     ],
-    //     lrc: 0x5e,
-    //     crc: 0x4970,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
+    {
+        name: 'setDayProfile (4 periods)',
+        hex: '0a 12 4f e8 4c 59 76 3d b5 fb dd dd 6d f3 8d 0b 69 b8',
+        frameHex: '7e 50 aa aa ff ff 0a 12 4f e8 4c 59 76 3d b5 fb dd dd 6d f3 8d 0b 69 b8 92 76 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.setDayProfile.accessLevel,
+        commands: [
+            downlinkCommands.setDayProfile.examples['set day profile with 4 periods']
+        ],
+        lrc: 0xaa,
+        crc: 0x9276,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'setDayProfile (max periods)',
+        hex: '0a 12 6d 4b 7a 82 06 2a de a1 79 ff 49 9b a9 c4 cc b4',
+        frameHex: '7e 50 aa aa ff ff 0a 12 6d 4b 7a 82 06 2a de a1 79 ff 49 9b a9 c4 cc b4 49 70 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.setDayProfile.accessLevel,
+        commands: [
+            downlinkCommands.setDayProfile.examples['set day profile with max periods']
+        ],
+        lrc: 0x5e,
+        crc: 0x4970,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
     {
         name: 'setDisplayParam',
         hex: '0a 12 dc d4 6d 81 98 a0 02 26 30 74 c9 64 ba f8 55 1c',
@@ -472,23 +490,22 @@ const downlinkMessages: TMessageList = [
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
-    }
-    // {
-    //     name: 'setOpParams',
-    //     hex: '0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75',
-    //     frameHex: '7e 50 aa aa ff ff 0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d 5d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75 36 b9 7e',
-    //     messageId: 10,
-    //     accessLevel: downlinkCommands.SetOpParams.accessLevel,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.SetOpParams(CommandBinaryBuffer.getDefaultOperatorParameters())
-    //     ],
-    //     lrc: 0x7b,
-    //     crc: 0x36b9,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
+    },
+    {
+        name: 'setOpParams',
+        hex: '0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75',
+        frameHex: '7e 50 aa aa ff ff 0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d 5d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75 36 b9 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.setOpParams.accessLevel,
+        commands: [
+            downlinkCommands.setOpParams.examples['set default operator parameters request']
+        ],
+        lrc: 0x7b,
+        crc: 0x36b9,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
     // {
     //     name: 'setSaldo',
     //     hex: '0a 12 84 7a 49 26 56 ad 85 d8 fb ce 99 fb e8 09 62 92 14 37 ef 69 d6 c4 3e e6 00 9a b5 21 fc 27 2b c2',
@@ -541,177 +558,149 @@ const downlinkMessages: TMessageList = [
     //     source: 0xffff,
     //     destination: 0xaaaa
     // },
-    // {
-    //     name: 'setSeasonProfile (default)',
-    //     hex: '0a 12 93 31 26 0c b6 37 9b d4 7a 77 9c 82 9c 73 71 eb',
-    //     frameHex: '7e 50 aa aa ff ff 0a 12 93 31 26 0c b6 37 9b d4 7a 77 9c 82 9c 73 71 eb fd eb 7e',
-    //     messageId: 10,
-    //     accessLevel: downlinkCommands.SetSeasonProfile.accessLevel,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.SetSeasonProfile({
-    //             tariffTable: 1,
-    //             index: 8,
-    //             month: 1,
-    //             date: 1,
-    //             dayIndexes: [0, 0, 0, 0, 0, 0, 0]
-    //         })
-    //     ],
-    //     lrc: 0x54,
-    //     crc: 0xfdeb,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
-    // {
-    //     name: 'setSeasonProfile',
-    //     hex: '0a 12 20 20 65 6d 84 7d 8d 08 fa d6 da c7 ed 73 6a 79',
-    //     frameHex: '7e 50 aa aa ff ff 0a 12 20 20 65 6d 84 7d 5d 8d 08 fa d6 da c7 ed 73 6a 79 fa cb 7e',
-    //     messageId: 10,
-    //     accessLevel: downlinkCommands.SetSeasonProfile.accessLevel,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.SetSeasonProfile({
-    //             tariffTable: 0,
-    //             index: 2,
-    //             month: 5,
-    //             date: 9,
-    //             dayIndexes: [0, 1, 2, 3, 4, 5, 6]
-    //         })
-    //     ],
-    //     lrc: 0x54,
-    //     crc: 0xfacb,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
-    // {
-    //     name: 'setSpecialDay',
-    //     hex: '0a 12 4c 2a 8a fc f5 5e b0 15 08 94 35 d1 2a 03 54 32',
-    //     frameHex: '7e 50 aa aa ff ff 0a 12 4c 2a 8a fc f5 5e b0 15 08 94 35 d1 2a 03 54 32 55 f4 7e',
-    //     messageId: 10,
-    //     accessLevel: downlinkCommands.SetSpecialDay.accessLevel,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.SetSpecialDay({
-    //             tariffTable: 1,
-    //             index: 5,
-    //             month: 1,
-    //             date: 9,
-    //             dayIndex: 3,
-    //             isPeriodic: true
-    //         })
-    //     ],
-    //     lrc: 0x5c,
-    //     crc: 0x55f4,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
-    // {
-    //     name: 'turnRelayOff',
-    //     hex: '0a 12 9d 81 66 34 ec 71 c4 62 af 9f 69 f6 c9 eb e8 08',
-    //     frameHex: '7e 50 aa aa ff ff 0a 12 9d 81 66 34 ec 71 c4 62 af 9f 69 f6 c9 eb e8 08 cb 7f 7e',
-    //     messageId: 10,
-    //     accessLevel: downlinkCommands.TurnRelayOff.accessLevel,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.TurnRelayOff()
-    //     ],
-    //     lrc: 0x5e,
-    //     crc: 0xcb7f,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
-    // {
-    //     name: 'turnRelayOn',
-    //     hex: '0a 12 0d 8d 21 54 75 8a 37 a0 21 fa cd a3 c3 f2 00 4b',
-    //     frameHex: '7e 50 aa aa ff ff 0a 12 0d 8d 21 54 75 8a 37 a0 21 fa cd a3 c3 f2 00 4b d2 62 7e',
-    //     messageId: 10,
-    //     accessLevel: downlinkCommands.TurnRelayOn.accessLevel,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.TurnRelayOn()
-    //     ],
-    //     lrc: 0x5f,
-    //     crc: 0xd262,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
-    // {
-    //     name: 'two read-only encrypted commands',
-    //     hex: '0a 13 66 82 dd f1 e5 58 9b 25 8f c4 dc 28 fc 87 ed 14',
-    //     frameHex: '7e 50 a1 a1 f1 f1 0a 7d 33 66 82 dd f1 e5 58 9b 25 8f c4 dc 28 fc 87 ed 14 62 d8 7e',
-    //     messageId: 10,
-    //     accessLevel: accessLevels.READ_ONLY,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.TurnRelayOn(),
-    //         new downlinkCommands.TurnRelayOff()
-    //     ],
-    //     lrc: 0x47,
-    //     crc: 0x62d8,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xf1f1,
-    //     destination: 0xa1a1
-    // },
-    // {
-    //     name: 'many read-only encrypted commands',
-    //     hex: '0a 13 40 3c 61 2c e6 56 3e d5 b8 f1 26 62 2a a7 e1 66 be 89 ba 1c 74 fa 1d 50 af eb 39 5f fe 24 27 bd',
-    //     frameHex: '7e 50 a1 a1 f1 f1 0a 7d 33 40 3c 61 2c e6 56 3e d5 b8 f1 26 62 2a a7 e1 66 be 89 ba 1c 74 fa 1d 50 af eb 39 5f fe 24 27 bd fc 35 7e',
-    //     messageId: 10,
-    //     accessLevel: accessLevels.READ_ONLY,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.TurnRelayOn(),
-    //         new downlinkCommands.TurnRelayOn(),
-    //         new downlinkCommands.TurnRelayOn(),
-    //         new downlinkCommands.TurnRelayOn(),
-    //         new downlinkCommands.TurnRelayOn(),
-    //         new downlinkCommands.TurnRelayOn(),
-    //         new downlinkCommands.TurnRelayOn()
-    //     ],
-    //     lrc: 0x5e,
-    //     crc: 0xfc35,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xf1f1,
-    //     destination: 0xa1a1
-    // },
-    // {
-    //     name: 'one unencrypted command',
-    //     hex: '0b 10 10 18 00 00 5d',
-    //     frameHex: '7e 50 a2 a3 f2 f3 0b 10 10 18 00 00 5d 3c d4 7e',
-    //     messageId: 11,
-    //     accessLevel: accessLevels.UNENCRYPTED,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.TurnRelayOn()
-    //     ],
-    //     lrc: 0x5d,
-    //     crc: 0x3cd4,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xf2f3,
-    //     destination: 0xa2a3
-    // },
-    // {
-    //     name: 'two unencrypted commands',
-    //     hex: '0b 10 10 18 00 19 00 00 44',
-    //     frameHex: '7e 50 a3 a4 f3 f4 0b 10 10 18 00 19 00 00 44 c3 d4 7e',
-    //     messageId: 11,
-    //     accessLevel: accessLevels.UNENCRYPTED,
-    //     direction: directions.DOWNLINK,
-    //     commands: [
-    //         new downlinkCommands.TurnRelayOn(),
-    //         new downlinkCommands.TurnRelayOff()
-    //     ],
-    //     lrc: 0x44,
-    //     crc: 0xc3d4,
-    //     frameType: frameTypes.DATA_REQUEST,
-    //     source: 0xf3f4,
-    //     destination: 0xa3a4
-    // }
+    {
+        name: 'setSeasonProfile (default)',
+        hex: '0a 12 93 31 26 0c b6 37 9b d4 7a 77 9c 82 9c 73 71 eb',
+        frameHex: '7e 50 aa aa ff ff 0a 12 93 31 26 0c b6 37 9b d4 7a 77 9c 82 9c 73 71 eb fd eb 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.setSeasonProfile.accessLevel,
+        commands: [
+            downlinkCommands.setSeasonProfile.examples['set default season profile']
+        ],
+        lrc: 0x54,
+        crc: 0xfdeb,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'setSeasonProfile',
+        hex: '0a 12 20 20 65 6d 84 7d 8d 08 fa d6 da c7 ed 73 6a 79',
+        frameHex: '7e 50 aa aa ff ff 0a 12 20 20 65 6d 84 7d 5d 8d 08 fa d6 da c7 ed 73 6a 79 fa cb 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.setSeasonProfile.accessLevel,
+        commands: [
+            downlinkCommands.setSeasonProfile.examples['set some season profile']
+        ],
+        lrc: 0x54,
+        crc: 0xfacb,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'setSpecialDay',
+        hex: '0a 12 4c 2a 8a fc f5 5e b0 15 08 94 35 d1 2a 03 54 32',
+        frameHex: '7e 50 aa aa ff ff 0a 12 4c 2a 8a fc f5 5e b0 15 08 94 35 d1 2a 03 54 32 55 f4 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.setSpecialDay.accessLevel,
+        commands: [
+            downlinkCommands.setSpecialDay.examples['set special day']
+        ],
+        lrc: 0x5c,
+        crc: 0x55f4,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'turnRelayOff',
+        hex: '0a 12 9d 81 66 34 ec 71 c4 62 af 9f 69 f6 c9 eb e8 08',
+        frameHex: '7e 50 aa aa ff ff 0a 12 9d 81 66 34 ec 71 c4 62 af 9f 69 f6 c9 eb e8 08 cb 7f 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.turnRelayOff.accessLevel,
+        commands: [
+            downlinkCommands.turnRelayOff.examples['simple request']
+        ],
+        lrc: 0x5e,
+        crc: 0xcb7f,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'turnRelayOn',
+        hex: '0a 12 0d 8d 21 54 75 8a 37 a0 21 fa cd a3 c3 f2 00 4b',
+        frameHex: '7e 50 aa aa ff ff 0a 12 0d 8d 21 54 75 8a 37 a0 21 fa cd a3 c3 f2 00 4b d2 62 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.turnRelayOn.accessLevel,
+        commands: [
+            downlinkCommands.turnRelayOn.examples['simple request']
+        ],
+        lrc: 0x5f,
+        crc: 0xd262,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'two read-only encrypted commands',
+        hex: '0a 13 66 82 dd f1 e5 58 9b 25 8f c4 dc 28 fc 87 ed 14',
+        frameHex: '7e 50 a1 a1 f1 f1 0a 7d 33 66 82 dd f1 e5 58 9b 25 8f c4 dc 28 fc 87 ed 14 62 d8 7e',
+        messageId: 10,
+        accessLevel: accessLevels.READ_ONLY,
+        commands: [
+            downlinkCommands.turnRelayOn.examples['simple request'],
+            downlinkCommands.turnRelayOff.examples['simple request']
+        ],
+        lrc: 0x47,
+        crc: 0x62d8,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xf1f1,
+        destination: 0xa1a1
+    },
+    {
+        name: 'many read-only encrypted commands',
+        hex: '0a 13 40 3c 61 2c e6 56 3e d5 b8 f1 26 62 2a a7 e1 66 be 89 ba 1c 74 fa 1d 50 af eb 39 5f fe 24 27 bd',
+        frameHex: '7e 50 a1 a1 f1 f1 0a 7d 33 40 3c 61 2c e6 56 3e d5 b8 f1 26 62 2a a7 e1 66 be 89 ba 1c 74 fa 1d 50 af eb 39 5f fe 24 27 bd fc 35 7e',
+        messageId: 10,
+        accessLevel: accessLevels.READ_ONLY,
+        commands: [
+            downlinkCommands.turnRelayOn.examples['simple request'],
+            downlinkCommands.turnRelayOn.examples['simple request'],
+            downlinkCommands.turnRelayOn.examples['simple request'],
+            downlinkCommands.turnRelayOn.examples['simple request'],
+            downlinkCommands.turnRelayOn.examples['simple request'],
+            downlinkCommands.turnRelayOn.examples['simple request'],
+            downlinkCommands.turnRelayOn.examples['simple request']
+        ],
+        lrc: 0x5e,
+        crc: 0xfc35,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xf1f1,
+        destination: 0xa1a1
+    },
+    {
+        name: 'one unencrypted command',
+        hex: '0b 10 10 18 00 00 5d',
+        frameHex: '7e 50 a2 a3 f2 f3 0b 10 10 18 00 00 5d 3c d4 7e',
+        messageId: 11,
+        accessLevel: accessLevels.UNENCRYPTED,
+        commands: [
+            downlinkCommands.turnRelayOn.examples['simple request']
+        ],
+        lrc: 0x5d,
+        crc: 0x3cd4,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xf2f3,
+        destination: 0xa2a3
+    },
+    {
+        name: 'two unencrypted commands',
+        hex: '0b 10 10 18 00 19 00 00 44',
+        frameHex: '7e 50 a3 a4 f3 f4 0b 10 10 18 00 19 00 00 44 c3 d4 7e',
+        messageId: 11,
+        accessLevel: accessLevels.UNENCRYPTED,
+        commands: [
+            downlinkCommands.turnRelayOn.examples['simple request'],
+            downlinkCommands.turnRelayOff.examples['simple request']
+        ],
+        lrc: 0x44,
+        crc: 0xc3d4,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xf3f4,
+        destination: 0xa3a4
+    }
 ];
 
 const uplinkMessages: TMessageList = [
@@ -730,25 +719,6 @@ const uplinkMessages: TMessageList = [
         source: 0xffff,
         destination: 0xaaaa
     },
-    // {
-    //     name: 'ErrorResponse',
-    //     hex: '0a 13 b5 c2 74 9b cb c7 60 a7 7a 65 1e 74 b5 5a b9 9e',
-    //     frameHex: '7e 51 aa aa ff ff 0a 7d 33 b5 c2 74 9b cb c7 60 a7 7a 65 1e 74 b5 5a b9 9e a8 1f 7e',
-    //     messageId: 10,
-    //     accessLevel: uplinkCommands.ErrorResponse.accessLevel,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.ErrorResponse({
-    //             commandId: downlinkCommands.TurnRelayOn.id,
-    //             errorCode: ACCESS_DENIED
-    //         })
-    //     ],
-    //     lrc: 0x31,
-    //     crc: 0xa81f,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
     {
         name: 'getBuildVersion',
         hex: '0a 13 9b 4b f7 2a d1 e5 49 a5 09 50 9a 59 7e c2 b5 88',
@@ -884,22 +854,66 @@ const uplinkMessages: TMessageList = [
         source: 0xffff,
         destination: 0xaaaa
     },
-    // {
-    //     name: 'GetOpParamsResponse',
-    //     hex: '0a 13 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 87 e4 c5 8e 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75',
-    //     frameHex: '7e 51 aa aa ff ff 0a 7d 33 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 5d 87 e4 c5 8e 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d 5d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75 9f 27 7e',
-    //     messageId: 10,
-    //     accessLevel: uplinkCommands.GetOpParamsResponse.accessLevel,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.GetOpParamsResponse(CommandBinaryBuffer.getDefaultOperatorParameters())
-    //     ],
-    //     lrc: 0x7b,
-    //     crc: 0x9f27,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
+    {
+        name: 'getEnergyCurrent',
+        hex: '0a 13 b2 49 f1 cf 51 c5 b9 2a ae 94 f5 e7 1b 2a 5b 36 8b 88 fb 14 6f 1e 94 60 f1 13 ea 8f 3f 64 ca 46',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 b2 49 f1 cf 51 c5 b9 2a ae 94 f5 e7 1b 2a 5b 36 8b 88 fb 14 6f 1e 94 60 f1 7d 33 ea 8f 3f 64 ca 46 d8 1f 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getEnergyCurrent.accessLevel,
+        commands: [
+            uplinkCommands.getEnergyCurrent.examples['simple response']
+        ],
+        lrc: 0x09,
+        crc: 0xd81f,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEnergyDay',
+        hex: '0a 13 a7 eb 54 fe 39 2b ea 0f 3c c9 d3 aa d1 a6 83 ec cd 90 46 f0 92 c2 93 14 8e ab ef 3d 4d 0b a3 b7',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 a7 eb 54 fe 39 2b ea 0f 3c c9 d3 aa d1 a6 83 ec cd 90 46 f0 92 c2 93 14 8e ab ef 3d 4d 0b a3 b7 06 6d 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getEnergyDay.accessLevel,
+        commands: [
+            uplinkCommands.getEnergyDay.examples['simple response']
+        ],
+        lrc: 0x1e,
+        crc: 0x066d,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEnergyDayPrevious',
+        hex: '0a 13 55 e9 39 74 8b e4 b6 a2 ac 0e 27 9c b6 3d a1 3c 74 42 98 60 89 31 d4 ff 70 2b f0 83 95 54 9b e0',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 55 e9 39 74 8b e4 b6 a2 ac 0e 27 9c b6 3d a1 3c 74 42 98 60 89 31 d4 ff 70 2b f0 83 95 54 9b e0 bd 5e 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getEnergyDayPrevious.accessLevel,
+        commands: [
+            uplinkCommands.getEnergyDayPrevious.examples['simple response']
+        ],
+        lrc: 0x0b,
+        crc: 0xbd5e,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getOpParams',
+        hex: '0a 13 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 87 e4 c5 8e 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 5d 87 e4 c5 8e 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d 5d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75 9f 27 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getOpParams.accessLevel,
+        commands: [
+            uplinkCommands.getOpParams.examples['get default operator parameters response']
+        ],
+        lrc: 0x7b,
+        crc: 0x9f27,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
     // {
     //     name: 'GetRatePlanInfoResponse',
     //     hex: '0a 13 2e 2c be 49 63 cc c6 cb e3 ab c5 42 bb 0f da a1 e5 f5 67 48 ac 4e 54 9d a4 1e 75 e8 0a 8c 93 7c',
@@ -1025,22 +1039,21 @@ const uplinkMessages: TMessageList = [
     //     source: 0xffff,
     //     destination: 0xaaaa
     // },
-    // {
-    //     name: 'PrepareRatePlanResponse',
-    //     hex: '0c 12 0b 27 68 f1 39 fe 5c 32 9f 44 45 c3 03 60 a8 b6',
-    //     frameHex: '7e 51 aa aa ff ff 0c 12 0b 27 68 f1 39 fe 5c 32 9f 44 45 c3 03 60 a8 b6 08 c3 7e',
-    //     messageId: 12,
-    //     accessLevel: uplinkCommands.PrepareRatePlanResponse.accessLevel,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.PrepareRatePlanResponse()
-    //     ],
-    //     lrc: 0x53,
-    //     crc: 0x08c3,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
+    {
+        name: 'prepareRatePlan',
+        hex: '0c 12 0b 27 68 f1 39 fe 5c 32 9f 44 45 c3 03 60 a8 b6',
+        frameHex: '7e 51 aa aa ff ff 0c 12 0b 27 68 f1 39 fe 5c 32 9f 44 45 c3 03 60 a8 b6 08 c3 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.prepareRatePlan.accessLevel,
+        commands: [
+            uplinkCommands.prepareRatePlan.examples['simple response']
+        ],
+        lrc: 0x53,
+        crc: 0x08c3,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
     // {
     //     name: 'RunTariffPlanResponse',
     //     hex: '0c 12 9f f9 75 af c6 27 a8 3b 9b 79 51 23 6b 74 59 ba',
@@ -1120,22 +1133,21 @@ const uplinkMessages: TMessageList = [
         source: 0xffff,
         destination: 0xaaaa
     },
-    // {
-    //     name: 'SetDayProfileResponse',
-    //     hex: '0c 12 cb 50 1d 66 88 69 6d 1b 4d 2b fb d6 6a a4 8d 31',
-    //     frameHex: '7e 51 aa aa ff ff 0c 12 cb 50 1d 66 88 69 6d 1b 4d 2b fb d6 6a a4 8d 31 48 83 7e',
-    //     messageId: 12,
-    //     accessLevel: uplinkCommands.SetDayProfileResponse.accessLevel,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.SetDayProfileResponse()
-    //     ],
-    //     lrc: 0x57,
-    //     crc: 0x4883,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
+    {
+        name: 'setDayProfile',
+        hex: '0c 12 cb 50 1d 66 88 69 6d 1b 4d 2b fb d6 6a a4 8d 31',
+        frameHex: '7e 51 aa aa ff ff 0c 12 cb 50 1d 66 88 69 6d 1b 4d 2b fb d6 6a a4 8d 31 48 83 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.setDayProfile.accessLevel,
+        commands: [
+            uplinkCommands.setDayProfile.examples['simple response']
+        ],
+        lrc: 0x57,
+        crc: 0x4883,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
     {
         name: 'setDisplayParam',
         hex: '0a 12 ae 17 9c ae bc 0b aa 81 9c f9 39 39 eb da af 99',
@@ -1151,22 +1163,21 @@ const uplinkMessages: TMessageList = [
         source: 0xffff,
         destination: 0xaaaa
     },
-    // {
-    //     name: 'SetOpParamsResponse',
-    //     hex: '0a 12 b7 7e 91 e5 84 c7 9e 69 9c 5a 6a 38 b1 d8 c1 02',
-    //     frameHex: '7e 51 aa aa ff ff 0a 12 b7 7d 5e 91 e5 84 c7 9e 69 9c 5a 6a 38 b1 d8 c1 02 01 cb 7e',
-    //     messageId: 10,
-    //     accessLevel: uplinkCommands.SetOpParamsResponse.accessLevel,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.SetOpParamsResponse()
-    //     ],
-    //     lrc: 0x58,
-    //     crc: 0x01cb,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
+    {
+        name: 'setOpParams',
+        hex: '0a 12 b7 7e 91 e5 84 c7 9e 69 9c 5a 6a 38 b1 d8 c1 02',
+        frameHex: '7e 51 aa aa ff ff 0a 12 b7 7d 5e 91 e5 84 c7 9e 69 9c 5a 6a 38 b1 d8 c1 02 01 cb 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.setOpParams.accessLevel,
+        commands: [
+            uplinkCommands.setOpParams.examples['simple response']
+        ],
+        lrc: 0x58,
+        crc: 0x01cb,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
     // {
     //     name: 'SetSaldoParametersResponse',
     //     hex: '0a 12 7b 8e 5b 7b 50 32 a8 b2 5b 46 69 04 a4 49 40 ff',
@@ -1199,22 +1210,21 @@ const uplinkMessages: TMessageList = [
     //     source: 0xffff,
     //     destination: 0xaaaa
     // },
-    // {
-    //     name: 'SetSeasonProfileResponse',
-    //     hex: '0a 12 0d 18 99 92 bd c9 f6 f1 06 b5 c1 9b 15 66 a1 6a',
-    //     frameHex: '7e 51 aa aa ff ff 0a 12 0d 18 99 92 bd c9 f6 f1 06 b5 c1 9b 15 66 a1 6a d4 6b 7e',
-    //     messageId: 10,
-    //     accessLevel: uplinkCommands.SetSeasonProfileResponse.accessLevel,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.SetSeasonProfileResponse()
-    //     ],
-    //     lrc: 0x56,
-    //     crc: 0xd46b,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
+    {
+        name: 'setSeasonProfile',
+        hex: '0a 12 0d 18 99 92 bd c9 f6 f1 06 b5 c1 9b 15 66 a1 6a',
+        frameHex: '7e 51 aa aa ff ff 0a 12 0d 18 99 92 bd c9 f6 f1 06 b5 c1 9b 15 66 a1 6a d4 6b 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.setSeasonProfile.accessLevel,
+        commands: [
+            uplinkCommands.setSeasonProfile.examples['simple response']
+        ],
+        lrc: 0x56,
+        crc: 0xd46b,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
     {
         name: 'getSpecialDay',
         hex: '0a 13 8e b0 81 8d 53 40 b4 1d 24 56 8e 0e 86 8c 89 8f',
@@ -1229,95 +1239,90 @@ const uplinkMessages: TMessageList = [
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
+    },
+    {
+        name: 'setSpecialDay',
+        hex: '0a 12 58 96 e9 31 df b7 cb e9 79 0d 30 4e 02 f0 3f 5e',
+        frameHex: '7e 51 aa aa ff ff 0a 12 58 96 e9 31 df b7 cb e9 79 0d 30 4e 02 f0 3f 5e 32 96 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.setSpecialDay.accessLevel,
+        commands: [
+            uplinkCommands.setSpecialDay.examples['simple response']
+        ],
+        lrc: 0x55,
+        crc: 0x3296,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'turnRelayOff',
+        hex: '0a 12 9d 81 66 34 ec 71 c4 62 af 9f 69 f6 c9 eb e8 08',
+        frameHex: '7e 51 aa aa ff ff 0a 12 9d 81 66 34 ec 71 c4 62 af 9f 69 f6 c9 eb e8 08 02 f6 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.turnRelayOff.accessLevel,
+        commands: [
+            uplinkCommands.turnRelayOff.examples['simple response']
+        ],
+        lrc: 0x5e,
+        crc: 0x02f6,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'turnRelayOn',
+        hex: '0a 12 0d 8d 21 54 75 8a 37 a0 21 fa cd a3 c3 f2 00 4b',
+        frameHex: '7e 51 aa aa ff ff 0a 12 0d 8d 21 54 75 8a 37 a0 21 fa cd a3 c3 f2 00 4b 1b eb 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.turnRelayOn.accessLevel,
+        commands: [
+            uplinkCommands.turnRelayOn.examples['simple response']
+        ],
+        lrc: 0x5f,
+        crc: 0x1beb,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'two unencrypted commands',
+        hex: '0b 10 10 18 00 18 00 00 45',
+        frameHex: '7e 51 a3 a4 f3 f4 0b 10 10 18 00 18 00 00 45 1b a7 7e',
+        messageId: 11,
+        accessLevel: accessLevels.UNENCRYPTED,
+        commands: [
+            uplinkCommands.turnRelayOn.examples['simple response'],
+            uplinkCommands.turnRelayOn.examples['simple response']
+        ],
+        lrc: 0x45,
+        crc: 0x1ba7,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xf3f4,
+        destination: 0xa3a4
+    },
+    {
+        name: 'many unencrypted commands',
+        hex: '0c 10 10 18 00 18 00 18 00 18 00 18 00 18 00 18 00 18 00 00 45',
+        frameHex: '7e 51 a3 a4 f3 f4 0c 10 10 18 00 18 00 18 00 18 00 18 00 18 00 18 00 18 00 00 45 38 67 7e',
+        messageId: 12,
+        accessLevel: accessLevels.UNENCRYPTED,
+        commands: [
+            uplinkCommands.turnRelayOn.examples['simple response'],
+            uplinkCommands.turnRelayOn.examples['simple response'],
+            uplinkCommands.turnRelayOn.examples['simple response'],
+            uplinkCommands.turnRelayOn.examples['simple response'],
+            uplinkCommands.turnRelayOn.examples['simple response'],
+            uplinkCommands.turnRelayOn.examples['simple response'],
+            uplinkCommands.turnRelayOn.examples['simple response'],
+            uplinkCommands.turnRelayOn.examples['simple response']
+        ],
+        lrc: 0x45,
+        crc: 0x3867,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xf3f4,
+        destination: 0xa3a4
     }
-    // {
-    //     name: 'SetSpecialDayResponse',
-    //     hex: '0a 12 58 96 e9 31 df b7 cb e9 79 0d 30 4e 02 f0 3f 5e',
-    //     frameHex: '7e 51 aa aa ff ff 0a 12 58 96 e9 31 df b7 cb e9 79 0d 30 4e 02 f0 3f 5e 32 96 7e',
-    //     messageId: 10,
-    //     accessLevel: uplinkCommands.SetSpecialDayResponse.accessLevel,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.SetSpecialDayResponse()
-    //     ],
-    //     lrc: 0x55,
-    //     crc: 0x3296,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
-    // {
-    //     name: 'TurnRelayOffResponse',
-    //     hex: '0a 12 9d 81 66 34 ec 71 c4 62 af 9f 69 f6 c9 eb e8 08',
-    //     frameHex: '7e 51 aa aa ff ff 0a 12 9d 81 66 34 ec 71 c4 62 af 9f 69 f6 c9 eb e8 08 02 f6 7e',
-    //     messageId: 10,
-    //     accessLevel: uplinkCommands.TurnRelayOffResponse.accessLevel,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.TurnRelayOffResponse()
-    //     ],
-    //     lrc: 0x5e,
-    //     crc: 0x02f6,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
-    // {
-    //     name: 'TurnRelayOnResponse',
-    //     hex: '0a 12 0d 8d 21 54 75 8a 37 a0 21 fa cd a3 c3 f2 00 4b',
-    //     frameHex: '7e 51 aa aa ff ff 0a 12 0d 8d 21 54 75 8a 37 a0 21 fa cd a3 c3 f2 00 4b 1b eb 7e',
-    //     messageId: 10,
-    //     accessLevel: uplinkCommands.TurnRelayOnResponse.accessLevel,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.TurnRelayOnResponse()
-    //     ],
-    //     lrc: 0x5f,
-    //     crc: 0x1beb,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xffff,
-    //     destination: 0xaaaa
-    // },
-    // {
-    //     name: 'two unencrypted commands',
-    //     hex: '0b 10 10 18 00 18 00 00 45',
-    //     frameHex: '7e 51 a3 a4 f3 f4 0b 10 10 18 00 18 00 00 45 1b a7 7e',
-    //     messageId: 11,
-    //     accessLevel: accessLevels.UNENCRYPTED,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.TurnRelayOnResponse(),
-    //         new uplinkCommands.TurnRelayOnResponse()
-    //     ],
-    //     lrc: 0x45,
-    //     crc: 0x1ba7,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xf3f4,
-    //     destination: 0xa3a4
-    // },
-    // {
-    //     name: 'many unencrypted commands',
-    //     hex: '0c 10 10 18 00 18 00 18 00 18 00 18 00 18 00 18 00 18 00 00 45',
-    //     frameHex: '7e 51 a3 a4 f3 f4 0c 10 10 18 00 18 00 18 00 18 00 18 00 18 00 18 00 18 00 00 45 38 67 7e',
-    //     messageId: 12,
-    //     accessLevel: accessLevels.UNENCRYPTED,
-    //     direction: directions.UPLINK,
-    //     commands: [
-    //         new uplinkCommands.TurnRelayOnResponse(),
-    //         new uplinkCommands.TurnRelayOnResponse(),
-    //         new uplinkCommands.TurnRelayOnResponse(),
-    //         new uplinkCommands.TurnRelayOnResponse(),
-    //         new uplinkCommands.TurnRelayOnResponse(),
-    //         new uplinkCommands.TurnRelayOnResponse(),
-    //         new uplinkCommands.TurnRelayOnResponse(),
-    //         new uplinkCommands.TurnRelayOnResponse()
-    //     ],
-    //     lrc: 0x45,
-    //     crc: 0x3867,
-    //     frameType: frameTypes.DATA_RESPONSE,
-    //     source: 0xf3f4,
-    //     destination: 0xa3a4
-    // }
 ];
 
 

@@ -1,6 +1,8 @@
 /**
  * Downlink command to set full date and time on the meter.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as setDateTime from 'jooby-codec/mtx/commands/downlink/setDateTime.js';

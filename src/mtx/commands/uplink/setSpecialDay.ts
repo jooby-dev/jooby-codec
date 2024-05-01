@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `SetSpecialDay`.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as setSpecialDay from 'jooby-codec/mtx/commands/uplink/setSpecialDay.js';

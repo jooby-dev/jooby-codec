@@ -24,7 +24,7 @@ export interface IToBytesOptions {
 
 // to build IFrame from frame bytes
 export interface IFromFrameOptions {
-    aesKey?: Uint8Array
+    aesKey?: TBytes
 }
 
 // to build IMessage from bytes

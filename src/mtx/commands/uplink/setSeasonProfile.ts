@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `SetSeasonProfile`.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as setSeasonProfile from 'jooby-codec/mtx/commands/uplink/setSeasonProfile.js';

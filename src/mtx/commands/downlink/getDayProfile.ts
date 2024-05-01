@@ -1,6 +1,8 @@
 /**
  * Downlink command to get day profile information for the given tariff table.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as getDayProfile from 'jooby-codec/mtx/commands/downlink/getDayProfile.js';

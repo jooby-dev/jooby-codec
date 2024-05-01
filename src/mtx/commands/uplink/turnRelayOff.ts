@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `TurnRelayOff`.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as turnRelayOff from 'jooby-codec/mtx/commands/uplink/turnRelayOff.js';

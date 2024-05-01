@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `GetDateTime`.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as getDateTime from 'jooby-codec/mtx/commands/uplink/getDateTime.js';
