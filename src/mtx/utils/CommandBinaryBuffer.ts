@@ -702,7 +702,7 @@ export interface IEnergyPeriod {
 }
 
 /** active A+ energy by tariffs T1-T4 */
-export interface IEnergies extends Array<types.TInt32 | null> {}
+export interface IEnergies extends Array<types.TUint32 | null> {}
 
 export interface IPackedEnergiesWithType {
     energyType?: TEnergyType,
@@ -825,6 +825,52 @@ const define1Mask = {
     MAGNET_SCREEN_CONST: 0x20
 };
 
+function getPackedEnergyType ( byte: number ): TEnergyType {
+    const isAPlus = !!bitSet.extractBits(byte, TARIFF_NUMBER, 1);
+
+    if ( isAPlus ) {
+        return A_PLUS_ENERGY_TYPE;
+    }
+
+    return A_MINUS_ENERGY_TYPE;
+}
+
+function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: TEnergyType, tariffMapByte: number ): IEnergies {
+    let byte = tariffMapByte;
+    const energies = Array.from({length: TARIFF_NUMBER}) as IEnergies;
+
+    if ( energyType === A_MINUS_ENERGY_TYPE ) {
+        byte >>= TARIFF_NUMBER;
+    }
+
+    energies.forEach((energy, index) => {
+        // read flags by one bit
+        const isTariffExists = !!bitSet.extractBits(byte, 1, index + 1);
+
+        if ( isTariffExists ) {
+            energies[index] = buffer.getUint32();
+        } else {
+            energies[index] = null;
+        }
+    });
+
+    return energies;
+}
+
+function setPackedEnergyType ( buffer: ICommandBinaryBuffer, energyType: TEnergyType, energies: IEnergies ) {
+    let tariffsByte = 0;
+
+    energies.forEach((energy, index) => {
+        // set flags by one bit
+        tariffsByte = bitSet.fillBits(tariffsByte, 1, index + 1, Number(!!energy));
+    });
+
+    if ( energyType === A_MINUS_ENERGY_TYPE ) {
+        tariffsByte <<= TARIFF_NUMBER;
+    }
+
+    buffer.setUint8(tariffsByte);
+}
 
 export interface ICommandBinaryBuffer extends IBinaryBuffer {
     // static methods
@@ -857,7 +903,11 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setSpecialDay ( specialDay: ISpecialDay ),
 
     getDeviceType (): IDeviceType,
-    setDeviceType ( deviceType: IDeviceType )
+    setDeviceType ( deviceType: IDeviceType ),
+
+    getPackedEnergyWithType (): IPackedEnergiesWithType,
+    setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ),
+    getEnergies(): IEnergies
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -1044,6 +1094,33 @@ CommandBinaryBuffer.prototype.getDeviceType = function (): IDeviceType {
 
 CommandBinaryBuffer.prototype.setDeviceType = function ( deviceType: IDeviceType ) {
     this.setBytes(DeviceType.toBytes(deviceType));
+};
+
+CommandBinaryBuffer.prototype.getPackedEnergyWithType = function (): IPackedEnergiesWithType {
+    const byte = this.getUint8();
+    const energyType = getPackedEnergyType(byte);
+    const energies = getPackedEnergies(this, energyType, byte);
+
+    return {
+        energyType,
+        energies
+    };
+};
+
+CommandBinaryBuffer.prototype.getEnergies = function (): IEnergies {
+    return Array.from({length: TARIFF_NUMBER}, () => this.getInt32());
+};
+
+CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, energies}: IPackedEnergiesWithType ) {
+    if ( energyType ) {
+        setPackedEnergyType(this, energyType, energies);
+    }
+
+    energies.forEach(energy => {
+        if ( energy ) {
+            this.setUint32(energy);
+        }
+    });
 };
 
 
@@ -1320,86 +1397,9 @@ CommandBinaryBuffer.prototype.setDeviceType = function ( deviceType: IDeviceType
 //         periods.forEach(period => this.setEnergyPeriod(period));
 //     }
 
-//     getEnergies (): IEnergies {
-//         return Array.from({length: types.TARIFF_NUMBER}, () => this.getUint32());
-//     }
-
 //     setEnergies ( energies: IEnergies ) {
 //         energies.forEach(value => this.setUint32(value as TInt32));
 //     }
-
-//     // eslint-disable-next-line class-methods-use-this
-//     private getPackedEnergyType ( byte: number ): types.TEnergyType {
-//         const isAPlus = !!bitSet.extractBits(byte, TARIFF_NUMBER, 1);
-
-//         if ( isAPlus ) {
-//             return A_PLUS_ENERGY_TYPE;
-//         }
-
-//         return A_MINUS_ENERGY_TYPE;
-//     }
-
-//     private getPackedEnergies ( energyType: types.TEnergyType, tariffMapByte: number ): IEnergies {
-//         let byte = tariffMapByte;
-//         const energies = Array.from({length: types.TARIFF_NUMBER}) as IEnergies;
-
-//         if ( energyType === A_MINUS_ENERGY_TYPE ) {
-//             byte >>= TARIFF_NUMBER;
-//         }
-
-//         energies.forEach((energy, index) => {
-//             // read flags by one bit
-//             const isTariffExists = !!bitSet.extractBits(byte, 1, index + 1);
-
-//             if ( isTariffExists ) {
-//                 energies[index] = this.getUint32();
-//             } else {
-//                 energies[index] = null;
-//             }
-//         });
-
-//         return energies;
-//     }
-
-//     getPackedEnergyWithType (): IPackedEnergiesWithType {
-//         const byte = this.getUint8();
-//         const energyType = this.getPackedEnergyType(byte);
-//         const energies = this.getPackedEnergies(energyType, byte);
-
-//         return {
-//             energyType,
-//             energies
-//         };
-//     }
-
-//     private setPackedEnergyType ( energyType: types.TEnergyType, energies: IEnergies ) {
-//         let tariffsByte = 0;
-
-//         energies.forEach((energy, index) => {
-//             // set flags by one bit
-//             tariffsByte = bitSet.fillBits(tariffsByte, 1, index + 1, Number(!!energy));
-//         });
-
-//         if ( energyType === A_MINUS_ENERGY_TYPE ) {
-//             tariffsByte <<= TARIFF_NUMBER;
-//         }
-
-//         this.setUint8(tariffsByte);
-//     }
-
-//     setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ) {
-//         console.log({energyType, energies});
-//         if ( energyType ) {
-//             this.setPackedEnergyType(energyType, energies);
-//         }
-
-//         energies.forEach(energy => {
-//             if ( energy ) {
-//                 this.setUint32(energy);
-//             }
-//         });
-//     }
-// }
 
 
 export default CommandBinaryBuffer;
