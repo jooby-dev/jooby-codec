@@ -831,6 +831,10 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getDayProfileFromByte ( value: number ): IDayProfile,
     getByteFromDayProfile ( dayProfile: IDayProfile ): number,
 
+    getDefaultSeasonProfile (): ISeasonProfile,
+
+    getDefaultOperatorParameters (): IOperatorParameters,
+
     // instance methods
     getFrameHeader (): IFrameHeader,
     setFrameHeader ( frameHeader: IFrameHeader ),
@@ -857,7 +861,10 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setSpecialDay ( specialDay: ISpecialDay ),
 
     getDeviceType (): IDeviceType,
-    setDeviceType ( deviceType: IDeviceType )
+    setDeviceType ( deviceType: IDeviceType ),
+
+    getOperatorParameters (): IOperatorParameters,
+    setOperatorParameters ( operatorParameters: IOperatorParameters),
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -883,6 +890,66 @@ CommandBinaryBuffer.getByteFromDayProfile = ( dayProfile: IDayProfile ): number 
 
     return value;
 };
+
+CommandBinaryBuffer.getDefaultSeasonProfile = (): ISeasonProfile => (
+    {
+        month: 1,
+        date: 1,
+        dayIndexes: [0, 0, 0, 0, 0, 0, 0]
+    }
+);
+
+
+CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => (
+    {
+        vpThreshold: 265000,
+        vThreshold: 156000,
+        ipThreshold: 120000,
+        pmaxThreshold0: 31800,
+        pmaxThreshold1: 31800,
+        pmaxThreshold2: 31800,
+        pmaxThreshold3: 31800,
+        speedOptoPort: 0,
+        tint: 30,
+        calcPeriodDate: 1,
+        timeoutDisplay: 127,
+        timeoutScreen: 7,
+        displaySet: (bitSet.toObject(displaySetMask, 0x80003184) as unknown) as IDisplaySetOperatorParameter,
+        relaySet4: (bitSet.toObject(relaySet4Mask, 0) as unknown) as IRelaySet4OperatorParameter,
+        relaySet3: (bitSet.toObject(relaySet3Mask, 0) as unknown) as IRelaySet3OperatorParameter,
+        relaySet2: (bitSet.toObject(relaySet2Mask, 3) as unknown) as IRelaySet2OperatorParameter,
+        relaySet1: (bitSet.toObject(relaySet1Mask, 3) as unknown) as IRelaySet1OperatorParameter,
+        displayType: 0,
+        ten: 0,
+        timeoutRefresh: 240,
+        deltaCorMin: 15,
+        timeoutMagnetOff: 5,
+        timeoutMagnetOn: 5,
+        define1: (bitSet.toObject(define1Mask, 0) as unknown) as IDefine1OperatorParameter,
+        timeoutRelayOn: 1,
+        timeoutRelayKey: 0,
+        timeoutRelayAuto: 5,
+        timeoutBadVAVB: 5,
+        freqMax: 55,
+        freqMin: 45,
+        phMin: 0,
+        year: 0,
+        month: 0,
+        date: 0,
+        energyDecimalPoint: 2,
+        typeMeter: 0,
+        timeoutIMax: 5,
+        timeoutPMax: 5,
+        timeoutCos: 5,
+        pMaxDef: 1,
+        displaySetExt: (bitSet.toObject(displaySetExtMask, 0x8383fff) as unknown) as IDisplaySetExtOperatorParameter,
+        timeoutUneqCurrent: 5,
+        timeoutBipolarPower: 5,
+        relaySet5: (bitSet.toObject(relaySet5Mask, 0) as unknown) as IRelaySet5OperatorParameter,
+        timeCorrectPeriod: 24,
+        timeCorrectPassHalfhour: false
+    }
+);
 
 
 CommandBinaryBuffer.prototype.getFrameHeader = function (): IFrameHeader {
@@ -1047,6 +1114,116 @@ CommandBinaryBuffer.prototype.setDeviceType = function ( deviceType: IDeviceType
 };
 
 
+CommandBinaryBuffer.prototype.getOperatorParameters = function (): IOperatorParameters {
+    const operatorParameters = {
+        vpThreshold: this.getUint32(),
+        vThreshold: this.getUint32(),
+        ipThreshold: this.getUint32(),
+        pmaxThreshold0: this.getUint32(),
+        pmaxThreshold1: this.getUint32(),
+        pmaxThreshold2: this.getUint32(),
+        pmaxThreshold3: this.getUint32(),
+        speedOptoPort: this.getUint8(),
+        tint: this.getUint8(),
+        calcPeriodDate: this.getUint8(),
+        timeoutDisplay: this.getUint8(),
+        timeoutScreen: this.getUint8(),
+        displaySet: (bitSet.toObject(displaySetMask, this.getUint32()) as unknown) as IDisplaySetOperatorParameter,
+        relaySet4: (bitSet.toObject(relaySet4Mask, this.getUint8()) as unknown) as IRelaySet4OperatorParameter,
+        relaySet3: (bitSet.toObject(relaySet3Mask, this.getUint8()) as unknown) as IRelaySet3OperatorParameter,
+        relaySet2: (bitSet.toObject(relaySet2Mask, this.getUint8()) as unknown) as IRelaySet2OperatorParameter,
+        relaySet1: (bitSet.toObject(relaySet1Mask, this.getUint8()) as unknown) as IRelaySet1OperatorParameter,
+        displayType: this.getUint8(),
+        ten: this.getUint8(),
+        timeoutRefresh: this.getUint16(),
+        deltaCorMin: this.getUint8(),
+        timeoutMagnetOff: this.getUint8(),
+        timeoutMagnetOn: this.getUint8(),
+        define1: (bitSet.toObject(define1Mask, this.getUint8()) as unknown) as IDefine1OperatorParameter,
+        timeoutRelayOn: this.getUint8(),
+        timeoutRelayKey: this.getUint8(),
+        timeoutRelayAuto: this.getUint8(),
+        timeoutBadVAVB: this.getUint8(),
+        freqMax: this.getUint8(),
+        freqMin: this.getUint8(),
+        phMin: this.getUint16(),
+        year: this.getUint8(),
+        month: this.getUint8(),
+        date: this.getUint8(),
+        energyDecimalPoint: this.getUint8(),
+        typeMeter: this.getUint8(),
+        timeoutIMax: this.getUint8(),
+        timeoutPMax: this.getUint8(),
+        timeoutCos: this.getUint8(),
+        pMaxDef: this.getUint8(),
+        displaySetExt: (bitSet.toObject(displaySetExtMask, this.getUint32()) as unknown) as IDisplaySetExtOperatorParameter,
+        timeoutUneqCurrent: this.getUint8(),
+        timeoutBipolarPower: this.getUint8(),
+        relaySet5: (bitSet.toObject(relaySet5Mask, this.getUint8()) as unknown) as IRelaySet5OperatorParameter,
+        timeCorrectPeriod: 0,
+        timeCorrectPassHalfhour: false
+    };
+
+    const timeCorrectPeriod = this.getUint8();
+
+    operatorParameters.timeCorrectPeriod = timeCorrectPeriod & 0x7f;
+    operatorParameters.timeCorrectPassHalfhour = !!(timeCorrectPeriod & 0x80);
+
+    return operatorParameters as IOperatorParameters;
+};
+
+CommandBinaryBuffer.prototype.setOperatorParameters = function ( operatorParameters: IOperatorParameters ) {
+    const timeCorrectPeriod = operatorParameters.timeCorrectPeriod
+        | (operatorParameters.timeCorrectPassHalfhour ? 0x80 : 0);
+
+    this.setUint32(operatorParameters.vpThreshold);
+    this.setUint32(operatorParameters.vThreshold);
+    this.setUint32(operatorParameters.ipThreshold);
+    this.setUint32(operatorParameters.pmaxThreshold0);
+    this.setUint32(operatorParameters.pmaxThreshold1);
+    this.setUint32(operatorParameters.pmaxThreshold2);
+    this.setUint32(operatorParameters.pmaxThreshold3);
+    this.setUint8(operatorParameters.speedOptoPort);
+    this.setUint8(operatorParameters.tint);
+    this.setUint8(operatorParameters.calcPeriodDate);
+    this.setUint8(operatorParameters.timeoutDisplay);
+    this.setUint8(operatorParameters.timeoutScreen);
+    this.setUint32(bitSet.fromObject(displaySetMask, (operatorParameters.displaySet as unknown) as bitSet.TBooleanObject));
+    this.setUint8(bitSet.fromObject(relaySet4Mask, (operatorParameters.relaySet4 as unknown) as bitSet.TBooleanObject));
+    this.setUint8(bitSet.fromObject(relaySet3Mask, (operatorParameters.relaySet3 as unknown) as bitSet.TBooleanObject));
+    this.setUint8(bitSet.fromObject(relaySet2Mask, (operatorParameters.relaySet2 as unknown) as bitSet.TBooleanObject));
+    this.setUint8(bitSet.fromObject(relaySet1Mask, (operatorParameters.relaySet1 as unknown) as bitSet.TBooleanObject));
+    this.setUint8(operatorParameters.displayType);
+    this.setUint8(operatorParameters.ten);
+    this.setUint16(operatorParameters.timeoutRefresh);
+    this.setUint8(operatorParameters.deltaCorMin);
+    this.setUint8(operatorParameters.timeoutMagnetOff);
+    this.setUint8(operatorParameters.timeoutMagnetOn);
+    this.setUint8(bitSet.fromObject(define1Mask, (operatorParameters.define1 as unknown) as bitSet.TBooleanObject));
+    this.setUint8(operatorParameters.timeoutRelayOn);
+    this.setUint8(operatorParameters.timeoutRelayKey);
+    this.setUint8(operatorParameters.timeoutRelayAuto);
+    this.setUint8(operatorParameters.timeoutBadVAVB);
+    this.setUint8(operatorParameters.freqMax);
+    this.setUint8(operatorParameters.freqMin);
+    this.setUint16(operatorParameters.phMin);
+    this.setUint8(operatorParameters.year);
+    this.setUint8(operatorParameters.month);
+    this.setUint8(operatorParameters.date);
+    this.setUint8(operatorParameters.energyDecimalPoint);
+    this.setUint8(operatorParameters.typeMeter);
+    this.setUint8(operatorParameters.timeoutIMax);
+    this.setUint8(operatorParameters.timeoutPMax);
+    this.setUint8(operatorParameters.timeoutCos);
+    this.setUint8(operatorParameters.pMaxDef);
+    this.setUint32(bitSet.fromObject(displaySetExtMask, (operatorParameters.displaySetExt as unknown) as bitSet.TBooleanObject));
+    this.setUint8(operatorParameters.timeoutUneqCurrent);
+    this.setUint8(operatorParameters.timeoutBipolarPower);
+    this.setUint8(bitSet.fromObject(relaySet5Mask, (operatorParameters.relaySet5 as unknown) as bitSet.TBooleanObject));
+    this.setUint8(timeCorrectPeriod);
+};
+
+
 //     getDate (): IDate {
 //         return {
 //             year: this.getUint8(),
@@ -1075,174 +1252,6 @@ CommandBinaryBuffer.prototype.setDeviceType = function ( deviceType: IDeviceType
 //     setPackedDate ( date: IDate ) {
 //         this.setUint8((date.year << 1) | ((date.month >> 3) & 0x01));
 //         this.setUint8(((date.month << 5) & 0xe0) | (date.date & 0x1f));
-//     }
-
-//     static getDefaultOperatorParameters (): IOperatorParameters {
-//         return {
-//             vpThreshold: 265000,
-//             vThreshold: 156000,
-//             ipThreshold: 120000,
-//             pmaxThreshold0: 31800,
-//             pmaxThreshold1: 31800,
-//             pmaxThreshold2: 31800,
-//             pmaxThreshold3: 31800,
-//             speedOptoPort: 0,
-//             tint: 30,
-//             calcPeriodDate: 1,
-//             timeoutDisplay: 127,
-//             timeoutScreen: 7,
-//             displaySet: (bitSet.toObject(displaySetMask, 0x80003184) as unknown) as IDisplaySetOperatorParameter,
-//             relaySet4: (bitSet.toObject(relaySet4Mask, 0) as unknown) as IRelaySet4OperatorParameter,
-//             relaySet3: (bitSet.toObject(relaySet3Mask, 0) as unknown) as IRelaySet3OperatorParameter,
-//             relaySet2: (bitSet.toObject(relaySet2Mask, 3) as unknown) as IRelaySet2OperatorParameter,
-//             relaySet1: (bitSet.toObject(relaySet1Mask, 3) as unknown) as IRelaySet1OperatorParameter,
-//             displayType: 0,
-//             ten: 0,
-//             timeoutRefresh: 240,
-//             deltaCorMin: 15,
-//             timeoutMagnetOff: 5,
-//             timeoutMagnetOn: 5,
-//             define1: (bitSet.toObject(define1Mask, 0) as unknown) as IDefine1OperatorParameter,
-//             timeoutRelayOn: 1,
-//             timeoutRelayKey: 0,
-//             timeoutRelayAuto: 5,
-//             timeoutBadVAVB: 5,
-//             freqMax: 55,
-//             freqMin: 45,
-//             phMin: 0,
-//             year: 0,
-//             month: 0,
-//             date: 0,
-//             energyDecimalPoint: 2,
-//             typeMeter: 0,
-//             timeoutIMax: 5,
-//             timeoutPMax: 5,
-//             timeoutCos: 5,
-//             pMaxDef: 1,
-//             displaySetExt: (bitSet.toObject(displaySetExtMask, 0x8383fff) as unknown) as IDisplaySetExtOperatorParameter,
-//             timeoutUneqCurrent: 5,
-//             timeoutBipolarPower: 5,
-//             relaySet5: (bitSet.toObject(relaySet5Mask, 0) as unknown) as IRelaySet5OperatorParameter,
-//             timeCorrectPeriod: 24,
-//             timeCorrectPassHalfhour: false
-//         };
-//     }
-
-//     getOperatorParameters (): IOperatorParameters {
-//         const operatorParameters = {
-//             vpThreshold: this.getUint32(),
-//             vThreshold: this.getUint32(),
-//             ipThreshold: this.getUint32(),
-//             pmaxThreshold0: this.getUint32(),
-//             pmaxThreshold1: this.getUint32(),
-//             pmaxThreshold2: this.getUint32(),
-//             pmaxThreshold3: this.getUint32(),
-//             speedOptoPort: this.getUint8(),
-//             tint: this.getUint8(),
-//             calcPeriodDate: this.getUint8(),
-//             timeoutDisplay: this.getUint8(),
-//             timeoutScreen: this.getUint8(),
-//             displaySet: (bitSet.toObject(displaySetMask, this.getUint32()) as unknown) as IDisplaySetOperatorParameter,
-//             relaySet4: (bitSet.toObject(relaySet4Mask, this.getUint8()) as unknown) as IRelaySet4OperatorParameter,
-//             relaySet3: (bitSet.toObject(relaySet3Mask, this.getUint8()) as unknown) as IRelaySet3OperatorParameter,
-//             relaySet2: (bitSet.toObject(relaySet2Mask, this.getUint8()) as unknown) as IRelaySet2OperatorParameter,
-//             relaySet1: (bitSet.toObject(relaySet1Mask, this.getUint8()) as unknown) as IRelaySet1OperatorParameter,
-//             displayType: this.getUint8(),
-//             ten: this.getUint8(),
-//             timeoutRefresh: this.getUint16(),
-//             deltaCorMin: this.getUint8(),
-//             timeoutMagnetOff: this.getUint8(),
-//             timeoutMagnetOn: this.getUint8(),
-//             define1: (bitSet.toObject(define1Mask, this.getUint8()) as unknown) as IDefine1OperatorParameter,
-//             timeoutRelayOn: this.getUint8(),
-//             timeoutRelayKey: this.getUint8(),
-//             timeoutRelayAuto: this.getUint8(),
-//             timeoutBadVAVB: this.getUint8(),
-//             freqMax: this.getUint8(),
-//             freqMin: this.getUint8(),
-//             phMin: this.getUint16(),
-//             year: this.getUint8(),
-//             month: this.getUint8(),
-//             date: this.getUint8(),
-//             energyDecimalPoint: this.getUint8(),
-//             typeMeter: this.getUint8(),
-//             timeoutIMax: this.getUint8(),
-//             timeoutPMax: this.getUint8(),
-//             timeoutCos: this.getUint8(),
-//             pMaxDef: this.getUint8(),
-//             displaySetExt: (bitSet.toObject(displaySetExtMask, this.getUint32()) as unknown) as IDisplaySetExtOperatorParameter,
-//             timeoutUneqCurrent: this.getUint8(),
-//             timeoutBipolarPower: this.getUint8(),
-//             relaySet5: (bitSet.toObject(relaySet5Mask, this.getUint8()) as unknown) as IRelaySet5OperatorParameter,
-//             timeCorrectPeriod: 0,
-//             timeCorrectPassHalfhour: false
-//         };
-
-//         const timeCorrectPeriod = this.getUint8();
-
-//         operatorParameters.timeCorrectPeriod = timeCorrectPeriod & 0x7f;
-//         operatorParameters.timeCorrectPassHalfhour = !!(timeCorrectPeriod & 0x80);
-
-//         return operatorParameters as IOperatorParameters;
-//     }
-
-//     setOperatorParameters ( operatorParameters: IOperatorParameters ) {
-//         const timeCorrectPeriod = operatorParameters.timeCorrectPeriod
-//             | (operatorParameters.timeCorrectPassHalfhour ? 0x80 : 0);
-
-//         this.setUint32(operatorParameters.vpThreshold);
-//         this.setUint32(operatorParameters.vThreshold);
-//         this.setUint32(operatorParameters.ipThreshold);
-//         this.setUint32(operatorParameters.pmaxThreshold0);
-//         this.setUint32(operatorParameters.pmaxThreshold1);
-//         this.setUint32(operatorParameters.pmaxThreshold2);
-//         this.setUint32(operatorParameters.pmaxThreshold3);
-//         this.setUint8(operatorParameters.speedOptoPort);
-//         this.setUint8(operatorParameters.tint);
-//         this.setUint8(operatorParameters.calcPeriodDate);
-//         this.setUint8(operatorParameters.timeoutDisplay);
-//         this.setUint8(operatorParameters.timeoutScreen);
-//         this.setUint32(bitSet.fromObject(displaySetMask, (operatorParameters.displaySet as unknown) as bitSet.TBooleanObject));
-//         this.setUint8(bitSet.fromObject(relaySet4Mask, (operatorParameters.relaySet4 as unknown) as bitSet.TBooleanObject));
-//         this.setUint8(bitSet.fromObject(relaySet3Mask, (operatorParameters.relaySet3 as unknown) as bitSet.TBooleanObject));
-//         this.setUint8(bitSet.fromObject(relaySet2Mask, (operatorParameters.relaySet2 as unknown) as bitSet.TBooleanObject));
-//         this.setUint8(bitSet.fromObject(relaySet1Mask, (operatorParameters.relaySet1 as unknown) as bitSet.TBooleanObject));
-//         this.setUint8(operatorParameters.displayType);
-//         this.setUint8(operatorParameters.ten);
-//         this.setUint16(operatorParameters.timeoutRefresh);
-//         this.setUint8(operatorParameters.deltaCorMin);
-//         this.setUint8(operatorParameters.timeoutMagnetOff);
-//         this.setUint8(operatorParameters.timeoutMagnetOn);
-//         this.setUint8(bitSet.fromObject(define1Mask, (operatorParameters.define1 as unknown) as bitSet.TBooleanObject));
-//         this.setUint8(operatorParameters.timeoutRelayOn);
-//         this.setUint8(operatorParameters.timeoutRelayKey);
-//         this.setUint8(operatorParameters.timeoutRelayAuto);
-//         this.setUint8(operatorParameters.timeoutBadVAVB);
-//         this.setUint8(operatorParameters.freqMax);
-//         this.setUint8(operatorParameters.freqMin);
-//         this.setUint16(operatorParameters.phMin);
-//         this.setUint8(operatorParameters.year);
-//         this.setUint8(operatorParameters.month);
-//         this.setUint8(operatorParameters.date);
-//         this.setUint8(operatorParameters.energyDecimalPoint);
-//         this.setUint8(operatorParameters.typeMeter);
-//         this.setUint8(operatorParameters.timeoutIMax);
-//         this.setUint8(operatorParameters.timeoutPMax);
-//         this.setUint8(operatorParameters.timeoutCos);
-//         this.setUint8(operatorParameters.pMaxDef);
-//         this.setUint32(bitSet.fromObject(displaySetExtMask, (operatorParameters.displaySetExt as unknown) as bitSet.TBooleanObject));
-//         this.setUint8(operatorParameters.timeoutUneqCurrent);
-//         this.setUint8(operatorParameters.timeoutBipolarPower);
-//         this.setUint8(bitSet.fromObject(relaySet5Mask, (operatorParameters.relaySet5 as unknown) as bitSet.TBooleanObject));
-//         this.setUint8(timeCorrectPeriod);
-//     }
-
-//     static getDefaultSeasonProfile (): ISeasonProfile {
-//         return {
-//             month: 1,
-//             date: 1,
-//             dayIndexes: [0, 0, 0, 0, 0, 0, 0]
-//         };
 //     }
 
 //     static getDefaultTimeCorrectionParameters (): ITimeCorrectionParameters {
