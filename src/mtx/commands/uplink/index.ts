@@ -19,3 +19,4 @@ export * as setDisplayParam from './setDisplayParam.js';
 export * as getDeviceType from './getDeviceType.js';
 export * as getEnergyCurrent from './getEnergyCurrent.js';
 export * as getEnergyDay from './getEnergyDay.js';
+export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';

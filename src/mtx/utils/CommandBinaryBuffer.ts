@@ -907,7 +907,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getPackedEnergyWithType (): IPackedEnergiesWithType,
     setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ),
+
     getEnergies(): IEnergies,
+    setEnergies ( energies: IEnergies ),
 
     getDate (): types.IDate,
     setDate ( date: types.IDate )
@@ -1112,6 +1114,10 @@ CommandBinaryBuffer.prototype.getPackedEnergyWithType = function (): IPackedEner
 
 CommandBinaryBuffer.prototype.getEnergies = function (): IEnergies {
     return Array.from({length: TARIFF_NUMBER}, () => this.getInt32());
+};
+
+CommandBinaryBuffer.prototype.setEnergies = function ( energies: IEnergies ) {
+    energies.forEach(value => this.setUint32(value));
 };
 
 CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, energies}: IPackedEnergiesWithType ) {
@@ -1398,10 +1404,6 @@ CommandBinaryBuffer.prototype.setDate = function ( date: types.IDate ) {
 
 //     setEnergyPeriods ( periods: Array<IEnergyPeriod> ) {
 //         periods.forEach(period => this.setEnergyPeriod(period));
-//     }
-
-//     setEnergies ( energies: IEnergies ) {
-//         energies.forEach(value => this.setUint32(value as TInt32));
 //     }
 
 
