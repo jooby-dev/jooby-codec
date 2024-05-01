@@ -36,6 +36,7 @@ interface ISetSpecialDayParameters extends ISpecialDay {
      * (`0` - table `A+`, `1` – table `A-`)
      */
     tariffTable: types.TUint8;
+
     /**
      * Special day index in a list of all tariff special days (max `26`).
      */
