@@ -56,6 +56,7 @@ export const name: types.TCommandName = 'setDayProfile';
 export const headerSize = 2;
 export const maxSize = 2 + MAX_PERIODS_NUMBER;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'set day profile with 1 period': {

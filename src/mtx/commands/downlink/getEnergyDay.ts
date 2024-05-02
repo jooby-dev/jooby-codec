@@ -48,6 +48,7 @@ export const name: types.TCommandName = 'getEnergyDay';
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'request day values for 2024.03.22 00:00:00 GMT': {

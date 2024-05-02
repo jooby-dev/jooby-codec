@@ -30,7 +30,7 @@ export const name: types.TCommandName = 'getDeviceId';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
 export const maxSize = COMMAND_BODY_SIZE;
-
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'simple request': {

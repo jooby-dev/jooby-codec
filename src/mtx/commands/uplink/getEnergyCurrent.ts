@@ -51,6 +51,7 @@ export const name: types.TCommandName = 'getEnergyCurrent';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = MAX_COMMAND_SIZE;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'simple response': {

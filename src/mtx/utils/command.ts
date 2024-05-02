@@ -46,6 +46,7 @@ export interface ICommandImplementation {
     maxSize: number,
     accessLevel: types.TAccessLevel,
     examples: TCommandExamples,
+    isLoraOnly: boolean,
 
     fromBytes ( bytes: types.TBytes ),
     toBytes ( parameters?: object ): types.TBytes

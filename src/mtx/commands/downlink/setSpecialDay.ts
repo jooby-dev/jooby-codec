@@ -51,6 +51,7 @@ export const name: types.TCommandName = 'setSpecialDay';
 export const headerSize = 2;
 export const maxSize = 6;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'set special day': {

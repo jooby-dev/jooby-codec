@@ -44,6 +44,7 @@ export const name: types.TCommandName = 'getExtendedCurrentValues';
 export const headerSize = 2;
 export const maxSize = 4;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'simple response': {

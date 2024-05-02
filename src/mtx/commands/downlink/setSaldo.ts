@@ -66,6 +66,7 @@ export const name: types.TCommandName = 'setSaldo';
 export const headerSize = 2;
 export const maxSize = 12;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'test request': {

@@ -45,6 +45,7 @@ export const name: types.TCommandName = 'getSaldoParameters';
 export const headerSize = 2;
 export const maxSize = 37;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'default response': {
