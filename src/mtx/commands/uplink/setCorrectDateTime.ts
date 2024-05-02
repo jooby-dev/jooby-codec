@@ -1,36 +1,37 @@
 /**
- * Uplink command to set access key.
+ * Uplink command for incremental time correction.
+ *
+ * The corresponding downlink command: `setCorrectDateTime`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as setAccessKey from 'jooby-codec/mtx/commands/uplink/setAccessKey.js';
+ * import * as setCorrectDateTimeResponse from 'jooby-codec/mtx/commands/uplink/setCorrectDateTimeResponse.js';
  *
  * // empty response
  * const bytes = [];
  * // decoded payload
- * const parameters = activateRatePlan.fromBytes(bytes);
+ * const parameters = setCorrectDateTimeResponse.fromBytes(bytes);
  *
- * // this command doesn't have any parameters
  * console.log(parameters);
  * // output:
  * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetAccessKey.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetCorrectDateTime.md#response)
  */
 
-import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
-import {READ_WRITE} from '../../constants/accessLevels.js';
+import * as types from '../../types.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x09;
-export const name: types.TCommandName = 'setAccessKey';
+export const id: types.TCommandId = 0x5c;
+export const name: types.TCommandName = 'setCorrectDateTime';
 export const headerSize = 2;
 export const maxSize = 0;
-export const accessLevel: types.TAccessLevel = READ_WRITE;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
@@ -42,7 +43,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x09, 0x00
+            0x5c, 0x00
         ]
     }
 };

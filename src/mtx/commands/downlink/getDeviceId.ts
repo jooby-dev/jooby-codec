@@ -23,13 +23,11 @@ import * as command from '../../utils/command.js';
 import * as accessLevels from '../../constants/accessLevels.js';
 
 
-const COMMAND_BODY_SIZE = 0;
-
 export const id: types.TCommandId = 0x05;
 export const name: types.TCommandName = 'getDeviceId';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
-export const maxSize = COMMAND_BODY_SIZE;
+export const maxSize = 0;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
@@ -54,7 +52,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameters => {
-    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+    if ( bytes.length !== maxSize ) {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 

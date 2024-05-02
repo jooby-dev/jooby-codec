@@ -1,33 +1,33 @@
 /**
- * Uplink command to set access key.
+ * Uplink command to set [DST](https://en.wikipedia.org/wiki/Daylight_saving_time)/Standard time transition options.
+ *
+ * The corresponding downlink command: `setCorrectTime`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as setAccessKey from 'jooby-codec/mtx/commands/uplink/setAccessKey.js';
+ * import * as setCorrectTimeResponse from 'jooby-codec/mtx/commands/uplink/setCorrectTimeResponse.js';
  *
  * // empty response
  * const bytes = [];
  * // decoded payload
- * const parameters = activateRatePlan.fromBytes(bytes);
+ * const parameters = setCorrectTimeResponse.fromBytes(bytes);
  *
- * // this command doesn't have any parameters
  * console.log(parameters);
  * // output:
  * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetAccessKey.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetCorrectTime.md#response)
  */
 
-import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
+import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
-
-export const id: types.TCommandId = 0x09;
-export const name: types.TCommandName = 'setAccessKey';
+export const id: types.TCommandId = 0x1c;
+export const name: types.TCommandName = 'setCorrectTime';
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
@@ -42,7 +42,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x09, 0x00
+            0x1c, 0x00
         ]
     }
 };
