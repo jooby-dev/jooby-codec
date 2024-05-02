@@ -872,6 +872,28 @@ function setPackedEnergyType ( buffer: ICommandBinaryBuffer, energyType: TEnergy
     buffer.setUint8(tariffsByte);
 }
 
+function getEnergyPeriod ( period: number ): IEnergyPeriod {
+    if ( period === 0xffff ) {
+        return {
+            tariff: undefined,
+            energy: undefined
+        };
+    }
+
+    return {
+        tariff: ((period >> 14) & 0x03),
+        energy: (period & 0x3fff)
+    };
+}
+
+function setEnergyPeriod ( buffer: ICommandBinaryBuffer, {tariff, energy}: IEnergyPeriod ) {
+    if ( tariff !== undefined && energy !== undefined ) {
+        buffer.setUint16((tariff << 14) | (energy & 0x3fff));
+    } else {
+        buffer.setUint16(0xffff);
+    }
+}
+
 export interface ICommandBinaryBuffer extends IBinaryBuffer {
     // static methods
     getDayProfileFromByte ( value: number ): IDayProfile,
@@ -920,6 +942,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getOperatorParameters (): IOperatorParameters,
     setOperatorParameters ( operatorParameters: IOperatorParameters),
+
+    getEnergyPeriods ( periodsNumber: number ): Array<IEnergyPeriod>,
+    setEnergyPeriods ( periods: Array<IEnergyPeriod> )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -1322,6 +1347,16 @@ CommandBinaryBuffer.prototype.setDate = function ( date: types.IDate ) {
     this.setUint8(date.date);
 };
 
+CommandBinaryBuffer.prototype.getEnergyPeriods = function ( periodsNumber: number ): Array<IEnergyPeriod> {
+    const periods = Array.from({length: periodsNumber}, () => this.getUint16());
+
+    return periods.map(period => getEnergyPeriod(period));
+};
+
+CommandBinaryBuffer.prototype.setEnergyPeriods = function ( periods: Array<IEnergyPeriod> ) {
+    periods.forEach(period => setEnergyPeriod(this, period));
+};
+
 
 //     getPackedDate (): IDate {
 //         const date0 = this.getUint8();
@@ -1379,39 +1414,6 @@ CommandBinaryBuffer.prototype.setDate = function ( date: types.IDate ) {
 //         this.setUint8(saldoParameters.decimalPointIndication);
 //         this.setUint32(saldoParameters.powerThreshold);
 //         this.setInt32(saldoParameters.creditThreshold);
-//     }
-
-//     // eslint-disable-next-line class-methods-use-this
-//     private getEnergyPeriod ( period: number ): IEnergyPeriod {
-//         if ( period === 0xffff ) {
-//             return {
-//                 tariff: undefined,
-//                 energy: undefined
-//             };
-//         }
-
-//         return {
-//             tariff: ((period >> 14) & 0x03),
-//             energy: (period & 0x3fff)
-//         };
-//     }
-
-//     private setEnergyPeriod ( {tariff, energy}: IEnergyPeriod ) {
-//         if ( tariff !== undefined && energy !== undefined ) {
-//             this.setUint16((tariff << 14) | (energy & 0x3fff));
-//         } else {
-//             this.setUint16(0xffff);
-//         }
-//     }
-
-//     getEnergyPeriods ( periodsNumber:number ): Array<IEnergyPeriod> {
-//         const periods = Array.from({length: periodsNumber}, () => this.getUint16());
-
-//         return periods.map(period => this.getEnergyPeriod(period));
-//     }
-
-//     setEnergyPeriods ( periods: Array<IEnergyPeriod> ) {
-//         periods.forEach(period => this.setEnergyPeriod(period));
 //     }
 
 

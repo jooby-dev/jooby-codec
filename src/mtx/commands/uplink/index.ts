@@ -17,6 +17,7 @@ export * as getEnergyCurrent from './getEnergyCurrent.js';
 export * as getEnergyDay from './getEnergyDay.js';
 export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';
 export * as getExtendedCurrentValues from './getExtendedCurrentValues.js';
+export * as getHalfHours from './getHalfHours.js';
 export * as getOpParams from './getOpParams.js';
 export * as getSeasonProfile from './getSeasonProfile.js';
 export * as getSpecialDay from './getSpecialDay.js';
