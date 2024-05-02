@@ -22,6 +22,7 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
+
 export const id: types.TCommandId = 0x2e;
 export const name: types.TCommandName = 'getSaldoParameters';
 export const headerSize = 2;
