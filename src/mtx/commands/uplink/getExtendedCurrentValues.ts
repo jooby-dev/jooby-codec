@@ -33,7 +33,8 @@ import {READ_ONLY} from '../../constants/accessLevels.js';
 interface IGetExtendedCurrentValuesResponseParameters {
     /** device temperature */
     temperature: types.TInt16,
-    /** The frequency of voltage in the power grid */
+
+    /** the frequency of voltage in the power grid */
     frequency: types.TInt16
 }
 

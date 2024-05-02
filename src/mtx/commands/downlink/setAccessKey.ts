@@ -28,12 +28,12 @@
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import * as accessLevels from '../../constants/accessLevels.js';
 
 
 interface ISetAccessKeyParameters {
     /**
-     * Access level from the list of [available levels](../../constants/accessLevels.ts).
+     * Access level from the list of {@link accessLevels | available levels}.
      */
     accessLevel: types.TUint8,
 
@@ -55,7 +55,7 @@ export const id: types.TCommandId = 0x09;
 export const name: types.TCommandName = 'setAccessKey';
 export const headerSize = 2;
 export const maxSize = 1 + KEY_SIZE;
-export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
 
 export const examples: command.TCommandExamples = {
     'set key for READ_ONLY access level': {
@@ -65,7 +65,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            accessLevel: READ_ONLY,
+            accessLevel: accessLevels.READ_ONLY,
             key: [
                 0, 1, 2, 3, 4, 5, 6, 7,
                 7, 6, 5, 4, 3, 2, 1, 0
