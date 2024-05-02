@@ -1,36 +1,35 @@
 /**
- * Downlink command to set device operator parameters.
+ * Downlink command to set device current saldo parameters information.
  *
- * The corresponding downlink command: `setOpParams`.
+ * The corresponding downlink command: `setSaldoParameters`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as setOpParams from 'jooby-codec/mtx/commands/uplink/setOpParams.js';
+ * import * as setSaldoParameters from 'jooby-codec/mtx/commands/uplink/setSaldoParameters.js';
  *
- * // empty response
- * const bytes = [];
- * // decoded payload
- * const command = setOpParams.fromBytes(bytes);
+ * const command = setSaldoParameters.fromBytes();
  *
  * console.log(command.parameters);
  * // output:
  * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetOpParams.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetSaldoParameters.md#response)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
-export const id: types.TCommandId = 0x1f;
-export const name: types.TCommandName = 'setOpParams';
+
+export const id: types.TCommandId = 0x2f;
+export const name: types.TCommandName = 'setSaldoParameters';
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
+
 
 export const examples: command.TCommandExamples = {
     'simple response': {
@@ -41,7 +40,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x1f, 0x00
+            0x2f, 0x00
         ]
     }
 };

@@ -1,7 +1,7 @@
 /**
  * Downlink command to get full date from device.
  *
- * The corresponding downlink command: `GetDateTime`.
+ * The corresponding downlink command: `getDateTime`.
  *
  * @packageDocumentation
  *

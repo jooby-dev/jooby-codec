@@ -1,7 +1,7 @@
 /**
  * Downlink command to get the meter displays sorting order.
  *
- * The corresponding downlink command: `GetDisplayParam`.
+ * The corresponding downlink command: `getDisplayParam`.
  *
  * @packageDocumentation
  *

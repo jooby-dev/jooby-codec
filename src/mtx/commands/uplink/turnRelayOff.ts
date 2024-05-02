@@ -1,7 +1,7 @@
 /**
  * Downlink command to turn the device relay off.
  *
- * The corresponding downlink command: `TurnRelayOff`.
+ * The corresponding downlink command: `turnRelayOff`.
  *
  * @packageDocumentation
  *
