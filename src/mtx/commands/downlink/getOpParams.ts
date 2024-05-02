@@ -1,6 +1,8 @@
 /**
  * Downlink command to get device operator parameters.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as getOpParams from 'jooby-codec/mtx/commands/downlink/getOpParams.js';

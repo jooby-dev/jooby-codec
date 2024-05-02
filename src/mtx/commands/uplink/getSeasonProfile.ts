@@ -1,7 +1,9 @@
 /**
  * Downlink command to get season profile information for the given tariff table.
  *
- * The corresponding downlink command: `GetSeasonProfile`.
+ * The corresponding downlink command: `getSeasonProfile`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

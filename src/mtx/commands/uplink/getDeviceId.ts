@@ -1,7 +1,7 @@
 /**
  * Uplink command to get device identifier.
  *
- * The corresponding downlink command: `GetDeviceId`.
+ * The corresponding downlink command: `getDeviceId`.
  *
  * @packageDocumentation
  *

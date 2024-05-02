@@ -1,7 +1,9 @@
 /**
  * Downlink command to get special day information for the given tariff table.
  *
- * The corresponding downlink command: `GetSpecialDay`.
+ * The corresponding downlink command: `getSpecialDay`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

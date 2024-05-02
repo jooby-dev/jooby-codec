@@ -1,7 +1,7 @@
 /**
  * Uplink command to set full date and time on the meter.
  *
- * The corresponding downlink command: `SetDateTime`.
+ * The corresponding downlink command: `setDateTime`.
  *
  * @packageDocumentation
  *

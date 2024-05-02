@@ -1,7 +1,9 @@
 /**
  * Downlink command to set the meter displays sorting order.
  *
- * The corresponding downlink command: `SetDisplayParam`.
+ * The corresponding downlink command: `setDisplayParam`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

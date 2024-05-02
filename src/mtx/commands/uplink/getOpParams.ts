@@ -1,7 +1,9 @@
 /**
  * Downlink command to get device operator parameters.
  *
- * The corresponding downlink command: `GetOpParams`.
+ * The corresponding downlink command: `getOpParams`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
@@ -223,8 +225,6 @@ export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
  */
 export const toBytes = ( parameters: IOperatorParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
-
-    console.log({parameters});
 
     buffer.setOperatorParameters(parameters);
 

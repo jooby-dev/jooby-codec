@@ -1,6 +1,8 @@
 /**
  * Downlink command to turn the device relay off.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as turnRelayOff from 'jooby-codec/mtx/commands/downlink/turnRelayOff.js';

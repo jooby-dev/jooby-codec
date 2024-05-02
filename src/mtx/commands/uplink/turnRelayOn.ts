@@ -1,7 +1,9 @@
 /**
  * Downlink command to turn the device relay on.
  *
- * The corresponding downlink command: `TurnRelayOn`.
+ * The corresponding downlink command: `turnRelayOn`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

@@ -1,33 +1,34 @@
 /**
- * Downlink command to set device operator parameters.
+ * Downlink command for instant activation of the passive tariff plan.
  *
- * The corresponding downlink command: `setOpParams`.
+ * The corresponding downlink command: `runTariffPlan`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as setOpParams from 'jooby-codec/mtx/commands/uplink/setOpParams.js';
+ * import * as runTariffPlan from 'jooby-codec/mtx/commands/uplink/runTariffPlan.js';
  *
  * // empty response
  * const bytes = [];
  * // decoded payload
- * const command = setOpParams.fromBytes(bytes);
+ * const parameters = runTariffPlan.fromBytes(bytes);
  *
- * console.log(command.parameters);
+ * console.log(parameters);
  * // output:
  * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetOpParams.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/RunTariffPlan.md#response)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
-export const id: types.TCommandId = 0x1f;
-export const name: types.TCommandName = 'setOpParams';
+
+export const id: types.TCommandId = 0x06;
+export const name: types.TCommandName = 'runTariffPlan';
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
@@ -41,7 +42,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x1f, 0x00
+            0x06, 0x00
         ]
     }
 };

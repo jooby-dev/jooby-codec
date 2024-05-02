@@ -17,7 +17,7 @@ const byteUnstuffMap: Record<number, number> = invertObject(byteStuffMap) as Rec
 const byteStuffMap7thBitSize: Record<number, number> = {...byteStuffMap, 0x7c: 0x5c, 0xfe: 0x5f};
 const byteUnstuffMap7thBitSize: Record<number, number> = invertObject(byteStuffMap7thBitSize) as Record<number, number>;
 
-const byteStuff = ( stuffingMap: Record<number, number>, byte: number ): number => stuffingMap[byte] || byte;
+const byteStuff = ( stuffingMap: Record<number, number>, byte: number ): number => +stuffingMap[byte] || byte;
 
 
 export const arrayStuff = ( data: TBytes, dataBits: TDataBits = 8 ): TBytes => {

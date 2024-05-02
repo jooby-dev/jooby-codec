@@ -1,6 +1,8 @@
 /**
  * Downlink command to prepare device for rate plan application.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as prepareRatePlan from 'jooby-codec/mtx/commands/downlink/prepareRatePlan.js';

@@ -1,39 +1,36 @@
 /**
- * Downlink command to set device operator parameters.
- *
- * The corresponding downlink command: `setOpParams`.
+ * Downlink command to get device current saldo information.
  *
  * @packageDocumentation
  *
- * @example create command instance from command body hex dump
+ * @example
  * ```js
- * import * as setOpParams from 'jooby-codec/mtx/commands/uplink/setOpParams.js';
+ * import * as getSaldo from 'jooby-codec/mtx/commands/downlink/getSaldo.js';
  *
- * // empty response
- * const bytes = [];
- * // decoded payload
- * const command = setOpParams.fromBytes(bytes);
+ * const bytes = getSaldo.toBytes();
  *
- * console.log(command.parameters);
+ * // command binary representation
+ * console.log(bytes);
  * // output:
- * {}
+ * [0x29, 0x00]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetOpParams.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetSaldo.md#request)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import {READ_WRITE} from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 
-export const id: types.TCommandId = 0x1f;
-export const name: types.TCommandName = 'setOpParams';
+
+export const id: types.TCommandId = 0x29;
+export const name: types.TCommandName = 'getSaldo';
 export const headerSize = 2;
 export const maxSize = 0;
-export const accessLevel: types.TAccessLevel = READ_WRITE;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 
 export const examples: command.TCommandExamples = {
-    'simple response': {
+    'simple request': {
         id,
         name,
         headerSize,
@@ -41,7 +38,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x1f, 0x00
+            0x29, 0x00
         ]
     }
 };
@@ -50,6 +47,7 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
+ * @param bytes - only body (without header)
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameters => {
@@ -57,6 +55,7 @@ export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameter
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
+    // no parameters to decode
     return {};
 };
 
@@ -64,6 +63,7 @@ export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameter
 /**
  * Encode command parameters.
  *
+ * @param parameters - command payload
  * @returns full message (header with body)
  */
 export const toBytes = (): types.TBytes => command.toBytes(id);

@@ -1,7 +1,9 @@
 /**
  * Downlink command to turn the device relay off.
  *
- * The corresponding downlink command: `TurnRelayOff`.
+ * The corresponding downlink command: `turnRelayOff`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

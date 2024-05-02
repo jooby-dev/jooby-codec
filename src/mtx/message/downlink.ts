@@ -1,3 +1,125 @@
+/**
+ * Process messages to send to devices.
+ *
+ * @example
+ * ```js
+ * import * as message from 'jooby-codec/mtx/message/downlink';
+ * import * as downlinkCommands from 'jooby-codec/mtx/commands/downlink';
+ * import getHexFromBytes from 'jooby-codec/utils/getHexFromBytes.js';
+ * import * as frameTypes from 'jooby-codec/mtx/constants/frameTypes.js';
+ *
+ * const aesKey = [...Array(16).keys()];
+ * const messageId = 10;
+ *
+ * const commands = [
+ *     {
+ *         id: downlinkCommands.setDateTime.id,
+ *         parameters: {
+ *             isSummerTime: false,
+ *             seconds: 55,
+ *             minutes: 31,
+ *             hours: 18,
+ *             day: 2,
+ *             date: 19,
+ *             month: 2,
+ *             year: 24
+ *         }
+ *     }
+ * ];
+ * const bytes = message.toBytes(
+ *     commands,
+ *     {
+ *         messageId,
+ *         accessLevel: downlinkCommands.setDateTime.accessLevel,
+ *         aesKey
+ *     }
+ * );
+ *
+ * console.log('message encoded:', JSON.stringify(bytes));
+ * // output:
+ * [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132]
+ *
+ * console.log('message encoded in HEX:', getHexFromBytes(bytes));
+ * // output:
+ * '0a 13 ed 74 0a ae 4a ba c8 42 c4 1b e7 f5 0d 3c 28 84'
+ *
+ *
+ * const frameBytes = message.toFrame(
+ *     bytes,
+ *     {
+ *         type: frameTypes.DATA_REQUEST,
+ *         source: 0xffff,
+ *         destination: 0xaaaa
+ *     }
+ * );
+ *
+ * console.log('frame encoded:', frameBytes);
+ * // output:
+ * [126,80,170,170,255,255,10,125,51,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132,97,187,126]
+ *
+ * console.log('frame encoded in HEX:', getHexFromBytes(frameBytes));
+ * // output:
+ * '7e 50 aa aa ff ff 0a 7d 33 ed 74 0a ae 4a ba c8 42 c4 1b e7 f5 0d 3c 28 84 61 bb 7e'
+ *
+ *
+ * // decode message back from bytes
+ * const parsedMessage = message.fromBytes(bytes, {aesKey});
+ *
+ * console.log('parsed message:', parsedMessage);
+ * // output:
+ * {
+ *     messageId: 3,
+ *     accessLevel: 3,
+ *     commands: [
+ *       {
+ *         id: 8,
+ *         name: 'setDateTime',
+ *         headerSize: 2,
+ *         bytes: [Array],
+ *         parameters: [Object]
+ *       }
+ *     ],
+ *     bytes: [
+ *         3,  19, 237, 116,  10, 174,
+ *        74, 186, 200,  66, 196,  27,
+ *       231, 245,  13,  60,  40, 132
+ *     ],
+ *     lrc: { expected: 119, actual: 119 }
+ * }
+ *
+ * // decode message back from frame
+ * const parsedFrame = message.fromFrame(frameBytes, {aesKey});
+ *
+ * console.log('parsed frame:', parsedFrame);
+ * // output:
+ * {
+ *     type: 80,
+ *     destination: 43690,
+ *     source: 65535,
+ *     messageId: 10,
+ *     accessLevel: 3,
+ *     commands: [
+ *       {
+ *         id: 8,
+ *         name: 'setDateTime',
+ *         headerSize: 2,
+ *         bytes: [Array],
+ *         parameters: [Object]
+ *       }
+ *     ],
+ *     bytes: [
+ *        10,  19, 237, 116,  10, 174,
+ *        74, 186, 200,  66, 196,  27,
+ *       231, 245,  13,  60,  40, 132
+ *     ],
+ *     lrc: { expected: 119, actual: 119 },
+ *     crc: 25019
+ * }
+ * ```
+ *
+ * @packageDocumentation
+ */
+
 import * as commands from '../commands/downlink/index.js';
 import * as wrappers from './wrappers.js';
 
@@ -29,15 +151,21 @@ toBytesMap[commands.getEnergyDayPrevious.id] = commands.getEnergyDayPrevious.toB
 toBytesMap[commands.getExtendedCurrentValues.id] = commands.getExtendedCurrentValues.toBytes;
 toBytesMap[commands.getHalfHours.id] = commands.getHalfHours.toBytes;
 toBytesMap[commands.getOpParams.id] = commands.getOpParams.toBytes;
+toBytesMap[commands.getRatePlanInfo.id] = commands.getRatePlanInfo.toBytes;
+toBytesMap[commands.getSaldo.id] = commands.getSaldo.toBytes;
+toBytesMap[commands.getSaldoParameters.id] = commands.getSaldoParameters.toBytes;
 toBytesMap[commands.getSeasonProfile.id] = commands.getSeasonProfile.toBytes;
 toBytesMap[commands.getSpecialDay.id] = commands.getSpecialDay.toBytes;
 toBytesMap[commands.getVersion.id] = commands.getVersion.toBytes;
 toBytesMap[commands.prepareRatePlan.id] = commands.prepareRatePlan.toBytes;
+toBytesMap[commands.runTariffPlan.id] = commands.runTariffPlan.toBytes;
 toBytesMap[commands.setAccessKey.id] = commands.setAccessKey.toBytes;
 toBytesMap[commands.setDateTime.id] = commands.setDateTime.toBytes;
 toBytesMap[commands.setDayProfile.id] = commands.setDayProfile.toBytes;
 toBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.toBytes;
 toBytesMap[commands.setOpParams.id] = commands.setOpParams.toBytes;
+toBytesMap[commands.setSaldo.id] = commands.setSaldo.toBytes;
+toBytesMap[commands.setSaldoParameters.id] = commands.setSaldoParameters.toBytes;
 toBytesMap[commands.setSeasonProfile.id] = commands.setSeasonProfile.toBytes;
 toBytesMap[commands.setSpecialDay.id] = commands.setSpecialDay.toBytes;
 toBytesMap[commands.turnRelayOff.id] = commands.turnRelayOff.toBytes;
@@ -59,15 +187,21 @@ fromBytesMap[commands.getEnergyDayPrevious.id] = commands.getEnergyDayPrevious.f
 fromBytesMap[commands.getExtendedCurrentValues.id] = commands.getExtendedCurrentValues.fromBytes;
 fromBytesMap[commands.getHalfHours.id] = commands.getHalfHours.fromBytes;
 fromBytesMap[commands.getOpParams.id] = commands.getOpParams.fromBytes;
+fromBytesMap[commands.getRatePlanInfo.id] = commands.getRatePlanInfo.fromBytes;
+fromBytesMap[commands.getSaldo.id] = commands.getSaldo.fromBytes;
+fromBytesMap[commands.getSaldoParameters.id] = commands.getSaldoParameters.fromBytes;
 fromBytesMap[commands.getSeasonProfile.id] = commands.getSeasonProfile.fromBytes;
 fromBytesMap[commands.getSpecialDay.id] = commands.getSpecialDay.fromBytes;
 fromBytesMap[commands.getVersion.id] = commands.getVersion.fromBytes;
 fromBytesMap[commands.prepareRatePlan.id] = commands.prepareRatePlan.fromBytes;
+fromBytesMap[commands.runTariffPlan.id] = commands.runTariffPlan.fromBytes;
 fromBytesMap[commands.setAccessKey.id] = commands.setAccessKey.fromBytes;
 fromBytesMap[commands.setDateTime.id] = commands.setDateTime.fromBytes;
 fromBytesMap[commands.setDayProfile.id] = commands.setDayProfile.fromBytes;
 fromBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.fromBytes;
 fromBytesMap[commands.setOpParams.id] = commands.setOpParams.fromBytes;
+fromBytesMap[commands.setSaldo.id] = commands.setSaldo.fromBytes;
+fromBytesMap[commands.setSaldoParameters.id] = commands.setSaldoParameters.fromBytes;
 fromBytesMap[commands.setSeasonProfile.id] = commands.setSeasonProfile.fromBytes;
 fromBytesMap[commands.setSpecialDay.id] = commands.setSpecialDay.fromBytes;
 fromBytesMap[commands.turnRelayOff.id] = commands.turnRelayOff.fromBytes;
@@ -89,15 +223,21 @@ nameMap[commands.getEnergyDayPrevious.id] = commands.getEnergyDayPrevious.name;
 nameMap[commands.getExtendedCurrentValues.id] = commands.getExtendedCurrentValues.name;
 nameMap[commands.getHalfHours.id] = commands.getHalfHours.name;
 nameMap[commands.getOpParams.id] = commands.getOpParams.name;
+nameMap[commands.getRatePlanInfo.id] = commands.getRatePlanInfo.name;
+nameMap[commands.getSaldo.id] = commands.getSaldo.name;
+nameMap[commands.getSaldoParameters.id] = commands.getSaldoParameters.name;
 nameMap[commands.getSeasonProfile.id] = commands.getSeasonProfile.name;
 nameMap[commands.getSpecialDay.id] = commands.getSpecialDay.name;
 nameMap[commands.getVersion.id] = commands.getVersion.name;
 nameMap[commands.prepareRatePlan.id] = commands.prepareRatePlan.name;
+nameMap[commands.runTariffPlan.id] = commands.runTariffPlan.name;
 nameMap[commands.setAccessKey.id] = commands.setAccessKey.name;
 nameMap[commands.setDateTime.id] = commands.setDateTime.name;
 nameMap[commands.setDayProfile.id] = commands.setDayProfile.name;
 nameMap[commands.setDisplayParam.id] = commands.setDisplayParam.name;
 nameMap[commands.setOpParams.id] = commands.setOpParams.name;
+nameMap[commands.setSaldo.id] = commands.setSaldo.name;
+nameMap[commands.setSaldoParameters.id] = commands.setSaldoParameters.name;
 nameMap[commands.setSeasonProfile.id] = commands.setSeasonProfile.name;
 nameMap[commands.setSpecialDay.id] = commands.setSpecialDay.name;
 nameMap[commands.turnRelayOff.id] = commands.turnRelayOff.name;

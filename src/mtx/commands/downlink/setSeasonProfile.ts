@@ -1,6 +1,8 @@
 /**
  * Downlink command to set season profile information for the given tariff table.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as setSeasonProfile from 'jooby-codec/mtx/commands/downlink/setSeasonProfile.js';
@@ -70,6 +72,7 @@ export const examples: command.TCommandExamples = {
     'set some season profile': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

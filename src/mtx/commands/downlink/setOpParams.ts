@@ -1,6 +1,8 @@
 /**
  * Downlink command to set device operator parameters.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as setOpParams from 'jooby-codec/mtx/commands/downlink/setOpParams.js'; * import {CommandBinaryBuffer} from 'jooby-codec/mtx/index.js';

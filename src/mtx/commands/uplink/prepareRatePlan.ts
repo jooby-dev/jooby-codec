@@ -1,7 +1,9 @@
 /**
  * Downlink command to prepare device for rate plan application.
  *
- * The corresponding downlink command: `PrepareRatePlan`.
+ * The corresponding downlink command: `prepareRatePlan`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

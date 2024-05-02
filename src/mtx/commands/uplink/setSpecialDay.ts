@@ -1,7 +1,9 @@
 /**
  * Downlink command to set special day information for the given tariff table.
  *
- * The corresponding downlink command: `SetSpecialDay`.
+ * The corresponding downlink command: `setSpecialDay`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
