@@ -1,0 +1,156 @@
+/**
+ * Downlink command to get device current saldo information.
+ *
+ * The corresponding downlink command: `GetSaldo`.
+ *
+ * @example create command instance from command body hex dump
+ * ```js
+ * import * as getSaldo from 'jooby-codec/mtx/commands/uplink/getSaldo.js';
+ *
+ * const bytes = [
+ *     0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00,
+ *     0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x07, 0x09, 0x17, 0x06, 0x23
+ * ];
+ * const parameters = getSaldoResponse.fromBytes(bytes);
+ *
+ * console.log(parameters);
+ * // output:
+ * {
+ *     currentSaldo: 1,
+ *     count: 0,
+ *     energy: [2, 3, 4, 5],
+ *     beginSaldoOfPeriod: 7,
+ *     date: {
+ *         month: 9,
+ *         date: 23,
+ *         hours: 6,
+ *         minutes: 35
+ *     }
+ * }
+ * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetSaldo.md#response)
+ */
+
+import * as command from '../../utils/command.js';
+import * as types from '../../types.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+
+
+export const id: types.TCommandId = 0x29;
+export const name: types.TCommandName = 'getSaldo';
+export const headerSize = 2;
+export const maxSize = 29;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
+
+
+export interface IGetSaldoResponseParameters {
+    /**
+     * Current device saldo.
+     */
+    currentSaldo: types.TInt32,
+
+    /**
+     * Counter for saldo installations.
+     */
+    count: types.TUint8,
+
+    /**
+     * Energy for tariffs `1`-`4` at the moment of setting a new saldo.
+     */
+    energy: Array<types.TInt32>,
+
+    /**
+     * Current saldo after setting the saldo.
+     */
+    beginSaldoOfPeriod: types.TInt32,
+
+    /**
+     * Last saldo installations time.
+     */
+    date: {
+        month: types.TMonth,
+        date: types.TMonthDay,
+        hours: types.TUint8,
+        minutes: types.TUint8
+    }
+}
+
+
+export const examples: command.TCommandExamples = {
+    'test response': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        accessLevel,
+        parameters: {
+            currentSaldo: 1,
+            count: 0,
+            energy: [2, 3, 4, 5],
+            beginSaldoOfPeriod: 7,
+            date: {
+                month: 9,
+                date: 23,
+                hours: 6,
+                minutes: 35
+            }
+        },
+        bytes: [
+            0x29, 0x1d,
+            0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00,
+            0x00, 0x04, 0x00, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00, 0x07, 0x09, 0x17, 0x06, 0x23
+        ]
+    }
+};
+
+
+/**
+ * Decode command parameters.
+ *
+ * @param bytes - command body bytes
+ * @returns decoded parameters
+ */
+export const fromBytes = (bytes: types.TBytes): IGetSaldoResponseParameters => {
+    if (bytes.length !== maxSize) {
+        throw new Error('Invalid GetSaldoResponse data size.');
+    }
+
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+
+    return {
+        currentSaldo: buffer.getInt32(),
+        count: buffer.getUint8(),
+        energy: Array.from({length: 4}, () => buffer.getInt32()),
+        beginSaldoOfPeriod: buffer.getInt32(),
+        date: {
+            month: buffer.getUint8() as unknown as types.TMonth,
+            date: buffer.getUint8() as unknown as types.TMonthDay,
+            hours: buffer.getUint8(),
+            minutes: buffer.getUint8()
+        }
+    };
+};
+
+
+/**
+ * Encode command parameters.
+ *
+ * @param parameters - command parameters
+ * @returns full message (header with body)
+ */
+export const toBytes = ( parameters: IGetSaldoResponseParameters ): types.TBytes => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+
+    buffer.setInt32(parameters.currentSaldo);
+    buffer.setUint8(parameters.count);
+    parameters.energy.forEach(value => buffer.setInt32(value));
+    buffer.setInt32(parameters.beginSaldoOfPeriod);
+    buffer.setUint8(parameters.date.month as unknown as types.TUint8);
+    buffer.setUint8(parameters.date.date as unknown as types.TUint8);
+    buffer.setUint8(parameters.date.hours);
+    buffer.setUint8(parameters.date.minutes);
+
+    return command.toBytes(id, buffer.data);
+};
