@@ -40,6 +40,7 @@ export const name: types.TCommandName = 'getOpParams';
 export const headerSize = 2;
 export const maxSize = OPERATOR_PARAMETERS_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'get default operator parameters response': {

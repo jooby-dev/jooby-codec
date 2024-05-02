@@ -56,6 +56,7 @@ export const name: types.TCommandName = 'setAccessKey';
 export const headerSize = 2;
 export const maxSize = 1 + KEY_SIZE;
 export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'set key for READ_ONLY access level': {

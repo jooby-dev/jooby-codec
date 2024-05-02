@@ -28,6 +28,7 @@ export const name: types.TCommandName = 'getBuildVersion';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 0;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'simple request': {

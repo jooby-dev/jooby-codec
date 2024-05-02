@@ -29,7 +29,6 @@ export interface IFromFrameOptions {
 
 // to build IMessage from bytes
 export interface IFromBytesOptions {
-    withMtxLora?: boolean,
     aesKey?: TBytes
 }
 

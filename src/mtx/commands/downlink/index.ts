@@ -18,6 +18,7 @@ export * as getEnergyDay from './getEnergyDay.js';
 export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';
 export * as getExtendedCurrentValues from './getExtendedCurrentValues.js';
 export * as getHalfHours from './getHalfHours.js';
+export * as getHalfhoursEnergies from './getHalfhoursEnergies.js';
 export * as getOpParams from './getOpParams.js';
 export * as getRatePlanInfo from './getRatePlanInfo.js';
 export * as getSaldo from './getSaldo.js';

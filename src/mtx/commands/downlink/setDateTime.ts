@@ -40,6 +40,7 @@ export const name: types.TCommandName = 'setDateTime';
 export const headerSize = 2;
 export const maxSize = 8;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
     'time: 2024.02.19 18:31:55': {
