@@ -23,6 +23,7 @@ export * as getSeasonProfile from './getSeasonProfile.js';
 export * as getSpecialDay from './getSpecialDay.js';
 export * as getVersion from './getVersion.js';
 export * as prepareRatePlan from './prepareRatePlan.js';
+export * as setAccessKey from './setAccessKey.js';
 export * as setDateTime from './setDateTime.js';
 export * as setDayProfile from './setDayProfile.js';
 export * as setDisplayParam from './setDisplayParam.js';
