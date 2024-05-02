@@ -1,7 +1,7 @@
 /**
  * Downlink command to set day profile for tariff plan.
  *
- * The corresponding downlink command: `SetDayProfile`.
+ * The corresponding downlink command: `setDayProfile`.
  *
  * @packageDocumentation
  *

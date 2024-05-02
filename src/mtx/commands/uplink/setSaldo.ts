@@ -1,7 +1,9 @@
 /**
  * Downlink command to set device current saldo information.
  *
- * The corresponding downlink command: `SetSaldo`.
+ * The corresponding downlink command: `setSaldo`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

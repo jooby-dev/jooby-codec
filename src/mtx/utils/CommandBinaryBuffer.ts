@@ -14,6 +14,8 @@ import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
 import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
 import {DATA_REQUEST} from '../constants/frameTypes.js';
+import * as screenIds from '../constants/screenIds.js';
+import * as frameTypes from '../constants/frameTypes.js';
 
 
 export const frameHeaderSize = 5;

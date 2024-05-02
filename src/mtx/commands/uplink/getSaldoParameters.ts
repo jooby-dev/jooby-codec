@@ -1,7 +1,9 @@
 /**
  * Downlink command to get device current saldo parameters information.
  *
- * The corresponding downlink command: `GetSaldoParameters`.
+ * The corresponding downlink command: `getSaldoParameters`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
@@ -48,6 +50,7 @@ export const examples: command.TCommandExamples = {
     'default response': {
         id,
         name,
+        headerSize,
         maxSize,
         accessLevel,
         parameters: {

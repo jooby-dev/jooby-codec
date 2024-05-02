@@ -32,6 +32,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as getSaldo from '../uplink/getSaldo.js';
 
 
 interface ISetSaldoParameters {
@@ -51,7 +53,7 @@ interface ISetSaldoParameters {
     saldoNew: types.TInt32;
 
     /**
-     * Saldo value obtained through {@link GetSaldo}/{@link GetSaldoResponse}.
+     * Saldo value obtained through {@link getSaldo}.
      */
     saldoOld: types.TInt32;
 }

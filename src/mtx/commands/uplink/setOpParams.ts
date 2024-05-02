@@ -1,7 +1,7 @@
 /**
  * Downlink command to set device operator parameters.
  *
- * The corresponding downlink command: `SetOpParams`.
+ * The corresponding downlink command: `setOpParams`.
  *
  * @packageDocumentation
  *

@@ -1,7 +1,9 @@
 /**
  * Downlink command to get device current saldo information.
  *
- * The corresponding downlink command: `GetSaldo`.
+ * The corresponding downlink command: `getSaldo`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

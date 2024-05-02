@@ -51,7 +51,10 @@ export const examples: command.TCommandExamples = {
         parameters: {
             tariffTable: 1
         },
-        bytes: [0x2c, 0x01, 0x01]
+        bytes: [
+            0x2c, 0x01,
+            0x01
+        ]
     }
 };
 

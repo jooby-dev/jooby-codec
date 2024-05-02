@@ -1,7 +1,7 @@
 /**
  * Downlink command to turn the device relay on.
  *
- * The corresponding downlink command: `TurnRelayOn`.
+ * The corresponding downlink command: `turnRelayOn`.
  *
  * @packageDocumentation
  *

@@ -49,7 +49,10 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {tariffTable: 5},
-        bytes: [0x06, 0x01, 0x05]
+        bytes: [
+            0x06, 0x01,
+            0x05
+        ]
     }
 };
 

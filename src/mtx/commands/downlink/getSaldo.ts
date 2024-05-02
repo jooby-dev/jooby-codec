@@ -37,7 +37,9 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {},
-        bytes: [0x29, 0x00]
+        bytes: [
+            0x29, 0x00
+        ]
     }
 };
 

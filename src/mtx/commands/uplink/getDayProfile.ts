@@ -1,7 +1,7 @@
 /**
  * Downlink command to get day profile for the given tariff table.
  *
- * The corresponding downlink command: `GetDayProfile`.
+ * The corresponding downlink command: `getDayProfile`.
  *
  * @packageDocumentation
  *

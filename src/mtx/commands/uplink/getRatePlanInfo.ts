@@ -1,7 +1,9 @@
 /**
  * Downlink command to get device rate plan information.
  *
- * The corresponding downlink command: `GetRatePlanInfo`.
+ * The corresponding downlink command: `getRatePlanInfo`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

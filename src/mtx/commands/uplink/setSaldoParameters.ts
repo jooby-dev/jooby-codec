@@ -1,7 +1,9 @@
 /**
  * Downlink command to set device current saldo parameters information.
  *
- * The corresponding downlink command: `SetSaldoParameters`.
+ * The corresponding downlink command: `setSaldoParameters`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

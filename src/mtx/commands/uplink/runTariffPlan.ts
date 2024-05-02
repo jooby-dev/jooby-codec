@@ -1,7 +1,9 @@
 /**
  * Downlink command for instant activation of the passive tariff plan.
  *
- * The corresponding downlink command: `RunTariffPlan`.
+ * The corresponding downlink command: `runTariffPlan`.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
@@ -39,7 +41,9 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {},
-        bytes: [0x06, 0x00]
+        bytes: [
+            0x06, 0x00
+        ]
     }
 };
 
