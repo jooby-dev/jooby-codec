@@ -107,7 +107,7 @@ export const examples: command.TCommandExamples = {
  */
 export const fromBytes = ( bytes: types.TBytes ): ISaldoParameters => {
     if ( bytes.length !== maxSize ) {
-        throw new Error('Invalid GetSaldoParametersResponse data size.');
+        throw new Error('Invalid getSaldoParameters data size.');
     }
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);

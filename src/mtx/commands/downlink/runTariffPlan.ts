@@ -64,7 +64,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = (bytes: types.TBytes): IRunTariffPlanParameters => ({tariffTable: bytes[0]});
+export const fromBytes = ( bytes: types.TBytes ): IRunTariffPlanParameters => ({tariffTable: bytes[0]});
 
 /**
  * Encode command parameters.
@@ -72,6 +72,6 @@ export const fromBytes = (bytes: types.TBytes): IRunTariffPlanParameters => ({ta
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = (parameters: IRunTariffPlanParameters): types.TBytes => (
+export const toBytes = ( parameters: IRunTariffPlanParameters ): types.TBytes => (
     command.toBytes(id, [parameters.tariffTable])
 );

@@ -7,12 +7,12 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as setCorrectTimeResponse from 'jooby-codec/mtx/commands/uplink/setCorrectTimeResponse.js';
+ * import * as setCorrectTime from 'jooby-codec/mtx/commands/uplink/setCorrectTime.js';
  *
  * // empty response
  * const bytes = [];
  * // decoded payload
- * const parameters = setCorrectTimeResponse.fromBytes(bytes);
+ * const parameters = setCorrectTime.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

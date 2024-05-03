@@ -98,7 +98,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = (bytes: types.TBytes): ISetSaldoParameters => {
+export const fromBytes = ( bytes: types.TBytes ): ISetSaldoParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return {
@@ -119,7 +119,7 @@ export const fromBytes = (bytes: types.TBytes): ISetSaldoParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = (parameters: ISetSaldoParameters): types.TBytes => {
+export const toBytes = ( parameters: ISetSaldoParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
 
     buffer.setUint8(parameters.date.month as unknown as types.TUint8);
