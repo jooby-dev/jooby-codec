@@ -32,7 +32,7 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfhoursEnergies} from '../../utils/LoraCommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfhoursEnergies, TARIFF_NUMBER} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 
 
@@ -46,6 +46,40 @@ export interface IGetHalfhoursEnergiesResponseParameters {
 
 const DATE_SIZE = 3; // year, month, date
 const MAX_HALFHOURS_ENERGY_SIZE = 5 * 3 * 4; // 5 energy types, 3 channels, 4 bytes - energy value
+
+const energiesToObis: Record<string, string> = {
+    'A+': '1.5.x',
+    'A+R+': '3.5.x',
+    'A+R-': '4.5.x',
+    'A-': '2.5.x',
+    'A-R+': '6.5.x',
+    'A-R-': '7.5.x'
+};
+
+const convertEnergyToObis = ( energy: string, tariff: number = 0 ) => {
+    const obis = energiesToObis[energy];
+
+    return obis ? obis.replace('x', tariff.toString(10)) : '';
+};
+
+const convertHalfhoursEnergiesToDlms = ( energies: THalfhoursEnergies ) => {
+    const dlms: Record<string, number> = {};
+
+    Object.keys(energies).forEach(energy => {
+        const values = energies[energy];
+
+        for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
+            const value = (values as Array<number | undefined>)[tariff];
+
+            if ( value || value === 0 ) {
+                dlms[convertEnergyToObis(energy, tariff + 1)] = value;
+            }
+        }
+    });
+
+    return dlms;
+};
+
 
 export const id: types.TCommandId = 0x6f;
 export const name: types.TCommandName = 'getHalfhoursEnergies';
@@ -123,17 +157,16 @@ export const toBytes = ( parameters: IGetHalfhoursEnergiesResponseParameters ): 
 };
 
 
-// toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
-//     const {parameters} = this;
-//     const {date, firstHalfhour, halfhoursNumber, energies} = parameters;
-//     const result = dlms
-//         ? {
-//             date,
-//             firstHalfhour,
-//             halfhoursNumber,
-//             ...convertHalfhoursEnergiesToDlms(energies)
-//         }
-//         : parameters;
+export const toJson = ( parameters: IGetHalfhoursEnergiesResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
+    const {date, firstHalfhour, halfhoursNumber, energies} = parameters;
+    const result = dlms
+        ? {
+            date,
+            firstHalfhour,
+            halfhoursNumber,
+            ...convertHalfhoursEnergiesToDlms(energies)
+        }
+        : parameters;
 
-//     return JSON.stringify(result);
-// }
+    return JSON.stringify(result);
+};

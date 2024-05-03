@@ -98,17 +98,15 @@ export const toBytes = ( parameters: IGetExtendedCurrentValuesResponseParameters
 };
 
 
-// TODO: add implementation
-// export const toJson = ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
-//     const {parameters} = this;
-//     const {temperature, frequency} = this.parameters;
+export const toJson = ( parameters: IGetExtendedCurrentValuesResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
+    const {temperature, frequency} = parameters;
 
-//     const result = dlms
-//         ? {
-//             '0.11.0': temperature,
-//             '14.7.0': frequency
-//         }
-//         : parameters;
+    const result = dlms
+        ? {
+            '0.11.0': temperature,
+            '14.7.0': frequency
+        }
+        : parameters;
 
-//     return JSON.stringify(result);
-// }
+    return JSON.stringify(result);
+};

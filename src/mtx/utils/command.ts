@@ -1,4 +1,5 @@
 import * as types from '../types.js';
+import {IBytesConversionFormatOptions, defaultFormatOptions} from '../../utils/bytesConversion.js';
 
 
 /**
@@ -51,6 +52,15 @@ export interface ICommandImplementation {
     fromBytes ( bytes: types.TBytes ),
     toBytes ( parameters?: object ): types.TBytes
 }
+
+export interface IDlmsJsonOptions extends IBytesConversionFormatOptions {
+    dlms: boolean
+}
+
+export const defaultDlmsJsonOptions = {
+    ...defaultFormatOptions,
+    dlms: false
+};
 
 
 export const toBytes = ( commandId: number, commandBytes: types.TBytes = [] ): types.TBytes => [commandId, commandBytes.length, ...commandBytes];

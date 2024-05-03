@@ -30,15 +30,17 @@
  */
 
 import * as types from '../../types.js';
+import * as command from '../../utils/command.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {
     ICommandBinaryBuffer,
     IPackedEnergiesWithType,
     PACKED_ENERGY_TYPE_SIZE,
     DATE_SIZE,
-    ENERGY_SIZE
+    ENERGY_SIZE,
+    TARIFF_NUMBER
 } from '../../utils/CommandBinaryBuffer.js';
-import * as command from '../../utils/command.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import getObisByEnergy from '../../utils/getObisEnergy.js';
 
 
 interface IGetEnergyDayResponseParameters extends IPackedEnergiesWithType {
@@ -49,12 +51,6 @@ interface IGetEnergyDayResponseParameters extends IPackedEnergiesWithType {
 /** fixed size only for parameters without `energyType` parameter  */
 const COMMAND_SIZE = 19;
 const MAX_COMMAND_SIZE = COMMAND_SIZE + PACKED_ENERGY_TYPE_SIZE;
-
-// const getObisByEnergy = ( energy: number | undefined, tariff: number = 0 ): string => {
-//     const obis = energy === A_MINUS_ENERGY_TYPE ? '2.8.x' : '1.8.x';
-
-//     return obis.replace('x', tariff.toString(10));
-// };
 
 
 export const id: types.TCommandId = 0x16;
@@ -157,25 +153,22 @@ export const toBytes = ( parameters: IGetEnergyDayResponseParameters ): types.TB
 };
 
 
-// TODO: add implementation
-// export const toJson = ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
-//     const {parameters} = this;
+export const toJson = ( parameters: IGetEnergyDayResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
+    if ( !dlms ) {
+        return JSON.stringify(parameters);
+    }
 
-//     if ( !dlms ) {
-//         return JSON.stringify(parameters);
-//     }
+    const {date, energyType, energies} = parameters;
+    const result: Record<string, types.TUint32> = {};
 
-//     const {date, energyType, energies} = parameters;
-//     const result: Record<string, TInt32> = {};
+    for ( let i = 0; i < TARIFF_NUMBER; i += 1 ) {
+        if ( energies[i] || energies[i] === 0 ) {
+            result[getObisByEnergy(energyType, i + 1)] = energies[i];
+        }
+    }
 
-//     for ( let i = 0; i < TARIFF_NUMBER; i += 1 ) {
-//         if ( energies[i] || energies[i] === 0 ) {
-//             result[getObisByEnergy(energyType, i + 1)] = energies[i] as TInt32;
-//         }
-//     }
-
-//     return JSON.stringify({
-//         date,
-//         ...result
-//     });
-// }
+    return JSON.stringify({
+        date,
+        ...result
+    });
+};

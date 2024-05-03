@@ -32,7 +32,7 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, TTariffsEnergies} from '../../utils/LoraCommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, TTariffsEnergies, TARIFF_NUMBER} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 
 
@@ -45,38 +45,42 @@ interface IGetDayEnergiesResponseParameters {
 const DATE_SIZE = 3; // year, month, date
 const MAX_TARIFFS_ENERGIES_SIZE = 5 * 4 * 4; // 5 energy types, 4 tariffs, 4 bytes - energy value
 
-// const energiesToObis: Record<string, string> = {
-//     'A+': '1.8.x',
-//     'A+R+': '3.8.x',
-//     'A+R-': '4.8.x',
-//     'A-': '2.8.x',
-//     'A-R+': '7.8.x',
-//     'A-R-': '8.8.x'
-// };
 
-// const convertEnergyToObis = ( energy: string, tariff: number = 0 ) => {
-//     const obis = energiesToObis[energy];
+const energiesToObis: Record<string, string> = {
+    'A+': '1.8.x',
+    'A+R+': '3.8.x',
+    'A+R-': '4.8.x',
+    'A-': '2.8.x',
+    'A-R+': '7.8.x',
+    'A-R-': '8.8.x'
+};
 
-//     return obis ? obis.replace('x', tariff.toString(10)) : '';
-// };
+const convertEnergyToObis = ( energy: string, tariff: number = 0 ) => {
+    const obis = energiesToObis[energy];
 
-// const convertTariffsEnergiesToDlms = ( energies: TTariffsEnergies ) => {
-//     const dlms: Record<string, number> = {};
+    return obis ? obis.replace('x', tariff.toString(10)) : '';
+};
 
-//     for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
-//         const tariffEnergies = energies[tariff];
+const convertTariffsEnergiesToDlms = ( energies: TTariffsEnergies ) => {
+    const dlms: Record<string, number> = {};
 
-//         if ( tariffEnergies ) {
-//             for ( const [energy, value] of Object.entries(tariffEnergies) ) {
-//                 if ( value || value === 0 ) {
-//                     dlms[convertEnergyToObis(energy, tariff + 1)] = value;
-//                 }
-//             }
-//         }
-//     }
+    for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
+        const tariffEnergies = energies[tariff];
 
-//     return dlms;
-// };
+        if ( tariffEnergies ) {
+            Object.keys(tariffEnergies).forEach(energy => {
+                const value = tariffEnergies[energy];
+
+                if ( value || value === 0 ) {
+                    dlms[convertEnergyToObis(energy, tariff + 1)] = value;
+                }
+            });
+        }
+    }
+
+    return dlms;
+};
+
 
 export const id: types.TCommandId = 0x78;
 export const name: types.TCommandName = 'getDayEnergies';
@@ -145,15 +149,14 @@ export const toBytes = ( parameters: IGetDayEnergiesResponseParameters ): types.
 };
 
 
-// toJson ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
-//     const {parameters} = this;
-//     const {date, energies} = parameters;
-//     const result = dlms
-//         ? {
-//             date,
-//             ...convertTariffsEnergiesToDlms(energies)
-//         }
-//         : parameters;
+export const toJson = ( parameters: IGetDayEnergiesResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
+    const {date, energies} = parameters;
+    const result = dlms
+        ? {
+            date,
+            ...convertTariffsEnergiesToDlms(energies)
+        }
+        : parameters;
 
-//     return JSON.stringify(result);
-// }
+    return JSON.stringify(result);
+};
