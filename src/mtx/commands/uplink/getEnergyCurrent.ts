@@ -34,7 +34,7 @@ import CommandBinaryBuffer, {
     ENERGY_SIZE,
     TARIFF_NUMBER
 } from '../../utils/CommandBinaryBuffer.js';
-import getObisEnergy from '../../utils/getObisEnergy.js';
+import getObisByEnergy from '../../utils/getObisByEnergy.js';
 
 
 /** fixed size only for parameters without `energyType` parameter  */
@@ -137,7 +137,7 @@ export const toJson = ( parameters: IPackedEnergiesWithType, {dlms}: command.IDl
 
     for ( let i = 0; i < TARIFF_NUMBER; i += 1 ) {
         if ( energies[i] || energies[i] === 0 ) {
-            result[getObisEnergy(energyType, i + 1)] = energies[i];
+            result[getObisByEnergy(energyType, i + 1)] = energies[i];
         }
     }
 
