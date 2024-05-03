@@ -112,7 +112,7 @@ export const examples: command.TCommandExamples = {
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetRatePlanInfoResponseParameters => {
     if ( bytes.length !== maxSize ) {
-        throw new Error('Invalid GetRatePlanInfoResponse data size.');
+        throw new Error('Invalid getRatePlanInfo data size.');
     }
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);

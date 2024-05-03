@@ -1,45 +1,49 @@
 /**
- * Downlink command to get device identifier.
+ * Uplink command for incremental time correction.
+ *
+ * The corresponding downlink command: `setCorrectDateTime`.
  *
  * @packageDocumentation
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import * as getDeviceId from 'jooby-codec/mtx/commands/downlink/getDeviceId.js';
+ * import * as setCorrectDateTime from 'jooby-codec/mtx/commands/uplink/setCorrectDateTime.js';
  *
- * const bytes = getDeviceId.toBytes();
+ * // empty response
+ * const bytes = [];
+ * // decoded payload
+ * const parameters = setCorrectDateTime.fromBytes(bytes);
  *
- * // command binary representation
- * console.log(bytes);
+ * console.log(parameters);
  * // output:
- * [5, 0]
+ * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDeviceId.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetCorrectDateTime.md#response)
  */
 
-import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
-import * as accessLevels from '../../constants/accessLevels.js';
+import * as types from '../../types.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x05;
-export const name: types.TCommandName = 'getDeviceId';
+export const id: types.TCommandId = 0x5c;
+export const name: types.TCommandName = 'setCorrectDateTime';
 export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
 export const maxSize = 0;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'simple request': {
+    'simple response': {
         id,
         name,
         headerSize,
-        accessLevel,
         maxSize,
+        accessLevel,
         parameters: {},
         bytes: [
-            0x05, 0x00
+            0x5c, 0x00
         ]
     }
 };
@@ -56,7 +60,6 @@ export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameter
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    // no parameters to decode
     return {};
 };
 

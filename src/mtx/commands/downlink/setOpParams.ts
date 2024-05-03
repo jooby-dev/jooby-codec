@@ -6,9 +6,9 @@
  * @example
  * ```js
  * import * as setOpParams from 'jooby-codec/mtx/commands/downlink/setOpParams.js'; * import {CommandBinaryBuffer} from 'jooby-codec/mtx/index.js';
- * import {CommandBinaryBuffer} from 'jooby-codec/mtx/utils.js';
+ * import {getDefaultOperatorParameters} from 'jooby-codec/mtx/utils/CommandBinaryBuffer.js';
  *
- * const parameters = CommandBinaryBuffer.getDefaultOperatorParameters();
+ * const parameters = getDefaultOperatorParameters();
  * const bytes = setOpParams.toBytes(parameters);
  *
  * // command binary representation
