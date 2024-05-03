@@ -89,11 +89,11 @@ export const examples: command.TCommandExamples = {
                 'A-R-': false
             },
             firstHalfhour: 5,
-            halfhoursNumber: 4
+            halfhoursNumber: 3
         },
         bytes: [
             0x6f, 0x05,
-            0x2a, 0x43, 0x03, 0x05, 0x04
+            0x2a, 0x43, 0x03, 0x05, 0x03
         ]
     }
 };

@@ -40,7 +40,7 @@ import CommandBinaryBuffer, {
     ENERGY_SIZE,
     TARIFF_NUMBER
 } from '../../utils/CommandBinaryBuffer.js';
-import getObisByEnergy from '../../utils/getObisEnergy.js';
+import getObisByEnergy from '../../utils/getObisByEnergy.js';
 
 
 interface IGetEnergyDayResponseParameters extends IPackedEnergiesWithType {
