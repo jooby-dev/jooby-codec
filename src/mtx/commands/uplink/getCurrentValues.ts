@@ -35,9 +35,9 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
 interface IGetCurrentValuesResponseParameters {
@@ -143,29 +143,26 @@ export const toBytes = ( parameters: IGetCurrentValuesResponseParameters ): type
 };
 
 
-// TODO: add implementation
-// export const toJson = ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
-//     const {parameters} = this;
+export const toJson = ( parameters: IGetCurrentValuesResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
+    if ( !dlms ) {
+        return JSON.stringify(parameters);
+    }
 
-//     if ( !dlms ) {
-//         return JSON.stringify(parameters);
-//     }
+    const result: Record<string, number> = {
+        '21.7.0': parameters.powerA,
+        '31.7.0': parameters.iaRms,
+        '32.7.0': parameters.vavbRms,
+        '33.7.0': parameters.pfA,
+        '51.7.0': parameters.ibRms,
+        '41.7.0': parameters.powerB,
+        '53.7.0': parameters.pfB
+    };
 
-//     const result: Record<string, number> = {
-//         '21.7.0': parameters.powerA,
-//         '31.7.0': parameters.iaRms,
-//         '32.7.0': parameters.vavbRms,
-//         '33.7.0': parameters.pfA,
-//         '51.7.0': parameters.ibRms,
-//         '41.7.0': parameters.powerB,
-//         '53.7.0': parameters.pfB
-//     };
+    const varAKey = parameters.varA >= 0 ? '23.7.0' : '24.7.0';
+    const varBKey = parameters.varB >= 0 ? '43.7.0' : '44.7.0';
 
-//     const varAKey = parameters.varA >= 0 ? '23.7.0' : '24.7.0';
-//     const varBKey = parameters.varB >= 0 ? '43.7.0' : '44.7.0';
+    result[varAKey] = parameters.varA;
+    result[varBKey] = parameters.varB;
 
-//     result[varAKey] = parameters.varA;
-//     result[varBKey] = parameters.varB;
-
-//     return JSON.stringify(result);
-// }
+    return JSON.stringify(result);
+};

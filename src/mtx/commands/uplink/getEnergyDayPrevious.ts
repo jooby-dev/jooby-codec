@@ -40,23 +40,23 @@ interface IGetEnergyDayPreviousResponseParameters {
 }
 
 
-// const TARIFF_NUMBER = 4;
+const TARIFF_NUMBER = 4;
 
-// const convertAPlusEnergyToObis = ( tariff: number = 0 ) => '1.8.x'.replace('x', tariff.toString(10));
+const convertAPlusEnergyToObis = ( tariff: number = 0 ) => '1.8.x'.replace('x', tariff.toString(10));
 
-// const convertEnergiesToDlms = ( energy: IEnergies ) => {
-//     const dlms: Record<string, number> = {};
+const convertEnergiesToDlms = ( energy: IEnergies ) => {
+    const dlms: Record<string, number> = {};
 
-//     for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
-//         const value = energy[tariff];
+    for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
+        const value = energy[tariff];
 
-//         if ( value || value === 0 ) {
-//             dlms[convertAPlusEnergyToObis(tariff + 1)] = value;
-//         }
-//     }
+        if ( value || value === 0 ) {
+            dlms[convertAPlusEnergyToObis(tariff + 1)] = value;
+        }
+    }
 
-//     return dlms;
-// };
+    return dlms;
+};
 
 
 export const id: types.TCommandId = 0x03;
@@ -122,16 +122,14 @@ export const toBytes = ( parameters: IGetEnergyDayPreviousResponseParameters ): 
 };
 
 
-// TODO: add implementation
-// export const toJson = ( {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) {
-//     const {parameters} = this;
-//     const {date, energies} = parameters;
-//     const result = dlms
-//         ? {
-//             date,
-//             ...convertEnergiesToDlms(energies)
-//         }
-//         : parameters;
+export const toJson = ( parameters: IGetEnergyDayPreviousResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
+    const {date, energies} = parameters;
+    const result = dlms
+        ? {
+            date,
+            ...convertEnergiesToDlms(energies)
+        }
+        : parameters;
 
-//     return JSON.stringify(result);
-// }
+    return JSON.stringify(result);
+};
