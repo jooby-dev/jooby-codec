@@ -51,7 +51,11 @@ const energiesMask = {
 };
 
 const getEnergiesFlags = <T>( energies: IEnergies<T> ): number => {
-    const booleanObject = Object.fromEntries(Object.entries(energies).map(([name, value]) => [name, !!value]));
+    const booleanObject = {};
+
+    Object.keys(energies).forEach(name => {
+        booleanObject[name] = !!energies[name];
+    });
 
     return bitSet.fromObject(energiesMask, (booleanObject as unknown) as bitSet.TBooleanObject);
 };

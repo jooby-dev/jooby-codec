@@ -68,11 +68,13 @@ const convertTariffsEnergiesToDlms = ( energies: TTariffsEnergies ) => {
         const tariffEnergies = energies[tariff];
 
         if ( tariffEnergies ) {
-            for ( const [energy, value] of Object.entries(tariffEnergies) ) {
+            Object.keys(tariffEnergies).forEach(energy => {
+                const value = tariffEnergies[energy];
+
                 if ( value || value === 0 ) {
                     dlms[convertEnergyToObis(energy, tariff + 1)] = value;
                 }
-            }
+            });
         }
     }
 

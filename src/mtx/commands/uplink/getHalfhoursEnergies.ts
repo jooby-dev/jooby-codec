@@ -65,7 +65,9 @@ const convertEnergyToObis = ( energy: string, tariff: number = 0 ) => {
 const convertHalfhoursEnergiesToDlms = ( energies: THalfhoursEnergies ) => {
     const dlms: Record<string, number> = {};
 
-    for ( const [energy, values] of Object.entries(energies) ) {
+    Object.keys(energies).forEach(energy => {
+        const values = energies[energy];
+
         for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {
             const value = (values as Array<number | undefined>)[tariff];
 
@@ -73,7 +75,7 @@ const convertHalfhoursEnergiesToDlms = ( energies: THalfhoursEnergies ) => {
                 dlms[convertEnergyToObis(energy, tariff + 1)] = value;
             }
         }
-    }
+    });
 
     return dlms;
 };
