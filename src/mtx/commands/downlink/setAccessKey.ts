@@ -19,7 +19,8 @@
  *
  * // command binary representation
  * console.log(bytes);
- * // [9, 17, 3, 0, 1, 2, 3, 4, 5, 6, 7, 7, 6, 5, 4, 3, 2, 1, 0]
+ * // output:
+ * [9, 17, 3, 0, 1, 2, 3, 4, 5, 6, 7, 7, 6, 5, 4, 3, 2, 1, 0]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetAccessKey.md#request)

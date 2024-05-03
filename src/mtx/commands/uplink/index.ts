@@ -32,6 +32,8 @@ export * as getVersion from './getVersion.js';
 export * as prepareRatePlan from './prepareRatePlan.js';
 export * as runTariffPlan from './runTariffPlan.js';
 export * as setAccessKey from './setAccessKey.js';
+export * as setCorrectDateTime from './setCorrectDateTime.js';
+export * as setCorrectTime from './setCorrectTime.js';
 export * as setDateTime from './setDateTime.js';
 export * as setDayProfile from './setDayProfile.js';
 export * as setDisplayParam from './setDisplayParam.js';
