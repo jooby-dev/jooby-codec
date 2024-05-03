@@ -1,7 +1,7 @@
 /**
  * Downlink command to get halfhours energies by 4 tariffs (T1-T4).
  *
- * This command can be transmitted only via Lora.
+ * **This command can be transmitted only via Lora.**
  *
  * @packageDocumentation
  *

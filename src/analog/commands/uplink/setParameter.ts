@@ -28,9 +28,12 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as deviceParameters from '../../constants/deviceParameters.js';
+
 
 interface ISetParameterResponseParameters {
-    /** One of the [parameter types](../../constants/deviceParameters.ts). */
+    /** One of the {@link deviceParameters | parameter types}. */
     id: types.TUint8;
 
     /**

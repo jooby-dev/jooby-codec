@@ -34,11 +34,14 @@ import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as events from '../../constants/events.js';
+
 
 interface IArchiveEvent {
     time2000: TTime2000;
 
-    /** One of the [device events](../../constants/events.ts). */
+    /** One of the {@link events | device events}. */
     id: types.TUint8;
 
     /** It's a unique number for each event. */

@@ -11,6 +11,7 @@ export * as getCorrectTime from './getCorrectTime.js';
 export * as getCurrentValues from './getCurrentValues.js';
 export * as getDateTime from './getDateTime.js';
 export * as getDayEnergies from './getDayEnergies.js';
+export * as getDayMaxPower from './getDayMaxPower.js';
 export * as getDayProfile from './getDayProfile.js';
 export * as getDeviceId from './getDeviceId.js';
 export * as getDeviceType from './getDeviceType.js';
