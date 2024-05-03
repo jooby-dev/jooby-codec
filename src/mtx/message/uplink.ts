@@ -85,6 +85,7 @@ export const toFrame = wrappers.getToFrame;
 // fill maps
 // iteration should not be used
 toBytesMap[commands.activateRatePlan.id] = commands.activateRatePlan.toBytes;
+toBytesMap[commands.errorResponse.id] = commands.errorResponse.toBytes;
 toBytesMap[commands.getBuildVersion.id] = commands.getBuildVersion.toBytes;
 toBytesMap[commands.getCorrectTime.id] = commands.getCorrectTime.toBytes;
 toBytesMap[commands.getCurrentValues.id] = commands.getCurrentValues.toBytes;
@@ -121,6 +122,7 @@ toBytesMap[commands.turnRelayOn.id] = commands.turnRelayOn.toBytes;
 
 // because of webpack/rollup processing!
 fromBytesMap[commands.activateRatePlan.id] = commands.activateRatePlan.fromBytes;
+fromBytesMap[commands.errorResponse.id] = commands.errorResponse.fromBytes;
 fromBytesMap[commands.getBuildVersion.id] = commands.getBuildVersion.fromBytes;
 fromBytesMap[commands.getCorrectTime.id] = commands.getCorrectTime.fromBytes;
 fromBytesMap[commands.getCurrentValues.id] = commands.getCurrentValues.fromBytes;
@@ -157,6 +159,7 @@ fromBytesMap[commands.turnRelayOn.id] = commands.turnRelayOn.fromBytes;
 
 
 nameMap[commands.activateRatePlan.id] = commands.activateRatePlan.name;
+nameMap[commands.errorResponse.id] = commands.errorResponse.name;
 nameMap[commands.getBuildVersion.id] = commands.getBuildVersion.name;
 nameMap[commands.getCorrectTime.id] = commands.getCorrectTime.name;
 nameMap[commands.getCurrentValues.id] = commands.getCurrentValues.name;
