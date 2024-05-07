@@ -1,5 +1,5 @@
 /**
- * Downlink command to set device operator parameters.
+ * Uplink command to set device operator parameters.
  *
  * The corresponding downlink command: `setOpParams`.
  *

@@ -1,5 +1,5 @@
 /**
- * Downlink command to set the meter displays sorting order.
+ * Uplink command to set the meter displays sorting order.
  *
  * The corresponding downlink command: `setDisplayParam`.
  *

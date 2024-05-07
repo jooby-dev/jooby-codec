@@ -1,5 +1,5 @@
 /**
- * Downlink command to get season profile information for the given tariff table.
+ * Uplink command to get season profile information for the given tariff table.
  *
  * The corresponding downlink command: `getSeasonProfile`.
  *

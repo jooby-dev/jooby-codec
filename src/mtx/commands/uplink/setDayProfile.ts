@@ -1,5 +1,5 @@
 /**
- * Downlink command to set day profile for tariff plan.
+ * Uplink command to set day profile for tariff plan.
  *
  * The corresponding downlink command: `setDayProfile`.
  *

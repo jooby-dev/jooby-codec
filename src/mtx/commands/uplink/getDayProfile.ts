@@ -1,5 +1,5 @@
 /**
- * Downlink command to get day profile for the given tariff table.
+ * Uplink command to get day profile for the given tariff table.
  *
  * The corresponding downlink command: `getDayProfile`.
  *
