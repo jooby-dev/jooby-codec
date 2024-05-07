@@ -1,5 +1,5 @@
 /**
- * Downlink command to get device current saldo parameters information.
+ * Uplink command to get device current saldo parameters information.
  *
  * The corresponding downlink command: `getSaldoParameters`.
  *

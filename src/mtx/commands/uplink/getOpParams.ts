@@ -1,5 +1,5 @@
 /**
- * Downlink command to get device operator parameters.
+ * Uplink command to get device operator parameters.
  *
  * The corresponding downlink command: `getOpParams`.
  *

@@ -1,5 +1,5 @@
 /**
- * Downlink command to get full date from device.
+ * Uplink command to get full date from device.
  *
  * The corresponding downlink command: `getDateTime`.
  *

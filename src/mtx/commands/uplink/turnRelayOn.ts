@@ -1,5 +1,5 @@
 /**
- * Downlink command to turn the device relay on.
+ * Uplink command to turn the device relay on.
  *
  * The corresponding downlink command: `turnRelayOn`.
  *

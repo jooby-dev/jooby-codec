@@ -1,5 +1,5 @@
 /**
- * Downlink command to get device rate plan information.
+ * Uplink command to get device rate plan information.
  *
  * The corresponding downlink command: `getRatePlanInfo`.
  *

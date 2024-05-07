@@ -1,5 +1,5 @@
 /**
- * Downlink command for instant activation of the passive tariff plan.
+ * Uplink command for instant activation of the passive tariff plan.
  *
  * The corresponding downlink command: `runTariffPlan`.
  *

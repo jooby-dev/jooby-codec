@@ -1,5 +1,5 @@
 /**
- * Downlink command to get special day information for the given tariff table.
+ * Uplink command to get special day information for the given tariff table.
  *
  * The corresponding downlink command: `getSpecialDay`.
  *

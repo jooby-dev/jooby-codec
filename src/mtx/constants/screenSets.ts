@@ -1,3 +1,10 @@
+/**
+ * Each device has 2 display sets: `32` main displays and `32` additional displays.
+ * A set is a combination of the following {@link screenIds}.
+ *
+ * @packageDocumentation
+ */
+
 import * as screenIds from './screenIds.js';
 
 

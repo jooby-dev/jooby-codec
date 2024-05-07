@@ -1,5 +1,5 @@
 /**
- * Downlink command to set device current saldo information.
+ * Uplink command to set device current saldo information.
  *
  * The corresponding downlink command: `setSaldo`.
  *

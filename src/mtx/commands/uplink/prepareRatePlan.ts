@@ -1,5 +1,5 @@
 /**
- * Downlink command to prepare device for rate plan application.
+ * Uplink command to prepare device for rate plan application.
  *
  * The corresponding downlink command: `prepareRatePlan`.
  *
