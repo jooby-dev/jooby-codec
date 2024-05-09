@@ -123,6 +123,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getObis (): IObis,
     setObis ( obisProfile: IObis ),
+
+    getEUI (): string,
+    setEUI ( eui: string )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -239,6 +242,22 @@ CommandBinaryBuffer.prototype.setObisProfile = function ( profile: IObisProfile 
     this.setUint8(flags);
 };
 
+CommandBinaryBuffer.prototype.getEUI = function (): string {
+    const bytes = [];
+
+    for ( let i = 0; i < EUI_SIZE; ++i ) {
+        bytes.push(this.getUint8());
+    }
+
+    return getHexFromBytes(bytes);
+};
+
+CommandBinaryBuffer.prototype.setEUI = function ( eui: string ) {
+    const bytes = getBytesFromHex(eui);
+
+    bytes.forEach(byte => this.setUint8(byte));
+};
+
 //     static getObisContentSize ( obisValue: IObisValueFloat | IObisValueString ) {
 //         if ( typeof obisValue.content === 'number' ) {
 //             // IObisValueFloat, 1 byte obis id code + 4 byte float value
@@ -298,22 +317,6 @@ CommandBinaryBuffer.prototype.setObisProfile = function ( profile: IObisProfile 
 //     setVersion ( version: IVersion ): void {
 //         this.setUint8(version.major);
 //         this.setUint8(version.minor);
-//     }
-
-//     getEUI (): string {
-//         const bytes = [];
-
-//         for ( let i = 0; i < EUI_SIZE; ++i ) {
-//             bytes.push(this.getUint8());
-//         }
-
-//         return getHexFromBytes(new Uint8Array(bytes));
-//     }
-
-//     setEUI ( eui: string ): void {
-//         const bytes = getBytesFromHex(eui);
-
-//         bytes.forEach(byte => this.setUint8(byte));
 //     }
 // }
 

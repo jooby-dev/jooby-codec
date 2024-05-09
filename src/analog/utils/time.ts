@@ -1,4 +1,4 @@
-import {BrandType} from '../../types.js';
+import {TUint32} from '../../types.js';
 
 
 /**
@@ -8,7 +8,7 @@ import {BrandType} from '../../types.js';
  * Time `2023-04-03T14:01:17.000Z` is `1680530477` in Unix time representation.
  * Unix time for year `2000` is `946684800` so seconds since year `2000` is `1680530477` - `946684800` = `733845677`.
  */
-export type TTime2000 = BrandType<number, 'seconds'>;
+export type TTime2000 = TUint32;
 
 
 const INITIAL_YEAR_TIMESTAMP = 946684800000;
