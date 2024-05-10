@@ -135,9 +135,27 @@ export const toBytes = wrappers.getToBytes(toBytesMap);
 
 // fill maps
 // iteration should not be used
+toBytesMap[commands.getArchiveState.id] = commands.getArchiveState.toBytes;
+toBytesMap[commands.getLorawanInfo.id] = commands.getLorawanInfo.toBytes;
+toBytesMap[commands.getLorawanState.id] = commands.getLorawanState.toBytes;
+toBytesMap[commands.getMeterDate.id] = commands.getMeterDate.toBytes;
+toBytesMap[commands.getMeterId.id] = commands.getMeterId.toBytes;
+toBytesMap[commands.getMeterIdList.id] = commands.getMeterIdList.toBytes;
 toBytesMap[commands.setupObis.id] = commands.setupObis.toBytes;
 
 // because of webpack/rollup processing!
+fromBytesMap[commands.getArchiveState.id] = commands.getArchiveState.fromBytes;
+fromBytesMap[commands.getLorawanInfo.id] = commands.getLorawanInfo.fromBytes;
+fromBytesMap[commands.getLorawanState.id] = commands.getLorawanState.fromBytes;
+fromBytesMap[commands.getMeterDate.id] = commands.getMeterDate.fromBytes;
+fromBytesMap[commands.getMeterId.id] = commands.getMeterId.fromBytes;
+fromBytesMap[commands.getMeterIdList.id] = commands.getMeterIdList.fromBytes;
 fromBytesMap[commands.setupObis.id] = commands.setupObis.fromBytes;
 
+nameMap[commands.getArchiveState.id] = commands.getArchiveState.name;
+nameMap[commands.getLorawanInfo.id] = commands.getLorawanInfo.name;
+nameMap[commands.getLorawanState.id] = commands.getLorawanState.name;
+nameMap[commands.getMeterDate.id] = commands.getMeterDate.name;
+nameMap[commands.getMeterId.id] = commands.getMeterId.name;
+nameMap[commands.getMeterIdList.id] = commands.getMeterIdList.name;
 nameMap[commands.setupObis.id] = commands.setupObis.name;
