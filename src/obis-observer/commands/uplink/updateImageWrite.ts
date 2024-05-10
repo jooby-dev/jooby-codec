@@ -51,7 +51,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
-    if (bytes.length !== COMMAND_BODY_SIZE) {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
