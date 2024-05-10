@@ -1,5 +1,5 @@
 /**
- * Downlink command.
+ * Downlink command to get the archive state for the specific meter, including the record count, eldest record date, and newest record date.
  *
  * @packageDocumentation
  *
@@ -18,7 +18,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * // [15, 6, 5, 1, 0, 0, 0, 3]
+ * [15, 6, 5, 1, 0, 0, 0, 3]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveState.md#request)

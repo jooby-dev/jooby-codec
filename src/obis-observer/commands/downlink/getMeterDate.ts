@@ -1,5 +1,5 @@
 /**
- * Downlink command.
+ * Downlink command to get the current date and time on the specific meter.
  *
  * @packageDocumentation
  *
@@ -17,7 +17,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * // [122, 5, 4, 0, 0, 0, 3]
+ * [122, 5, 4, 0, 0, 0, 3]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterDate.md#request)

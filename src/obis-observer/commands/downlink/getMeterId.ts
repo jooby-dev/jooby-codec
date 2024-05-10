@@ -1,5 +1,5 @@
 /**
- * Downlink command.
+ * Downlink command to get the meter id by the meter address.
  *
  * @packageDocumentation
  *
@@ -12,12 +12,12 @@
  *     address: 'ma2375'
  * };
  *
- *  * const bytes = getMeterId.toBytes(parameters);
+ * const bytes = getMeterId.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
- * // [118, 8, 0, 6, 109, 97, 50, 51, 55, 53]
+ * [118, 8, 0, 6, 109, 97, 50, 51, 55, 53]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterId.md#request)

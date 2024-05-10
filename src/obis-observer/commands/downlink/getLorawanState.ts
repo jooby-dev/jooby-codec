@@ -1,5 +1,5 @@
 /**
- * Downlink command.
+ * Downlink command to get the Lorawan related state and statistic.
  *
  * @packageDocumentation
  *
@@ -15,7 +15,7 @@
  *
  * // command binary representation
  * console.log(bytes);
- * // [34, 1, 8]
+ * [34, 1, 8]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetLorawanState.md#request)

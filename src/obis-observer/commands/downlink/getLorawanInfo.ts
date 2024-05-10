@@ -1,5 +1,5 @@
 /**
- * Downlink command.
+ * Downlink command to get the LoRaWAN information, like device EUI, application EUI and activation method.
  *
  * @packageDocumentation
  *
@@ -16,7 +16,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * // [32, 1, 8]
+ * [32, 1, 8]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetLorawanInfo.md#request)

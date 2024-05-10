@@ -1,5 +1,5 @@
 /**
- * Uplink command.
+ * Uplink command to get the meter id by the meter address.
  *
  * @packageDocumentation
  *

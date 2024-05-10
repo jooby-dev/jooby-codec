@@ -1,5 +1,5 @@
 /**
- * Uplink command.
+ * Uplink command to get the current date and time on the specific meter.
  *
  * @packageDocumentation
  *
@@ -70,7 +70,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMeterDateResponseParameter
 
     return {
         requestId: buffer.getUint8(),
-        time2000: buffer.getUint32()
+        time2000: buffer.getUint32() as TTime2000
     };
 };
 

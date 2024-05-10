@@ -1,5 +1,5 @@
 /**
- * Uplink command.
+ * Uplink command to get the archive state for the specific meter, including the record count, eldest record date, and newest record date.
  *
  * @packageDocumentation
  *
@@ -120,8 +120,8 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveStateResponseParame
         : {
             requestId,
             archiveRecordsNumber: buffer.getUint32(),
-            eldestTime2000: buffer.getUint32(),
-            newestTime2000: buffer.getUint32()
+            eldestTime2000: buffer.getUint32() as TTime2000,
+            newestTime2000: buffer.getUint32() as TTime2000
         };
 };
 

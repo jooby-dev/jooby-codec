@@ -1,5 +1,5 @@
 /**
- * Uplink command.
+ * Uplink command to get the list of meters id.
  *
  * @packageDocumentation
  *

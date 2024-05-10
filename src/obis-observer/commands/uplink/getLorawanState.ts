@@ -1,5 +1,5 @@
 /**
- * Uplink command.
+ * Uplink command to get the Lorawan related state and statistic.
  *
  * @packageDocumentation
  *

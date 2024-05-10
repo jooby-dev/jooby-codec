@@ -1,5 +1,5 @@
 /**
- * Uplink command.
+ * Uplink command to get the LoRaWAN information, like device EUI, application EUI and activation method.
  *
  * @packageDocumentation
  *

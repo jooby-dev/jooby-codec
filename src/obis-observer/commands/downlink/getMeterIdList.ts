@@ -1,5 +1,5 @@
 /**
- * Downlink command.
+ * Downlink command to get the list of meters id.
  *
  * @packageDocumentation
  *
@@ -16,7 +16,7 @@
  *
  * // command binary representation
  * console.log(bytes);
- * // [116, 2, 8, 3]
+ * [116, 2, 8, 3]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterIdList.md#request)
