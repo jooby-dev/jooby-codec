@@ -28,11 +28,6 @@ import CommandBinaryBuffer, {
 } from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IUpdateImageVerifyParameters extends ICommandParameters {
-    requestId: types.TUint8
-}
-
-
 export const id: types.TCommandId = 0x32;
 export const name: types.TCommandName = 'updateImageVerify';
 export const headerSize = 2;
@@ -61,7 +56,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( bytes: types.TBytes ): IUpdateImageVerifyParameters => {
+export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
     if ( bytes.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
@@ -79,7 +74,7 @@ export const fromBytes = ( bytes: types.TBytes ): IUpdateImageVerifyParameters =
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IUpdateImageVerifyParameters ): types.TBytes => {
+export const toBytes = ( parameters: ICommandParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
     const {requestId} = parameters;
 

@@ -6,7 +6,7 @@
  * import * as setSerialPort from 'jooby-codec/obis-observer/commands/uplink/setSerialPort.js';
  *
  * const bytes = [0x20];
- * const parameters =  setSerialPort.fromBytes(bytes);
+ * const parameters = setSerialPort.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

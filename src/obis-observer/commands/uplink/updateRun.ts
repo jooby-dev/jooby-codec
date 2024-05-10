@@ -5,8 +5,8 @@
  * ```js
  * import * as updateRun from 'jooby-codec/obis-observer/commands/uplink/updateRun.js';
  *
- * const bytes =  [0x21];
- * const parameters =  updateRun.fromBytes(bytes);
+ * const bytes = [0x21];
+ * const parameters = updateRun.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -50,7 +50,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
-    if (bytes.length !== COMMAND_BODY_SIZE) {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 

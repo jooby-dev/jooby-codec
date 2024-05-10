@@ -5,8 +5,8 @@
  * ```js
  * import * as setupMeterProfile from 'jooby-codec/obis-observer/commands/uplink/setupMeterProfile.js';
  *
- * const bytes =  [0x9c];
- * const parameters =  setupMeterProfile.fromBytes(bytes);
+ * const bytes = [0x9c];
+ * const parameters = setupMeterProfile.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

@@ -10,9 +10,9 @@
  * const parameters = {
  *     requestId: 33,
  *     offset: 2112,
- *     data: new Uint8Array([
+ *     data: [
  *         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
- *     ])
+ *     ]
  * };
  * const bytes = updateImageWrite.toBytes(parameters);
  *
@@ -33,7 +33,6 @@ import CommandBinaryBuffer, {
 
 
 interface IUpdateImageWriteParameters extends ICommandParameters {
-    requestId: types.TUint8,
     offset: types.TUint32,
     data: types.TBytes
 }

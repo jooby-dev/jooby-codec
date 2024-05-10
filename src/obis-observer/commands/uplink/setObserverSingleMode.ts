@@ -5,8 +5,8 @@
  * ```js
  * import * as setObserverSingleMode from 'jooby-codec/obis-observer/commands/uplink/setObserverSingleMode.js';
  *
- * const bytes =  [0x07];
- * const parameters =  setObserverSingleMode.fromBytes(bytes);
+ * const bytes = [0x07];
+ * const parameters = setObserverSingleMode.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

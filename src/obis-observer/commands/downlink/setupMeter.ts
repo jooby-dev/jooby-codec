@@ -154,14 +154,14 @@ export const fromBytes = ( bytes: types.TBytes ): ISetupMeterParameters => {
 export const toBytes = ( parameters: ISetupMeterParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getCommandSize(parameters));
     const {requestId, meterId, meterProfileId, address} = parameters;
-
     const isMeterProfileIdExist = meterProfileId || meterProfileId === 0;
+
     buffer.setUint8(requestId);
     buffer.setUint32(meterId);
 
     if ( address.length !== 0 || isMeterProfileIdExist ) {
         buffer.setString(address);
-        if (isMeterProfileIdExist) {
+        if ( isMeterProfileIdExist ) {
             buffer.setUint8(meterProfileId);
         }
     }

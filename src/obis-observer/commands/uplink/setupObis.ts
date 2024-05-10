@@ -6,7 +6,7 @@
  * import * as setupObis from 'jooby-codec/obis-observer/commands/uplink/setupObis.js';
  *
  * const bytes = [0x02];
- * const parameters =  setupObis.fromBytes(bytes);
+ * const parameters = setupObis.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

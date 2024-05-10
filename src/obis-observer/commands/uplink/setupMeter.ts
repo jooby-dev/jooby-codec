@@ -6,7 +6,7 @@
  * import * as setupMeter from 'jooby-codec/obis-observer/commands/uplink/setupMeter.js';
  *
  * const bytes = [0x07];
- * const parameters =  setupMeter.fromBytes(bytes);
+ * const parameters = setupMeter.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

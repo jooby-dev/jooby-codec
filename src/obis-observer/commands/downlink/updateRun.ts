@@ -26,11 +26,6 @@ import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, ICommandParameters} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IUpdateRunParameters extends ICommandParameters {
-    requestId: types.TUint8
-}
-
-
 export const id: types.TCommandId = 0x34;
 export const name: types.TCommandName = 'updateRun';
 export const headerSize = 2;
@@ -57,7 +52,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( bytes: types.TBytes ): IUpdateRunParameters => {
+export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const requestId = buffer.getUint8();
 
@@ -71,4 +66,4 @@ export const fromBytes = ( bytes: types.TBytes ): IUpdateRunParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IUpdateRunParameters ): types.TBytes => command.toBytes(id, [parameters.requestId]);
+export const toBytes = ( parameters: ICommandParameters ): types.TBytes => command.toBytes(id, [parameters.requestId]);

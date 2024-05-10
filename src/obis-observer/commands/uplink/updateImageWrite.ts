@@ -5,8 +5,8 @@
  * ```js
  * import * as updateImageWrite from 'jooby-codec/obis-observer/commands/uplink/updateImageWrite.js';
  *
- * const bytes =  [0x21];
- * const parameters =  updateImageWrite.fromBytes(bytes);
+ * const bytes = [0x21];
+ * const parameters = updateImageWrite.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
