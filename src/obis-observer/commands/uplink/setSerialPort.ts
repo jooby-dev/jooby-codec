@@ -1,30 +1,29 @@
 /**
- * Response to set the OBIS ID and OBIS profile for the specific OBIS code and meter profile.
+ * Response to set serial port parameters.
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as setupObis from 'jooby-codec/obis-observer/commands/uplink/setupObis.js';
+ * import * as setSerialPort from 'jooby-codec/obis-observer/commands/uplink/setSerialPort.js';
  *
- * const bytes = [0x02];
- * const parameters = setupObis.fromBytes(bytes);
+ * const bytes = [0x20];
+ * const parameters = setSerialPort.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
  * {
- *     requestId: 2
+ *     requestId: 32
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetupObis.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetSerialPort.md#response)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 
-
-export const id: types.TCommandId = 0x43;
-export const name: types.TCommandName = 'setupObis';
+export const id: types.TCommandId = 0x0a;
+export const name: types.TCommandName = 'setSerialPort';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = REQUEST_ID_SIZE;
@@ -35,15 +34,14 @@ export const examples: command.TCommandExamples = {
         name,
         headerSize,
         parameters: {
-            requestId: 2
+            requestId: 32
         },
         bytes: [
-            0x43, 0x01,
-            0x02
+            0x0a, 0x01,
+            0x20
         ]
     }
 };
-
 
 /**
  * Decode command parameters.
@@ -57,7 +55,6 @@ export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
 
     return {requestId: bytes[0]};
 };
-
 
 /**
  * Encode command parameters.

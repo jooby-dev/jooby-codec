@@ -1,5 +1,5 @@
 /**
- * Downlink command.
+ * Request to set the OBIS ID and OBIS profile for the specific OBIS code and meter profile.
  *
  * @packageDocumentation
  *
@@ -36,6 +36,8 @@
  * // output
  * [66, 13, 3, 2, 240, 0, 244, 0, 132, 38, 4, 2, 0, 9, 1]
  * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetupObis.md#request)
  */
 
 import * as command from '../../utils/command.js';
