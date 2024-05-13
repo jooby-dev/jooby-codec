@@ -8,7 +8,7 @@
  * import * as getMeterInfo from 'jooby-codec/obis-observer/commands/uplink/getMeterInfo.js';
  *
  * // get meter info response with meterProfileId
- * const bytes = [0x79, 0x09, 0x02, 0x01, 0x06, 0x6d, 0x61, 0x32, 0x33, 0x37, 0x35];
+ * const bytes = [0x02, 0x06, 0x6d, 0x61, 0x32, 0x33, 0x37, 0x35, 0x01];
  *
  * // decoded payload
  * const parameters = getMeterInfo.fromBytes(bytes);

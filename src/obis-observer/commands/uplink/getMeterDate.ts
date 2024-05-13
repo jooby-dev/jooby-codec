@@ -11,7 +11,7 @@
  * const bytes = [0x07, 0x2c, 0x2f, 0x0a, 0xf6];
  *
  * // decoded payload
- * const parameters = getArchiveState.fromBytes(bytes);
+ * const parameters = getMeterDate.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

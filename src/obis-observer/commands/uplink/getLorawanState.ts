@@ -11,7 +11,7 @@
  * const bytes = [0x08, 0x01, 0xc1, 0x05, 0x06, 0x00, 0x00, 0x00];
  *
  * // decoded payload
- * const parameters = getBuildVersion.fromBytes(bytes);
+ * const parameters = getLorawanState.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

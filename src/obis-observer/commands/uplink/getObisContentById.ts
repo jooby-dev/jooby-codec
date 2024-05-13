@@ -11,7 +11,7 @@
  * const bytes = [0x79, 0x43, 0xac, 0x1d, 0x71];
  *
  * // decoded payload
- * const parameters = getObisContent.fromBytes(bytes);
+ * const parameters = getObisContentById.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

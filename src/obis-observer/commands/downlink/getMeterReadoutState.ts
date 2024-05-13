@@ -16,7 +16,7 @@
  *
  * // command binary representation
  * console.log(bytes);
- * [129, 5, 9, 0, 0, 0, 3]
+ * [129, 5, 8, 0, 0, 0, 3]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterReadoutState.md#request)

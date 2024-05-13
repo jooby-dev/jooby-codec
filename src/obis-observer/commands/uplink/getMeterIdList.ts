@@ -30,15 +30,12 @@ import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, REQUEST_I
 import * as command from '../../utils/command.js';
 
 
-type TMeterId = types.TUint32;
-type TMeterIdList = Array<TMeterId>;
-
 /**
  * IGetMeterIdListResponseParameters command parameters
  */
 interface IGetMeterIdListResponseParameters extends ICommandParameters {
     isCompleted: boolean,
-    meterIdList: TMeterIdList
+    meterIdList: Array<types.TUint32>
 }
 
 
@@ -76,7 +73,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMeterIdListResponseParamet
     const isCompleted = buffer.isEmpty ? 1 : buffer.getUint8();
     const meterIdList = buffer.isEmpty
         ? []
-        : [...new Array<TMeterId>(buffer.bytesLeft / METER_ID_SIZE)].map(() => buffer.getUint32());
+        : [...new Array<types.TUint32>(buffer.bytesLeft / METER_ID_SIZE)].map(() => buffer.getUint32());
 
     return {requestId, isCompleted: isCompleted !== 0, meterIdList};
 };

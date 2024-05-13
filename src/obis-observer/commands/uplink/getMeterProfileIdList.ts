@@ -11,7 +11,7 @@
  * const bytes = [0x05, 0x01, 0x01, 0x02];
  *
  * // decoded payload
- * const parameters = getMeterIdList.fromBytes(bytes);
+ * const parameters = getMeterProfileIdList.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -30,14 +30,12 @@ import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, REQUEST_I
 import * as command from '../../utils/command.js';
 
 
-type TMeterProfileId = types.TUint8;
-type TMeterProfileIdList = Array<TMeterProfileId>;
 /**
  * IGetMeterProfileIdListResponseParameters command parameters
  */
 interface IGetMeterProfileIdListResponseParameters extends ICommandParameters {
     isCompleted: boolean,
-    meterProfileIdList: TMeterProfileIdList
+    meterProfileIdList: Array<types.TUint8>
 }
 
 
@@ -75,7 +73,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMeterProfileIdListResponse
     const isCompleted = buffer.isEmpty ? 1 : buffer.getUint8();
     const meterProfileIdList = buffer.isEmpty
         ? []
-        : [...new Array<TMeterProfileId>(buffer.bytesLeft)].map(() => buffer.getUint8());
+        : [...new Array<types.TUint8>(buffer.bytesLeft)].map(() => buffer.getUint8());
 
     return {requestId, isCompleted: isCompleted !== 0, meterProfileIdList};
 };

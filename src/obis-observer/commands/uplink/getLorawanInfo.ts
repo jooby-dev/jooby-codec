@@ -14,7 +14,7 @@
  * ];
  *
  * // decoded payload
- * const command = getLorawanInfo.fromBytes(commandBody);
+ * const parameters = getLorawanInfo.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
