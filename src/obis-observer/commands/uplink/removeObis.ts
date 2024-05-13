@@ -48,6 +48,7 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
+ * @param bytes - only body (without header)
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
@@ -62,6 +63,7 @@ export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
 /**
  * Encode command parameters.
  *
+ * @param parameters - command payload
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ICommandParameters ): types.TBytes => command.toBytes(id, [parameters.requestId]);

@@ -121,6 +121,7 @@ const getCommandSize = ( parameters: IReadMeterArchiveResponseParameters ): numb
 /**
  * Decode command parameters.
  *
+ * @param bytes - only body (without header)
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IReadMeterArchiveResponseParameters => {
@@ -155,6 +156,7 @@ export const fromBytes = ( bytes: types.TBytes ): IReadMeterArchiveResponseParam
 /**
  * Encode command parameters.
  *
+ * @param parameters - command payload
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IReadMeterArchiveResponseParameters ): types.TBytes => {

@@ -5,7 +5,7 @@
  * ```js
  * import * as readMeterArchiveWithDate from 'jooby-codec/obis-observer/commands/uplink/readMeterArchiveWithDate.js';
  *
- * const bytes = [0x11, 0x01, 0x08, 0x40, 0x66, 0x66, 0x66];
+ * const bytes = [0x0c, 0x01, 0x0c, 0x01, 0x08, 0x40, 0x66, 0x66];
  * const parameters = readMeterArchiveWithDate.fromBytes(bytes);
  *
  * console.log(parameters);
@@ -13,7 +13,7 @@
  * {
  *     requestId: 12,
  *     isCompleted: true,
- *     obisValueList: [{code: 8, content: 3.60}]
+ *     obisValueList: [{code: 8, content: 3.6}]
  * }
  * ```
  *
@@ -45,7 +45,7 @@ export const examples: command.TCommandExamples = {
         parameters: {
             requestId: 12,
             isCompleted: true,
-            obisValueList: [{code: 8, content: 3.60}]
+            obisValueList: [{code: 8, content: 3.6}]
         },
         bytes: [
             0x14, 0x07,
@@ -84,6 +84,7 @@ const getCommandSize = ( parameters: IReadMeterArchiveWithDateResponseParameters
 /**
  * Decode command parameters.
  *
+ * @param bytes - only body (without header)
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IReadMeterArchiveWithDateResponseParameters => {
@@ -103,6 +104,7 @@ export const fromBytes = ( bytes: types.TBytes ): IReadMeterArchiveWithDateRespo
 /**
  * Encode command parameters.
  *
+ * @param parameters - command payload
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IReadMeterArchiveWithDateResponseParameters ): types.TBytes => {

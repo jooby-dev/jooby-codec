@@ -16,7 +16,7 @@
  * // output command binary in hex representation
  * console.log(bytes);
  * // output
- * [98, 3, 17]
+ * [98, 2, 3, 17]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveMeterProfile.md#request)

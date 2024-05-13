@@ -16,7 +16,7 @@
  * // output command binary in hex representation
  * console.log(bytes);
  * // output
- * [114, 3, 0, 0, 0, 17]
+ * [114, 5, 3, 0, 0, 0, 17]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/RemoveMeter.md#request)
