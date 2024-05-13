@@ -9,9 +9,12 @@
  * ```js
  * import * as setSaldoParameters from 'jooby-codec/mtx/commands/uplink/setSaldoParameters.js';
  *
- * const command = setSaldoParameters.fromBytes();
+ * // empty response
+ * const bytes = [];
+ * // decoded payload
+ * const parameters = setSaldoParameters.fromBytes();
  *
- * console.log(command.parameters);
+ * console.log(parameters);
  * // output:
  * {}
  * ```

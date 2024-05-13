@@ -20,10 +20,10 @@
  * };
  * const bytes = setCorrectTime.toBytes(parameters);
  *
- * // output command binary in hex representation
+ * // command binary representation
  * console.log(bytes);
  * // output:
- * [92, 2, 0, 5]
+ * [28, 9, 3, 0, 3, 1, 10, 0, 4, 1, 1]
  * ```
  */
 

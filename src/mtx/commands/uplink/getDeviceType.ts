@@ -5,7 +5,7 @@
  *
  * @example
  * ```js
- * import * as getDeviceType from 'jooby-codec/mtx/commands/uplink/getDeviceType.js
+ * import * as getDeviceType from 'jooby-codec/mtx/commands/uplink/getDeviceType.js'
  *
  * // type 1
  * const bytes = [0x00, 0x11, 0x21, 0x49, 0x21, 0xB6, 0x81, 0xC0, 0x00];

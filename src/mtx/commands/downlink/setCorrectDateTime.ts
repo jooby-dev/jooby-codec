@@ -12,7 +12,7 @@
  * };
  * const bytes = setCorrectDateTime.toBytes(parameters);
  *
- * // output command binary in hex representation
+ * // command binary representation
  * console.log(bytes);
  * // output:
  * [92, 2, 0, 5]

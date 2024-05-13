@@ -10,10 +10,10 @@
  * const parameters = {
  *     year: 24,
  *     month: 3,
- *     date: 22,
+ *     date: 22
  * };
  *
- * const bytes = activateRatePlan.toBytes(parameters);
+ * const bytes = getHalfHours.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);

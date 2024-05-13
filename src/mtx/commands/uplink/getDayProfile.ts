@@ -10,7 +10,7 @@
  * import * as getDayProfile from 'jooby-codec/mtx/commands/uplink/getDayProfile.js';
  *
  * // response with 4 periods
- * const bytes = [0x3b, 0x05, 0x10, 0x1d, 0x22, 0x2f, 0xff];
+ * const bytes = [0x10, 0x1d, 0x22, 0x2f, 0xff];
  *
  * // decoded payload
  * const parameters = getDayProfile.fromBytes(bytes);

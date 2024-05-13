@@ -10,7 +10,7 @@
  * import * as getDisplayParam from 'jooby-codec/mtx/commands/uplink/getDisplayParam.js';
  *
  * // mode with order
- * const bytes = [0x5e, 0x05, 0x08, 0x04, 0x05, 0x06, 0x07];
+ * const bytes = [0x08, 0x04, 0x05, 0x06, 0x07];
  *
  * // decoded payload
  * const parameters = getDisplayParam.fromBytes(bytes);

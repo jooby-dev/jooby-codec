@@ -7,7 +7,7 @@
  * ```js
  * import * as getEnergyDayPrevious from 'jooby-codec/mtx/commands/downlink/getEnergyDayPrevious.js';
  *
- * const bytes = getCorrectTime.toBytes();
+ * const bytes = getEnergyDayPrevious.toBytes();
  *
  * // command binary representation
  * console.log(bytes);

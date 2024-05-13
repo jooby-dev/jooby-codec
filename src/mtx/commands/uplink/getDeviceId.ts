@@ -14,7 +14,7 @@
  * // decoded payload
  * const parameters = getDeviceId.fromBytes(bytes);
  *
- * console.log(command.parameters);
+ * console.log(parameters);
  * // output:
  * {
  *     manufacturer: '001a79',
