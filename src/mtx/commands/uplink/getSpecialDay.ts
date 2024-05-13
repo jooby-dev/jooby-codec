@@ -10,7 +10,7 @@
  * import * as getSpecialDay from 'jooby-codec/mtx/commands/uplink/getSpecialDay.js';
  *
  * // special day response
- * const bytes = [0x3d, 0x04, 0x01, 0x09, 0x03, 0x00];
+ * const bytes = [0x01, 0x09, 0x03, 0x00];
  *
  * // decoded payload
  * const parameters = getSpecialDay.fromBytes(bytes);
@@ -54,7 +54,10 @@ export const examples: command.TCommandExamples = {
             dayIndex: 3,
             isPeriodic: true
         },
-        bytes: [0x3d, 0x04, 0x01, 0x09, 0x03, 0x00]
+        bytes: [
+            0x3d, 0x04,
+            0x01, 0x09, 0x03, 0x00
+        ]
     }
 };
 

@@ -17,7 +17,7 @@
  *     month: 2,
  *     year: 24
  * };
- * const bytes = getDateTime.toBytes(parameters);
+ * const bytes = setDateTime.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);

@@ -9,8 +9,8 @@
  * ```js
  * import * as getDayMaxPower from 'jooby-codec/mtx/commands/uplink/getDayMaxPower.js';
  *
- * const bytes = [0x2a, 0x43, 0x11, 0x11, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x20, 0x00];
- * const command = getDayMaxPower.fromBytes(bytes);
+ * const bytes = [0x2a, 0x43, 0x11, 0x11, 0x02, 0x03, 0x00, 0x00, 0x10, 0x00, 0x04, 0x05, 0x00, 0x00, 0x20, 0x00];
+ * const parameters = getDayMaxPower.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -22,8 +22,16 @@
  *     },
  *     tariffs: [
  *          {
- *              'A+': 0x1000,
- *              'A-R+': 0x2000
+ *              'A+': {
+ *                  hours: 2,
+ *                  minutes: 3,
+ *                  power: 0x1000
+ *              },
+ *              'A-R+': {
+ *                  hours: 4,
+ *                  minutes: 5,
+ *                  power: 0x2000
+ *              }
  *          }
  *     ]
  * }

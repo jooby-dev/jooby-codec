@@ -7,7 +7,7 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getOpParams from 'jooby-codec/obis-observer/commands/uplink/getOpParams.js';
+ * import * as getOpParams from 'jooby-codec/mtx/commands/uplink/getOpParams.js';
  * import {getDefaultOperatorParameters} from 'jooby-codec/mtx/utils/CommandBinaryBuffer.js';
  *
  * // get default operator parameters response

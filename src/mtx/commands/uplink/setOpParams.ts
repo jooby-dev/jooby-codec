@@ -12,9 +12,9 @@
  * // empty response
  * const bytes = [];
  * // decoded payload
- * const command = setOpParams.fromBytes(bytes);
+ * const parameters = setOpParams.fromBytes(bytes);
  *
- * console.log(command.parameters);
+ * console.log(parameters);
  * // output:
  * {}
  * ```

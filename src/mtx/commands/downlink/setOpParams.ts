@@ -5,7 +5,7 @@
  *
  * @example
  * ```js
- * import * as setOpParams from 'jooby-codec/mtx/commands/downlink/setOpParams.js'; * import {CommandBinaryBuffer} from 'jooby-codec/mtx/index.js';
+ * import * as setOpParams from 'jooby-codec/mtx/commands/downlink/setOpParams.js';
  * import {getDefaultOperatorParameters} from 'jooby-codec/mtx/utils/CommandBinaryBuffer.js';
  *
  * const parameters = getDefaultOperatorParameters();

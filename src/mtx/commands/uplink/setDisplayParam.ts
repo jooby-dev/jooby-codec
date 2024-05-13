@@ -9,10 +9,12 @@
  * ```js
  * import * as setDisplayParam from 'jooby-codec/mtx/commands/uplink/setDisplayParam.js';
  *
+ * // empty response
+ * const bytes = [];
  * // decoded payload
- * const command = setDisplayParam.fromBytes();
+ * const parameters = setDisplayParam.fromBytes(bytes);
  *
- * console.log(command.parameters);
+ * console.log(parameters);
  * // output:
  * {}
  * ```

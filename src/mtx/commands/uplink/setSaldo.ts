@@ -12,9 +12,9 @@
  * // empty response
  * const bytes = [];
  * // decoded payload
- * const command = setSaldo.fromBytes(bytes);
+ * const parameters = setSaldo.fromBytes(bytes);
  *
- * console.log(command.parameters);
+ * console.log(parameters);
  * // output:
  * {}
  * ```

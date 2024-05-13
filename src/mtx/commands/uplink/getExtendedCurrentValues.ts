@@ -11,7 +11,7 @@
  * const bytes = [0x00, 0x43, 0x00, 0x3c];
  *
  * // decoded payload
- * const parameters = getDeviceType.fromBytes(bytes);
+ * const parameters = getExtendedCurrentValues.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
