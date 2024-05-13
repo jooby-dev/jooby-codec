@@ -1,5 +1,5 @@
 /**
- * Request to remove the specific OBIS from service.
+ * Downlink command to remove the specific OBIS from service.
  *
  * @packageDocumentation
  *

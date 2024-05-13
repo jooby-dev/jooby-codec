@@ -1,5 +1,7 @@
 /**
- * Response to verify the update image on the device. This command is part of update procedure.
+ * Uplink command to verify the update image on the device. This command is part of update procedure.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

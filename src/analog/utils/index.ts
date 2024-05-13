@@ -1,5 +1,5 @@
 /**
- * Analog protocol tools and utils.
+ * Protocol-specific tools and utils.
  *
  * @packageDocumentation
  */

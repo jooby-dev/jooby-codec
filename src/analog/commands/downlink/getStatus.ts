@@ -1,5 +1,5 @@
 /**
- * The command to request status information from the sensor.
+ * Downlink command to request status information from the sensor.
  *
  * @packageDocumentation
  *

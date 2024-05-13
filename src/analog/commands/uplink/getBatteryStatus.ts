@@ -1,5 +1,5 @@
 /**
- * The command for receiving status information from the sensor battery.
+ * Uplink command for receiving status information from the sensor battery.
  *
  * By default, the battery status is measured once per 24 hours. The state of the battery physically cannot change dramatically.
  * Response to the request contains the latest measurement results. This is enough to monitor the battery condition.

@@ -1,5 +1,5 @@
 /**
- * Request to setup the meter id, meter profile id, meter address to the meter. A new meter will be created if it doesn't exist.
+ * Downlink command to setup the meter id, meter profile id, meter address to the meter. A new meter will be created if it doesn't exist.
  *
  * @packageDocumentation
  *

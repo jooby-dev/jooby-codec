@@ -1,5 +1,7 @@
 /**
- * Response to remove the specific OBIS from service.
+ * Uplink command to remove the specific OBIS from service.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

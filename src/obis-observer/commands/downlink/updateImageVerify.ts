@@ -1,5 +1,5 @@
 /**
- * Request to verify the update image on the device. This command is part of update procedure.
+ * Downlink command to verify the update image on the device. This command is part of update procedure.
  *
  * @packageDocumentation
  *

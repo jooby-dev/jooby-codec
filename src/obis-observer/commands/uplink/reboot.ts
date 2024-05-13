@@ -1,5 +1,7 @@
 /**
- * Response to restart the device.
+ * Uplink command to restart the device.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

@@ -1,5 +1,5 @@
 /**
- * Request to remove specific meter device.
+ * Downlink command to remove specific meter device.
  *
  * @packageDocumentation
  *

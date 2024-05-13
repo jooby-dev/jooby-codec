@@ -1,5 +1,5 @@
 /**
- * Request to set the single or multi mode of the observer device.
+ * Downlink command to set the single or multi mode of the observer device.
  *
  * @packageDocumentation
  *

@@ -1,5 +1,5 @@
 /**
- * Request to write the block of the new image to the device. This command is part of update procedure.
+ * Downlink command to write the block of the new image to the device. This command is part of update procedure.
  *
  * @packageDocumentation
  *

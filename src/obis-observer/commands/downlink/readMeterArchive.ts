@@ -1,5 +1,5 @@
 /**
- * Request to get the meter archive data.
+ * Downlink command to get the meter archive data.
  *
  * @packageDocumentation
  *

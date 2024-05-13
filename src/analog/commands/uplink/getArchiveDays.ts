@@ -1,5 +1,5 @@
 /**
- * The command for requesting the archive of daily data from the pulse counter sensor.
+ * Uplink command for requesting the archive of daily data from the pulse counter sensor.
  * If there is no data available in the archive, `0xffffffff` will be returned.
  * Due to the limited length of transmitted data from the sensor, not all requested data will be transferred.
  *

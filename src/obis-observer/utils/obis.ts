@@ -1,3 +1,9 @@
+/**
+ * OBIS code/object conversion utils.
+ *
+ * @packageDocumentation
+ */
+
 import invertObject, {THashTable} from '../../utils/invertObject.js';
 import {IObis} from './CommandBinaryBuffer.js';
 

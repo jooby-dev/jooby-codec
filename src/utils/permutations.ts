@@ -10,14 +10,15 @@
  * const inputArray = [1, 2, 3];
  * const result = permutations(inputArray);
  * console.log(result);
- * // Output: [
- * //   [1, 2, 3],
- * //   [1, 3, 2],
- * //   [2, 1, 3],
- * //   [2, 3, 1],
- * //   [3, 1, 2],
- * //   [3, 2, 1]
- * // ]
+ * // output:
+ * [
+ *   [1, 2, 3],
+ *   [1, 3, 2],
+ *   [2, 1, 3],
+ *   [2, 3, 1],
+ *   [3, 1, 2],
+ *   [3, 2, 1]
+ * ]
  * ```
  */
 const permutations = <T>( sequence: Array<T> ): Array<Array<T>> => {

@@ -1,5 +1,7 @@
 /**
- * Response to setup the meter profile.
+ * Uplink command to setup the meter profile.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

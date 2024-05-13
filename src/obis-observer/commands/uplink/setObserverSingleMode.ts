@@ -1,5 +1,7 @@
 /**
- * Response to set the single or multi mode of the observer device.
+ * Uplink command to set the single or multi mode of the observer device.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

@@ -1,5 +1,7 @@
 /**
- * Response to get the meter archive data for the specific date.
+ * Uplink command to get the meter archive data for the specific date.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

@@ -1,5 +1,7 @@
 /**
- * Response to remove specific meter device.
+ * Uplink command to remove specific meter device.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

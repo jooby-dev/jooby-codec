@@ -1,5 +1,5 @@
 /**
- * Request to setup the meter profile.
+ * Downlink command to setup the meter profile.
  *
  * @packageDocumentation
  *
