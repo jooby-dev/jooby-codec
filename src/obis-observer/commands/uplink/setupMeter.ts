@@ -1,5 +1,7 @@
 /**
- * Response to setup the meter id, meter profile id, meter address to the meter. A new meter will be created if it doesn't exist.
+ * Uplink command to setup the meter id, meter profile id, meter address to the meter. A new meter will be created if it doesn't exist.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

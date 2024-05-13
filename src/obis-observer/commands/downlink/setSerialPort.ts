@@ -1,5 +1,5 @@
 /**
- * Request to set serial port parameters.
+ * Downlink command to set serial port parameters.
  *
  * @packageDocumentation
  *

@@ -1,5 +1,5 @@
 /**
- * Request to set the OBIS ID and OBIS profile for the specific OBIS code and meter profile.
+ * Downlink command to set the OBIS ID and OBIS profile for the specific OBIS code and meter profile.
  *
  * @packageDocumentation
  *

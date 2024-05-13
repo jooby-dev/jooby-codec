@@ -1,5 +1,7 @@
 /**
- * Response to set serial port parameters.
+ * Uplink command to set serial port parameters.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

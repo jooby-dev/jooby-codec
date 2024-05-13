@@ -1,5 +1,5 @@
 /**
- * Request to set the Lorawan activation method OTAA or ABP.
+ * Downlink command to set the Lorawan activation method OTAA or ABP.
  *
  * @packageDocumentation
  *

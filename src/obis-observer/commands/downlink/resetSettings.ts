@@ -1,5 +1,5 @@
 /**
- * Request to reset device settings.
+ * Downlink command to reset device settings.
  *
  * @packageDocumentation
  *

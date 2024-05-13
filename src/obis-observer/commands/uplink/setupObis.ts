@@ -1,5 +1,7 @@
 /**
- * Response to set the OBIS ID and OBIS profile for the specific OBIS code and meter profile.
+ * Uplink command to set the OBIS ID and OBIS profile for the specific OBIS code and meter profile.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

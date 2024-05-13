@@ -15,10 +15,11 @@ Install required dependencies:
 npm install jooby-codec
 ```
 
-This will provide 2 protocols of codecs:
+This will provide 3 protocols of codecs:
 
 - Analog
 - MTX
+- OBIS Observer
 
 
 ## Usage of Analog codecs
@@ -70,7 +71,7 @@ const bytes = message.toBytes(commands);
 
 console.log('message encoded:', JSON.stringify(bytes));
 // output:
-'[12,2,45,136,254]'
+[12,2,45,136,254]
 
 console.log('message encoded in HEX:', getHexFromBytes(bytes));
 // output:
@@ -334,5 +335,115 @@ console.log('parsed frame:', parsedFrame);
     ],
     lrc: { expected: 53, actual: 53 },
     crc: 8532
+}
+```
+
+
+## Usage of OBIS Observer
+
+Add to the project:
+
+```js
+import {commands, message} from 'jooby-codec/obis-observer';
+
+// output all available downlink and uplink commands tree
+console.log(commands);
+// all uplink commands
+console.log(commands.uplink);
+// one particular command
+console.log(commands.uplink.getMeterId);
+
+// output main namespace for work with messages
+console.log(message);
+```
+
+But it's better to add only necessary commands to the project:
+
+```js
+// to get only downlink commands
+import {downlink} from 'jooby-codec/obis-observer/commands';
+// or slightly more efficient
+import * as downlink from 'jooby-codec/obis-observer/commands/downlink';
+
+// to get one particular command
+import * as getMeterInfo from 'jooby-codec/obis-observer/commands/downlink/getMeterInfo.js';
+```
+
+The last approach is preferred as it is more efficient and will init only a necessary commands.
+
+Prepare and parse downlink message:
+
+```js
+import * as message from 'jooby-codec/obis-observer/message/downlink';
+import * as downlinkCommands from 'jooby-codec/obis-observer/commands/downlink';
+import getHexFromBytes from 'jooby-codec/utils/getHexFromBytes.js';
+
+const commands = [
+    {
+        id: downlinkCommands.getMeterProfile.id,
+        parameters: {requestId: 3, meterProfileId: 4}
+    }
+];
+const bytes = message.toBytes(commands);
+
+console.log('message encoded:', JSON.stringify(bytes));
+// output:
+[102,2,3,4]
+
+console.log('message encoded in HEX:', getHexFromBytes(bytes));
+// output:
+'66 02 03 04'
+
+// decode message back from bytes
+const parsedMessage = message.fromBytes(bytes);
+
+console.log('parsedMessage:', parsedMessage);
+// output:
+{
+    commands: [
+        {
+            id: 102,
+            name: 'getMeterProfile',
+            headerSize: 2,
+            bytes: [Array],
+            parameters: [Object]
+        }
+    ],
+    bytes: [102, 2, 3, 4]
+}
+```
+
+Parse uplink message:
+
+```js
+import * as message from 'jooby-codec/obis-observer/message/uplink';
+
+// binary data received from a device
+const bytes = [0x10, 0x0d, 0x02, 0x00, 0x00, 0x00, 0x51, 0x2c, 0x2d, 0xea, 0xae, 0x2c, 0x2f, 0x0a, 0xf6];
+
+// decode it
+const payload = message.fromBytes(bytes);
+
+if ( 'error' in payload ) {
+    console.log('decode failure:', payload.error, payload.message);
+} else {
+    console.log('message decoded:', payload.commands);
+    // output:
+    [
+        {
+            id: 16,
+            name: 'getArchiveState',
+            headerSize: 2,
+            bytes: [
+                16, 13, 2, 0, 0, 0, 81, 44, 45, 234, 174, 44, 47, 10, 246
+            ],
+            parameters: {
+                requestId: 2,
+                archiveRecordsNumber: 81,
+                eldestTime2000: 741206702,
+                newestTime2000: 741280502
+            }
+        }
+    ]
 }
 ```

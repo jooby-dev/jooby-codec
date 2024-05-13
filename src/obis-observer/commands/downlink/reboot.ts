@@ -1,5 +1,5 @@
 /**
- * Request to restart the device.
+ * Downlink command to restart the device.
  *
  * @packageDocumentation
  *

@@ -5,64 +5,35 @@
  *
  * @example
  * ```js
- * import * as message from 'jooby-codec/mtx/message/uplink';
- * import getBytesFromHex from 'jooby-codec/utils/getBytesFromHex.js';
+ * import * as message from 'jooby-codec/obis-observer/message/uplink';
  *
- * const aesKey = [...Array(16).keys()];
+ * // binary data received from a device
+ * const bytes = [0x10, 0x0d, 0x02, 0x00, 0x00, 0x00, 0x51, 0x2c, 0x2d, 0xea, 0xae, 0x2c, 0x2f, 0x0a, 0xf6];
  *
- * const messageBytes = getBytesFromHex('0a 13 9b 4b f7 2a d1 e5 49 a5 09 50 9a 59 7e c2 b5 88');
- * const frameBytes = getBytesFromHex('7e 51 aa aa ff ff 0a 7d 33 9b 4b f7 2a d1 e5 49 a5 09 50 9a 59 7d 5e c2 b5 88 21 54 7e');
+ * // decode it
+ * const payload = message.fromBytes(bytes);
  *
- * const parsedMessage = message.fromBytes(messageBytes, {aesKey});
- *
- * console.log('parsed message:', parsedMessage);
- * // output:
- * {
- *     messageId: 10,
- *     accessLevel: 3,
- *     commands: [
- *       {
- *         id: 112,
- *         name: 'getBuildVersion',
- *         headerSize: 2,
- *         bytes: [Array],
- *         parameters: [Object]
- *       }
- *     ],
- *     bytes: [
- *        10,  19, 155,  75, 247,  42,
- *       209, 229,  73, 165,   9,  80,
- *       154,  89, 126, 194, 181, 136
- *     ],
- *     lrc: { expected: 53, actual: 53 }
- * }
- *
- * const parsedFrame = message.fromFrame(frameBytes, {aesKey});
- *
- * console.log('parsed frame:', parsedFrame);
- * // output:
- * {
- *     type: 81,
- *     destination: 43690,
- *     source: 65535,
- *     messageId: 10,
- *     accessLevel: 3,
- *     commands: [
- *       {
- *         id: 112,
- *         name: 'getBuildVersion',
- *         headerSize: 2,
- *         bytes: [Array],
- *         parameters: [Object]
- *       }
- *     ],
- *     bytes: [
- *        10,  19, 155,  75, 247,  42,
- *       209, 229,  73, 165,   9,  80,
- *       154,  89, 126, 194, 181, 136
- *     ],
- *     lrc: { expected: 53, actual: 53 },
- *     crc: 8532
+ * if ( 'error' in payload ) {
+ *     console.log('decode failure:', payload.error, payload.message);
+ * } else {
+ *     console.log('message decoded:', payload.commands);
+ *     // output:
+ *     [
+ *         {
+ *             id: 16,
+ *             name: 'getArchiveState',
+ *             headerSize: 2,
+ *             bytes: [
+ *                 16, 13, 2, 0, 0, 0, 81, 44, 45, 234, 174, 44, 47, 10, 246
+ *             ],
+ *             parameters: {
+ *                 requestId: 2,
+ *                 archiveRecordsNumber: 81,
+ *                 eldestTime2000: 741206702,
+ *                 newestTime2000: 741280502
+ *             }
+ *         }
+ *     ]
  * }
  * ```
  *

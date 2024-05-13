@@ -1,5 +1,5 @@
 /**
- * Request to remove the specific meter profile.
+ * Downlink command to remove the specific meter profile.
  *
  * @packageDocumentation
  *

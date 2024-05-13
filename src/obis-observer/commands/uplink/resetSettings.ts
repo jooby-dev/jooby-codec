@@ -1,5 +1,7 @@
 /**
- * Response to reset device settings.
+ * Uplink command to reset device settings.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

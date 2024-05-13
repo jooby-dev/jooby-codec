@@ -1,5 +1,7 @@
 /**
- * Response to set the Lorawan activation method OTAA or ABP.
+ * Uplink command to set the Lorawan activation method OTAA or ABP.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

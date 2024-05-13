@@ -1,5 +1,7 @@
 /**
- * Response to write the block of the new image to the device. This command is part of update procedure.
+ * Uplink command to write the block of the new image to the device. This command is part of update procedure.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js

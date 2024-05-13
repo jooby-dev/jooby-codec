@@ -1,5 +1,7 @@
 /**
- * Response to remove the specific meter profile.
+ * Uplink command to remove the specific meter profile.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
