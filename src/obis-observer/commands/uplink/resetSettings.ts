@@ -1,21 +1,21 @@
 /**
- * Response to write the block of the new image to the device. This command is part of update procedure.
+ * Response to reset device settings.
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as updateRun from 'jooby-codec/obis-observer/commands/uplink/updateRun.js';
+ * import * as resetSettings from 'jooby-codec/obis-observer/commands/uplink/resetSettings.js';
  *
- * const bytes = [0x21];
- * const parameters = updateRun.fromBytes(bytes);
+ * const bytes = [0x07];
+ * const parameters = resetSettings.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
  * {
- *     requestId: 33
+ *     requestId: 7
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/UpdateImageWrite.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/ResetSettings.md#response)
  */
 
 import * as command from '../../utils/command.js';
@@ -23,23 +23,23 @@ import * as types from '../../../types.js';
 import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 
 
-export const id: types.TCommandId = 0x35;
-export const name: types.TCommandName = 'updateRun';
+export const id: types.TCommandId = 0x93;
+export const name: types.TCommandName = 'resetSettings';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = REQUEST_ID_SIZE;
 
 export const examples: command.TCommandExamples = {
-    'success result': {
+    'reset settings response': {
         id,
         name,
         headerSize,
         parameters: {
-            requestId: 33
+            requestId: 7
         },
         bytes: [
-            0x35, 0x01,
-            0x21
+            0x93, 0x01,
+            0x07
         ]
     }
 };
@@ -48,6 +48,7 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
+ * @param bytes - only body (without header)
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
@@ -62,6 +63,7 @@ export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
 /**
  * Encode command parameters.
  *
+ * @param parameters - command payload
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ICommandParameters ): types.TBytes => command.toBytes(id, [parameters.requestId]);

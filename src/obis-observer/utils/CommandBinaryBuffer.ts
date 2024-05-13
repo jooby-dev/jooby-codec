@@ -65,15 +65,15 @@ export interface IObisProfile {
     flags: IObisProfileFlags
 }
 
-// export interface IObisValueFloat {
-//     code: number,
-//     content: number
-// }
+export interface IObisValueFloat {
+    code: number,
+    content: number
+}
 
-// export interface IObisValueString {
-//     code: number,
-//     content: string
-// }
+export interface IObisValueString {
+    code: number,
+    content: string
+}
 
 // export interface IVersion {
 //     major: number,
@@ -116,6 +116,7 @@ const contentTypeBitStartIndex = 4;
 export interface ICommandBinaryBuffer extends IBinaryBuffer {
     // static methods
     getObisSize ( obis: IObis ): number,
+    getObisContentSize ( obis: IObis ): number,
 
     // instance methods
     getObisProfile (): IObisProfile,
@@ -125,7 +126,13 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setObis ( obisProfile: IObis ),
 
     getEUI (): string,
-    setEUI ( eui: string )
+    setEUI ( eui: string ),
+
+    getObisValueString (): IObisValueString,
+    setObisValueString ( obisValue: IObisValueString),
+
+    getObisValueFloat (): IObisValueFloat,
+    setObisValueFloat ( obisValue: IObisValueFloat),
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -141,6 +148,16 @@ CommandBinaryBuffer.getObisSize = ( obis: IObis ): number => {
     const keys = Object.keys(obis) as Array<keyof IObis>;
 
     return keys.filter(key => obis[key] !== undefined).length + 1;
+};
+
+CommandBinaryBuffer.getObisContentSize = ( obisValue: IObisValueFloat | IObisValueString ) => {
+    if ( typeof obisValue.content === 'number' ) {
+        // IObisValueFloat, 1 byte obis id code + 4 byte float value
+        return 5;
+    }
+
+    // 1 byte for obis id code + 1 byte of string size + string bytes
+    return 1 + obisValue.content.length + 1;
 };
 
 
@@ -258,33 +275,24 @@ CommandBinaryBuffer.prototype.setEUI = function ( eui: string ) {
     bytes.forEach(byte => this.setUint8(byte));
 };
 
-//     static getObisContentSize ( obisValue: IObisValueFloat | IObisValueString ) {
-//         if ( typeof obisValue.content === 'number' ) {
-//             // IObisValueFloat, 1 byte obis id code + 4 byte float value
-//             return 5;
-//         }
 
-//         // 1 byte for obis id code + 1 byte of string size + string bytes
-//         return 1 + obisValue.content.length + 1;
-//     }
+CommandBinaryBuffer.prototype.getObisValueString = function (): IObisValueString {
+    return {code: this.getUint8(), content: this.getString()};
+};
 
-//     getObisValueString (): IObisValueString {
-//         return {code: this.getUint8(), content: this.getString()};
-//     }
+CommandBinaryBuffer.prototype.setObisValueString = function ( obisValue: IObisValueString ) {
+    this.setUint8(obisValue.code);
+    this.setString(obisValue.content);
+};
 
-//     setObisValueString ( obisValue: IObisValueString ) {
-//         this.setUint8(obisValue.code);
-//         this.setString(obisValue.content);
-//     }
+CommandBinaryBuffer.prototype.getObisValueFloat = function (): IObisValueFloat {
+    return {code: this.getUint8(), content: roundNumber(this.getFloat32())};
+};
 
-//     getObisValueFloat (): IObisValueFloat {
-//         return {code: this.getUint8(), content: roundNumber(this.getFloat32())};
-//     }
-
-//     setObisValueFloat ( obisValue: IObisValueFloat ) {
-//         this.setUint8(obisValue.code);
-//         this.setFloat32(roundNumber(obisValue.content));
-//     }
+CommandBinaryBuffer.prototype.setObisValueFloat = function ( obisValue: IObisValueFloat ) {
+    this.setUint8(obisValue.code);
+    this.setFloat32(roundNumber(obisValue.content));
+};
 
 //     getSerialPortParameters () {
 //         return {
