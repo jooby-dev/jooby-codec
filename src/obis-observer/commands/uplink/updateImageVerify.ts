@@ -50,6 +50,7 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *
@@ -66,12 +67,13 @@ export const fromBytes = ( bytes: types.TBytes ): IUpdateImageVerifyParameters =
     return {requestId, isImageValid};
 };
 
+
 /**
  * Encode command parameters.
  *
  * @returns full message (header with body)
  */
-export const toBytes = (parameters: IUpdateImageVerifyParameters): types.TBytes => command.toBytes(
+export const toBytes = ( parameters: IUpdateImageVerifyParameters ): types.TBytes => command.toBytes(
     id,
     [parameters.requestId, parameters.isImageValid ? 1 : 0]
 );

@@ -44,6 +44,7 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *

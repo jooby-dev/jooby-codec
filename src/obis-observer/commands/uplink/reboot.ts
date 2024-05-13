@@ -1,12 +1,12 @@
 /**
- * Response to set the single or multi mode of the observer device.
+ * Response to restart the device.
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as setObserverSingleMode from 'jooby-codec/obis-observer/commands/uplink/setObserverSingleMode.js';
+ * import * as reboot from 'jooby-codec/obis-observer/commands/uplink/reboot.js';
  *
  * const bytes = [0x07];
- * const parameters = setObserverSingleMode.fromBytes(bytes);
+ * const parameters = reboot.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -15,7 +15,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObserverSingleMode.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/Reboot.md#response)
  */
 
 import * as command from '../../utils/command.js';
@@ -23,14 +23,14 @@ import * as types from '../../../types.js';
 import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 
 
-export const id: types.TCommandId = 0x0c;
-export const name: types.TCommandName = 'setObserverSingleMode';
+export const id: types.TCommandId = 0x27;
+export const name: types.TCommandName = 'reboot';
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = REQUEST_ID_SIZE;
 
 export const examples: command.TCommandExamples = {
-    'succeed result': {
+    'reboot response': {
         id,
         name,
         headerSize,
@@ -38,7 +38,7 @@ export const examples: command.TCommandExamples = {
             requestId: 7
         },
         bytes: [
-            0x0c, 0x01,
+            0x27, 0x01,
             0x07
         ]
     }

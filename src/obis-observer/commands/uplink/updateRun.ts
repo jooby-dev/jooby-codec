@@ -44,6 +44,7 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *
@@ -56,6 +57,7 @@ export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
 
     return {requestId: bytes[0]};
 };
+
 
 /**
  * Encode command parameters.
