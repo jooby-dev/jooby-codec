@@ -80,11 +80,11 @@ export interface IVersion {
     minor: types.TUint8
 }
 
-// export interface ISerialPortParameters {
-//     baudRate: number,
-//     dataBits: number,
-//     parity: number
-// }
+export interface ISerialPortParameters {
+    baudRate: types.TUint8,
+    dataBits: types.TUint8,
+    parity: types.TUint8
+}
 
 
 export const REQUEST_ID_SIZE = 1;
@@ -135,7 +135,10 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setObisValueFloat ( obisValue: IObisValueFloat),
 
     getVersion (): IVersion,
-    setVersion ( version: IVersion )
+    setVersion ( version: IVersion ),
+
+    getSerialPortParameters (): ISerialPortParameters,
+    setSerialPortParameters ( parameters: ISerialPortParameters )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -309,27 +312,26 @@ CommandBinaryBuffer.prototype.setVersion = function ( version: IVersion ) {
     this.setUint8(version.minor);
 };
 
-//     getSerialPortParameters () {
-//         return {
-//             baudRate: this.getUint8(),
-//             dataBits: this.getUint8(),
-//             parity: bitSet.extractBits(this.getUint8(), 2, 1)
-//         };
-//     }
+CommandBinaryBuffer.prototype.getSerialPortParameters = function (): ISerialPortParameters {
+    return {
+        baudRate: this.getUint8(),
+        dataBits: this.getUint8(),
+        parity: bitSet.extractBits(this.getUint8(), 2, 1)
+    };
+};
 
-//     setSerialPortParameters ( parameters: ISerialPortParameters ) {
-//         const {
-//             baudRate,
-//             dataBits,
-//             parity
-//         } = parameters;
-//         const flags = bitSet.fillBits(0, 2, 1, parity);
+CommandBinaryBuffer.prototype.setSerialPortParameters = function ( parameters: ISerialPortParameters ) {
+    const {
+        baudRate,
+        dataBits,
+        parity
+    } = parameters;
+    const flags = bitSet.fillBits(0, 2, 1, parity);
 
-//         this.setUint8(baudRate);
-//         this.setUint8(dataBits);
-//         this.setUint8(flags);
-//     }
-// }
+    this.setUint8(baudRate);
+    this.setUint8(dataBits);
+    this.setUint8(flags);
+};
 
 
 export default CommandBinaryBuffer;

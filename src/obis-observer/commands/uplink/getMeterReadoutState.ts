@@ -71,7 +71,7 @@ interface IGetMeterReadoutStateResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_SIZE = REQUEST_ID_SIZE + 4 + 4 + 2 + 2 + 2 + 7;
+const COMMAND_BODY_SIZE = REQUEST_ID_SIZE + 4 + 4 + 2 + 2 + 2 + 7;
 
 const isValidParameterSet = ( parameters: IGetMeterReadoutStateResponseParameters | ICommandParameters ): boolean => {
     const {
@@ -192,7 +192,7 @@ export const toBytes = ( parameters: IGetMeterReadoutStateResponseParameters ): 
         return command.toBytes(id, [parameters.requestId]);
     }
 
-    const size = isValidParameterSet(parameters) ? COMMAND_SIZE : REQUEST_ID_SIZE;
+    const size = isValidParameterSet(parameters) ? COMMAND_BODY_SIZE : REQUEST_ID_SIZE;
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
 
     buffer.setUint8(parameters.requestId);
