@@ -10,6 +10,7 @@
  * ```js
  * import * as getArchiveHours from 'jooby-codec/analog/commands/uplink/getArchiveHours.js';
  *
+ * // response to getArchiveHours downlink command
  * const bytes = [0x2f, 0x97, 0x8c, 0x00, 0x00, 0xa3, 0x80, 0x0a];
  *
  * // decoded payload

@@ -1,6 +1,4 @@
 /**
- * SHOULD BE REWORKED!
- *
  * Process messages to send to devices.
  *
  * @example

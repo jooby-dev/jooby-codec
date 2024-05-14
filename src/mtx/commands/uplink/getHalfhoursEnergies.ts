@@ -9,7 +9,10 @@
  * ```js
  * import * as getHalfhoursEnergies from 'jooby-codec/mtx/commands/uplink/getHalfhoursEnergies.js';
  *
+ * // response to getHalfhoursEnergies downlink command
  * const bytes = [0x2a, 0x43, 0x11, 0x01, 0x02, 0x10, 0x00, 0x20, 0x00, 0x30, 0x00, 0x40, 0x00];
+ *
+ * // decoded payload
  * const parameters = getHalfhoursEnergies.fromBytes(bytes);
  *
  * console.log(parameters);

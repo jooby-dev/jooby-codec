@@ -7,7 +7,10 @@
  * ```js
  * import * as setObserverSingleMode from 'jooby-codec/obis-observer/commands/uplink/setObserverSingleMode.js';
  *
+ * // response to setObserverSingleMode downlink command
  * const bytes = [0x07];
+ *
+ * // decoded payload
  * const parameters = setObserverSingleMode.fromBytes(bytes);
  *
  * console.log(parameters);

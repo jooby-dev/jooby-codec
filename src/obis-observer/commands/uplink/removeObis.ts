@@ -7,7 +7,10 @@
  * ```js
  * import * as removeObis from 'jooby-codec/obis-observer/commands/uplink/removeObis.js';
  *
+ * // response to removeObis downlink command
  * const bytes = [0x07];
+ *
+ * // decoded payload
  * const parameters = removeObis.fromBytes(bytes);
  *
  * console.log(parameters);

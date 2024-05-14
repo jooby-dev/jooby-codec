@@ -7,7 +7,10 @@
  * ```js
  * import * as updateImageWrite from 'jooby-codec/obis-observer/commands/uplink/updateImageWrite.js';
  *
+ * // response to updateImageWrite downlink command
  * const bytes = [0x21];
+ *
+ * // decoded payload
  * const parameters = updateImageWrite.fromBytes(bytes);
  *
  * console.log(parameters);

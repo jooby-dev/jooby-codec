@@ -8,6 +8,7 @@
  * ```js
  * import * as writeImage from 'jooby-codec/analog/commands/downlink/writeImage.js';
  *
+ * // response to writeImage downlink command
  * const bytes = [0x00, 0x00, 0x00, 0x40, 0x01];
  *
  * // decoded payload

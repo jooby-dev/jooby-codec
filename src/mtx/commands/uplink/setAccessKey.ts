@@ -9,6 +9,7 @@
  *
  * // empty response
  * const bytes = [];
+ *
  * // decoded payload
  * const parameters = setAccessKey.fromBytes(bytes);
  *

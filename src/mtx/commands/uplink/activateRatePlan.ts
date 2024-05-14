@@ -9,6 +9,8 @@
  *
  * // empty response
  * const bytes = [];
+ *
+ * // decoded payload
  * const parameters = activateRatePlan.fromBytes(bytes);
  *
  * // this command doesn't have any parameters

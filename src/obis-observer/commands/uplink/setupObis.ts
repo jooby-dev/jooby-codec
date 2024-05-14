@@ -7,7 +7,10 @@
  * ```js
  * import * as setupObis from 'jooby-codec/obis-observer/commands/uplink/setupObis.js';
  *
+ * // response to setupObis downlink command
  * const bytes = [0x02];
+ *
+ * // decoded payload
  * const parameters = setupObis.fromBytes(bytes);
  *
  * console.log(parameters);

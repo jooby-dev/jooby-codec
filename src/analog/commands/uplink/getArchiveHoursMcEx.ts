@@ -7,6 +7,7 @@
  * ```js
  * import * as getArchiveHoursMcEx from 'jooby-codec/analog/commands/uplink/getArchiveHoursMcEx.js';
  *
+ * // response to getArchiveHoursMcEx downlink command
  * const bytes = [0x2f, 0x97, 0x0c, 0x02, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a];
  *
  * // decoded payload

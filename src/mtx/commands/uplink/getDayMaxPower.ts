@@ -9,7 +9,10 @@
  * ```js
  * import * as getDayMaxPower from 'jooby-codec/mtx/commands/uplink/getDayMaxPower.js';
  *
+ * // response to getDayMaxPower downlink command
  * const bytes = [0x2a, 0x43, 0x11, 0x11, 0x02, 0x03, 0x00, 0x00, 0x10, 0x00, 0x04, 0x05, 0x00, 0x00, 0x20, 0x00];
+ *
+ * // decoded payload
  * const parameters = getDayMaxPower.fromBytes(bytes);
  *
  * console.log(parameters);

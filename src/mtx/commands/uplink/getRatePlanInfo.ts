@@ -9,10 +9,13 @@
  * ```js
  * import * as getRatePlanInfo from 'jooby-codec/mtx/commands/uplink/getRatePlanInfo.js';
  *
+ * // response to getRatePlanInfo downlink command
  * const bytes = [
  *     0x08, 0x00, 0x00, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
  *     0x00, 0x00, 0x00, 0x0a, 0x14, 0x1e, 0x28, 0x32, 0x3c, 0x46, 0x50
  * ];
+ *
+ * // decoded payload
  * const parameters = getRatePlanInfo.fromBytes(bytes);
  *
  * console.log(parameters);

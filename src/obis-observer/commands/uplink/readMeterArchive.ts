@@ -7,7 +7,10 @@
  * ```js
  * import * as readMeterArchive from 'jooby-codec/obis-observer/commands/uplink/readMeterArchive.js';
  *
+ * // response to readMeterArchive downlink command
  * const bytes = [0x0c, 0x01, 0x1b, 0xb4, 0x0c, 0x60, 0x08, 0x3e, 0xcc, 0xcc, 0xcd, 0x00, 0x1b, 0xb4, 0x0c, 0x20, 0x08, 0x3e, 0x4c, 0xcc, 0xcd];
+ *
+ * // decoded payload
  * const parameters = readMeterArchive.fromBytes(bytes);
  *
  * console.log(parameters);

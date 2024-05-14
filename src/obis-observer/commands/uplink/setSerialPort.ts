@@ -7,7 +7,10 @@
  * ```js
  * import * as setSerialPort from 'jooby-codec/obis-observer/commands/uplink/setSerialPort.js';
  *
+ * // response to setSerialPort downlink command
  * const bytes = [0x20];
+ *
+ * // decoded payload
  * const parameters = setSerialPort.fromBytes(bytes);
  *
  * console.log(parameters);

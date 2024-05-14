@@ -1,57 +1,60 @@
 import {TBytes} from '../../types.js';
 import {TCommand} from '../utils/command.js';
 
-// SHOULD BE REWORKED!
 
 /**
- * @example single correctTime2000 command
+ * @example single getArchiveState command
  * ```js
  * {
- *     bytes: [0x0c, 0x02, 0x2d, 0x88, 0xfe],
+ *     bytes: [0x10, 0x0d, 0x02, 0x00, 0x00, 0x00, 0x51, 0x2c, 0x2d, 0xea, 0xae, 0x2c, 0x2f, 0x0a, 0xf6],
  *     commands: [
  *         {
- *             id: 12,
+ *             id: 16,
+ *             name: 'getArchiveState',
  *             headerSize: 2,
- *             parameters: {sequenceNumber: 45, seconds: -120},
- *             bytes: [0x0c, 0x02, 0x2d, 0x88]
+ *             bytes: [
+ *                 16, 13, 2, 0, 0, 0, 81, 44, 45, 234, 174, 44, 47, 10, 246
+ *             ],
+ *             parameters: {
+ *                 requestId: 2,
+ *                 archiveRecordsNumber: 81,
+ *                 eldestTime2000: 741206702,
+ *                 newestTime2000: 741280502
+ *             }
  *         }
- *     ],
- *     lrc: {
- *         expected: 0xfe,
- *         actual: 0xfe
- *     }
+ *     ]
  * }
  * ```
  */
 export interface IMessage {
     commands: Array<TCommand>,
     bytes: TBytes,
-    // lrc: {
-    //     expected: number,
-    //     actual: number
-    // }
 }
 
 /**
- * @example single correctTime2000 command
+ * @example single getArchiveState command
  * ```js
  * {
  *    message: {
- *        bytes: [0x0c, 0x02, 0x2d, 0x88, 0x00],
+ *        bytes: [16, 13, 2, 0, 0, 0, 81, 44, 45, 234, 174, 44, 47, 10, 246],
  *        commands: [
  *            {
- *                id: 12,
+ *                id: 16,
+ *                name: 'getArchiveState',
  *                headerSize: 2,
- *                parameters: {sequenceNumber: 45, seconds: -120},
- *                bytes: [0x0c, 0x02, 0x2d, 0x88]
+ *                bytes: [
+ *                    16, 13, 2, 0, 0, 0, 81, 44, 45, 234, 174, 44, 47, 10, 246
+ *                ],
+ *                parameters: {
+ *                    requestId: 2,
+ *                    archiveRecordsNumber: 81,
+ *                    eldestTime2000: 741206702,
+ *                    newestTime2000: 741280502
+ *                }
  *            }
- *        ],
- *        lrc: {
- *            expected: 0,
- *            actual: 0xfe
- *        }
+ *        ]
  *    },
- *    error: 'mismatch LRC'
+ *    error: 'Wrong buffer size: 50.'
  *}
  * ```
  */

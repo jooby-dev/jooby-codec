@@ -7,7 +7,10 @@
  * ```js
  * import * as resetSettings from 'jooby-codec/obis-observer/commands/uplink/resetSettings.js';
  *
+ * // response to resetSettings downlink command
  * const bytes = [0x07];
+ *
+ * // decoded payload
  * const parameters = resetSettings.fromBytes(bytes);
  *
  * console.log(parameters);

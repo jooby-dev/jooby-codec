@@ -7,6 +7,7 @@
  * ```js
  * import * as getExAbsArchiveDaysMc from 'jooby-codec/analog/commands/uplink/getExAbsArchiveDaysMc.js';
  *
+ * // response to getExAbsArchiveDaysMc downlink command
  * const bytes = [0x2e, 0x6a, 0x08, 0x02, 0x83, 0x94, 0x2b, 0xaa, 0x2c];
  *
  * // decoded payload
