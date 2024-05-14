@@ -7,7 +7,10 @@
  * ```js
  * import * as updateRun from 'jooby-codec/obis-observer/commands/uplink/updateRun.js';
  *
+ * // response to updateRun downlink command
  * const bytes = [0x21];
+ *
+ * // decoded payload
  * const parameters = updateRun.fromBytes(bytes);
  *
  * console.log(parameters);

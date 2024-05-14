@@ -7,7 +7,10 @@
  * ```js
  * import * as updateImageVerify from 'jooby-codec/obis-observer/commands/uplink/updateImageVerify.js';
  *
+ * // response to updateImageVerify downlink command
  * const bytes = [0x20, 0x01];
+ *
+ * // decoded payload
  * const parameters = updateImageVerify.fromBytes(bytes);
  *
  * console.log(parameters);

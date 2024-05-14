@@ -9,6 +9,7 @@
  * ```js
  * import * as getDeviceId from 'jooby-codec/mtx/commands/uplink/getDeviceId.js';
  *
+ * // response to getDeviceId downlink command
  * const bytes = [0x00, 0x1a, 0x79, 0x17, 0x14, 0x1b, 0x1d, 0x6a];
  *
  * // decoded payload

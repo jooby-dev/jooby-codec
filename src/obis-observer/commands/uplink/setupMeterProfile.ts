@@ -7,7 +7,10 @@
  * ```js
  * import * as setupMeterProfile from 'jooby-codec/obis-observer/commands/uplink/setupMeterProfile.js';
  *
+ * // response to setupMeterProfile downlink command
  * const bytes = [0x9c];
+ *
+ * // decoded payload
  * const parameters = setupMeterProfile.fromBytes(bytes);
  *
  * console.log(parameters);

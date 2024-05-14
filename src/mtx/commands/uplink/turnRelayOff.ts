@@ -11,6 +11,7 @@
  *
  * // empty response
  * const bytes = [];
+ *
  * // decoded payload
  * const parameters = turnRelayOff.fromBytes(bytes);
  *

@@ -10,6 +10,7 @@
  * ```typescript
  * import * as getParameter from 'jooby-codec/analog/commands/uplink/getParameter.js';
  *
+ * // response to getParameter downlink command
  * const bytes = [0x01, 0x00, 0x00, 0x00, 0x04];
  *
  * // decoded payload

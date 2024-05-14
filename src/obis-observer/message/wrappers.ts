@@ -33,6 +33,10 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [] ):
         position += 2;
 
         try {
+            if ( !fromBytesMap[commandId] ) {
+                throw new Error(`Unsupported command id: ${commandId}!`);
+            }
+
             command.parameters = fromBytesMap[commandId](bytes.slice(position, position + commandSize));
             commands.push(command);
         } catch ( error ) {

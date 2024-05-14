@@ -21,6 +21,8 @@ This will provide 3 protocols of codecs:
 - MTX
 - OBIS Observer
 
+There is a low-level documentation available in a separate [repository](https://github.com/jooby-dev/jooby-docs).
+
 
 ## Usage of Analog codecs
 

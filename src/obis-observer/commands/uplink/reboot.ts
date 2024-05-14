@@ -7,7 +7,10 @@
  * ```js
  * import * as reboot from 'jooby-codec/obis-observer/commands/uplink/reboot.js';
  *
+ * // response to reboot downlink command
  * const bytes = [0x07];
+ *
+ * // decoded payload
  * const parameters = reboot.fromBytes(bytes);
  *
  * console.log(parameters);

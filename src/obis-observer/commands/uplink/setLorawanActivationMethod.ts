@@ -7,7 +7,10 @@
  * ```js
  * import * as setLorawanActivationMethod from 'jooby-codec/obis-observer/commands/uplink/setLorawanActivationMethod.js';
  *
+ * // response to setLorawanActivationMethod downlink command
  * const bytes = [0x07];
+ *
+ * // decoded payload
  * const parameters = setLorawanActivationMethod.fromBytes(bytes);
  *
  * console.log(parameters);

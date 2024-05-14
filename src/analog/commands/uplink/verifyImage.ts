@@ -10,6 +10,8 @@
  *
  * // empty response
  * const bytes = [0x01];
+ *
+ * // decoded payload
  * const parameters = verifyImage.fromBytes(bytes);
  *
  * // this command doesn't have any parameters

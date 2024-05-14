@@ -10,6 +10,8 @@
  *
  * // empty response
  * const bytes = [];
+ *
+ * // decoded payload
  * const parameters = updateRun.fromBytes(bytes);
  *
  * // this command doesn't have any parameters

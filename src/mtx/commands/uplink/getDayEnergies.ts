@@ -9,7 +9,10 @@
  * ```js
  * import * as getDayEnergies from 'jooby-codec/mtx/commands/uplink/getDayEnergies.js';
  *
+ * // response to getDayEnergies downlink command
  * const bytes = [0x2a, 0x43, 0x11, 0x11, 0x10, 0x00, 0x20, 0x00];
+ *
+ * // decoded payload
  * const parameters = getDayEnergies.fromBytes(bytes);
  *
  * console.log(parameters);
