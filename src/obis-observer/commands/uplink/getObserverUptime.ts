@@ -10,7 +10,7 @@
  * // response to getObserverUptime downlink command
  * const bytes = [
  *     0x07, 0x00, 0x00, 0x0f, 0xb0
- * ]);
+ * ];
  *
  * // decoded payload
  * const parameters = getObserverUptime.fromBytes(bytes);

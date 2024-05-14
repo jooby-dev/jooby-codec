@@ -10,7 +10,7 @@
  * // response to getObserverSingleMode downlink command
  * const bytes = [
  *     0x07, 0x01
- * ]);
+ * ];
  *
  * // decoded payload
  * const parameters = getObserverSingleMode.fromBytes(bytes);
