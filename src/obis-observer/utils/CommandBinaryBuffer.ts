@@ -75,10 +75,10 @@ export interface IObisValueString {
     content: string
 }
 
-// export interface IVersion {
-//     major: number,
-//     minor: number
-// }
+export interface IVersion {
+    major: types.TUint8,
+    minor: types.TUint8
+}
 
 // export interface ISerialPortParameters {
 //     baudRate: number,
@@ -133,6 +133,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getObisValueFloat (): IObisValueFloat,
     setObisValueFloat ( obisValue: IObisValueFloat),
+
+    getVersion (): IVersion,
+    setVersion ( version: IVersion )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -294,6 +297,18 @@ CommandBinaryBuffer.prototype.setObisValueFloat = function ( obisValue: IObisVal
     this.setFloat32(roundNumber(obisValue.content));
 };
 
+CommandBinaryBuffer.prototype.getVersion = function (): IVersion {
+    return {
+        major: this.getUint8(),
+        minor: this.getUint8()
+    };
+};
+
+CommandBinaryBuffer.prototype.setVersion = function ( version: IVersion ) {
+    this.setUint8(version.major);
+    this.setUint8(version.minor);
+};
+
 //     getSerialPortParameters () {
 //         return {
 //             baudRate: this.getUint8(),
@@ -313,18 +328,6 @@ CommandBinaryBuffer.prototype.setObisValueFloat = function ( obisValue: IObisVal
 //         this.setUint8(baudRate);
 //         this.setUint8(dataBits);
 //         this.setUint8(flags);
-//     }
-
-//     getVersion (): IVersion {
-//         return {
-//             major: this.getUint8(),
-//             minor: this.getUint8()
-//         };
-//     }
-
-//     setVersion ( version: IVersion ): void {
-//         this.setUint8(version.major);
-//         this.setUint8(version.minor);
 //     }
 // }
 
