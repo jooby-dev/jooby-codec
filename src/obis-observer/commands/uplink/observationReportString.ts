@@ -2,6 +2,8 @@
  * The Observation Report String uplink command is used for reporting by the OBIS observer.
  * The command includes the OBIS content captured according to schedule and contain string values.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as observationReportString from 'jooby-codec/obis-observer/commands/uplink/observationReportString.js';

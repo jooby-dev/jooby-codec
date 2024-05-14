@@ -1,6 +1,8 @@
 /**
  * Uplink command to get the information about serial port settings.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as getSerialPort from 'jooby-codec/obis-observer/commands/uplink/getSerialPort.js';

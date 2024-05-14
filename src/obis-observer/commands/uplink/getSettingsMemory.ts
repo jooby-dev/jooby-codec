@@ -1,6 +1,8 @@
 /**
  * Uplink command to get the information about memory settings.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as getSettingsMemory from 'jooby-codec/obis-observer/commands/uplink/getSettingsMemory.js';
