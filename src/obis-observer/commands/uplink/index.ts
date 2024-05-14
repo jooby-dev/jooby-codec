@@ -4,6 +4,7 @@
  * @packageDocumentation
  */
 
+export * as errorResponse from './errorResponse.js';
 export * as getArchiveState from './getArchiveState.js';
 export * as getLorawanInfo from './getLorawanInfo.js';
 export * as getLorawanState from './getLorawanState.js';
@@ -16,10 +17,13 @@ export * as getMeterProfileIdList from './getMeterProfileIdList.js';
 export * as getMeterReadoutState from './getMeterReadoutState.js';
 export * as getObisContent from './getObisContent.js';
 export * as getObisContentById from './getObisContentById.js';
+export * as getObisContentByIdString from './getObisContentByIdString.js';
 export * as getObisIdList from './getObisIdList.js';
 export * as getObisInfo from './getObisInfo.js';
 export * as getObserverCapabilities from './getObserverCapabilities.js';
 export * as getObserverInfo from './getObserverInfo.js';
+export * as getObserverSingleMode from './getObserverSingleMode.js';
+export * as getObserverUptime from './getObserverUptime.js';
 export * as getSerialPort from './getSerialPort.js';
 export * as getSettingsMemory from './getSettingsMemory.js';
 export * as observationReport from './observationReport.js';
