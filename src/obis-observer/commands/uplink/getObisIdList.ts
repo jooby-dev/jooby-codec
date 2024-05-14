@@ -5,7 +5,7 @@
  * ```js
  * import * as getObisIdList from 'jooby-codec/obis-observer/commands/uplink/getObisIdList.js';
  *
- * // response to getObisContentById
+ * // response to getObisIdList downlink command
  * const bytes = [0x03, 0x01, 0xc5, 0xc6];
  *
  * // decoded payload
