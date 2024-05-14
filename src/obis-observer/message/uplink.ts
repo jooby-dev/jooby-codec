@@ -54,6 +54,7 @@ export const toBytes = wrappers.getToBytes(toBytesMap);
 
 // fill maps
 // iteration should not be used
+toBytesMap[commands.errorResponse.id] = commands.errorResponse.toBytes;
 toBytesMap[commands.getArchiveState.id] = commands.getArchiveState.toBytes;
 toBytesMap[commands.getLorawanInfo.id] = commands.getLorawanInfo.toBytes;
 toBytesMap[commands.getLorawanState.id] = commands.getLorawanState.toBytes;
@@ -66,10 +67,13 @@ toBytesMap[commands.getMeterProfileIdList.id] = commands.getMeterProfileIdList.t
 toBytesMap[commands.getMeterReadoutState.id] = commands.getMeterReadoutState.toBytes;
 toBytesMap[commands.getObisContent.id] = commands.getObisContent.toBytes;
 toBytesMap[commands.getObisContentById.id] = commands.getObisContentById.toBytes;
+toBytesMap[commands.getObisContentByIdString.id] = commands.getObisContentByIdString.toBytes;
 toBytesMap[commands.getObisIdList.id] = commands.getObisIdList.toBytes;
 toBytesMap[commands.getObisInfo.id] = commands.getObisInfo.toBytes;
 toBytesMap[commands.getObserverCapabilities.id] = commands.getObserverCapabilities.toBytes;
 toBytesMap[commands.getObserverInfo.id] = commands.getObserverInfo.toBytes;
+toBytesMap[commands.getObserverSingleMode.id] = commands.getObserverSingleMode.toBytes;
+toBytesMap[commands.getObserverUptime.id] = commands.getObserverUptime.toBytes;
 toBytesMap[commands.getSerialPort.id] = commands.getSerialPort.toBytes;
 toBytesMap[commands.getSettingsMemory.id] = commands.getSettingsMemory.toBytes;
 toBytesMap[commands.observationReport.id] = commands.observationReport.toBytes;
@@ -93,6 +97,7 @@ toBytesMap[commands.updateImageWrite.id] = commands.updateImageWrite.toBytes;
 toBytesMap[commands.updateRun.id] = commands.updateRun.toBytes;
 
 // because of webpack/rollup processing!
+fromBytesMap[commands.errorResponse.id] = commands.errorResponse.fromBytes;
 fromBytesMap[commands.getArchiveState.id] = commands.getArchiveState.fromBytes;
 fromBytesMap[commands.getLorawanInfo.id] = commands.getLorawanInfo.fromBytes;
 fromBytesMap[commands.getLorawanState.id] = commands.getLorawanState.fromBytes;
@@ -105,10 +110,13 @@ fromBytesMap[commands.getMeterProfileIdList.id] = commands.getMeterProfileIdList
 fromBytesMap[commands.getMeterReadoutState.id] = commands.getMeterReadoutState.fromBytes;
 fromBytesMap[commands.getObisContent.id] = commands.getObisContent.fromBytes;
 fromBytesMap[commands.getObisContentById.id] = commands.getObisContentById.fromBytes;
+fromBytesMap[commands.getObisContentByIdString.id] = commands.getObisContentByIdString.fromBytes;
 fromBytesMap[commands.getObisIdList.id] = commands.getObisIdList.fromBytes;
 fromBytesMap[commands.getObisInfo.id] = commands.getObisInfo.fromBytes;
 fromBytesMap[commands.getObserverCapabilities.id] = commands.getObserverCapabilities.fromBytes;
 fromBytesMap[commands.getObserverInfo.id] = commands.getObserverInfo.fromBytes;
+fromBytesMap[commands.getObserverSingleMode.id] = commands.getObserverSingleMode.fromBytes;
+fromBytesMap[commands.getObserverUptime.id] = commands.getObserverUptime.fromBytes;
 fromBytesMap[commands.getSerialPort.id] = commands.getSerialPort.fromBytes;
 fromBytesMap[commands.getSettingsMemory.id] = commands.getSettingsMemory.fromBytes;
 fromBytesMap[commands.observationReport.id] = commands.observationReport.fromBytes;
@@ -131,6 +139,7 @@ fromBytesMap[commands.updateImageVerify.id] = commands.updateImageVerify.fromByt
 fromBytesMap[commands.updateImageWrite.id] = commands.updateImageWrite.fromBytes;
 fromBytesMap[commands.updateRun.id] = commands.updateRun.fromBytes;
 
+nameMap[commands.errorResponse.id] = commands.errorResponse.name;
 nameMap[commands.getArchiveState.id] = commands.getArchiveState.name;
 nameMap[commands.getLorawanInfo.id] = commands.getLorawanInfo.name;
 nameMap[commands.getLorawanState.id] = commands.getLorawanState.name;
@@ -143,10 +152,13 @@ nameMap[commands.getMeterProfileIdList.id] = commands.getMeterProfileIdList.name
 nameMap[commands.getMeterReadoutState.id] = commands.getMeterReadoutState.name;
 nameMap[commands.getObisContent.id] = commands.getObisContent.name;
 nameMap[commands.getObisContentById.id] = commands.getObisContentById.name;
+nameMap[commands.getObisContentByIdString.id] = commands.getObisContentByIdString.name;
 nameMap[commands.getObisIdList.id] = commands.getObisIdList.name;
 nameMap[commands.getObisInfo.id] = commands.getObisInfo.name;
 nameMap[commands.getObserverCapabilities.id] = commands.getObserverCapabilities.name;
 nameMap[commands.getObserverInfo.id] = commands.getObserverInfo.name;
+nameMap[commands.getObserverSingleMode.id] = commands.getObserverSingleMode.name;
+nameMap[commands.getObserverUptime.id] = commands.getObserverUptime.name;
 nameMap[commands.getSerialPort.id] = commands.getSerialPort.name;
 nameMap[commands.getSettingsMemory.id] = commands.getSettingsMemory.name;
 nameMap[commands.observationReport.id] = commands.observationReport.name;

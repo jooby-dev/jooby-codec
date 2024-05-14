@@ -20,6 +20,8 @@ export * as getObisIdList from './getObisIdList.js';
 export * as getObisInfo from './getObisInfo.js';
 export * as getObserverCapabilities from './getObserverCapabilities.js';
 export * as getObserverInfo from './getObserverInfo.js';
+export * as getObserverSingleMode from './getObserverSingleMode.js';
+export * as getObserverUptime from './getObserverUptime.js';
 export * as getSerialPort from './getSerialPort.js';
 export * as getSettingsMemory from './getSettingsMemory.js';
 export * as readArchive from './readArchive.js';
