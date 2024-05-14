@@ -37,7 +37,7 @@ interface IGetMeterIdResponseParameters extends ICommandParameters {
 }
 
 
-const COMMAND_SIZE = REQUEST_ID_SIZE + METER_ID_SIZE;
+const COMMAND_BODY_SIZE = REQUEST_ID_SIZE + METER_ID_SIZE;
 
 
 export const id: types.TCommandId = 0x77;
@@ -84,7 +84,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMeterIdResponseParameters 
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetMeterIdResponseParameters ): types.TBytes => {
-    const size = parameters.meterId ? COMMAND_SIZE : REQUEST_ID_SIZE;
+    const size = parameters.meterId ? COMMAND_BODY_SIZE : REQUEST_ID_SIZE;
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
 
     buffer.setUint8(parameters.requestId);

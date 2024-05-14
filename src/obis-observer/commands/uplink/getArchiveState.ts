@@ -43,7 +43,7 @@ interface IGetArchiveStateResponseParameters extends ICommandParameters {
 
 
 // request id byte + records count + DateTime 4 bytes * 2
-const COMMAND_SIZE = REQUEST_ID_SIZE + 4 + DATE_TIME_SIZE * 2;
+const COMMAND_BODY_SIZE = REQUEST_ID_SIZE + 4 + DATE_TIME_SIZE * 2;
 
 const isValidParameterSet = ( parameters: IGetArchiveStateResponseParameters | ICommandParameters ): boolean => {
     const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = parameters as IGetArchiveStateResponseParameters;
@@ -137,7 +137,7 @@ export const toBytes = ( parameters: IGetArchiveStateResponseParameters ): types
         return command.toBytes(id, [parameters.requestId]);
     }
 
-    const size = isValidParameterSet(parameters) ? COMMAND_SIZE : REQUEST_ID_SIZE;
+    const size = isValidParameterSet(parameters) ? COMMAND_BODY_SIZE : REQUEST_ID_SIZE;
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
     const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = parameters;
 

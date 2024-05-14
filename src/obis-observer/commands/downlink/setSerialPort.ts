@@ -28,15 +28,8 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE
+    ICommandBinaryBuffer, ICommandParameters, ISerialPortParameters, REQUEST_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
-
-
-interface ISetSerialPortParameters extends ICommandParameters {
-    baudRate: types.TUint8,
-    dataBits: types.TUint8,
-    parity: types.TUint8
-}
 
 
 export const id: types.TCommandId = 0x09;
@@ -85,22 +78,17 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( bytes: types.TBytes ): ISetSerialPortParameters => {
+export const fromBytes = ( bytes: types.TBytes ): ISerialPortParameters & ICommandParameters => {
     if ( bytes.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const requestId = buffer.getUint8();
-    const baudRate = buffer.getUint8();
-    const dataBits = buffer.getUint8();
-    const parity = buffer.getUint8();
 
     return {
         requestId,
-        baudRate,
-        dataBits,
-        parity
+        ...buffer.getSerialPortParameters()
     };
 };
 
@@ -111,14 +99,11 @@ export const fromBytes = ( bytes: types.TBytes ): ISetSerialPortParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: ISetSerialPortParameters ): types.TBytes => {
+export const toBytes = ( parameters: ISerialPortParameters & ICommandParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
-    const {requestId, baudRate, dataBits, parity} = parameters;
 
-    buffer.setUint8(requestId);
-    buffer.setUint8(baudRate);
-    buffer.setUint8(dataBits);
-    buffer.setUint8(parity);
+    buffer.setUint8(parameters.requestId);
+    buffer.setSerialPortParameters(parameters);
 
     return command.toBytes(id, buffer.data);
 };
