@@ -27,6 +27,47 @@
  * }
  * ```
  *
+ * @example with config
+ * ```js
+ * import * as message from 'jooby-codec/analog/message/uplink';
+ * import * as hardwareTypes from 'jooby-codec/analog/constants/hardwareTypes.js';
+ *
+ * // binary data received from a device
+ * const bytes = [0x62, 0x20, 0x09, 0x1e];
+ *
+ * const config = {
+ *     hardwareType: hardwareTypes.GASI3
+ * };
+ *
+ * // decode it
+ * const payload = message.fromBytes(bytes, config);
+ *
+ * if ( 'error' in payload ) {
+ *     console.log('decode failure:', payload.error, payload.message);
+ * } else {
+ *     console.log('message decoded:', payload.commands[0]);
+ *     // output:
+ *     [
+ *         {
+ *             id: 96,
+ *             name: 'lastEvent',
+ *             headerSize: 1,
+ *             bytes: [98, 32, 9],
+ *             config: {hardwareType: 3},
+ *             parameters: {
+ *                 sequenceNumber: 32,
+ *                 status: {
+ *                     isBatteryLow: true,
+ *                     isMagneticInfluence: false,
+ *                     isButtonReleased: false,
+ *                     isConnectionLost: true
+ *                 }
+ *             }
+ *         }
+ *     ]
+ * }
+ * ```
+ *
  * @packageDocumentation
  */
 

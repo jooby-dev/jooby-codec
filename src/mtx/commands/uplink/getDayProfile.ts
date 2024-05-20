@@ -70,7 +70,10 @@ export const examples: command.TCommandExamples = {
                 {tariff: 3, isFirstHalfHour: true, hour: 9}
             ]
         },
-        bytes: [0x3b, 0x08, 0x10, 0x1d, 0x22, 0x2f, 0x30, 0x3d, 0x46, 0x4b]
+        bytes: [
+            0x3b, 0x08,
+            0x10, 0x1d, 0x22, 0x2f, 0x30, 0x3d, 0x46, 0x4b
+        ]
     },
     'response with 4 periods': {
         id,
@@ -86,7 +89,10 @@ export const examples: command.TCommandExamples = {
                 {tariff: 3, isFirstHalfHour: false, hour: 5}
             ]
         },
-        bytes: [0x3b, 0x05, 0x10, 0x1d, 0x22, 0x2f, 0xff]
+        bytes: [
+            0x3b, 0x05,
+            0x10, 0x1d, 0x22, 0x2f, 0xff
+        ]
     }
 };
 
