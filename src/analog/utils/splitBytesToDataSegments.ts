@@ -39,7 +39,7 @@ export const splitBytesToDataSegments = ( bytes: types.TBytes, {segmentationSess
     }
 
     if ( segments.length !== 0 ) {
-        segments[segments.length - 1].parameters.isLast = true;
+        segments[segments.length - 1].isLast = true;
     }
 
     return segments;

@@ -47,6 +47,10 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
         }
 
         try {
+            if ( !fromBytesMap[headerInfo.commandId] ) {
+                throw new Error(`Unsupported command id: ${headerInfo.commandId}!`);
+            }
+
             command.parameters = fromBytesMap[headerInfo.commandId](bodyData, config);
             commands.push(command);
         } catch ( error ) {

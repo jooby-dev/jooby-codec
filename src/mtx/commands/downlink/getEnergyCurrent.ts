@@ -45,7 +45,7 @@ export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'simple request': {
+    'get default A+ energy': {
         id,
         name,
         headerSize,
@@ -56,18 +56,18 @@ export const examples: command.TCommandExamples = {
             0x0f, 0x00
         ]
     },
-    'get A+ energy': {
+    'get A- energy': {
         id,
         name,
         headerSize,
         maxSize,
         accessLevel,
         parameters: {
-            energyType: 1
+            energyType: 2
         },
         bytes: [
             0x0f, 0x01,
-            0x01
+            0x02
         ]
     }
 };
