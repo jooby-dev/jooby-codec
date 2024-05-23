@@ -61,7 +61,7 @@ export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'simple response': {
+    'default A+ energy': {
         id,
         name,
         headerSize,

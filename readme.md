@@ -23,6 +23,8 @@ This will provide 3 protocols of codecs:
 
 There is a low-level documentation available in a separate [repository](https://github.com/jooby-dev/jooby-docs).
 
+It's also possible to send MTX commands [via Lora](./mtx-lora.md).
+
 
 ## Usage of Analog codecs
 

@@ -176,16 +176,16 @@ const downlinkMessages: TMessageList = [
     },
     {
         name: 'getEnergyCurrent',
-        hex: '0a 13 76 59 e7 62 c0 67 e8 39 0e ed b1 5f e6 11 c0 aa',
-        frameHex: '7e 50 aa aa ff ff 0a 7d 33 76 59 e7 62 c0 67 e8 39 0e ed b1 5f e6 7d 31 c0 aa 71 1e 7e',
+        hex: '0a 13 bc 75 40 f0 ec 47 4e 8a 02 d2 23 6b 95 4d 78 40',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 bc 75 40 f0 ec 47 4e 8a 02 d2 23 6b 95 4d 78 40 68 85 7e',
         messageId: 10,
         accessLevel: downlinkCommands.getEnergyCurrent.accessLevel,
         commands: [
-            downlinkCommands.getEnergyCurrent.examples['simple request'],
-            downlinkCommands.getEnergyCurrent.examples['get A+ energy']
+            downlinkCommands.getEnergyCurrent.examples['get default A+ energy'],
+            downlinkCommands.getEnergyCurrent.examples['get A- energy']
         ],
-        lrc: 0x46,
-        crc: 0x711e,
+        lrc: 0x45,
+        crc: 0x6885,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -899,7 +899,7 @@ const uplinkMessages: TMessageList = [
         messageId: 10,
         accessLevel: uplinkCommands.getEnergyCurrent.accessLevel,
         commands: [
-            uplinkCommands.getEnergyCurrent.examples['simple response']
+            uplinkCommands.getEnergyCurrent.examples['default A+ energy']
         ],
         lrc: 0x09,
         crc: 0xd81f,
@@ -914,7 +914,7 @@ const uplinkMessages: TMessageList = [
         messageId: 10,
         accessLevel: uplinkCommands.getEnergyDay.accessLevel,
         commands: [
-            uplinkCommands.getEnergyDay.examples['simple response']
+            uplinkCommands.getEnergyDay.examples['default A+ energy']
         ],
         lrc: 0x1e,
         crc: 0x066d,
