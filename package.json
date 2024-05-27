@@ -1,6 +1,6 @@
 {
     "name": "jooby-codec",
-    "version": "4.2.1",
+    "version": "4.3.0",
     "description": "Jooby message encoders/decoders",
     "type": "module",
     "main": "./dist/index.js",
@@ -73,7 +73,7 @@
         "@types/jest": "^29.5.12",
         "@typescript-eslint/eslint-plugin": "^7.3.1",
         "@typescript-eslint/parser": "^7.3.1",
-        "clean-publish": "^4.3.0",
+        "clean-publish": "^5.0.0",
         "eslint-config-airbnb-base": "^15.0.0",
         "eslint-config-airbnb-typescript": "^18.0.0",
         "eslint-import-resolver-typescript": "^3.6.1",
