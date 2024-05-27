@@ -1,8 +1,8 @@
-import * as frameUtils from '../../src/analog/utils/frame.js';
+import * as frame from '../../src/analog/utils/frame.js';
 import * as downlinkMessage from '../../src/analog/message/downlink.js';
 import * as downlinkCommands from '../../src/analog/commands/downlink/index.js';
-import {IInvalidMessage, IMessage} from '../../src/analog/message/types.js';
-import {ICommand} from '../../src/analog/utils/command.js';
+import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
+import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 
 
 const command1 = {
@@ -26,78 +26,45 @@ const command2 = {
         }
     }
 };
-const command3 = {
-    bytes: [0x14, 0x00],
-    id: 0x14,
-    headerSize: 2,
-    name: 'getStatus',
-    parameters: {}
-};
 
 
 describe('frame validation', () => {
     test('test valid frame', () => {
-        const {frame, message: anyMessage} = frameUtils.toFrame(downlinkMessage, [command1, command2]);
-        const message = anyMessage as IInvalidMessage;
+        const messageBytes = downlinkMessage.toBytes([command1, command2]);
+        expect(getHexFromBytes(messageBytes)).toBe('02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6');
 
-        expect(frame.isValid).toBe(true);
-        expect(message.error).toBe(undefined);
+        const frameBytes = frame.toBytes(messageBytes);
+        expect(getHexFromBytes(frameBytes)).toBe('7e 02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6 8a 94 7e');
     });
 
     test('test invalid frame', () => {
-        const hex = '7e 02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9 a6 8a 94 7e';
-        const {frame, message: anyMessage} = frameUtils.fromHex(downlinkMessage, hex);
-        const message = anyMessage as IInvalidMessage;
+        const frameBytes = getBytesFromHex('7e 02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9 a6 8a 94 7e');
+        const parsedFrame = frame.fromBytes(frameBytes);
 
-        expect(frame.isValid).toBe(false);
-        expect(message.error).toBe('mismatch LRC');
+        if ( 'error' in parsedFrame ) {
+            expect(parsedFrame.error).toBe('Mismatch CRC.');
+        } else {
+            throw new Error('Field error should be present!');
+        }
     });
 });
 
 describe('getCommands', () => {
     test('test valid input', () => {
-        const hex = '7e 02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6 8a 94 7e';
-        const {frame, message: anyMessage} = frameUtils.fromHex(downlinkMessage, hex);
-        // it must be valid, but need to access to 'error' property which exists only in invalid message
-        const invalidMessage = anyMessage as IInvalidMessage;
-        const message = anyMessage as IMessage;
-        const setTime2000Command = message.commands[0] as ICommand;
-        const setParameterCommand = message.commands[1] as ICommand;
+        const frameBytes = getBytesFromHex('7e 02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6 8a 94 7e');
+        const parsedFrame = frame.fromBytes(frameBytes);
 
-        expect(frame.isValid).toBe(true);
-        expect(invalidMessage.error).toBe(undefined);
-        expect(message.commands.length).toBe(2);
-        expect(setTime2000Command.id).toEqual(downlinkCommands.setTime2000.id);
-        expect(setParameterCommand.id).toEqual(downlinkCommands.setParameter.id);
-    });
+        if ( 'bytes' in parsedFrame ) {
+            const parsedMessage = downlinkMessage.fromBytes(parsedFrame.bytes);
 
-    test('test invalid input', () => {
-        const hex = '7e 02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9 a6 8a 94 7e';
-        const {frame, message: anyMessage} = frameUtils.fromHex(downlinkMessage, hex);
-        const invalidMessage = anyMessage as IInvalidMessage;
-        const message = anyMessage as IMessage;
-
-        expect(frame.isValid).toBe(false);
-        expect(invalidMessage.error).toBe('mismatch LRC');
-        expect(message.commands).toBe(undefined);
-    });
-});
-
-describe('test fromFrames', () => {
-    test('test 1', () => {
-        const frame1 = frameUtils.toFrame(downlinkMessage, [command1, command2]);
-        const frame2 = frameUtils.toFrame(downlinkMessage, [command3]);
-        const result = frameUtils.fromFrames(downlinkMessage, [frame1.frame, frame2.frame]);
-        const commands = result.flatMap(({message: anyMessage}) => {
-            const message = anyMessage as IMessage;
-
-            return message.commands;
-        });
-
-        expect(result.length).toBe(2);
-        expect(commands.length).toBe(3);
-        expect(commands[0]).toStrictEqual(command1);
-        expect(commands[1]).toStrictEqual(command2);
-        expect(commands[2]).toStrictEqual(command3);
+            if ( 'error' in parsedMessage ) {
+                throw new Error('Field error should be missing!');
+            } else {
+                expect(getHexFromBytes(parsedMessage.bytes)).toBe('02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6');
+                expect(parsedMessage.commands).toStrictEqual([command1, command2]);
+            }
+        } else {
+            throw new Error('Field bytes should be present!');
+        }
     });
 });

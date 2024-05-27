@@ -4,6 +4,7 @@
  * @example
  * ```js
  * import * as message from 'jooby-codec/mtx/message/downlink';
+ * import * as frame from 'jooby-codec/mtx/utils/frame.js';
  * import * as downlinkCommands from 'jooby-codec/mtx/commands/downlink';
  * import getHexFromBytes from 'jooby-codec/utils/getHexFromBytes.js';
  * import * as frameTypes from 'jooby-codec/mtx/constants/frameTypes.js';
@@ -26,7 +27,7 @@
  *         }
  *     }
  * ];
- * const bytes = message.toBytes(
+ * const messageBytes = message.toBytes(
  *     commands,
  *     {
  *         messageId,
@@ -35,17 +36,16 @@
  *     }
  * );
  *
- * console.log('message encoded:', JSON.stringify(bytes));
+ * console.log('message encoded:', JSON.stringify(messageBytes));
  * // output:
  * [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132]
  *
- * console.log('message encoded in HEX:', getHexFromBytes(bytes));
+ * console.log('message encoded in HEX:', getHexFromBytes(messageBytes));
  * // output:
  * '0a 13 ed 74 0a ae 4a ba c8 42 c4 1b e7 f5 0d 3c 28 84'
  *
- *
- * const frameBytes = message.toFrame(
- *     bytes,
+ * const frameBytes = frame.toBytes(
+ *     messageBytes,
  *     {
  *         type: frameTypes.DATA_REQUEST,
  *         source: 0xffff,
@@ -63,7 +63,7 @@
  *
  *
  * // decode message back from bytes
- * const parsedMessage = message.fromBytes(bytes, {aesKey});
+ * const parsedMessage = message.fromBytes(messageBytes, {aesKey});
  *
  * console.log('parsed message:', parsedMessage);
  * // output:
@@ -71,49 +71,50 @@
  *     messageId: 3,
  *     accessLevel: 3,
  *     commands: [
- *       {
- *         id: 8,
- *         name: 'setDateTime',
- *         headerSize: 2,
- *         bytes: [Array],
- *         parameters: [Object]
- *       }
+ *         {
+ *             id: 8,
+ *             name: 'setDateTime',
+ *             headerSize: 2,
+ *             bytes: [Array],
+ *             parameters: [Object]
+ *         }
  *     ],
- *     bytes: [
- *         3,  19, 237, 116,  10, 174,
- *        74, 186, 200,  66, 196,  27,
- *       231, 245,  13,  60,  40, 132
- *     ],
- *     lrc: { expected: 119, actual: 119 }
+ *     bytes: [3,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+ *     lrc: {expected: 119, actual: 119}
  * }
  *
  * // decode message back from frame
- * const parsedFrame = message.fromFrame(frameBytes, {aesKey});
+ * const parsedFrame = frame.fromBytes(frameBytes);
  *
- * console.log('parsed frame:', parsedFrame);
+ * console.log('parsedFrame:', parsedFrame);
  * // output:
  * {
- *     type: 80,
- *     destination: 43690,
- *     source: 65535,
- *     messageId: 10,
- *     accessLevel: 3,
- *     commands: [
- *       {
- *         id: 8,
- *         name: 'setDateTime',
- *         headerSize: 2,
- *         bytes: [Array],
- *         parameters: [Object]
- *       }
- *     ],
- *     bytes: [
- *        10,  19, 237, 116,  10, 174,
- *        74, 186, 200,  66, 196,  27,
- *       231, 245,  13,  60,  40, 132
- *     ],
- *     lrc: { expected: 119, actual: 119 },
- *     crc: 25019
+ *     bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+ *     crc: {actual: 47969, expected: 47969},
+ *     header: {type: 80, destination: 43690, source: 65535}
+ * }
+ *
+ * // parsed successfully
+ * if ( 'bytes' in parsedFrame ) {
+ *     const parsedMessage2 = message.fromBytes(parsedFrame.bytes, {aesKey});
+ *
+ *     console.log('parsedMessage2:', parsedMessage2);
+ *     // output:
+ *     {
+ *         messageId: 10,
+ *         accessLevel: 3,
+ *         commands: [
+ *             {
+ *                 id: 8,
+ *                 name: 'setDateTime',
+ *                 headerSize: 2,
+ *                 bytes: [Array],
+ *                 parameters: [Object]
+ *             }
+ *         ],
+ *         bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+ *         lrc: {expected: 119, actual: 119}
+ *     }
  * }
  * ```
  *
@@ -130,9 +131,7 @@ export const nameMap = {};
 
 export const fromBytes = wrappers.getFromBytes(fromBytesMap, nameMap);
 export const toBytes = wrappers.getToBytes(toBytesMap);
-//export const toMessage = wrappers.getToMessage(toBytesMap);
-export const fromFrame = wrappers.getFromFrame(fromBytes);
-export const toFrame = wrappers.getToFrame;
+
 
 // fill maps
 // iteration should not be used
