@@ -3,18 +3,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 import * as message from '../../src/mtx/message/index.js';
-//import * as command from '../../src/mtx/utils/command.js';
-//import CommandBinaryBuffer from '../../src/mtx/utils/CommandBinaryBuffer.js';
 import * as downlinkCommands from '../../src/mtx/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/mtx/commands/uplink/index.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
+import * as frame from '../../src/mtx/utils/frame.js';
 import * as accessLevels from '../../src/mtx/constants/accessLevels.js';
 import * as frameTypes from '../../src/mtx/constants/frameTypes.js';
-//import * as meterTypes from '../../src/mtx/constants/meterTypes.js';
-//import * as directions from '../../src/constants/directions.js';
-//import {ACCESS_DENIED} from '../../src/mtx/constants/resultCodes.js';
 import {TBytes} from '../../src/types.js';
 
 
@@ -24,9 +21,7 @@ interface IMessage {
     frameHex: string,
     messageId: number,
     accessLevel: number,
-    //direction: number,
     commands: any,
-    //commands: Array<Command>,
     lrc: number,
     frameType: number,
     source: number,
@@ -49,7 +44,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.activateRatePlan.examples['set rate plan request']
         ],
         lrc: 0x50,
-        crc: 0x8775,
+        crc: 0x7587,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xf5f6,
         destination: 0xa8a9
@@ -64,7 +59,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getBuildVersion.examples['simple request']
         ],
         lrc: 0x36,
-        crc: 0x30fc,
+        crc: 0xfc30,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -79,7 +74,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getCorrectTime.examples['simple request']
         ],
         lrc: 0x78,
-        crc: 0x8287,
+        crc: 0x8782,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -94,7 +89,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getCurrentValues.examples['simple request']
         ],
         lrc: 0x4b,
-        crc: 0xfef9,
+        crc: 0xf9fe,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -109,7 +104,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getDateTime.examples['simple request']
         ],
         lrc: 0x41,
-        crc: 0xb86e,
+        crc: 0x6eb8,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -124,7 +119,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getDayProfile.examples['request for active tariff table A+']
         ],
         lrc: 0x7d,
-        crc: 0xe226,
+        crc: 0x26e2,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -139,7 +134,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getDeviceId.examples['simple request']
         ],
         lrc: 0x43,
-        crc: 0x9c30,
+        crc: 0x309c,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -154,7 +149,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getDeviceType.examples['simple request']
         ],
         lrc: 0x42,
-        crc: 0xcf3a,
+        crc: 0x3acf,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -169,7 +164,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getDisplayParam.examples['get additional display parameters']
         ],
         lrc: 0x18,
-        crc: 0xab59,
+        crc: 0x59ab,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -185,7 +180,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getEnergyCurrent.examples['get A- energy']
         ],
         lrc: 0x45,
-        crc: 0x6885,
+        crc: 0x8568,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -201,7 +196,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getEnergyDay.examples['request day values with energy type for 2024.03.22 00:00:00 GMT']
         ],
         lrc: 0x40,
-        crc: 0xa671,
+        crc: 0x71a6,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -216,7 +211,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getEnergyDayPrevious.examples['simple request']
         ],
         lrc: 0x45,
-        crc: 0xdaa9,
+        crc: 0xa9da,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -231,7 +226,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getExtendedCurrentValues.examples['simple request']
         ],
         lrc: 0x7c,
-        crc: 0x3c6a,
+        crc: 0x6a3c,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -246,7 +241,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getHalfHours.examples['request half hour data for 2024.03.22 00:00:00 GMT']
         ],
         lrc: 0x5d,
-        crc: 0x4e40,
+        crc: 0x404e,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -261,7 +256,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getHalfhoursEnergies.examples['request for halfhours energies']
         ],
         lrc: 0x43,
-        crc: 0xccfe,
+        crc: 0xfecc,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -276,7 +271,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getOpParams.examples['simple request']
         ],
         lrc: 0x58,
-        crc: 0xa0c6,
+        crc: 0xc6a0,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -291,7 +286,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getRatePlanInfo.examples['request for table A-']
         ],
         lrc: 0x6a,
-        crc: 0x514c,
+        crc: 0x4c51,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -306,7 +301,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getSaldo.examples['simple request']
         ],
         lrc: 0x6f,
-        crc: 0x3912,
+        crc: 0x1239,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -321,7 +316,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getSaldoParameters.examples['simple request']
         ],
         lrc: 0x68,
-        crc: 0x0457,
+        crc: 0x5704,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -336,7 +331,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getSeasonProfile.examples['request for passive tariff table A+']
         ],
         lrc: 0x7d,
-        crc: 0xaa4b,
+        crc: 0x4baa,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -351,7 +346,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getSpecialDay.examples['request for passive tariff table A+']
         ],
         lrc: 0x7c,
-        crc: 0x578a,
+        crc: 0x8a57,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -366,7 +361,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.getVersion.examples['simple request']
         ],
         lrc: 0x6e,
-        crc: 0xee5b,
+        crc: 0x5bee,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -381,7 +376,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.prepareRatePlan.examples['prepare rate plan request']
         ],
         lrc: 0x6b,
-        crc: 0x5596,
+        crc: 0x9655,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -396,7 +391,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.runTariffPlan.examples['simple request']
         ],
         lrc: 0x45,
-        crc: 0xd084,
+        crc: 0x84d0,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -411,7 +406,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setAccessKey.examples['set key for READ_ONLY access level']
         ],
         lrc: 0x5d,
-        crc: 0xb200,
+        crc: 0x00b2,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -426,7 +421,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setCorrectDateTime.examples['shift device time 5 seconds backward']
         ],
         lrc: 0x1c,
-        crc: 0x408e,
+        crc: 0x8e40,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -441,7 +436,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setCorrectTime.examples['default parameters']
         ],
         lrc: 0x5d,
-        crc: 0x85db,
+        crc: 0xdb85,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -456,7 +451,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setDateTime.examples['time: 2024.02.19 18:31:55']
         ],
         lrc: 0x77,
-        crc: 0x61bb,
+        crc: 0xbb61,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -471,7 +466,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setDayProfile.examples['set day profile with 4 periods']
         ],
         lrc: 0xaa,
-        crc: 0x9276,
+        crc: 0x7692,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -486,7 +481,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setDayProfile.examples['set day profile with max periods']
         ],
         lrc: 0x5e,
-        crc: 0x4970,
+        crc: 0x7049,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -501,7 +496,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setDisplayParam.examples['set params with order']
         ],
         lrc: 0x17,
-        crc: 0x40a9,
+        crc: 0xa940,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -516,7 +511,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setOpParams.examples['set default operator parameters request']
         ],
         lrc: 0x7b,
-        crc: 0x36b9,
+        crc: 0xb936,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -531,7 +526,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setSaldo.examples['test request']
         ],
         lrc: 0x5d,
-        crc: 0xab08,
+        crc: 0x08ab,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -546,7 +541,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setSaldoParameters.examples['test parameters']
         ],
         lrc: 0x43,
-        crc: 0xa89f,
+        crc: 0x9fa8,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -561,7 +556,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setSeasonProfile.examples['set default season profile']
         ],
         lrc: 0x54,
-        crc: 0xfdeb,
+        crc: 0xebfd,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -576,7 +571,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setSeasonProfile.examples['set some season profile']
         ],
         lrc: 0x54,
-        crc: 0xfacb,
+        crc: 0xcbfa,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -591,7 +586,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.setSpecialDay.examples['set special day']
         ],
         lrc: 0x5c,
-        crc: 0x55f4,
+        crc: 0xf455,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -606,7 +601,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.turnRelayOff.examples['simple request']
         ],
         lrc: 0x5e,
-        crc: 0xcb7f,
+        crc: 0x7fcb,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -621,7 +616,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.turnRelayOn.examples['simple request']
         ],
         lrc: 0x5f,
-        crc: 0xd262,
+        crc: 0x62d2,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -637,7 +632,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.turnRelayOff.examples['simple request']
         ],
         lrc: 0x47,
-        crc: 0x62d8,
+        crc: 0xd862,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xf1f1,
         destination: 0xa1a1
@@ -658,7 +653,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.turnRelayOn.examples['simple request']
         ],
         lrc: 0x5e,
-        crc: 0xfc35,
+        crc: 0x35fc,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xf1f1,
         destination: 0xa1a1
@@ -673,7 +668,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.turnRelayOn.examples['simple request']
         ],
         lrc: 0x5d,
-        crc: 0x3cd4,
+        crc: 0xd43c,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xf2f3,
         destination: 0xa2a3
@@ -689,7 +684,7 @@ const downlinkMessages: TMessageList = [
             downlinkCommands.turnRelayOff.examples['simple request']
         ],
         lrc: 0x44,
-        crc: 0xc3d4,
+        crc: 0xd4c3,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xf3f4,
         destination: 0xa3a4
@@ -707,7 +702,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.activateRatePlan.examples['simple response']
         ],
         lrc: 0x54,
-        crc: 0x339c,
+        crc: 0x9c33,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -722,7 +717,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.errorResponse.examples['ACCESS_DENIED on TurnRelayOn command']
         ],
         lrc: 0x31,
-        crc: 0xa81f,
+        crc: 0x1fa8,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -737,7 +732,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getBuildVersion.examples['2021.09.16/0.0.9']
         ],
         lrc: 0x35,
-        crc: 0x2154,
+        crc: 0x5421,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -752,7 +747,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getCorrectTime.examples['default parameters']
         ],
         lrc: 0x7e,
-        crc: 0xcc0b,
+        crc: 0x0bcc,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -767,7 +762,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getCurrentValues.examples['simple response']
         ],
         lrc: 0x77,
-        crc: 0x8542,
+        crc: 0x4285,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -782,7 +777,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getDateTime.examples['time: 2024.02.19 18:31:55']
         ],
         lrc: 0x78,
-        crc: 0xd480,
+        crc: 0x80d4,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -797,7 +792,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getDayEnergies.examples['get day energies']
         ],
         lrc: 0x6c,
-        crc: 0xb3a1,
+        crc: 0xa1b3,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -812,7 +807,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getDayMaxPower.examples['get day max power']
         ],
         lrc: 0x75,
-        crc: 0xb68c,
+        crc: 0x8cb6,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -827,7 +822,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getDayProfile.examples['full periods response']
         ],
         lrc: 0x75,
-        crc: 0x1498,
+        crc: 0x9814,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -842,7 +837,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getDayProfile.examples['response with 4 periods']
         ],
         lrc: 0x87,
-        crc: 0x1610,
+        crc: 0x1016,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -857,7 +852,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getDeviceId.examples['simple response']
         ],
         lrc: 0x47,
-        crc: 0xfe54,
+        crc: 0x54fe,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -872,7 +867,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getDeviceType.examples['type 2']
         ],
         lrc: 0xb0,
-        crc: 0x9354,
+        crc: 0x5493,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -887,7 +882,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getDisplayParam.examples['mode with order']
         ],
         lrc: 0x15,
-        crc: 0xd841,
+        crc: 0x41d8,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -902,7 +897,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getEnergyCurrent.examples['default A+ energy']
         ],
         lrc: 0x09,
-        crc: 0xd81f,
+        crc: 0x1fd8,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -917,7 +912,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getEnergyDay.examples['default A+ energy']
         ],
         lrc: 0x1e,
-        crc: 0x066d,
+        crc: 0x6d06,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -932,7 +927,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getEnergyDayPrevious.examples['simple response']
         ],
         lrc: 0x0b,
-        crc: 0xbd5e,
+        crc: 0x5ebd,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -947,7 +942,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getExtendedCurrentValues.examples['simple response']
         ],
         lrc: 0x07,
-        crc: 0xc300,
+        crc: 0x00c3,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -962,7 +957,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getHalfHours.examples['simple response']
         ],
         lrc: 0x87,
-        crc: 0x77b0,
+        crc: 0xb077,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -977,7 +972,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getHalfhoursEnergies.examples['get halfhours energies']
         ],
         lrc: 0x1c,
-        crc: 0xec0d,
+        crc: 0x0dec,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -992,7 +987,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getOpParams.examples['get default operator parameters response']
         ],
         lrc: 0x7b,
-        crc: 0x9f27,
+        crc: 0x279f,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1007,7 +1002,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getRatePlanInfo.examples['rate plan info response for A- table']
         ],
         lrc: 0x44,
-        crc: 0x6394,
+        crc: 0x9463,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1022,7 +1017,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getSaldo.examples['test response']
         ],
         lrc: 0x4f,
-        crc: 0x7944,
+        crc: 0x4479,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1037,7 +1032,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getSaldoParameters.examples['test response']
         ],
         lrc: 0x43,
-        crc: 0x13f4,
+        crc: 0xf413,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1052,7 +1047,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getSeasonProfile.examples['simple response']
         ],
         lrc: 0x71,
-        crc: 0xca5a,
+        crc: 0x5aca,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1067,7 +1062,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getSpecialDay.examples['special day response']
         ],
         lrc: 0x74,
-        crc: 0x0174,
+        crc: 0x7401,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1082,7 +1077,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.getVersion.examples['simple response']
         ],
         lrc: 0x65,
-        crc: 0x074a,
+        crc: 0x4a07,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1097,7 +1092,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.prepareRatePlan.examples['simple response']
         ],
         lrc: 0x53,
-        crc: 0x08c3,
+        crc: 0xc308,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1112,7 +1107,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.runTariffPlan.examples['simple response']
         ],
         lrc: 0x41,
-        crc: 0xe319,
+        crc: 0x19e3,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1127,7 +1122,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setAccessKey.examples['simple response']
         ],
         lrc: 0x4e,
-        crc: 0xa2ac,
+        crc: 0xaca2,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1142,7 +1137,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setCorrectDateTime.examples['simple response']
         ],
         lrc: 0x1a,
-        crc: 0x3021,
+        crc: 0x2130,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1157,7 +1152,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setCorrectTime.examples['simple response']
         ],
         lrc: 0x5b,
-        crc: 0xf1d6,
+        crc: 0xd6f1,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1172,7 +1167,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setDateTime.examples['simple response']
         ],
         lrc: 0x4e,
-        crc: 0x841e,
+        crc: 0x1e84,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1187,7 +1182,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setDayProfile.examples['simple response']
         ],
         lrc: 0x57,
-        crc: 0x4883,
+        crc: 0x8348,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1202,7 +1197,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setDisplayParam.examples['simple response']
         ],
         lrc: 0x1a,
-        crc: 0x7ed7, // special case
+        crc: 0xd77e, // special case
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1217,7 +1212,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setOpParams.examples['simple response']
         ],
         lrc: 0x58,
-        crc: 0x01cb,
+        crc: 0xcb01,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1232,7 +1227,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setSaldo.examples['simple response']
         ],
         lrc: 0x6d,
-        crc: 0x2b3e,
+        crc: 0x3e2b,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1247,7 +1242,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setSaldoParameters.examples['simple response']
         ],
         lrc: 0x68,
-        crc: 0x84a3,
+        crc: 0xa384,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1262,7 +1257,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setSeasonProfile.examples['simple response']
         ],
         lrc: 0x56,
-        crc: 0xd46b,
+        crc: 0x6bd4,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1277,7 +1272,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.setSpecialDay.examples['simple response']
         ],
         lrc: 0x55,
-        crc: 0x3296,
+        crc: 0x9632,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1292,7 +1287,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.turnRelayOff.examples['simple response']
         ],
         lrc: 0x5e,
-        crc: 0x02f6,
+        crc: 0xf602,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1307,7 +1302,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.turnRelayOn.examples['simple response']
         ],
         lrc: 0x5f,
-        crc: 0x1beb,
+        crc: 0xeb1b,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1323,7 +1318,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.turnRelayOn.examples['simple response']
         ],
         lrc: 0x45,
-        crc: 0x1ba7,
+        crc: 0xa71b,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xf3f4,
         destination: 0xa3a4
@@ -1345,7 +1340,7 @@ const uplinkMessages: TMessageList = [
             uplinkCommands.turnRelayOn.examples['simple response']
         ],
         lrc: 0x45,
-        crc: 0x3867,
+        crc: 0x6738,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xf3f4,
         destination: 0xa3a4
@@ -1367,11 +1362,11 @@ const checkMessage = ( messageLink, messageParams: IMessage ) => {
     const {frameHex, frameType, source, destination, crc} = messageParams;
     const messageBytes: TBytes = messageLink.toBytes(commands, {messageId, aesKey, accessLevel});
     const messageData = messageLink.fromBytes(getBytesFromHex(hex), {aesKey});
-    const frame: TBytes = messageLink.toFrame(messageBytes, {type: frameType, source, destination});
-    const frameMessageData = messageLink.fromFrame(getBytesFromHex(frameHex), {aesKey});
+    const frameBytes: TBytes = frame.toBytes(messageBytes, {type: frameType, source, destination});
+    const parsedFrame = frame.fromBytes(getBytesFromHex(frameHex));
 
     expect(getHexFromBytes(messageBytes)).toEqual(hex);
-    expect(getHexFromBytes(frame)).toEqual(frameHex);
+    expect(getHexFromBytes(frameBytes)).toEqual(frameHex);
 
     if ( 'bytes' in messageData ) {
         // valid message
@@ -1386,11 +1381,15 @@ const checkMessage = ( messageLink, messageParams: IMessage ) => {
         throw new Error('wrong message format');
     }
 
-    expect(frameMessageData.crc).toStrictEqual(crc);
-    expect(frameMessageData.source).toStrictEqual(source);
-    expect(frameMessageData.destination).toStrictEqual(destination);
-    expect(frameMessageData.type).toStrictEqual(frameType);
-    expect(messageData.commands).toStrictEqual(frameMessageData.commands);
+    if ( 'error' in parsedFrame ) {
+        throw new Error('Field error should be missing!');
+    } else {
+        expect(getHexFromBytes(parsedFrame.bytes)).toEqual(hex);
+        expect(parsedFrame.crc.actual).toStrictEqual(crc);
+        expect(parsedFrame.header?.source).toStrictEqual(source);
+        expect(parsedFrame.header?.destination).toStrictEqual(destination);
+        expect(parsedFrame.header?.type).toStrictEqual(frameType);
+    }
 };
 
 

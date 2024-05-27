@@ -1,17 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/default-param-last */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import {TBytes} from '../../types.js';
 import {IMessage, IInvalidMessage} from './types.js';
 import {TCommand} from '../utils/command.js';
-import {aes, calculateCrcBytes} from '../utils/crypto.js';
-import {arrayStuff, arrayUnstuff} from '../../utils/frame.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, frameHeaderSize, IFrameHeader, defaultFrameHeader} from '../utils/CommandBinaryBuffer.js';
+import {aes} from '../utils/crypto.js';
 import * as accessLevels from '../constants/accessLevels.js';
-import {START_BYTE, STOP_BYTE} from '../../constants/frameAttributes.js';
 import calculateLrc from '../../utils/calculateLrc.js';
 
 
@@ -22,19 +18,9 @@ export interface IToBytesOptions {
     aesKey?: TBytes
 }
 
-// to build IFrame from frame bytes
-export interface IFromFrameOptions {
-    aesKey?: TBytes
-}
-
 // to build IMessage from bytes
 export interface IFromBytesOptions {
     aesKey?: TBytes
-}
-
-// frame structure
-export interface IFrame extends IMessage, IFrameHeader {
-    crc: number
 }
 
 // bitmask to extract/apply access level
@@ -49,7 +35,7 @@ const COMMANDS_END_MARK = [0];
 const COMMAND_HEADER_SIZE = 2;
 
 
-export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], config: IFromBytesOptions ): IMessage | IInvalidMessage => {
+export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], config: IFromBytesOptions = {} ): IMessage | IInvalidMessage => {
     const aesKey = config?.aesKey;
     const commands: Array<TCommand> = [];
     const [messageId, maskedAccessLevel] = bytes;
@@ -182,42 +168,5 @@ export const getToBytes = toBytesMap => ( commands: Array<TCommand>, {messageId,
 };
 
 
-export const getToMessage = toBytesMap => ( commands: Array<TCommand> ) => {
-    // TODO: add implementation
-};
-
-export const getFromFrame = fromBytes => ( bytes: TBytes, {aesKey}: IFromFrameOptions ): IFrame => {
-    let unstuffed = arrayUnstuff(bytes);
-
-    if ( bytes[0] === START_BYTE && bytes[bytes.length - 1] === STOP_BYTE ) {
-        unstuffed = unstuffed.slice(1, unstuffed.length - 1);
-    }
-
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(unstuffed);
-    const frameHeader = buffer.getFrameHeader();
-
-    const crc: ICommandBinaryBuffer = new CommandBinaryBuffer(unstuffed.slice(-2));
-    const messageData = unstuffed.slice(5, -2);
-    const message = fromBytes(messageData, {aesKey}) as IFrame;
-
-    return {
-        ...frameHeader,
-        ...message,
-        crc: crc.getUint16(false)
-    };
-};
-
-export const getToFrame = ( message: TBytes, frameHeader: IFrameHeader = defaultFrameHeader ): TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(frameHeaderSize);
-    buffer.setFrameHeader(frameHeader);
-
-    const unstuffed = buffer.data.concat(message);
-    const crc = calculateCrcBytes(unstuffed);
-    const stuffed = arrayStuff(unstuffed.concat(crc));
-
-    // add special marks to both ends
-    stuffed.unshift(START_BYTE);
-    stuffed.push(STOP_BYTE);
-
-    return stuffed;
-};
+// TODO: add implementation
+//export const getToMessage = toBytesMap => ( commands: Array<TCommand> ) => {};

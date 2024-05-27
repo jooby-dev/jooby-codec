@@ -207,6 +207,7 @@ Prepare and parse downlink message and frame:
 
 ```js
 import * as message from 'jooby-codec/mtx/message/downlink';
+import * as frame from 'jooby-codec/mtx/utils/frame.js';
 import * as downlinkCommands from 'jooby-codec/mtx/commands/downlink';
 import getHexFromBytes from 'jooby-codec/utils/getHexFromBytes.js';
 import * as frameTypes from 'jooby-codec/mtx/constants/frameTypes.js';
@@ -229,7 +230,7 @@ const commands = [
         }
     }
 ];
-const bytes = message.toBytes(
+const messageBytes = message.toBytes(
     commands,
     {
         messageId,
@@ -238,17 +239,16 @@ const bytes = message.toBytes(
     }
 );
 
-console.log('message encoded:', JSON.stringify(bytes));
+console.log('message encoded:', JSON.stringify(messageBytes));
 // output:
 [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132]
 
-console.log('message encoded in HEX:', getHexFromBytes(bytes));
+console.log('message encoded in HEX:', getHexFromBytes(messageBytes));
 // output:
 '0a 13 ed 74 0a ae 4a ba c8 42 c4 1b e7 f5 0d 3c 28 84'
 
-
-const frameBytes = message.toFrame(
-    bytes,
+const frameBytes = frame.toBytes(
+    messageBytes,
     {
         type: frameTypes.DATA_REQUEST,
         source: 0xffff,
@@ -266,57 +266,57 @@ console.log('frame encoded in HEX:', getHexFromBytes(frameBytes));
 
 
 // decode message back from bytes
-const parsedMessage = message.fromBytes(bytes, {aesKey});
+const parsedMessage = message.fromBytes(messageBytes, {aesKey});
 
 console.log('parsed message:', parsedMessage);
 // output:
-{
+/* {
     messageId: 3,
     accessLevel: 3,
     commands: [
-      {
+    {
         id: 8,
         name: 'setDateTime',
         headerSize: 2,
         bytes: [Array],
         parameters: [Object]
-      }
+    }
     ],
-    bytes: [
-        3,  19, 237, 116,  10, 174,
-       74, 186, 200,  66, 196,  27,
-      231, 245,  13,  60,  40, 132
-    ],
-    lrc: { expected: 119, actual: 119 }
-}
+    bytes: [3,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+    lrc: {expected: 119, actual: 119}
+} */
 
 // decode message back from frame
-const parsedFrame = message.fromFrame(frameBytes, {aesKey});
+const parsedFrame = frame.fromBytes(frameBytes);
 
-console.log('parsed frame:', parsedFrame);
+console.log('parsedFrame:', parsedFrame);
 // output:
-{
-    type: 80,
-    destination: 43690,
-    source: 65535,
-    messageId: 10,
-    accessLevel: 3,
-    commands: [
-      {
-        id: 8,
-        name: 'setDateTime',
-        headerSize: 2,
-        bytes: [Array],
-        parameters: [Object]
-      }
-    ],
-    bytes: [
-       10,  19, 237, 116,  10, 174,
-       74, 186, 200,  66, 196,  27,
-      231, 245,  13,  60,  40, 132
-    ],
-    lrc: { expected: 119, actual: 119 },
-    crc: 25019
+/* {
+    bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+    crc: {actual: 47969, expected: 47969},
+    header: {type: 80, destination: 43690, source: 65535}
+} */
+
+if ( 'bytes' in parsedFrame ) {
+    const parsedMessage2 = message.fromBytes(parsedFrame.bytes, {aesKey});
+
+    console.log('parsedMessage2:', parsedMessage2);
+    // output:
+    /* {
+        messageId: 10,
+        accessLevel: 3,
+        commands: [
+            {
+                id: 8,
+                name: 'setDateTime',
+                headerSize: 2,
+                bytes: [Array],
+                parameters: [Object]
+            }
+        ],
+        bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+        lrc: {expected: 119, actual: 119}
+    } */
 }
 ```
 
@@ -324,63 +324,55 @@ Parse uplink message:
 
 ```js
 import * as message from 'jooby-codec/mtx/message/uplink';
+import * as frame from 'jooby-codec/mtx/utils/frame.js';
 import getBytesFromHex from 'jooby-codec/utils/getBytesFromHex.js';
 
 const aesKey = [...Array(16).keys()];
 
+// a message with one getBuildVersion command
 const messageBytes = getBytesFromHex('0a 13 9b 4b f7 2a d1 e5 49 a5 09 50 9a 59 7e c2 b5 88');
+// the same message as a frame
 const frameBytes = getBytesFromHex('7e 51 aa aa ff ff 0a 7d 33 9b 4b f7 2a d1 e5 49 a5 09 50 9a 59 7d 5e c2 b5 88 21 54 7e');
 
 const parsedMessage = message.fromBytes(messageBytes, {aesKey});
 
 console.log('parsed message:', parsedMessage);
 // output:
-{
+/* {
     messageId: 10,
     accessLevel: 3,
     commands: [
-      {
-        id: 112,
-        name: 'getBuildVersion',
-        headerSize: 2,
-        bytes: [Array],
-        parameters: [Object]
-      }
+        {
+            id: 112,
+            name: 'getBuildVersion',
+            headerSize: 2,
+            bytes: [Array],
+            parameters: [Object]
+        }
     ],
-    bytes: [
-       10,  19, 155,  75, 247,  42,
-      209, 229,  73, 165,   9,  80,
-      154,  89, 126, 194, 181, 136
-    ],
-    lrc: { expected: 53, actual: 53 }
-}
+    bytes: [10,19,155,75,247,42,209,229,73,165,9,80,154,89,126,194,181,136],
+    lrc: {expected: 53, actual: 53}
+} */
 
-const parsedFrame = message.fromFrame(frameBytes, {aesKey});
+const parsedFrame = frame.fromBytes(frameBytes);
 
 console.log('parsed frame:', parsedFrame);
 // output:
-{
-    type: 81,
-    destination: 43690,
-    source: 65535,
-    messageId: 10,
-    accessLevel: 3,
-    commands: [
-      {
-        id: 112,
-        name: 'getBuildVersion',
-        headerSize: 2,
-        bytes: [Array],
-        parameters: [Object]
-      }
-    ],
-    bytes: [
-       10,  19, 155,  75, 247,  42,
-      209, 229,  73, 165,   9,  80,
-      154,  89, 126, 194, 181, 136
-    ],
-    lrc: { expected: 53, actual: 53 },
-    crc: 8532
+/* {
+    bytes: [10,19,155,75,247,42,209,229,73,165,9,80,154,89,126,194,181,136],
+    crc: {actual: 21537, expected: 21537},
+    header: {type: 81, destination: 43690, source: 65535}
+} */
+
+// parsed successfully
+if ( 'bytes' in parsedFrame ) {
+    const parsedMessage2 = message.fromBytes(parsedFrame.bytes, {aesKey});
+
+    if ( JSON.stringify(parsedMessage) === JSON.stringify(parsedMessage2) ) {
+        console.log('correct message');
+    } else {
+        throw new Error('parsedMessage and parsedMessage2 should be identical!');
+    }
 }
 ```
 

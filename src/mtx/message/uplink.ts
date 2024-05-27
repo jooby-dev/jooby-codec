@@ -4,11 +4,14 @@
  * @example
  * ```js
  * import * as message from 'jooby-codec/mtx/message/uplink';
+ * import * as frame from 'jooby-codec/mtx/utils/frame.js';
  * import getBytesFromHex from 'jooby-codec/utils/getBytesFromHex.js';
  *
  * const aesKey = [...Array(16).keys()];
  *
+ * // a message with one getBuildVersion command
  * const messageBytes = getBytesFromHex('0a 13 9b 4b f7 2a d1 e5 49 a5 09 50 9a 59 7e c2 b5 88');
+ * // the same message as a frame
  * const frameBytes = getBytesFromHex('7e 51 aa aa ff ff 0a 7d 33 9b 4b f7 2a d1 e5 49 a5 09 50 9a 59 7d 5e c2 b5 88 21 54 7e');
  *
  * const parsedMessage = message.fromBytes(messageBytes, {aesKey});
@@ -19,48 +22,37 @@
  *     messageId: 10,
  *     accessLevel: 3,
  *     commands: [
- *       {
- *         id: 112,
- *         name: 'getBuildVersion',
- *         headerSize: 2,
- *         bytes: [Array],
- *         parameters: [Object]
- *       }
+ *         {
+ *             id: 112,
+ *             name: 'getBuildVersion',
+ *             headerSize: 2,
+ *             bytes: [Array],
+ *             parameters: [Object]
+ *         }
  *     ],
- *     bytes: [
- *        10,  19, 155,  75, 247,  42,
- *       209, 229,  73, 165,   9,  80,
- *       154,  89, 126, 194, 181, 136
- *     ],
- *     lrc: { expected: 53, actual: 53 }
+ *     bytes: [10,19,155,75,247,42,209,229,73,165,9,80,154,89,126,194,181,136],
+ *     lrc: {expected: 53, actual: 53}
  * }
  *
- * const parsedFrame = message.fromFrame(frameBytes, {aesKey});
+ * const parsedFrame = frame.fromBytes(frameBytes);
  *
  * console.log('parsed frame:', parsedFrame);
  * // output:
  * {
- *     type: 81,
- *     destination: 43690,
- *     source: 65535,
- *     messageId: 10,
- *     accessLevel: 3,
- *     commands: [
- *       {
- *         id: 112,
- *         name: 'getBuildVersion',
- *         headerSize: 2,
- *         bytes: [Array],
- *         parameters: [Object]
- *       }
- *     ],
- *     bytes: [
- *        10,  19, 155,  75, 247,  42,
- *       209, 229,  73, 165,   9,  80,
- *       154,  89, 126, 194, 181, 136
- *     ],
- *     lrc: { expected: 53, actual: 53 },
- *     crc: 8532
+ *     bytes: [10,19,155,75,247,42,209,229,73,165,9,80,154,89,126,194,181,136],
+ *     crc: {actual: 21537, expected: 21537},
+ *     header: {type: 81, destination: 43690, source: 65535}
+ * }
+ *
+ * // parsed successfully
+ * if ( 'bytes' in parsedFrame ) {
+ *     const parsedMessage2 = message.fromBytes(parsedFrame.bytes, {aesKey});
+ *
+ *     if ( JSON.stringify(parsedMessage) === JSON.stringify(parsedMessage2) ) {
+ *         console.log('correct message');
+ *     } else {
+ *         throw new Error('parsedMessage and parsedMessage2 should be identical!');
+ *     }
  * }
  * ```
  *
@@ -77,9 +69,6 @@ export const nameMap = {};
 
 export const fromBytes = wrappers.getFromBytes(fromBytesMap, nameMap);
 export const toBytes = wrappers.getToBytes(toBytesMap);
-//export const toMessage = wrappers.getToMessage(toBytesMap);
-export const fromFrame = wrappers.getFromFrame(fromBytes);
-export const toFrame = wrappers.getToFrame;
 
 
 // fill maps
