@@ -711,6 +711,24 @@ export interface IPackedEnergiesWithType {
     energies: IEnergies
 }
 
+export interface IEventStatusParameters {
+    CASE_OPEN: boolean,
+    MAGNETIC_ON: boolean,
+    PARAMETERS_UPDATE_REMOTE: boolean,
+    PARAMETERS_UPDATE_LOCAL: boolean,
+    RESTART: boolean,
+    ERROR_ACCESS: boolean,
+    TIME_SET: boolean,
+    TIME_CORRECT: boolean,
+    DEVICE_FAILURE: boolean,
+    CASE_TERMINAL_OPEN: boolean,
+    CASE_MODULE_OPEN: boolean,
+    TARIFF_TABLE_SET: boolean,
+    TARIFF_TABLE_GET: boolean,
+    PROTECTION_RESET_EM: boolean,
+    PROTECTION_RESET_MAGNETIC: boolean
+}
+
 /** `1` - `A+`, `2` - `A-` */
 export type TEnergyType = typeof A_PLUS_ENERGY_TYPE | typeof A_MINUS_ENERGY_TYPE;
 
@@ -825,6 +843,24 @@ const relaySet5Mask = {
 const define1Mask = {
     BLOCK_KEY_OPTOPORT: 0x02,
     MAGNET_SCREEN_CONST: 0x20
+};
+
+const eventStatusMask = {
+    CASE_OPEN: 2 ** 0,
+    MAGNETIC_ON: 2 ** 1,
+    PARAMETERS_UPDATE_REMOTE: 2 ** 2,
+    PARAMETERS_UPDATE_LOCAL: 2 ** 3,
+    RESTART: 2 ** 4,
+    ERROR_ACCESS: 2 ** 5,
+    TIME_SET: 2 ** 6,
+    TIME_CORRECT: 2 ** 7,
+    DEVICE_FAILURE: 2 ** 8,
+    CASE_TERMINAL_OPEN: 2 ** 9,
+    CASE_MODULE_OPEN: 2 ** 10,
+    TARIFF_TABLE_SET: 2 ** 11,
+    TARIFF_TABLE_GET: 2 ** 12,
+    PROTECTION_RESET_EM: 2 ** 13,
+    PROTECTION_RESET_MAGNETIC: 2 ** 14
 };
 
 function getPackedEnergyType ( byte: number ): TEnergyType {
@@ -949,7 +985,10 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setSaldoParameters ( saldoParameters: ISaldoParameters ),
 
     getEnergyPeriods ( periodsNumber: number ): Array<IEnergyPeriod>,
-    setEnergyPeriods ( periods: Array<IEnergyPeriod> )
+    setEnergyPeriods ( periods: Array<IEnergyPeriod> ),
+
+    getEventStatus (): IEventStatusParameters,
+    setEventStatus ( parameters: IEventStatusParameters )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -1335,6 +1374,16 @@ CommandBinaryBuffer.prototype.getEnergyPeriods = function ( periodsNumber: numbe
 
 CommandBinaryBuffer.prototype.setEnergyPeriods = function ( periods: Array<IEnergyPeriod> ) {
     periods.forEach(period => setEnergyPeriod(this, period));
+};
+
+CommandBinaryBuffer.prototype.getEventStatus = function (): IEventStatusParameters {
+    const eventStatus = this.getUint16();
+
+    return (bitSet.toObject(eventStatusMask, eventStatus) as unknown) as IEventStatusParameters;
+};
+
+CommandBinaryBuffer.prototype.setEventStatus = function ( parameters: IEventStatusParameters ) {
+    this.setUint16(bitSet.fromObject(eventStatusMask, (parameters as unknown) as bitSet.TBooleanObject));
 };
 
 
