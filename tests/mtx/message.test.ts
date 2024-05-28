@@ -398,15 +398,15 @@ const downlinkMessages: TMessageList = [
     },
     {
         name: 'runTariffPlan',
-        hex: '0a 12 b4 52 a3 9e 75 02 fd 91 7f ec 66 c1 c1 8b ec 53',
-        frameHex: '7e 50 aa aa ff ff 0a 12 b4 52 a3 9e 75 02 fd 91 7f ec 66 c1 c1 8b ec 53 d0 84 7e',
+        hex: '0a 12 db a4 0e 02 c2 83 a4 6d 3d 1c 74 1d bd d2 1c ca',
+        frameHex: '7e 50 aa aa ff ff 0a 12 db a4 0e 02 c2 83 a4 6d 3d 1c 74 1d bd d2 1c ca f5 4b 7e',
         messageId: 10,
         accessLevel: downlinkCommands.runTariffPlan.accessLevel,
         commands: [
             downlinkCommands.runTariffPlan.examples['simple request']
         ],
-        lrc: 0x45,
-        crc: 0x84d0,
+        lrc: 0x05,
+        crc: 0x4bf5,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -1129,15 +1129,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'runTariffPlan',
-        hex: '0c 12 9f f9 75 af c6 27 a8 3b 9b 79 51 23 6b 74 59 ba',
-        frameHex: '7e 51 aa aa ff ff 0c 12 9f f9 75 af c6 27 a8 3b 9b 79 51 23 6b 74 59 ba e3 19 7e',
+        hex: '0c 12 0c da 8f aa a2 8d 9c ae 9b 03 33 bf 3e 8b f0 58',
+        frameHex: '7e 51 aa aa ff ff 0c 12 0c da 8f aa a2 8d 9c ae 9b 03 33 bf 3e 8b f0 58 80 42 7e',
         messageId: 12,
         accessLevel: uplinkCommands.runTariffPlan.accessLevel,
         commands: [
             uplinkCommands.runTariffPlan.examples['simple response']
         ],
-        lrc: 0x41,
-        crc: 0x19e3,
+        lrc: 0x01,
+        crc: 0x4280,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

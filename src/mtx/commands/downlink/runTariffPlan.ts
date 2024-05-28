@@ -15,7 +15,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [6, 1, 5]
+ * [70, 1, 5]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/RunTariffPlan.md#request)
@@ -35,7 +35,7 @@ interface IRunTariffPlanParameters {
 }
 
 
-export const id: types.TCommandId = 0x06;
+export const id: types.TCommandId = 0x46;
 export const name: types.TCommandName = 'runTariffPlan';
 export const headerSize = 2;
 export const maxSize = 1;
@@ -51,7 +51,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {tariffTable: 5},
         bytes: [
-            0x06, 0x01,
+            0x46, 0x01,
             0x05
         ]
     }
