@@ -126,7 +126,6 @@ interface ICalibrationEnableFlagParameters {
 
     /** For factory testing only.  */
     keyPress2Test: boolean
-
 }
 
 
@@ -218,7 +217,6 @@ export const fromBytes = ( data: types.TBytes ): IGetCurrentStatusMeterResponseP
         curTariff: buffer.getUint8(),
         curTariffExp: buffer.getUint8(),
         isSummerTime: !!buffer.getUint8()
-
     };
 };
 
