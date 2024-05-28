@@ -232,6 +232,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getExtendedCurrentValues2',
+        hex: '0a 13 ee 29 43 03 e5 c9 69 c4 97 e1 e4 8d 31 60 a4 08',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 ee 29 43 03 e5 c9 69 c4 97 e1 e4 8d 31 60 a4 08 cc 46 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getExtendedCurrentValues2.accessLevel,
+        commands: [
+            downlinkCommands.getExtendedCurrentValues2.examples['simple request']
+        ],
+        lrc: 0x6b,
+        crc: 0x46cc,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getHalfHours',
         hex: '0a 13 8a 7d e8 d9 ef 2f ff 39 65 7f 17 96 27 8e e2 04',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 8a 7d 5d e8 d9 ef 2f ff 39 65 7f 17 96 27 8e e2 04 4e 40 7e',
@@ -943,6 +958,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x07,
         crc: 0x00c3,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getExtendedCurrentValues2',
+        hex: '0a 13 61 6b 4a 60 09 c3 1d 05 12 47 75 dc e7 36 2d 38',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 61 6b 4a 60 09 c3 1d 05 12 47 75 dc e7 36 2d 38 f5 21 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getExtendedCurrentValues2.accessLevel,
+        commands: [
+            uplinkCommands.getExtendedCurrentValues2.examples['simple response']
+        ],
+        lrc: 0x99,
+        crc: 0x21f5,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

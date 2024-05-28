@@ -242,7 +242,7 @@ export interface IRelaySet3OperatorParameter {
     RELAY_OFF_LIM_TARIFF_3: boolean,
 
     /**
-     * Turn off on `cos(fi)`.
+     * Turn off on `cos φ`.
      */
     RELAY_OFF_PF_MIN: boolean
 }
@@ -470,7 +470,7 @@ export interface IOperatorParameters {
     freqMin: types.TUint8,
 
     /**
-     * Minimum threshold for the `cos(fi)` value.
+     * Minimum threshold for the `cos φ` value.
      */
     phMin: types.TUint16,
 
@@ -512,7 +512,7 @@ export interface IOperatorParameters {
     timeoutPMax: types.TUint8,
 
     /**
-     * Timeout for relay deactivation based on `cos(fi)`.
+     * Timeout for relay deactivation based on `cos φ`.
      */
     timeoutCos: types.TUint8,
 
@@ -729,6 +729,88 @@ export interface IEventStatusParameters {
     PROTECTION_RESET_MAGNETIC: boolean
 }
 
+export interface IExtendedCurrentValues2RelayStatus {
+    /** Current relay state: 1 - on, 0 - off. */
+    RELAY_STATE: boolean,
+    /** Relay turned off due to poor voltage. */
+    RELAY_UBAD: boolean,
+    /** Relay switched off due to unequal currents. */
+    RELAY_UNEQ_CURRENT: boolean,
+    /** Relay switched off from the control center. */
+    RELAY_OFF_CENTER: boolean,
+    /** Relay turned off due to maximum current. */
+    RELAY_IMAX: boolean,
+    /** Relay turned off due to maximum power. */
+    RELAY_PMAX: boolean
+}
+
+export interface IExtendedCurrentValues2RelayStatus2 {
+    /** Relay turned off due to cos φ. */
+    RELAY_COSFI: boolean,
+    /** Relay turned off due to balance. */
+    RELAY_SALDO_OFF_FLAG: boolean,
+    /** Relay turned off due to current imbalance between phase and neutral. */
+    RELAY_UNEQUIL_CURRENT_OFF: boolean,
+    /** Relay turned off due to bidirectional power in phase and neutral. */
+    RELAY_BIPOLAR_POWER_OFF: boolean,
+    /** Relay turned off due to exceeding allowable power in net balance limit mode. */
+    RELAY_SALDO_OFF_ON_MAX_POWER: boolean,
+    /** Relay switched on manually by hardware. */
+    RELAY_HARD_ST1: boolean
+}
+
+export interface IExtendedCurrentValues2Status1 {
+    /** Voltage is above threshold. */
+    MAXVA: boolean,
+    /** Voltage is below threshold. */
+    MINVA: boolean,
+    /** Temperature is above threshold. */
+    MAXT: boolean,
+    /** Temperature is below threshold. */
+    MINT: boolean,
+    /** Frequency is above threshold. */
+    MAXF: boolean,
+    /** Frequency is below threshold. */
+    MINF: boolean,
+    /** Current is above threshold. */
+    MAXIA: boolean,
+    /** Power is above threshold. */
+    MAXP: boolean
+}
+
+export interface IExtendedCurrentValues2Status2 {
+    /** Power exceeded in credit mode. */
+    MAX_POWER_SALDO: boolean,
+    /** Low battery voltage. */
+    BATTERY_VBAT_BAD: boolean,
+    /** Clock not synchronized. */
+    CLOCK_UNSET: boolean,
+    /** cos φ below threshold. */
+    MIN_COS_FI: boolean
+}
+
+export interface IExtendedCurrentValues2Status3 {
+    /** Current imbalance. */
+    UNEQUIL_CURRENT: boolean,
+    /** Opposite power directions in phases A and B. */
+    BIPOLAR_POWER: boolean,
+    /** Negative power in phase A. */
+    POWER_A_NEGATIVE: boolean,
+    /** Negative power in phase B. */
+    POWER_B_NEGATIVE: boolean
+}
+
+export interface IExtendedCurrentValues2Parameters {
+    /** current battery voltage */
+    uBattery: number,
+
+    relayStatus: IExtendedCurrentValues2RelayStatus,
+    relayStatus2: IExtendedCurrentValues2RelayStatus2,
+    status1: IExtendedCurrentValues2Status1,
+    status2: IExtendedCurrentValues2Status2,
+    status3: IExtendedCurrentValues2Status3
+}
+
 /** `1` - `A+`, `2` - `A-` */
 export type TEnergyType = typeof A_PLUS_ENERGY_TYPE | typeof A_MINUS_ENERGY_TYPE;
 
@@ -863,6 +945,51 @@ const eventStatusMask = {
     PROTECTION_RESET_MAGNETIC: 2 ** 14
 };
 
+
+const extendedCurrentValues2RelayStatusMask = {
+    RELAY_STATE: 2 ** 0,
+    RELAY_UBAD: 2 ** 1,
+    RELAY_UNEQ_CURRENT: 2 ** 4,
+    RELAY_OFF_CENTER: 2 ** 5,
+    RELAY_IMAX: 2 ** 6,
+    RELAY_PMAX: 2 ** 7
+};
+
+const extendedCurrentValues2RelayStatus2Mask = {
+    RELAY_COSFI: 2 ** 0,
+    RELAY_SALDO_OFF_FLAG: 2 ** 1,
+    RELAY_UNEQUIL_CURRENT_OFF: 2 ** 2,
+    RELAY_BIPOLAR_POWER_OFF: 2 ** 3,
+    RELAY_SALDO_OFF_ON_MAX_POWER: 2 ** 4,
+    RELAY_HARD_ST1: 2 ** 5
+};
+
+const extendedCurrentValues2Status1Mask = {
+    MAXVA: 2 ** 0,
+    MINVA: 2 ** 1,
+    MAXT: 2 ** 2,
+    MINT: 2 ** 3,
+    MAXF: 2 ** 4,
+    MINF: 2 ** 5,
+    MAXIA: 2 ** 6,
+    MAXP: 2 ** 7
+};
+
+const extendedCurrentValues2Status2Mask = {
+    MAX_POWER_SALDO: 2 ** 0,
+    BATTERY_VBAT_BAD: 2 ** 1,
+    CLOCK_UNSET: 2 ** 3,
+    MIN_COS_FI: 2 ** 5
+};
+
+const extendedCurrentValues2Status3Mask = {
+    UNEQUIL_CURRENT: 2 ** 0,
+    BIPOLAR_POWER: 2 ** 1,
+    POWER_A_NEGATIVE: 2 ** 6,
+    POWER_B_NEGATIVE: 2 ** 7
+};
+
+
 function getPackedEnergyType ( byte: number ): TEnergyType {
     const isAPlus = !!bitSet.extractBits(byte, TARIFF_NUMBER, 1);
 
@@ -988,7 +1115,10 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setEnergyPeriods ( periods: Array<IEnergyPeriod> ),
 
     getEventStatus (): IEventStatusParameters,
-    setEventStatus ( parameters: IEventStatusParameters )
+    setEventStatus ( parameters: IEventStatusParameters ),
+
+    getExtendedCurrentValues2 (): IExtendedCurrentValues2Parameters,
+    setExtendedCurrentValues2 ( parameters: IExtendedCurrentValues2Parameters )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -1386,6 +1516,41 @@ CommandBinaryBuffer.prototype.setEventStatus = function ( parameters: IEventStat
     this.setUint16(bitSet.fromObject(eventStatusMask, (parameters as unknown) as bitSet.TBooleanObject));
 };
 
+CommandBinaryBuffer.prototype.getExtendedCurrentValues2 = function (): IExtendedCurrentValues2Parameters {
+    const uBattery = this.getUint16();
+    const relayStatus = bitSet.toObject(extendedCurrentValues2RelayStatusMask, this.getUint8()) as unknown as IExtendedCurrentValues2RelayStatus;
+    const relayStatus2 = bitSet.toObject(extendedCurrentValues2RelayStatus2Mask, this.getUint8()) as unknown as IExtendedCurrentValues2RelayStatus2;
+    const status1 = bitSet.toObject(extendedCurrentValues2Status1Mask, this.getUint8()) as unknown as IExtendedCurrentValues2Status1;
+    const status2 = bitSet.toObject(extendedCurrentValues2Status2Mask, this.getUint8()) as unknown as IExtendedCurrentValues2Status2;
+    const status3 = bitSet.toObject(extendedCurrentValues2Status3Mask, this.getUint8()) as unknown as IExtendedCurrentValues2Status3;
+
+    return {
+        uBattery,
+        relayStatus,
+        relayStatus2,
+        status1,
+        status2,
+        status3
+    };
+};
+
+CommandBinaryBuffer.prototype.setExtendedCurrentValues2 = function ( parameters: IExtendedCurrentValues2Parameters ) {
+    const {
+        uBattery,
+        relayStatus,
+        relayStatus2,
+        status1,
+        status2,
+        status3
+    } = parameters;
+
+    this.setUint16(uBattery);
+    this.setUint8(bitSet.fromObject(extendedCurrentValues2RelayStatusMask, (relayStatus as unknown) as bitSet.TBooleanObject));
+    this.setUint8(bitSet.fromObject(extendedCurrentValues2RelayStatus2Mask, (relayStatus2 as unknown) as bitSet.TBooleanObject));
+    this.setUint8(bitSet.fromObject(extendedCurrentValues2Status1Mask, (status1 as unknown) as bitSet.TBooleanObject));
+    this.setUint8(bitSet.fromObject(extendedCurrentValues2Status2Mask, (status2 as unknown) as bitSet.TBooleanObject));
+    this.setUint8(bitSet.fromObject(extendedCurrentValues2Status3Mask, (status3 as unknown) as bitSet.TBooleanObject));
+};
 
 export const getDefaultOperatorParameters = (): IOperatorParameters => (
     {
