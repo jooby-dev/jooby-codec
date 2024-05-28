@@ -232,6 +232,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getExtendedCurrentValues2',
+        hex: '0a 13 ee 29 43 03 e5 c9 69 c4 97 e1 e4 8d 31 60 a4 08',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 ee 29 43 03 e5 c9 69 c4 97 e1 e4 8d 31 60 a4 08 cc 46 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getExtendedCurrentValues2.accessLevel,
+        commands: [
+            downlinkCommands.getExtendedCurrentValues2.examples['simple request']
+        ],
+        lrc: 0x6b,
+        crc: 0x46cc,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getHalfHours',
         hex: '0a 13 8a 7d e8 d9 ef 2f ff 39 65 7f 17 96 27 8e e2 04',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 8a 7d 5d e8 d9 ef 2f ff 39 65 7f 17 96 27 8e e2 04 4e 40 7e',
@@ -383,15 +398,15 @@ const downlinkMessages: TMessageList = [
     },
     {
         name: 'runTariffPlan',
-        hex: '0a 12 b4 52 a3 9e 75 02 fd 91 7f ec 66 c1 c1 8b ec 53',
-        frameHex: '7e 50 aa aa ff ff 0a 12 b4 52 a3 9e 75 02 fd 91 7f ec 66 c1 c1 8b ec 53 d0 84 7e',
+        hex: '0a 12 db a4 0e 02 c2 83 a4 6d 3d 1c 74 1d bd d2 1c ca',
+        frameHex: '7e 50 aa aa ff ff 0a 12 db a4 0e 02 c2 83 a4 6d 3d 1c 74 1d bd d2 1c ca f5 4b 7e',
         messageId: 10,
         accessLevel: downlinkCommands.runTariffPlan.accessLevel,
         commands: [
             downlinkCommands.runTariffPlan.examples['simple request']
         ],
-        lrc: 0x45,
-        crc: 0x84d0,
+        lrc: 0x05,
+        crc: 0x4bf5,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -948,6 +963,21 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getExtendedCurrentValues2',
+        hex: '0a 13 61 6b 4a 60 09 c3 1d 05 12 47 75 dc e7 36 2d 38',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 61 6b 4a 60 09 c3 1d 05 12 47 75 dc e7 36 2d 38 f5 21 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getExtendedCurrentValues2.accessLevel,
+        commands: [
+            uplinkCommands.getExtendedCurrentValues2.examples['simple response']
+        ],
+        lrc: 0x99,
+        crc: 0x21f5,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getHalfHours',
         hex: '0a 13 01 7c 3f d4 90 8d 93 4e 82 72 e1 3f 1d cd 3d d5 d5 43 5d 19 51 04 14 2f 1d 4b 2c 86 d3 02 69 20 5a 03 4d 02 18 23 f9 75 e0 c4 d0 ae e1 27 e8 db 3f f3 68 cf 35 ed 34 51 53 d8 07 d5 2f 22 6d 89 24 2a be 58 95 14 bf e8 a3 a2 35 7e 0b 8b c9 12 65 ae 3e 94 ca 2e d7 ad 05 1b 32 4a 19 74 1a 04 ae 6a 64 c4 02 4f cc 14 fd c1 3c 2d 77 19 f7 4e',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 01 7c 3f d4 90 8d 93 4e 82 72 e1 3f 1d cd 3d d5 d5 43 5d 19 51 04 14 2f 1d 4b 2c 86 d3 02 69 20 5a 03 4d 02 18 23 f9 75 e0 c4 d0 ae e1 27 e8 db 3f f3 68 cf 35 ed 34 51 53 d8 07 d5 2f 22 6d 89 24 2a be 58 95 14 bf e8 a3 a2 35 7d 5e 0b 8b c9 12 65 ae 3e 94 ca 2e d7 ad 05 1b 32 4a 19 74 1a 04 ae 6a 64 c4 02 4f cc 14 fd c1 3c 2d 77 19 f7 4e 77 b0 7e',
@@ -1099,15 +1129,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'runTariffPlan',
-        hex: '0c 12 9f f9 75 af c6 27 a8 3b 9b 79 51 23 6b 74 59 ba',
-        frameHex: '7e 51 aa aa ff ff 0c 12 9f f9 75 af c6 27 a8 3b 9b 79 51 23 6b 74 59 ba e3 19 7e',
+        hex: '0c 12 0c da 8f aa a2 8d 9c ae 9b 03 33 bf 3e 8b f0 58',
+        frameHex: '7e 51 aa aa ff ff 0c 12 0c da 8f aa a2 8d 9c ae 9b 03 33 bf 3e 8b f0 58 80 42 7e',
         messageId: 12,
         accessLevel: uplinkCommands.runTariffPlan.accessLevel,
         commands: [
             uplinkCommands.runTariffPlan.examples['simple response']
         ],
-        lrc: 0x41,
-        crc: 0x19e3,
+        lrc: 0x01,
+        crc: 0x4280,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

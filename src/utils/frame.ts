@@ -113,11 +113,14 @@ export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
     // input doesn't look like frame
     if ( bytes[0] !== START_BYTE || bytes[bytes.length - 1] !== STOP_BYTE ) {
         return {
-            bytes: [],
-            crc: {
-                actual: 0,
-                expected: undefined
-            }
+            frame: {
+                bytes: [],
+                crc: {
+                    actual: 0,
+                    expected: undefined
+                }
+            },
+            error: 'Not a frame.'
         };
     }
 
