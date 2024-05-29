@@ -95,6 +95,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getCriticalEvent',
+        hex: '0a 13 e2 b1 1c b9 3e 32 15 7b 9c 83 cf db 01 59 cb b1',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 e2 b1 1c b9 3e 32 15 7b 9c 83 cf db 01 59 cb b1 84 fe 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getCriticalEvent.accessLevel,
+        commands: [
+            downlinkCommands.getCriticalEvent.examples['simple request']
+        ],
+        lrc: 0x12,
+        crc: 0xfe84,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getCurrentValues',
         hex: '0a 13 69 f4 c3 58 30 92 05 e8 22 ed 74 8c cb bc 53 b4',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 69 f4 c3 58 30 92 05 e8 22 ed 74 8c cb bc 53 b4 fe f9 7e',
@@ -227,6 +242,51 @@ const downlinkMessages: TMessageList = [
         ],
         lrc: 0x45,
         crc: 0xa9da,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEvents',
+        hex: '0a 13 65 ac 46 61 64 80 2f 50 86 fb 27 52 67 6a f7 c2',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 65 ac 46 61 64 80 2f 50 86 fb 27 52 67 6a f7 c2 25 70 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getEvents.accessLevel,
+        commands: [
+            downlinkCommands.getEvents.examples['simple request']
+        ],
+        lrc: 0x70,
+        crc: 0x7025,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEventsCounters',
+        hex: '0a 13 17 2c 12 33 90 5c f7 3d 1e c1 86 03 9c c8 a3 23',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 17 2c 12 33 90 5c f7 3d 1e c1 86 03 9c c8 a3 23 e1 1e 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getEventsCounters.accessLevel,
+        commands: [
+            downlinkCommands.getEventsCounters.examples['simple request']
+        ],
+        lrc: 0x72,
+        crc: 0x1ee1,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEventStatus',
+        hex: '0a 13 85 db fe 1a eb 10 1c 70 06 08 c4 81 c3 45 da 8e',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 85 db fe 1a eb 10 1c 70 06 08 c4 81 c3 45 da 8e 0b 9a 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getEventStatus.accessLevel,
+        commands: [
+            downlinkCommands.getEventStatus.examples['simple request']
+        ],
+        lrc: 0x47,
+        crc: 0x9a0b,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -813,6 +873,21 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getCriticalEvent',
+        hex: '0a 13 98 c7 84 47 f3 5e de 28 e4 8e 6b 9d 55 da 6a 08',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 98 c7 84 47 f3 5e de 28 e4 8e 6b 9d 55 da 6a 08 5d e2 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getCriticalEvent.accessLevel,
+        commands: [
+            uplinkCommands.getCriticalEvent.examples['simple response']
+        ],
+        lrc: 0x2c,
+        crc: 0xe25d,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getCurrentValues',
         hex: '0a 13 7a ee 80 2a 01 36 e8 77 fb 57 cc d9 ba ca 1a af 8d 20 aa 9b 97 2f e1 03 7b d9 a3 de 03 74 37 b8 00 ec 1c f4 0b 84 7d 96 44 f5 38 e3 fc 4e ad 19',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 7a ee 80 2a 01 36 e8 77 fb 57 cc d9 ba ca 1a af 8d 20 aa 9b 97 2f e1 03 7b d9 a3 de 03 74 37 b8 00 ec 1c f4 0b 84 7d 5d 96 44 f5 38 e3 fc 4e ad 19 85 42 7e',
@@ -988,6 +1063,51 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x0b,
         crc: 0x5ebd,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEvents',
+        hex: '0a 13 03 fd 86 2f ea 14 f8 46 22 ee 0c a6 e9 68 53 49 8a 7f 41 6c ff 14 7c 13 63 12 0e a2 43 45 8c 2b',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 03 fd 86 2f ea 14 f8 46 22 ee 0c a6 e9 68 53 49 8a 7f 41 6c ff 14 7c 7d 33 63 12 0e a2 43 45 8c 2b 52 83 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getEvents.accessLevel,
+        commands: [
+            uplinkCommands.getEvents.examples['simple response']
+        ],
+        lrc: 0x17,
+        crc: 0x8352,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEventsCounters',
+        hex: '0a 13 04 d8 6a 89 b9 92 b2 8f 97 6d 5a ba 72 42 1e c5 fb f4 6a df 46 7d 49 45 c6 00 d7 f5 bf 02 b2 bc',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 04 d8 6a 89 b9 92 b2 8f 97 6d 5a ba 72 42 1e c5 fb f4 6a df 46 7d 5d 49 45 c6 00 d7 f5 bf 02 b2 bc 6d 60 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getEventsCounters.accessLevel,
+        commands: [
+            uplinkCommands.getEventsCounters.examples['simple response']
+        ],
+        lrc: 0x73,
+        crc: 0x606d,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEventStatus',
+        hex: '0a 13 5f f6 79 76 86 52 d9 9a 6f 59 72 6c fa b1 3e cf',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 5f f6 79 76 86 52 d9 9a 6f 59 72 6c fa b1 3e cf e5 75 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getEventStatus.accessLevel,
+        commands: [
+            uplinkCommands.getEventStatus.examples['simple response']
+        ],
+        lrc: 0xd0,
+        crc: 0x75e5,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

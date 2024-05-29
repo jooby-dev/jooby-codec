@@ -13,9 +13,9 @@ import * as DeviceType from './deviceType.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
 import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
-import {DATA_REQUEST} from '../constants/frameTypes.js';
 import * as screenIds from '../constants/screenIds.js';
 import * as frameTypes from '../constants/frameTypes.js';
+import * as events from '../constants/events.js';
 
 
 export const frameHeaderSize = 5;
@@ -711,7 +711,14 @@ export interface IPackedEnergiesWithType {
     energies: IEnergies
 }
 
-export interface IEventStatusParameters {
+export interface IEventStatus {
+    DEVICE_FAILURE: boolean,
+    CASE_TERMINAL_OPEN: boolean,
+    CASE_MODULE_OPEN: boolean,
+    TARIFF_TABLE_SET: boolean,
+    TARIFF_TABLE_GET: boolean,
+    PROTECTION_RESET_EM: boolean,
+    PROTECTION_RESET_MAGNETIC: boolean,
     CASE_OPEN: boolean,
     MAGNETIC_ON: boolean,
     PARAMETERS_UPDATE_REMOTE: boolean,
@@ -719,14 +726,25 @@ export interface IEventStatusParameters {
     RESTART: boolean,
     ERROR_ACCESS: boolean,
     TIME_SET: boolean,
-    TIME_CORRECT: boolean,
-    DEVICE_FAILURE: boolean,
-    CASE_TERMINAL_OPEN: boolean,
-    CASE_MODULE_OPEN: boolean,
-    TARIFF_TABLE_SET: boolean,
-    TARIFF_TABLE_GET: boolean,
-    PROTECTION_RESET_EM: boolean,
-    PROTECTION_RESET_MAGNETIC: boolean
+    TIME_CORRECT: boolean
+}
+
+export interface IEvent {
+    hours: types.TUint8,
+    minutes: types.TUint8,
+    seconds: types.TUint8,
+    event: types.TUint8,
+    power?: Array<types.TUint8>,
+    newDate?: {
+        dst: types.TUint8,
+        seconds: types.TUint8,
+        minutes: types.TUint8,
+        hours: types.TUint8,
+        wday: types.TUint8,
+        date: types.TUint8,
+        month: types.TUint8,
+        year: types.TUint8
+    }
 }
 
 export interface IExtendedCurrentValues2RelayStatus {
@@ -816,7 +834,7 @@ export type TEnergyType = typeof A_PLUS_ENERGY_TYPE | typeof A_MINUS_ENERGY_TYPE
 
 
 export const defaultFrameHeader: IFrameHeader = {
-    type: DATA_REQUEST,
+    type: frameTypes.DATA_REQUEST,
     destination: 0xffff,
     source: 0xfffe
 };
@@ -1114,11 +1132,14 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getEnergyPeriods ( periodsNumber: number ): Array<IEnergyPeriod>,
     setEnergyPeriods ( periods: Array<IEnergyPeriod> ),
 
-    getEventStatus (): IEventStatusParameters,
-    setEventStatus ( parameters: IEventStatusParameters ),
-
     getExtendedCurrentValues2 (): IExtendedCurrentValues2Parameters,
-    setExtendedCurrentValues2 ( parameters: IExtendedCurrentValues2Parameters )
+    setExtendedCurrentValues2 ( parameters: IExtendedCurrentValues2Parameters ),
+
+    getEventStatus (): IEventStatus,
+    setEventStatus ( parameters: IEventStatus ),
+
+    getEvent (): IEvent,
+    setEvent ( event: IEvent )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -1506,13 +1527,13 @@ CommandBinaryBuffer.prototype.setEnergyPeriods = function ( periods: Array<IEner
     periods.forEach(period => setEnergyPeriod(this, period));
 };
 
-CommandBinaryBuffer.prototype.getEventStatus = function (): IEventStatusParameters {
+CommandBinaryBuffer.prototype.getEventStatus = function (): IEventStatus {
     const eventStatus = this.getUint16();
 
-    return (bitSet.toObject(eventStatusMask, eventStatus) as unknown) as IEventStatusParameters;
+    return (bitSet.toObject(eventStatusMask, eventStatus) as unknown) as IEventStatus;
 };
 
-CommandBinaryBuffer.prototype.setEventStatus = function ( parameters: IEventStatusParameters ) {
+CommandBinaryBuffer.prototype.setEventStatus = function ( parameters: IEventStatus ) {
     this.setUint16(bitSet.fromObject(eventStatusMask, (parameters as unknown) as bitSet.TBooleanObject));
 };
 
@@ -1551,6 +1572,81 @@ CommandBinaryBuffer.prototype.setExtendedCurrentValues2 = function ( parameters:
     this.setUint8(bitSet.fromObject(extendedCurrentValues2Status2Mask, (status2 as unknown) as bitSet.TBooleanObject));
     this.setUint8(bitSet.fromObject(extendedCurrentValues2Status3Mask, (status3 as unknown) as bitSet.TBooleanObject));
 };
+
+CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
+    const data: IEvent = {
+        hours: this.getUint8(),
+        minutes: this.getUint8(),
+        seconds: this.getUint8(),
+        event: this.getUint8()
+    };
+    const {event} = data;
+
+    const {bytesLeft} = this;
+
+    switch ( event ) {
+        case events.POWER_OVER_RELAY_OFF:
+            if ( bytesLeft < 4 ) {
+                return data;
+            }
+
+            data.power = [this.getUint8(), this.getUint8(), this.getUint8(), this.getUint8()];
+            break;
+
+        case events.CMD_CHANGE_TIME:
+        case events.TIME_CORRECT:
+            if ( bytesLeft < 8 ) {
+                return data;
+            }
+
+            data.newDate = {
+                dst: this.getUint8(),
+                seconds: this.getUint8(),
+                minutes: this.getUint8(),
+                hours: this.getUint8(),
+                wday: this.getUint8(),
+                date: this.getUint8(),
+                month: this.getUint8(),
+                year: this.getUint8()
+            };
+            break;
+
+        default:
+            break;
+    }
+
+    return data;
+};
+
+CommandBinaryBuffer.prototype.setEvent = function ( event: IEvent ) {
+    this.setUint8(event.hours);
+    this.setUint8(event.minutes);
+    this.setUint8(event.seconds);
+    this.setUint8(event.event);
+
+    switch ( event.event ) {
+        case events.POWER_OVER_RELAY_OFF:
+            for ( const item of event.power ) {
+                this.setUint8(item);
+            }
+            break;
+
+        case events.CMD_CHANGE_TIME:
+        case events.TIME_CORRECT:
+            this.setUint8(event.newDate.dst);
+            this.setUint8(event.newDate.seconds);
+            this.setUint8(event.newDate.minutes);
+            this.setUint8(event.newDate.hours);
+            this.setUint8(event.newDate.wday);
+            this.setUint8(event.newDate.date);
+            this.setUint8(event.newDate.month);
+            this.setUint8(event.newDate.year);
+            break;
+
+        default: break;
+    }
+};
+
 
 export const getDefaultOperatorParameters = (): IOperatorParameters => (
     {

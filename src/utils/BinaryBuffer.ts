@@ -472,6 +472,10 @@ Object.defineProperties(BinaryBuffer.prototype, {
 
     isEmpty: {
         get () {
+            if ( this.offset > this.data.length ) {
+                throw new Error(`current offset ${this.offset} is outside the bounds of the buffer`);
+            }
+
             return this.data.length - this.offset === 0;
         }
     },
