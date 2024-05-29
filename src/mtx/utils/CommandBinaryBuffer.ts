@@ -946,7 +946,7 @@ const eventStatusMask = {
 };
 
 
-const extendedCurrentValues2RelayStatusMask = {
+export const extendedCurrentValues2RelayStatusMask = {
     RELAY_STATE: 2 ** 0,
     RELAY_UBAD: 2 ** 1,
     RELAY_UNEQ_CURRENT: 2 ** 4,

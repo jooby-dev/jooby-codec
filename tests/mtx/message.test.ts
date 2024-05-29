@@ -80,6 +80,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getCurrentStatusMeter',
+        hex: '0a 13 92 b4 f6 2d 89 83 5d 97 fa 3b ae fd 07 54 7e 39',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 92 b4 f6 2d 89 83 5d 97 fa 3b ae fd 07 54 7d 5e 39 8d 91 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getCurrentStatusMeter.accessLevel,
+        commands: [
+            downlinkCommands.getCurrentStatusMeter.examples['simple request']
+        ],
+        lrc: 0x7f,
+        crc: 0x918d,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getCurrentValues',
         hex: '0a 13 69 f4 c3 58 30 92 05 e8 22 ed 74 8c cb bc 53 b4',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 69 f4 c3 58 30 92 05 e8 22 ed 74 8c cb bc 53 b4 fe f9 7e',
@@ -768,6 +783,21 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getCurrentStatusMeter',
+        hex: '0a 13 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 4c 82 19 7b 11 0d ff 77 0e 18 68 ea 60 88 84 16 6e fe 4c a8 d1 12 86 db 57 a4 60 ae c0 0b 6e 0b',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 4c 82 19 7b 7d 31 0d ff 77 0e 18 68 ea 60 88 84 16 6e fe 4c a8 d1 12 86 db 57 a4 60 ae c0 0b 6e 0b 5d 98 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getCurrentStatusMeter.accessLevel,
+        commands: [
+            uplinkCommands.getCurrentStatusMeter.examples['simple response']
+        ],
+        lrc: 0xb6,
+        crc: 0x985d,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getCurrentValues',
         hex: '0a 13 7a ee 80 2a 01 36 e8 77 fb 57 cc d9 ba ca 1a af 8d 20 aa 9b 97 2f e1 03 7b d9 a3 de 03 74 37 b8 00 ec 1c f4 0b 84 7d 96 44 f5 38 e3 fc 4e ad 19',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 7a ee 80 2a 01 36 e8 77 fb 57 cc d9 ba ca 1a af 8d 20 aa 9b 97 2f e1 03 7b d9 a3 de 03 74 37 b8 00 ec 1c f4 0b 84 7d 5d 96 44 f5 38 e3 fc 4e ad 19 85 42 7e',
@@ -1400,7 +1430,7 @@ const checkMessage = ( messageLink, messageParams: IMessage ) => {
 
     if ( 'bytes' in messageData ) {
         // valid message
-        expect(messageData.lrc.actual).toEqual(lrc);
+        expect(getHexFromBytes([messageData.lrc.actual])).toEqual(getHexFromBytes([lrc]));
         expect(messageData.messageId).toEqual(messageId);
         expect(messageData.accessLevel).toEqual(accessLevel);
         expect(messageData.commands).toStrictEqual(commands);
