@@ -23,7 +23,7 @@ export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';
 export * as getEventStatus from './getEventStatus.js';
 export * as getExtendedCurrentValues from './getExtendedCurrentValues.js';
 export * as getExtendedCurrentValues2 from './getExtendedCurrentValues2.js';
-export * as getHalfHours from './getHalfHours.js';
+export * as getHalfHourDemand from './getHalfHourDemand.js';
 export * as getHalfhoursEnergies from './getHalfhoursEnergies.js';
 export * as getOpParams from './getOpParams.js';
 export * as getRatePlanInfo from './getRatePlanInfo.js';
