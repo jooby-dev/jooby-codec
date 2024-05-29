@@ -262,13 +262,13 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getHalfHours',
+        name: 'getHalfHourDemand',
         hex: '0a 13 8a 7d e8 d9 ef 2f ff 39 65 7f 17 96 27 8e e2 04',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 8a 7d 5d e8 d9 ef 2f ff 39 65 7f 17 96 27 8e e2 04 4e 40 7e',
         messageId: 10,
-        accessLevel: downlinkCommands.getHalfHours.accessLevel,
+        accessLevel: downlinkCommands.getHalfHourDemand.accessLevel,
         commands: [
-            downlinkCommands.getHalfHours.examples['request half hour data for 2024.03.22 00:00:00 GMT']
+            downlinkCommands.getHalfHourDemand.examples['request archive values for 2024.03.22']
         ],
         lrc: 0x5d,
         crc: 0x404e,
@@ -1008,13 +1008,13 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getHalfHours',
+        name: 'getHalfHourDemand',
         hex: '0a 13 01 7c 3f d4 90 8d 93 4e 82 72 e1 3f 1d cd 3d d5 d5 43 5d 19 51 04 14 2f 1d 4b 2c 86 d3 02 69 20 5a 03 4d 02 18 23 f9 75 e0 c4 d0 ae e1 27 e8 db 3f f3 68 cf 35 ed 34 51 53 d8 07 d5 2f 22 6d 89 24 2a be 58 95 14 bf e8 a3 a2 35 7e 0b 8b c9 12 65 ae 3e 94 ca 2e d7 ad 05 1b 32 4a 19 74 1a 04 ae 6a 64 c4 02 4f cc 14 fd c1 3c 2d 77 19 f7 4e',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 01 7c 3f d4 90 8d 93 4e 82 72 e1 3f 1d cd 3d d5 d5 43 5d 19 51 04 14 2f 1d 4b 2c 86 d3 02 69 20 5a 03 4d 02 18 23 f9 75 e0 c4 d0 ae e1 27 e8 db 3f f3 68 cf 35 ed 34 51 53 d8 07 d5 2f 22 6d 89 24 2a be 58 95 14 bf e8 a3 a2 35 7d 5e 0b 8b c9 12 65 ae 3e 94 ca 2e d7 ad 05 1b 32 4a 19 74 1a 04 ae 6a 64 c4 02 4f cc 14 fd c1 3c 2d 77 19 f7 4e 77 b0 7e',
         messageId: 10,
-        accessLevel: uplinkCommands.getHalfHours.accessLevel,
+        accessLevel: uplinkCommands.getHalfHourDemand.accessLevel,
         commands: [
-            uplinkCommands.getHalfHours.examples['simple response']
+            uplinkCommands.getHalfHourDemand.examples['simple response']
         ],
         lrc: 0x87,
         crc: 0xb077,

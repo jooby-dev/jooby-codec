@@ -80,8 +80,6 @@ const checkMessage = ( implementation, exampleMessage: IMessage | IInvalidMessag
         messageFromBytes = implementation.fromBytes(exampleMessage.bytes);
         bytesFromMessage = implementation.toBytes(exampleMessage.commands);
 
-        console.log('bytesFromMessage:', bytesFromMessage);
-
         expect(getHexFromBytes(bytesFromMessage)).toBe(getHexFromBytes(exampleMessage.bytes));
     } else if ( 'message' in exampleMessage ) {
         // invalid message
