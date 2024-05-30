@@ -52,7 +52,7 @@ export interface IMessage {
  *            actual: 0xfe
  *        }
  *    },
- *    error: 'mismatch LRC'
+ *    error: 'Mismatch LRC.'
  *}
  * ```
  */

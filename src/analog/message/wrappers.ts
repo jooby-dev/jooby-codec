@@ -73,7 +73,6 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
 
     message.lrc.actual = actualLrc;
     message.lrc.expected = expectedLrc;
-    //result.isValid = expectedLrc === actualLrc;
 
     if ( expectedLrc === actualLrc ) {
         return message;
@@ -81,7 +80,7 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
 
     return {
         message,
-        error: 'mismatch LRC'
+        error: 'Mismatch LRC.'
     };
 };
 
