@@ -46,7 +46,7 @@ const downlinkMessages: TMessageExamples = {
                 actual: 0xfe
             }
         },
-        error: 'mismatch LRC'
+        error: 'Mismatch LRC.'
     }
 };
 
@@ -84,7 +84,7 @@ const uplinkMessages: TMessageExamples = {
                 actual: 0x58
             }
         },
-        error: 'mismatch LRC'
+        error: 'Mismatch LRC.'
     },
     'valid setTime2000 + currentMc + dayMc': {
         bytes: getBytesFromHex('02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 55 0c 83 01 08 0a  b5'),
