@@ -1,11 +1,15 @@
 {
     "cSpell.words": [
+        "ACCPARAM",
         "Aquaris",
         "bootloader",
+        "CALFLAG",
+        "CALIBR",
         "ciphertext",
         "colspan",
         "concat",
         "COSFI",
+        "CROSSZERO",
         "DeadByElpy",
         "DEPASS",
         "depassivation",
@@ -40,11 +44,13 @@
         "MAXVA",
         "MINF",
         "MINVA",
+        "MAGN",
         "MTXLORA",
         "mxssfd",
         "Nbiot",
         "nodenext",
         "novator",
+        "NVRAM",
         "nwtgck",
         "OMNI",
         "Openkey",
@@ -60,6 +66,7 @@
         "PMAX",
         "pmaxThreshold",
         "POWERB",
+        "POWERSALDO",
         "preinstall",
         "QIII",
         "reassignable",
@@ -80,6 +87,7 @@
         "VAVB",
         "VBAT",
         "VRMS",
+        "wday",
         "WONO"
     ]
 }

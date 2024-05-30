@@ -10,7 +10,7 @@
  * import * as getEventStatus from 'jooby-codec/mtx/commands/uplink/getEventStatus.js';
  *
  * // response to getEventStatus downlink command
- * const bytes = [0x10, 0x85];
+ * const bytes = [0x85, 0x10];
  *
  * // decoded payload
  * const parameters = getEventStatus.fromBytes(bytes);
@@ -42,7 +42,7 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import * as accessLevels from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IEventStatusParameters} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, IEventStatus} from '../../utils/CommandBinaryBuffer.js';
 
 
 export const id: types.TCommandId = 0x01;
@@ -78,7 +78,7 @@ export const examples: command.TCommandExamples = {
         },
         bytes: [
             0x01, 0x02,
-            0x10, 0x85
+            0x85, 0x10
         ]
     }
 };
@@ -90,8 +90,8 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( bytes: types.TBytes ): IEventStatusParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+export const fromBytes = ( bytes: types.TBytes ): IEventStatus => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes, true);
 
     return buffer.getEventStatus();
 };
@@ -100,14 +100,14 @@ export const fromBytes = ( bytes: types.TBytes ): IEventStatusParameters => {
 /**
  * Encode command parameters.
  *
- * @param parameters - command parameters
+ * @param eventStatus - command parameters
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IEventStatusParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+export const toBytes = ( eventStatus: IEventStatus ): types.TBytes => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize, true);
 
     // body
-    buffer.setEventStatus(parameters);
+    buffer.setEventStatus(eventStatus);
 
     return command.toBytes(id, buffer.data);
 };
