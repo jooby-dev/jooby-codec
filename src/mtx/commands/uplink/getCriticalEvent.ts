@@ -143,16 +143,18 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventResponseParam
  * @param parameters - command parameters
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetCriticalEventResponseParameters ): types.TBytes => (
-    command.toBytes(id, [
-        parameters.event,
-        parameters.index,
-        parameters.date.year,
-        parameters.date.month,
-        parameters.date.date,
-        parameters.date.hours,
-        parameters.date.minutes,
-        parameters.date.seconds,
-        parameters.count
-    ])
-);
+export const toBytes = ( parameters: IGetCriticalEventResponseParameters ): types.TBytes => {
+    const {event, index, date, count} = parameters;
+
+    return command.toBytes(id, [
+        event,
+        index,
+        date.year,
+        date.month,
+        date.date,
+        date.hours,
+        date.minutes,
+        date.seconds,
+        count
+    ]);
+};

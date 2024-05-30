@@ -1,5 +1,5 @@
 /**
- * Uplink command to get device events.
+ * Uplink command to get device events by date.
  *
  * The corresponding downlink command: `getEvents`.
  *
@@ -41,11 +41,11 @@
  *             seconds: 33,
  *             event: 121,
  *             newDate: {
- *                 dst: 0,
+ *                 isSummerTime: 0,
  *                 seconds: 10,
  *                 minutes: 22,
  *                 hours: 3,
- *                 wday: 4,
+ *                 day: 4,
  *                 date: 12,
  *                 month: 7,
  *                 year: 24
@@ -73,6 +73,7 @@ interface IGetCriticalEventResponseParameters {
 // date + event number byte
 const BODY_WITHOUT_EVENTS_SIZE = 3 + 1;
 const EVENT_SIZE = 4;
+
 export const id: types.TCommandId = 0x33;
 export const name: types.TCommandName = 'getEvents';
 export const headerSize = 2;
@@ -108,11 +109,11 @@ export const examples: command.TCommandExamples = {
                     seconds: 33,
                     event: 121,
                     newDate: {
-                        dst: 0,
+                        isSummerTime: false,
                         seconds: 10,
                         minutes: 22,
                         hours: 3,
-                        wday: 4,
+                        day: 4,
                         date: 12,
                         month: 7,
                         year: 24
@@ -139,7 +140,6 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventResponseParam
     if ( bytes.length > maxSize ) {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
-    console.log(bytes);
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const date = buffer.getDate();

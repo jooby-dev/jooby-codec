@@ -735,16 +735,7 @@ export interface IEvent {
     seconds: types.TUint8,
     event: types.TUint8,
     power?: Array<types.TUint8>,
-    newDate?: {
-        dst: types.TUint8,
-        seconds: types.TUint8,
-        minutes: types.TUint8,
-        hours: types.TUint8,
-        wday: types.TUint8,
-        date: types.TUint8,
-        month: types.TUint8,
-        year: types.TUint8
-    }
+    newDate?: IDateTime
 }
 
 export interface IExtendedCurrentValues2RelayStatus {
@@ -1581,7 +1572,6 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
         event: this.getUint8()
     };
     const {event} = data;
-
     const {bytesLeft} = this;
 
     switch ( event ) {
@@ -1599,16 +1589,7 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
                 return data;
             }
 
-            data.newDate = {
-                dst: this.getUint8(),
-                seconds: this.getUint8(),
-                minutes: this.getUint8(),
-                hours: this.getUint8(),
-                wday: this.getUint8(),
-                date: this.getUint8(),
-                month: this.getUint8(),
-                year: this.getUint8()
-            };
+            data.newDate = this.getDateTime();
             break;
 
         default:
@@ -1633,14 +1614,7 @@ CommandBinaryBuffer.prototype.setEvent = function ( event: IEvent ) {
 
         case events.CMD_CHANGE_TIME:
         case events.TIME_CORRECT:
-            this.setUint8(event.newDate.dst);
-            this.setUint8(event.newDate.seconds);
-            this.setUint8(event.newDate.minutes);
-            this.setUint8(event.newDate.hours);
-            this.setUint8(event.newDate.wday);
-            this.setUint8(event.newDate.date);
-            this.setUint8(event.newDate.month);
-            this.setUint8(event.newDate.year);
+            this.setDateTime(event.newDate);
             break;
 
         default: break;

@@ -1,5 +1,5 @@
 /**
- * Downlink command to get device events by date and offset.
+ * Downlink command to get device events by date.
  *
  * @packageDocumentation
  *
@@ -35,7 +35,6 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 
 interface IGetEventsParameters {
     date: types.IDate,
-
     offset: types.TUint8
 }
 

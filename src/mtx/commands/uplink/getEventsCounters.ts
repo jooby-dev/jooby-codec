@@ -50,6 +50,7 @@ interface IGetEventsCountersResponseParameters {
 
 const COMMAND_BODY_SIZE = 14;
 const OLD_COMMAND_BODY_SIZE = 20;
+
 export const id: types.TCommandId = 0x34;
 export const name: types.TCommandName = 'getEventsCounters';
 export const headerSize = 2;
