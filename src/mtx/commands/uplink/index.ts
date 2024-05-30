@@ -25,6 +25,7 @@ export * as getExtendedCurrentValues from './getExtendedCurrentValues.js';
 export * as getExtendedCurrentValues2 from './getExtendedCurrentValues2.js';
 export * as getHalfHourDemand from './getHalfHourDemand.js';
 export * as getHalfhoursEnergies from './getHalfhoursEnergies.js';
+export * as getMonthDemand from './getMonthDemand.js';
 export * as getOpParams from './getOpParams.js';
 export * as getRatePlanInfo from './getRatePlanInfo.js';
 export * as getSaldo from './getSaldo.js';

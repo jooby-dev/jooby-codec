@@ -292,6 +292,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getMonthDemand',
+        hex: '0a 13 9a 6f bb b5 98 1e 40 eb c5 11 13 19 36 c6 68 b6',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 9a 6f bb b5 98 1e 40 eb c5 7d 31 7d 33 19 36 c6 68 b6 3c 65 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getMonthDemand.accessLevel,
+        commands: [
+            downlinkCommands.getMonthDemand.examples['request energy for 2024.03']
+        ],
+        lrc: 0x48,
+        crc: 0x653c,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getOpParams',
         hex: '0a 13 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22 a0 c6 7e',
@@ -1033,6 +1048,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x1c,
         crc: 0x0dec,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getMonthDemand',
+        hex: '0a 13 38 0b a6 84 57 df ec dc 01 cd a9 32 0c 45 a8 db 0d 9c 54 54 50 61 b0 ea ca bd 91 be d3 fc de 75',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 38 0b a6 84 57 df ec dc 01 cd a9 32 0c 45 a8 db 0d 9c 54 54 50 61 b0 ea ca bd 91 be d3 fc de 75 27 cc 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getMonthDemand.accessLevel,
+        commands: [
+            uplinkCommands.getMonthDemand.examples['response energy for 2024.03']
+        ],
+        lrc: 0x08,
+        crc: 0xcc27,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
