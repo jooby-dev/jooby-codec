@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 // @ts-nocheck
+
 import fs from 'fs';
 import path from 'path';
 
@@ -58,11 +59,10 @@ const getCommandFileNames = dirPath => fs.readdirSync(dirPath)
     .map(file => path.parse(file).name);
 
 const checkCommandFileNames = ( dirPath, importedCommands ) => {
-    const commandFileNames = getCommandFileNames(dirPath);
+    const commandFileNames = getCommandFileNames(dirPath).sort();
+    const importedCommandNames = Object.keys(importedCommands).sort();
 
-    commandFileNames.forEach(fileName => {
-        expect(importedCommands).toHaveProperty(fileName);
-    });
+    expect(commandFileNames).toStrictEqual(importedCommandNames);
 };
 
 
