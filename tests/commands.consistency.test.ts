@@ -4,6 +4,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 // @ts-nocheck
+import fs from 'fs';
+import path from 'path';
+
 import {commands as analogCommands} from '../src/analog/index.js';
 import {commands as mtxCommands} from '../src/mtx/index.js';
 import {commands as obisObserverCommands} from '../src/obis-observer/index.js';
@@ -47,6 +50,18 @@ const checkUplinkDownlinkConsistency = ( uplinkCommands, downlinkCommands ) => {
                 }
             }
         }
+    });
+};
+
+const getCommandFileNames = dirPath => fs.readdirSync(dirPath)
+    .filter(file => file !== 'index.ts')
+    .map(file => path.parse(file).name);
+
+const checkCommandFileNames = ( dirPath, importedCommands ) => {
+    const commandFileNames = getCommandFileNames(dirPath);
+
+    commandFileNames.forEach(fileName => {
+        expect(importedCommands).toHaveProperty(fileName);
     });
 };
 
@@ -100,5 +115,20 @@ describe('commands consistency', () => {
 
     test('mtx uplink/downlink IDs should match', () => {
         checkUplinkDownlinkConsistency(mtxCommands.uplink, mtxCommands.downlink);
+    });
+
+    test('analog command file names should match imported commands', () => {
+        checkCommandFileNames(path.resolve(__dirname, '../src/analog/commands/downlink'), analogCommands.downlink);
+        checkCommandFileNames(path.resolve(__dirname, '../src/analog/commands/uplink'), analogCommands.uplink);
+    });
+
+    test('mtx command file names should match imported commands', () => {
+        checkCommandFileNames(path.resolve(__dirname, '../src/mtx/commands/downlink'), mtxCommands.downlink);
+        checkCommandFileNames(path.resolve(__dirname, '../src/mtx/commands/uplink'), mtxCommands.uplink);
+    });
+
+    test('obis-observer command file names should match imported commands', () => {
+        checkCommandFileNames(path.resolve(__dirname, '../src/obis-observer/commands/downlink'), obisObserverCommands.downlink);
+        checkCommandFileNames(path.resolve(__dirname, '../src/obis-observer/commands/uplink'), obisObserverCommands.uplink);
     });
 });
