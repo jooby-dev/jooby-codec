@@ -60,7 +60,7 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import * as accessLevels from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, TARIFF_NUMBER} from '../../utils/CommandBinaryBuffer.js';
 
 
 interface IGetDayMaxDemandResponseParameters {
@@ -139,7 +139,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDayMaxDemandResponseParame
     const date = buffer.getDate();
 
     // 4 tariffs
-    const power = Array.from({length: 4}, () => ({
+    const power = Array.from({length: TARIFF_NUMBER}, () => ({
         hours: buffer.getUint8(),
         minutes: buffer.getUint8(),
         power: buffer.getUint32()
