@@ -1,6 +1,8 @@
 /**
  * Uplink command to reset the maximum daily power.
  *
+ * The corresponding downlink command: `resetPowerMaxDay`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
