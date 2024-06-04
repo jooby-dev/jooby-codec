@@ -1,5 +1,5 @@
 /**
- * Downlink command to get active A+ energy in half hours by date.
+ * Downlink command to get active `A+` energy in half hours by date.
  *
  * @packageDocumentation
  *

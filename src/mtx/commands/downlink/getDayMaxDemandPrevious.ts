@@ -1,33 +1,33 @@
 /**
- * Downlink command to get active energy for a previous day by 4 tariffs (`T1`-`T4`).
+ * Downlink command to get the maximum `A+` power for the previous day.
  *
  * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getEnergyDayPrevious from 'jooby-codec/mtx/commands/downlink/getEnergyDayPrevious.js';
+ * import * as getDayMaxDemandPrevious from 'jooby-codec/mtx/commands/downlink/getDayMaxDemandPrevious.js';
  *
- * const bytes = getEnergyDayPrevious.toBytes();
+ * const bytes = getDayMaxDemandPrevious.toBytes();
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [3, 0]
+ * [74, 0]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetEnergyDayPrevious.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDayMaxDemandPrevious.md#request)
  */
 
-import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
+import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x03;
-export const name: types.TCommandName = 'getEnergyDayPrevious';
+export const id: types.TCommandId = 0x4a;
+export const name: types.TCommandName = 'getDayMaxDemandPrevious';
 export const headerSize = 2;
-export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const maxSize = 0;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
@@ -39,7 +39,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x03, 0x00
+            0x4a, 0x00
         ]
     }
 };

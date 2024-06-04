@@ -1,5 +1,5 @@
 /**
- * Uplink command to get current energy A+ by default or selected energy type for 4 tariffs (T1-T4).
+ * Uplink command to get current energy `A+` by default or selected energy type for 4 tariffs (`T1`-`T4`).
  *
  * @packageDocumentation
  *

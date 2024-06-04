@@ -1,15 +1,15 @@
 /**
- * Uplink command to get the maximum `A+` power for the day.
+ * Uplink command to get the maximum `A+` power for the previous day.
  *
- * The corresponding downlink command: `getDayMaxDemand`.
+ * The corresponding downlink command: `getDayMaxDemandPrevious`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getDayMaxDemand from 'jooby-codec/mtx/commands/uplink/getDayMaxDemand.js';
+ * import * as getDayMaxDemandPrevious from 'jooby-codec/mtx/commands/uplink/getDayMaxDemandPrevious.js';
  *
- * // response to getDayMaxDemand downlink command
+ * // response to getDayMaxDemandPrevious downlink command
  * const bytes = [
  *     0x17, 0x03, 0x0c,
  *     0x01, 0x00, 0x00, 0x00, 0x01, 0xc8,
@@ -19,7 +19,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = getDayMaxDemand.fromBytes(bytes);
+ * const parameters = getDayMaxDemandPrevious.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -54,7 +54,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDayMaxDemand.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetDayMaxDemandPrevious.md#response)
  */
 
 import * as types from '../../types.js';
@@ -63,8 +63,8 @@ import * as accessLevels from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetDayMaxDemandResponseParameters} from '../../utils/CommandBinaryBuffer.js';
 
 
-export const id: types.TCommandId = 0x31;
-export const name: types.TCommandName = 'getDayMaxDemand';
+export const id: types.TCommandId = 0x4a;
+export const name: types.TCommandName = 'getDayMaxDemandPrevious';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
 export const maxSize = 27;
@@ -107,7 +107,7 @@ export const examples: command.TCommandExamples = {
             ]
         },
         bytes: [
-            0x31, 0x1b,
+            0x4a, 0x1b,
             0x17, 0x03, 0x0c,
             0x01, 0x00, 0x00, 0x00, 0x01, 0xc8,
             0x03, 0x0c, 0x00, 0x00, 0x25, 0x02,

@@ -605,23 +605,23 @@ export interface IDeviceId {
     /**
      * Device type.
      *
-     * ID | Name
-     * ---|------
-     * 01 | MTX 1
-     * 02 | MTX 3 direct (old)
-     * 03 | MTX 3 transformer (old)
-     * 04 | MTX 3 direct
-     * 05 | MTX 3 transformer
-     * 11 | MTX 1 new (two shunts)
-     * 12 | MTX 3 direct new (shunts)
-     * 13 | MTX 3 transformer new
-     * 14 | MTX 1 pole
-     * 15 | MTX RD remote display
-     * 16 | MTX RR repeater
-     * 21 | MTX 1 new, current transformers
-     * 22 | MTX 3 direct new, current transformers
-     * 80 | RF module
-     * 81 | water meter
+     * ID   | Name
+     * -----|------
+     * `01` | MTX 1
+     * `02` | MTX 3 direct (old)
+     * `03` | MTX 3 transformer (old)
+     * `04` | MTX 3 direct
+     * `05` | MTX 3 transformer
+     * `11` | MTX 1 new (two shunts)
+     * `12` | MTX 3 direct new (shunts)
+     * `13` | MTX 3 transformer new
+     * `14` | MTX 1 pole
+     * `15` | MTX RD remote display
+     * `16` | MTX RR repeater
+     * `21` | MTX 1 new, current transformers
+     * `22` | MTX 3 direct new, current transformers
+     * `80` | RF module
+     * `81` | water meter
      */
     type: number,
 
@@ -697,13 +697,13 @@ export interface ISaldoParameters {
 }
 
 export interface IEnergyPeriod {
-    /** one of four tariffs (T1-T4) */
+    /** one of four tariffs (`T1`-`T4`) */
     tariff?: types.TUint8,
     /** value for period */
     energy?: types.TUint16
 }
 
-/** active A+ energy by tariffs T1-T4 */
+/** active `A+` energy by tariffs `T1`-`T4` */
 export interface IEnergies extends Array<types.TUint32 | null> {}
 
 export interface IPackedEnergiesWithType {
@@ -818,6 +818,15 @@ export interface IExtendedCurrentValues2Parameters {
     status1: IExtendedCurrentValues2Status1,
     status2: IExtendedCurrentValues2Status2,
     status3: IExtendedCurrentValues2Status3
+}
+
+export interface IGetDayMaxDemandResponseParameters {
+    date: types.IDate,
+    power: Array<{
+        hours: types.TUint8,
+        minutes: types.TUint8,
+        power: types.TUint32
+    }>
 }
 
 /** `1` - `A+`, `2` - `A-` */
@@ -1130,7 +1139,10 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setEventStatus ( parameters: IEventStatus ),
 
     getEvent (): IEvent,
-    setEvent ( event: IEvent )
+    setEvent ( event: IEvent ),
+
+    getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
+    setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -1621,6 +1633,27 @@ CommandBinaryBuffer.prototype.setEvent = function ( event: IEvent ) {
     }
 };
 
+CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxDemandResponseParameters {
+    const date = this.getDate();
+
+    // 4 tariffs
+    const power = Array.from({length: TARIFF_NUMBER}, () => ({
+        hours: this.getUint8(),
+        minutes: this.getUint8(),
+        power: this.getUint32()
+    }));
+
+    return {date, power};
+};
+CommandBinaryBuffer.prototype.setDayMaxDemandResponse = function ( parameters: IGetDayMaxDemandResponseParameters ) {
+    this.setDate(parameters.date);
+
+    parameters.power.forEach(value => {
+        this.setUint8(value.hours);
+        this.setUint8(value.minutes);
+        this.setUint32(value.power);
+    });
+};
 
 export const getDefaultOperatorParameters = (): IOperatorParameters => (
     {

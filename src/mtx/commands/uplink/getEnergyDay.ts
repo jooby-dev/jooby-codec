@@ -1,5 +1,5 @@
 /**
- * Uplink command to get active A+ energy by date.
+ * Uplink command to get active `A+` energy by date.
  *
  * @packageDocumentation
  *
