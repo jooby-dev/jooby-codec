@@ -51,9 +51,9 @@ interface IGetArchiveHoursMcResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x1a;
+export const id: types.TCommandId = 0x0c1f;
 export const name: types.TCommandName = 'getExAbsArchiveHoursMc';
-export const headerSize = 2;
+export const headerSize = 3;
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
 // max hours diff - 7 (3 bit value)
@@ -76,7 +76,7 @@ export const examples: command.TCommandExamples = {
             ]
         },
         bytes: [
-            0x1a, 0x0d,
+            0x1f, 0x0c, 0x0d,
             0x2f, 0x97, 0x2c, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a
         ]
     },
@@ -90,7 +90,7 @@ export const examples: command.TCommandExamples = {
             channelList: []
         },
         bytes: [
-            0x1a, 0x04,
+            0x1f, 0x0c, 0x04,
             0x2f, 0x6a, 0x00, 0x00
         ]
     }
