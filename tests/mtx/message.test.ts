@@ -487,6 +487,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'resetPowerMaxDay',
+        hex: '0a 12 f8 8e 7f 8c 99 33 e9 ba e1 e7 4a aa 81 fe 9f ab',
+        frameHex: '7e 50 aa aa ff ff 0a 12 f8 8e 7f 8c 99 33 e9 ba e1 e7 4a aa 81 fe 9f ab 23 e6 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.resetPowerMaxDay.accessLevel,
+        commands: [
+            downlinkCommands.resetPowerMaxDay.examples['simple request']
+        ],
+        lrc: 0x72,
+        crc: 0xe623,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'runTariffPlan',
         hex: '0a 12 db a4 0e 02 c2 83 a4 6d 3d 1c 74 1d bd d2 1c ca',
         frameHex: '7e 50 aa aa ff ff 0a 12 db a4 0e 02 c2 83 a4 6d 3d 1c 74 1d bd d2 1c ca f5 4b 7e',
@@ -1303,6 +1318,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x53,
         crc: 0xc308,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'resetPowerMaxDay',
+        hex: '0c 12 f8 8e 7f 8c 99 33 e9 ba e1 e7 4a aa 81 fe 9f ab',
+        frameHex: '7e 51 aa aa ff ff 0c 12 f8 8e 7f 8c 99 33 e9 ba e1 e7 4a aa 81 fe 9f ab 9a 6d 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.resetPowerMaxDay.accessLevel,
+        commands: [
+            uplinkCommands.resetPowerMaxDay.examples['simple response']
+        ],
+        lrc: 0x72,
+        crc: 0x6d9a,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
