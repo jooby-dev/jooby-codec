@@ -7,7 +7,7 @@
  *
  * @example
  * ```js
- * import * as getLastHalfHour from 'jooby-codec/mtx/commands/downlink/GetLastHalfHour.js';
+ * import * as getHalfhoursEnergies from 'jooby-codec/mtx/commands/downlink/getHalfhoursEnergies.js';
  *
  * const parameters = {
  *     date: {
@@ -23,13 +23,15 @@
  *     }
  *};
  *
- * const bytes = getLastHalfHour.toBytes(parameters);
+ * const bytes = getHalfhoursEnergies.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
  * [111, 5, 42, 67, 3, 5, 4]
  * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetHalfhoursEnergies.md#request)
  */
 
 import * as command from '../../utils/command.js';
@@ -38,7 +40,7 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, TEnergiesFlags} from '../../u
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 
 
-interface IGetLastHalfHourParameters {
+interface IGetHalfhoursEnergiesParameters {
     /**
       * Date.
       */
@@ -62,7 +64,7 @@ interface IGetLastHalfHourParameters {
 
 
 export const id: types.TCommandId = 0x6f;
-export const name: types.TCommandName = 'getLastHalfHour';
+export const name: types.TCommandName = 'getHalfhoursEnergies';
 export const headerSize = 2;
 export const maxSize = 5;
 export const accessLevel: types.TAccessLevel = UNENCRYPTED;
@@ -105,7 +107,7 @@ export const examples: command.TCommandExamples = {
   * @param bytes - command body bytes
   * @returns decoded parameters
   */
-export const fromBytes = ( bytes: types.TBytes ): IGetLastHalfHourParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetHalfhoursEnergiesParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return {
@@ -123,7 +125,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetLastHalfHourParameters => 
   * @param parameters - command payload
   * @returns full message (header with body)
   */
-export const toBytes = ( parameters: IGetLastHalfHourParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetHalfhoursEnergiesParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
 
     buffer.setDate(parameters.date);

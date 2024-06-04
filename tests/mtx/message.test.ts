@@ -352,13 +352,14 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getLastHalfHour',
+        // does not match empro
+        name: 'getHalfhoursEnergies',
         hex: '0a 10 10 6f 05 2a 43 03 05 03 00 43',
         frameHex: '7e 50 aa aa ff ff 0a 10 10 6f 05 2a 43 03 05 03 00 43 cc fe 7e', // is not used
         messageId: 10,
-        accessLevel: downlinkCommands.getLastHalfHour.accessLevel,
+        accessLevel: downlinkCommands.getHalfhoursEnergies.accessLevel,
         commands: [
-            downlinkCommands.getLastHalfHour.examples['request for halfhours energies']
+            downlinkCommands.getHalfhoursEnergies.examples['request for halfhours energies']
         ],
         lrc: 0x43,
         crc: 0xfecc,
@@ -1203,13 +1204,14 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getLastHalfHour',
+        // does not match empro
+        name: 'getHalfhoursEnergies',
         hex: '0a 10 10 6f 0d 2a 43 11 01 02 10 00 20 00 30 00 40 00 00 1c',
         frameHex: '7e 51 aa aa ff ff 0a 10 10 6f 0d 2a 43 7d 31 01 02 10 00 20 00 30 00 40 00 00 1c ec 0d 7e',
         messageId: 10,
-        accessLevel: uplinkCommands.getLastHalfHour.accessLevel,
+        accessLevel: uplinkCommands.getHalfhoursEnergies.accessLevel,
         commands: [
-            uplinkCommands.getLastHalfHour.examples['get halfhours energies']
+            uplinkCommands.getHalfhoursEnergies.examples['get halfhours energies']
         ],
         lrc: 0x1c,
         crc: 0x0dec,

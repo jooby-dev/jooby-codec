@@ -7,13 +7,13 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getLastHalfHour from 'jooby-codec/mtx/commands/uplink/getLastHalfHour.js';
+ * import * as getHalfhoursEnergies from 'jooby-codec/mtx/commands/uplink/getHalfhoursEnergies.js';
  *
- * // response to getLastHalfHour downlink command
+ * // response to getHalfhoursEnergies downlink command
  * const bytes = [0x2a, 0x43, 0x11, 0x01, 0x02, 0x10, 0x00, 0x20, 0x00, 0x30, 0x00, 0x40, 0x00];
  *
  * // decoded payload
- * const parameters = getLastHalfHour.fromBytes(bytes);
+ * const parameters = getHalfhoursEnergies.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -31,6 +31,8 @@
  *     }
  * }
  * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetHalfhoursEnergies.md#response)
  */
 
 import * as command from '../../utils/command.js';
@@ -39,7 +41,7 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfhoursEnergies, TARIFF_NU
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 
 
-export interface IGetLastHalfHourResponseParameters {
+export interface IGetHalfhoursEnergiesResponseParameters {
     date: types.IDate;
     firstHalfhour: number;
     halfhoursNumber: number;
@@ -85,7 +87,7 @@ const convertHalfhoursEnergiesToDlms = ( energies: THalfhoursEnergies ) => {
 
 
 export const id: types.TCommandId = 0x6f;
-export const name: types.TCommandName = 'getLastHalfHour';
+export const name: types.TCommandName = 'getHalfhoursEnergies';
 export const headerSize = 2;
 export const maxSize = DATE_SIZE + MAX_HALFHOURS_ENERGY_SIZE;
 export const accessLevel: types.TAccessLevel = UNENCRYPTED;
@@ -124,7 +126,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetLastHalfHourResponseParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetHalfhoursEnergiesResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const date = buffer.getDate();
     const energiesFlags = buffer.getEnergiesFlags();
@@ -146,7 +148,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetLastHalfHourResponseParame
  * @param parameters - parameters to encode
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetLastHalfHourResponseParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetHalfhoursEnergiesResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
     const {date, firstHalfhour, halfhoursNumber, energies} = parameters;
 
@@ -160,7 +162,7 @@ export const toBytes = ( parameters: IGetLastHalfHourResponseParameters ): types
 };
 
 
-export const toJson = ( parameters: IGetLastHalfHourResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
+export const toJson = ( parameters: IGetHalfhoursEnergiesResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
     const {date, firstHalfhour, halfhoursNumber, energies} = parameters;
     const result = dlms
         ? {

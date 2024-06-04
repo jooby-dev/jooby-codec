@@ -28,7 +28,7 @@ export * as getEventStatus from './getEventStatus.js';
 export * as getExtendedCurrentValues from './getExtendedCurrentValues.js';
 export * as getExtendedCurrentValues2 from './getExtendedCurrentValues2.js';
 export * as getHalfHourDemand from './getHalfHourDemand.js';
-export * as getLastHalfHour from './getLastHalfHour.js';
+export * as getHalfhoursEnergies from './getHalfhoursEnergies.js';
 export * as getMonthDemand from './getMonthDemand.js';
 export * as getOpParams from './getOpParams.js';
 export * as getRatePlanInfo from './getRatePlanInfo.js';
