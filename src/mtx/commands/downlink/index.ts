@@ -11,6 +11,7 @@ export * as getCriticalEvent from './getCriticalEvent.js';
 export * as getCurrentStatusMeter from './getCurrentStatusMeter.js';
 export * as getCurrentValues from './getCurrentValues.js';
 export * as getDateTime from './getDateTime.js';
+export * as getDayMaxDemand from './getDayMaxDemand.js';
 export * as getDayProfile from './getDayProfile.js';
 export * as getDeviceId from './getDeviceId.js';
 export * as getDeviceType from './getDeviceType.js';

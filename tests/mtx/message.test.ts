@@ -140,6 +140,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getDayMaxDemand',
+        hex: '0a 13 6f bb 91 12 b6 71 1d b6 3f ce 9e 6d c4 a6 d9 2a',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 6f bb 91 12 b6 71 1d b6 3f ce 9e 6d c4 a6 d9 2a 7c a8 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getDayMaxDemand.accessLevel,
+        commands: [
+            downlinkCommands.getDayMaxDemand.examples['request for 2024.03.22']
+        ],
+        lrc: 0x79,
+        crc: 0xa87c,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getDayProfile',
         hex: '0a 13 00 3f e4 e6 f8 7e 34 9d ba ee 69 dd 8a b9 32 78',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 00 3f e4 e6 f8 7d 5e 34 9d ba ee 69 dd 8a b9 32 78 e2 26 7e',
@@ -948,6 +963,21 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getDayMaxDemand',
+        hex: '0a 13 f2 c4 07 c3 2e 52 c6 5c bc ee be d4 79 68 15 ee 78 49 7d 33 8a 26 6f 16 02 5f 13 58 5d a3 da 8b',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 f2 c4 07 c3 2e 52 c6 5c bc ee be d4 79 68 15 ee 78 49 7d 5d 33 8a 26 6f 16 02 5f 7d 33 58 5d a3 da 8b 60 da 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDayMaxDemand.accessLevel,
+        commands: [
+            uplinkCommands.getDayMaxDemand.examples['response for 2023.03.12']
+        ],
+        lrc: 0x1c,
+        crc: 0xda60,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getDayMaxPower',
         hex: '0a 10 10 79 10 2a 43 11 11 02 03 00 00 10 00 04 05 00 00 20 00 00 75',
         frameHex: '7e 51 aa aa ff ff 0a 10 10 79 10 2a 43 7d 31 7d 31 02 03 00 00 10 00 04 05 00 00 20 00 00 75 b6 8c 7e',
@@ -1625,7 +1655,7 @@ const checkMessage = ( messageLink, messageParams: IMessage ) => {
         throw new Error('Field error should be missing!');
     } else {
         expect(getHexFromBytes(parsedFrame.bytes)).toEqual(hex);
-        expect(parsedFrame.crc.actual).toStrictEqual(crc);
+        expect(parsedFrame.crc.actual.toString(16)).toStrictEqual(crc.toString(16));
         expect(parsedFrame.header?.source).toStrictEqual(source);
         expect(parsedFrame.header?.destination).toStrictEqual(destination);
         expect(parsedFrame.header?.type).toStrictEqual(frameType);
