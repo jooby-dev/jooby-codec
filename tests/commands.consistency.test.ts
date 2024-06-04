@@ -16,7 +16,27 @@ import * as mtxMessage from '../src/mtx/message/index.js';
 import * as obisObserverMessage from '../src/obis-observer/message/index.js';
 
 
-const getCommandIdsFromCommandsImport = commandsData => Object.values(commandsData).map(({id}) => id);
+const ANALOG_DOWNLINK_PATH = path.resolve(__dirname, '../src/analog/commands/downlink');
+const ANALOG_UPLINK_PATH = path.resolve(__dirname, '../src/analog/commands/uplink');
+const ANALOG_MESSAGE_DOWNLINK_PATH = path.resolve(__dirname, '../src/analog/message/downlink.ts');
+const ANALOG_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/analog/message/uplink.ts');
+const ANALOG_DOWNLINK_INDEX_PATH = path.resolve(ANALOG_DOWNLINK_PATH, 'index.ts');
+const ANALOG_UPLINK_INDEX_PATH = path.resolve(ANALOG_UPLINK_PATH, 'index.ts');
+
+const MTX_DOWNLINK_PATH = path.resolve(__dirname, '../src/mtx/commands/downlink');
+const MTX_UPLINK_PATH = path.resolve(__dirname, '../src/mtx/commands/uplink');
+const MTX_MESSAGE_DOWNLINK_PATH = path.resolve(__dirname, '../src/mtx/message/downlink.ts');
+const MTX_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/mtx/message/uplink.ts');
+const MTX_DOWNLINK_INDEX_PATH = path.resolve(MTX_DOWNLINK_PATH, 'index.ts');
+const MTX_UPLINK_INDEX_PATH = path.resolve(MTX_UPLINK_PATH, 'index.ts');
+
+const OBIS_OBSERVER_DOWNLINK_PATH = path.resolve(__dirname, '../src/obis-observer/commands/downlink');
+const OBIS_OBSERVER_UPLINK_PATH = path.resolve(__dirname, '../src/obis-observer/commands/uplink');
+const OBIS_OBSERVER_MESSAGE_DOWNLINK_PATH = path.resolve(__dirname, '../src/obis-observer/message/downlink.ts');
+const OBIS_OBSERVER_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/obis-observer/message/uplink.ts');
+const OBIS_OBSERVER_DOWNLINK_INDEX_PATH = path.resolve(OBIS_OBSERVER_DOWNLINK_PATH, 'index.ts');
+const OBIS_OBSERVER_UPLINK_INDEX_PATH = path.resolve(OBIS_OBSERVER_UPLINK_PATH, 'index.ts');
+
 
 const getCommandIdsFromMessageImport = messageData => {
     const result = {};
@@ -28,11 +48,25 @@ const getCommandIdsFromMessageImport = messageData => {
     return result;
 };
 
-const checkIdConsistency = ( commandIds, messageIds ) => {
-    commandIds.forEach(id => {
-        expect(messageIds.toBytesMap).toContain(id);
-        expect(messageIds.fromBytesMap).toContain(id);
-        expect(messageIds.nameMap).toContain(id);
+const checkIdConsistency = ( commands, messageIds, messagePath ) => {
+    Object.values(commands).forEach(({name, id}) => {
+        try {
+            expect(messageIds.toBytesMap).toContain(id);
+        } catch {
+            throw new Error(`Command ${name} (ID ${id}) is missing in toBytesMap at ${messagePath}`);
+        }
+
+        try {
+            expect(messageIds.fromBytesMap).toContain(id);
+        } catch {
+            throw new Error(`Command ${name} (ID ${id}) is missing in fromBytesMap at ${messagePath}`);
+        }
+
+        try {
+            expect(messageIds.nameMap).toContain(id);
+        } catch {
+            throw new Error(`Command ${name} (ID ${id}) is missing in nameMap at ${messagePath}`);
+        }
     });
 };
 
@@ -58,54 +92,73 @@ const getCommandFileNames = dirPath => fs.readdirSync(dirPath)
     .filter(file => file !== 'index.ts')
     .map(file => path.parse(file).name);
 
-const checkCommandFileNames = ( dirPath, importedCommands ) => {
+const checkCommandFileNames = ( dirPath, importPath, importedCommands ) => {
     const commandFileNames = getCommandFileNames(dirPath).sort();
     const importedCommandNames = Object.keys(importedCommands).sort();
 
-    expect(commandFileNames).toStrictEqual(importedCommandNames);
+    const missingInFiles = importedCommandNames.filter(name => !commandFileNames.includes(name));
+    const missingInImports = commandFileNames.filter(name => !importedCommandNames.includes(name));
+
+    try {
+        expect(commandFileNames).toStrictEqual(importedCommandNames);
+    } catch ( error ) {
+        throw new Error(
+            `Command file names mismatch in directory ${dirPath} compared to imported commands from ${importPath}\n\n`
+             + `Expected: ${importedCommandNames.join(', ')}\n\n`
+             + `Received: ${commandFileNames.join(', ')}\n\n`
+             + `Missing in files: ${missingInFiles.join(', ')}\n\n`
+             + `Missing in imports: ${missingInImports.join(', ')}`
+        );
+    }
 };
 
 
 describe('commands consistency', () => {
     test('analog downlink IDs should match', () => {
         checkIdConsistency(
-            getCommandIdsFromCommandsImport(analogCommands.downlink),
-            getCommandIdsFromMessageImport(analogMessage.downlink)
+            analogCommands.downlink,
+            getCommandIdsFromMessageImport(analogMessage.downlink),
+            ANALOG_MESSAGE_DOWNLINK_PATH
         );
     });
 
     test('analog uplink IDs should match', () => {
         checkIdConsistency(
-            getCommandIdsFromCommandsImport(analogCommands.uplink),
-            getCommandIdsFromMessageImport(analogMessage.uplink)
+            analogCommands.uplink,
+            getCommandIdsFromMessageImport(analogMessage.uplink),
+            ANALOG_MESSAGE_UPLINK_PATH
         );
     });
 
     test('mtx downlink IDs should match', () => {
         checkIdConsistency(
-            getCommandIdsFromCommandsImport(mtxCommands.downlink),
-            getCommandIdsFromMessageImport(mtxMessage.downlink)
+            mtxCommands.downlink,
+            getCommandIdsFromMessageImport(mtxMessage.downlink),
+            MTX_MESSAGE_DOWNLINK_PATH
         );
     });
 
     test('mtx uplink IDs should match', () => {
         checkIdConsistency(
-            getCommandIdsFromCommandsImport(mtxCommands.uplink),
-            getCommandIdsFromMessageImport(mtxMessage.uplink)
+            mtxCommands.uplink,
+            getCommandIdsFromMessageImport(mtxMessage.uplink),
+            MTX_MESSAGE_UPLINK_PATH
         );
     });
 
     test('obis-observer downlink IDs should match', () => {
         checkIdConsistency(
-            getCommandIdsFromCommandsImport(obisObserverCommands.downlink),
-            getCommandIdsFromMessageImport(obisObserverMessage.downlink)
+            obisObserverCommands.downlink,
+            getCommandIdsFromMessageImport(obisObserverMessage.downlink),
+            OBIS_OBSERVER_MESSAGE_DOWNLINK_PATH
         );
     });
 
     test('obis-observer uplink IDs should match', () => {
         checkIdConsistency(
-            getCommandIdsFromCommandsImport(obisObserverCommands.uplink),
-            getCommandIdsFromMessageImport(obisObserverMessage.uplink)
+            obisObserverCommands.uplink,
+            getCommandIdsFromMessageImport(obisObserverMessage.uplink),
+            OBIS_OBSERVER_MESSAGE_UPLINK_PATH
         );
     });
 
@@ -118,17 +171,17 @@ describe('commands consistency', () => {
     });
 
     test('analog command file names should match imported commands', () => {
-        checkCommandFileNames(path.resolve(__dirname, '../src/analog/commands/downlink'), analogCommands.downlink);
-        checkCommandFileNames(path.resolve(__dirname, '../src/analog/commands/uplink'), analogCommands.uplink);
+        checkCommandFileNames(ANALOG_DOWNLINK_PATH, ANALOG_DOWNLINK_INDEX_PATH, analogCommands.downlink);
+        checkCommandFileNames(ANALOG_UPLINK_PATH, ANALOG_UPLINK_INDEX_PATH, analogCommands.uplink);
     });
 
     test('mtx command file names should match imported commands', () => {
-        checkCommandFileNames(path.resolve(__dirname, '../src/mtx/commands/downlink'), mtxCommands.downlink);
-        checkCommandFileNames(path.resolve(__dirname, '../src/mtx/commands/uplink'), mtxCommands.uplink);
+        checkCommandFileNames(MTX_DOWNLINK_PATH, MTX_DOWNLINK_INDEX_PATH, mtxCommands.downlink);
+        checkCommandFileNames(MTX_UPLINK_PATH, MTX_UPLINK_INDEX_PATH, mtxCommands.uplink);
     });
 
     test('obis-observer command file names should match imported commands', () => {
-        checkCommandFileNames(path.resolve(__dirname, '../src/obis-observer/commands/downlink'), obisObserverCommands.downlink);
-        checkCommandFileNames(path.resolve(__dirname, '../src/obis-observer/commands/uplink'), obisObserverCommands.uplink);
+        checkCommandFileNames(OBIS_OBSERVER_DOWNLINK_PATH, OBIS_OBSERVER_DOWNLINK_INDEX_PATH, obisObserverCommands.downlink);
+        checkCommandFileNames(OBIS_OBSERVER_UPLINK_PATH, OBIS_OBSERVER_UPLINK_INDEX_PATH, obisObserverCommands.uplink);
     });
 });
