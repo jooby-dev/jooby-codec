@@ -1,5 +1,5 @@
 /**
- * Uplink command to get energy A+ for 4 tariffs (T1-T4) for a given month.
+ * Uplink command to get energy `A+` for 4 tariffs (`T1`-`T4`) for a given month.
  *
  * @packageDocumentation
  *

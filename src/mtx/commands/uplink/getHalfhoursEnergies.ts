@@ -1,5 +1,5 @@
 /**
- * Uplink command to get halfhours energies by 4 tariffs (T1-T4).
+ * Uplink command to get halfhours energies by 4 tariffs (`T1`-`T4`).
  *
  * **This command can be transmitted only via Lora.**
  *

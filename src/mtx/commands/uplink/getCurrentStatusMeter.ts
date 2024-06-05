@@ -92,10 +92,10 @@ interface IGetCurrentStatusMeterResponseParameters {
     /** Calibration enable flag. */
     calEnableFlag: ICalibrationEnableFlagParameters,
 
-    /** Current tariff A+. */
+    /** Current tariff `A+`. */
     curTariff: types.TUint8,
 
-    /** Current tariff A-. */
+    /** Current tariff `A-`. */
     curTariffExp: types.TUint8,
 
     /** Is it DST or Standard time. */
