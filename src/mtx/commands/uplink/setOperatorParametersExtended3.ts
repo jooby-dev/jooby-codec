@@ -1,26 +1,26 @@
 /**
- * Uplink command to reset the maximum daily power.
+ * Uplink command to set the shutdown thresholds for negative active power (`A-`).
  *
- * The corresponding downlink command: `resetPowerMaxDay`.
+ * The corresponding downlink command: `setOperatorParametersExtended3`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as resetPowerMaxDay from 'jooby-codec/mtx/commands/uplink/resetPowerMaxDay.js';
+ * import * as setOperatorParametersExtended3 from 'jooby-codec/mtx/commands/uplink/setOperatorParametersExtended3.js';
  *
  * // empty response
  * const bytes = [];
  *
  * // decoded payload
- * const parameters = resetPowerMaxDay.fromBytes(bytes);
+ * const parameters = setOperatorParametersExtended3.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
  * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/ResetPowerMaxDay.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetOperatorParametersExtended3.md#response)
  */
 
 import * as command from '../../utils/command.js';
@@ -28,8 +28,8 @@ import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x35;
-export const name: types.TCommandName = 'resetPowerMaxDay';
+export const id: types.TCommandId = 0x72;
+export const name: types.TCommandName = 'setOperatorParametersExtended3';
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
@@ -44,7 +44,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x35, 0x00
+            0x72, 0x00
         ]
     }
 };
@@ -61,7 +61,6 @@ export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameter
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    // no parameters to decode
     return {};
 };
 

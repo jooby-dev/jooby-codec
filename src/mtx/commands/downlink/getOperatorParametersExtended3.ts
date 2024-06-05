@@ -1,42 +1,37 @@
 /**
- * Uplink command to reset the maximum daily power.
- *
- * The corresponding downlink command: `resetPowerMaxDay`.
+ * Downlink command to get the shutdown thresholds for negative active power (`A-`).
  *
  * @packageDocumentation
  *
- * @example create command instance from command body hex dump
+ * @example
  * ```js
- * import * as resetPowerMaxDay from 'jooby-codec/mtx/commands/uplink/resetPowerMaxDay.js';
+ * import * as getOperatorParametersExtended3 from 'jooby-codec/mtx/commands/downlink/getOperatorParametersExtended3.js';
  *
- * // empty response
- * const bytes = [];
+ * const bytes = getOperatorParametersExtended3.toBytes();
  *
- * // decoded payload
- * const parameters = resetPowerMaxDay.fromBytes(bytes);
- *
- * console.log(parameters);
+ * // command binary representation
+ * console.log(bytes);
  * // output:
- * {}
+ * [113, 0]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/ResetPowerMaxDay.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetOperatorParametersExtended3.md#request)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import {READ_WRITE} from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x35;
-export const name: types.TCommandName = 'resetPowerMaxDay';
+export const id: types.TCommandId = 0x71;
+export const name: types.TCommandName = 'getOperatorParametersExtended3';
 export const headerSize = 2;
 export const maxSize = 0;
-export const accessLevel: types.TAccessLevel = READ_WRITE;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'simple response': {
+    'simple request': {
         id,
         name,
         headerSize,
@@ -44,7 +39,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x35, 0x00
+            0x71, 0x00
         ]
     }
 };

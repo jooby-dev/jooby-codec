@@ -398,6 +398,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getOperatorParametersExtended3',
+        hex: '0a 13 0d ff f3 10 14 71 c0 b0 25 26 c1 72 a2 82 7e 63',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 0d ff f3 10 14 71 c0 b0 25 26 c1 72 a2 82 7d 5e 63 1f 98 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getOperatorParametersExtended3.accessLevel,
+        commands: [
+            downlinkCommands.getOperatorParametersExtended3.examples['simple request']
+        ],
+        lrc: 0x37,
+        crc: 0x981f,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getOpParams',
         hex: '0a 13 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22 a0 c6 7e',
@@ -648,6 +663,21 @@ const downlinkMessages: TMessageList = [
         ],
         lrc: 0x17,
         crc: 0xa940,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'setOperatorParametersExtended3',
+        hex: '0a 12 86 bb 64 fc 64 6e 2f 3c 76 db 6b d7 35 9b f6 02 ce dd 6d bc 69 ee 13 ad 50 f3 03 41 2b da 48 1e',
+        frameHex: '7e 50 aa aa ff ff 0a 12 86 bb 64 fc 64 6e 2f 3c 76 db 6b d7 35 9b f6 02 ce dd 6d bc 69 ee 7d 33 ad 50 f3 03 41 2b da 48 1e ff 1f 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.setOperatorParametersExtended3.accessLevel,
+        commands: [
+            downlinkCommands.setOperatorParametersExtended3.examples['simple request']
+        ],
+        lrc: 0x20,
+        crc: 0x1fff,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -1265,6 +1295,21 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getOperatorParametersExtended3',
+        hex: '0a 13 97 a1 04 b0 ec 3c f6 60 02 f3 d3 d3 d2 22 2b 6b ab 12 fa 37 6e cb 75 13 8a b4 f1 39 96 31 e6 2a',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 97 a1 04 b0 ec 3c f6 60 02 f3 d3 d3 d2 22 2b 6b ab 12 fa 37 6e cb 75 7d 33 8a b4 f1 39 96 31 e6 2a 60 33 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getOperatorParametersExtended3.accessLevel,
+        commands: [
+            uplinkCommands.getOperatorParametersExtended3.examples['simple response']
+        ],
+        lrc: 0x22,
+        crc: 0x3360,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getOpParams',
         hex: '0a 13 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 87 e4 c5 8e 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 5d 87 e4 c5 8e 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d 5d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75 9f 27 7e',
@@ -1500,6 +1545,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x1a,
         crc: 0xd77e, // special case
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'setOperatorParametersExtended3',
+        hex: '0a 12 92 d0 25 2d 1a c8 94 b8 74 31 d7 d7 bb f8 e1 1a',
+        frameHex: '7e 51 aa aa ff ff 0a 12 92 d0 25 2d 1a c8 94 b8 74 31 d7 d7 bb f8 e1 1a 9a 09 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.setOperatorParametersExtended3.accessLevel,
+        commands: [
+            uplinkCommands.setOperatorParametersExtended3.examples['simple response']
+        ],
+        lrc: 0x35,
+        crc: 0x099a,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

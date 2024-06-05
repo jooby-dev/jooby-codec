@@ -17,6 +17,8 @@
  * // output:
  * [92, 2, 0, 5]
  * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetCorrectDateTime.md#request)
  */
 
 import * as command from '../../utils/command.js';

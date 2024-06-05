@@ -26,7 +26,7 @@
  * // same as getDefaultOperatorParameters()
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetOpParams.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetOpParams.md#response)
  */
 
 import * as command from '../../utils/command.js';
