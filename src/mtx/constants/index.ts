@@ -13,3 +13,4 @@ export * as resultCodes from './resultCodes.js';
 export * as screenIds from './screenIds.js';
 export * as screenSets from './screenSets.js';
 export * as criticalEvents from './criticalEvents.js';
+export * as specialOperationTypes from './specialOperationTypes.js';

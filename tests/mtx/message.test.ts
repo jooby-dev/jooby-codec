@@ -155,6 +155,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getDayMaxDemandExport',
+        hex: '0a 13 70 80 47 e2 54 69 cc b3 99 64 ea 9d 29 ff 7f 21',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 70 80 47 e2 54 69 cc b3 99 64 ea 9d 29 ff 7f 21 0b fb 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getDayMaxDemandExport.accessLevel,
+        commands: [
+            downlinkCommands.getDayMaxDemandExport.examples['request for 2024.03.22']
+        ],
+        lrc: 0x10,
+        crc: 0xfb0b,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getDayMaxDemandPrevious',
         hex: '0a 13 60 60 a6 9b f6 36 09 72 e9 94 74 60 4e ff af 58',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 60 60 a6 9b f6 36 09 72 e9 94 74 60 4e ff af 58 d7 d3 7e',
@@ -773,6 +788,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'setSpecialOperation',
+        hex: '0a 12 23 01 38 8e 26 57 98 ba 4a e5 07 9e ed 60 18 a5',
+        frameHex: '7e 50 aa aa ff ff 0a 12 23 01 38 8e 26 57 98 ba 4a e5 07 9e ed 60 18 a5 94 6f 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.setSpecialOperation.accessLevel,
+        commands: [
+            downlinkCommands.setSpecialOperation.examples['read screens info']
+        ],
+        lrc: 0xf4,
+        crc: 0x6f94,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'turnRelayOff',
         hex: '0a 12 9d 81 66 34 ec 71 c4 62 af 9f 69 f6 c9 eb e8 08',
         frameHex: '7e 50 aa aa ff ff 0a 12 9d 81 66 34 ec 71 c4 62 af 9f 69 f6 c9 eb e8 08 cb 7f 7e',
@@ -1009,21 +1039,6 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getDayMaxDemandPrevious',
-        hex: '0a 13 c9 aa a3 be be 34 65 1d cb e5 d4 07 99 5b e2 5c 24 51 c8 e3 43 de 82 05 a7 9a 0d b8 f0 df b0 0b',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 c9 aa a3 be be 34 65 1d cb e5 d4 07 99 5b e2 5c 24 51 c8 e3 43 de 82 05 a7 9a 0d b8 f0 df b0 0b f2 c8 7e',
-        messageId: 10,
-        accessLevel: uplinkCommands.getDayMaxDemandPrevious.accessLevel,
-        commands: [
-            uplinkCommands.getDayMaxDemandPrevious.examples['response for 2023.03.12']
-        ],
-        lrc: 0x67,
-        crc: 0xc8f2,
-        frameType: frameTypes.DATA_RESPONSE,
-        source: 0xffff,
-        destination: 0xaaaa
-    },
-    {
         name: 'getDayMaxDemand',
         hex: '0a 13 f2 c4 07 c3 2e 52 c6 5c bc ee be d4 79 68 15 ee 78 49 7d 33 8a 26 6f 16 02 5f 13 58 5d a3 da 8b',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 f2 c4 07 c3 2e 52 c6 5c bc ee be d4 79 68 15 ee 78 49 7d 5d 33 8a 26 6f 16 02 5f 7d 33 58 5d a3 da 8b 60 da 7e',
@@ -1034,6 +1049,36 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x1c,
         crc: 0xda60,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDayMaxDemandExport',
+        hex: '0a 13 06 50 15 9c 89 bb 12 a8 e8 c6 3e cd a4 bd a3 62 c5 31 cb 4a 3b d9 fe 22 ee 50 15 c6 23 f7 1d fb',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 06 50 15 9c 89 bb 12 a8 e8 c6 3e cd a4 bd a3 62 c5 31 cb 4a 3b d9 fe 22 ee 50 15 c6 23 f7 1d fb e8 fe 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDayMaxDemandExport.accessLevel,
+        commands: [
+            uplinkCommands.getDayMaxDemandExport.examples['response for 2023.03.12']
+        ],
+        lrc: 0x75,
+        crc: 0xfee8,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDayMaxDemandPrevious',
+        hex: '0a 13 c9 aa a3 be be 34 65 1d cb e5 d4 07 99 5b e2 5c 24 51 c8 e3 43 de 82 05 a7 9a 0d b8 f0 df b0 0b',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 c9 aa a3 be be 34 65 1d cb e5 d4 07 99 5b e2 5c 24 51 c8 e3 43 de 82 05 a7 9a 0d b8 f0 df b0 0b f2 c8 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDayMaxDemandPrevious.accessLevel,
+        commands: [
+            uplinkCommands.getDayMaxDemandPrevious.examples['response for 2023.03.12']
+        ],
+        lrc: 0x67,
+        crc: 0xc8f2,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1635,6 +1680,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x55,
         crc: 0x9632,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'setSpecialOperation',
+        hex: '0a 12 08 53 33 e7 53 69 d7 01 2e b3 62 ad 3d e0 12 0c',
+        frameHex: '7e 51 aa aa ff ff 0a 12 08 53 33 e7 53 69 d7 01 2e b3 62 ad 3d e0 12 0c 22 72 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.setSpecialOperation.accessLevel,
+        commands: [
+            uplinkCommands.setSpecialOperation.examples['both screens are present']
+        ],
+        lrc: 0x21,
+        crc: 0x7222,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
