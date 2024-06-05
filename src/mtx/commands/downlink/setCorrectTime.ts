@@ -25,6 +25,8 @@
  * // output:
  * [28, 9, 3, 0, 3, 1, 10, 0, 4, 1, 1]
  * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetCorrectTime.md#request)
  */
 
 import * as command from '../../utils/command.js';

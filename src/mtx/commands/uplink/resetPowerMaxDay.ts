@@ -20,7 +20,7 @@
  * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/resetPowerMaxDay.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/ResetPowerMaxDay.md#response)
  */
 
 import * as command from '../../utils/command.js';

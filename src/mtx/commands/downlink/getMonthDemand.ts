@@ -20,7 +20,7 @@
  * [23, 2, 24, 3]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/getMonthDemand.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetMonthDemand.md#request)
  */
 
 import * as types from '../../types.js';

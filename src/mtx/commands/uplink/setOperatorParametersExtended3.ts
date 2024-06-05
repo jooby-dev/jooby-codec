@@ -20,7 +20,7 @@
  * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/setOperatorParametersExtended3.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetOperatorParametersExtended3.md#response)
  */
 
 import * as command from '../../utils/command.js';

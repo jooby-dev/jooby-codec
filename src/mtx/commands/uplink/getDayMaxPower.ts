@@ -39,6 +39,8 @@
  *     ]
  * }
  * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDayMaxPower.md#response)
  */
 
 import * as command from '../../utils/command.js';

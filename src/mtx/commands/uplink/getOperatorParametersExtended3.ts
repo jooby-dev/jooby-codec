@@ -31,7 +31,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/getOperatorParametersExtended3.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetOperatorParametersExtended3.md#response)
  */
 
 import * as command from '../../utils/command.js';
@@ -70,7 +70,6 @@ export const examples: command.TCommandExamples = {
             0x71, 0x11,
             0x00, 0x00, 0x00, 0x64, 0x00, 0x00, 0x00, 0xc8, 0x00, 0x00, 0x01, 0x2c, 0x00, 0x00, 0x01, 0x90, 0x14
         ]
-
     }
 };
 

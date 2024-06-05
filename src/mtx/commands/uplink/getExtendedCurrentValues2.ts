@@ -58,7 +58,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/uplink/GetExtendedCurrentValues2.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetExtendedCurrentValues2.md#response)
  */
 
 import * as command from '../../utils/command.js';

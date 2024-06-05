@@ -26,6 +26,8 @@
  * // output:
  * [114, 17, 0, 0, 0, 100, 0, 0, 0, 200, 0, 0, 1, 44, 0, 0, 1, 144, 20]
  * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetOperatorParametersExtended3.md#request)
  */
 
 import * as command from '../../utils/command.js';
@@ -64,7 +66,6 @@ export const examples: command.TCommandExamples = {
             0x72, 0x11,
             0x00, 0x00, 0x00, 0x64, 0x00, 0x00, 0x00, 0xc8, 0x00, 0x00, 0x01, 0x2c, 0x00, 0x00, 0x01, 0x90, 0x14
         ]
-
     }
 };
 
