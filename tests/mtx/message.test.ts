@@ -668,6 +668,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'setOperatorParametersExtended3',
+        hex: '0a 12 86 bb 64 fc 64 6e 2f 3c 76 db 6b d7 35 9b f6 02 ce dd 6d bc 69 ee 13 ad 50 f3 03 41 2b da 48 1e',
+        frameHex: '7e 50 aa aa ff ff 0a 12 86 bb 64 fc 64 6e 2f 3c 76 db 6b d7 35 9b f6 02 ce dd 6d bc 69 ee 7d 33 ad 50 f3 03 41 2b da 48 1e ff 1f 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.setOperatorParametersExtended3.accessLevel,
+        commands: [
+            downlinkCommands.setOperatorParametersExtended3.examples['simple request']
+        ],
+        lrc: 0x20,
+        crc: 0x1fff,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'setOpParams',
         hex: '0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75',
         frameHex: '7e 50 aa aa ff ff 0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d 5d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75 36 b9 7e',
@@ -1530,6 +1545,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x1a,
         crc: 0xd77e, // special case
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'setOperatorParametersExtended3',
+        hex: '0a 12 92 d0 25 2d 1a c8 94 b8 74 31 d7 d7 bb f8 e1 1a',
+        frameHex: '7e 51 aa aa ff ff 0a 12 92 d0 25 2d 1a c8 94 b8 74 31 d7 d7 bb f8 e1 1a 9a 09 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.setOperatorParametersExtended3.accessLevel,
+        commands: [
+            uplinkCommands.setOperatorParametersExtended3.examples['simple response']
+        ],
+        lrc: 0x35,
+        crc: 0x099a,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

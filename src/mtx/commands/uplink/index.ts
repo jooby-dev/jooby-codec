@@ -48,6 +48,7 @@ export * as setCorrectTime from './setCorrectTime.js';
 export * as setDateTime from './setDateTime.js';
 export * as setDayProfile from './setDayProfile.js';
 export * as setDisplayParam from './setDisplayParam.js';
+export * as setOperatorParametersExtended3 from './setOperatorParametersExtended3.js';
 export * as setOpParams from './setOpParams.js';
 export * as setSaldo from './setSaldo.js';
 export * as setSaldoParameters from './setSaldoParameters.js';

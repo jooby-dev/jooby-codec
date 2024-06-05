@@ -1,37 +1,42 @@
 /**
- * Downlink command to get the shutdown thresholds for negative active power (`A-`).
+ * Uplink command to set the shutdown thresholds for negative active power (`A-`).
+ *
+ * The corresponding downlink command: `setOperatorParametersExtended3`.
  *
  * @packageDocumentation
  *
- * @example
+ * @example create command instance from command body hex dump
  * ```js
- * import * as getOperatorParametersExtended3 from 'jooby-codec/mtx/commands/downlink/getOperatorParametersExtended3.js';
+ * import * as setOperatorParametersExtended3 from 'jooby-codec/mtx/commands/uplink/setOperatorParametersExtended3.js';
  *
- * const bytes = getOperatorParametersExtended3.toBytes();
+ * // empty response
+ * const bytes = [];
  *
- * // command binary representation
- * console.log(bytes);
+ * // decoded payload
+ * const parameters = setOperatorParametersExtended3.fromBytes(bytes);
+ *
+ * console.log(parameters);
  * // output:
- * [113, 0]
+ * {}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/getOperatorParametersExtended3.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/setOperatorParametersExtended3.md#response)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import {READ_WRITE} from '../../constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x71;
-export const name: types.TCommandName = 'getOperatorParametersExtended3';
+export const id: types.TCommandId = 0x72;
+export const name: types.TCommandName = 'setOperatorParametersExtended3';
 export const headerSize = 2;
 export const maxSize = 0;
-export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const accessLevel: types.TAccessLevel = READ_WRITE;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'simple request': {
+    'simple response': {
         id,
         name,
         headerSize,
@@ -39,7 +44,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x71, 0x00
+            0x72, 0x00
         ]
     }
 };
@@ -56,7 +61,6 @@ export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameter
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    // no parameters to decode
     return {};
 };
 
