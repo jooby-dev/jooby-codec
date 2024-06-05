@@ -829,6 +829,55 @@ export interface IGetDayMaxDemandResponseParameters {
     }>
 }
 
+export interface IOperatorParametersExtended3RelaySet {
+    /**
+     * Turn off the relay upon exceeding the active maximum negative power threshold for tariff `T1`.
+     */
+    RELAY_OFF_LIMIT_P_MINUS_T1: boolean,
+
+    /**
+     * Turn off the relay upon exceeding the active maximum negative power threshold for tariff `T2`.
+     */
+    RELAY_OFF_LIMIT_P_MINUS_T2: boolean,
+
+    /**
+     * Turn off the relay upon exceeding the active maximum negative power threshold for tariff `T3`.
+     */
+    RELAY_OFF_LIMIT_P_MINUS_T3: boolean,
+
+    /**
+     * Turn off the relay upon exceeding the active maximum negative power threshold for tariff `T4`.
+     */
+    RELAY_OFF_LIMIT_P_MINUS_T4: boolean
+}
+
+export interface IOperatorParametersExtended3 {
+    /**
+     * Active maximum negative power threshold for tariff `T1`, Watts.
+     */
+    pmaxMinusThreshold0: types.TUint32,
+
+    /**
+     * Active maximum negative power threshold for tariff `T2`, Watts.
+     */
+    pmaxMinusThreshold1: types.TUint32,
+
+    /**
+     * Active maximum negative power threshold for tariff `T3`, Watts.
+     */
+    pmaxMinusThreshold2: types.TUint32,
+
+    /**
+     * Active maximum negative power threshold for tariff `T4`, Watts.
+     */
+    pmaxMinusThreshold3: types.TUint32,
+
+    /**
+     * Additional relay settings.
+     */
+    relaySet: IOperatorParametersExtended3RelaySet
+}
+
 /** `1` - `A+`, `2` - `A-` */
 export type TEnergyType = typeof A_PLUS_ENERGY_TYPE | typeof A_MINUS_ENERGY_TYPE;
 
@@ -1007,6 +1056,13 @@ const extendedCurrentValues2Status3Mask = {
     POWER_B_NEGATIVE: 2 ** 7
 };
 
+const operatorParametersExtended3RelaySetMask = {
+    RELAY_OFF_LIMIT_P_MINUS_T1: 0x04,
+    RELAY_OFF_LIMIT_P_MINUS_T2: 0x08,
+    RELAY_OFF_LIMIT_P_MINUS_T3: 0x10,
+    RELAY_OFF_LIMIT_P_MINUS_T4: 0x20
+};
+
 
 function getPackedEnergyType ( byte: number ): TEnergyType {
     const isAPlus = !!bitSet.extractBits(byte, TARIFF_NUMBER, 1);
@@ -1142,7 +1198,10 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setEvent ( event: IEvent ),
 
     getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
-    setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters )
+    setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
+
+    getOperatorParametersExtended3 (): IOperatorParametersExtended3,
+    setOperatorParametersExtended3 ( operatorParameters: IOperatorParametersExtended3 )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -1645,6 +1704,7 @@ CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxD
 
     return {date, power};
 };
+
 CommandBinaryBuffer.prototype.setDayMaxDemandResponse = function ( parameters: IGetDayMaxDemandResponseParameters ) {
     this.setDate(parameters.date);
 
@@ -1653,6 +1713,26 @@ CommandBinaryBuffer.prototype.setDayMaxDemandResponse = function ( parameters: I
         this.setUint8(value.minutes);
         this.setUint32(value.power);
     });
+};
+
+CommandBinaryBuffer.prototype.getOperatorParametersExtended3 = function (): IOperatorParametersExtended3 {
+    return {
+        pmaxMinusThreshold0: this.getUint32(),
+        pmaxMinusThreshold1: this.getUint32(),
+        pmaxMinusThreshold2: this.getUint32(),
+        pmaxMinusThreshold3: this.getUint32(),
+        relaySet: (bitSet.toObject(operatorParametersExtended3RelaySetMask, this.getUint8()) as unknown) as IOperatorParametersExtended3RelaySet
+    };
+};
+
+CommandBinaryBuffer.prototype.setOperatorParametersExtended3 = function ( parameters: IOperatorParametersExtended3 ) {
+    const {pmaxMinusThreshold0, pmaxMinusThreshold1, pmaxMinusThreshold2, pmaxMinusThreshold3, relaySet} = parameters;
+
+    this.setUint32(pmaxMinusThreshold0);
+    this.setUint32(pmaxMinusThreshold1);
+    this.setUint32(pmaxMinusThreshold2);
+    this.setUint32(pmaxMinusThreshold3);
+    this.setUint8(bitSet.fromObject(operatorParametersExtended3RelaySetMask, (relaySet as unknown) as bitSet.TBooleanObject));
 };
 
 export const getDefaultOperatorParameters = (): IOperatorParameters => (
