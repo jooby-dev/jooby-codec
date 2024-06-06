@@ -578,6 +578,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'resetPowerMaxMonth',
+        hex: '0a 12 a5 a2 26 c1 8f e8 1a aa 33 20 44 3e 67 53 23 99',
+        frameHex: '7e 50 aa aa ff ff 0a 12 a5 a2 26 c1 8f e8 1a aa 33 20 44 3e 67 53 23 99 9b ee 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.resetPowerMaxMonth.accessLevel,
+        commands: [
+            downlinkCommands.resetPowerMaxMonth.examples['simple request']
+        ],
+        lrc: 0x71,
+        crc: 0xee9b,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'runTariffPlan',
         hex: '0a 12 db a4 0e 02 c2 83 a4 6d 3d 1c 74 1d bd d2 1c ca',
         frameHex: '7e 50 aa aa ff ff 0a 12 db a4 0e 02 c2 83 a4 6d 3d 1c 74 1d bd d2 1c ca f5 4b 7e',
@@ -1515,6 +1530,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x72,
         crc: 0x6d9a,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'resetPowerMaxMonth',
+        hex: '0c 12 a5 a2 26 c1 8f e8 1a aa 33 20 44 3e 67 53 23 99',
+        frameHex: '7e 51 aa aa ff ff 0c 12 a5 a2 26 c1 8f e8 1a aa 33 20 44 3e 67 53 23 99 22 65 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.resetPowerMaxMonth.accessLevel,
+        commands: [
+            uplinkCommands.resetPowerMaxMonth.examples['simple response']
+        ],
+        lrc: 0x71,
+        crc: 0x6522,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

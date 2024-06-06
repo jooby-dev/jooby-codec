@@ -43,6 +43,7 @@ export * as getSpecialDay from './getSpecialDay.js';
 export * as getVersion from './getVersion.js';
 export * as prepareRatePlan from './prepareRatePlan.js';
 export * as resetPowerMaxDay from './resetPowerMaxDay.js';
+export * as resetPowerMaxMonth from './resetPowerMaxMonth.js';
 export * as runTariffPlan from './runTariffPlan.js';
 export * as setAccessKey from './setAccessKey.js';
 export * as setCorrectDateTime from './setCorrectDateTime.js';
