@@ -413,6 +413,22 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        // does not exist in empro
+        name: 'getMeterInfo',
+        hex: '0a 13 a0 d0 e1 0f 40 49 06 36 39 90 41 40 7b 9e 96 8c',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 a0 d0 e1 0f 40 49 06 36 39 90 41 40 7b 9e 96 8c e3 0c 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getMeterInfo.accessLevel,
+        commands: [
+            downlinkCommands.getMeterInfo.examples['simple request']
+        ],
+        lrc: 0x3c,
+        crc: 0x0ce3,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getMonthDemand',
         hex: '0a 13 9a 6f bb b5 98 1e 40 eb c5 11 13 19 36 c6 68 b6',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 9a 6f bb b5 98 1e 40 eb c5 7d 31 7d 33 19 36 c6 68 b6 3c 65 7e',
@@ -1365,6 +1381,22 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x1c,
         crc: 0x0dec,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        // does not exist in empro
+        name: 'getMeterInfo',
+        hex: '0a 13 1f 3c 50 9e 5f 4d 5c b0 ee 7c f5 b1 6e fa 53 a5',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 1f 3c 50 9e 5f 4d 5c b0 ee 7c f5 b1 6e fa 53 a5 48 45 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getMeterInfo.accessLevel,
+        commands: [
+            uplinkCommands.getMeterInfo.examples['simple response']
+        ],
+        lrc: 0x3d,
+        crc: 0x4548,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
