@@ -382,6 +382,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getHalfHourDemandPrevious',
+        hex: '0a 13 7a cf f2 19 4d 9b 5c 25 b8 6b 13 47 f4 94 40 92',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 7a cf f2 19 4d 9b 5c 25 b8 6b 7d 33 47 f4 94 40 92 f8 7d 33 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getHalfHourDemandPrevious.accessLevel,
+        commands: [
+            downlinkCommands.getHalfHourDemandPrevious.examples['simple request']
+        ],
+        lrc: 0x0d,
+        crc: 0x13f8,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         // does not match empro
         name: 'getHalfhoursEnergies',
         hex: '0a 10 10 6f 05 2a 43 03 05 03 00 43',
@@ -1304,6 +1319,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x87,
         crc: 0xb077,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getHalfHourDemandPrevious',
+        hex: '0a 13 60 df 92 f8 70 a0 13 37 ee 80 2c 35 de 33 4a 18 d5 43 5d 19 51 04 14 2f 1d 4b 2c 86 d3 02 69 20 5a 03 4d 02 18 23 f9 75 e0 c4 d0 ae e1 27 e8 db 3f f3 68 cf 35 ed 34 51 53 d8 07 d5 2f 22 6d 89 24 2a be 58 95 14 bf e8 a3 a2 35 7e 0b 8b c9 12 65 ae 3e 94 ca 2e d7 ad 05 1b 32 4a 19 74 1a 04 c4 96 68 1c a4 f3 99 0d 2e ba ed 45 2b 7f 58 7d',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 60 df 92 f8 70 a0 7d 33 37 ee 80 2c 35 de 33 4a 18 d5 43 5d 19 51 04 14 2f 1d 4b 2c 86 d3 02 69 20 5a 03 4d 02 18 23 f9 75 e0 c4 d0 ae e1 27 e8 db 3f f3 68 cf 35 ed 34 51 53 d8 07 d5 2f 22 6d 89 24 2a be 58 95 14 bf e8 a3 a2 35 7d 5e 0b 8b c9 12 65 ae 3e 94 ca 2e d7 ad 05 1b 32 4a 19 74 1a 04 c4 96 68 1c a4 f3 99 0d 2e ba ed 45 2b 7f 58 7d 5d 57 2e 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getHalfHourDemandPrevious.accessLevel,
+        commands: [
+            uplinkCommands.getHalfHourDemandPrevious.examples['response for day when DST start/end']
+        ],
+        lrc: 0x76,
+        crc: 0x2e57,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
