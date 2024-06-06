@@ -250,22 +250,92 @@ checkMessages('downlink messages', message.downlink, downlinkMessages);
 checkMessages('uplink messages', message.uplink, uplinkMessages);
 checkMessages('mtx uplink messages', message.uplink, mtxUplinkMessages, {hardwareType: MTXLORA});
 
-describe('message validation', () => {
-    test('test valid input', () => {
-        const bytes = getBytesFromHex('02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6');
-        const messageFromBytes = message.downlink.fromBytes(bytes);
+describe('message validation from real devices', () => {
+    test('parse valid hex dumps', () => {
+        const templates: Array<{hex: string; direction: 'uplink' | 'downlink'; expectedResults: {commandIds: Array<number>; bytesLength: number; lrc: number}}> = [
+            {
+                hex: '02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6',
+                direction: 'downlink',
+                expectedResults: {lrc: 166, bytesLength: 17, commandIds: [2, 3]}
+            },
+            {
+                hex: '14 0d 02 84 0c 01 e3 5c 0c 69 10 17 fd 62 64 18 03 01 b9 17 55',
+                direction: 'uplink',
+                expectedResults: {lrc: 85, bytesLength: 21, commandIds: [20, 24]}
+            }
+        ];
 
-        if ( 'error' in messageFromBytes ) {
-            throw new Error('wrong message');
-        }
+        templates.forEach(template => {
+            const bytes = getBytesFromHex(template.hex);
+            // eslint-disable-next-line import/namespace
+            const messageFromBytes = message[template.direction].fromBytes(bytes);
+
+            if ( 'error' in messageFromBytes ) {
+                throw new Error('Expected valid message, but got error');
+            }
+
+            const {expected, actual} = messageFromBytes.lrc;
+
+            messageFromBytes.commands.forEach((command, index) => {
+                if ( 'id' in command ) {
+                    expect(command.id).toBe(template.expectedResults.commandIds[index]);
+                } else {
+                    throw new Error('Expected command id, but not found');
+                }
+            });
+
+            expect([actual, expected]).toEqual([template.expectedResults.lrc, template.expectedResults.lrc]);
+            expect(messageFromBytes.bytes.length).toBe(template.expectedResults.bytesLength);
+        });
     });
 
-    test('test invalid input', () => {
-        const bytes = getBytesFromHex('02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9 a6');
-        const messageFromBytes = message.downlink.fromBytes(bytes);
+    test('parse invalid hex dumps', () => {
+        const templates: Array<{hex: string; direction: string, errorMessage: string}> = [
+            {
+                hex: '02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9 a6',
+                direction: 'downlink',
+                errorMessage: 'Mismatch LRC.'
+            }
+        ];
 
-        if ( !('error' in messageFromBytes) ) {
-            throw new Error('wrong message');
-        }
+        templates.forEach(template => {
+            const bytes = getBytesFromHex(template.hex);
+            // eslint-disable-next-line import/namespace
+            const messageFromBytes = message[template.direction].fromBytes(bytes);
+
+            if (!('error' in messageFromBytes)) {
+                throw new Error('Expected invalid message, but got valid');
+            }
+
+            expect(messageFromBytes.error).toEqual(template.errorMessage);
+        });
+    });
+
+    test('parse dumps with invalid commands', () => {
+        const templates: Array<{hex: string; direction: string, errorMessage: string}> = [
+            {
+                hex: '14 0d 02 84 0c 01 e3 5c 0c 69 10 17 fd 62 64 18 03 01 b9 17 55',
+                direction: 'downlink',
+                errorMessage: 'Wrong buffer size'
+            }
+        ];
+
+        templates.forEach(template => {
+            const bytes = getBytesFromHex(template.hex);
+            // eslint-disable-next-line import/namespace
+            const messageFromBytes = message[template.direction].fromBytes(bytes);
+
+            if ( 'commands' in messageFromBytes ) {
+                messageFromBytes.commands.forEach(command => {
+                    if ( 'error' in command ) {
+                        expect(command.error).toContain(template.errorMessage);
+                    } else {
+                        throw new Error('Expected error in command, but none found');
+                    }
+                });
+            } else {
+                throw new Error('Expected commands in message, but none found');
+            }
+        });
     });
 });
