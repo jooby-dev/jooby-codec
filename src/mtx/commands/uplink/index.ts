@@ -35,6 +35,8 @@ export * as getHalfhoursEnergies from './getHalfhoursEnergies.js';
 export * as getMagneticFieldThreshold from './getMagneticFieldThreshold.js';
 export * as getMeterInfo from './getMeterInfo.js';
 export * as getMonthDemand from './getMonthDemand.js';
+export * as getMonthMaxDemand from './getMonthMaxDemand.js';
+export * as getMonthMaxDemandExport from './getMonthMaxDemandExport.js';
 export * as getOperatorParametersExtended3 from './getOperatorParametersExtended3.js';
 export * as getOpParams from './getOpParams.js';
 export * as getRatePlanInfo from './getRatePlanInfo.js';
