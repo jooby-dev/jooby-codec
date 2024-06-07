@@ -51,6 +51,8 @@ interface IGasStatus extends IStatusBase {
     temperature: types.TUint8;
     remainingBatteryCapacity?: types.TUint8;
     lastEventSequenceNumber: types.TUint8;
+    /** Displays the error rate coefficient when communicating with the base station (downlink frames), percents. */
+    downlinkQuality?: types.TUint8;
 }
 
 interface IMtxStatus extends IStatusBase {
@@ -92,7 +94,7 @@ const UNKNOWN_BATTERY_RESISTANCE = 65535;
 const UNKNOWN_BATTERY_CAPACITY = 255;
 
 export const examples: command.TCommandExamples = {
-    'status for GASI3': {
+    'status for GASI3 (old)': {
         id,
         name,
         headerSize,
@@ -103,13 +105,34 @@ export const examples: command.TCommandExamples = {
                 batteryVoltage: {underLowLoad: 3158, underHighLoad: 3522},
                 batteryInternalResistance: 10034,
                 temperature: 14,
-                remainingBatteryCapacity: 41,
+                remainingBatteryCapacity: 40.9,
                 lastEventSequenceNumber: 34
             }
         },
         bytes: [
             0x14, 0x0c,
             0x02, 0x0a, 0x03, 0x01, 0xc5, 0x6d, 0xc2, 0x27, 0x32, 0x0e, 0x68, 0x22
+        ]
+    },
+    'status for GASI3 (new)': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            software: {type: 2, version: 10},
+            hardware: {type: hardwareTypes.GASI3, version: 1},
+            data: {
+                batteryVoltage: {underLowLoad: 3158, underHighLoad: 3522},
+                batteryInternalResistance: 10034,
+                temperature: 14,
+                remainingBatteryCapacity: 40.9,
+                lastEventSequenceNumber: 34,
+                downlinkQuality: 42
+            }
+        },
+        bytes: [
+            0x14, 0x0d,
+            0x02, 0x0a, 0x03, 0x01, 0xc5, 0x6d, 0xc2, 0x27, 0x32, 0x0e, 0x68, 0x22, 0x2a
         ]
     },
     'status for MTX': {
@@ -187,8 +210,13 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
                 } else if ( statusData.remainingBatteryCapacity !== undefined ) {
                     statusData.remainingBatteryCapacity = roundNumber(
                         (statusData.remainingBatteryCapacity * 100) / (UNKNOWN_BATTERY_CAPACITY - 1),
-                        0
+                        1
                     );
+                }
+
+                // only in the new version buffer is still not empty
+                if ( !buffer.isEmpty ) {
+                    statusData.downlinkQuality = buffer.getUint8();
                 }
 
                 data = statusData;
@@ -263,10 +291,18 @@ export const toBytes = ( parameters: IStatusParameters ): types.TBytes => {
                 if ( statusData.remainingBatteryCapacity === undefined ) {
                     buffer.setUint8(UNKNOWN_BATTERY_CAPACITY);
                 } else {
-                    buffer.setUint8((UNKNOWN_BATTERY_CAPACITY - 1) * (statusData.remainingBatteryCapacity / 100));
+                    buffer.setUint8(roundNumber(
+                        (UNKNOWN_BATTERY_CAPACITY - 1) * (statusData.remainingBatteryCapacity / 100),
+                        0
+                    ));
                 }
 
                 buffer.setUint8(statusData.lastEventSequenceNumber);
+
+                // new version
+                if ( 'downlinkQuality' in statusData ) {
+                    buffer.setUint8(statusData.downlinkQuality);
+                }
             }
             break;
 

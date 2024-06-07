@@ -8,7 +8,7 @@ import * as downlinkCommands from '../../src/analog/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/analog/commands/uplink/index.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
-import {MTXLORA} from '../../src/analog/constants/hardwareTypes.js';
+import * as hardwareTypes from '../../src/analog/constants/hardwareTypes.js';
 import {TBytes} from '../../src/types.js';
 
 
@@ -130,6 +130,99 @@ const uplinkMessages: TMessageExamples = {
             expected: 0xb5,
             actual: 0xb5
         }
+    },
+    'valid old status + currentMc': {
+        bytes: getBytesFromHex('14 0c 02 84 0c 01 e3 5c 0c 69 10 17 fe 62  18 03 01 b9 17  33'),
+        commands: [
+            {
+                id: uplinkCommands.status.id,
+                name: 'status',
+                headerSize: 2,
+                parameters: {
+                    software: {
+                        type: 2,
+                        version: 132
+                    },
+                    hardware: {
+                        type: hardwareTypes.GASIC,
+                        version: 1
+                    },
+                    data: {
+                        batteryVoltage: {
+                            underLowLoad: 3637,
+                            underHighLoad: 3084
+                        },
+                        batteryInternalResistance: 26896,
+                        temperature: 23,
+                        remainingBatteryCapacity: 100,
+                        lastEventSequenceNumber: 98
+                    }
+                },
+                bytes: getBytesFromHex('14 0c 02 84 0c 01 e3 5c 0c 69 10 17 fe 62')
+            },
+            {
+                id: uplinkCommands.currentMc.id,
+                name: 'currentMc',
+                headerSize: 2,
+                parameters: {
+                    channelList: [
+                        {index: 1, value: 3001}
+                    ]
+                },
+                bytes: getBytesFromHex('18 03 01 b9 17')
+            }
+        ],
+        lrc: {
+            expected: 0x33,
+            actual: 0x33
+        }
+    },
+    'valid new status + currentMc': {
+        bytes: getBytesFromHex('14 0d 02 84 0c 01 e3 5c 0c 69 10 17 fd 62 64  18 03 01 b9 17  55'),
+        commands: [
+            {
+                id: uplinkCommands.status.id,
+                name: 'status',
+                headerSize: 2,
+                parameters: {
+                    software: {
+                        type: 2,
+                        version: 132
+                    },
+                    hardware: {
+                        type: hardwareTypes.GASIC,
+                        version: 1
+                    },
+                    data: {
+                        batteryVoltage: {
+                            underLowLoad: 3637,
+                            underHighLoad: 3084
+                        },
+                        batteryInternalResistance: 26896,
+                        temperature: 23,
+                        remainingBatteryCapacity: 99.6,
+                        lastEventSequenceNumber: 98,
+                        downlinkQuality: 100
+                    }
+                },
+                bytes: getBytesFromHex('14 0d 02 84 0c 01 e3 5c 0c 69 10 17 fd 62 64')
+            },
+            {
+                id: uplinkCommands.currentMc.id,
+                name: 'currentMc',
+                headerSize: 2,
+                parameters: {
+                    channelList: [
+                        {index: 1, value: 3001}
+                    ]
+                },
+                bytes: getBytesFromHex('18 03 01 b9 17')
+            }
+        ],
+        lrc: {
+            expected: 0x55,
+            actual: 0x55
+        }
     }
 };
 
@@ -142,7 +235,7 @@ const mtxUplinkMessages: TMessageExamples = {
                 name: 'dataSegment',
                 headerSize: 2,
                 config: {
-                    hardwareType: MTXLORA
+                    hardwareType: hardwareTypes.MTXLORA
                 },
                 parameters: {
                     segmentationSessionId: 196,
@@ -167,7 +260,7 @@ const mtxUplinkMessages: TMessageExamples = {
                 name: 'dataSegment',
                 headerSize: 2,
                 config: {
-                    hardwareType: MTXLORA
+                    hardwareType: hardwareTypes.MTXLORA
                 },
                 parameters: {
                     segmentationSessionId: 196,
@@ -183,7 +276,7 @@ const mtxUplinkMessages: TMessageExamples = {
                 name: 'lastEvent',
                 headerSize: 1,
                 config: {
-                    hardwareType: MTXLORA
+                    hardwareType: hardwareTypes.MTXLORA
                 },
                 parameters: {
                     sequenceNumber: 208,
@@ -248,7 +341,7 @@ const checkMessages = ( description: string, implementation, messagesExamples: T
 
 checkMessages('downlink messages', message.downlink, downlinkMessages);
 checkMessages('uplink messages', message.uplink, uplinkMessages);
-checkMessages('mtx uplink messages', message.uplink, mtxUplinkMessages, {hardwareType: MTXLORA});
+checkMessages('mtx uplink messages', message.uplink, mtxUplinkMessages, {hardwareType: hardwareTypes.MTXLORA});
 
 describe('message validation', () => {
     test('test valid input', () => {
