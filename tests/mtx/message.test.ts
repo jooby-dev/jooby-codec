@@ -428,6 +428,36 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getMonthMaxDemand',
+        hex: '0a 13 ea f0 38 3c 0b b6 3d 7d 0e 3e 20 83 96 09 6e f9',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 ea f0 38 3c 0b b6 3d 7d 5d 0e 3e 20 83 96 09 6e f9 d0 bd 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getMonthMaxDemand.accessLevel,
+        commands: [
+            downlinkCommands.getMonthMaxDemand.examples['request max power for 2024.03']
+        ],
+        lrc: 0x6d,
+        crc: 0xbdd0,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getMonthMaxDemandExport',
+        hex: '0a 13 25 84 0d df c3 16 28 64 68 03 b3 d5 dd a9 92 c2',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 25 84 0d df c3 16 28 64 68 03 b3 d5 dd a9 92 c2 d3 e1 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getMonthMaxDemandExport.accessLevel,
+        commands: [
+            downlinkCommands.getMonthMaxDemandExport.examples['request max power for 2024.03']
+        ],
+        lrc: 0x06,
+        crc: 0xe1d3,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getOperatorParametersExtended3',
         hex: '0a 13 0d ff f3 10 14 71 c0 b0 25 26 c1 72 a2 82 7e 63',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 0d ff f3 10 14 71 c0 b0 25 26 c1 72 a2 82 7d 5e 63 1f 98 7e',
@@ -1365,6 +1395,36 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x08,
         crc: 0xcc27,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getMonthMaxDemand',
+        hex: '0a 13 5b 3e 07 78 33 43 93 99 32 e3 e4 0f 68 be 73 4a 2f 38 8f f2 c0 30 66 07 32 95 da 4f ab c3 99 c5 b0 9c 54 0b 37 2e 85 7e 95 1b 07 b7 3b c0 77 75',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 5b 3e 07 78 33 43 93 99 32 e3 e4 0f 68 be 73 4a 2f 38 8f f2 c0 30 66 07 32 95 da 4f ab c3 99 c5 b0 9c 54 0b 37 2e 85 7d 5e 95 1b 07 b7 3b c0 77 75 a4 2f 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getMonthMaxDemand.accessLevel,
+        commands: [
+            uplinkCommands.getMonthMaxDemand.examples['response max power for 2024.03']
+        ],
+        lrc: 0xa2,
+        crc: 0x2fa4,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getMonthMaxDemandExport',
+        hex: '0a 13 d6 63 64 a4 44 cc 49 dc 97 3e f1 16 8b bc e3 c3 2f 38 8f f2 c0 30 66 07 32 95 da 4f ab c3 99 c5 a4 16 b6 a2 98 91 f2 01 dc 0c 60 d1 9c df f6 06',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 d6 63 64 a4 44 cc 49 dc 97 3e f1 16 8b bc e3 c3 2f 38 8f f2 c0 30 66 07 32 95 da 4f ab c3 99 c5 a4 16 b6 a2 98 91 f2 01 dc 0c 60 d1 9c df f6 06 4a ad 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getMonthMaxDemandExport.accessLevel,
+        commands: [
+            uplinkCommands.getMonthMaxDemandExport.examples['response max power for 2024.03']
+        ],
+        lrc: 0xc9,
+        crc: 0xad4a,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

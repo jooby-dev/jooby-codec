@@ -878,6 +878,17 @@ export interface IOperatorParametersExtended3 {
     relaySet: IOperatorParametersExtended3RelaySet
 }
 
+export interface IMonthMaxPower {
+    date: types.TMonthDay,
+    hours: types.TUint8,
+    minutes: types.TUint8,
+
+    /**
+     * max power value for a month
+     */
+    power: types.TUint32
+}
+
 /** `1` - `A+`, `2` - `A-` */
 export type TEnergyType = typeof A_PLUS_ENERGY_TYPE | typeof A_MINUS_ENERGY_TYPE;
 
@@ -1201,7 +1212,10 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
 
     getOperatorParametersExtended3 (): IOperatorParametersExtended3,
-    setOperatorParametersExtended3 ( operatorParameters: IOperatorParametersExtended3 )
+    setOperatorParametersExtended3 ( operatorParameters: IOperatorParametersExtended3 ),
+
+    getMonthMaxPowerByTariffs (): Array<IMonthMaxPower>,
+    setMonthMaxPowerByTariffs ( tariffs: Array<IMonthMaxPower> )
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -1733,6 +1747,24 @@ CommandBinaryBuffer.prototype.setOperatorParametersExtended3 = function ( parame
     this.setUint32(pmaxMinusThreshold2);
     this.setUint32(pmaxMinusThreshold3);
     this.setUint8(bitSet.fromObject(operatorParametersExtended3RelaySetMask, (relaySet as unknown) as bitSet.TBooleanObject));
+};
+
+CommandBinaryBuffer.prototype.getMonthMaxPowerByTariffs = function () {
+    return Array.from({length: TARIFF_NUMBER}, () => ({
+        date: this.getUint8(),
+        hours: this.getUint8(),
+        minutes: this.getUint8(),
+        power: this.getUint32()
+    }));
+};
+
+CommandBinaryBuffer.prototype.setMonthMaxPowerByTariffs = function ( tariffs: Array<IMonthMaxPower> ) {
+    tariffs.forEach(tariff => {
+        this.setUint8(tariff.date);
+        this.setUint8(tariff.hours);
+        this.setUint8(tariff.minutes);
+        this.setUint32(tariff.power);
+    });
 };
 
 export const getDefaultOperatorParameters = (): IOperatorParameters => (
