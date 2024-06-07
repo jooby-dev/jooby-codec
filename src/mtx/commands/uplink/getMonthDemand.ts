@@ -1,6 +1,8 @@
 /**
  * Uplink command to get energy `A+` for 4 tariffs (`T1`-`T4`) for a given month.
  *
+ * The corresponding downlink command: `getMonthDemand`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
