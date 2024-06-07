@@ -34,7 +34,7 @@ import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IMagneticFieldThresholdParameters {
+interface IGetMagneticFieldThresholdParameters {
     /**
      * Magnetic induction value, mT.
      */
@@ -91,7 +91,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( bytes: types.TBytes ): IMagneticFieldThresholdParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetMagneticFieldThresholdParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return {
@@ -109,12 +109,12 @@ export const fromBytes = ( bytes: types.TBytes ): IMagneticFieldThresholdParamet
  * @param parameters - command parameters
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IMagneticFieldThresholdParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetMagneticFieldThresholdParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
 
     buffer.setUint16(parameters.induction);
     buffer.setUint16(parameters.threshold);
-    buffer.setUint16(Math.round(parameters.inductionCoefficient * 100));
+    buffer.setUint16(parameters.inductionCoefficient * 100);
     buffer.setUint32(parameters.reserved);
 
     return command.toBytes(id, buffer.data);

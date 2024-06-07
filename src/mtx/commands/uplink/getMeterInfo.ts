@@ -27,9 +27,12 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import {IOperatorParameters} from '../../utils/CommandBinaryBuffer.js';
 
-interface IGetMeterInfo {
-    /** Integration period for load profiles */
+
+interface IGetMeterInfoParameters {
+    /** Integration period for load profiles (also present in {@link IOperatorParameters}) */
     ten: types.TUint8;
 }
 
@@ -63,7 +66,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( [ten]: types.TBytes ): IGetMeterInfo => ({ten});
+export const fromBytes = ( [ten]: types.TBytes ): IGetMeterInfoParameters => ({ten});
 
 
 /**
@@ -72,4 +75,4 @@ export const fromBytes = ( [ten]: types.TBytes ): IGetMeterInfo => ({ten});
  * @param parameters - command parameters
  * @returns full message (header with body)
  */
-export const toBytes = ( {ten}: IGetMeterInfo ): types.TBytes => command.toBytes(id, [ten]);
+export const toBytes = ( {ten}: IGetMeterInfoParameters ): types.TBytes => command.toBytes(id, [ten]);
