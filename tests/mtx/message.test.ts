@@ -413,6 +413,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getMagneticFieldThreshold',
+        hex: '0a 13 6f 52 7f 83 e7 39 0f b6 69 03 0b c3 36 45 0f d3',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 6f 52 7f 83 e7 39 0f b6 69 03 0b c3 36 45 0f d3 03 21 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getMagneticFieldThreshold.accessLevel,
+        commands: [
+            downlinkCommands.getMagneticFieldThreshold.examples['simple request']
+        ],
+        lrc: 0x2b,
+        crc: 0x2103,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         // does not exist in empro
         name: 'getMeterInfo',
         hex: '0a 13 a0 d0 e1 0f 40 49 06 36 39 90 41 40 7b 9e 96 8c',
@@ -1381,6 +1396,22 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x1c,
         crc: 0x0dec,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        // does not match empro
+        name: 'getMagneticFieldThreshold',
+        hex: '0a 13 39 12 e9 f0 90 f0 df 74 bb 28 e5 18 5c cb 35 b3',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 39 12 e9 f0 90 f0 df 74 bb 28 e5 18 5c cb 35 b3 31 b8 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getMagneticFieldThreshold.accessLevel,
+        commands: [
+            uplinkCommands.getMagneticFieldThreshold.examples['simple response']
+        ],
+        lrc: 0x55,
+        crc: 0xb831,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
