@@ -703,7 +703,7 @@ export interface IEnergyPeriod {
     energy?: types.TUint16
 }
 
-/** active `A+` energy by tariffs `T1`-`T4` */
+/** active energy by tariffs `T1`-`T4` */
 export interface IEnergies extends Array<types.TUint32 | null> {}
 
 export interface IPackedEnergiesWithType {
