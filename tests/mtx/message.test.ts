@@ -459,6 +459,22 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        // does not exist in empro
+        name: 'getMonthDemandExport',
+        hex: '0a 13 11 94 89 49 57 81 98 99 73 2f db f7 f8 47 ab 28',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 7d 31 94 89 49 57 81 98 99 73 2f db f7 f8 47 ab 28 86 5c 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getMonthDemandExport.accessLevel,
+        commands: [
+            downlinkCommands.getMonthDemandExport.examples['request energy for 2024.03']
+        ],
+        lrc: 0x0d,
+        crc: 0x5c86,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getMonthMaxDemand',
         hex: '0a 13 ea f0 38 3c 0b b6 3d 7d 0e 3e 20 83 96 09 6e f9',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 ea f0 38 3c 0b b6 3d 7d 5d 0e 3e 20 83 96 09 6e f9 d0 bd 7e',
@@ -1473,6 +1489,22 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x08,
         crc: 0xcc27,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        // does not exist in empro
+        name: 'getMonthDemandExport',
+        hex: '0a 13 87 5a ab 91 e4 84 3e fe 23 b2 9c cf 4d fb 00 a0 b8 bc 7e 7c bd 50 2d 37 83 04 c3 98 7e 69 a7 cc',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 87 5a ab 91 e4 84 3e fe 23 b2 9c cf 4d fb 00 a0 b8 bc 7d 5e 7c bd 50 2d 37 83 04 c3 98 7d 5e 69 a7 cc 7d 31 7d 33 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getMonthDemandExport.accessLevel,
+        commands: [
+            uplinkCommands.getMonthDemandExport.examples['response energy for 2024.03']
+        ],
+        lrc: 0x4d,
+        crc: 0x1311,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
