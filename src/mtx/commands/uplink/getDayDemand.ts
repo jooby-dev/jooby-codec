@@ -1,17 +1,17 @@
 /**
- * Uplink command to get active `A+` energy by date.
+ * Uplink command to get day energy `A+` by default or selected energy type (`A+` or `A-`) for 4 tariffs (`T1`-`T4`) for date.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getEnergyDay from 'jooby-codec/mtx/commands/uplink/getEnergyDay.js';
+ * import * as getDayDemand from 'jooby-codec/mtx/commands/uplink/getDayDemand.js';
  *
  * // received A- energies
  * const bytes = [0x18, 0x03, 0x16, 0xd0, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57];
  *
  * // decoded payload
- * const parameters = getEnergyDay.fromBytes(bytes);
+ * const parameters = getDayDemand.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -43,7 +43,7 @@ import CommandBinaryBuffer, {
 import getObisByEnergy from '../../utils/getObisByEnergy.js';
 
 
-interface IGetEnergyDayResponseParameters extends IPackedEnergiesWithType {
+interface IGetDayDemandResponseParameters extends IPackedEnergiesWithType {
     date: types.IDate
 }
 
@@ -54,7 +54,7 @@ const MAX_COMMAND_SIZE = COMMAND_SIZE + PACKED_ENERGY_TYPE_SIZE;
 
 
 export const id: types.TCommandId = 0x16;
-export const name: types.TCommandName = 'getEnergyDay';
+export const name: types.TCommandName = 'getDayDemand';
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
@@ -109,9 +109,9 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetEnergyDayResponseParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    let parameters: IGetEnergyDayResponseParameters;
+    let parameters: IGetDayDemandResponseParameters;
 
     if ( bytes.length === COMMAND_SIZE ) {
         parameters = {
@@ -135,7 +135,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetEnergyDayResponseParameter
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetEnergyDayResponseParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetDayDemandResponseParameters ): types.TBytes => {
     let size = COMMAND_SIZE;
 
     if ( parameters?.energyType ) {
@@ -153,7 +153,7 @@ export const toBytes = ( parameters: IGetEnergyDayResponseParameters ): types.TB
 };
 
 
-export const toJson = ( parameters: IGetEnergyDayResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
+export const toJson = ( parameters: IGetDayDemandResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
     if ( !dlms ) {
         return JSON.stringify(parameters);
     }

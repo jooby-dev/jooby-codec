@@ -1,11 +1,11 @@
 /**
- * Downlink command to get day energy `A+` by default or selected energy type for 4 tariffs (`T1`-`T4`) for date.
+ * Downlink command to get day energy `A+` by default or selected energy type (`A+` or `A-`) for 4 tariffs (`T1`-`T4`) for date.
  *
  * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getEnergyDay from 'jooby-codec/mtx/commands/downlink/getEnergyDay.js';
+ * import * as getDayDemand from 'jooby-codec/mtx/commands/downlink/getDayDemand.js';
  *
  * const parameters = {
  *     date: {
@@ -16,7 +16,7 @@
  *     energyType: 1
  * };
  *
- * const bytes = getEnergyDay.toBytes(parameters);
+ * const bytes = getDayDemand.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
@@ -33,7 +33,7 @@ import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
-interface IGetEnergyDayParameters {
+interface IGetDayDemandParameters {
     date: types.IDate,
     energyType?: TEnergyType
 }
@@ -44,7 +44,7 @@ const MAX_COMMAND_SIZE = 4;
 
 
 export const id: types.TCommandId = 0x16;
-export const name: types.TCommandName = 'getEnergyDay';
+export const name: types.TCommandName = 'getDayDemand';
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
@@ -97,7 +97,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetEnergyDayParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     if ( bytes.length === MAX_COMMAND_SIZE ) {
@@ -117,7 +117,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetEnergyDayParameters => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetEnergyDayParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetDayDemandParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(parameters?.energyType ? MAX_COMMAND_SIZE : MIN_COMMAND_SIZE);
 
     // body

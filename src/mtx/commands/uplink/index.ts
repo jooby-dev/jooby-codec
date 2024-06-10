@@ -22,7 +22,7 @@ export * as getDeviceId from './getDeviceId.js';
 export * as getDeviceType from './getDeviceType.js';
 export * as getDisplayParam from './getDisplayParam.js';
 export * as getEnergyCurrent from './getEnergyCurrent.js';
-export * as getEnergyDay from './getEnergyDay.js';
+export * as getDayDemand from './getDayDemand.js';
 export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';
 export * as getEnergyExportDayPrevious from './getEnergyExportDayPrevious.js';
 export * as getEvents from './getEvents.js';

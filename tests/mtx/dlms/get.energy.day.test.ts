@@ -1,4 +1,4 @@
-import {getEnergyDay} from '../../../src/mtx/commands/uplink/index.js';
+import {getDayDemand} from '../../../src/mtx/commands/uplink/index.js';
 import {A_MINUS_ENERGY_TYPE, A_PLUS_ENERGY_TYPE} from '../../../src/mtx/utils/CommandBinaryBuffer.js';
 import {runCommandDlmsTest} from './utils/runCommandDlmsTest.js';
 
@@ -71,4 +71,4 @@ const examples = [
 ];
 
 
-describe('GetEnergyDayResponse dlms tests', () => runCommandDlmsTest(getEnergyDay, examples));
+describe('GetEnergyDayResponse dlms tests', () => runCommandDlmsTest(getDayDemand, examples));
