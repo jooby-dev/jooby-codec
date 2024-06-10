@@ -277,6 +277,23 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        // does not exist in empro
+        name: 'getDayDemandExport',
+        hex: '0a 13 c7 fd 48 30 45 4e c9 52 a5 4f b7 7e 3e 3e 43 9e',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 c7 fd 48 30 45 4e c9 52 a5 4f b7 7d 5e 3e 3e 43 9e ca 69 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getDayDemandExport.accessLevel,
+        commands: [
+            downlinkCommands.getDayDemandExport.examples['request day values for 2024.03.22 00:00:00 GMT'],
+            downlinkCommands.getDayDemandExport.examples['request day values with energy type for 2024.03.22 00:00:00 GMT']
+        ],
+        lrc: 0x40,
+        crc: 0x69ca,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getEnergyDayPrevious',
         hex: '0a 13 cc 4b 4e f3 a2 5d e3 e4 05 cc ad 32 60 01 4a ad',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 cc 4b 4e f3 a2 5d e3 e4 05 cc ad 32 60 01 4a ad da a9 7e',
@@ -1321,6 +1338,23 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x1e,
         crc: 0x6d06,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        // does not exist in empro
+        name: 'getDayDemandExport',
+        hex: '0a 13 d7 60 08 96 88 4f 56 b0 3a ad bc 4b 83 52 b7 cc 09 88 68 65 82 60 2c 97 0e fd 0e c8 26 d9 e9 64 d3 3b 63 32 81 64 de f7 b0 18 e1 02 00 1f 94 c0',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 d7 60 08 96 88 4f 56 b0 3a ad bc 4b 83 52 b7 cc 09 88 68 65 82 60 2c 97 0e fd 0e c8 26 d9 e9 64 d3 3b 63 32 81 64 de f7 b0 18 e1 02 00 1f 94 c0 8c e2 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDayDemandExport.accessLevel,
+        commands: [
+            uplinkCommands.getDayDemandExport.examples['default A- energy'],
+            uplinkCommands.getDayDemandExport.examples['received A+ energies']
+        ],
+        lrc: 0xfe,
+        crc: 0xe28c,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
