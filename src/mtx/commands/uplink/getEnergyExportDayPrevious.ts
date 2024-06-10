@@ -1,6 +1,8 @@
 /**
  * Uplink command to get active energy for a previous day by 4 tariffs (`T1`-`T4`).
  *
+ * The corresponding downlink command: `getEnergyExportDayPrevious`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
