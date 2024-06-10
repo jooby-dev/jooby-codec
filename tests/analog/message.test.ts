@@ -51,7 +51,7 @@ const downlinkMessages: TMessageExamples = {
 };
 
 const validUplinkMessages: TMessageExamples = {
-    'valid correctTime2000 response': {
+    'correctTime2000 response': {
         bytes: getBytesFromHex('0c 01 00  58'),
         commands: [
             {
@@ -70,7 +70,7 @@ const validUplinkMessages: TMessageExamples = {
             actual: 0x58
         }
     },
-    'valid setTime2000 + currentMc + dayMc': {
+    'setTime2000 + currentMc + dayMc': {
         bytes: getBytesFromHex('02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 55 0c 83 01 08 0a  b5'),
         commands: [
             {
@@ -124,7 +124,7 @@ const validUplinkMessages: TMessageExamples = {
             actual: 0xb5
         }
     },
-    'valid old status + currentMc': {
+    'old status + currentMc': {
         bytes: getBytesFromHex('14 0c 02 84 0c 01 e3 5c 0c 69 10 17 fe 62  18 03 01 b9 17  33'),
         commands: [
             {
@@ -176,7 +176,7 @@ const validUplinkMessages: TMessageExamples = {
             actual: 0x33
         }
     },
-    'valid new status + currentMc': {
+    'new status + currentMc': {
         bytes: getBytesFromHex('14 0d 02 84 0c 01 e3 5c 0c 69 10 17 fd 62 64  18 03 01 b9 17  55'),
         commands: [
             {
@@ -229,7 +229,7 @@ const validUplinkMessages: TMessageExamples = {
             actual: 0x55
         }
     },
-    'valid currentMc+lastEvent response': {
+    'currentMc + lastEvent response': {
         bytes: getBytesFromHex('18 03 01 8a 12 62 ed 00 58'),
         commands: [
             {
@@ -273,7 +273,7 @@ const validUplinkMessages: TMessageExamples = {
             actual: 0x58
         }
     },
-    'valid hourMc+lastEvent response': {
+    'hourMc + lastEvent response': {
         bytes: getBytesFromHex('17 06 00 6f 0c 01 99 35 62 bc 00 54'),
         commands: [
             {
@@ -320,7 +320,7 @@ const validUplinkMessages: TMessageExamples = {
             actual: 0x54
         }
     },
-    'valid time2000+status response': {
+    'time2000 + new status response': {
         bytes: getBytesFromHex('09 05 00 00 62 2c 58 14 0d 02 76 0c 01 e3 6c 83 4f 93 19 fd bc 51 f6'),
         commands: [
             {
@@ -372,7 +372,7 @@ const validUplinkMessages: TMessageExamples = {
             actual: 0xf6
         }
     },
-    'valid exAbsHourMc+lastEvent response': {
+    'exAbsHourMc + lastEvent response': {
         bytes: getBytesFromHex('1f 0a 0e 30 c7 e5 01 82 f4 52 00 00 00 00 00 00 00 62 62 00 79'),
         commands: [
             {
@@ -431,7 +431,7 @@ const validUplinkMessages: TMessageExamples = {
 };
 
 const invalidUplinkMessages: TMessageExamples = {
-    'invalid correctTime2000 response': {
+    'correctTime2000 response': {
         message: {
             bytes: getBytesFromHex('0c 01 00  00'),
             commands: [
@@ -566,8 +566,8 @@ const checkMessages = ( description: string, implementation, messagesExamples: T
 
 
 checkMessages('downlink messages', message.downlink, downlinkMessages);
-checkMessages('uplink messages', message.uplink, validUplinkMessages, {hardwareType: hardwareTypes.GASIC});
-checkMessages('uplink messages', message.uplink, invalidUplinkMessages);
+checkMessages('valid uplink messages', message.uplink, validUplinkMessages, {hardwareType: hardwareTypes.GASIC});
+checkMessages('invalid uplink messages', message.uplink, invalidUplinkMessages);
 checkMessages('mtx uplink messages', message.uplink, mtxUplinkMessages, {hardwareType: hardwareTypes.MTXLORA});
 
 describe('message validation', () => {
