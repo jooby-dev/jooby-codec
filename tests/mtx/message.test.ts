@@ -292,6 +292,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getEnergyExportDayPrevious',
+        hex: '0a 13 94 f0 94 e7 49 bd a3 f3 39 3f 6f 65 b5 c9 ad 89',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 94 f0 94 e7 49 bd a3 f3 39 3f 6f 65 b5 c9 ad 89 60 45 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getEnergyExportDayPrevious.accessLevel,
+        commands: [
+            downlinkCommands.getEnergyExportDayPrevious.examples['simple request']
+        ],
+        lrc: 0x16,
+        crc: 0x4560,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getEvents',
         hex: '0a 13 65 ac 46 61 64 80 2f 50 86 fb 27 52 67 6a f7 c2',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 65 ac 46 61 64 80 2f 50 86 fb 27 52 67 6a f7 c2 25 70 7e',
@@ -1321,6 +1336,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x0b,
         crc: 0x5ebd,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getEnergyExportDayPrevious',
+        hex: '0a 13 9e b8 fe 77 16 d8 1c d1 21 aa 50 52 3b 7d 73 09 4e 97 61 e1 2f d8 4c b9 c4 7e 2c c8 65 9d 86 e5',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 9e b8 fe 77 16 d8 1c d1 21 aa 50 52 3b 7d 5d 73 09 4e 97 61 e1 2f d8 4c b9 c4 7d 5e 2c c8 65 9d 86 e5 8d c9 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getEnergyExportDayPrevious.accessLevel,
+        commands: [
+            uplinkCommands.getEnergyExportDayPrevious.examples['response with A- energy by T1, T4']
+        ],
+        lrc: 0x75,
+        crc: 0xc98d,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

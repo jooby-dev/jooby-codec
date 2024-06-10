@@ -1,19 +1,19 @@
 /**
  * Uplink command to get active energy for a previous day by 4 tariffs (`T1`-`T4`).
  *
- * The corresponding downlink command: `getEnergyDayPrevious`.
+ * The corresponding downlink command: `getEnergyExportDayPrevious`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getEnergyDayPrevious from 'jooby-codec/mtx/commands/uplink/getEnergyDayPrevious.js';
+ * import * as getEnergyExportDayPrevious from 'jooby-codec/mtx/commands/uplink/getEnergyExportDayPrevious.js';
  *
- * // simple response
- * const bytes = [0x18, 0x03, 0x16, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x32, 0xe0, 0x64, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57];
+ * // response with A- energy by T1, T4
+ * const bytes = [0x18, 0x03, 0x16, 0x90, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x20, 0xbd, 0x57];
  *
  * // decoded payload
- * const parameters = getEnergyDayPrevious.fromBytes(bytes);
+ * const parameters = getEnergyExportDayPrevious.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -23,11 +23,12 @@
  *         month: 3,
  *         date: 22
  *     },
- *     energies: [40301230, 3334244, 2333, 2145623]
+ *     energyType: 2,
+ *     energies: [40301230, null, null, 2145623]
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetEnergyDayPrevious.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetEnergyExportDayPrevious.md#response)
  */
 
 import * as types from '../../types.js';
@@ -39,7 +40,7 @@ import CommandBinaryBuffer, {
 } from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IGetEnergyDayPreviousResponseParameters extends IPackedEnergiesWithType {
+interface IGetEnergyExportDayPreviousResponseParameters extends IPackedEnergiesWithType {
     date: types.IDate
 }
 
@@ -64,8 +65,8 @@ const convertEnergiesToDlms = ( energy: IEnergies ) => {
 const COMMAND_SIZE = 19;
 const MAX_COMMAND_SIZE = COMMAND_SIZE + PACKED_ENERGY_TYPE_SIZE;
 
-export const id: types.TCommandId = 0x03;
-export const name: types.TCommandName = 'getEnergyDayPrevious';
+export const id: types.TCommandId = 0x50;
+export const name: types.TCommandName = 'getEnergyExportDayPrevious';
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
@@ -87,11 +88,11 @@ export const examples: command.TCommandExamples = {
             energies: [40301230, 3334244, 2333, 2145623]
         },
         bytes: [
-            0x03, 0x13,
+            0x50, 0x13,
             0x18, 0x03, 0x16, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x32, 0xe0, 0x64, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57
         ]
     },
-    'response with A- energy by T1, T4 only': {
+    'response with A- energy by T1, T4': {
         id,
         name,
         headerSize,
@@ -107,7 +108,7 @@ export const examples: command.TCommandExamples = {
             energies: [40301230, null, null, 2145623]
         },
         bytes: [
-            0x03, 0x0c,
+            0x50, 0x0c,
             0x18, 0x03, 0x16, 0x90, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x20, 0xbd, 0x57
         ]
     }
@@ -120,9 +121,9 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetEnergyDayPreviousResponseParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetEnergyExportDayPreviousResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    let parameters: IGetEnergyDayPreviousResponseParameters;
+    let parameters: IGetEnergyExportDayPreviousResponseParameters;
 
     if ( bytes.length === COMMAND_SIZE ) {
         parameters = {
@@ -147,7 +148,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetEnergyDayPreviousResponseP
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetEnergyDayPreviousResponseParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetEnergyExportDayPreviousResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getPackedEnergiesWithDateSize(parameters));
 
     // body
@@ -158,7 +159,7 @@ export const toBytes = ( parameters: IGetEnergyDayPreviousResponseParameters ): 
 };
 
 
-export const toJson = ( parameters: IGetEnergyDayPreviousResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
+export const toJson = ( parameters: IGetEnergyExportDayPreviousResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
     const {date, energies} = parameters;
     const result = dlms
         ? {

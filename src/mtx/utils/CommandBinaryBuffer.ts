@@ -1832,4 +1832,14 @@ export const getDefaultTimeCorrectionParameters = (): ITimeCorrectionParameters 
     }
 );
 
+export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithType ): number => {
+    if ( parameters?.energyType ) {
+        const energiesNumber = parameters.energies.filter(energy => energy !== null).length;
+
+        return DATE_SIZE + PACKED_ENERGY_TYPE_SIZE + (energiesNumber * ENERGY_SIZE);
+    }
+
+    return DATE_SIZE + ENERGY_SIZE * TARIFF_NUMBER;
+};
+
 export default CommandBinaryBuffer;

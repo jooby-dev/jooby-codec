@@ -21,6 +21,7 @@ export * as getDisplayParam from './getDisplayParam.js';
 export * as getEnergyCurrent from './getEnergyCurrent.js';
 export * as getEnergyDay from './getEnergyDay.js';
 export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';
+export * as getEnergyExportDayPrevious from './getEnergyExportDayPrevious.js';
 export * as getEvents from './getEvents.js';
 export * as getEventsCounters from './getEventsCounters.js';
 export * as getEventStatus from './getEventStatus.js';
