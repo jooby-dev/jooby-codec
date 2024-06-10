@@ -70,6 +70,60 @@ const validUplinkMessages: TMessageExamples = {
             actual: 0x58
         }
     },
+    'valid setTime2000 + currentMc + dayMc': {
+        bytes: getBytesFromHex('02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 55 0c 83 01 08 0a  b5'),
+        commands: [
+            {
+                id: uplinkCommands.setTime2000.id,
+                name: 'setTime2000',
+                headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {status: 1},
+                bytes: getBytesFromHex('02 01 01')
+            },
+            {
+                id: uplinkCommands.currentMc.id,
+                name: 'currentMc',
+                headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {
+                    channelList: [
+                        {index: 1, value: 131},
+                        {index: 2, value: 8},
+                        {index: 3, value: 10},
+                        {index: 4, value: 12}
+                    ]
+                },
+                bytes: getBytesFromHex('18 06 0f 83 01 08 0a 0c')
+            },
+            {
+                id: uplinkCommands.dayMc.id,
+                name: 'dayMc',
+                headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {
+                    startTime2000: 756604800,
+                    channelList: [
+                        {index: 1, value: 12},
+                        {index: 3, value: 131},
+                        {index: 5, value: 8},
+                        {index: 7, value: 10}
+                    ]
+                },
+                bytes: getBytesFromHex('16 08 2f 97 55 0c 83 01 08 0a')
+            }
+        ],
+        lrc: {
+            expected: 0xb5,
+            actual: 0xb5
+        }
+    },
     'valid old status + currentMc': {
         bytes: getBytesFromHex('14 0c 02 84 0c 01 e3 5c 0c 69 10 17 fe 62  18 03 01 b9 17  33'),
         commands: [
@@ -173,60 +227,6 @@ const validUplinkMessages: TMessageExamples = {
         lrc: {
             expected: 0x55,
             actual: 0x55
-        }
-    },
-    'valid setTime2000 + currentMc + dayMc': {
-        bytes: getBytesFromHex('02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 55 0c 83 01 08 0a  b5'),
-        commands: [
-            {
-                id: uplinkCommands.setTime2000.id,
-                name: 'setTime2000',
-                headerSize: 2,
-                config: {
-                    hardwareType: hardwareTypes.GASIC
-                },
-                parameters: {status: 1},
-                bytes: getBytesFromHex('02 01 01')
-            },
-            {
-                id: uplinkCommands.currentMc.id,
-                name: 'currentMc',
-                headerSize: 2,
-                config: {
-                    hardwareType: hardwareTypes.GASIC
-                },
-                parameters: {
-                    channelList: [
-                        {index: 1, value: 131},
-                        {index: 2, value: 8},
-                        {index: 3, value: 10},
-                        {index: 4, value: 12}
-                    ]
-                },
-                bytes: getBytesFromHex('18 06 0f 83 01 08 0a 0c')
-            },
-            {
-                id: uplinkCommands.dayMc.id,
-                name: 'dayMc',
-                headerSize: 2,
-                config: {
-                    hardwareType: hardwareTypes.GASIC
-                },
-                parameters: {
-                    startTime2000: 756604800,
-                    channelList: [
-                        {index: 1, value: 12},
-                        {index: 3, value: 131},
-                        {index: 5, value: 8},
-                        {index: 7, value: 10}
-                    ]
-                },
-                bytes: getBytesFromHex('16 08 2f 97 55 0c 83 01 08 0a')
-            }
-        ],
-        lrc: {
-            expected: 0xb5,
-            actual: 0xb5
         }
     },
     'valid currentMc+lastEvent response': {
