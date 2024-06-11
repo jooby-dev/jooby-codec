@@ -32,6 +32,7 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IDataSegment} from '../../utils/CommandBinaryBuffer.js';
+import {getStringFromBytes, IBytesConversionFormatOptions} from '../../../utils/bytesConversion.js';
 
 
 export const id: types.TCommandId = 0x1e;
@@ -88,12 +89,9 @@ export const toBytes = ( parameters: IDataSegment ): types.TBytes => {
 };
 
 
-// TODO: add implementation
-// export const toJson = ( options: TJsonOptions = defaultJsonOptions ) {
-//     const {parameters} = this;
-
-//     return JSON.stringify({
-//         ...parameters,
-//         data: getStringFromBytes(parameters.data, options)
-//     });
-// }
+export const toJson = ( parameters: IDataSegment, options: IBytesConversionFormatOptions ) => (
+    JSON.stringify({
+        ...parameters,
+        data: getStringFromBytes(parameters.data, options)
+    })
+);
