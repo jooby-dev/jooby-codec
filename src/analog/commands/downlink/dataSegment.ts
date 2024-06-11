@@ -89,7 +89,6 @@ export const toBytes = ( parameters: IDataSegment ): types.TBytes => {
 };
 
 
-// TODO: add implementation
 export const toJson = ( parameters: IDataSegment, options: IBytesConversionFormatOptions ) => (
     JSON.stringify({
         ...parameters,
