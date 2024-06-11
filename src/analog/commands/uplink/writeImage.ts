@@ -91,12 +91,3 @@ export const toBytes = ( parameters: IWriteImageResponseParameters ): types.TByt
 
     return command.toBytes(id, buffer.data);
 };
-
-
-/**
- * Convert command parameters to JSON.
- *
- * @param parameters - command payload
- * @returns JSON representation of command parameters
- */
-export const toJson = ( parameters: IWriteImageResponseParameters ): string => JSON.stringify(parameters);
