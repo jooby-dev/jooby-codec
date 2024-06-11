@@ -1,5 +1,5 @@
 /**
- * Downlink command to get the maximum `A+` power for the day.
+ * Downlink command to get the maximum power of active energy (A+) for the day.
  *
  * @packageDocumentation
  *

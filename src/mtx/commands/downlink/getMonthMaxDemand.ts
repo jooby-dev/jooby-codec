@@ -1,5 +1,5 @@
 /**
- * Downlink command to get max power `A+` for 4 tariffs (`T1`-`T4`) for a given month.
+ * Downlink command to get max power of active energy (A+) for 4 tariffs (`T1`-`T4`) for a given month.
  *
  * @packageDocumentation
  *
