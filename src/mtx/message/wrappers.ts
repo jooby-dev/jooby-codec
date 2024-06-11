@@ -130,8 +130,8 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
 export const getToBytes = toBytesMap => ( commands: Array<TCommand>, {messageId, accessLevel = accessLevels.READ_ONLY, aesKey}: IToBytesOptions ): TBytes => {
     const commandBytes = commands.map(command => {
         // valid command
-        if ( 'parameters' in command ) {
-            return toBytesMap[command.id](command.parameters);
+        if ( 'id' in command ) {
+            return toBytesMap[command.id](command.parameters || {});
         }
 
         // invalid command
