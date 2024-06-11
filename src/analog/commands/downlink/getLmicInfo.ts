@@ -1,6 +1,8 @@
 /**
  * Command to get LMiC (IBM LoRaWAN in C) information.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as getLmicInfo from 'jooby-codec/analog/commands/downlink/getLmicInfo.js';

@@ -4,6 +4,8 @@
  * By default, the battery status is measured once per 24 hours. The state of the battery physically cannot change dramatically.
  * Response to the request contains the latest measurement results. This is enough to monitor the battery condition.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as getBatteryStatus from 'jooby-codec/analog/commands/uplink/getBatteryStatus.js';
