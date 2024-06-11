@@ -23,7 +23,7 @@ import * as command from '../../utils/command.js';
 
 
 export const id: types.TCommandId = 0x0f1f;
-export const name: types.TCommandName = 'getExAbsCurrentMC';
+export const name: types.TCommandName = 'getExAbsCurrentMc';
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 0;
