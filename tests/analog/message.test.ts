@@ -50,14 +50,17 @@ const downlinkMessages: TMessageExamples = {
     }
 };
 
-const uplinkMessages: TMessageExamples = {
-    'valid correctTime2000 response': {
+const validUplinkMessages: TMessageExamples = {
+    'correctTime2000 response': {
         bytes: getBytesFromHex('0c 01 00  58'),
         commands: [
             {
                 id: uplinkCommands.correctTime2000.id,
                 name: 'correctTime2000',
                 headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
                 parameters: {status: 0},
                 bytes: getBytesFromHex('0c 01 00')
             }
@@ -67,32 +70,16 @@ const uplinkMessages: TMessageExamples = {
             actual: 0x58
         }
     },
-    'invalid correctTime2000 response': {
-        message: {
-            bytes: getBytesFromHex('0c 01 00  00'),
-            commands: [
-                {
-                    id: uplinkCommands.correctTime2000.id,
-                    name: 'correctTime2000',
-                    headerSize: 2,
-                    parameters: {status: 0},
-                    bytes: getBytesFromHex('0c 01 00')
-                }
-            ],
-            lrc: {
-                expected: 0,
-                actual: 0x58
-            }
-        },
-        error: 'Mismatch LRC.'
-    },
-    'valid setTime2000 + currentMc + dayMc': {
+    'setTime2000 + currentMc + dayMc': {
         bytes: getBytesFromHex('02 01 01  18 06 0f 83 01 08 0a 0c  16 08 2f 97 55 0c 83 01 08 0a  b5'),
         commands: [
             {
                 id: uplinkCommands.setTime2000.id,
                 name: 'setTime2000',
                 headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
                 parameters: {status: 1},
                 bytes: getBytesFromHex('02 01 01')
             },
@@ -100,6 +87,9 @@ const uplinkMessages: TMessageExamples = {
                 id: uplinkCommands.currentMc.id,
                 name: 'currentMc',
                 headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
                 parameters: {
                     channelList: [
                         {index: 1, value: 131},
@@ -114,6 +104,9 @@ const uplinkMessages: TMessageExamples = {
                 id: uplinkCommands.dayMc.id,
                 name: 'dayMc',
                 headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
                 parameters: {
                     startTime2000: 756604800,
                     channelList: [
@@ -131,13 +124,16 @@ const uplinkMessages: TMessageExamples = {
             actual: 0xb5
         }
     },
-    'valid old status + currentMc': {
+    'old status + currentMc': {
         bytes: getBytesFromHex('14 0c 02 84 0c 01 e3 5c 0c 69 10 17 fe 62  18 03 01 b9 17  33'),
         commands: [
             {
                 id: uplinkCommands.status.id,
                 name: 'status',
                 headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
                 parameters: {
                     software: {
                         type: 2,
@@ -164,6 +160,9 @@ const uplinkMessages: TMessageExamples = {
                 id: uplinkCommands.currentMc.id,
                 name: 'currentMc',
                 headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
                 parameters: {
                     channelList: [
                         {index: 1, value: 3001}
@@ -177,13 +176,16 @@ const uplinkMessages: TMessageExamples = {
             actual: 0x33
         }
     },
-    'valid new status + currentMc': {
+    'new status + currentMc': {
         bytes: getBytesFromHex('14 0d 02 84 0c 01 e3 5c 0c 69 10 17 fd 62 64  18 03 01 b9 17  55'),
         commands: [
             {
                 id: uplinkCommands.status.id,
                 name: 'status',
                 headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
                 parameters: {
                     software: {
                         type: 2,
@@ -211,6 +213,9 @@ const uplinkMessages: TMessageExamples = {
                 id: uplinkCommands.currentMc.id,
                 name: 'currentMc',
                 headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
                 parameters: {
                     channelList: [
                         {index: 1, value: 3001}
@@ -223,6 +228,227 @@ const uplinkMessages: TMessageExamples = {
             expected: 0x55,
             actual: 0x55
         }
+    },
+    'currentMc + lastEvent response': {
+        bytes: getBytesFromHex('18 03 01 8a 12 62 ed 00 58'),
+        commands: [
+            {
+                id: uplinkCommands.currentMc.id,
+                name: 'currentMc',
+                headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {
+                    channelList: [
+                        {
+                            value: 2314,
+                            index: 1
+                        }
+                    ]
+                },
+                bytes: getBytesFromHex('18 03 01 8a 12')
+            },
+            {
+                id: uplinkCommands.lastEvent.id,
+                name: 'lastEvent',
+                headerSize: 1,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {
+                    sequenceNumber: 237,
+                    status: {
+                        isBatteryLow: false,
+                        isMagneticInfluence: false,
+                        isButtonReleased: false,
+                        isConnectionLost: false
+                    }
+                },
+                bytes: getBytesFromHex('62 ed 00')
+            }
+        ],
+        lrc: {
+            expected: 0x58,
+            actual: 0x58
+        }
+    },
+    'hourMc + lastEvent response': {
+        bytes: getBytesFromHex('17 06 00 6f 0c 01 99 35 62 bc 00 54'),
+        commands: [
+            {
+                id: uplinkCommands.hourMc.id,
+                name: 'hourMc',
+                headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {
+                    startTime2000: 6436800,
+                    hours: 1,
+                    channelList: [
+                        {
+                            value: 6809,
+                            diff: [],
+                            index: 1
+                        }
+                    ]
+                },
+                bytes: getBytesFromHex('17 06 00 6f 0c 01 99 35')
+            },
+            {
+                id: uplinkCommands.lastEvent.id,
+                name: 'lastEvent',
+                headerSize: 1,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {
+                    sequenceNumber: 188,
+                    status: {
+                        isBatteryLow: false,
+                        isMagneticInfluence: false,
+                        isButtonReleased: false,
+                        isConnectionLost: false
+                    }
+                },
+                bytes: getBytesFromHex('62 bc 00')
+            }
+        ],
+        lrc: {
+            expected: 0x54,
+            actual: 0x54
+        }
+    },
+    'time2000 + new status response': {
+        bytes: getBytesFromHex('09 05 00 00 62 2c 58 14 0d 02 76 0c 01 e3 6c 83 4f 93 19 fd bc 51 f6'),
+        commands: [
+            {
+                id: uplinkCommands.time2000.id,
+                name: 'time2000',
+                headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {
+                    sequenceNumber: 0,
+                    time2000: 6433880
+                },
+                bytes: getBytesFromHex('09 05 00 00 62 2c 58')
+            },
+            {
+                id: uplinkCommands.status.id,
+                name: 'status',
+                headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {
+                    software: {
+                        type: 2,
+                        version: 118
+                    },
+                    hardware: {
+                        type: 12,
+                        version: 1
+                    },
+                    data: {
+                        batteryVoltage: {
+                            underLowLoad: 3638,
+                            underHighLoad: 3203
+                        },
+                        batteryInternalResistance: 20371,
+                        temperature: 25,
+                        remainingBatteryCapacity: 99.6,
+                        lastEventSequenceNumber: 188,
+                        downlinkQuality: 81
+                    }
+                },
+                bytes: getBytesFromHex('14 0d 02 76 0c 01 e3 6c 83 4f 93 19 fd bc 51')
+            }
+        ],
+        lrc: {
+            expected: 0xf6,
+            actual: 0xf6
+        }
+    },
+    'exAbsHourMc + lastEvent response': {
+        bytes: getBytesFromHex('1f 0a 0e 30 c7 e5 01 82 f4 52 00 00 00 00 00 00 00 62 62 00 79'),
+        commands: [
+            {
+                id: uplinkCommands.exAbsHourMc.id,
+                name: 'exAbsHourMc',
+                headerSize: 3,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {
+                    startTime2000: 771051600,
+                    hours: 8,
+                    channelList: [
+                        {
+                            diff: [
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0,
+                                0
+                            ],
+                            value: 10612,
+                            pulseCoefficient: 10,
+                            index: 1
+                        }
+                    ]
+                },
+                bytes: getBytesFromHex('1f 0a 0e 30 c7 e5 01 82 f4 52 00 00 00 00 00 00 00')
+            },
+            {
+                id: uplinkCommands.lastEvent.id,
+                name: 'lastEvent',
+                headerSize: 1,
+                config: {
+                    hardwareType: hardwareTypes.GASIC
+                },
+                parameters: {
+                    sequenceNumber: 98,
+                    status: {
+                        isBatteryLow: false,
+                        isMagneticInfluence: false,
+                        isButtonReleased: false,
+                        isConnectionLost: false
+                    }
+                },
+                bytes: getBytesFromHex('62 62 00')
+            }
+        ],
+        lrc: {
+            expected: 0x79,
+            actual: 0x79
+        }
+    }
+};
+
+const invalidUplinkMessages: TMessageExamples = {
+    'correctTime2000 response': {
+        message: {
+            bytes: getBytesFromHex('0c 01 00  00'),
+            commands: [
+                {
+                    id: uplinkCommands.correctTime2000.id,
+                    name: 'correctTime2000',
+                    headerSize: 2,
+                    parameters: {status: 0},
+                    bytes: getBytesFromHex('0c 01 00')
+                }
+            ],
+            lrc: {
+                expected: 0,
+                actual: 0x58
+            }
+        },
+        error: 'Mismatch LRC.'
     }
 };
 
@@ -340,7 +566,8 @@ const checkMessages = ( description: string, implementation, messagesExamples: T
 
 
 checkMessages('downlink messages', message.downlink, downlinkMessages);
-checkMessages('uplink messages', message.uplink, uplinkMessages);
+checkMessages('valid uplink messages', message.uplink, validUplinkMessages, {hardwareType: hardwareTypes.GASIC});
+checkMessages('invalid uplink messages', message.uplink, invalidUplinkMessages);
 checkMessages('mtx uplink messages', message.uplink, mtxUplinkMessages, {hardwareType: hardwareTypes.MTXLORA});
 
 describe('message validation', () => {
