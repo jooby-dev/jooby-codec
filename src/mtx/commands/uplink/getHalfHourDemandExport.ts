@@ -1,13 +1,13 @@
 /**
- * Uplink command to get active energy (`A+`) in half hours by date.
+ * Uplink command to get active energy (`A-`) in half hours by date.
  *
- * The corresponding downlink command: `getHalfHourDemand`.
+ * The corresponding downlink command: `getHalfHourDemandExport`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getHalfHourDemand from 'jooby-codec/mtx/commands/uplink/getHalfHourDemand.js';
+ * import * as getHalfHourDemandExport from 'jooby-codec/mtx/commands/uplink/getHalfHourDemandExport.js';
  *
  * // simple response
  * const bytes = [
@@ -21,7 +21,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = getHalfHourDemand.fromBytes(bytes);
+ * const parameters = getHalfHourDemandExport.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -84,7 +84,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetHalfHourDemand.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetHalfHourDemandExport.md#response)
  */
 
 import * as command from '../../utils/command.js';
@@ -107,8 +107,8 @@ const MAX_PERIODS = 50;
 const MAX_COMMAND_SIZE = 4 + (MAX_PERIODS * 2);
 
 
-export const id: types.TCommandId = 0x15;
-export const name: types.TCommandName = 'getHalfHourDemand';
+export const id: types.TCommandId = 0x53;
+export const name: types.TCommandName = 'getHalfHourDemandExport';
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
@@ -179,7 +179,7 @@ export const examples: command.TCommandExamples = {
             ]
         },
         bytes: [
-            0x15, 0x63,
+            0x53, 0x63,
             0x18, 0x03, 0x16, 0x44, 0x57, 0x44, 0xc6, 0x45, 0x35, 0x45, 0xa4, 0x46, 0x13, 0x46, 0x82, 0x46,
             0xf1, 0x47, 0x60, 0x47, 0xcf, 0x47, 0xd0, 0x48, 0x3f, 0x48, 0xae, 0x49, 0x1d, 0x49, 0x8c, 0x49,
             0xfb, 0x4a, 0x6a, 0x4a, 0xd9, 0x4b, 0x48, 0x4b, 0xb7, 0x4b, 0xb8, 0x4c, 0x27, 0x4c, 0x96, 0x4d,
@@ -253,7 +253,7 @@ export const examples: command.TCommandExamples = {
             ]
         },
         bytes: [
-            0x15, 0x63,
+            0x53, 0x63,
             0x16, 0x06, 0x12, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
             0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
             0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,
@@ -330,7 +330,7 @@ export const examples: command.TCommandExamples = {
             dstHour: 3
         },
         bytes: [
-            0x15, 0x68,
+            0x53, 0x68,
             0x18, 0x02, 0x1f, 0x44, 0x57, 0x44, 0xc6, 0x45, 0x35, 0x45, 0xa4, 0x46, 0x13, 0x46, 0x82, 0x46,
             0xf1, 0x47, 0x60, 0x47, 0xcf, 0x47, 0xd0, 0x48, 0x3f, 0x48, 0xae, 0x49, 0x1d, 0x49, 0x8c, 0x49,
             0xfb, 0x4a, 0x6a, 0x4a, 0xd9, 0x4b, 0x48, 0x4b, 0xb7, 0x4b, 0xb8, 0x4c, 0x27, 0x4c, 0x96, 0x4d,

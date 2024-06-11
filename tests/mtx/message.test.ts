@@ -414,6 +414,22 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        // does not exist in empro
+        name: 'getHalfHourDemandExport',
+        hex: '0a 13 85 8b 32 32 cd e4 66 67 2b a8 64 6b b1 34 bb f3',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 85 8b 32 32 cd e4 66 67 2b a8 64 6b b1 34 bb f3 6d 37 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getHalfHourDemandExport.accessLevel,
+        commands: [
+            downlinkCommands.getHalfHourDemandExport.examples['request archive values for 2024.03.22']
+        ],
+        lrc: 0x1b,
+        crc: 0x376d,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getHalfHourDemandPrevious',
         hex: '0a 13 7a cf f2 19 4d 9b 5c 25 b8 6b 13 47 f4 94 40 92',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 7a cf f2 19 4d 9b 5c 25 b8 6b 7d 33 47 f4 94 40 92 f8 7d 33 7e',
@@ -1475,6 +1491,22 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x87,
         crc: 0xb077,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        // does not exist in empro
+        name: 'getHalfHourDemandExport',
+        hex: '0a 13 ba f7 d4 77 0a 1f cb 08 02 d2 f4 ae 44 6c a9 d1 d5 43 5d 19 51 04 14 2f 1d 4b 2c 86 d3 02 69 20 5a 03 4d 02 18 23 f9 75 e0 c4 d0 ae e1 27 e8 db 3f f3 68 cf 35 ed 34 51 53 d8 07 d5 2f 22 6d 89 24 2a be 58 95 14 bf e8 a3 a2 35 7e 0b 8b c9 12 65 ae 3e 94 ca 2e d7 ad 05 1b 32 4a 19 74 1a 04 44 08 58 83 cb b5 d7 c2 44 c4 b6 df 32 c1 a3 f1',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 ba f7 d4 77 0a 1f cb 08 02 d2 f4 ae 44 6c a9 d1 d5 43 5d 19 51 04 14 2f 1d 4b 2c 86 d3 02 69 20 5a 03 4d 02 18 23 f9 75 e0 c4 d0 ae e1 27 e8 db 3f f3 68 cf 35 ed 34 51 53 d8 07 d5 2f 22 6d 89 24 2a be 58 95 14 bf e8 a3 a2 35 7d 5e 0b 8b c9 12 65 ae 3e 94 ca 2e d7 ad 05 1b 32 4a 19 74 1a 04 44 08 58 83 cb b5 d7 c2 44 c4 b6 df 32 c1 a3 f1 32 dd 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getHalfHourDemandExport.accessLevel,
+        commands: [
+            uplinkCommands.getHalfHourDemandExport.examples['simple response']
+        ],
+        lrc: 0xc1,
+        crc: 0xdd32,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
