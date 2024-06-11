@@ -140,6 +140,39 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getDayDemand',
+        hex: '0a 13 68 a5 76 4f 3b ee b4 d7 2e 2a 7c f6 ee 41 92 06',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 68 a5 76 4f 3b ee b4 d7 2e 2a 7c f6 ee 41 92 06 a6 71 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getDayDemand.accessLevel,
+        commands: [
+            downlinkCommands.getDayDemand.examples['request day values for 2024.03.22 00:00:00 GMT'],
+            downlinkCommands.getDayDemand.examples['request day values with energy type for 2024.03.22 00:00:00 GMT']
+        ],
+        lrc: 0x40,
+        crc: 0x71a6,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        // does not exist in empro
+        name: 'getDayDemandExport',
+        hex: '0a 13 c7 fd 48 30 45 4e c9 52 a5 4f b7 7e 3e 3e 43 9e',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 c7 fd 48 30 45 4e c9 52 a5 4f b7 7d 5e 3e 3e 43 9e ca 69 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getDayDemandExport.accessLevel,
+        commands: [
+            downlinkCommands.getDayDemandExport.examples['request day values for 2024.03.22 00:00:00 GMT'],
+            downlinkCommands.getDayDemandExport.examples['request day values with energy type for 2024.03.22 00:00:00 GMT']
+        ],
+        lrc: 0x40,
+        crc: 0x69ca,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getDayMaxDemand',
         hex: '0a 13 6f bb 91 12 b6 71 1d b6 3f ce 9e 6d c4 a6 d9 2a',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 6f bb 91 12 b6 71 1d b6 3f ce 9e 6d c4 a6 d9 2a 7c a8 7e',
@@ -256,22 +289,6 @@ const downlinkMessages: TMessageList = [
         ],
         lrc: 0x45,
         crc: 0x8568,
-        frameType: frameTypes.DATA_REQUEST,
-        source: 0xffff,
-        destination: 0xaaaa
-    },
-    {
-        name: 'getEnergyDay',
-        hex: '0a 13 68 a5 76 4f 3b ee b4 d7 2e 2a 7c f6 ee 41 92 06',
-        frameHex: '7e 50 aa aa ff ff 0a 7d 33 68 a5 76 4f 3b ee b4 d7 2e 2a 7c f6 ee 41 92 06 a6 71 7e',
-        messageId: 10,
-        accessLevel: downlinkCommands.getEnergyDay.accessLevel,
-        commands: [
-            downlinkCommands.getEnergyDay.examples['request day values for 2024.03.22 00:00:00 GMT'],
-            downlinkCommands.getEnergyDay.examples['request day values with energy type for 2024.03.22 00:00:00 GMT']
-        ],
-        lrc: 0x40,
-        crc: 0x71a6,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -1146,6 +1163,38 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getDayDemand',
+        hex: '0a 13 a7 eb 54 fe 39 2b ea 0f 3c c9 d3 aa d1 a6 83 ec cd 90 46 f0 92 c2 93 14 8e ab ef 3d 4d 0b a3 b7',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 a7 eb 54 fe 39 2b ea 0f 3c c9 d3 aa d1 a6 83 ec cd 90 46 f0 92 c2 93 14 8e ab ef 3d 4d 0b a3 b7 06 6d 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDayDemand.accessLevel,
+        commands: [
+            uplinkCommands.getDayDemand.examples['default A+ energy']
+        ],
+        lrc: 0x1e,
+        crc: 0x6d06,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        // does not exist in empro
+        name: 'getDayDemandExport',
+        hex: '0a 13 d7 60 08 96 88 4f 56 b0 3a ad bc 4b 83 52 b7 cc 09 88 68 65 82 60 2c 97 0e fd 0e c8 26 d9 e9 64 d3 3b 63 32 81 64 de f7 b0 18 e1 02 00 1f 94 c0',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 d7 60 08 96 88 4f 56 b0 3a ad bc 4b 83 52 b7 cc 09 88 68 65 82 60 2c 97 0e fd 0e c8 26 d9 e9 64 d3 3b 63 32 81 64 de f7 b0 18 e1 02 00 1f 94 c0 8c e2 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDayDemandExport.accessLevel,
+        commands: [
+            uplinkCommands.getDayDemandExport.examples['default A- energy'],
+            uplinkCommands.getDayDemandExport.examples['received A+ energies']
+        ],
+        lrc: 0xfe,
+        crc: 0xe28c,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getDayEnergies',
         hex: '0a 10 10 78 08 2a 43 11 11 10 00 20 00 00 6c',
         frameHex: '7e 51 aa aa ff ff 0a 10 10 78 08 2a 43 7d 31 7d 31 10 00 20 00 00 6c b3 a1 7e',
@@ -1306,21 +1355,6 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x09,
         crc: 0x1fd8,
-        frameType: frameTypes.DATA_RESPONSE,
-        source: 0xffff,
-        destination: 0xaaaa
-    },
-    {
-        name: 'getEnergyDay',
-        hex: '0a 13 a7 eb 54 fe 39 2b ea 0f 3c c9 d3 aa d1 a6 83 ec cd 90 46 f0 92 c2 93 14 8e ab ef 3d 4d 0b a3 b7',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 a7 eb 54 fe 39 2b ea 0f 3c c9 d3 aa d1 a6 83 ec cd 90 46 f0 92 c2 93 14 8e ab ef 3d 4d 0b a3 b7 06 6d 7e',
-        messageId: 10,
-        accessLevel: uplinkCommands.getEnergyDay.accessLevel,
-        commands: [
-            uplinkCommands.getEnergyDay.examples['default A+ energy']
-        ],
-        lrc: 0x1e,
-        crc: 0x6d06,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
