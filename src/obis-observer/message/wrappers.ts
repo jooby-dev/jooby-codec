@@ -55,8 +55,8 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [] ):
 export const getToBytes = toBytesMap => ( commands: Array<TCommand> ): TBytes => {
     const commandBytes = commands.map(command => {
         // valid command
-        if ( 'parameters' in command ) {
-            return toBytesMap[command.id](command.parameters);
+        if ( 'id' in command ) {
+            return toBytesMap[command.id](command.parameters || {});
         }
 
         // invalid command
