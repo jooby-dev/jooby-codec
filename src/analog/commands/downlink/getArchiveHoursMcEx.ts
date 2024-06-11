@@ -16,7 +16,7 @@
  * [31, 48, 5, 47, 151, 12, 2, 1]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMcEx.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMCEx.md#request)
  */
 
 import * as types from '../../../types.js';

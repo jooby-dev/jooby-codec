@@ -7,13 +7,13 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as dayMC from 'jooby-codec/analog/commands/uplink/dayMC.js';
+ * import * as dayMc from 'jooby-codec/analog/commands/uplink/dayMc.js';
  *
  * // 4 channels at 2023.12.23 00:00:00 GMT
  * const bytes = [0x2f, 0x97, 0x55, 0x0c, 0x83, 0x01, 0x08, 0x0a];
  *
  * // decoded payload
- * const parameters = dayMC.fromBytes(bytes);
+ * const parameters = dayMc.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
