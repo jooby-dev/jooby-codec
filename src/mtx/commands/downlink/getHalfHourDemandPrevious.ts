@@ -1,5 +1,5 @@
 /**
- * Downlink command to get active `A+` energy for the previous day.
+ * Downlink command to get active energy (`A+`) for the previous day.
  *
  * @packageDocumentation
  *

@@ -1,5 +1,5 @@
 /**
- * Uplink command to get the maximum `A+` power for the day.
+ * Uplink command to get the maximum power of active energy (A+) for the day.
  *
  * The corresponding downlink command: `getDayMaxDemand`.
  *

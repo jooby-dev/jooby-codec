@@ -1,11 +1,13 @@
 /**
- * Downlink command to get the maximum power of active energy (A+) for the day.
+ * Downlink command to get active energy (`A-`) in half hours by date.
+ *
+ * The corresponding downlink command: `getHalfHourDemandExport`.
  *
  * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getDayMaxDemand from 'jooby-codec/mtx/commands/downlink/getDayMaxDemand.js';
+ * import * as getHalfHourDemandExport from 'jooby-codec/mtx/commands/downlink/getHalfHourDemandExport.js';
  *
  * const parameters = {
  *     date: {
@@ -15,15 +17,15 @@
  *     }
  * };
  *
- * const bytes = getDayMaxDemand.toBytes(parameters);
+ * const bytes = getHalfHourDemandExport.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [49, 3, 24, 3, 22]
+ * [83, 3, 24, 3, 22]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDayMaxDemand.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetHalfHourDemandExport.md#request)
  */
 
 import * as types from '../../types.js';
@@ -32,20 +34,20 @@ import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
-interface IGetDayMaxDemandParameters {
+interface IGetHalfHourDemandExportParameters {
     date: types.IDate
 }
 
 
-export const id: types.TCommandId = 0x31;
-export const name: types.TCommandName = 'getDayMaxDemand';
+export const id: types.TCommandId = 0x53;
+export const name: types.TCommandName = 'getHalfHourDemandExport';
 export const headerSize = 2;
 export const maxSize = 3;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'request for 2024.03.22': {
+    'request archive values for 2024.03.22': {
         id,
         name,
         headerSize,
@@ -59,7 +61,7 @@ export const examples: command.TCommandExamples = {
             }
         },
         bytes: [
-            0x31, 0x03,
+            0x53, 0x03,
             0x18, 0x03, 0x16
         ]
     }
@@ -72,7 +74,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetDayMaxDemandParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandExportParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return {date: buffer.getDate()};
@@ -85,9 +87,10 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDayMaxDemandParameters => 
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetDayMaxDemandParameters ) : types.TBytes => {
+export const toBytes = ( parameters: IGetHalfHourDemandExportParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
 
+    // body
     buffer.setDate(parameters.date);
 
     return command.toBytes(id, buffer.data);

@@ -1,5 +1,5 @@
 /**
- * Downlink command to get day energy `A-` by default or selected energy type (`A+` or `A-`) for 4 tariffs (`T1`-`T4`) for date.
+ * Downlink command to get day active energy (`A-`) by default or selected active energy (`A+` or `A-`) for 4 tariffs (`T1`-`T4`) for date.
  *
  * @packageDocumentation
  *
