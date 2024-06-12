@@ -95,6 +95,29 @@ export const examples: command.TCommandExamples = {
             0x10, 0xe1, 0x01
         ]
     },
+    'status for IMP4EU (all false)': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            sequenceNumber: 16,
+            status: {
+                isBatteryLow: false,
+                isConnectionLost: false,
+                isFirstChannelInactive: false,
+                isSecondChannelInactive: false,
+                isThirdChannelInactive: false,
+                isForthChannelInactive: false
+            }
+        },
+        config: {
+            hardwareType: hardwareTypes.IMP4EU
+        },
+        bytes: [
+            0x63,
+            0x10, 0x80, 0x00
+        ]
+    },
     'status for MTXLORA': {
         id,
         name,
