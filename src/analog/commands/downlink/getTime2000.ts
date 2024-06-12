@@ -1,6 +1,8 @@
 /**
  * Command to request sensor current time.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as getTime2000 from 'jooby-codec/analog/commands/downlink/getTime2000.js';

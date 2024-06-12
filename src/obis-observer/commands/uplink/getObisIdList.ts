@@ -1,6 +1,8 @@
 /**
  * Uplink command to get the OBIS id list for the specific meter profile.
  *
+ * @packageDocumentation
+ *
  * @example create command instance from command body hex dump
  * ```js
  * import * as getObisIdList from 'jooby-codec/obis-observer/commands/uplink/getObisIdList.js';

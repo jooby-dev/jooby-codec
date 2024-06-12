@@ -4,6 +4,8 @@
  * It is used when the time difference is more than `127` seconds.
  * A device should apply it immediately.
  *
+ * @packageDocumentation
+ *
  * @example
  * ```js
  * import * as setTime2000 from 'jooby-codec/analog/commands/downlink/setTime2000.js';
