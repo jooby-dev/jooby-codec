@@ -1,16 +1,15 @@
 import {START_BYTE, STOP_BYTE} from '../constants/frameAttributes.js';
 import {TBytes} from '../types.js';
-import * as frame from './frame.js';
 
 
 class FrameCollector {
-    private frames: Array<frame.TFrame> = [];
+    private frames: Array<TBytes> = [];
 
-    private buffer: Array<number> = [];
+    private buffer: TBytes = [];
 
-    constructor ( public dataBits: frame.TDataBits = 8, public frameBufferMaxSize: number = 256 ) {}
+    constructor ( public frameBufferMaxSize: number = 256 ) {}
 
-    process ( data: TBytes ): Array<frame.TFrame> {
+    process ( data: TBytes ): Array<TBytes> {
         data.forEach(value => this.processByte(value));
 
         const result = this.frames;
@@ -33,7 +32,7 @@ class FrameCollector {
         this.buffer.push(byte);
 
         if ( byte === STOP_BYTE ) {
-            this.frames.push(frame.fromBytes(this.buffer, this.dataBits));
+            this.frames.push(this.buffer);
             this.reset();
 
             return;
