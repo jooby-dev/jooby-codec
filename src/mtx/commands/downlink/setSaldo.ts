@@ -1,6 +1,8 @@
 /**
  * Downlink command to set device current saldo information.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

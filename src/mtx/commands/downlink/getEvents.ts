@@ -1,6 +1,8 @@
 /**
  * Downlink command to get device events by date.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

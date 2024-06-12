@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `getRatePlanInfo`.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
@@ -55,8 +57,16 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, ITariffPlan, TARIFF_PLAN_SIZE
 
 
 export interface IGetRatePlanInfoResponseParameters {
+    /**
+     * tariff table identifier
+     *
+     * `0` – table `A+`, `1` – table `A-` (for `MTX1`)</br>
+     * `0` – table `A+`, `1` – table `P+`, `2` – table `A-` (for `MTX3`)
+     */
     tariffTable: types.TUint8;
+
     activePlan: ITariffPlan;
+
     passivePlan: ITariffPlan;
 }
 

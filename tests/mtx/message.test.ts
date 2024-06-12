@@ -15,7 +15,7 @@ import * as frameTypes from '../../src/mtx/constants/frameTypes.js';
 import {TBytes} from '../../src/types.js';
 
 
-interface IMessage {
+export interface IMessage {
     name: string,
     hex: string,
     frameHex: string,
@@ -29,9 +29,9 @@ interface IMessage {
     crc: number
 }
 
-type TMessageList = Array<IMessage>;
+export type TMessageList = Array<IMessage>;
 
-const aesKey = [...Array(16).keys()];
+export const aesKey = [...Array(16).keys()];
 
 const downlinkMessages: TMessageList = [
     {
@@ -2090,7 +2090,7 @@ const uplinkMessages: TMessageList = [
 });
 
 
-const checkMessage = ( messageLink, messageParams: IMessage ) => {
+export const checkMessage = ( messageLink, messageParams: IMessage ) => {
     const {hex, messageId, accessLevel, commands, lrc} = messageParams;
     const {frameHex, frameType, source, destination, crc} = messageParams;
     const messageBytes: TBytes = messageLink.toBytes(commands, {messageId, aesKey, accessLevel});

@@ -1,6 +1,10 @@
 /**
  * Uplink command to get device version information.
  *
+ * The corresponding downlink command: `getVersion`.
+ *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

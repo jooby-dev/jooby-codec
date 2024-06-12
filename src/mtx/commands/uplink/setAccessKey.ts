@@ -1,6 +1,10 @@
 /**
  * Uplink command to set access key.
  *
+ * The corresponding downlink command: `setAccessKey`.
+ *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

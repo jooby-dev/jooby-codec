@@ -1,6 +1,8 @@
 /**
  * Downlink command to get [DST](https://en.wikipedia.org/wiki/Daylight_saving_time)/Standard time transition options.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

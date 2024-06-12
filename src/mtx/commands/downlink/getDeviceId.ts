@@ -1,6 +1,8 @@
 /**
  * Downlink command to get device identifier.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

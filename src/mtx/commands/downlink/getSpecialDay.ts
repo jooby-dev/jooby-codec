@@ -1,6 +1,8 @@
 /**
  * Downlink command to get special day information for the given tariff table.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example
@@ -32,13 +34,17 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 interface IGetSpecialDayParameters {
     /**
      * tariff table identifier
-     * (`0` - table `A+`, `1` – table `A-`)
+     *
+     * `0` – table `A+`, `1` – table `A-` (for `MTX1`)</br>
+     * `0` – table `A+`, `1` – table `P+`, `2` – table `A-` (for `MTX3`)
      */
     tariffTable: types.TUint8;
+
     /**
      * Special day index in a list of all tariff special days (max `26`).
      */
     index: types.TUint8;
+
     /**
      * Is it active or passive table (`0` - active, `1` - passive).
      */

@@ -1,7 +1,11 @@
 /**
  * Uplink command to get device type.
  *
-* @packageDocumentation
+ * The corresponding downlink command: `getDeviceType`.
+ *
+ * Supported in MTX1 and MTX3 devices.
+ *
+ * @packageDocumentation
  *
  * @example
  * ```js

@@ -1,6 +1,10 @@
 /**
  * Uplink command to get firmware build date and version from device.
  *
+ * The corresponding downlink command: `getBuildVersion`.
+ *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

@@ -1,6 +1,8 @@
 /**
  * Downlink command to get device rate plan information.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example
@@ -29,7 +31,9 @@ import {READ_ONLY} from '../../constants/accessLevels.js';
 interface IGetRatePlanInfoParameters {
     /**
      * tariff table identifier
-     * (`0` - table `A+`, `1` – table `A-`)
+     *
+     * `0` – table `A+`, `1` – table `A-` (for `MTX1`)</br>
+     * `0` – table `A+`, `1` – table `P+`, `2` – table `A-` (for `MTX3`)
      */
     tariffTable: types.TUint8;
 }

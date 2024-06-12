@@ -1,6 +1,8 @@
 /**
  * Downlink command to set season profile information for the given tariff table.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example
@@ -34,9 +36,12 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, ISeasonProfile, SEASON_PROFIL
 interface ISetSeasonProfileParameters extends ISeasonProfile {
     /**
      * tariff table identifier
-     * (`0` - table `A+`, `1` – table `A-`)
+     *
+     * `0` – table `A+`, `1` – table `A-` (for `MTX1`)</br>
+     * `0` – table `A+`, `1` – table `P+`, `2` – table `A-` (for `MTX3`)
      */
     tariffTable: types.TUint8;
+
     /**
      * Season profile index in a list of all tariff seasons (max `14`).
      */
