@@ -5,13 +5,13 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as currentMC from 'jooby-codec/analog/commands/uplink/currentMC.js';
+ * import * as currentMc from 'jooby-codec/analog/commands/uplink/currentMc.js';
  *
  * // 4 first channels
  * const bytes = [0x0f, 0x83, 0x01, 0x08, 0x0a, 0x0c];
  *
  * // decoded payload
- * const parameters = currentMC.fromBytes(bytes);
+ * const parameters = currentMc.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

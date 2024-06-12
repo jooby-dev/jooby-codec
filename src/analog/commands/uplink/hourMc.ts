@@ -6,7 +6,7 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as hourMC from 'jooby-codec/analog/commands/uplink/hourMC.js';
+ * import * as hourMc from 'jooby-codec/analog/commands/uplink/hourMc.js';
  *
  * // 4 first channels at 2023.12.23 12:00:00 GMT
  * const bytes = [
@@ -15,7 +15,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = hourMC.fromBytes(bytes);
+ * const parameters = hourMc.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

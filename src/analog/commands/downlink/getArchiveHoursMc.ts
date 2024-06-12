@@ -5,11 +5,11 @@
  *
  * @example
  * ```js
- * import * as getArchiveHoursMC from 'jooby-codec/analog/commands/downlink/getArchiveHoursMC.js';
+ * import * as getArchiveHoursMc from 'jooby-codec/analog/commands/downlink/getArchiveHoursMc.js';
  *
  * // hour pulse counter and 1 hour diff for 1 channel from 2023.12.23 12:00:00 GMT
  * const parameters = {startTime2000: 756648000, hours: 2, channelList: [1]};
- * const bytes = getArchiveHoursMC.toBytes(parameters);
+ * const bytes = getArchiveHoursMc.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
