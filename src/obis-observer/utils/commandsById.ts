@@ -1,6 +1,6 @@
-import {downlink, uplink} from '../commands/index.js';
+import {downlink as originalDownlink, uplink as originalUplink} from '../commands/index.js';
 import getCommandsById from '../../utils/getCommandsById.js';
 
 
-export const downlinkById = getCommandsById(downlink);
-export const uplinkById = getCommandsById(uplink);
+export const downlink = getCommandsById(originalDownlink);
+export const uplink = getCommandsById(originalUplink);
