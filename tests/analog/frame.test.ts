@@ -54,8 +54,8 @@ describe('getCommands', () => {
         const frameBytes = getBytesFromHex('7e 02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6 8a 94 7e');
         const parsedFrame = frame.fromBytes(frameBytes);
 
-        if ( 'bytes' in parsedFrame ) {
-            const parsedMessage = downlinkMessage.fromBytes(parsedFrame.bytes);
+        if ( 'payload' in parsedFrame ) {
+            const parsedMessage = downlinkMessage.fromBytes(parsedFrame.payload);
 
             if ( 'error' in parsedMessage ) {
                 throw new Error('Field error should be missing!');

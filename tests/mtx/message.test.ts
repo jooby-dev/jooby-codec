@@ -2117,7 +2117,7 @@ export const checkMessage = ( messageLink, messageParams: IMessage ) => {
     if ( 'error' in parsedFrame ) {
         throw new Error('Field error should be missing!');
     } else {
-        expect(getHexFromBytes(parsedFrame.bytes)).toEqual(hex);
+        expect(getHexFromBytes(parsedFrame.payload)).toEqual(hex);
         expect(parsedFrame.crc.actual.toString(16)).toStrictEqual(crc.toString(16));
         expect(parsedFrame.header?.source).toStrictEqual(source);
         expect(parsedFrame.header?.destination).toStrictEqual(destination);
