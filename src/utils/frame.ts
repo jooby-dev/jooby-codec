@@ -6,6 +6,7 @@ import BinaryBuffer, {IBinaryBuffer} from './BinaryBuffer.js';
 
 
 export interface IFrame {
+    bytes: TBytes,
     payload: TBytes,
     crc: {
         expected: number,
@@ -114,6 +115,7 @@ export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
     if ( bytes[0] !== START_BYTE || bytes[bytes.length - 1] !== STOP_BYTE ) {
         return {
             frame: {
+                bytes,
                 payload: [],
                 crc: {
                     actual: 0,
@@ -129,6 +131,7 @@ export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
     const payload = unstuffed.slice(0, unstuffed.length - 2);
     const actualCrc = calculateCrc16(payload);
     const frame = {
+        bytes,
         payload,
         crc: {
             actual: actualCrc,
