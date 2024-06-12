@@ -6,7 +6,7 @@ import BinaryBuffer, {IBinaryBuffer} from './BinaryBuffer.js';
 
 
 export interface IFrame {
-    bytes: TBytes,
+    payload: TBytes,
     crc: {
         expected: number,
         actual: number
@@ -114,7 +114,7 @@ export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
     if ( bytes[0] !== START_BYTE || bytes[bytes.length - 1] !== STOP_BYTE ) {
         return {
             frame: {
-                bytes: [],
+                payload: [],
                 crc: {
                     actual: 0,
                     expected: undefined
@@ -126,10 +126,10 @@ export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
 
     const unstuffed = arrayUnstuff(bytes.slice(1, bytes.length - 1), dataBits);
     const expectedCrc = getFrameCrc(unstuffed);
-    const content = unstuffed.slice(0, unstuffed.length - 2);
-    const actualCrc = calculateCrc16(content);
-    const payload = {
-        bytes: content,
+    const payload = unstuffed.slice(0, unstuffed.length - 2);
+    const actualCrc = calculateCrc16(payload);
+    const frame = {
+        payload,
         crc: {
             actual: actualCrc,
             expected: expectedCrc
@@ -138,10 +138,10 @@ export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
 
     if ( actualCrc !== expectedCrc ) {
         return {
-            frame: payload,
+            frame,
             error: 'Mismatch CRC.'
         };
     }
 
-    return payload;
+    return frame;
 };

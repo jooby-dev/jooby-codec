@@ -27,12 +27,12 @@ export const fromBytes = ( bytes: TBytes ): TMtxFrame => {
     const parsedFrame = frame.fromBytes(bytes);
     let header: IFrameHeader;
 
-    if ( 'bytes' in parsedFrame ) {
-        const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(parsedFrame.bytes);
+    if ( 'payload' in parsedFrame ) {
+        const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(parsedFrame.payload);
         header = buffer.getFrameHeader();
 
         // payload is all except header
-        parsedFrame.bytes = parsedFrame.bytes.slice(5);
+        parsedFrame.payload = parsedFrame.payload.slice(5);
 
         return {
             ...parsedFrame,
