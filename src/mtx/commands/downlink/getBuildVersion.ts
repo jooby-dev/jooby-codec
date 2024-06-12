@@ -1,6 +1,8 @@
 /**
  * Downlink command to get firmware build date and version from device.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

@@ -1,6 +1,8 @@
 /**
  * Downlink command to prepare device for rate plan application.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example
@@ -31,9 +33,12 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 interface IPrepareRatePlanParameters {
     /**
      * tariff table identifier
-     * (`0` - table `A+`, `1` – table `A-`)
+     *
+     * `0` – table `A+`, `1` – table `A-` (for `MTX1`)</br>
+     * `0` – table `A+`, `1` – table `P+`, `2` – table `A-` (for `MTX3`)
      */
     tariffTable: types.TUint8;
+
     /**
      * Rate plan unique identifier.
      */

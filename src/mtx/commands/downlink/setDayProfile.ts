@@ -1,6 +1,8 @@
 /**
  * Downlink command to set day profile for tariff plan.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example
@@ -37,13 +39,17 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, IDayProfile} from '../../util
 interface ISetDayProfileParameters {
     /**
      * tariff table identifier
-     * (`0` - table `A+`, `1` – table `A-`)
+     *
+     * `0` – table `A+`, `1` – table `A-` (for `MTX1`)</br>
+     * `0` – table `A+`, `1` – table `P+`, `2` – table `A-` (for `MTX3`)
      */
     tariffTable: types.TUint8;
+
     /**
      * Day profile index in a list of all tariff days (max `32`).
      */
     index: types.TUint8;
+
     periods: Array<IDayProfile>;
 }
 

@@ -1,6 +1,10 @@
 /**
  * Uplink command to get [DST](https://en.wikipedia.org/wiki/Daylight_saving_time)/Standard time transition options.
  *
+ * The corresponding downlink command: `getCorrectTime`.
+ *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

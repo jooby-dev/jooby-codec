@@ -1,6 +1,8 @@
 /**
  * Downlink command for incremental time correction.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

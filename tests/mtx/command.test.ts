@@ -26,7 +26,7 @@ const checkExample = (
 };
 
 
-const processExamples = ( commandMap: Record<string, ICommandImplementation> ) => {
+export const processExamples = ( commandMap: Record<string, ICommandImplementation> ) => {
     for ( const [commandName, commandImplementation] of Object.entries(commandMap) ) {
         // each command should export at least 1 example
         expect(Object.keys(commandImplementation.examples).length).toBeGreaterThan(0);

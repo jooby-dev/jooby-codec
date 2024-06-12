@@ -1,6 +1,8 @@
 /**
  * Downlink command to set special parameters (resetting screens of magnetic and electromagnetic influence).
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

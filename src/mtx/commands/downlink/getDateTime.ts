@@ -1,6 +1,8 @@
 /**
  * Downlink command to get full date from device.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

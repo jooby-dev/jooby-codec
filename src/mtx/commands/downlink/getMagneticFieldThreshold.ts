@@ -1,6 +1,8 @@
 /**
  * Downlink command to get the magnetic induction sensor parameters and the magnetic induction value.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

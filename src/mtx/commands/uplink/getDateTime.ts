@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `getDateTime`.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

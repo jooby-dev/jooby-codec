@@ -1,6 +1,8 @@
 /**
  * Downlink command to get device current saldo parameters information.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

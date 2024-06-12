@@ -1,6 +1,8 @@
 /**
  * Downlink command to reset the maximum monthly power.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

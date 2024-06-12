@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `setDateTime`.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

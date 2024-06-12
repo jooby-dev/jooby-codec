@@ -1,6 +1,8 @@
 /**
  * Downlink command to turn the device relay off.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

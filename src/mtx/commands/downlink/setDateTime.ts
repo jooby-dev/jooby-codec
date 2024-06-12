@@ -1,6 +1,8 @@
 /**
  * Downlink command to set full date and time on the meter.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example
