@@ -1,4 +1,4 @@
-import {downlink as originalDownlink, uplink as originalUplink} from '../commands/index.js';
+import {downlink as originalDownlink, uplink as originalUplink} from './index.js';
 import getCommandsById from '../../utils/getCommandsById.js';
 
 
