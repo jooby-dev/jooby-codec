@@ -804,7 +804,7 @@ const fourChannelBitMask = {
     isFirstChannelInactive: Math.pow(2, 4),
     isSecondChannelInactive: Math.pow(2, 5),
     isThirdChannelInactive: Math.pow(2, 6),
-    isForthChannelInactive: Math.pow(2, 7)
+    isForthChannelInactive: Math.pow(2, 8)
 };
 const mtxBitMask = {
     isMeterCaseOpen: Math.pow(2, 0),
@@ -1980,7 +1980,7 @@ CommandBinaryBuffer.prototype.getEventStatus = function ( hardwareType: number )
     // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
     //     status = bitSet.toObject(waterBitMask, this.getUint8());
     } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        status = bitSet.toObject(fourChannelBitMask, this.getExtendedValue());
+        status = bitSet.toObject(fourChannelBitMask, this.getUint16());
     } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         status = bitSet.toObject(mtxBitMask, this.getUint16());
     } else {
@@ -2001,7 +2001,10 @@ CommandBinaryBuffer.prototype.setEventStatus = function ( hardwareType: number, 
     // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
     //     this.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
     } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        this.setExtendedValue(bitSet.fromObject(fourChannelBitMask, status as bitSet.TBooleanObject));
+        // apply 2 bytes with always set extended bit to 1 (on the 7-th position)
+        this.setUint16(
+            bitSet.fromObject(fourChannelBitMask, status as bitSet.TBooleanObject) | (1 << 7)
+        );
     } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         this.setUint16(bitSet.fromObject(mtxBitMask, status as bitSet.TBooleanObject));
     } else {
