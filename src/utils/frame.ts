@@ -6,7 +6,9 @@ import BinaryBuffer, {IBinaryBuffer} from './BinaryBuffer.js';
 
 
 export interface IFrame {
+    /** original data before any processing */
     bytes: TBytes,
+    /** payload after processing (unstuffing, crc check ...) */
     payload: TBytes,
     crc: {
         expected: number,
