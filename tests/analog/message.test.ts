@@ -30,7 +30,7 @@ const validDownlinkMessages: TMessageExamples = {
         }
     },
     'setParameters + getParameters': {
-        bytes: getBytesFromHex('03 02 04 0c 03 0b 1a 52 b8 09 42 52 b8 2d 42 17 00 04 01 04 04 01 1a 63'),
+        bytes: getBytesFromHex('03 02 04 0c  03 0b 1a 52 b8 09 42 52 b8 2d 42 17 00  04 01 04  04 01 1a  63'),
         commands: [
             {
                 id: downlinkCommands.setParameter.id,
@@ -74,10 +74,23 @@ const validDownlinkMessages: TMessageExamples = {
         }
     },
     'multiple commands in the message': {
-        bytes: getBytesFromHex(
-            '1f 30 05 2f 97 0c 02 01 1f 0d 04 2f 98 01 01 1f 0c 04 2f 97 0c 01 1f 0c 04 2f 97 0c 01 1f 05 00 1f 02 00 1b'
-            + '04 2e 6a 01 01 1a 04 2f 97 2c 01 18 00 0b 05 2b bd 98 ad 04 09 00 07 00 06 03 2e 6a 01 05 04 2f 97 0c 02 f6'
-        ),
+        bytes: getBytesFromHex(`
+        1f 30 05 2f 97 0c 02 01
+        1f 0d 04 2f 98 01 01
+        1f 0c 04 2f 97 0c 01
+        1f 0c 04 2f 97 0c 01
+        1f 05 00
+        1f 02 00
+        1b 04 2e 6a 01 01
+        1a 04 2f 97 2c 01
+        18 00
+        0b 05 2b bd 98 ad 04
+        09 00
+        07 00
+        06 03 2e 6a 01
+        05 04 2f 97 0c 02
+        f6
+        `),
         commands: [
             {
                 id: downlinkCommands.getArchiveHoursMcEx.id,
@@ -253,7 +266,7 @@ const invalidDownlinkMessages: TMessageExamples = {
     },
     'get parameters + set parameters': {
         message: {
-            bytes: getBytesFromHex('04 01 17 04 01 18 03 02 0d 00 03 07 0a 00 64 0c 96 00 e9 4c'),
+            bytes: getBytesFromHex('04 01 17  04 01 18  03 02 0d 00  03 07 0a 00 64 0c 96 00 e9  4c'),
             commands: [
                 {
                     id: downlinkCommands.getParameter.id,
@@ -480,7 +493,7 @@ const validUplinkMessages: TMessageExamples = {
         }
     },
     'currentMc + lastEvent response': {
-        bytes: getBytesFromHex('18 03 01 8a 12 62 ed 00 58'),
+        bytes: getBytesFromHex('18 03 01 8a 12  62 ed 00  58'),
         commands: [
             {
                 id: uplinkCommands.currentMc.id,
@@ -524,7 +537,7 @@ const validUplinkMessages: TMessageExamples = {
         }
     },
     'hourMc + lastEvent response': {
-        bytes: getBytesFromHex('17 06 00 6f 0c 01 99 35 62 bc 00 54'),
+        bytes: getBytesFromHex('17 06 00 6f 0c 01 99 35  62 bc 00  54'),
         commands: [
             {
                 id: uplinkCommands.hourMc.id,
@@ -571,7 +584,7 @@ const validUplinkMessages: TMessageExamples = {
         }
     },
     'time2000 + new status response': {
-        bytes: getBytesFromHex('09 05 00 00 62 2c 58 14 0d 02 76 0c 01 e3 6c 83 4f 93 19 fd bc 51 f6'),
+        bytes: getBytesFromHex('09 05 00 00 62 2c 58  14 0d 02 76 0c 01 e3 6c 83 4f 93 19 fd bc 51  f6'),
         commands: [
             {
                 id: uplinkCommands.time2000.id,
@@ -623,7 +636,7 @@ const validUplinkMessages: TMessageExamples = {
         }
     },
     'exAbsHourMc + lastEvent response': {
-        bytes: getBytesFromHex('1f 0a 0e 30 c7 e5 01 82 f4 52 00 00 00 00 00 00 00 62 62 00 79'),
+        bytes: getBytesFromHex('1f 0a 0e 30 c7 e5 01 82 f4 52 00 00 00 00 00 00 00  62 62 00  79'),
         commands: [
             {
                 id: uplinkCommands.exAbsHourMc.id,
@@ -637,15 +650,7 @@ const validUplinkMessages: TMessageExamples = {
                     hours: 8,
                     channelList: [
                         {
-                            diff: [
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0
-                            ],
+                            diff: [0, 0, 0, 0, 0, 0, 0],
                             value: 10612,
                             pulseCoefficient: 10,
                             index: 1
@@ -682,10 +687,11 @@ const validUplinkMessages: TMessageExamples = {
 
 const validMultichannelUplinkMessages: TMessageExamples = {
     'multichannel hourMc + lastEvent': {
-        bytes: getBytesFromHex(
-            '17 33 00 68 ec 0f ad b0 48 c6 08 c8 08 c6 08 c4 08 be 08 b4 08 b9 08 b3 ed 2d 00 00 00 00'
-            + ' 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00 63 39 80 00 ad'
-        ),
+        bytes: getBytesFromHex(`
+            17 33 00 68 ec 0f ad b0 48 c6 08 c8 08 c6 08 c4 08 be 08 b4 08 b9 08 b3 ed 2d
+            00 00 00 00 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00
+            63 39 80 00  ad
+        `),
         commands: [
             {
                 id: uplinkCommands.hourMc.id,
@@ -700,61 +706,29 @@ const validMultichannelUplinkMessages: TMessageExamples = {
                     channelList: [
                         {
                             value: 1185837,
-                            diff: [
-                                1094,
-                                1096,
-                                1094,
-                                1092,
-                                1086,
-                                1076,
-                                1081
-                            ],
+                            diff: [1094, 1096, 1094, 1092, 1086, 1076, 1081],
                             index: 1
                         },
                         {
                             value: 751283,
-                            diff: [
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0
-                            ],
+                            diff: [0, 0, 0, 0, 0, 0, 0],
                             index: 2
                         },
                         {
                             value: 1480717,
-                            diff: [
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0
-                            ],
+                            diff: [0, 0, 0, 0, 0, 0, 0],
                             index: 3
                         },
                         {
                             value: 700175,
-                            diff: [
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0
-                            ],
+                            diff: [0, 0, 0, 0, 0, 0, 0],
                             index: 4
                         }
                     ]
                 },
                 bytes: getBytesFromHex(
-                    '17 33 00 68 ec 0f ad b0 48 c6 08 c8 08 c6 08 c4 08 be 08 b4 08 b9 08 b3 ed 2d '
-                    + '00 00 00 00 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00'
+                    `17 33 00 68 ec 0f ad b0 48 c6 08 c8 08 c6 08 c4 08 be 08 b4 08 b9 08 b3 ed 2d
+                      00 00 00 00 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00`
                 )
             },
             {
@@ -807,7 +781,7 @@ const invalidUplinkMessages: TMessageExamples = {
     },
     'time2000 + new status': {
         message: {
-            bytes: getBytesFromHex('09 05 4e 2c 26 53 d6 14 0d 02 76 0c 01 e2 bc 0c 67 2a 17 fd bc 62 dd'),
+            bytes: getBytesFromHex('09 05 4e 2c 26 53 d6  14 0d 02 76 0c 01 e2 bc 0c 67 2a 17 fd bc 62  dd'),
             commands: [
                 {
                     id: uplinkCommands.time2000.id,
@@ -976,9 +950,9 @@ checkMessages('valid multichannel uplink messages', message.uplink, validMultich
 checkMessages('invalid uplink messages', message.uplink, invalidUplinkMessages);
 checkMessages('mtx uplink messages', message.uplink, mtxUplinkMessages, {hardwareType: hardwareTypes.MTXLORA});
 
-describe('message validation', () => {
+describe('additional message validation', () => {
     test('valid input', () => {
-        const bytes = getBytesFromHex('02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6');
+        const bytes = getBytesFromHex('02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9  a6');
         const messageFromBytes = message.downlink.fromBytes(bytes);
 
         if ( 'error' in messageFromBytes ) {
@@ -987,7 +961,7 @@ describe('message validation', () => {
     });
 
     test('invalid input', () => {
-        const bytes = getBytesFromHex('02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9 a6');
+        const bytes = getBytesFromHex('02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9  a6');
         const messageFromBytes = message.downlink.fromBytes(bytes);
 
         if ( !('error' in messageFromBytes) ) {
@@ -996,7 +970,7 @@ describe('message validation', () => {
     });
 
     test('invalid commands direction in message', () => {
-        const bytes = getBytesFromHex('17 0d 2e d5 f3 01 99 35 00 00 00 00 00 00 00 62 bc 00 34');
+        const bytes = getBytesFromHex('17 0d 2e d5 f3 01 99 35 00 00 00 00 00 00 00 62 bc 00  34');
         const messageFromBytes = message.downlink.fromBytes(bytes);
 
         if ( 'commands' in messageFromBytes ) {
