@@ -98,6 +98,7 @@ toBytesMap[commands.setCorrectDateTime.id] = commands.setCorrectDateTime.toBytes
 toBytesMap[commands.setCorrectTime.id] = commands.setCorrectTime.toBytes;
 toBytesMap[commands.setDateTime.id] = commands.setDateTime.toBytes;
 toBytesMap[commands.setDayProfile.id] = commands.setDayProfile.toBytes;
+toBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.toBytes;
 toBytesMap[commands.setSaldo.id] = commands.setSaldo.toBytes;
 toBytesMap[commands.setSaldoParameters.id] = commands.setSaldoParameters.toBytes;
 toBytesMap[commands.setSeasonProfile.id] = commands.setSeasonProfile.toBytes;
@@ -108,6 +109,7 @@ toBytesMap[commands.turnRelayOn.id] = commands.turnRelayOn.toBytes;
 
 // commands different from MTX1
 toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
+toBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.toBytes;
 
 
 // commands identical to MTX1
@@ -137,6 +139,7 @@ fromBytesMap[commands.setCorrectDateTime.id] = commands.setCorrectDateTime.fromB
 fromBytesMap[commands.setCorrectTime.id] = commands.setCorrectTime.fromBytes;
 fromBytesMap[commands.setDateTime.id] = commands.setDateTime.fromBytes;
 fromBytesMap[commands.setDayProfile.id] = commands.setDayProfile.fromBytes;
+fromBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.fromBytes;
 fromBytesMap[commands.setSaldo.id] = commands.setSaldo.fromBytes;
 fromBytesMap[commands.setSaldoParameters.id] = commands.setSaldoParameters.fromBytes;
 fromBytesMap[commands.setSeasonProfile.id] = commands.setSeasonProfile.fromBytes;
@@ -147,6 +150,7 @@ fromBytesMap[commands.turnRelayOn.id] = commands.turnRelayOn.fromBytes;
 
 // commands different from MTX1
 fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes;
+fromBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.fromBytes;
 
 
 // commands identical to MTX1
@@ -176,6 +180,7 @@ nameMap[commands.setCorrectDateTime.id] = commands.setCorrectDateTime.name;
 nameMap[commands.setCorrectTime.id] = commands.setCorrectTime.name;
 nameMap[commands.setDateTime.id] = commands.setDateTime.name;
 nameMap[commands.setDayProfile.id] = commands.setDayProfile.name;
+nameMap[commands.setDisplayParam.id] = commands.setDisplayParam.name;
 nameMap[commands.setSaldo.id] = commands.setSaldo.name;
 nameMap[commands.setSaldoParameters.id] = commands.setSaldoParameters.name;
 nameMap[commands.setSeasonProfile.id] = commands.setSeasonProfile.name;
@@ -186,3 +191,4 @@ nameMap[commands.turnRelayOn.id] = commands.turnRelayOn.name;
 
 // commands different from MTX1
 nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
+nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;

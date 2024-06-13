@@ -824,15 +824,15 @@ const downlinkMessages: TMessageList = [
     },
     {
         name: 'setDisplayParam',
-        hex: '0a 12 dc d4 6d 81 98 a0 02 26 30 74 c9 64 ba f8 55 1c',
-        frameHex: '7e 50 aa aa ff ff 0a 12 dc d4 6d 81 98 a0 02 26 30 74 c9 64 ba f8 55 1c 40 a9 7e',
+        hex: '0a 12 a2 d2 eb 6b 01 e2 a3 41 9f 9d 56 e5 ff 83 e2 d8',
+        frameHex: '7e 50 aa aa ff ff 0a 12 a2 d2 eb 6b 01 e2 a3 41 9f 9d 56 e5 ff 83 e2 d8 62 45 7e',
         messageId: 10,
         accessLevel: downlinkCommands.setDisplayParam.accessLevel,
         commands: [
             downlinkCommands.setDisplayParam.examples['set params with order']
         ],
-        lrc: 0x17,
-        crc: 0xa940,
+        lrc: 0x1f,
+        crc: 0x4562,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -1347,15 +1347,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getDisplayParam',
-        hex: '0a 13 29 3d 20 95 fd 5a 96 e0 7d d3 86 ce 79 b4 58 a6',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 29 3d 20 95 fd 5a 96 e0 7d 5d d3 86 ce 79 b4 58 a6 d8 41 7e',
+        hex: '0a 13 41 56 c5 65 bf 04 25 17 8a a5 3b 3e ef 47 17 ae',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 41 56 c5 65 bf 04 25 17 8a a5 3b 3e ef 47 17 ae 9f 8e 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getDisplayParam.accessLevel,
         commands: [
             uplinkCommands.getDisplayParam.examples['mode with order']
         ],
-        lrc: 0x15,
-        crc: 0x41d8,
+        lrc: 0x1d,
+        crc: 0x8e9f,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

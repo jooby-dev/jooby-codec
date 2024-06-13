@@ -7,7 +7,7 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getDisplayParam from 'jooby-codec/mtx/commands/uplink/getDisplayParam.js';
+ * import * as getDisplayParam from 'jooby-codec/mtx3/commands/uplink/getDisplayParam.js';
  *
  * // mode with order
  * const bytes = [0x00, 0x04, 0x05, 0x06, 0x07];
@@ -26,9 +26,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDisplayParam.md#response)
  */
 
-import * as command from '../../utils/command.js';
+import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
 
 
 interface IGetDisplayParamResponseParameters {
@@ -37,8 +37,10 @@ interface IGetDisplayParamResponseParameters {
      *
      * | Value | Screen type  | Screen range |
      * | ----- | ------------ | ------------ |
-     * | `0`   | `main`       | `1..32`      |
-     * | `1`   | `additional` | `1..32`      |
+     * | `0`   | `main`       | `1..64`      |
+     * | `1`   | `main`       | `65..128`    |
+     * | `2`   | `additional` | `1..64`      |
+     * | `3`   | `additional` | `65..128`    |
      */
     displayMode: types.TUint8,
 
@@ -54,7 +56,7 @@ interface IGetDisplayParamResponseParameters {
 export const id: types.TCommandId = 0x5e;
 export const name: types.TCommandName = 'getDisplayParam';
 export const headerSize = 2;
-export const maxSize = 33;
+export const maxSize = 65;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
