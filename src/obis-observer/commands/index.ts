@@ -20,5 +20,12 @@
  * </table>
  */
 
-export * as downlink from './downlink/index.js';
-export * as uplink from './uplink/index.js';
+import * as downlink from './downlink/index.js';
+import * as uplink from './uplink/index.js';
+import getCommandsById from '../../utils/getCommandsById.js';
+
+
+export {downlink, uplink};
+
+export const downlinkById = getCommandsById(downlink);
+export const uplinkById = getCommandsById(uplink);
