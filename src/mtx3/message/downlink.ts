@@ -170,6 +170,8 @@ toBytesMap[commands.turnRelayOn.id] = commands.turnRelayOn.toBytes;
 
 // commands different from MTX1
 toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
+toBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.toBytes;
+toBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.toBytes;
 
 
 // commands identical to MTX1
@@ -209,6 +211,8 @@ fromBytesMap[commands.turnRelayOn.id] = commands.turnRelayOn.fromBytes;
 
 // commands different from MTX1
 fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes;
+fromBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.fromBytes;
+fromBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.fromBytes;
 
 
 // commands identical to MTX1
@@ -248,3 +252,5 @@ nameMap[commands.turnRelayOn.id] = commands.turnRelayOn.name;
 
 // commands different from MTX1
 nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
+nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;
+nameMap[commands.setDisplayParam.id] = commands.setDisplayParam.name;

@@ -5,7 +5,7 @@
  *
  * @example
  * ```js
- * import * as setDisplayParam from 'jooby-codec/mtx/commands/downlink/setDisplayParam.js';
+ * import * as setDisplayParam from 'jooby-codec/mtx3/commands/downlink/setDisplayParam.js';
  *
  * const parameters = {
  *     displayMode: 0,
@@ -22,9 +22,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetDisplayParam.md#request)
  */
 
-import * as command from '../../utils/command.js';
+import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
-import {READ_WRITE} from '../../constants/accessLevels.js';
+import {READ_WRITE} from '../../../mtx/constants/accessLevels.js';
 
 
 interface ISetDisplayParamParameters {
@@ -33,8 +33,10 @@ interface ISetDisplayParamParameters {
      *
      * | Value | Screen type  | Screen range |
      * | ----- | ------------ | ------------ |
-     * | `0`   | `main`       | `1..32`      |
-     * | `1`   | `additional` | `1..32`      |
+     * | `0`   | `main`       | `1..64`      |
+     * | `1`   | `main`       | `65..128`    |
+     * | `2`   | `additional` | `1..64`      |
+     * | `3`   | `additional` | `65..128`    |
      */
     displayMode: types.TUint8,
 
@@ -50,7 +52,7 @@ interface ISetDisplayParamParameters {
 export const id: types.TCommandId = 0x5d;
 export const name: types.TCommandName = 'setDisplayParam';
 export const headerSize = 2;
-export const maxSize = 33;
+export const maxSize = 65;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
 export const isLoraOnly = false;
 

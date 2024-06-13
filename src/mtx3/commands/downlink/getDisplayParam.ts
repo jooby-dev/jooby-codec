@@ -5,7 +5,7 @@
  *
  * @example
  * ```js
- * import * as getDisplayParam from 'jooby-codec/mtx/commands/downlink/getDisplayParam.js';
+ * import * as getDisplayParam from 'jooby-codec/mtx3/commands/downlink/getDisplayParam.js';
  *
  * const parameters = {
  *     displayMode: 1
@@ -21,9 +21,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDisplayParam.md#request)
  */
 
-import * as command from '../../utils/command.js';
+import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
@@ -33,8 +33,10 @@ interface IGetDisplayParamParameters {
      *
      * | Value | Screen type  | Screen range |
      * | ----- | ------------ | ------------ |
-     * | `0`   | `main`       | `1..32`      |
-     * | `1`   | `additional` | `1..32`      |
+     * | `0`   | `main`       | `1..64`      |
+     * | `1`   | `main`       | `65..128`    |
+     * | `2`   | `additional` | `1..64`      |
+     * | `3`   | `additional` | `65..128`    |
      */
     displayMode: types.TUint8;
 }
