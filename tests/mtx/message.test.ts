@@ -278,14 +278,14 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getEnergyCurrent',
+        name: 'getEnergy',
         hex: '0a 13 bc 75 40 f0 ec 47 4e 8a 02 d2 23 6b 95 4d 78 40',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 bc 75 40 f0 ec 47 4e 8a 02 d2 23 6b 95 4d 78 40 68 85 7e',
         messageId: 10,
-        accessLevel: downlinkCommands.getEnergyCurrent.accessLevel,
+        accessLevel: downlinkCommands.getEnergy.accessLevel,
         commands: [
-            downlinkCommands.getEnergyCurrent.examples['get default A+ energy'],
-            downlinkCommands.getEnergyCurrent.examples['get A- energy']
+            downlinkCommands.getEnergy.examples['get default A+ energy'],
+            downlinkCommands.getEnergy.examples['get A- energy']
         ],
         lrc: 0x45,
         crc: 0x8568,
@@ -1361,13 +1361,13 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getEnergyCurrent',
+        name: 'getEnergy',
         hex: '0a 13 b2 49 f1 cf 51 c5 b9 2a ae 94 f5 e7 1b 2a 5b 36 8b 88 fb 14 6f 1e 94 60 f1 13 ea 8f 3f 64 ca 46',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 b2 49 f1 cf 51 c5 b9 2a ae 94 f5 e7 1b 2a 5b 36 8b 88 fb 14 6f 1e 94 60 f1 7d 33 ea 8f 3f 64 ca 46 d8 1f 7e',
         messageId: 10,
-        accessLevel: uplinkCommands.getEnergyCurrent.accessLevel,
+        accessLevel: uplinkCommands.getEnergy.accessLevel,
         commands: [
-            uplinkCommands.getEnergyCurrent.examples['default A+ energy']
+            uplinkCommands.getEnergy.examples['default A+ energy']
         ],
         lrc: 0x09,
         crc: 0x1fd8,

@@ -1,4 +1,4 @@
-import {getEnergyCurrent} from '../../../src/mtx/commands/uplink/index.js';
+import {getEnergy} from '../../../src/mtx/commands/uplink/index.js';
 import {runCommandDlmsTest} from './utils/runCommandDlmsTest.js';
 
 
@@ -40,4 +40,4 @@ const examples = [
 ];
 
 
-describe('GetEnergyCurrentResponse dlms tests', () => runCommandDlmsTest(getEnergyCurrent, examples));
+describe('GetEnergyResponse dlms tests', () => runCommandDlmsTest(getEnergy, examples));
