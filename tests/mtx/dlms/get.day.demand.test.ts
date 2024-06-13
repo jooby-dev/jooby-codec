@@ -1,5 +1,4 @@
 import {getDayDemand} from '../../../src/mtx/commands/uplink/index.js';
-import {A_MINUS_ENERGY_TYPE, A_PLUS_ENERGY_TYPE} from '../../../src/mtx/utils/CommandBinaryBuffer.js';
 import {runCommandDlmsTest} from './utils/runCommandDlmsTest.js';
 
 
@@ -34,8 +33,8 @@ const examples = [
                 month: 2,
                 date: 3
             },
-            energyType: A_PLUS_ENERGY_TYPE,
-            energies: [40301230, undefined, undefined, 2145623]
+            energyType: 1,
+            energies: [40301230, null, null, 2145623]
         },
         dlms: {
             date: {
@@ -55,8 +54,8 @@ const examples = [
                 month: 2,
                 date: 3
             },
-            energyType: A_MINUS_ENERGY_TYPE,
-            energies: [undefined, 40301230, undefined, 2145623]
+            energyType: 2,
+            energies: [null, 40301230, null, 2145623]
         },
         dlms: {
             date: {

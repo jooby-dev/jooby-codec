@@ -28,14 +28,18 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, TEnergyType} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
 interface IGetDayDemandExportParameters {
     date: types.IDate,
-    energyType?: TEnergyType
+
+    /**
+     * `1` - `A+`, `2` - `A-`
+     */
+    energyType?: types.TUint8
 }
 
 
@@ -103,7 +107,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandExportParameters 
     if ( bytes.length === MAX_COMMAND_SIZE ) {
         return {
             date: buffer.getDate(),
-            energyType: buffer.getUint8() as TEnergyType
+            energyType: buffer.getUint8()
         };
     }
 

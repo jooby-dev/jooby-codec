@@ -1,34 +1,27 @@
 /**
- * Uplink command to get day active energy (`A-`) by default or selected active energy (`A+` or `A-`) for 4 tariffs (`T1`-`T4`) for date.
- *
- * The corresponding downlink command: `getDayDemandExport`.
+ * Uplink command to get current active energy (`A-`) by default or selected active energy (`A+` or `A-`) for 4 tariffs (`T1`-`T4`).
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getDayDemandExport from 'jooby-codec/mtx/commands/uplink/getDayDemandExport.js';
+ * import * as getEnergyCurrent from 'jooby-codec/mtx/commands/uplink/getEnergyCurrent.js';
  *
  * // received A- energies
- * const bytes = [0x18, 0x03, 0x16, 0x0d, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57];
+ * const bytes = [0x02, 0x66, 0xf2, 0xae, 0x00, 0x32, 0xe0, 0x64, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57];
  *
  * // decoded payload
- * const parameters = getDayDemandExport.fromBytes(bytes);
+ * const parameters = getEnergyCurrent.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
  * {
- *     date: {
- *         year: 24,
- *         month: 3,
- *         date: 22
- *     },
  *     energyType: 2,
  *     energies: [40301230, null, 2333, 2145623]
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDayDemandExport.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetEnergyExport.md#response)
  */
 
 import * as types from '../../types.js';
@@ -38,68 +31,52 @@ import CommandBinaryBuffer, {
     ICommandBinaryBuffer,
     IPackedEnergiesWithType,
     PACKED_ENERGY_TYPE_SIZE,
-    DATE_SIZE,
     ENERGY_SIZE,
     TARIFF_NUMBER
 } from '../../utils/CommandBinaryBuffer.js';
 import getObisByEnergy from '../../utils/getObisByEnergy.js';
 
 
-interface IGetDayDemandExportResponseParameters extends IPackedEnergiesWithType {
-    date: types.IDate
-}
-
-
 /** fixed size only for parameters without `energyType` parameter  */
-const COMMAND_SIZE = 19;
+const COMMAND_SIZE = 16;
 const MAX_COMMAND_SIZE = COMMAND_SIZE + PACKED_ENERGY_TYPE_SIZE;
 
 
-export const id: types.TCommandId = 0x4f;
-export const name: types.TCommandName = 'getDayDemandExport';
+export const id: types.TCommandId = 0x5b;
+export const name: types.TCommandName = 'getEnergyExport';
 export const headerSize = 2;
-export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const maxSize = MAX_COMMAND_SIZE;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'default A- energy': {
+    'default response': {
         id,
         name,
         headerSize,
         maxSize,
         accessLevel,
         parameters: {
-            date: {
-                year: 24,
-                month: 3,
-                date: 22
-            },
             energies: [40301230, 3334244, 2333, 2145623]
         },
         bytes: [
-            0x4f, 0x13,
-            0x18, 0x03, 0x16, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x32, 0xe0, 0x64, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57
+            0x5b, 0x10,
+            0x02, 0x66, 0xf2, 0xae, 0x00, 0x32, 0xe0, 0x64, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57
         ]
     },
-    'received A+ energies': {
+    'received A- energies by tariffs': {
         id,
         name,
         headerSize,
         maxSize,
         accessLevel,
         parameters: {
-            date: {
-                year: 24,
-                month: 3,
-                date: 22
-            },
-            energyType: 1,
+            energyType: 2,
             energies: [40301230, null, 2333, 2145623]
         },
         bytes: [
-            0x4f, 0x10,
-            0x18, 0x03, 0x16, 0xd1, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57
+            0x5b, 0x0d,
+            0xd2, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57
         ]
     }
 };
@@ -111,20 +88,16 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandExportResponseParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IPackedEnergiesWithType => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    let parameters: IGetDayDemandExportResponseParameters;
+    let parameters: IPackedEnergiesWithType;
 
     if ( bytes.length === COMMAND_SIZE ) {
         parameters = {
-            date: buffer.getDate(),
             energies: buffer.getEnergies()
         };
     } else {
-        parameters = {
-            date: buffer.getDate(),
-            ...buffer.getPackedEnergyWithType()
-        };
+        parameters = buffer.getPackedEnergyWithType();
     }
 
     return parameters;
@@ -137,30 +110,29 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandExportResponsePar
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetDayDemandExportResponseParameters ): types.TBytes => {
+export const toBytes = ( parameters: IPackedEnergiesWithType ): types.TBytes => {
     let size = COMMAND_SIZE;
 
     if ( parameters?.energyType ) {
         const energiesNumber = parameters.energies.filter(energy => energy !== null).length;
-        size = DATE_SIZE + PACKED_ENERGY_TYPE_SIZE + (energiesNumber * ENERGY_SIZE);
+        size = PACKED_ENERGY_TYPE_SIZE + (energiesNumber * ENERGY_SIZE);
     }
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
 
     // body
-    buffer.setDate(parameters.date);
     buffer.setPackedEnergyWithType(parameters);
 
     return command.toBytes(id, buffer.data);
 };
 
 
-export const toJson = ( parameters: IGetDayDemandExportResponseParameters, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
+export const toJson = ( parameters: IPackedEnergiesWithType, {dlms}: command.IDlmsJsonOptions = command.defaultDlmsJsonOptions ) => {
     if ( !dlms ) {
         return JSON.stringify(parameters);
     }
 
-    const {date, energyType, energies} = parameters;
+    const {energyType, energies} = parameters;
     const result: Record<string, types.TUint32> = {};
 
     for ( let i = 0; i < TARIFF_NUMBER; i += 1 ) {
@@ -169,8 +141,5 @@ export const toJson = ( parameters: IGetDayDemandExportResponseParameters, {dlms
         }
     }
 
-    return JSON.stringify({
-        date,
-        ...result
-    });
+    return JSON.stringify(result);
 };

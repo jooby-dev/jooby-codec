@@ -1,25 +1,25 @@
 /**
- * Downlink command to get current active energy (`A+`) by default or selected active energy (`A+` or `A-`) for 4 tariffs (`T1`-`T4`).
+ * Downlink command to get current active energy (`A-`) by default or selected active energy (`A+` or `A-`) for 4 tariffs (`T1`-`T4`).
  *
  * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getEnergyCurrent from 'jooby-codec/mtx/commands/downlink/getEnergyCurrent.js';
+ * import * as getEnergyExport from 'jooby-codec/mtx/commands/downlink/getEnergyExport.js';
  *
  * const parameters = {
  *     energyType: 1
  * };
  *
- * const bytes = getEnergyCurrent.toBytes(parameters);
+ * const bytes = getEnergyExport.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [15, 1, 1]
+ * [91, 1, 2]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetEnergyCurrent.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetEnergyExport.md#request)
  */
 
 import * as types from '../../types.js';
@@ -40,8 +40,8 @@ const MIN_COMMAND_SIZE = 0;
 const MAX_COMMAND_SIZE = 1;
 
 
-export const id: types.TCommandId = 0x0f;
-export const name: types.TCommandName = 'getEnergyCurrent';
+export const id: types.TCommandId = 0x5b;
+export const name: types.TCommandName = 'getEnergyExport';
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
@@ -56,7 +56,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x0f, 0x00
+            0x5b, 0x00
         ]
     },
     'get A- energy': {
@@ -69,7 +69,7 @@ export const examples: command.TCommandExamples = {
             energyType: 2
         },
         bytes: [
-            0x0f, 0x01,
+            0x5b, 0x01,
             0x02
         ]
     }

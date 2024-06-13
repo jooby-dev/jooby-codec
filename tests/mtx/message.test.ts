@@ -1196,16 +1196,16 @@ const uplinkMessages: TMessageList = [
     {
         // does not exist in empro
         name: 'getDayDemandExport',
-        hex: '0a 13 d7 60 08 96 88 4f 56 b0 3a ad bc 4b 83 52 b7 cc 09 88 68 65 82 60 2c 97 0e fd 0e c8 26 d9 e9 64 d3 3b 63 32 81 64 de f7 b0 18 e1 02 00 1f 94 c0',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 d7 60 08 96 88 4f 56 b0 3a ad bc 4b 83 52 b7 cc 09 88 68 65 82 60 2c 97 0e fd 0e c8 26 d9 e9 64 d3 3b 63 32 81 64 de f7 b0 18 e1 02 00 1f 94 c0 8c e2 7e',
+        hex: '0a 13 d7 60 08 96 88 4f 56 b0 3a ad bc 4b 83 52 b7 cc 0c 87 93 84 6a b1 84 78 dc 8e 3a 68 db f7 95 36 d8 ae ce 0b 9d ff 64 82 30 2f 3d 81 d9 c7 28 3d',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 d7 60 08 96 88 4f 56 b0 3a ad bc 4b 83 52 b7 cc 0c 87 93 84 6a b1 84 78 dc 8e 3a 68 db f7 95 36 d8 ae ce 0b 9d ff 64 82 30 2f 3d 81 d9 c7 28 3d 4a 15 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getDayDemandExport.accessLevel,
         commands: [
             uplinkCommands.getDayDemandExport.examples['default A- energy'],
             uplinkCommands.getDayDemandExport.examples['received A+ energies']
         ],
-        lrc: 0xfe,
-        crc: 0xe28c,
+        lrc: 0x22,
+        crc: 0x154a,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1392,15 +1392,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getEnergyExportDayPrevious',
-        hex: '0a 13 9e b8 fe 77 16 d8 1c d1 21 aa 50 52 3b 7d 73 09 4e 97 61 e1 2f d8 4c b9 c4 7e 2c c8 65 9d 86 e5',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 9e b8 fe 77 16 d8 1c d1 21 aa 50 52 3b 7d 5d 73 09 4e 97 61 e1 2f d8 4c b9 c4 7d 5e 2c c8 65 9d 86 e5 8d c9 7e',
+        hex: '0a 13 ab 74 e9 bb 6d a4 64 6d 79 cf 4c d8 92 8c f3 59 e6 f8 a2 f1 27 d5 76 cc 1d 50 e3 c4 d9 9e 41 c3',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 ab 74 e9 bb 6d a4 64 6d 79 cf 4c d8 92 8c f3 59 e6 f8 a2 f1 27 d5 76 cc 1d 50 e3 c4 d9 9e 41 c3 d4 90 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getEnergyExportDayPrevious.accessLevel,
         commands: [
             uplinkCommands.getEnergyExportDayPrevious.examples['response with A- energy by T1, T4']
         ],
-        lrc: 0x75,
-        crc: 0xc98d,
+        lrc: 0x77,
+        crc: 0x90d4,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -2106,6 +2106,7 @@ export const checkMessage = ( messageLink, messageParams: IMessage ) => {
         expect(getHexFromBytes([messageData.lrc.actual])).toEqual(getHexFromBytes([lrc]));
         expect(messageData.messageId).toEqual(messageId);
         expect(messageData.accessLevel).toEqual(accessLevel);
+        console.log(messageData.id);
         expect(messageData.commands).toStrictEqual(commands);
     } else if ( 'message' in messageData ) {
         // invalid message
