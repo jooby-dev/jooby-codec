@@ -729,7 +729,8 @@ const validMultichannelUplinkMessages: TMessageExamples = {
                 },
                 bytes: getBytesFromHex(`
                     17 33 00 68 ec 0f ad b0 48 c6 08 c8 08 c6 08 c4 08 be 08 b4 08 b9 08 b3 ed 2d
-                    00 00 00 00 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00`)
+                    00 00 00 00 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00
+                `)
             },
             {
                 id: uplinkCommands.lastEvent.id,
