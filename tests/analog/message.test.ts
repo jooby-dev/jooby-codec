@@ -75,21 +75,21 @@ const validDownlinkMessages: TMessageExamples = {
     },
     'multiple commands in the message': {
         bytes: getBytesFromHex(`
-        1f 30 05 2f 97 0c 02 01
-        1f 0d 04 2f 98 01 01
-        1f 0c 04 2f 97 0c 01
-        1f 0c 04 2f 97 0c 01
-        1f 05 00
-        1f 02 00
-        1b 04 2e 6a 01 01
-        1a 04 2f 97 2c 01
-        18 00
-        0b 05 2b bd 98 ad 04
-        09 00
-        07 00
-        06 03 2e 6a 01
-        05 04 2f 97 0c 02
-        f6
+            1f 30 05 2f 97 0c 02 01
+            1f 0d 04 2f 98 01 01
+            1f 0c 04 2f 97 0c 01
+            1f 0c 04 2f 97 0c 01
+            1f 05 00
+            1f 02 00
+            1b 04 2e 6a 01 01
+            1a 04 2f 97 2c 01
+            18 00
+            0b 05 2b bd 98 ad 04
+            09 00
+            07 00
+            06 03 2e 6a 01
+            05 04 2f 97 0c 02
+            f6
         `),
         commands: [
             {
@@ -690,7 +690,8 @@ const validMultichannelUplinkMessages: TMessageExamples = {
         bytes: getBytesFromHex(`
             17 33 00 68 ec 0f ad b0 48 c6 08 c8 08 c6 08 c4 08 be 08 b4 08 b9 08 b3 ed 2d
             00 00 00 00 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00
-            63 39 80 00  ad
+            63 39 80 00
+            ad
         `),
         commands: [
             {
@@ -726,10 +727,9 @@ const validMultichannelUplinkMessages: TMessageExamples = {
                         }
                     ]
                 },
-                bytes: getBytesFromHex(
-                    `17 33 00 68 ec 0f ad b0 48 c6 08 c8 08 c6 08 c4 08 be 08 b4 08 b9 08 b3 ed 2d
-                      00 00 00 00 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00`
-                )
+                bytes: getBytesFromHex(`
+                    17 33 00 68 ec 0f ad b0 48 c6 08 c8 08 c6 08 c4 08 be 08 b4 08 b9 08 b3 ed 2d
+                    00 00 00 00 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00`)
             },
             {
                 id: uplinkCommands.lastEvent.id,
