@@ -32,15 +32,12 @@ import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import * as energyTypes from '../../constants/energyTypes.js';
 
 
 interface IGetDayDemandExportParameters {
     date: types.IDate,
-
-    /**
-     * `1` - `A+`, `2` - `A-`
-     */
-    energyType?: types.TUint8
+    energyType?: types.TEnergyType
 }
 
 
@@ -86,7 +83,7 @@ export const examples: command.TCommandExamples = {
                 month: 3,
                 date: 22
             },
-            energyType: 1
+            energyType: energyTypes.A_PLUS
         },
         bytes: [
             0x4f, 0x04,

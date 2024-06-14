@@ -2106,7 +2106,6 @@ export const checkMessage = ( messageLink, messageParams: IMessage ) => {
         expect(getHexFromBytes([messageData.lrc.actual])).toEqual(getHexFromBytes([lrc]));
         expect(messageData.messageId).toEqual(messageId);
         expect(messageData.accessLevel).toEqual(accessLevel);
-        console.log(messageData.id);
         expect(messageData.commands).toStrictEqual(commands);
     } else if ( 'message' in messageData ) {
         // invalid message

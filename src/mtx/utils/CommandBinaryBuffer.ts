@@ -5,7 +5,7 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import * as types from '../../types.js';
+import * as types from '../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import {IDeviceType} from './deviceType.js';
@@ -16,6 +16,7 @@ import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
 import * as screenIds from '../constants/screenIds.js';
 import * as frameTypes from '../constants/frameTypes.js';
 import * as events from '../constants/events.js';
+import * as energyTypes from '../constants/energyTypes.js';
 
 
 export const frameHeaderSize = 5;
@@ -707,10 +708,7 @@ export interface IEnergyPeriod {
 export interface IEnergies extends Array<types.TUint32 | null> {}
 
 export interface IPackedEnergiesWithType {
-    /**
-     * `1` - `A+`, `2` - `A-`
-     */
-    energyType?: types.TUint8,
+    energyType?: types.TEnergyType,
 
     energies: IEnergies
 }
@@ -1074,7 +1072,7 @@ const operatorParametersExtended3RelaySetMask = {
 };
 
 
-function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: number, tariffMapByte: number ): IEnergies {
+function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: types.TEnergyType, tariffMapByte: number ): IEnergies {
     const byte = tariffMapByte >> TARIFF_NUMBER;
     const energies = Array.from({length: TARIFF_NUMBER}) as IEnergies;
 
@@ -1092,7 +1090,7 @@ function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: number, t
     return energies;
 }
 
-function setPackedEnergyType ( buffer: ICommandBinaryBuffer, energyType: number, energies: IEnergies ) {
+function setPackedEnergyType ( buffer: ICommandBinaryBuffer, energyType: types.TEnergyType, energies: IEnergies ) {
     const indexShift = 1 + TARIFF_NUMBER;
     let tariffsByte = energyType;
 

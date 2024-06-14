@@ -5,13 +5,13 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getEnergyCurrent from 'jooby-codec/mtx/commands/uplink/getEnergyCurrent.js';
+ * import * as getEnergyExport from 'jooby-codec/mtx/commands/uplink/getEnergyExport.js';
  *
  * // received A- energies
  * const bytes = [0x02, 0x66, 0xf2, 0xae, 0x00, 0x32, 0xe0, 0x64, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57];
  *
  * // decoded payload
- * const parameters = getEnergyCurrent.fromBytes(bytes);
+ * const parameters = getEnergyExport.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

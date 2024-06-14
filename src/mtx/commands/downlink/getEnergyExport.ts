@@ -27,13 +27,11 @@ import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import * as energyTypes from '../../constants/energyTypes.js';
 
 
 interface IGetEnergyCurrentParameters {
-    /**
-     * `1` - `A+`, `2` - `A-`
-     */
-    energyType?: types.TUint8
+    energyType?: types.TEnergyType
 }
 
 
@@ -67,7 +65,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            energyType: 2
+            energyType: energyTypes.A_MINUS
         },
         bytes: [
             0x5b, 0x01,
