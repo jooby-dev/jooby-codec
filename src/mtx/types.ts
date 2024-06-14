@@ -18,6 +18,6 @@ export type TAccessLevel = BrandType<number, '0 | 1 | 2 | 3'>;
 /**
  * `1` - `A+`, `2` - `A-`
  *
-/** One of the {@link energyTypes | energy types}
+ * One of the {@link energyTypes | energy types}
  */
 export type TEnergyType = BrandType<number, 'uint8'>;
