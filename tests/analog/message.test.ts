@@ -12,8 +12,8 @@ import * as hardwareTypes from '../../src/analog/constants/hardwareTypes.js';
 import {TBytes} from '../../src/types.js';
 
 
-const downlinkMessages: TMessageExamples = {
-    'valid correctTime2000': {
+const validDownlinkMessages: TMessageExamples = {
+    'correctTime2000 request': {
         bytes: getBytesFromHex('0c 02 2d 88  fe'),
         commands: [
             {
@@ -29,7 +29,223 @@ const downlinkMessages: TMessageExamples = {
             actual: 0xfe
         }
     },
-    'invalid correctTime2000': {
+    'setParameters + getParameters': {
+        bytes: getBytesFromHex('03 02 04 0c  03 0b 1a 52 b8 09 42 52 b8 2d 42 17 00  04 01 04  04 01 1a  63'),
+        commands: [
+            {
+                id: downlinkCommands.setParameter.id,
+                name: 'setParameter',
+                headerSize: 2,
+                parameters: {id: 4, data: {value: 12}},
+                bytes: getBytesFromHex('03 02 04 0c')
+            },
+            {
+                id: downlinkCommands.setParameter.id,
+                name: 'setParameter',
+                headerSize: 2,
+                parameters: {
+                    id: 26,
+                    data: {
+                        latitude: 34.43,
+                        longitude: 43.43,
+                        altitude: 23
+                    }
+                },
+                bytes: getBytesFromHex('03 0b 1a 52 b8 09 42 52 b8 2d 42 17 00')
+            },
+            {
+                id: downlinkCommands.getParameter.id,
+                name: 'getParameter',
+                headerSize: 2,
+                parameters: {id: 4, data: null},
+                bytes: getBytesFromHex('04 01 04')
+            },
+            {
+                id: downlinkCommands.getParameter.id,
+                name: 'getParameter',
+                headerSize: 2,
+                parameters: {id: 26, data: null},
+                bytes: getBytesFromHex('04 01 1a')
+            }
+        ],
+        lrc: {
+            expected: 0x63,
+            actual: 0x63
+        }
+    },
+    'multiple commands in the message': {
+        bytes: getBytesFromHex(`
+            1f 30 05 2f 97 0c 02 01
+            1f 0d 04 2f 98 01 01
+            1f 0c 04 2f 97 0c 01
+            1f 0c 04 2f 97 0c 01
+            1f 05 00
+            1f 02 00
+            1b 04 2e 6a 01 01
+            1a 04 2f 97 2c 01
+            18 00
+            0b 05 2b bd 98 ad 04
+            09 00
+            07 00
+            06 03 2e 6a 01
+            05 04 2f 97 0c 02
+            f6
+        `),
+        commands: [
+            {
+                id: downlinkCommands.getArchiveHoursMcEx.id,
+                name: 'getArchiveHoursMcEx',
+                headerSize: 3,
+                parameters: {
+                    startTime2000: 756648000,
+                    hour: 12,
+                    hours: 2,
+                    channelList: [
+                        1
+                    ]
+                },
+                bytes: getBytesFromHex('1f 30 05 2f 97 0c 02 01')
+            },
+            {
+                id: downlinkCommands.getExAbsArchiveDaysMc.id,
+                name: 'getExAbsArchiveDaysMc',
+                headerSize: 3,
+                parameters: {
+                    startTime2000: 756691200,
+                    days: 1,
+                    channelList: [
+                        1
+                    ]
+                },
+                bytes: getBytesFromHex('1f 0d 04 2f 98 01 01')
+            },
+            {
+                id: downlinkCommands.getExAbsArchiveHoursMc.id,
+                name: 'getExAbsArchiveHoursMc',
+                headerSize: 3,
+                parameters: {
+                    channelList: [
+                        1
+                    ],
+                    hours: 1,
+                    startTime2000: 756648000
+                },
+                bytes: getBytesFromHex('1f 0c 04 2f 97 0c 01')
+            },
+            {
+                id: downlinkCommands.getExAbsArchiveHoursMc.id,
+                name: 'getExAbsArchiveHoursMc',
+                headerSize: 3,
+                parameters: {
+                    channelList: [
+                        1
+                    ],
+                    hours: 1,
+                    startTime2000: 756648000
+                },
+                bytes: getBytesFromHex('1f 0c 04 2f 97 0c 01')
+            },
+            {
+                id: downlinkCommands.getBatteryStatus.id,
+                name: 'getBatteryStatus',
+                headerSize: 3,
+                parameters: {},
+                bytes: getBytesFromHex('1f 05 00')
+            },
+            {
+                id: downlinkCommands.getLmicInfo.id,
+                name: 'getLmicInfo',
+                headerSize: 3,
+                parameters: {},
+                bytes: getBytesFromHex('1f 02 00')
+            },
+            {
+                id: downlinkCommands.getArchiveDaysMc.id,
+                name: 'getArchiveDaysMc',
+                headerSize: 2,
+                parameters: {
+                    startTime2000: 731721600,
+                    days: 1,
+                    channelList: [
+                        1
+                    ]
+                },
+                bytes: getBytesFromHex('1b 04 2e 6a 01 01')
+            },
+            {
+                id: downlinkCommands.getArchiveHoursMc.id,
+                name: 'getArchiveHoursMc',
+                headerSize: 2,
+                parameters: {
+                    startTime2000: 756648000,
+                    hours: 2,
+                    channelList: [
+                        1
+                    ]
+                },
+                bytes: getBytesFromHex('1a 04 2f 97 2c 01')
+            },
+            {
+                id: downlinkCommands.getCurrentMc.id,
+                name: 'getCurrentMc',
+                headerSize: 2,
+                parameters: {},
+                bytes: getBytesFromHex('18 00')
+            },
+            {
+                id: downlinkCommands.getArchiveEvents.id,
+                name: 'getArchiveEvents',
+                headerSize: 2,
+                parameters: {
+                    startTime2000: 733845677,
+                    events: 4
+                },
+                bytes: getBytesFromHex('0b 05 2b bd 98 ad 04')
+            },
+            {
+                id: downlinkCommands.getTime2000.id,
+                name: 'getTime2000',
+                headerSize: 2,
+                parameters: {},
+                bytes: getBytesFromHex('09 00')
+            },
+            {
+                id: downlinkCommands.getCurrent.id,
+                name: 'getCurrent',
+                headerSize: 2,
+                parameters: {},
+                bytes: getBytesFromHex('07 00')
+            },
+            {
+                id: downlinkCommands.getArchiveDays.id,
+                name: 'getArchiveDays',
+                headerSize: 2,
+                parameters: {
+                    startTime2000: 731721600,
+                    days: 1
+                },
+                bytes: getBytesFromHex('06 03 2e 6a 01')
+            },
+            {
+                id: downlinkCommands.getArchiveHours.id,
+                name: 'getArchiveHours',
+                headerSize: 2,
+                parameters: {
+                    startTime2000: 756648000,
+                    hours: 2
+                },
+                bytes: getBytesFromHex('05 04 2f 97 0c 02')
+            }
+        ],
+        lrc: {
+            expected: 0xf6,
+            actual: 0xf6
+        }
+    }
+};
+
+const invalidDownlinkMessages: TMessageExamples = {
+    'correctTime2000 response': {
         message: {
             bytes: getBytesFromHex('0c 02 2d 88  00'),
             commands: [
@@ -44,6 +260,53 @@ const downlinkMessages: TMessageExamples = {
             lrc: {
                 expected: 0,
                 actual: 0xfe
+            }
+        },
+        error: 'Mismatch LRC.'
+    },
+    'get parameters + set parameters': {
+        message: {
+            bytes: getBytesFromHex('04 01 17  04 01 18  03 02 0d 00  03 07 0a 00 64 0c 96 00 e9  4c'),
+            commands: [
+                {
+                    id: downlinkCommands.getParameter.id,
+                    name: 'getParameter',
+                    headerSize: 2,
+                    parameters: {id: 23, data: null},
+                    bytes: getBytesFromHex('04 01 17')
+                },
+                {
+                    id: downlinkCommands.getParameter.id,
+                    name: 'getParameter',
+                    headerSize: 2,
+                    parameters: {id: 24, data: null},
+                    bytes: getBytesFromHex('04 01 18')
+                },
+                {
+                    id: downlinkCommands.setParameter.id,
+                    name: 'setParameter',
+                    headerSize: 2,
+                    parameters: {id: 13, data: {value: 0}},
+                    bytes: getBytesFromHex('03 02 0d 00')
+                },
+                {
+                    id: downlinkCommands.setParameter.id,
+                    name: 'setParameter',
+                    headerSize: 2,
+                    parameters: {
+                        id: 10,
+                        data: {
+                            loadTime: 100,
+                            internalResistance: 3222,
+                            lowVoltage: 233
+                        }
+                    },
+                    bytes: getBytesFromHex('03 07 0a 00 64 0c 96 00 e9')
+                }
+            ],
+            lrc: {
+                expected: 0x4c,
+                actual: 0x4f
             }
         },
         error: 'Mismatch LRC.'
@@ -230,7 +493,7 @@ const validUplinkMessages: TMessageExamples = {
         }
     },
     'currentMc + lastEvent response': {
-        bytes: getBytesFromHex('18 03 01 8a 12 62 ed 00 58'),
+        bytes: getBytesFromHex('18 03 01 8a 12  62 ed 00  58'),
         commands: [
             {
                 id: uplinkCommands.currentMc.id,
@@ -274,7 +537,7 @@ const validUplinkMessages: TMessageExamples = {
         }
     },
     'hourMc + lastEvent response': {
-        bytes: getBytesFromHex('17 06 00 6f 0c 01 99 35 62 bc 00 54'),
+        bytes: getBytesFromHex('17 06 00 6f 0c 01 99 35  62 bc 00  54'),
         commands: [
             {
                 id: uplinkCommands.hourMc.id,
@@ -321,7 +584,7 @@ const validUplinkMessages: TMessageExamples = {
         }
     },
     'time2000 + new status response': {
-        bytes: getBytesFromHex('09 05 00 00 62 2c 58 14 0d 02 76 0c 01 e3 6c 83 4f 93 19 fd bc 51 f6'),
+        bytes: getBytesFromHex('09 05 00 00 62 2c 58  14 0d 02 76 0c 01 e3 6c 83 4f 93 19 fd bc 51  f6'),
         commands: [
             {
                 id: uplinkCommands.time2000.id,
@@ -373,7 +636,7 @@ const validUplinkMessages: TMessageExamples = {
         }
     },
     'exAbsHourMc + lastEvent response': {
-        bytes: getBytesFromHex('1f 0a 0e 30 c7 e5 01 82 f4 52 00 00 00 00 00 00 00 62 62 00 79'),
+        bytes: getBytesFromHex('1f 0a 0e 30 c7 e5 01 82 f4 52 00 00 00 00 00 00 00  62 62 00  79'),
         commands: [
             {
                 id: uplinkCommands.exAbsHourMc.id,
@@ -387,15 +650,7 @@ const validUplinkMessages: TMessageExamples = {
                     hours: 8,
                     channelList: [
                         {
-                            diff: [
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0,
-                                0
-                            ],
+                            diff: [0, 0, 0, 0, 0, 0, 0],
                             value: 10612,
                             pulseCoefficient: 10,
                             index: 1
@@ -430,6 +685,81 @@ const validUplinkMessages: TMessageExamples = {
     }
 };
 
+const validMultichannelUplinkMessages: TMessageExamples = {
+    'multichannel hourMc + lastEvent': {
+        bytes: getBytesFromHex(`
+            17 33 00 68 ec 0f ad b0 48 c6 08 c8 08 c6 08 c4 08 be 08 b4 08 b9 08 b3 ed 2d
+            00 00 00 00 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00
+            63 39 80 00
+            ad
+        `),
+        commands: [
+            {
+                id: uplinkCommands.hourMc.id,
+                name: 'hourMc',
+                headerSize: 2,
+                config: {
+                    hardwareType: hardwareTypes.IMP4EU
+                },
+                parameters: {
+                    startTime2000: 5832000,
+                    hours: 8,
+                    channelList: [
+                        {
+                            value: 1185837,
+                            diff: [1094, 1096, 1094, 1092, 1086, 1076, 1081],
+                            index: 1
+                        },
+                        {
+                            value: 751283,
+                            diff: [0, 0, 0, 0, 0, 0, 0],
+                            index: 2
+                        },
+                        {
+                            value: 1480717,
+                            diff: [0, 0, 0, 0, 0, 0, 0],
+                            index: 3
+                        },
+                        {
+                            value: 700175,
+                            diff: [0, 0, 0, 0, 0, 0, 0],
+                            index: 4
+                        }
+                    ]
+                },
+                bytes: getBytesFromHex(`
+                    17 33 00 68 ec 0f ad b0 48 c6 08 c8 08 c6 08 c4 08 be 08 b4 08 b9 08 b3 ed 2d
+                    00 00 00 00 00 00 00 8d b0 5a 00 00 00 00 00 00 00 8f de 2a 00 00 00 00 00 00 00
+                `)
+            },
+            {
+                id: uplinkCommands.lastEvent.id,
+                name: 'lastEvent',
+                headerSize: 1,
+                config: {
+                    hardwareType: hardwareTypes.IMP4EU
+                },
+                parameters: {
+                    sequenceNumber: 57,
+                    status: {
+                        isBatteryLow: false,
+                        isConnectionLost: false,
+                        isFirstChannelInactive: false,
+                        isSecondChannelInactive: false,
+                        isThirdChannelInactive: false,
+                        isForthChannelInactive: false
+                    }
+                },
+                bytes: getBytesFromHex('63 39 80 00')
+            }
+        ],
+        lrc: {
+            expected: 0xad,
+            actual: 0xad
+        }
+    }
+};
+
 const invalidUplinkMessages: TMessageExamples = {
     'correctTime2000 response': {
         message: {
@@ -446,6 +776,55 @@ const invalidUplinkMessages: TMessageExamples = {
             lrc: {
                 expected: 0,
                 actual: 0x58
+            }
+        },
+        error: 'Mismatch LRC.'
+    },
+    'time2000 + new status': {
+        message: {
+            bytes: getBytesFromHex('09 05 4e 2c 26 53 d6  14 0d 02 76 0c 01 e2 bc 0c 67 2a 17 fd bc 62  dd'),
+            commands: [
+                {
+                    id: uplinkCommands.time2000.id,
+                    name: 'time2000',
+                    headerSize: 2,
+                    parameters: {
+                        sequenceNumber: 78,
+                        time2000: 740709334
+                    },
+                    bytes: getBytesFromHex('09 05 4e 2c 26 53 d6')
+                },
+                {
+                    id: uplinkCommands.status.id,
+                    name: 'status',
+                    headerSize: 2,
+                    parameters: {
+                        software: {
+                            type: 2,
+                            version: 118
+                        },
+                        hardware: {
+                            type: 12,
+                            version: 1
+                        },
+                        data: {
+                            batteryVoltage: {
+                                underLowLoad: 3627,
+                                underHighLoad: 3084
+                            },
+                            batteryInternalResistance: 26410,
+                            temperature: 23,
+                            remainingBatteryCapacity: 99.6,
+                            lastEventSequenceNumber: 188,
+                            downlinkQuality: 98
+                        }
+                    },
+                    bytes: getBytesFromHex('14 0d 02 76 0c 01 e2 bc 0c 67 2a 17 fd bc 62')
+                }
+            ],
+            lrc: {
+                expected: 0xdd,
+                actual: 0xd3
             }
         },
         error: 'Mismatch LRC.'
@@ -565,14 +944,16 @@ const checkMessages = ( description: string, implementation, messagesExamples: T
 );
 
 
-checkMessages('downlink messages', message.downlink, downlinkMessages);
+checkMessages('valid downlink messages', message.downlink, validDownlinkMessages);
+checkMessages('invalid downlink messages', message.downlink, invalidDownlinkMessages);
 checkMessages('valid uplink messages', message.uplink, validUplinkMessages, {hardwareType: hardwareTypes.GASIC});
+checkMessages('valid multichannel uplink messages', message.uplink, validMultichannelUplinkMessages, {hardwareType: hardwareTypes.IMP4EU});
 checkMessages('invalid uplink messages', message.uplink, invalidUplinkMessages);
 checkMessages('mtx uplink messages', message.uplink, mtxUplinkMessages, {hardwareType: hardwareTypes.MTXLORA});
 
-describe('message validation', () => {
-    test('test valid input', () => {
-        const bytes = getBytesFromHex('02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9 a6');
+describe('additional message validation', () => {
+    test('valid input', () => {
+        const bytes = getBytesFromHex('02 05 4e 2b bd 98 ad 03 07 0a 00 64 0c 96 00 e9  a6');
         const messageFromBytes = message.downlink.fromBytes(bytes);
 
         if ( 'error' in messageFromBytes ) {
@@ -580,12 +961,25 @@ describe('message validation', () => {
         }
     });
 
-    test('test invalid input', () => {
-        const bytes = getBytesFromHex('02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9 a6');
+    test('invalid input', () => {
+        const bytes = getBytesFromHex('02 05 4e 2b bd 98 ab 03 07 0a 00 64 0c 96 00 e9  a6');
         const messageFromBytes = message.downlink.fromBytes(bytes);
 
         if ( !('error' in messageFromBytes) ) {
             throw new Error('wrong message');
+        }
+    });
+
+    test('invalid commands direction in message', () => {
+        const bytes = getBytesFromHex('17 0d 2e d5 f3 01 99 35 00 00 00 00 00 00 00 62 bc 00  34');
+        const messageFromBytes = message.downlink.fromBytes(bytes);
+
+        if ( 'commands' in messageFromBytes ) {
+            messageFromBytes.commands.forEach(command => {
+                if ( !('error' in command) ) {
+                    throw new Error('expected error in commands, but not found it');
+                }
+            });
         }
     });
 });
