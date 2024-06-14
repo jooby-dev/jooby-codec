@@ -6,6 +6,7 @@
  * @example
  * ```js
  * import * as getDayDemandExport from 'jooby-codec/mtx/commands/downlink/getDayDemandExport.js';
+ * import * as energyTypes from 'jooby-codec/mtx/constants/energyTypes.js';
  *
  * const parameters = {
  *     date: {
@@ -13,7 +14,7 @@
  *         month: 3,
  *         date: 22
  *     },
- *     energyType: 1
+ *     energyType: energyTypes.A_PLUS
  * };
  *
  * const bytes = getDayDemandExport.toBytes(parameters);
@@ -28,14 +29,15 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, TEnergyType} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import * as energyTypes from '../../constants/energyTypes.js';
 
 
 interface IGetDayDemandExportParameters {
     date: types.IDate,
-    energyType?: TEnergyType
+    energyType?: types.TEnergyType
 }
 
 
@@ -81,7 +83,7 @@ export const examples: command.TCommandExamples = {
                 month: 3,
                 date: 22
             },
-            energyType: 1
+            energyType: energyTypes.A_PLUS
         },
         bytes: [
             0x4f, 0x04,
@@ -103,7 +105,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandExportParameters 
     if ( bytes.length === MAX_COMMAND_SIZE ) {
         return {
             date: buffer.getDate(),
-            energyType: buffer.getUint8() as TEnergyType
+            energyType: buffer.getUint8()
         };
     }
 

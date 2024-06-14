@@ -5,7 +5,7 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import * as types from '../../types.js';
+import * as types from '../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import {IDeviceType} from './deviceType.js';
@@ -16,6 +16,7 @@ import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
 import * as screenIds from '../constants/screenIds.js';
 import * as frameTypes from '../constants/frameTypes.js';
 import * as events from '../constants/events.js';
+import * as energyTypes from '../constants/energyTypes.js';
 
 
 export const frameHeaderSize = 5;
@@ -707,7 +708,8 @@ export interface IEnergyPeriod {
 export interface IEnergies extends Array<types.TUint32 | null> {}
 
 export interface IPackedEnergiesWithType {
-    energyType?: TEnergyType,
+    energyType?: types.TEnergyType,
+
     energies: IEnergies
 }
 
@@ -889,9 +891,6 @@ export interface IMonthMaxPower {
     power: types.TUint32
 }
 
-/** `1` - `A+`, `2` - `A-` */
-export type TEnergyType = typeof A_PLUS_ENERGY_TYPE | typeof A_MINUS_ENERGY_TYPE;
-
 
 export const defaultFrameHeader: IFrameHeader = {
     type: frameTypes.DATA_REQUEST,
@@ -903,8 +902,6 @@ export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
 export const SEASON_PROFILE_DAYS_NUMBER = 7;
 export const SEASON_PROFILE_SIZE = 2 + SEASON_PROFILE_DAYS_NUMBER;
-export const A_PLUS_ENERGY_TYPE = 1;
-export const A_MINUS_ENERGY_TYPE = 2;
 export const TARIFF_NUMBER = 4;
 export const PACKED_ENERGY_TYPE_SIZE = 1;
 export const ENERGY_SIZE = 4;
@@ -1075,23 +1072,9 @@ const operatorParametersExtended3RelaySetMask = {
 };
 
 
-function getPackedEnergyType ( byte: number ): TEnergyType {
-    const isAPlus = !!bitSet.extractBits(byte, TARIFF_NUMBER, 1);
-
-    if ( isAPlus ) {
-        return A_PLUS_ENERGY_TYPE;
-    }
-
-    return A_MINUS_ENERGY_TYPE;
-}
-
-function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: TEnergyType, tariffMapByte: number ): IEnergies {
-    let byte = tariffMapByte;
+function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: types.TEnergyType, tariffMapByte: number ): IEnergies {
+    const byte = tariffMapByte >> TARIFF_NUMBER;
     const energies = Array.from({length: TARIFF_NUMBER}) as IEnergies;
-
-    if ( energyType === A_MINUS_ENERGY_TYPE ) {
-        byte >>= TARIFF_NUMBER;
-    }
 
     energies.forEach((energy, index) => {
         // read flags by one bit
@@ -1107,17 +1090,14 @@ function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: TEnergyTy
     return energies;
 }
 
-function setPackedEnergyType ( buffer: ICommandBinaryBuffer, energyType: TEnergyType, energies: IEnergies ) {
-    let tariffsByte = 0;
+function setPackedEnergyType ( buffer: ICommandBinaryBuffer, energyType: types.TEnergyType, energies: IEnergies ) {
+    const indexShift = 1 + TARIFF_NUMBER;
+    let tariffsByte = energyType;
 
     energies.forEach((energy, index) => {
         // set flags by one bit
-        tariffsByte = bitSet.fillBits(tariffsByte, 1, index + 1, Number(!!energy));
+        tariffsByte = bitSet.fillBits(tariffsByte, 1, index + indexShift, Number(!!energy));
     });
-
-    if ( energyType === A_MINUS_ENERGY_TYPE ) {
-        tariffsByte <<= TARIFF_NUMBER;
-    }
 
     buffer.setUint8(tariffsByte);
 }
@@ -1522,7 +1502,7 @@ CommandBinaryBuffer.prototype.setOperatorParameters = function ( operatorParamet
 
 CommandBinaryBuffer.prototype.getPackedEnergyWithType = function (): IPackedEnergiesWithType {
     const byte = this.getUint8();
-    const energyType = getPackedEnergyType(byte);
+    const energyType = bitSet.extractBits(byte, TARIFF_NUMBER, 1);
     const energies = getPackedEnergies(this, energyType, byte);
 
     return {
@@ -1537,7 +1517,7 @@ CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, 
     }
 
     energies.forEach(energy => {
-        if ( energy ) {
+        if ( energy !== null ) {
             this.setUint32(energy);
         }
     });

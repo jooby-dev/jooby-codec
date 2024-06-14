@@ -6,9 +6,10 @@
  * @example
  * ```js
  * import * as getEnergyCurrent from 'jooby-codec/mtx/commands/downlink/getEnergyCurrent.js';
+ * import * as energyTypes from 'jooby-codec/mtx/constants/energyTypes.js';
  *
  * const parameters = {
- *     energyType: 1
+ *     energyType: energyTypes.A_PLUS
  * };
  *
  * const bytes = getEnergyCurrent.toBytes(parameters);
@@ -23,13 +24,14 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {TEnergyType, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import * as energyTypes from '../../constants/energyTypes.js';
 
 
 interface IGetEnergyCurrentParameters {
-    energyType?: TEnergyType
+    energyType?: types.TEnergyType
 }
 
 
@@ -63,7 +65,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            energyType: 2
+            energyType: energyTypes.A_MINUS
         },
         bytes: [
             0x0f, 0x01,
@@ -81,7 +83,7 @@ export const examples: command.TCommandExamples = {
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetEnergyCurrentParameters => {
     if ( bytes.length === MAX_COMMAND_SIZE ) {
-        return {energyType: bytes[0] as TEnergyType};
+        return {energyType: bytes[0]};
     }
 
     // no parameters to decode

@@ -1,5 +1,4 @@
-import {getEnergyCurrent} from '../../../src/mtx/commands/uplink/index.js';
-import {A_MINUS_ENERGY_TYPE, A_PLUS_ENERGY_TYPE} from '../../../src/mtx/utils/CommandBinaryBuffer.js';
+import {getEnergy} from '../../../src/mtx/commands/uplink/index.js';
 import {runCommandDlmsTest} from './utils/runCommandDlmsTest.js';
 
 
@@ -19,8 +18,8 @@ const examples = [
     {
         name: 'energy A+',
         parameters: {
-            energyType: A_PLUS_ENERGY_TYPE,
-            energies: [40301230, undefined, undefined, 2145623]
+            energyType: 1,
+            energies: [40301230, null, null, 2145623]
         },
         dlms: {
             '1.8.1': 40301230,
@@ -30,8 +29,8 @@ const examples = [
     {
         name: 'energy A-',
         parameters: {
-            energyType: A_MINUS_ENERGY_TYPE,
-            energies: [undefined, 40301230, undefined, 2145623]
+            energyType: 2,
+            energies: [null, 40301230, null, 2145623]
         },
         dlms: {
             '2.8.2': 40301230,
@@ -41,4 +40,4 @@ const examples = [
 ];
 
 
-describe('GetEnergyCurrentResponse dlms tests', () => runCommandDlmsTest(getEnergyCurrent, examples));
+describe('GetEnergyResponse dlms tests', () => runCommandDlmsTest(getEnergy, examples));

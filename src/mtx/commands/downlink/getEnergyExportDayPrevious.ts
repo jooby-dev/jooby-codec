@@ -21,10 +21,11 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import * as energyTypes from '../../constants/energyTypes.js';
 
 
 interface IGetEnergyExportDayPreviousParameters {
-    energyType?: types.TUint8
+    energyType?: types.TEnergyType
 }
 
 const MIN_COMMAND_SIZE = 0;
@@ -56,7 +57,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            energyType: 2
+            energyType: energyTypes.A_MINUS
         },
         bytes: [
             0x50, 0x01,

@@ -1,17 +1,17 @@
 /**
- * Uplink command to get current active energy (`A+`) by default or selected active energy (`A+` or `A-`) for 4 tariffs (`T1`-`T4`).
+ * Uplink command to get current active energy (`A-`) by default or selected active energy (`A+` or `A-`) for 4 tariffs (`T1`-`T4`).
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getEnergyCurrent from 'jooby-codec/mtx/commands/uplink/getEnergyCurrent.js';
+ * import * as getEnergyExport from 'jooby-codec/mtx/commands/uplink/getEnergyExport.js';
  *
  * // received A- energies
- * const bytes = [0xd0, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57];
+ * const bytes = [0x02, 0x66, 0xf2, 0xae, 0x00, 0x32, 0xe0, 0x64, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57];
  *
  * // decoded payload
- * const parameters = getEnergyCurrent.fromBytes(bytes);
+ * const parameters = getEnergyExport.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -21,7 +21,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetEnergyCurrent.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetEnergyExport.md#response)
  */
 
 import * as types from '../../types.js';
@@ -42,15 +42,15 @@ const COMMAND_SIZE = 16;
 const MAX_COMMAND_SIZE = COMMAND_SIZE + PACKED_ENERGY_TYPE_SIZE;
 
 
-export const id: types.TCommandId = 0x0f;
-export const name: types.TCommandName = 'getEnergyCurrent';
+export const id: types.TCommandId = 0x5b;
+export const name: types.TCommandName = 'getEnergyExport';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = MAX_COMMAND_SIZE;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'default A+ energy': {
+    'default response': {
         id,
         name,
         headerSize,
@@ -60,11 +60,11 @@ export const examples: command.TCommandExamples = {
             energies: [40301230, 3334244, 2333, 2145623]
         },
         bytes: [
-            0x0f, 0x10,
+            0x5b, 0x10,
             0x02, 0x66, 0xf2, 0xae, 0x00, 0x32, 0xe0, 0x64, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57
         ]
     },
-    'received A- energies': {
+    'received A- energies by tariffs': {
         id,
         name,
         headerSize,
@@ -75,8 +75,8 @@ export const examples: command.TCommandExamples = {
             energies: [40301230, null, 2333, 2145623]
         },
         bytes: [
-            0x0f, 0x0d,
-            0xd0, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57
+            0x5b, 0x0d,
+            0xd2, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x09, 0x1d, 0x00, 0x20, 0xbd, 0x57
         ]
     }
 };

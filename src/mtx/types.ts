@@ -1,4 +1,6 @@
 import {BrandType} from '../types.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as energyTypes from './constants/energyTypes.js';
 
 
 export * from '../types.js';
@@ -12,3 +14,10 @@ export * from '../types.js';
  * READ_ONLY = 0x03;
  */
 export type TAccessLevel = BrandType<number, '0 | 1 | 2 | 3'>;
+
+/**
+ * `1` - `A+`, `2` - `A-`
+ *
+ * One of the {@link energyTypes | energy types}
+ */
+export type TEnergyType = BrandType<number, 'uint8'>;
