@@ -6,6 +6,7 @@
  * @example
  * ```js
  * import * as getDayDemandExport from 'jooby-codec/mtx/commands/downlink/getDayDemandExport.js';
+ * import * as energyTypes from 'jooby-codec/mtx/constants/energyTypes.js';
  *
  * const parameters = {
  *     date: {
@@ -13,7 +14,7 @@
  *         month: 3,
  *         date: 22
  *     },
- *     energyType: 1
+ *     energyType: energyTypes.A_PLUS
  * };
  *
  * const bytes = getDayDemandExport.toBytes(parameters);

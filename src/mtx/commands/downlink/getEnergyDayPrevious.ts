@@ -24,6 +24,9 @@ import {READ_ONLY} from '../../constants/accessLevels.js';
 
 
 interface IGetEnergyDayPreviousParameters {
+    /**
+     * `1` - `A+`, `2` - `A-`
+     */
     energyType?: types.TUint8
 }
 

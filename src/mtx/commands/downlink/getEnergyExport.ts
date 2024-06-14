@@ -6,9 +6,10 @@
  * @example
  * ```js
  * import * as getEnergyExport from 'jooby-codec/mtx/commands/downlink/getEnergyExport.js';
+ * import * as energyTypes from 'jooby-codec/mtx/constants/energyTypes.js';
  *
  * const parameters = {
- *     energyType: 1
+ *     energyType: energyTypes.A_MINUS
  * };
  *
  * const bytes = getEnergyExport.toBytes(parameters);
