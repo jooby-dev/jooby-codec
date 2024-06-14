@@ -72,7 +72,7 @@ interface IGetMonthDemandResponseParameters {
 
 
 export const id: types.TCommandId = 0x59;
-export const name: types.TCommandName = 'getMonthMaxDemand';
+export const name: types.TCommandName = 'getMonthMaxDemandExport';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 2 + TARIFF_NUMBER * 7;
