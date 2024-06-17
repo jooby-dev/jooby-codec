@@ -17,6 +17,7 @@ export * as getDayMaxDemand from './getDayMaxDemand.js';
 export * as getDayMaxDemandExport from './getDayMaxDemandExport.js';
 export * as getDayMaxDemandPrevious from './getDayMaxDemandPrevious.js';
 export * as getDayProfile from './getDayProfile.js';
+export * as getDemand from './getDemand.js';
 export * as getDeviceId from './getDeviceId.js';
 export * as getDeviceType from './getDeviceType.js';
 export * as getDisplayParam from './getDisplayParam.js';

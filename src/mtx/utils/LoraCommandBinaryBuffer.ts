@@ -128,22 +128,22 @@ CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
 
 
 CommandBinaryBuffer.prototype.getDate = function (): IDate {
-    const datePart1 = this.getUint8();
-    const datePart2 = this.getUint8();
+    const date0 = this.getUint8();
+    const date1 = this.getUint8();
 
     return {
-        year: datePart1 >> 1,
-        month: ((datePart1 & 1) << 4) | (datePart2 >> 5),
-        date: datePart2 & 0x1f
+        year: date0 >> 1,
+        month: ((date0 << 3) & 0x0f) | (date1 >> 5),
+        date: date1 & 0x1f
     };
 };
 
 CommandBinaryBuffer.prototype.setDate = function ( {year, month, date}: IDate ) {
-    const date1 = (year << 1) | (month >> 3);
-    const date2 = ((month & 0x03) << 5) | (date & 0x1f);
+    const date0 = (year << 1) | ((month >> 3) & 0x01);
+    const date1 = ((month << 5) & 0xe0) | (date & 0x1f);
 
+    this.setUint8(date0);
     this.setUint8(date1);
-    this.setUint8(date2);
 };
 
 CommandBinaryBuffer.prototype.getEnergiesFlags = function (): TEnergiesFlags {

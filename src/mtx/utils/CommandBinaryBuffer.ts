@@ -16,7 +16,9 @@ import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
 import * as screenIds from '../constants/screenIds.js';
 import * as frameTypes from '../constants/frameTypes.js';
 import * as events from '../constants/events.js';
-import * as energyTypes from '../constants/energyTypes.js';
+//import * as energyTypes from '../constants/energyTypes.js';
+
+import * as demandTypes from '../constants/demandTypes.js';
 
 
 export const frameHeaderSize = 5;
@@ -822,6 +824,50 @@ export interface IExtendedCurrentValues2Parameters {
     status3: IExtendedCurrentValues2Status3
 }
 
+export interface IGetDemandParameters {
+    /**
+      * Packed date.
+      */
+    date: types.IDate;
+
+    /**
+     * Possible value is one of {@link demandTypes}.
+     */
+    energyType: types.TUint8,
+
+    /**
+     * Starting block number of requested data.
+     * Depends on the `ten` parameter in {@link IOperatorParameters}.
+     *
+     * Possible values:
+     *
+     * | Ten   | Value range |
+     * | ----- | ----------- |
+     * | `1`   | `0`..`1440` |
+     * | `3`   | `0`..`480`  |
+     * | `5`   | `0`..`288`  |
+     * | `10`  | `0`..`144`  |
+     * | `15`  | `0`..`96`   |
+     * | `30`  | `0`..`48`   |
+     * | `60`  | `0`..`24`   |
+     */
+    firstIndex: types.TUint16,
+
+    /**
+     * Number of requested blocks.
+     * No more than `48` blocks in a single request.
+     */
+    count: types.TUint8,
+
+    /**
+     * Accumulation period.
+     *
+     * Can be `1`, `3`, `5`, `10`, `15`, `30`, `60` minutes.
+     * Value `0` is also `30` minutes.
+     */
+    period: types.TUint8
+}
+
 export interface IGetDayMaxDemandResponseParameters {
     date: types.IDate,
     power: Array<{
@@ -1187,6 +1233,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getEvent (): IEvent,
     setEvent ( event: IEvent ),
+
+    getDemandParameters (): IGetDemandParameters,
+    setDemandParameters ( parameters: IGetDemandParameters ),
 
     getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
     setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
@@ -1684,6 +1733,35 @@ CommandBinaryBuffer.prototype.setEvent = function ( event: IEvent ) {
 
         default: break;
     }
+};
+
+CommandBinaryBuffer.prototype.getDemandParameters = function (): IGetDemandParameters {
+    const date0 = this.getUint8();
+    const date1 = this.getUint8();
+
+    return {
+        date: {
+            year: (date0 >> 1),
+            month: ((date0 << 3) & 0x0f) | (date1 >> 5),
+            date: date1 & 0x1f
+        },
+        energyType: this.getUint8(),
+        firstIndex: this.getUint16(),
+        count: this.getUint8(),
+        period: this.getUint8()
+    };
+};
+
+CommandBinaryBuffer.prototype.setDemandParameters = function ( parameters: IGetDemandParameters ) {
+    const date0 = (parameters.date.year << 1) | ((parameters.date.month >> 3) & 0x01);
+    const date1 = ((parameters.date.month << 5) & 0xe0) | (parameters.date.date & 0x1f);
+
+    this.setUint8(date0);
+    this.setUint8(date1);
+    this.setUint8(parameters.energyType);
+    this.setUint16(parameters.firstIndex);
+    this.setUint8(parameters.count);
+    this.setUint8(parameters.period);
 };
 
 CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxDemandResponseParameters {

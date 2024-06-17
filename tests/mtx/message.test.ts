@@ -233,6 +233,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getDemand',
+        hex: '0a 13 cf 06 01 7f e7 3e fb 27 b8 51 15 87 89 f8 03 12',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 cf 06 01 7f e7 3e fb 27 b8 51 15 87 89 f8 03 12 fd 6a 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getDemand.accessLevel,
+        commands: [
+            downlinkCommands.getDemand.examples['request for A+']
+        ],
+        lrc: 0xd2,
+        crc: 0x6afd,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getDeviceId',
         hex: '0a 13 55 9e 05 01 4e 5c 2a 6c 0d 8a da 30 a7 4c 0f 86',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 55 9e 05 01 4e 5c 2a 6c 0d 8a da 30 a7 4c 0f 86 9c 30 7e',
@@ -1311,6 +1326,66 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x87,
         crc: 0x1016,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDemand (for A+)',
+        hex: '0a 13 29 20 8c 56 1e 8a e2 ae 29 f2 77 0c 03 89 40 f6 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 13 c5 c9 2c 12 90 1a 66 a9 9d 45 93 09 18 09 5a 6e 28 4a 83 b9 fc 68 87 49 7b 49 05 8f 07 02 d9 3a 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 13 27 e2 31 e7 8d 1e de 66 4f 73 40 cd 1c ad ca 1c 20 2f f4 33 fc 78 01 d3 ed ae a5 b6 46 f4 f4 c3',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 29 20 8c 56 1e 8a e2 ae 29 f2 77 0c 03 89 40 f6 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 7d 33 c5 c9 2c 12 90 1a 66 a9 9d 45 93 09 18 09 5a 6e 28 4a 83 b9 fc 68 87 49 7b 49 05 8f 07 02 d9 3a 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 7d 33 27 e2 31 e7 8d 1e de 66 4f 73 40 cd 1c ad ca 1c 20 2f f4 33 fc 78 01 d3 ed ae a5 b6 46 f4 f4 c3 18 66 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDemand.accessLevel,
+        commands: [
+            uplinkCommands.getDemand.examples['response for A+']
+        ],
+        lrc: 0x6c,
+        crc: 0x6618,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDemand (for A+, period: 60, no tariff)',
+        hex: '0a 13 bb 97 68 39 28 c5 c4 9c a6 55 ab 06 cb b8 47 35 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 13 c5 c9 2c 12 90 1a 66 a9 9d 45 93 09 18 09 5a 6e 93 48 78 11 a8 3e 69 b1 bb 01 97 94 97 cd ef cf',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 bb 97 68 39 28 c5 c4 9c a6 55 ab 06 cb b8 47 35 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 7d 33 c5 c9 2c 12 90 1a 66 a9 9d 45 93 09 18 09 5a 6e 93 48 78 7d 31 a8 3e 69 b1 bb 01 97 94 97 cd ef cf 6a c8 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDemand.accessLevel,
+        commands: [
+            uplinkCommands.getDemand.examples['response for A+ (period: 60, no tariff)']
+        ],
+        lrc: 0x4d,
+        crc: 0xc86a,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDemand (for A+, lastSummerHour)',
+        hex: '0a 13 65 c5 26 8d 45 e5 d9 95 5f 41 cb 5f df d4 9b 61',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 65 c5 26 8d 45 e5 d9 95 5f 41 cb 5f df d4 9b 61 b8 2e 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDemand.accessLevel,
+        commands: [
+            uplinkCommands.getDemand.examples['response for A+ (lastSummerHour)']
+        ],
+        lrc: 0x94,
+        crc: 0x2eb8,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDemand (for voltage, period: 60, no tariff)',
+        hex: '0a 13 0e b0 e4 7c bf 90 26 9a 40 6a d8 cf d4 cb a1 69',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 0e b0 e4 7c bf 90 26 9a 40 6a d8 cf d4 cb a1 69 c8 31 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDemand.accessLevel,
+        commands: [
+            uplinkCommands.getDemand.examples['response for voltage (period: 60, no tariff)']
+        ],
+        lrc: 0xd1,
+        crc: 0x31c8,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
