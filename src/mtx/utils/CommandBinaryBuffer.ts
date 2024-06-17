@@ -826,8 +826,8 @@ export interface IExtendedCurrentValues2Parameters {
 
 export interface IGetDemandParameters {
     /**
-      * Packed date.
-      */
+     * Packed date.
+     */
     date: types.IDate;
 
     /**
