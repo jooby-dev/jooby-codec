@@ -1362,15 +1362,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getDemand (for A+, lastSummerHour)',
-        hex: '0a 13 65 c5 26 8d 45 e5 d9 95 5f 41 cb 5f df d4 9b 61',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 65 c5 26 8d 45 e5 d9 95 5f 41 cb 5f df d4 9b 61 b8 2e 7e',
+        hex: '0a 13 ce 1d 71 5f da 33 97 0b 3f 0d e0 6e 34 55 67 0e',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 ce 1d 71 5f da 33 97 0b 3f 0d e0 6e 34 55 67 0e b3 ab 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getDemand.accessLevel,
         commands: [
             uplinkCommands.getDemand.examples['response for A+ (lastSummerHour)']
         ],
-        lrc: 0x94,
-        crc: 0x2eb8,
+        lrc: 0x95,
+        crc: 0xabb3,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

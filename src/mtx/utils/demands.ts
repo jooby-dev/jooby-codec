@@ -18,7 +18,7 @@ const energyFromWord = ( word, index, periodMin ) => {
         return null;
     }
 
-    const indexLastSummerRecord = getRecordIndex(25, 0, periodMin);
+    const indexLastSummerRecord = getRecordIndex(24, 0, periodMin);
 
     if ( index === indexLastSummerRecord ) {
         return {
@@ -70,7 +70,7 @@ const voltageFromWord = ( word, index, periodMin ) => {
         return 0xffff;
     }
 
-    const indexLastSummerRecord = getRecordIndex(25, 0, periodMin);
+    const indexLastSummerRecord = getRecordIndex(24, 0, periodMin);
 
     return ( index === indexLastSummerRecord )
         ? {lastSummerHour: ((word >> 8) & 0xff)}
