@@ -5,6 +5,25 @@
  */
 export type BrandType<K, T> = K & {info?: T};
 
+/**
+ * Utility type to create a new type by omitting certain properties from an existing type
+ * and replacing them with new properties. This is useful for modifying properties
+ * or methods in an existing type.
+ *
+ * @template T - The original type to be modified.
+ * @template R - The type with properties to replace or add to the original type.
+ *
+ * @example
+ * // Usage:
+ * type NewType = Modify<OriginalType, {
+ *     propertyToModify: NewType1;
+ *     newProperty: NewType2;
+ * }>
+ *
+ * @see: https://stackoverflow.com/questions/41285211/overriding-interface-property-type-defined-in-typescript-d-ts-file
+ */
+export type Modify<T, R> = Omit<T, keyof R> & R;
+
 
 /**
  * Unique command identifier.

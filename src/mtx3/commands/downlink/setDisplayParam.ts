@@ -19,7 +19,7 @@
  * [93, 5, 0, 4, 5, 6, 7]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetDisplayParam.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/SetDisplayParam.md#request)
  */
 
 import * as command from '../../../mtx/utils/command.js';

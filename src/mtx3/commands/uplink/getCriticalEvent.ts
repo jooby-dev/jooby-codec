@@ -7,7 +7,7 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getCriticalEvent from 'jooby-codec/mtx/commands/uplink/getCriticalEvent.js';
+ * import * as getCriticalEvent from 'jooby-codec/mtx3/commands/uplink/getCriticalEvent.js';
  *
  * // response to getCriticalEvent downlink command
  * const bytes = [0x01, 0x01, 0xe9, 0x03, 0x0c, 0x0a, 0x16, 0x21, 0x07];
@@ -32,7 +32,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetCriticalEvent.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetCriticalEvent.md#response)
  */
 
 import * as types from '../../types.js';
