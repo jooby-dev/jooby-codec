@@ -3,6 +3,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
+
+const ADDITIONAL_HOUR = 25;
+
+
 export const getRecordTime = ( index: number, periodMin ) => {
     const periodsInHour = 60 / periodMin;
     const hours = Math.trunc(index / periodsInHour);
@@ -13,12 +17,14 @@ export const getRecordTime = ( index: number, periodMin ) => {
 
 export const getRecordIndex = ( hours, minutes, periodMin ) => Math.trunc(((hours * 60) + minutes) / periodMin);
 
+const getLastSummerHourIndex = periodMin => getRecordIndex(ADDITIONAL_HOUR, 0, periodMin);
+
 const energyFromWord = ( word, index, periodMin ) => {
     if ( word === 0xffff) {
         return null;
     }
 
-    const indexLastSummerRecord = getRecordIndex(24, 0, periodMin);
+    const indexLastSummerRecord = getLastSummerHourIndex(periodMin);
 
     if ( index === indexLastSummerRecord ) {
         return {
@@ -70,7 +76,7 @@ const voltageFromWord = ( word, index, periodMin ) => {
         return 0xffff;
     }
 
-    const indexLastSummerRecord = getRecordIndex(24, 0, periodMin);
+    const indexLastSummerRecord = getLastSummerHourIndex(periodMin);
 
     return ( index === indexLastSummerRecord )
         ? {lastSummerHour: ((word >> 8) & 0xff)}

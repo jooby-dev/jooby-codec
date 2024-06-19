@@ -5,7 +5,7 @@
     "type": "module",
     "main": "./dist/index.js",
     "repository": {
-        "url": "git+https://github.com/jooby-dev/jooby-codec"
+        "url": "https://github.com/jooby-dev/jooby-codec"
     },
     "exports": {
         ".": "./dist/index.js",

@@ -11,7 +11,7 @@
  * import * as getDemand from 'jooby-codec/mtx/commands/uplink/getDemand.js';
  *
  * // response to getDemand downlink command
- * const bytes = [0x31, 0x42, 0xa0, 0x00, 0x18, 0x01, 0x3c, 0x04, 0xff];
+ * const bytes = [0x31, 0x42, 0xa0, 0x00, 0x19, 0x01, 0x3c, 0x04, 0xff];
  *
  * // decoded payload
  * const parameters = getDemand.fromBytes(bytes);
@@ -21,7 +21,7 @@
  * {
 *     date: { year: 24, month: 10, date: 2 },
 *     energyType: 160,
-*     firstIndex: 24,
+*     firstIndex: 25,
 *     count: 1,
 *     period: 60,
 *     demands: [ { lastSummerHour: 4 } ]
@@ -269,7 +269,7 @@ export const examples: command.TCommandExamples = {
                 date: 2
             },
             energyType: demandTypes.A_PLUS,
-            firstIndex: 24,
+            firstIndex: 25,
             count: 1,
             period: 60,
             demands: [
@@ -278,7 +278,7 @@ export const examples: command.TCommandExamples = {
         },
         bytes: [
             0x76, 0x09,
-            0x31, 0x42, 0x01, 0x00, 0x18, 0x01, 0x3c,
+            0x31, 0x42, 0x01, 0x00, 0x19, 0x01, 0x3c,
             0x04, 0xff
         ]
     },
@@ -321,7 +321,7 @@ export const examples: command.TCommandExamples = {
                 date: 2
             },
             energyType: demandTypes.VOLTAGE,
-            firstIndex: 24,
+            firstIndex: 25,
             count: 1,
             period: 60,
             demands: [
@@ -330,8 +330,46 @@ export const examples: command.TCommandExamples = {
         },
         bytes: [
             0x76, 0x09,
-            0x31, 0x42, 0xa0, 0x00, 0x18, 0x01, 0x3c,
+            0x31, 0x42, 0xa0, 0x00, 0x19, 0x01, 0x3c,
             0x04, 0xff
+        ]
+    },
+
+    'response for voltage 10 min (lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 27
+            },
+            energyType: demandTypes.VOLTAGE_10,
+            firstIndex: 144,
+            count: 7,
+            period: 10,
+            demands: [
+                {voltage: 2375},
+                {voltage: 2381},
+                {voltage: 2372},
+                {voltage: 2373},
+                {voltage: 2374},
+                {voltage: 2365},
+                {lastSummerHour: 3}
+            ]
+        },
+        bytes: [
+            0x76, 0x15,
+            0x31, 0x5b, 0x40, 0x00, 0x90, 0x07, 0x0a,
+            0x09, 0x47,
+            0x09, 0x4d,
+            0x09, 0x44,
+            0x09, 0x45,
+            0x09, 0x46,
+            0x09, 0x3d,
+            0x03, 0xff
         ]
     }
 };
