@@ -1362,15 +1362,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getDemand (for A+, lastSummerHour)',
-        hex: '0a 13 ce 1d 71 5f da 33 97 0b 3f 0d e0 6e 34 55 67 0e',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 ce 1d 71 5f da 33 97 0b 3f 0d e0 6e 34 55 67 0e b3 ab 7e',
+        hex: '0a 13 65 c5 26 8d 45 e5 d9 95 5f 41 cb 5f df d4 9b 61',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 65 c5 26 8d 45 e5 d9 95 5f 41 cb 5f df d4 9b 61 b8 2e 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getDemand.accessLevel,
         commands: [
             uplinkCommands.getDemand.examples['response for A+ (lastSummerHour)']
         ],
-        lrc: 0x95,
-        crc: 0xabb3,
+        lrc: 0x94,
+        crc: 0x2eb8,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1386,6 +1386,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0xd1,
         crc: 0x31c8,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDemand (for voltage 10 min, period: 10, no tariff)',
+        hex: '0a 13 e7 e9 77 05 5e 59 63 d9 a5 ac f8 8d bc c0 d0 5b 98 fa 2b 63 8e 9e 6c 66 34 c0 dd 4f fc 2f c3 e4',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 e7 e9 77 05 5e 59 63 d9 a5 ac f8 8d bc c0 d0 5b 98 fa 2b 63 8e 9e 6c 66 34 c0 dd 4f fc 2f c3 e4 82 2e 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDemand.accessLevel,
+        commands: [
+            uplinkCommands.getDemand.examples['response for voltage 10 min (lastSummerHour)']
+        ],
+        lrc: 0x1e,
+        crc: 0x2e82,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
