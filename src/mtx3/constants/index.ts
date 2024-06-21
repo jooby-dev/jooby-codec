@@ -5,3 +5,5 @@
  */
 
 export * from '../../mtx/constants/index.js';
+
+export * as baudRates from './baudRates.js';

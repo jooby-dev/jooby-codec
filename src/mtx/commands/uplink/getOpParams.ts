@@ -8,7 +8,7 @@
  * @example create command instance from command body hex dump
  * ```js
  * import * as getOpParams from 'jooby-codec/mtx/commands/uplink/getOpParams.js';
- * import {getDefaultOperatorParameters} from 'jooby-codec/mtx/utils/CommandBinaryBuffer.js';
+ * import CommandBinaryBuffer from 'jooby-codec/mtx/utils/CommandBinaryBuffer.js';
  *
  * // get default operator parameters response
  * const bytes = [
@@ -23,7 +23,7 @@
  *
  * console.log(parameters);
  * // output:
- * // same as getDefaultOperatorParameters()
+ * // same as CommandBinaryBuffer.getDefaultOperatorParameters()
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetOpParams.md#response)

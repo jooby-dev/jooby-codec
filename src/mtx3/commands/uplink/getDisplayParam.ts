@@ -23,7 +23,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDisplayParam.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetDisplayParam.md#response)
  */
 
 import * as command from '../../../mtx/utils/command.js';
