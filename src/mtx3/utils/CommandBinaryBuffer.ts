@@ -609,23 +609,24 @@ export interface IDisplaySet4OperatorParameter {
     CURRENT_BALANCE: boolean;
 
     /**
-     * Display power threshold for tariff `T1` (`Obis 5.2.1`).
-     * since build 302.35.005
+     * Display power threshold for tariff `T1` (`5.2.1`).
+     *
+     * since build `302.35.005`
      */
     POWER_THRESHOLD_T1: boolean;
 
     /**
-     * Display power threshold for tariff `T2` (`Obis 5.2.2`).
+     * Display power threshold for tariff `T2` (`5.2.2`).
      */
     POWER_THRESHOLD_T2: boolean;
 
     /**
-     * Display power threshold for tariff `T3` (`Obis 5.2.3`).
+     * Display power threshold for tariff `T3` (`5.2.3`).
      */
     POWER_THRESHOLD_T3: boolean;
 
     /**
-     * Display power threshold for tariff `T4` (`Obis 5.2.4`).
+     * Display power threshold for tariff `T4` (`5.2.4`).
      */
     POWER_THRESHOLD_T4: boolean;
 
@@ -657,7 +658,10 @@ export interface IDisplaySet4OperatorParameter {
 
 export interface IRelaySetOperatorParameter {
     /**
-     * Relay activation function (`1` - enabled, `0` - disabled).
+     * Relay activation function.
+     *
+     * `1` - enabled,
+     * `0` - disabled.
      */
     RELAY_ON_Y: boolean;
 
@@ -697,7 +701,10 @@ export interface IRelaySetOperatorParameter {
     RELAY_ON_V_GOOD: boolean;
 
     /**
-     * Relay deactivation function (`1` - enabled, `0` - disabled).
+     * Relay deactivation function.
+     *
+     * `1` - enabled,
+     * `0` - disabled.
      */
     RELAY_OFF_Y: boolean;
 
@@ -817,10 +824,10 @@ export interface ISpeedOptoPortOperatorParameter {
      * Baud rate of the PLC (UART_0): `2400` or `9600`.
      *
      * | Value | Baud Rate |
-     * |-------|-----------|
-     * | 0     | 9600      |
-     * | 2     | 2400      |
-     * | 4     | 9600      |
+     * | ----- | --------- |
+     * | `0`   | `9600`    |
+     * | `2`   | `2400`    |
+     * | `4`   | `9600`    |
      */
     plc: typeof baudRates.RATE_2400 | typeof baudRates.RATE_9600,
 
@@ -828,10 +835,10 @@ export interface ISpeedOptoPortOperatorParameter {
      * Baud rate of the optoport (UART_1): `2400` or `9600`.
      *
      * | Value | Baud Rate |
-     * |-------|-----------|
-     * | 0     | 2400      |
-     * | 2     | 2400      |
-     * | 4     | 9600      |
+     * | ----- | --------- |
+     * | `0`   | `2400`    |
+     * | `2`   | `2400`    |
+     * | `4`   | `9600`    |
      */
     optoport: typeof baudRates.RATE_2400 | typeof baudRates.RATE_9600
 }
@@ -839,22 +846,26 @@ export interface ISpeedOptoPortOperatorParameter {
 export interface ITypeMeterOperatorParameter {
     /**
      * Consideration of transformation ratio.
-     * `0` - without transformation ratio, `1` - with transformation ratio.
+     *
+     * `0` - without transformation ratio,
+     * `1` - with transformation ratio.
      */
     TRANSFORMATION_RATIO: boolean;
 
     /**
      * Meter type.
-     * `1` - R-type meter.
+     *
+     * `1` - `R`-type meter.
      */
     METER_TYPE_R: boolean;
 
     /**
      * Reactive energy accumulation type.
-     * `0` - reactive energy accumulation by quadrants `Q1, Q2, Q3, Q4`;
-     * `1` - reactive energy accumulation by `R+, R-`.
      *
-     * Since build 302.19.XXX (XXX - decimal number) for G-type meters, the energies `R+` and `R-` are accumulated and displayed similarly to R-type meters.
+     * `0` - reactive energy accumulation by quadrants `Q1`, `Q2`, `Q3`, `Q4`;
+     * `1` - reactive energy accumulation by `R+`, `R-`.
+     *
+     * Since build `302.19.XXX` (`XXX` - decimal number) for `G`-type meters, the energies `R+` and `R-` are accumulated and displayed similarly to `R`-type meters.
      * Reactive energy by quadrants is not accumulated.
      */
     ACCUMULATE_BY_R_PLUS_MINUS: boolean;
@@ -917,7 +928,7 @@ export interface IOperatorParameters {
     rmaxThreshold3: types.TUint32,
 
     /**
-     * Power averaging interval, in minutes (1-60).
+     * Power averaging interval, in minutes (`1`-`60`).
      */
     tint: types.TUint8,
 
@@ -937,7 +948,7 @@ export interface IOperatorParameters {
     timeoutScreen: types.TUint8,
 
     /**
-     * Display settings for meter readings (first 32 screens).
+     * Display settings for meter readings (first `32` screens).
      */
     displaySet1: IDisplaySet1OperatorParameter,
 
@@ -963,21 +974,26 @@ export interface IOperatorParameters {
 
     /**
      * Integration period for energy profiles.
+     *
      * `15` - `15` minutes; `0`, `30` - `30` minutes; `60` - `60` minutes.
-     * since build 0.0.17
+     *
+     * since build `0.0.17`
      */
     ten: types.TUint8,
 
     /**
      * Voltage averaging interval.
+     *
      * `0`, `1`, `3`, `5`, `10`, `15`, `30` minutes.
-     * since build 0.0.17
+     *
+     * since build `0.0.17`
      */
     tu: types.TUint8,
 
     /**
      * Interval for tracking power off events, in minutes.
-     * since build 0.0.17
+     *
+     * since build `0.0.17`
      */
     timeIntervalPowerOff: types.TUint8,
 
@@ -1018,7 +1034,13 @@ export interface IOperatorParameters {
 
     /**
      * The number of digits after the decimal point for displaying energy values.
-     * (`0x00` - `8+0` mode, `0x01` - `7+1` mode, `0x02` - `6+2` mode, `0x03` - `5+3` mode)
+     *
+     * | Value  | Mode  |
+     * | ------ | ----- |
+     * | `0x00` | `8+0` |
+     * | `0x01` | `7+1` |
+     * | `0x02` | `6+2` |
+     * | `0x03` | `5+3` |
      */
     energyDecimalPoint: types.TUint8,
 
@@ -1068,7 +1090,8 @@ export interface IOperatorParameters {
     timeoutCos: types.TUint8,
 
     /**
-     * `0` - `PMAX` = `POWER_A` + `POWER_B` + `POWER_C`; `1` - `PMAX` is the averaged power over the integration period.
+     * `0` - `PMAX` = `POWER_A` + `POWER_B` + `POWER_C`;
+     * `1` - `PMAX` is the averaged power over the integration period.
      */
     pMaxDef: types.TUint8,
 
@@ -1277,6 +1300,9 @@ const setSpeedOptoPort = ( speedOptoPort: ISpeedOptoPortOperatorParameter ): num
 
 
 export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
+    // static methods
+    getDefaultOperatorParameters (): IOperatorParameters
+
     // instance methods
     // getFrameHeader (): IFrameHeader,
     // setFrameHeader ( frameHeader: IFrameHeader ),
@@ -1293,6 +1319,54 @@ function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.T
 // extending
 CommandBinaryBuffer.prototype = Object.create(MtxBinaryBuffer.prototype);
 CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
+
+
+CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => (
+    {
+        vpThreshold: 265000,
+        vThreshold: 156000,
+        ipThreshold: 120000,
+        pmaxThreshold0: 31800,
+        pmaxThreshold1: 31800,
+        pmaxThreshold2: 31800,
+        pmaxThreshold3: 31800,
+        rmaxThreshold0: 31800,
+        rmaxThreshold1: 31800,
+        rmaxThreshold2: 31800,
+        rmaxThreshold3: 31800,
+        tint: 30,
+        calcPeriodDate: 1,
+        timeoutDisplay: 127,
+        timeoutScreen: 7,
+        displaySet1: (bitSet.toObject(displaySet1Mask, 4229) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet2: (bitSet.toObject(displaySet2Mask, 139776) as unknown) as IDisplaySet2OperatorParameter,
+        displaySet3: (bitSet.toObject(displaySet3Mask, 0) as unknown) as IDisplaySet3OperatorParameter,
+        relaySet: (bitSet.toObject(relaySetMask, 771) as unknown) as IRelaySetOperatorParameter,
+        speedOptoPort: getSpeedOptoPort(64),
+        ten: 30,
+        tu: 30,
+        timeIntervalPowerOff: 3,
+        reserved: 0,
+        timeoutBadVAVB: 5,
+        freqMax: 55,
+        freqMin: 45,
+        year: 0,
+        month: 0,
+        date: 0,
+        energyDecimalPoint: 2,
+        voltageTransformationRatioNumerator: 1,
+        voltageTransformationRatioDenominator: 1,
+        currentTransformationRatioNumerator: 1,
+        currentTransformationRatioDenominator: 1,
+        typeMeter: (bitSet.toObject(typeMeterMask, 0) as unknown) as ITypeMeterOperatorParameter,
+        phMin: 0,
+        timeoutIMax: 5,
+        timeoutPMax: 5,
+        timeoutCos: 5,
+        pMaxDef: 1,
+        displaySet4: (bitSet.toObject(displaySet4Mask, 2147876864) as unknown) as IDisplaySet4OperatorParameter
+    }
+);
 
 
 // CommandBinaryBuffer.prototype.getFrameHeader = function (): IFrameHeader {
@@ -1404,54 +1478,6 @@ CommandBinaryBuffer.prototype.setOperatorParameters = function (operatorParamete
     this.setUint8(operatorParameters.pMaxDef);
     this.setUint32(bitSet.fromObject(displaySet4Mask, (operatorParameters.displaySet4 as unknown) as bitSet.TBooleanObject));
 };
-
-
-export const getDefaultOperatorParameters = (): IOperatorParameters => (
-    {
-        vpThreshold: 265000,
-        vThreshold: 156000,
-        ipThreshold: 120000,
-        pmaxThreshold0: 31800,
-        pmaxThreshold1: 31800,
-        pmaxThreshold2: 31800,
-        pmaxThreshold3: 31800,
-        rmaxThreshold0: 31800,
-        rmaxThreshold1: 31800,
-        rmaxThreshold2: 31800,
-        rmaxThreshold3: 31800,
-        tint: 30,
-        calcPeriodDate: 1,
-        timeoutDisplay: 127,
-        timeoutScreen: 7,
-        displaySet1: (bitSet.toObject(displaySet1Mask, 4229) as unknown) as IDisplaySet1OperatorParameter,
-        displaySet2: (bitSet.toObject(displaySet2Mask, 139776) as unknown) as IDisplaySet2OperatorParameter,
-        displaySet3: (bitSet.toObject(displaySet3Mask, 0) as unknown) as IDisplaySet3OperatorParameter,
-        relaySet: (bitSet.toObject(relaySetMask, 771) as unknown) as IRelaySetOperatorParameter,
-        speedOptoPort: getSpeedOptoPort(64),
-        ten: 30,
-        tu: 30,
-        timeIntervalPowerOff: 3,
-        reserved: 0,
-        timeoutBadVAVB: 5,
-        freqMax: 55,
-        freqMin: 45,
-        year: 0,
-        month: 0,
-        date: 0,
-        energyDecimalPoint: 2,
-        voltageTransformationRatioNumerator: 1,
-        voltageTransformationRatioDenominator: 1,
-        currentTransformationRatioNumerator: 1,
-        currentTransformationRatioDenominator: 1,
-        typeMeter: (bitSet.toObject(typeMeterMask, 0) as unknown) as ITypeMeterOperatorParameter,
-        phMin: 0,
-        timeoutIMax: 5,
-        timeoutPMax: 5,
-        timeoutCos: 5,
-        pMaxDef: 1,
-        displaySet4: (bitSet.toObject(displaySet4Mask, 2147876864) as unknown) as IDisplaySet4OperatorParameter
-    }
-);
 
 
 export default CommandBinaryBuffer;

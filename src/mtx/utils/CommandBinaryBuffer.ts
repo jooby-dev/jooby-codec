@@ -1279,6 +1279,58 @@ CommandBinaryBuffer.getDefaultSeasonProfile = (): ISeasonProfile => (
     }
 );
 
+CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => (
+    {
+        vpThreshold: 265000,
+        vThreshold: 156000,
+        ipThreshold: 120000,
+        pmaxThreshold0: 31800,
+        pmaxThreshold1: 31800,
+        pmaxThreshold2: 31800,
+        pmaxThreshold3: 31800,
+        speedOptoPort: 0,
+        tint: 30,
+        calcPeriodDate: 1,
+        timeoutDisplay: 127,
+        timeoutScreen: 7,
+        displaySet: (bitSet.toObject(displaySetMask, 0x80003184) as unknown) as IDisplaySetOperatorParameter,
+        relaySet4: (bitSet.toObject(relaySet4Mask, 0) as unknown) as IRelaySet4OperatorParameter,
+        relaySet3: (bitSet.toObject(relaySet3Mask, 0) as unknown) as IRelaySet3OperatorParameter,
+        relaySet2: (bitSet.toObject(relaySet2Mask, 3) as unknown) as IRelaySet2OperatorParameter,
+        relaySet1: (bitSet.toObject(relaySet1Mask, 3) as unknown) as IRelaySet1OperatorParameter,
+        displayType: 0,
+        ten: 0,
+        timeoutRefresh: 240,
+        deltaCorMin: 15,
+        timeoutMagnetOff: 5,
+        timeoutMagnetOn: 5,
+        define1: (bitSet.toObject(define1Mask, 0) as unknown) as IDefine1OperatorParameter,
+        timeoutRelayOn: 1,
+        timeoutRelayKey: 0,
+        timeoutRelayAuto: 5,
+        timeoutBadVAVB: 5,
+        freqMax: 55,
+        freqMin: 45,
+        phMin: 0,
+        year: 0,
+        month: 0,
+        date: 0,
+        energyDecimalPoint: 2,
+        typeMeter: 0,
+        timeoutIMax: 5,
+        timeoutPMax: 5,
+        timeoutCos: 5,
+        pMaxDef: 1,
+        displaySetExt: (bitSet.toObject(displaySetExtMask, 0x8383fff) as unknown) as IDisplaySetExtOperatorParameter,
+        timeoutUneqCurrent: 5,
+        timeoutBipolarPower: 5,
+        relaySet5: (bitSet.toObject(relaySet5Mask, 0) as unknown) as IRelaySet5OperatorParameter,
+        timeCorrectPeriod: 24,
+        timeCorrectPassHalfhour: false
+    }
+);
+
+
 CommandBinaryBuffer.prototype.getFrameHeader = function (): IFrameHeader {
     return {
         type: this.getUint8(),
@@ -1825,56 +1877,6 @@ CommandBinaryBuffer.prototype.setMonthMaxPowerByTariffs = function ( tariffs: Ar
     });
 };
 
-export const getDefaultOperatorParameters = (): IOperatorParameters => (
-    {
-        vpThreshold: 265000,
-        vThreshold: 156000,
-        ipThreshold: 120000,
-        pmaxThreshold0: 31800,
-        pmaxThreshold1: 31800,
-        pmaxThreshold2: 31800,
-        pmaxThreshold3: 31800,
-        speedOptoPort: 0,
-        tint: 30,
-        calcPeriodDate: 1,
-        timeoutDisplay: 127,
-        timeoutScreen: 7,
-        displaySet: (bitSet.toObject(displaySetMask, 0x80003184) as unknown) as IDisplaySetOperatorParameter,
-        relaySet4: (bitSet.toObject(relaySet4Mask, 0) as unknown) as IRelaySet4OperatorParameter,
-        relaySet3: (bitSet.toObject(relaySet3Mask, 0) as unknown) as IRelaySet3OperatorParameter,
-        relaySet2: (bitSet.toObject(relaySet2Mask, 3) as unknown) as IRelaySet2OperatorParameter,
-        relaySet1: (bitSet.toObject(relaySet1Mask, 3) as unknown) as IRelaySet1OperatorParameter,
-        displayType: 0,
-        ten: 0,
-        timeoutRefresh: 240,
-        deltaCorMin: 15,
-        timeoutMagnetOff: 5,
-        timeoutMagnetOn: 5,
-        define1: (bitSet.toObject(define1Mask, 0) as unknown) as IDefine1OperatorParameter,
-        timeoutRelayOn: 1,
-        timeoutRelayKey: 0,
-        timeoutRelayAuto: 5,
-        timeoutBadVAVB: 5,
-        freqMax: 55,
-        freqMin: 45,
-        phMin: 0,
-        year: 0,
-        month: 0,
-        date: 0,
-        energyDecimalPoint: 2,
-        typeMeter: 0,
-        timeoutIMax: 5,
-        timeoutPMax: 5,
-        timeoutCos: 5,
-        pMaxDef: 1,
-        displaySetExt: (bitSet.toObject(displaySetExtMask, 0x8383fff) as unknown) as IDisplaySetExtOperatorParameter,
-        timeoutUneqCurrent: 5,
-        timeoutBipolarPower: 5,
-        relaySet5: (bitSet.toObject(relaySet5Mask, 0) as unknown) as IRelaySet5OperatorParameter,
-        timeCorrectPeriod: 24,
-        timeCorrectPassHalfhour: false
-    }
-);
 
 export const getDefaultTimeCorrectionParameters = (): ITimeCorrectionParameters => (
     {
