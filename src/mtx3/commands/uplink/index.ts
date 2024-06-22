@@ -32,6 +32,7 @@ export * as setCorrectTime from '../../../mtx/commands/uplink/setCorrectTime.js'
 export * as setDateTime from '../../../mtx/commands/uplink/setDateTime.js';
 export * as setDayProfile from '../../../mtx/commands/uplink/setDayProfile.js';
 export * as setDisplayParam from '../../../mtx/commands/uplink/setDisplayParam.js';
+export * as setOpParams from '../../../mtx/commands/uplink/setOpParams.js';
 export * as setSaldo from '../../../mtx/commands/uplink/setSaldo.js';
 export * as setSaldoParameters from '../../../mtx/commands/uplink/setSaldoParameters.js';
 export * as setSeasonProfile from '../../../mtx/commands/uplink/setSeasonProfile.js';

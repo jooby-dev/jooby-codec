@@ -173,6 +173,7 @@ toBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.toBytes;
 toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
 toBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.toBytes;
 toBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.toBytes;
+toBytesMap[commands.setOpParams.id] = commands.setOpParams.toBytes;
 
 
 // commands identical to MTX1
@@ -214,6 +215,7 @@ fromBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.fromBytes;
 fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes;
 fromBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.fromBytes;
 fromBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.fromBytes;
+fromBytesMap[commands.setOpParams.id] = commands.setOpParams.fromBytes;
 
 
 // commands identical to MTX1
@@ -255,3 +257,4 @@ nameMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.name;
 nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
 nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;
 nameMap[commands.setDisplayParam.id] = commands.setDisplayParam.name;
+nameMap[commands.setOpParams.id] = commands.setOpParams.name;
