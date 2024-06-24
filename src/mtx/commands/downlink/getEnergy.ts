@@ -5,14 +5,14 @@
  *
  * @example
  * ```js
- * import * as getEnergyCurrent from 'jooby-codec/mtx/commands/downlink/getEnergyCurrent.js';
+ * import * as getEnergy from 'jooby-codec/mtx/commands/downlink/getEnergy.js';
  * import * as energyTypes from 'jooby-codec/mtx/constants/energyTypes.js';
  *
  * const parameters = {
  *     energyType: energyTypes.A_PLUS
  * };
  *
- * const bytes = getEnergyCurrent.toBytes(parameters);
+ * const bytes = getEnergy.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
@@ -20,7 +20,7 @@
  * [15, 1, 1]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetEnergyCurrent.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetEnergy.md#request)
  */
 
 import * as types from '../../types.js';
@@ -40,7 +40,7 @@ const MAX_COMMAND_SIZE = 1;
 
 
 export const id: types.TCommandId = 0x0f;
-export const name: types.TCommandName = 'getEnergyCurrent';
+export const name: types.TCommandName = 'getEnergy';
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
