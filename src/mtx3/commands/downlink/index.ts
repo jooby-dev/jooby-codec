@@ -44,5 +44,7 @@ export * as turnRelayOn from '../../../mtx/commands/downlink/turnRelayOn.js';
 // commands different from MTX1
 export * as getCriticalEvent from './getCriticalEvent.js';
 export * as getDisplayParam from './getDisplayParam.js';
+export * as getOperatorParametersExtended from './getOperatorParametersExtended.js';
 export * as setDisplayParam from './setDisplayParam.js';
+export * as setOperatorParametersExtended from './setOperatorParametersExtended.js';
 export * as setOpParams from './setOpParams.js';
