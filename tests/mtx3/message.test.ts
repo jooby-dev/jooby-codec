@@ -43,13 +43,13 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'setOpParams',
+        name: 'setOperatorParameters',
         hex: '0a 12 96 47 d0 20 3b ad 40 62 ff 98 d6 cf 55 01 c3 c4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d a9 56 76 3b 2c de 60 5c e8 90 a3 e4 ce e1 76 f8 49 52 40 74 61 2e da 5c 95 90 16 92 ec 4e 4e 35 2e 3a 96 6c 61 c4 1f bf 6f b0 f2 97 65 46 f8 45 e6 2d 4a 18 46 72 bc 8d 76 03 9d bb 71 84 81 af 7c 7c 6e ab 48 65 47 bb c2 85 20 67 35 e6 e8 c1 7d 35 b6',
         frameHex: '7e 50 aa aa ff ff 0a 12 96 47 d0 20 3b ad 40 62 ff 98 d6 cf 55 01 c3 c4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d 5d a9 56 76 3b 2c de 60 5c e8 90 a3 e4 ce e1 76 f8 49 52 40 74 61 2e da 5c 95 90 16 92 ec 4e 4e 35 2e 3a 96 6c 61 c4 1f bf 6f b0 f2 97 65 46 f8 45 e6 2d 4a 18 46 72 bc 8d 76 03 9d bb 71 84 81 af 7c 7c 6e ab 48 65 47 bb c2 85 20 67 35 e6 e8 c1 7d 5d 35 b6 5a 79 7e',
         messageId: 10,
-        accessLevel: downlinkCommands.setOpParams.accessLevel,
+        accessLevel: downlinkCommands.setOperatorParameters.accessLevel,
         commands: [
-            downlinkCommands.setOpParams.examples['set default operator parameters request']
+            downlinkCommands.setOperatorParameters.examples['set default operator parameters request']
         ],
         lrc: 0x3c,
         crc: 0x795a,
@@ -76,13 +76,13 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getOpParams',
+        name: 'getOperatorParameters',
         hex: '0a 13 bf 75 d5 5d 05 b1 3c 7a 01 f8 4d 3c 76 3c 4f a4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d a9 56 76 3b 2c de 60 5c e8 90 a3 e4 ce e1 76 f8 49 52 40 74 61 2e da 5c 95 90 16 92 ec 4e 4e 35 2e 3a 96 6c 61 c4 1f bf 6f b0 f2 97 65 46 f8 45 e6 2d 4a 18 46 72 bc 8d 76 03 9d bb 71 84 81 af 7c 7c 6e ab 48 65 47 bb c2 85 20 67 35 e6 e8 c1 7d 35 b6',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 bf 75 d5 5d 05 b1 3c 7a 01 f8 4d 3c 76 3c 4f a4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d 5d a9 56 76 3b 2c de 60 5c e8 90 a3 e4 ce e1 76 f8 49 52 40 74 61 2e da 5c 95 90 16 92 ec 4e 4e 35 2e 3a 96 6c 61 c4 1f bf 6f b0 f2 97 65 46 f8 45 e6 2d 4a 18 46 72 bc 8d 76 03 9d bb 71 84 81 af 7c 7c 6e ab 48 65 47 bb c2 85 20 67 35 e6 e8 c1 7d 5d 35 b6 23 8b 7e',
         messageId: 10,
-        accessLevel: uplinkCommands.getOpParams.accessLevel,
+        accessLevel: uplinkCommands.getOperatorParameters.accessLevel,
         commands: [
-            uplinkCommands.getOpParams.examples['get default operator parameters response']
+            uplinkCommands.getOperatorParameters.examples['get default operator parameters response']
         ],
         lrc: 0x3c,
         crc: 0x8b23,

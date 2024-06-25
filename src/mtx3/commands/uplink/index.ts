@@ -32,7 +32,7 @@ export * as setCorrectTime from '../../../mtx/commands/uplink/setCorrectTime.js'
 export * as setDateTime from '../../../mtx/commands/uplink/setDateTime.js';
 export * as setDayProfile from '../../../mtx/commands/uplink/setDayProfile.js';
 export * as setDisplayParam from '../../../mtx/commands/uplink/setDisplayParam.js';
-export * as setOpParams from '../../../mtx/commands/uplink/setOpParams.js';
+export * as setOperatorParameters from '../../../mtx/commands/uplink/setOperatorParameters.js';
 export * as setSaldo from '../../../mtx/commands/uplink/setSaldo.js';
 export * as setSaldoParameters from '../../../mtx/commands/uplink/setSaldoParameters.js';
 export * as setSeasonProfile from '../../../mtx/commands/uplink/setSeasonProfile.js';
@@ -46,5 +46,5 @@ export * as turnRelayOn from '../../../mtx/commands/uplink/turnRelayOn.js';
 export * as getCriticalEvent from './getCriticalEvent.js';
 export * as getDisplayParam from './getDisplayParam.js';
 export * as getOperatorParametersExtended from './getOperatorParametersExtended.js';
-export * as getOpParams from './getOpParams.js';
+export * as getOperatorParameters from './getOperatorParameters.js';
 export * as setOperatorParametersExtended from './setOperatorParametersExtended.js';

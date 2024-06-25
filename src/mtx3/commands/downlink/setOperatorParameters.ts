@@ -5,11 +5,11 @@
  *
  * @example
  * ```js
- * import * as setOpParams from 'jooby-codec/mtx3/commands/downlink/setOpParams.js';
+ * import * as setOperatorParameters from 'jooby-codec/mtx3/commands/downlink/setOperatorParameters.js';
  * import CommandBinaryBuffer from 'jooby-codec/mtx3/utils/CommandBinaryBuffer.js';
  *
  * const parameters = CommandBinaryBuffer.getDefaultOperatorParameters();
- * const bytes = setOpParams.toBytes(parameters);
+ * const bytes = setOperatorParameters.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
@@ -34,7 +34,7 @@ import {READ_WRITE} from '../../../mtx/constants/accessLevels.js';
 
 
 export const id: types.TCommandId = 0x1f;
-export const name: types.TCommandName = 'setOpParams';
+export const name: types.TCommandName = 'setOperatorParameters';
 export const headerSize = 2;
 export const maxSize = OPERATOR_PARAMETERS_SIZE;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

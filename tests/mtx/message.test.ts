@@ -583,13 +583,13 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getOpParams',
+        name: 'getOperatorParameters',
         hex: '0a 13 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22 a0 c6 7e',
         messageId: 10,
-        accessLevel: downlinkCommands.getOpParams.accessLevel,
+        accessLevel: downlinkCommands.getOperatorParameters.accessLevel,
         commands: [
-            downlinkCommands.getOpParams.examples['simple request']
+            downlinkCommands.getOperatorParameters.examples['simple request']
         ],
         lrc: 0x58,
         crc: 0xc6a0,
@@ -868,13 +868,13 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'setOpParams',
+        name: 'setOperatorParameters',
         hex: '0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75',
         frameHex: '7e 50 aa aa ff ff 0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d 5d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75 36 b9 7e',
         messageId: 10,
-        accessLevel: downlinkCommands.setOpParams.accessLevel,
+        accessLevel: downlinkCommands.setOperatorParameters.accessLevel,
         commands: [
-            downlinkCommands.setOpParams.examples['set default operator parameters request']
+            downlinkCommands.setOperatorParameters.examples['set default operator parameters request']
         ],
         lrc: 0x7b,
         crc: 0xb936,
@@ -1741,13 +1741,13 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getOpParams',
+        name: 'getOperatorParameters',
         hex: '0a 13 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 87 e4 c5 8e 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 5d 87 e4 c5 8e 22 0c 2e 12 c7 73 f8 23 b3 51 c2 f7 7d 5d a9 56 76 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 08 af 02 26 40 ae e6 68 3e 6f f8 ee 4d 04 b0 75 9f 27 7e',
         messageId: 10,
-        accessLevel: uplinkCommands.getOpParams.accessLevel,
+        accessLevel: uplinkCommands.getOperatorParameters.accessLevel,
         commands: [
-            uplinkCommands.getOpParams.examples['get default operator parameters response']
+            uplinkCommands.getOperatorParameters.examples['get default operator parameters response']
         ],
         lrc: 0x7b,
         crc: 0x279f,
@@ -2011,13 +2011,13 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'setOpParams',
+        name: 'setOperatorParameters',
         hex: '0a 12 b7 7e 91 e5 84 c7 9e 69 9c 5a 6a 38 b1 d8 c1 02',
         frameHex: '7e 51 aa aa ff ff 0a 12 b7 7d 5e 91 e5 84 c7 9e 69 9c 5a 6a 38 b1 d8 c1 02 01 cb 7e',
         messageId: 10,
-        accessLevel: uplinkCommands.setOpParams.accessLevel,
+        accessLevel: uplinkCommands.setOperatorParameters.accessLevel,
         commands: [
-            uplinkCommands.setOpParams.examples['simple response']
+            uplinkCommands.setOperatorParameters.examples['simple response']
         ],
         lrc: 0x58,
         crc: 0xcb01,
