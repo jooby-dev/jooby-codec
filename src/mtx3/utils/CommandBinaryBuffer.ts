@@ -1103,29 +1103,29 @@ export interface IOperatorParameters {
 
 export interface IDefine1OperatorParameterExtended {
     /**
-     * Reset daily maximum power using button.
+     * `1` - enable resetting daily maximum power using button.
      */
     RESET_DAY_MAX_POWER_KEY: boolean,
 
     /**
-     * Reset monthly maximum power using button.
+     * `1` - enable resetting monthly maximum power using button.
      */
     RESET_MONTH_MAX_POWER_KEY: boolean,
 
     /**
-     * `1` - optoport is unlocked by button, `0` - optoport is unlocked.
+     * `1` - optoport is unlocked by button, `0` - optoport is always unlocked.
      */
     BLOCK_KEY_OPTOPORT: boolean,
 
     /**
-     * `1` - constant magnetic field screen
+     * `1` - enable constant magnetic field screen.
      *
      * since build `302.35.005`
      */
     MAGNET_SCREEN_CONST: boolean
 
     /**
-     * Allow display indication in battery mode (`1` - enabled).
+     * `1` - enable display indication in battery mode.
      *
      * since build `0.0.17`
      */
@@ -1134,7 +1134,7 @@ export interface IDefine1OperatorParameterExtended {
 
 export interface IOperatorParametersExtended {
     /**
-     * Timeout for automatic relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI`, minutes.
+     * Timeout for automatic relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI`, in minutes.
      */
     timeoutRelayOn: types.TUint8,
 
@@ -1144,24 +1144,14 @@ export interface IOperatorParametersExtended {
     define1: IDefine1OperatorParameterExtended,
 
     /**
-     * Timeout for relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI`, seconds.
+     * Timeout for relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI`, in seconds.
      */
     timeoutRelayKey: types.TUint8,
 
     /**
-     * Timeout for relay activation upon restoration of quality voltage, seconds.
+     * Timeout for relay activation upon restoration of quality voltage, in seconds.
      */
-    timeoutRelayAuto: types.TUint8,
-
-    /**
-     * Reserved bytes.
-     */
-    reserved1: types.TUint32,
-
-    /**
-     * Reserved byte.
-     */
-    reserved2: types.TUint8,
+    timeoutRelayAuto: types.TUint8
 }
 
 export const OPERATOR_PARAMETERS_SIZE = 95;
@@ -1559,9 +1549,7 @@ CommandBinaryBuffer.prototype.getOperatorParametersExtended = function (): IOper
         timeoutRelayOn: this.getUint8(),
         define1: (bitSet.toObject(define1Mask, this.getUint8()) as unknown) as IDefine1OperatorParameterExtended,
         timeoutRelayKey: this.getUint8(),
-        timeoutRelayAuto: this.getUint8(),
-        reserved1: this.getUint32(),
-        reserved2: this.getUint8()
+        timeoutRelayAuto: this.getUint8()
     };
 };
 
@@ -1570,8 +1558,10 @@ CommandBinaryBuffer.prototype.setOperatorParametersExtended = function ( operato
     this.setUint8(bitSet.fromObject(define1Mask, (operatorParametersExtended.define1 as unknown) as bitSet.TBooleanObject));
     this.setUint8(operatorParametersExtended.timeoutRelayKey);
     this.setUint8(operatorParametersExtended.timeoutRelayAuto);
-    this.setUint32(operatorParametersExtended.reserved1);
-    this.setUint8(operatorParametersExtended.reserved2);
+    // reserved1
+    this.setUint32(0);
+    // reserved2
+    this.setUint8(0);
 };
 
 

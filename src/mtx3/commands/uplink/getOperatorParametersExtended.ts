@@ -27,9 +27,7 @@
  *         ALLOW_BROWNOUT_INDICATION: false
  *     },
  *     timeoutRelayKey: 0,
- *     timeoutRelayAuto: 5,
- *     reserved1: 0,
- *     reserved2: 0
+ *     timeoutRelayAuto: 5
  * }
  * ```
  *
@@ -66,9 +64,7 @@ export const examples: command.TCommandExamples = {
                 ALLOW_BROWNOUT_INDICATION: false
             },
             timeoutRelayKey: 0,
-            timeoutRelayAuto: 5,
-            reserved1: 0,
-            reserved2: 0
+            timeoutRelayAuto: 5
         },
         bytes: [
             0x3f, 0x09,
