@@ -141,7 +141,7 @@ export interface IDisplaySetExtOperatorParameter extends IDisplaySetBaseOperator
 
 export interface IRelaySet1OperatorParameter {
     /**
-     * Relay activation function (`1` - enabled, `0` - disabled).
+     * Relay activation function (`true` - enabled, `false` - disabled).
      */
     RELAY_ON_Y: boolean,
 
@@ -183,7 +183,7 @@ export interface IRelaySet1OperatorParameter {
 
 export interface IRelaySet2OperatorParameter {
     /**
-     * Relay deactivation function (`1` - enabled, `0` - disabled).
+     * Relay deactivation function (`true` - enabled, `false` - disabled).
      */
     RELAY_OFF_Y: boolean,
 
@@ -311,12 +311,12 @@ export interface IRelaySet5OperatorParameter {
 
 export interface IDefine1OperatorParameter {
     /**
-     * `1` - optoport is unlocked by button, `0` - optoport is unlocked (default is `0`).
+     * `true` - optoport is unlocked by button, `false` - optoport is unlocked (default is `false`).
      */
     BLOCK_KEY_OPTOPORT: boolean,
 
     /**
-     * `1` - constant magnetic field screen (`104.21.017`)
+     * `true` - constant magnetic field screen (`104.21.017`)
      */
     MAGNET_SCREEN_CONST: boolean
 }

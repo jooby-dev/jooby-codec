@@ -660,8 +660,8 @@ export interface IRelaySetOperatorParameter {
     /**
      * Relay activation function.
      *
-     * `1` - enabled,
-     * `0` - disabled.
+     * `true` - enabled,
+     * `false` - disabled.
      */
     RELAY_ON_Y: boolean;
 
@@ -703,8 +703,8 @@ export interface IRelaySetOperatorParameter {
     /**
      * Relay deactivation function.
      *
-     * `1` - enabled,
-     * `0` - disabled.
+     * `true` - enabled,
+     * `false` - disabled.
      */
     RELAY_OFF_Y: boolean;
 
@@ -847,23 +847,23 @@ export interface ITypeMeterOperatorParameter {
     /**
      * Consideration of transformation ratio.
      *
-     * `0` - without transformation ratio,
-     * `1` - with transformation ratio.
+     * `false` - without transformation ratio,
+     * `true` - with transformation ratio.
      */
     TRANSFORMATION_RATIO: boolean;
 
     /**
      * Meter type.
      *
-     * `1` - `R`-type meter.
+     * `true` - `R`-type meter.
      */
     METER_TYPE_R: boolean;
 
     /**
      * Reactive energy accumulation type.
      *
-     * `0` - reactive energy accumulation by quadrants `Q1`, `Q2`, `Q3`, `Q4`;
-     * `1` - reactive energy accumulation by `R+`, `R-`.
+     * `false` - reactive energy accumulation by quadrants `Q1`, `Q2`, `Q3`, `Q4`;
+     * `true` - reactive energy accumulation by `R+`, `R-`.
      *
      * Since build `302.19.XXX` (`XXX` - decimal number) for `G`-type meters, the energies `R+` and `R-` are accumulated and displayed similarly to `R`-type meters.
      * Reactive energy by quadrants is not accumulated.
@@ -1103,29 +1103,29 @@ export interface IOperatorParameters {
 
 export interface IDefine1OperatorParameterExtended {
     /**
-     * `1` - enable resetting daily maximum power using button.
+     * `true` - enable resetting daily maximum power using button.
      */
     RESET_DAY_MAX_POWER_KEY: boolean,
 
     /**
-     * `1` - enable resetting monthly maximum power using button.
+     * `true` - enable resetting monthly maximum power using button.
      */
     RESET_MONTH_MAX_POWER_KEY: boolean,
 
     /**
-     * `1` - optoport is unlocked by button, `0` - optoport is always unlocked.
+     * `true` - optoport is unlocked by button, `false` - optoport is always unlocked.
      */
     BLOCK_KEY_OPTOPORT: boolean,
 
     /**
-     * `1` - enable constant magnetic field screen.
+     * `true` - enable constant magnetic field screen.
      *
      * since build `302.35.005`
      */
     MAGNET_SCREEN_CONST: boolean
 
     /**
-     * `1` - enable display indication in battery mode.
+     * `true` - enable display indication in battery mode.
      *
      * since build `0.0.17`
      */
