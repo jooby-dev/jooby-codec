@@ -1134,7 +1134,7 @@ export interface IDefine1OperatorParameterExtended {
 
 export interface IOperatorParametersExtended {
     /**
-     * Timeout for automatic relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI`, in minutes.
+     * Timeout for automatic relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI` in minutes.
      */
     timeoutRelayOn: types.TUint8,
 
@@ -1144,7 +1144,7 @@ export interface IOperatorParametersExtended {
     define1: IDefine1OperatorParameterExtended,
 
     /**
-     * Timeout for relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI`, in seconds.
+     * Timeout for relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI` in seconds.
      */
     timeoutRelayKey: types.TUint8,
 
