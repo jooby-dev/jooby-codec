@@ -146,7 +146,7 @@ toBytesMap[mtx1Commands.getEvents.id] = mtx1Commands.getEvents.toBytes;
 toBytesMap[mtx1Commands.getEventsCounters.id] = mtx1Commands.getEventsCounters.toBytes;
 toBytesMap[mtx1Commands.getEventStatus.id] = mtx1Commands.getEventStatus.toBytes;
 toBytesMap[mtx1Commands.getMagneticFieldThreshold.id] = mtx1Commands.getMagneticFieldThreshold.toBytes;
-toBytesMap[mtx1Commands.getOpParams.id] = mtx1Commands.getOpParams.toBytes;
+toBytesMap[mtx1Commands.getOperatorParameters.id] = mtx1Commands.getOperatorParameters.toBytes;
 toBytesMap[mtx1Commands.getRatePlanInfo.id] = mtx1Commands.getRatePlanInfo.toBytes;
 toBytesMap[mtx1Commands.getSaldo.id] = mtx1Commands.getSaldo.toBytes;
 toBytesMap[mtx1Commands.getSaldoParameters.id] = mtx1Commands.getSaldoParameters.toBytes;
@@ -173,8 +173,10 @@ toBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.toBytes;
 // commands different from MTX1
 toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
 toBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.toBytes;
+toBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.toBytes;
 toBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.toBytes;
-toBytesMap[commands.setOpParams.id] = commands.setOpParams.toBytes;
+toBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.toBytes;
+toBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.toBytes;
 
 
 // commands identical to MTX1
@@ -189,7 +191,7 @@ fromBytesMap[mtx1Commands.getEvents.id] = mtx1Commands.getEvents.fromBytes;
 fromBytesMap[mtx1Commands.getEventsCounters.id] = mtx1Commands.getEventsCounters.fromBytes;
 fromBytesMap[mtx1Commands.getEventStatus.id] = mtx1Commands.getEventStatus.fromBytes;
 fromBytesMap[mtx1Commands.getMagneticFieldThreshold.id] = mtx1Commands.getMagneticFieldThreshold.fromBytes;
-fromBytesMap[mtx1Commands.getOpParams.id] = mtx1Commands.getOpParams.fromBytes;
+fromBytesMap[mtx1Commands.getOperatorParameters.id] = mtx1Commands.getOperatorParameters.fromBytes;
 fromBytesMap[mtx1Commands.getRatePlanInfo.id] = mtx1Commands.getRatePlanInfo.fromBytes;
 fromBytesMap[mtx1Commands.getSaldo.id] = mtx1Commands.getSaldo.fromBytes;
 fromBytesMap[mtx1Commands.getSaldoParameters.id] = mtx1Commands.getSaldoParameters.fromBytes;
@@ -216,8 +218,10 @@ fromBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.fromBytes;
 // commands different from MTX1
 fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes;
 fromBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.fromBytes;
+fromBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.fromBytes;
 fromBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.fromBytes;
-fromBytesMap[commands.setOpParams.id] = commands.setOpParams.fromBytes;
+fromBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.fromBytes;
+fromBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.fromBytes;
 
 
 // commands identical to MTX1
@@ -232,7 +236,7 @@ nameMap[mtx1Commands.getEvents.id] = mtx1Commands.getEvents.name;
 nameMap[mtx1Commands.getEventsCounters.id] = mtx1Commands.getEventsCounters.name;
 nameMap[mtx1Commands.getEventStatus.id] = mtx1Commands.getEventStatus.name;
 nameMap[mtx1Commands.getMagneticFieldThreshold.id] = mtx1Commands.getMagneticFieldThreshold.name;
-nameMap[mtx1Commands.getOpParams.id] = mtx1Commands.getOpParams.name;
+nameMap[mtx1Commands.getOperatorParameters.id] = mtx1Commands.getOperatorParameters.name;
 nameMap[mtx1Commands.getRatePlanInfo.id] = mtx1Commands.getRatePlanInfo.name;
 nameMap[mtx1Commands.getSaldo.id] = mtx1Commands.getSaldo.name;
 nameMap[mtx1Commands.getSaldoParameters.id] = mtx1Commands.getSaldoParameters.name;
@@ -259,5 +263,7 @@ nameMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.name;
 // commands different from MTX1
 nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
 nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;
+nameMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.name;
 nameMap[commands.setDisplayParam.id] = commands.setDisplayParam.name;
-nameMap[commands.setOpParams.id] = commands.setOpParams.name;
+nameMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.name;
+nameMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.name;

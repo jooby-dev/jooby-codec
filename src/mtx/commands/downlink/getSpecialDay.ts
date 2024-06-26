@@ -46,7 +46,7 @@ interface IGetSpecialDayParameters {
     index: types.TUint8;
 
     /**
-     * Is it active or passive table (`0` - active, `1` - passive).
+     * Is it active or passive table (`false` - active, `true` - passive).
      */
     isActive: boolean;
 }

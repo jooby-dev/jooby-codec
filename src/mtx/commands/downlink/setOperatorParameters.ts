@@ -1,49 +1,45 @@
 /**
- * Uplink command to get device operator parameters.
- *
- * The corresponding downlink command: `getOpParams`.
+ * Downlink command to set device operator parameters.
  *
  * @packageDocumentation
  *
- * @example create command instance from command body hex dump
+ * @example
  * ```js
- * import * as getOpParams from 'jooby-codec/mtx/commands/uplink/getOpParams.js';
+ * import * as setOperatorParameters from 'jooby-codec/mtx/commands/downlink/setOperatorParameters.js';
  * import CommandBinaryBuffer from 'jooby-codec/mtx/utils/CommandBinaryBuffer.js';
  *
- * // get default operator parameters response
- * const bytes = [
- *     0x00, 0x04, 0x0b, 0x28, 0x00, 0x02, 0x61, 0x60, 0x00, 0x01, 0xd4, 0xc0, 0x00, 0x00, 0x7c, 0x38, 0x00, 0x00, 0x7c, 0x38,
- *     0x00, 0x00, 0x7c, 0x38, 0x00, 0x00, 0x7c, 0x38, 0x00, 0x1e, 0x01, 0x7f, 0x07, 0x80, 0x00, 0x31, 0x84, 0x00, 0x00, 0x03,
- *     0x03, 0x00, 0x00, 0x00, 0xf0, 0x0f, 0x05, 0x05, 0x00, 0x01, 0x00, 0x05, 0x05, 0x37, 0x2d, 0x00, 0x00, 0x00, 0x00, 0x00,
- *     0x02, 0x00, 0x05, 0x05, 0x05, 0x01, 0x08, 0x38, 0x3f, 0xff, 0x05, 0x05, 0x00, 0x18
- * ];
+ * const parameters = CommandBinaryBuffer.getDefaultOperatorParameters();
+ * const bytes = setOperatorParameters.toBytes(parameters);
  *
- * // decoded payload
- * const parameters = getOpParams.fromBytes(bytes);
- *
- * console.log(parameters);
+ * // command binary representation
+ * console.log(bytes);
  * // output:
- * // same as CommandBinaryBuffer.getDefaultOperatorParameters()
+ * [
+ *     31, 74, 0, 4, 11, 40, 0, 2, 97, 96, 0, 1, 212, 192, 0, 0, 124, 56, 0,
+ *     0, 124, 56, 0, 0, 124, 56, 0, 0, 124, 56, 0, 30, 1, 127, 7, 128, 0,
+ *     49, 132, 0, 0, 3, 3, 0, 0, 0, 240, 15, 5, 5, 0, 1, 0, 5, 5, 55, 45, 0,
+ *     0, 0, 0, 0, 2, 0, 5, 5, 5, 1, 8, 56, 63, 255, 5, 5, 0, 24
+ * ]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetOpParams.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/SetOpParams.md#request)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IOperatorParameters, OPERATOR_PARAMETERS_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import {READ_WRITE} from '../../constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x1e;
-export const name: types.TCommandName = 'getOpParams';
+export const id: types.TCommandId = 0x1f;
+export const name: types.TCommandName = 'setOperatorParameters';
 export const headerSize = 2;
 export const maxSize = OPERATOR_PARAMETERS_SIZE;
-export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const accessLevel: types.TAccessLevel = READ_WRITE;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'get default operator parameters response': {
+    'set default operator parameters request': {
         id,
         name,
         headerSize,
@@ -195,11 +191,12 @@ export const examples: command.TCommandExamples = {
             timeCorrectPassHalfhour: false
         },
         bytes: [
-            0x1e, 0x4a,
-            0x00, 0x04, 0x0b, 0x28, 0x00, 0x02, 0x61, 0x60, 0x00, 0x01, 0xd4, 0xc0, 0x00, 0x00, 0x7c, 0x38, 0x00, 0x00, 0x7c, 0x38,
-            0x00, 0x00, 0x7c, 0x38, 0x00, 0x00, 0x7c, 0x38, 0x00, 0x1e, 0x01, 0x7f, 0x07, 0x80, 0x00, 0x31, 0x84, 0x00, 0x00, 0x03,
-            0x03, 0x00, 0x00, 0x00, 0xf0, 0x0f, 0x05, 0x05, 0x00, 0x01, 0x00, 0x05, 0x05, 0x37, 0x2d, 0x00, 0x00, 0x00, 0x00, 0x00,
-            0x02, 0x00, 0x05, 0x05, 0x05, 0x01, 0x08, 0x38, 0x3f, 0xff, 0x05, 0x05, 0x00, 0x18
+            0x1f, 0x4a,
+            0x00, 0x04, 0x0b, 0x28, 0x00, 0x02, 0x61, 0x60, 0x00, 0x01, 0xd4, 0xc0, 0x00, 0x00, 0x7c, 0x38,
+            0x00, 0x00, 0x7c, 0x38, 0x00, 0x00, 0x7c, 0x38, 0x00, 0x00, 0x7c, 0x38, 0x00, 0x1e, 0x01, 0x7f,
+            0x07, 0x80, 0x00, 0x31, 0x84, 0x00, 0x00, 0x03, 0x03, 0x00, 0x00, 0x00, 0xf0, 0x0f, 0x05, 0x05,
+            0x00, 0x01, 0x00, 0x05, 0x05, 0x37, 0x2d, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, 0x05, 0x05,
+            0x05, 0x01, 0x08, 0x38, 0x3f, 0xff, 0x05, 0x05, 0x00, 0x18
         ]
     }
 };
@@ -212,6 +209,10 @@ export const examples: command.TCommandExamples = {
  * @returns decoded parameters
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
+    if ( bytes.length !== maxSize ) {
+        throw new Error('Invalid SetOpParams data size.');
+    }
+
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return buffer.getOperatorParameters();

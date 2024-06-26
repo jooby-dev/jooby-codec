@@ -100,7 +100,7 @@ toBytesMap[mtx1Commands.setCorrectTime.id] = mtx1Commands.setCorrectTime.toBytes
 toBytesMap[mtx1Commands.setDateTime.id] = mtx1Commands.setDateTime.toBytes;
 toBytesMap[mtx1Commands.setDayProfile.id] = mtx1Commands.setDayProfile.toBytes;
 toBytesMap[mtx1Commands.setDisplayParam.id] = mtx1Commands.setDisplayParam.toBytes;
-toBytesMap[mtx1Commands.setOpParams.id] = mtx1Commands.setOpParams.toBytes;
+toBytesMap[mtx1Commands.setOperatorParameters.id] = mtx1Commands.setOperatorParameters.toBytes;
 toBytesMap[mtx1Commands.setSaldo.id] = mtx1Commands.setSaldo.toBytes;
 toBytesMap[mtx1Commands.setSaldoParameters.id] = mtx1Commands.setSaldoParameters.toBytes;
 toBytesMap[mtx1Commands.setSeasonProfile.id] = mtx1Commands.setSeasonProfile.toBytes;
@@ -112,7 +112,9 @@ toBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.toBytes;
 // commands different from MTX1
 toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
 toBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.toBytes;
-toBytesMap[commands.getOpParams.id] = commands.getOpParams.toBytes;
+toBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.toBytes;
+toBytesMap[commands.getOperatorParameters.id] = commands.getOperatorParameters.toBytes;
+toBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.toBytes;
 
 
 // commands identical to MTX1
@@ -143,7 +145,7 @@ fromBytesMap[mtx1Commands.setCorrectTime.id] = mtx1Commands.setCorrectTime.fromB
 fromBytesMap[mtx1Commands.setDateTime.id] = mtx1Commands.setDateTime.fromBytes;
 fromBytesMap[mtx1Commands.setDayProfile.id] = mtx1Commands.setDayProfile.fromBytes;
 fromBytesMap[mtx1Commands.setDisplayParam.id] = mtx1Commands.setDisplayParam.fromBytes;
-fromBytesMap[mtx1Commands.setOpParams.id] = mtx1Commands.setOpParams.fromBytes;
+fromBytesMap[mtx1Commands.setOperatorParameters.id] = mtx1Commands.setOperatorParameters.fromBytes;
 fromBytesMap[mtx1Commands.setSaldo.id] = mtx1Commands.setSaldo.fromBytes;
 fromBytesMap[mtx1Commands.setSaldoParameters.id] = mtx1Commands.setSaldoParameters.fromBytes;
 fromBytesMap[mtx1Commands.setSeasonProfile.id] = mtx1Commands.setSeasonProfile.fromBytes;
@@ -155,7 +157,9 @@ fromBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.fromBytes;
 // commands different from MTX1
 fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes;
 fromBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.fromBytes;
-fromBytesMap[commands.getOpParams.id] = commands.getOpParams.fromBytes;
+fromBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.fromBytes;
+fromBytesMap[commands.getOperatorParameters.id] = commands.getOperatorParameters.fromBytes;
+fromBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.fromBytes;
 
 
 // commands identical to MTX1
@@ -186,7 +190,7 @@ nameMap[mtx1Commands.setCorrectTime.id] = mtx1Commands.setCorrectTime.name;
 nameMap[mtx1Commands.setDateTime.id] = mtx1Commands.setDateTime.name;
 nameMap[mtx1Commands.setDayProfile.id] = mtx1Commands.setDayProfile.name;
 nameMap[mtx1Commands.setDisplayParam.id] = mtx1Commands.setDisplayParam.name;
-nameMap[mtx1Commands.setOpParams.id] = mtx1Commands.setOpParams.name;
+nameMap[mtx1Commands.setOperatorParameters.id] = mtx1Commands.setOperatorParameters.name;
 nameMap[mtx1Commands.setSaldo.id] = mtx1Commands.setSaldo.name;
 nameMap[mtx1Commands.setSaldoParameters.id] = mtx1Commands.setSaldoParameters.name;
 nameMap[mtx1Commands.setSeasonProfile.id] = mtx1Commands.setSeasonProfile.name;
@@ -198,4 +202,6 @@ nameMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.name;
 // commands different from MTX1
 nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
 nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;
-nameMap[commands.getOpParams.id] = commands.getOpParams.name;
+nameMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.name;
+nameMap[commands.getOperatorParameters.id] = commands.getOperatorParameters.name;
+nameMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.name;

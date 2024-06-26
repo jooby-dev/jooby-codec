@@ -1,13 +1,13 @@
 /**
  * Uplink command to get device operator parameters.
  *
- * The corresponding downlink command: `getOpParams`.
+ * The corresponding downlink command: `getOperatorParameters`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getOpParams from 'jooby-codec/mtx3/commands/uplink/getOpParams.js';
+ * import * as getOperatorParameters from 'jooby-codec/mtx3/commands/uplink/getOperatorParameters.js';
  * import CommandBinaryBuffer from 'jooby-codec/mtx3/utils/CommandBinaryBuffer.js';
  *
  * // get default operator parameters response
@@ -22,7 +22,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = getOpParams.fromBytes(bytes);
+ * const parameters = getOperatorParameters.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -39,7 +39,7 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, IOperatorParameters, OPERATOR
 
 
 export const id: types.TCommandId = 0x1e;
-export const name: types.TCommandName = 'getOpParams';
+export const name: types.TCommandName = 'getOperatorParameters';
 export const headerSize = 2;
 export const maxSize = OPERATOR_PARAMETERS_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

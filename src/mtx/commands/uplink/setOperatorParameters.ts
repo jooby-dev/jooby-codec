@@ -1,7 +1,7 @@
 /**
  * Uplink command to set device operator parameters.
  *
- * The corresponding downlink command: `setOpParams`.
+ * The corresponding downlink command: `setOperatorParameters`.
  *
  * Supported in MTX1 and MTX3 devices.
  *
@@ -9,13 +9,13 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as setOpParams from 'jooby-codec/mtx/commands/uplink/setOpParams.js';
+ * import * as setOperatorParameters from 'jooby-codec/mtx/commands/uplink/setOperatorParameters.js';
  *
  * // empty response
  * const bytes = [];
  *
  * // decoded payload
- * const parameters = setOpParams.fromBytes(bytes);
+ * const parameters = setOperatorParameters.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -30,7 +30,7 @@ import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 
 export const id: types.TCommandId = 0x1f;
-export const name: types.TCommandName = 'setOpParams';
+export const name: types.TCommandName = 'setOperatorParameters';
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

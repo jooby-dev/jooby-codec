@@ -660,8 +660,8 @@ export interface IRelaySetOperatorParameter {
     /**
      * Relay activation function.
      *
-     * `1` - enabled,
-     * `0` - disabled.
+     * `true` - enabled,
+     * `false` - disabled.
      */
     RELAY_ON_Y: boolean;
 
@@ -703,8 +703,8 @@ export interface IRelaySetOperatorParameter {
     /**
      * Relay deactivation function.
      *
-     * `1` - enabled,
-     * `0` - disabled.
+     * `true` - enabled,
+     * `false` - disabled.
      */
     RELAY_OFF_Y: boolean;
 
@@ -847,23 +847,23 @@ export interface ITypeMeterOperatorParameter {
     /**
      * Consideration of transformation ratio.
      *
-     * `0` - without transformation ratio,
-     * `1` - with transformation ratio.
+     * `false` - without transformation ratio,
+     * `true` - with transformation ratio.
      */
     TRANSFORMATION_RATIO: boolean;
 
     /**
      * Meter type.
      *
-     * `1` - `R`-type meter.
+     * `true` - `R`-type meter.
      */
     METER_TYPE_R: boolean;
 
     /**
      * Reactive energy accumulation type.
      *
-     * `0` - reactive energy accumulation by quadrants `Q1`, `Q2`, `Q3`, `Q4`;
-     * `1` - reactive energy accumulation by `R+`, `R-`.
+     * `false` - reactive energy accumulation by quadrants `Q1`, `Q2`, `Q3`, `Q4`;
+     * `true` - reactive energy accumulation by `R+`, `R-`.
      *
      * Since build `302.19.XXX` (`XXX` - decimal number) for `G`-type meters, the energies `R+` and `R-` are accumulated and displayed similarly to `R`-type meters.
      * Reactive energy by quadrants is not accumulated.
@@ -1101,7 +1101,61 @@ export interface IOperatorParameters {
     displaySet4: IDisplaySet4OperatorParameter
 }
 
+export interface IDefine1OperatorParameterExtended {
+    /**
+     * `true` - enable resetting daily maximum power using button.
+     */
+    RESET_DAY_MAX_POWER_KEY: boolean,
+
+    /**
+     * `true` - enable resetting monthly maximum power using button.
+     */
+    RESET_MONTH_MAX_POWER_KEY: boolean,
+
+    /**
+     * `true` - optoport is unlocked by button, `false` - optoport is always unlocked.
+     */
+    BLOCK_KEY_OPTOPORT: boolean,
+
+    /**
+     * `true` - enable constant magnetic field screen.
+     *
+     * since build `302.35.005`
+     */
+    MAGNET_SCREEN_CONST: boolean
+
+    /**
+     * `true` - enable display indication in battery mode.
+     *
+     * since build `0.0.17`
+     */
+    ALLOW_BROWNOUT_INDICATION: boolean
+}
+
+export interface IOperatorParametersExtended {
+    /**
+     * Timeout for automatic relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI` in minutes.
+     */
+    timeoutRelayOn: types.TUint8,
+
+    /**
+     * Setting for optoport, constant magnetic field screen, resetting power, and battery mode indication.
+     */
+    define1: IDefine1OperatorParameterExtended,
+
+    /**
+     * Timeout for relay activation based on `IMAX`, `PMAX`, `IDIFF`, `COSFI` in seconds.
+     */
+    timeoutRelayKey: types.TUint8,
+
+    /**
+     * Timeout for relay activation upon restoration of quality voltage, in seconds.
+     */
+    timeoutRelayAuto: types.TUint8
+}
+
 export const OPERATOR_PARAMETERS_SIZE = 95;
+export const OPERATOR_PARAMETERS_EXTENDED_SIZE = 9;
 
 
 const displaySet1Mask = {
@@ -1283,6 +1337,14 @@ const typeMeterMask = {
     ACCUMULATE_BY_R_PLUS_MINUS: 1 << 7
 };
 
+export const define1Mask = {
+    RESET_DAY_MAX_POWER_KEY: 1 << 0,
+    RESET_MONTH_MAX_POWER_KEY: 1 << 1,
+    BLOCK_KEY_OPTOPORT: 1 << 2,
+    MAGNET_SCREEN_CONST: 1 << 5,
+    ALLOW_BROWNOUT_INDICATION: 1 << 7
+};
+
 
 const getSpeedOptoPort = ( value: number ): ISpeedOptoPortOperatorParameter => ({
     plc: baudRates.valueToRate.plc[bitSet.extractBits(value, 4, 1)],
@@ -1308,7 +1370,10 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     // setFrameHeader ( frameHeader: IFrameHeader ),
 
     getOperatorParameters(): IOperatorParameters,
-    setOperatorParameters ( operatorParameters: IOperatorParameters)
+    setOperatorParameters ( operatorParameters: IOperatorParameters),
+
+    getOperatorParametersExtended(): IOperatorParametersExtended,
+    setOperatorParametersExtended ( operatorParametersExtended: IOperatorParametersExtended)
 }>;
 
 
@@ -1434,7 +1499,7 @@ CommandBinaryBuffer.prototype.getOperatorParameters = function (): IOperatorPara
     };
 };
 
-CommandBinaryBuffer.prototype.setOperatorParameters = function (operatorParameters: IOperatorParameters) {
+CommandBinaryBuffer.prototype.setOperatorParameters = function ( operatorParameters: IOperatorParameters ) {
     this.setUint32(operatorParameters.vpThreshold);
     this.setUint32(operatorParameters.vThreshold);
     this.setUint32(operatorParameters.ipThreshold);
@@ -1477,6 +1542,26 @@ CommandBinaryBuffer.prototype.setOperatorParameters = function (operatorParamete
     this.setUint8(operatorParameters.timeoutCos);
     this.setUint8(operatorParameters.pMaxDef);
     this.setUint32(bitSet.fromObject(displaySet4Mask, (operatorParameters.displaySet4 as unknown) as bitSet.TBooleanObject));
+};
+
+CommandBinaryBuffer.prototype.getOperatorParametersExtended = function (): IOperatorParametersExtended {
+    return {
+        timeoutRelayOn: this.getUint8(),
+        define1: (bitSet.toObject(define1Mask, this.getUint8()) as unknown) as IDefine1OperatorParameterExtended,
+        timeoutRelayKey: this.getUint8(),
+        timeoutRelayAuto: this.getUint8()
+    };
+};
+
+CommandBinaryBuffer.prototype.setOperatorParametersExtended = function ( operatorParametersExtended: IOperatorParametersExtended ) {
+    this.setUint8(operatorParametersExtended.timeoutRelayOn);
+    this.setUint8(bitSet.fromObject(define1Mask, (operatorParametersExtended.define1 as unknown) as bitSet.TBooleanObject));
+    this.setUint8(operatorParametersExtended.timeoutRelayKey);
+    this.setUint8(operatorParametersExtended.timeoutRelayAuto);
+    // reserved1
+    this.setUint32(0);
+    // reserved2
+    this.setUint8(0);
 };
 
 

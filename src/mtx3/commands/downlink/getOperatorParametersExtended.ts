@@ -1,32 +1,30 @@
 /**
- * Downlink command to get device operator parameters.
- *
- * Supported in MTX1 and MTX3 devices.
+ * Downlink command to get the extended operator parameters.
  *
  * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getOpParams from 'jooby-codec/mtx/commands/downlink/getOpParams.js';
+ * import * as getOperatorParametersExtended from 'jooby-codec/mtx3/commands/downlink/getOperatorParametersExtended.js';
  *
- * const bytes = getOpParams.toBytes();
+ * const bytes = getOperatorParametersExtended.toBytes();
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [30, 0]
+ * [63, 0]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetOpParams.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetOperatorParametersExtended.md#request)
  */
 
-import * as command from '../../utils/command.js';
+import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x1e;
-export const name: types.TCommandName = 'getOpParams';
+export const id: types.TCommandId = 0x3f;
+export const name: types.TCommandName = 'getOperatorParametersExtended';
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
@@ -41,7 +39,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x1e, 0x00
+            0x3f, 0x00
         ]
     }
 };
