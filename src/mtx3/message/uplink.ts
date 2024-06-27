@@ -111,9 +111,12 @@ toBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.toBytes;
 
 // commands different from MTX1
 toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
+toBytesMap[commands.getCurrentStatusMeter.id] = commands.getCurrentStatusMeter.toBytes;
+toBytesMap[commands.getCurrentValues.id] = commands.getCurrentValues.toBytes;
 toBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.toBytes;
-toBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.toBytes;
 toBytesMap[commands.getOperatorParameters.id] = commands.getOperatorParameters.toBytes;
+toBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.toBytes;
+toBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.toBytes;
 toBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.toBytes;
 
 
@@ -156,9 +159,12 @@ fromBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.fromBytes;
 
 // commands different from MTX1
 fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes;
+fromBytesMap[commands.getCurrentStatusMeter.id] = commands.getCurrentStatusMeter.fromBytes;
+fromBytesMap[commands.getCurrentValues.id] = commands.getCurrentValues.fromBytes;
 fromBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.fromBytes;
-fromBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.fromBytes;
 fromBytesMap[commands.getOperatorParameters.id] = commands.getOperatorParameters.fromBytes;
+fromBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.fromBytes;
+fromBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.fromBytes;
 fromBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.fromBytes;
 
 
@@ -201,7 +207,10 @@ nameMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.name;
 
 // commands different from MTX1
 nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
+nameMap[commands.getCurrentStatusMeter.id] = commands.getCurrentStatusMeter.name;
+nameMap[commands.getCurrentValues.id] = commands.getCurrentValues.name;
 nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;
-nameMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.name;
 nameMap[commands.getOperatorParameters.id] = commands.getOperatorParameters.name;
+nameMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.name;
+nameMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.name;
 nameMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.name;

@@ -716,21 +716,84 @@ export interface IPackedEnergiesWithType {
 }
 
 export interface IEventStatus {
-    DEVICE_FAILURE: boolean,
-    CASE_TERMINAL_OPEN: boolean,
-    CASE_MODULE_OPEN: boolean,
-    TARIFF_TABLE_SET: boolean,
-    TARIFF_TABLE_GET: boolean,
-    PROTECTION_RESET_EM: boolean,
-    PROTECTION_RESET_MAGNETIC: boolean,
-    CASE_OPEN: boolean,
-    MAGNETIC_ON: boolean,
-    PARAMETERS_UPDATE_REMOTE: boolean,
-    PARAMETERS_UPDATE_LOCAL: boolean,
-    RESTART: boolean,
-    ERROR_ACCESS: boolean,
-    TIME_SET: boolean,
-    TIME_CORRECT: boolean
+    /**
+     * The meter casing is open.
+     */
+    CASE_OPEN: boolean;
+
+    /**
+     * Electromagnetic influence detected.
+     */
+    MAGNETIC_ON: boolean;
+
+    /**
+     * Parameter setup remotely.
+     */
+    PARAMETERS_UPDATE_REMOTE: boolean;
+
+    /**
+     * Parameter setup locally.
+     */
+    PARAMETERS_UPDATE_LOCAL: boolean;
+
+    /**
+     * Meter program restart.
+     */
+    RESTART: boolean;
+
+    /**
+     * Incorrect password and block.
+     */
+    ERROR_ACCESS: boolean;
+
+    /**
+     * Time set.
+     */
+    TIME_SET: boolean;
+
+    /**
+     * Time correction.
+     */
+    TIME_CORRECT: boolean;
+
+    /**
+     * Meter failure.
+     */
+    DEVICE_FAILURE: boolean;
+
+    /**
+     * The meter terminal box is open.
+     */
+    CASE_TERMINAL_OPEN: boolean;
+
+    /**
+     * The meter module compartment is open.
+     */
+    CASE_MODULE_OPEN: boolean;
+
+    /**
+     * Tariff plan changed.
+     */
+    TARIFF_TABLE_SET: boolean;
+
+    /**
+     * New tariff plan received.
+     */
+    TARIFF_TABLE_GET: boolean;
+
+    /**
+     * Electromagnetic influence screen reset.
+     *
+     * since build `104.23.001` (`MTX1`), `302.37.001` (`MTX3`)
+     */
+    PROTECTION_RESET_EM: boolean;
+
+    /**
+     * Magnetic influence screen reset.
+     *
+     * since build `104.23.001` (`MTX1`), `302.37.001` (`MTX3`)
+     */
+    PROTECTION_RESET_MAGNETIC: boolean;
 }
 
 export interface IEvent {
@@ -1048,7 +1111,7 @@ const define1Mask = {
     MAGNET_SCREEN_CONST: 0x20
 };
 
-const eventStatusMask = {
+export const eventStatusMask = {
     CASE_OPEN: 2 ** 0,
     MAGNETIC_ON: 2 ** 1,
     PARAMETERS_UPDATE_REMOTE: 2 ** 2,
