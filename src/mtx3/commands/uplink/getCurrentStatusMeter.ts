@@ -67,19 +67,19 @@ import * as bitSet from '../../../utils/bitSet.js';
 import * as types from '../../types.js';
 
 
-interface ICurrentTariffs {
+interface ITariffs {
     /**
-     * Current tariff for the group of consumed energies (`1st` tariff grid).
+     * Tariff for consumed energies (`1st` grid).
      */
     consumedEnergies: types.TUint8;
 
     /**
-     * Current tariff for the group of maximum powers (`2nd` tariff grid).
+     * Tariff for maximum powers (`2nd` grid).
      */
     maximumPowers: types.TUint8;
 
     /**
-     * Current tariff for the group of generated energies (`3rd` tariff grid).
+     * Tariff for generated energies (`3rd` grid).
      */
     generatedEnergies: types.TUint8;
 }
@@ -121,7 +121,7 @@ interface IGetCurrentStatusMeterResponseParameters {
     tbadFREQ: types.TUint32;
 
     /**
-     * Current relay state.
+     * Relay state.
      *
      * `true` - on
      */
@@ -147,7 +147,7 @@ interface IGetCurrentStatusMeterResponseParameters {
     /**
      * Current tariffs for the 1st to 3rd tariff grids.
      */
-    curTariff: ICurrentTariffs;
+    curTariff: ITariffs;
 
     /**
      * Is it DST or Standard time.

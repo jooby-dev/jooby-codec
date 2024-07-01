@@ -742,12 +742,12 @@ export interface IEventStatus {
     RESTART: boolean;
 
     /**
-     * Incorrect password and block.
+     * Incorrect password entered, device is locked.
      */
     ERROR_ACCESS: boolean;
 
     /**
-     * Time set.
+     * Device time has been set.
      */
     TIME_SET: boolean;
 
