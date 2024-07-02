@@ -49,7 +49,7 @@
  *         PROTECTION_RESET_EM: false,
  *         PROTECTION_RESET_MAGNETIC: false
  *     },
- *     calEnableFlag: {
+ *     calibrationFlags: {
  *         calibrationEnable: true,
  *         hardkey: false,
  *         keyPressTest: false,
@@ -59,8 +59,10 @@
  *         keyOpenModuleTest: false,
  *         keyPress2Test: false
  *     },
- *     curTariff: 1,
- *     curTariffExp: 3,
+ *     currentTariffs: {
+ *         'A+': 1,
+ *         'A-': 3
+ *     },
  *     isSummerTime: true
  * }
  * ```
@@ -104,19 +106,15 @@ interface IGetCurrentStatusMeterResponseParameters {
     statusEvent: IEventStatus,
 
     /** Calibration enable flag. */
-    calEnableFlag: ICalibrationEnableFlagParameters,
+    calibrationFlags: ICalibrationFlags,
 
-    /** Current tariff `A+`. */
-    curTariff: types.TUint8,
-
-    /** Current tariff `A-`. */
-    curTariffExp: types.TUint8,
+    currentTariffs: ITariffs,
 
     /** Is it DST or Standard time. */
     isSummerTime: boolean,
 }
 
-interface ICalibrationEnableFlagParameters {
+interface ICalibrationFlags {
     /** Is calibration enabled or not. */
     calibrationEnable: boolean,
 
@@ -142,6 +140,14 @@ interface ICalibrationEnableFlagParameters {
     keyPress2Test: boolean
 }
 
+interface ITariffs {
+    /** Current tariff `A+`. */
+    'A+': types.TUint8;
+
+    /** Current tariff `A-`. */
+    'A-': types.TUint8;
+}
+
 
 export const id: types.TCommandId = 0x39;
 export const name: types.TCommandName = 'getCurrentStatusMeter';
@@ -150,7 +156,7 @@ export const maxSize = 31;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
-const calibrationEnableFlagMask = {
+const calibrationFlagsMask = {
     calibrationEnable: 0x01,
     hardkey: 0x02,
     keyPressTest: 0x04,
@@ -199,7 +205,7 @@ export const examples: command.TCommandExamples = {
                 PROTECTION_RESET_EM: false,
                 PROTECTION_RESET_MAGNETIC: false
             },
-            calEnableFlag: {
+            calibrationFlags: {
                 calibrationEnable: true,
                 hardkey: false,
                 keyPressTest: false,
@@ -209,8 +215,10 @@ export const examples: command.TCommandExamples = {
                 keyOpenModuleTest: false,
                 keyPress2Test: false
             },
-            curTariff: 1,
-            curTariffExp: 3,
+            currentTariffs: {
+                'A+': 1,
+                'A-': 3
+            },
             isSummerTime: true
         },
         bytes: [
@@ -243,9 +251,12 @@ export const fromBytes = ( data: types.TBytes ): IGetCurrentStatusMeterResponseP
     const relayStatus = bitSet.toObject(extendedCurrentValues2RelayStatusMask, buffer.getUint8()) as unknown as IExtendedCurrentValues2RelayStatus;
     const statusEvent1 = buffer.getUint8();
     const statusEvent2 = buffer.getUint8();
-    const calEnableFlag = bitSet.toObject(calibrationEnableFlagMask, buffer.getUint8()) as unknown as ICalibrationEnableFlagParameters;
-    const curTariff = buffer.getUint8();
-    const curTariffExp = buffer.getUint8();
+    const calibrationFlags = bitSet.toObject(calibrationFlagsMask, buffer.getUint8()) as unknown as ICalibrationFlags;
+    const currentTariffs = {
+        'A+': buffer.getUint8(),
+        'A-': buffer.getUint8()
+    };
+
     const isSummerTime = !!(buffer.getUint8() & 1);
 
     const statusEventValue = statusEvent1 | (statusEvent2 << 8);
@@ -258,9 +269,8 @@ export const fromBytes = ( data: types.TBytes ): IGetCurrentStatusMeterResponseP
         tbadFREQ,
         relayStatus,
         statusEvent: (bitSet.toObject(eventStatusMask, statusEventValue) as unknown) as IEventStatus,
-        calEnableFlag,
-        curTariff,
-        curTariffExp,
+        calibrationFlags,
+        currentTariffs,
         isSummerTime
     };
 };
@@ -289,9 +299,9 @@ export const toBytes = ( parameters: IGetCurrentStatusMeterResponseParameters ):
     buffer.setUint8(bitSet.fromObject(extendedCurrentValues2RelayStatusMask, (parameters.relayStatus as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(statusEventValue & 0xff);
     buffer.setUint8((statusEventValue >> 8) & 0xff);
-    buffer.setUint8(bitSet.fromObject(calibrationEnableFlagMask, (parameters.calEnableFlag as unknown) as bitSet.TBooleanObject));
-    buffer.setUint8(parameters.curTariff);
-    buffer.setUint8(parameters.curTariffExp);
+    buffer.setUint8(bitSet.fromObject(calibrationFlagsMask, (parameters.calibrationFlags as unknown) as bitSet.TBooleanObject));
+    buffer.setUint8(parameters.currentTariffs['A+']);
+    buffer.setUint8(parameters.currentTariffs['A-']);
     buffer.setUint8(parameters.isSummerTime ? 1 : 0);
 
     return command.toBytes(id, buffer.data);

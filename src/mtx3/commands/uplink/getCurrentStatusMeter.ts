@@ -47,10 +47,10 @@
  *     },
  *     centerAlert: true,
  *     calEnableFlag: true,
- *     curTariff: {
- *         consumedEnergies: 1,
+ *     currentTariffs: {
+ *         'A+': 1,
  *         maximumPowers: 2,
- *         generatedEnergies: 3
+ *         'A-': 3
  *     },
  *     isSummerTime: true
  * }
@@ -67,11 +67,11 @@ import * as bitSet from '../../../utils/bitSet.js';
 import * as types from '../../types.js';
 
 
-interface ITariff {
+interface ITariffs {
     /**
      * Tariff for the group of consumed energies (`1st` grid).
      */
-    consumedEnergies: types.TUint8;
+    'A+': types.TUint8;
 
     /**
      * Tariff for the group of maximum powers (`2nd` grid).
@@ -81,7 +81,7 @@ interface ITariff {
     /**
      * Tariff for the group of generated energies (`3rd` grid).
      */
-    generatedEnergies: types.TUint8;
+    'A-': types.TUint8;
 }
 
 interface IGetCurrentStatusMeterResponseParameters {
@@ -147,7 +147,7 @@ interface IGetCurrentStatusMeterResponseParameters {
     /**
      * Current tariffs for the 1st to 3rd tariff grids.
      */
-    curTariff: ITariff;
+    currentTariffs: ITariffs;
 
     /**
      * Is it DST or Standard time.
@@ -199,10 +199,10 @@ export const examples: command.TCommandExamples = {
             },
             centerAlert: true,
             calEnableFlag: true,
-            curTariff: {
-                consumedEnergies: 1,
+            currentTariffs: {
+                'A+': 1,
                 maximumPowers: 2,
-                generatedEnergies: 3
+                'A-': 3
             },
             isSummerTime: true
         },
@@ -240,10 +240,10 @@ export const fromBytes = ( data: types.TBytes ): IGetCurrentStatusMeterResponseP
     const statusEvent1 = buffer.getUint8();
     const centerAlert = !!(buffer.getUint8() & 1);
     const calEnableFlag = !!(buffer.getUint8() & 1);
-    const curTariff = {
-        consumedEnergies: buffer.getUint8(),
+    const currentTariffs = {
+        'A+': buffer.getUint8(),
         maximumPowers: buffer.getUint8(),
-        generatedEnergies: buffer.getUint8()
+        'A-': buffer.getUint8()
     };
 
     const statusEvent2 = buffer.getUint8();
@@ -263,7 +263,7 @@ export const fromBytes = ( data: types.TBytes ): IGetCurrentStatusMeterResponseP
         statusEvent: (bitSet.toObject(eventStatusMask, statusEventValue) as unknown) as IEventStatus,
         centerAlert,
         calEnableFlag,
-        curTariff,
+        currentTariffs,
         isSummerTime
     };
 };
@@ -295,9 +295,9 @@ export const toBytes = ( parameters: IGetCurrentStatusMeterResponseParameters ):
     buffer.setUint8(statusEventValue & 0xff);
     buffer.setUint8(parameters.centerAlert ? 1 : 0);
     buffer.setUint8(parameters.calEnableFlag ? 1 : 0);
-    buffer.setUint8(parameters.curTariff.consumedEnergies);
-    buffer.setUint8(parameters.curTariff.maximumPowers);
-    buffer.setUint8(parameters.curTariff.generatedEnergies);
+    buffer.setUint8(parameters.currentTariffs['A+']);
+    buffer.setUint8(parameters.currentTariffs.maximumPowers);
+    buffer.setUint8(parameters.currentTariffs['A-']);
     buffer.setUint8((statusEventValue >> 8) & 0xff);
     buffer.setUint8(parameters.isSummerTime ? 1 : 0);
 
