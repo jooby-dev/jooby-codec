@@ -1135,15 +1135,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getCurrentStatusMeter',
-        hex: '0a 13 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 4c 82 19 7b 11 0d ff 77 0e 18 68 ea 60 88 84 16 6e fe 4c a8 d1 12 86 db 57 a4 60 ae c0 0b 6e 0b',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 4c 82 19 7b 7d 31 0d ff 77 0e 18 68 ea 60 88 84 16 6e fe 4c a8 d1 12 86 db 57 a4 60 ae c0 0b 6e 0b 5d 98 7e',
+        hex: '0a 13 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 8a db 48 03 11 77 14 eb 80 ad 69 4d d9 a3 b1 07 53 d3 30 df 79 0b d4 38 fc 0a 1c 54 ae 16 d2 c6',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 8a db 48 03 7d 31 77 14 eb 80 ad 69 4d d9 a3 b1 07 53 d3 30 df 79 0b d4 38 fc 0a 1c 54 ae 16 d2 c6 fb 10 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getCurrentStatusMeter.accessLevel,
         commands: [
             uplinkCommands.getCurrentStatusMeter.examples['simple response']
         ],
-        lrc: 0xb6,
-        crc: 0x985d,
+        lrc: 0x24,
+        crc: 0x10fb,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

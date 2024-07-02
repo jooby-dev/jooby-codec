@@ -8,6 +8,8 @@
 export * as activateRatePlan from '../../../mtx/commands/downlink/activateRatePlan.js';
 export * as getBuildVersion from '../../../mtx/commands/downlink/getBuildVersion.js';
 export * as getCorrectTime from '../../../mtx/commands/downlink/getCorrectTime.js';
+export * as getCurrentStatusMeter from '../../../mtx/commands/downlink/getCurrentStatusMeter.js';
+export * as getCurrentValues from '../../../mtx/commands/downlink/getCurrentValues.js';
 export * as getDateTime from '../../../mtx/commands/downlink/getDateTime.js';
 export * as getDayProfile from '../../../mtx/commands/downlink/getDayProfile.js';
 export * as getDeviceId from '../../../mtx/commands/downlink/getDeviceId.js';
@@ -46,5 +48,5 @@ export * as getCriticalEvent from './getCriticalEvent.js';
 export * as getDisplayParam from './getDisplayParam.js';
 export * as getOperatorParametersExtended from './getOperatorParametersExtended.js';
 export * as setDisplayParam from './setDisplayParam.js';
-export * as setOperatorParametersExtended from './setOperatorParametersExtended.js';
 export * as setOperatorParameters from './setOperatorParameters.js';
+export * as setOperatorParametersExtended from './setOperatorParametersExtended.js';

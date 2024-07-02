@@ -138,6 +138,8 @@ export const toBytes = wrappers.getToBytes(toBytesMap);
 toBytesMap[mtx1Commands.activateRatePlan.id] = mtx1Commands.activateRatePlan.toBytes;
 toBytesMap[mtx1Commands.getBuildVersion.id] = mtx1Commands.getBuildVersion.toBytes;
 toBytesMap[mtx1Commands.getCorrectTime.id] = mtx1Commands.getCorrectTime.toBytes;
+toBytesMap[mtx1Commands.getCurrentStatusMeter.id] = mtx1Commands.getCurrentStatusMeter.toBytes;
+toBytesMap[mtx1Commands.getCurrentValues.id] = mtx1Commands.getCurrentValues.toBytes;
 toBytesMap[mtx1Commands.getDateTime.id] = mtx1Commands.getDateTime.toBytes;
 toBytesMap[mtx1Commands.getDayProfile.id] = mtx1Commands.getDayProfile.toBytes;
 toBytesMap[mtx1Commands.getDeviceId.id] = mtx1Commands.getDeviceId.toBytes;
@@ -175,14 +177,16 @@ toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
 toBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.toBytes;
 toBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.toBytes;
 toBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.toBytes;
-toBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.toBytes;
 toBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.toBytes;
+toBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.toBytes;
 
 
 // commands identical to MTX1
 fromBytesMap[mtx1Commands.activateRatePlan.id] = mtx1Commands.activateRatePlan.fromBytes;
 fromBytesMap[mtx1Commands.getBuildVersion.id] = mtx1Commands.getBuildVersion.fromBytes;
 fromBytesMap[mtx1Commands.getCorrectTime.id] = mtx1Commands.getCorrectTime.fromBytes;
+fromBytesMap[mtx1Commands.getCurrentStatusMeter.id] = mtx1Commands.getCurrentStatusMeter.fromBytes;
+fromBytesMap[mtx1Commands.getCurrentValues.id] = mtx1Commands.getCurrentValues.fromBytes;
 fromBytesMap[mtx1Commands.getDateTime.id] = mtx1Commands.getDateTime.fromBytes;
 fromBytesMap[mtx1Commands.getDayProfile.id] = mtx1Commands.getDayProfile.fromBytes;
 fromBytesMap[mtx1Commands.getDeviceId.id] = mtx1Commands.getDeviceId.fromBytes;
@@ -220,14 +224,16 @@ fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes
 fromBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.fromBytes;
 fromBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.fromBytes;
 fromBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.fromBytes;
-fromBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.fromBytes;
 fromBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.fromBytes;
+fromBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.fromBytes;
 
 
 // commands identical to MTX1
 nameMap[mtx1Commands.activateRatePlan.id] = mtx1Commands.activateRatePlan.name;
 nameMap[mtx1Commands.getBuildVersion.id] = mtx1Commands.getBuildVersion.name;
 nameMap[mtx1Commands.getCorrectTime.id] = mtx1Commands.getCorrectTime.name;
+nameMap[mtx1Commands.getCurrentStatusMeter.id] = mtx1Commands.getCurrentStatusMeter.name;
+nameMap[mtx1Commands.getCurrentValues.id] = mtx1Commands.getCurrentValues.name;
 nameMap[mtx1Commands.getDateTime.id] = mtx1Commands.getDateTime.name;
 nameMap[mtx1Commands.getDayProfile.id] = mtx1Commands.getDayProfile.name;
 nameMap[mtx1Commands.getDeviceId.id] = mtx1Commands.getDeviceId.name;
@@ -265,5 +271,5 @@ nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
 nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;
 nameMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.name;
 nameMap[commands.setDisplayParam.id] = commands.setDisplayParam.name;
-nameMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.name;
 nameMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.name;
+nameMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.name;

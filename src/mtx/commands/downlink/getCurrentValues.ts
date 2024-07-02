@@ -1,6 +1,8 @@
 /**
  * Downlink command to get current values like voltage, power, etc.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example
