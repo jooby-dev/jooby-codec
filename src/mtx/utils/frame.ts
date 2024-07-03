@@ -32,7 +32,7 @@ export const fromBytes = ( bytes: TBytes ): TMtxFrame => {
         header = buffer.getFrameHeader();
 
         // payload is all except header
-        parsedFrame.payload = parsedFrame.payload.slice(5);
+        parsedFrame.payload = parsedFrame.payload.slice(frameHeaderSize);
 
         return {
             ...parsedFrame,
