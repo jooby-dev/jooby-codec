@@ -1,36 +1,35 @@
 /**
- * Downlink command to get extended current values like temperature, frequency etc.
- *
- * Supported in MTX1 and MTX3 devices.
+ * Downlink command to get current energies `A+`, `R+`, `R-` for 4 tariffs (`T1`-`T4`).
  *
  * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getExtendedCurrentValues from 'jooby-codec/mtx/commands/downlink/getExtendedCurrentValues.js';
+ * import * as getEnergy from 'jooby-codec/mtx3/commands/downlink/getEnergy.js';
  *
- * const bytes = getExtendedCurrentValues.toBytes();
+ * const bytes = getEnergy.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [58, 0]
+ * [15, 0]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetExtendedCurrentValues.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetEnergy.md#request)
  */
 
+import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
-import * as command from '../../utils/command.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
 
 
-export const id: types.TCommandId = 0x3a;
-export const name: types.TCommandName = 'getExtendedCurrentValues';
+export const id: types.TCommandId = 0x0f;
+export const name: types.TCommandName = 'getEnergy';
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
+
 
 export const examples: command.TCommandExamples = {
     'simple request': {
@@ -41,7 +40,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x3a, 0x00
+            0x0f, 0x00
         ]
     }
 };

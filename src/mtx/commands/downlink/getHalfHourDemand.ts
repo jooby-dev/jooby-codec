@@ -1,6 +1,8 @@
 /**
  * Downlink command to get active energy (`A+`) in half hours by date.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example

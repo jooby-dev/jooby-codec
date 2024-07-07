@@ -1134,6 +1134,7 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        // does not match empro
         name: 'getCurrentStatusMeter',
         hex: '0a 13 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 8a db 48 03 11 77 14 eb 80 ad 69 4d d9 a3 b1 07 53 d3 30 df 79 0b d4 38 fc 0a 1c 54 ae 16 d2 c6',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 8a db 48 03 7d 31 77 14 eb 80 ad 69 4d d9 a3 b1 07 53 d3 30 df 79 0b d4 38 fc 0a 1c 54 ae 16 d2 c6 fb 10 7e',
@@ -1164,16 +1165,17 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        // does not match empro
         name: 'getCurrentValues',
-        hex: '0a 13 7a ee 80 2a 01 36 e8 77 fb 57 cc d9 ba ca 1a af 8d 20 aa 9b 97 2f e1 03 7b d9 a3 de 03 74 37 b8 00 ec 1c f4 0b 84 7d 96 44 f5 38 e3 fc 4e ad 19',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 7a ee 80 2a 01 36 e8 77 fb 57 cc d9 ba ca 1a af 8d 20 aa 9b 97 2f e1 03 7b d9 a3 de 03 74 37 b8 00 ec 1c f4 0b 84 7d 5d 96 44 f5 38 e3 fc 4e ad 19 85 42 7e',
+        hex: '0a 13 7a ee 80 2a 01 36 e8 77 fb 57 cc d9 ba ca 1a af 2d ea 9e 82 20 2b ef 79 e7 a7 be 02 fe 91 37 31 49 41 5f 97 03 1a 28 82 64 81 00 8b e0 19 48 47',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 7a ee 80 2a 01 36 e8 77 fb 57 cc d9 ba ca 1a af 2d ea 9e 82 20 2b ef 79 e7 a7 be 02 fe 91 37 31 49 41 5f 97 03 1a 28 82 64 81 00 8b e0 19 48 47 15 3d 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getCurrentValues.accessLevel,
         commands: [
             uplinkCommands.getCurrentValues.examples['simple response']
         ],
-        lrc: 0x77,
-        crc: 0x4285,
+        lrc: 0x06,
+        crc: 0x3d15,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

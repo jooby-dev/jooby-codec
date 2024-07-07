@@ -10,7 +10,7 @@
  * // simple response
  * const bytes = [
  *     0x00, 0x23, 0xd8, 0xb2, 0x00, 0x3d, 0xfa, 0x53, 0x00, 0x04, 0x9e, 0x89, 0x00, 0x01, 0xa1, 0x25,
- *     0x0c, 0xc3, 0x00, 0x04, 0xa6, 0x8b, 0x00, 0x01, 0x9f, 0x28, 0x00, 0x01, 0xa3, 0x1c, 0x0e, 0xb7
+ *     0x01, 0xf4, 0x00, 0x04, 0xa6, 0x8b, 0x00, 0x01, 0x9f, 0x28, 0x00, 0x01, 0xa3, 0x1c, 0xfe, 0x0c
  * ];
  *
  * // decoded payload
@@ -23,11 +23,11 @@
  *     iaRms: 4061779,
  *     vavbRms: 302729,
  *     varA: 106789,
- *     pfA: 3267,
+ *     pfA: 0.5,
  *     ibRms: 304779,
  *     powerB: 106280,
  *     varB: 107292,
- *     pfB: 3767
+ *     pfB: -0.5
  * }
  * ```
  *
@@ -81,16 +81,16 @@ export const examples: command.TCommandExamples = {
             iaRms: 4061779,
             vavbRms: 302729,
             varA: 106789,
-            pfA: 3267,
+            pfA: 0.5,
             ibRms: 304779,
             powerB: 106280,
             varB: 107292,
-            pfB: 3767
+            pfB: -0.5
         },
         bytes: [
             0x0d, 0x20,
             0x00, 0x23, 0xd8, 0xb2, 0x00, 0x3d, 0xfa, 0x53, 0x00, 0x04, 0x9e, 0x89, 0x00, 0x01, 0xa1, 0x25,
-            0x0c, 0xc3, 0x00, 0x04, 0xa6, 0x8b, 0x00, 0x01, 0x9f, 0x28, 0x00, 0x01, 0xa3, 0x1c, 0x0e, 0xb7
+            0x01, 0xf4, 0x00, 0x04, 0xa6, 0x8b, 0x00, 0x01, 0x9f, 0x28, 0x00, 0x01, 0xa3, 0x1c, 0xfe, 0x0c
         ]
     }
 };
@@ -110,11 +110,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentValuesResponseParam
         iaRms: buffer.getInt32(),
         vavbRms: buffer.getInt32(),
         varA: buffer.getInt32(),
-        pfA: buffer.getInt16(),
+        pfA: buffer.getInt16() / 1000,
         ibRms: buffer.getInt32(),
         powerB: buffer.getInt32(),
         varB: buffer.getInt32(),
-        pfB: buffer.getInt16()
+        pfB: buffer.getInt16() / 1000
     };
 };
 
@@ -133,11 +133,11 @@ export const toBytes = ( parameters: IGetCurrentValuesResponseParameters ): type
     buffer.setInt32(parameters.iaRms);
     buffer.setInt32(parameters.vavbRms);
     buffer.setInt32(parameters.varA);
-    buffer.setInt16(parameters.pfA);
+    buffer.setInt16(parameters.pfA * 1000);
     buffer.setInt32(parameters.ibRms);
     buffer.setInt32(parameters.powerB);
     buffer.setInt32(parameters.varB);
-    buffer.setInt16(parameters.pfB);
+    buffer.setInt16(parameters.pfB * 1000);
 
     return command.toBytes(id, buffer.data);
 };
