@@ -17,6 +17,8 @@ export * as getDeviceType from '../../../mtx/commands/downlink/getDeviceType.js'
 export * as getEvents from '../../../mtx/commands/downlink/getEvents.js';
 export * as getEventsCounters from '../../../mtx/commands/downlink/getEventsCounters.js';
 export * as getEventStatus from '../../../mtx/commands/downlink/getEventStatus.js';
+export * as getExtendedCurrentValues from '../../../mtx/commands/downlink/getExtendedCurrentValues.js';
+export * as getHalfHourDemand from '../../../mtx/commands/downlink/getHalfHourDemand.js';
 export * as getHalfhoursEnergies from '../../../mtx/commands/downlink/getHalfhoursEnergies.js';
 export * as getMagneticFieldThreshold from '../../../mtx/commands/downlink/getMagneticFieldThreshold.js';
 export * as getOperatorParameters from '../../../mtx/commands/downlink/getOperatorParameters.js';
@@ -47,6 +49,8 @@ export * as turnRelayOn from '../../../mtx/commands/downlink/turnRelayOn.js';
 // commands different from MTX1
 export * as getCriticalEvent from './getCriticalEvent.js';
 export * as getDisplayParam from './getDisplayParam.js';
+export * as getEnergy from './getEnergy.js';
+export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';
 export * as getOperatorParametersExtended from './getOperatorParametersExtended.js';
 export * as setDisplayParam from './setDisplayParam.js';
 export * as setOperatorParameters from './setOperatorParameters.js';

@@ -6,9 +6,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import * as types from '../../types.js';
-import MtxBinaryBuffer, {ICommandBinaryBuffer as IMtxCommandBinaryBuffer} from '../../mtx/utils/CommandBinaryBuffer.js';
+import MtxBinaryBuffer, {
+    ICommandBinaryBuffer as IMtxCommandBinaryBuffer,
+    TARIFF_NUMBER,
+    DATE_SIZE,
+    ENERGY_SIZE
+} from '../../mtx/utils/CommandBinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import * as baudRates from '../constants/baudRates.js';
+import {TEnergyType} from '../types.js';
 
 
 export interface IDisplaySet1OperatorParameter {
@@ -1154,8 +1160,56 @@ export interface IOperatorParametersExtended {
     timeoutRelayAuto: types.TUint8
 }
 
+/** Can represent two different sets of energies depending on the value of {@link TEnergyType | energy type}. */
+export interface IEnergies {
+    /**
+     * Active energy by tariff.
+     *
+     * For energy type `1`: `A+` (`1.8.1`, `1.8.2`, `1.8.3`, `1.8.4`).
+     *
+     * For energy type `2`: `A-` (`2.8.1`, `2.8.2`, `2.8.3`, `2.8.4`).
+     */
+    wh: Array<types.TInt32 | null>,
+
+    /**
+     * Reactive energy by tariff.
+     *
+     * For energy type `1`:
+     * - for type `R` meters: `R+` (`3.8.1`, `3.8.2`, `3.8.3`, `3.8.4`)
+     * - for type `G` meters: `A+R+` (`5.8.1`, `5.8.2`, `5.8.3`, `5.8.4`)
+     *
+     * For energy type `2`:
+     * - for type `G` meters: `A-R+` (`6.8.1`, `6.8.2`, `6.8.3`, `6.8.4`)
+     *
+     * Since build `302.19.XXX` (`XXX` - decimal number) for `G` meters, the accumulated and displayed energies are `R+` instead of `A+R+`, `A-R+`.
+     */
+    vari: Array<types.TInt32 | null>,
+
+    /**
+     * Negative reactive energy by tariff.
+     *
+     * For energy type `1`:
+     * - for type `R` meters: `R-` (`4.8.1`, `4.8.2`, `4.8.3`, `4.8.4`)
+     * - for type `G` meters: `A+R-` (`8.8.1`, `8.8.2`, `8.8.3`, `8.8.4`)
+     *
+     * For energy type `2`:
+     * - for type `G` meters: `A-R-` (`7.8.1`, `7.8.2`, `7.8.3`, `7.8.4`)
+     *
+     * Since build `302.19.XXX` (`XXX` - decimal number) for `G` meters, the accumulated and displayed energies are `R-` instead of `A+R-`, `A-R-`.
+     */
+    vare: Array<types.TInt32 | null>
+}
+
+export interface IPackedEnergiesWithType {
+    energyType?: TEnergyType,
+
+    energies: IEnergies
+}
+
 export const OPERATOR_PARAMETERS_SIZE = 95;
 export const OPERATOR_PARAMETERS_EXTENDED_SIZE = 9;
+export const PACKED_ENERGY_TYPE_SIZE = 1;
+const ENERGY_TYPE_BITS = 4;
 
 
 const displaySet1Mask = {
@@ -1360,6 +1414,48 @@ const setSpeedOptoPort = ( speedOptoPort: ISpeedOptoPortOperatorParameter ): num
     return result;
 };
 
+function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: TEnergyType, tariffMapByte: number ): IEnergies {
+    const byte = tariffMapByte >> ENERGY_TYPE_BITS;
+    const wh = [];
+    const vari = [];
+    const vare = [];
+
+    for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
+        // read flags by one bit
+        const isTariffExists = !!bitSet.extractBits(byte, 1, index + 1);
+
+        if ( isTariffExists ) {
+            wh.push(buffer.getInt32());
+            vari.push(buffer.getInt32());
+            vare.push(buffer.getInt32());
+        } else {
+            wh.push(null);
+            vari.push(null);
+            vare.push(null);
+        }
+    }
+
+    return {wh, vari, vare};
+}
+
+function getPackedEnergyType ( energyType: TEnergyType, energies: IEnergies ) {
+    const {wh, vari, vare} = energies;
+    const indexShift = 1 + ENERGY_TYPE_BITS;
+    let tariffsByte = energyType;
+
+    for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
+        // set flags by one bit
+        tariffsByte = bitSet.fillBits(
+            tariffsByte,
+            1,
+            index + indexShift,
+            Number(!!wh[index] && !!vari[index] && !!vare[index])
+        );
+    }
+
+    return tariffsByte;
+}
+
 
 export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     // static methods
@@ -1373,7 +1469,13 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     setOperatorParameters ( operatorParameters: IOperatorParameters),
 
     getOperatorParametersExtended(): IOperatorParametersExtended,
-    setOperatorParametersExtended ( operatorParametersExtended: IOperatorParametersExtended)
+    setOperatorParametersExtended ( operatorParametersExtended: IOperatorParametersExtended),
+
+    getEnergies(): IEnergies,
+    setEnergies ( energies: IEnergies ),
+
+    getPackedEnergyWithType (): IPackedEnergiesWithType,
+    setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType )
 }>;
 
 
@@ -1562,6 +1664,77 @@ CommandBinaryBuffer.prototype.setOperatorParametersExtended = function ( operato
     this.setUint32(0);
     // reserved2
     this.setUint8(0);
+};
+
+CommandBinaryBuffer.prototype.getEnergies = function (): IEnergies {
+    const wh = [];
+    const vari = [];
+    const vare = [];
+
+    for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
+        wh.push(this.getInt32());
+        vari.push(this.getInt32());
+        vare.push(this.getInt32());
+    }
+
+    return {wh, vari, vare};
+};
+
+CommandBinaryBuffer.prototype.setEnergies = function ( parameters: IEnergies ) {
+    for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
+        this.setInt32(parameters.wh[index]);
+        this.setInt32(parameters.vari[index]);
+        this.setInt32(parameters.vare[index]);
+    }
+};
+
+CommandBinaryBuffer.prototype.getPackedEnergyWithType = function (): IPackedEnergiesWithType {
+    const byte = this.getUint8();
+    const energyType = bitSet.extractBits(byte, ENERGY_TYPE_BITS, 1);
+    const energies = getPackedEnergies(this, energyType, byte);
+
+    return {
+        energyType,
+        energies
+    };
+};
+
+CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, energies}: IPackedEnergiesWithType ) {
+    if ( energyType ) {
+        const energyTypeByte = getPackedEnergyType(energyType, energies);
+        const tariffsByte = energyTypeByte >> ENERGY_TYPE_BITS;
+        this.setUint8(energyTypeByte);
+
+        for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
+            const isTariffExists = !!bitSet.extractBits(tariffsByte, 1, index + 1);
+
+            if ( isTariffExists ) {
+                this.setInt32(energies.wh[index]);
+                this.setInt32(energies.vari[index]);
+                this.setInt32(energies.vare[index]);
+            }
+        }
+
+        return;
+    }
+
+    for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
+        this.setInt32(energies.wh[index]);
+        this.setInt32(energies.vari[index]);
+        this.setInt32(energies.vare[index]);
+    }
+};
+
+export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithType ): number => {
+    const {wh, vari, vare} = parameters.energies;
+
+    if ( parameters?.energyType ) {
+        const energiesNumber = [...wh, ...vari, ...vare].filter(energy => energy !== null).length;
+
+        return DATE_SIZE + PACKED_ENERGY_TYPE_SIZE + (energiesNumber * ENERGY_SIZE);
+    }
+
+    return DATE_SIZE + ENERGY_SIZE * TARIFF_NUMBER;
 };
 
 
