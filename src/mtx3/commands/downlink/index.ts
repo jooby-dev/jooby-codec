@@ -19,6 +19,7 @@ export * as getEventsCounters from '../../../mtx/commands/downlink/getEventsCoun
 export * as getEventStatus from '../../../mtx/commands/downlink/getEventStatus.js';
 export * as getExtendedCurrentValues from '../../../mtx/commands/downlink/getExtendedCurrentValues.js';
 export * as getHalfHourDemand from '../../../mtx/commands/downlink/getHalfHourDemand.js';
+export * as getHalfhoursEnergies from '../../../mtx/commands/downlink/getHalfhoursEnergies.js';
 export * as getMagneticFieldThreshold from '../../../mtx/commands/downlink/getMagneticFieldThreshold.js';
 export * as getOperatorParameters from '../../../mtx/commands/downlink/getOperatorParameters.js';
 export * as getRatePlanInfo from '../../../mtx/commands/downlink/getRatePlanInfo.js';
