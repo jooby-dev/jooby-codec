@@ -15,6 +15,7 @@ export * as getDeviceType from '../../../mtx/commands/uplink/getDeviceType.js';
 export * as getEvents from '../../../mtx/commands/uplink/getEvents.js';
 export * as getEventsCounters from '../../../mtx/commands/uplink/getEventsCounters.js';
 export * as getEventStatus from '../../../mtx/commands/uplink/getEventStatus.js';
+export * as getHalfhoursEnergies from '../../../mtx/commands/uplink/getHalfhoursEnergies.js';
 export * as getMagneticFieldThreshold from '../../../mtx/commands/uplink/getMagneticFieldThreshold.js';
 export * as getRatePlanInfo from '../../../mtx/commands/uplink/getRatePlanInfo.js';
 export * as getSaldo from '../../../mtx/commands/uplink/getSaldo.js';
