@@ -53,6 +53,7 @@ export * as getDayDemand from './getDayDemand.js';
 export * as getDisplayParam from './getDisplayParam.js';
 export * as getEnergy from './getEnergy.js';
 export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';
+export * as getEnergyExport from './getEnergyExport.js';
 export * as getHalfHourDemandVare from './getHalfHourDemandVare.js';
 export * as getHalfHourDemandVari from './getHalfHourDemandVari.js';
 export * as getOperatorParametersExtended from './getOperatorParametersExtended.js';
