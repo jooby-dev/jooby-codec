@@ -1,6 +1,6 @@
 import {BrandType} from '../types.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import * as energyTypes from './constants/energyTypes.js';
+import {energyTypes} from './constants/index.js';
 
 
 export * from '../types.js';

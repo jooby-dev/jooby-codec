@@ -1206,6 +1206,26 @@ export interface IPackedEnergiesWithType {
     energies: IEnergies
 }
 
+/**
+ * Array of energy values for each half-hour interval.
+ *
+ * since build 302.25.001
+ *
+ * In previous versions, this field also included tariff information.
+ */
+interface IEnergyPeriods extends Array<types.TUint16 | undefined> {}
+
+export interface IGetHalfHourDemandResponseParameters {
+    date: types.IDate,
+
+    energies: IEnergyPeriods,
+
+    /**
+     * If DST start/end of this day, contain DST hour.
+     */
+    dstHour?: types.TUint8
+}
+
 export const OPERATOR_PARAMETERS_SIZE = 95;
 export const OPERATOR_PARAMETERS_EXTENDED_SIZE = 9;
 export const PACKED_ENERGY_TYPE_SIZE = 1;
@@ -1475,7 +1495,10 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     setEnergies ( energies: IEnergies ),
 
     getPackedEnergyWithType (): IPackedEnergiesWithType,
-    setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType )
+    setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ),
+
+    getEnergyPeriods ( energiesNumber: number ): IEnergyPeriods,
+    setEnergyPeriods ( energies: IEnergyPeriods )
 }>;
 
 
@@ -1723,6 +1746,21 @@ CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, 
         this.setInt32(energies.vari[index]);
         this.setInt32(energies.vare[index]);
     }
+};
+
+CommandBinaryBuffer.prototype.getEnergyPeriods = function ( energiesNumber: number ): IEnergyPeriods {
+    return Array.from(
+        {length: energiesNumber},
+        () => {
+            const energy = this.getUint16();
+
+            return energy === 0xffff ? undefined : energy;
+        }
+    );
+};
+
+CommandBinaryBuffer.prototype.setEnergyPeriods = function ( energies: IEnergyPeriods ) {
+    energies.forEach(energy => this.setUint16(energy === undefined ? 0xffff : energy));
 };
 
 export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithType ): number => {

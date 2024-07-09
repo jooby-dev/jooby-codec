@@ -1007,6 +1007,13 @@ export const defaultFrameHeader: IFrameHeader = {
     source: 0xfffe
 };
 
+export interface IGetHalfHourDemandResponseParameters {
+    date: types.IDate,
+    periods: Array<IEnergyPeriod>,
+    /** if DST start/end of this day, contain DST hour */
+    dstHour?: types.TUint8
+}
+
 export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
 export const SEASON_PROFILE_DAYS_NUMBER = 7;
@@ -1015,6 +1022,10 @@ export const TARIFF_NUMBER = 4;
 export const PACKED_ENERGY_TYPE_SIZE = 1;
 export const ENERGY_SIZE = 4;
 export const DATE_SIZE = 3;
+export const MIN_HALF_HOUR_PERIODS = 48;
+export const MAX_HALF_HOUR_PERIODS = 50;
+export const MIN_HALF_HOUR_COMMAND_SIZE = 3 + (MIN_HALF_HOUR_PERIODS * 2);
+export const MAX_HALF_HOUR_COMMAND_SIZE = 4 + (MAX_HALF_HOUR_PERIODS * 2);
 
 
 const baseDisplaySetMask = {

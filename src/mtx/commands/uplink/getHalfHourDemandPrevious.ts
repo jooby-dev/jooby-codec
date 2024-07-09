@@ -86,29 +86,22 @@
  */
 
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {IEnergyPeriod, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {
+    ICommandBinaryBuffer,
+    IGetHalfHourDemandResponseParameters,
+    MIN_HALF_HOUR_PERIODS,
+    MAX_HALF_HOUR_PERIODS,
+    MIN_HALF_HOUR_COMMAND_SIZE,
+    MAX_HALF_HOUR_COMMAND_SIZE
+} from '../../utils/CommandBinaryBuffer.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-
-
-interface IGetHalfHourDemandPreviousResponseParameters {
-    date: types.IDate,
-    periods: Array<IEnergyPeriod>,
-    /** if DST start/end of this day, contain DST hour */
-    dstHour?: types.TUint8
-}
-
-
-const MIN_PERIODS = 48;
-const MIN_COMMAND_SIZE = 3 + (MIN_PERIODS * 2);
-const MAX_PERIODS = 50;
-const MAX_COMMAND_SIZE = 4 + (MAX_PERIODS * 2);
 
 
 export const id: types.TCommandId = 0x4b;
 export const name: types.TCommandName = 'getHalfHourDemandPrevious';
 export const headerSize = 2;
-export const maxSize = MAX_COMMAND_SIZE;
+export const maxSize = MAX_HALF_HOUR_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
@@ -347,11 +340,11 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandPreviousResponseParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const hasDst = bytes.length > MIN_COMMAND_SIZE;
+    const hasDst = bytes.length > MIN_HALF_HOUR_COMMAND_SIZE;
     const date = buffer.getDate();
-    const periods = buffer.getEnergyPeriods(hasDst ? MAX_PERIODS : MIN_PERIODS);
+    const periods = buffer.getEnergyPeriods(hasDst ? MAX_HALF_HOUR_PERIODS : MIN_HALF_HOUR_PERIODS);
 
     if ( hasDst ) {
         return {
@@ -371,8 +364,8 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandPreviousResp
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetHalfHourDemandPreviousResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(parameters.periods.length > MIN_PERIODS ? MAX_COMMAND_SIZE : MIN_COMMAND_SIZE);
+export const toBytes = ( parameters: IGetHalfHourDemandResponseParameters ): types.TBytes => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(parameters.periods.length > MIN_HALF_HOUR_PERIODS ? MAX_HALF_HOUR_COMMAND_SIZE : MIN_HALF_HOUR_COMMAND_SIZE);
 
     // body
     buffer.setDate(parameters.date);

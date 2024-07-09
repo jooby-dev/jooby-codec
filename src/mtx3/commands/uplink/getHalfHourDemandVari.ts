@@ -1,13 +1,13 @@
 /**
- * Uplink command to get active energy (`A+`) in half hours by date.
+ * Uplink command to get reactive energy (`A+R+`) in half hours by date.
  *
- * The corresponding downlink command: `getHalfHourDemand`.
+ * The corresponding downlink command: `getHalfHourDemandVari`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getHalfHourDemand from 'jooby-codec/mtx3/commands/uplink/getHalfHourDemand.js';
+ * import * as getHalfHourDemandVari from 'jooby-codec/mtx3/commands/uplink/getHalfHourDemandVari.js';
  *
  * // simple response
  * const bytes = [
@@ -21,7 +21,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = getHalfHourDemand.fromBytes(bytes);
+ * const parameters = getHalfHourDemandVari.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -41,18 +41,18 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetHalfHourDemand.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetHalfHourDemandVari.md#response)
  */
 
 import * as command from '../../../mtx/utils/command.js';
-import * as types from '../../types.js';
 import {MIN_HALF_HOUR_PERIODS, MAX_HALF_HOUR_PERIODS, MIN_HALF_HOUR_COMMAND_SIZE, MAX_HALF_HOUR_COMMAND_SIZE} from '../../../mtx/utils/CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetHalfHourDemandResponseParameters} from '../../utils/CommandBinaryBuffer.js';
 
 
-export const id: types.TCommandId = 0x15;
-export const name: types.TCommandName = 'getHalfHourDemand';
+export const id: types.TCommandId = 0x48;
+export const name: types.TCommandName = 'getHalfHourDemandVari';
 export const headerSize = 2;
 export const maxSize = MIN_HALF_HOUR_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
@@ -80,7 +80,7 @@ export const examples: command.TCommandExamples = {
             ]
         },
         bytes: [
-            0x15, 0x63,
+            0x48, 0x63,
             0x18, 0x03, 0x16, 0x04, 0x57, 0x04, 0xc6, 0x05, 0x35, 0x05, 0xa4, 0x06, 0x13, 0x06, 0x82, 0x06,
             0xf1, 0x07, 0x60, 0x07, 0xcf, 0x07, 0xd0, 0x08, 0x3f, 0x08, 0xae, 0x09, 0x1d, 0x09, 0x8c, 0x09,
             0xfb, 0x0a, 0x6a, 0x0a, 0xd9, 0x0b, 0x48, 0x0b, 0xb7, 0x0b, 0xb8, 0x0c, 0x27, 0x0c, 0x96, 0x0d,
@@ -112,7 +112,7 @@ export const examples: command.TCommandExamples = {
             dstHour: 3
         },
         bytes: [
-            0x15, 0x68,
+            0x48, 0x68,
             0x18, 0x02, 0x1f, 0x04, 0x57, 0x04, 0xc6, 0x05, 0x35, 0x05, 0xa4, 0x06, 0x13, 0x06, 0x82, 0x06,
             0xf1, 0x07, 0x60, 0x07, 0xcf, 0x07, 0xd0, 0x08, 0x3f, 0x08, 0xae, 0x09, 0x1d, 0x09, 0x8c, 0x09,
             0xfb, 0x0a, 0x6a, 0x0a, 0xd9, 0x0b, 0x48, 0x0b, 0xb7, 0x0b, 0xb8, 0x0c, 0x27, 0x0c, 0x96, 0x0d,
