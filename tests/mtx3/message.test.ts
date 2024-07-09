@@ -106,6 +106,22 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getDayDemand',
+        hex: '0a 13 73 d6 f4 d9 79 57 bf 70 a7 fa e9 e5 5a c2 5f 00 6b 48 f6 84 b0 72 2d f3 68 13 5c 86 ec ee 5e f7 e6 6f 7a 9a a0 d1 92 d1 44 e5 1b 29 72 26 c5 4e 73 7a b7 a4 f7 cc e9 f4 f8 01 3c a5 4f 63 16 ff 92 cb b8 77 3a dd ee 66 4f 0d 2a 25 22 25 3d 36 d9 24 21 2b 8a d5 b6 d6 04 ee aa ee 2f 8a 57 e9',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 73 d6 f4 d9 79 57 bf 70 a7 fa e9 e5 5a c2 5f 00 6b 48 f6 84 b0 72 2d f3 68 7d 33 5c 86 ec ee 5e f7 e6 6f 7a 9a a0 d1 92 d1 44 e5 1b 29 72 26 c5 4e 73 7a b7 a4 f7 cc e9 f4 f8 01 3c a5 4f 63 16 ff 92 cb b8 77 3a dd ee 66 4f 0d 2a 25 22 25 3d 36 d9 24 21 2b 8a d5 b6 d6 04 ee aa ee 2f 8a 57 e9 ff 8b 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDayDemand.accessLevel,
+        commands: [
+            uplinkCommands.getDayDemand.examples['default A+, R+, R- energies'],
+            uplinkCommands.getDayDemand.examples['received A-, R+, R- energies by T1, T4 only']
+        ],
+        lrc: 0xdb,
+        crc: 0x8bff,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getEnergy',
         hex: '0a 13 c1 c0 fc 0c c6 46 d4 1c 61 5e 1f 80 98 3d a3 f0 91 1e 7a 8f cd 2f f6 e5 cf 7d 78 fc d0 35 56 0c 16 bb d7 df 0e 2b dc 26 fc 8e 6b 59 c0 fc b3 fd 6f 43 26 0d 72 8d b6 7d bb 60 22 b4 14 cc c0 85',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 c1 c0 fc 0c c6 46 d4 1c 61 5e 1f 80 98 3d a3 f0 91 1e 7a 8f cd 2f f6 e5 cf 7d 5d 78 fc d0 35 56 0c 16 bb d7 df 0e 2b dc 26 fc 8e 6b 59 c0 fc b3 fd 6f 43 26 0d 72 8d b6 7d 5d bb 60 22 b4 14 cc c0 85 3b ac 7e',
@@ -163,6 +179,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x1e,
         crc: 0xa6da,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getMonthDemand',
+        hex: '0a 13 27 36 75 e0 8c 01 09 7f 12 c1 a1 eb e4 57 2e 85 ac 69 42 3d a4 ed 4c 72 ed 43 08 f2 c3 ea d2 7a 2f ef 5d 30 ad 30 ba 0d 37 ad 1d 4a e1 59 bf 08 cc 54 97 58 84 d8 65 0a d3 43 94 67 5e ed f0 94',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 27 36 75 e0 8c 01 09 7f 12 c1 a1 eb e4 57 2e 85 ac 69 42 3d a4 ed 4c 72 ed 43 08 f2 c3 ea d2 7a 2f ef 5d 30 ad 30 ba 0d 37 ad 1d 4a e1 59 bf 08 cc 54 97 58 84 d8 65 0a d3 43 94 67 5e ed f0 94 15 06 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getMonthDemand.accessLevel,
+        commands: [
+            uplinkCommands.getMonthDemand.examples['response energy for 2024.03']
+        ],
+        lrc: 0x77,
+        crc: 0x0615,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

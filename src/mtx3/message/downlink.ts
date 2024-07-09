@@ -151,6 +151,7 @@ toBytesMap[mtx1Commands.getExtendedCurrentValues.id] = mtx1Commands.getExtendedC
 toBytesMap[mtx1Commands.getHalfHourDemand.id] = mtx1Commands.getHalfHourDemand.toBytes;
 toBytesMap[mtx1Commands.getHalfhoursEnergies.id] = mtx1Commands.getHalfhoursEnergies.toBytes;
 toBytesMap[mtx1Commands.getMagneticFieldThreshold.id] = mtx1Commands.getMagneticFieldThreshold.toBytes;
+toBytesMap[mtx1Commands.getMonthDemand.id] = mtx1Commands.getMonthDemand.toBytes;
 toBytesMap[mtx1Commands.getOperatorParameters.id] = mtx1Commands.getOperatorParameters.toBytes;
 toBytesMap[mtx1Commands.getRatePlanInfo.id] = mtx1Commands.getRatePlanInfo.toBytes;
 toBytesMap[mtx1Commands.getSaldo.id] = mtx1Commands.getSaldo.toBytes;
@@ -177,9 +178,12 @@ toBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.toBytes;
 
 // commands different from MTX1
 toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
+toBytesMap[commands.getDayDemand.id] = commands.getDayDemand.toBytes;
 toBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.toBytes;
 toBytesMap[commands.getEnergy.id] = commands.getEnergy.toBytes;
 toBytesMap[commands.getEnergyDayPrevious.id] = commands.getEnergyDayPrevious.toBytes;
+toBytesMap[commands.getHalfHourDemandVare.id] = commands.getHalfHourDemandVare.toBytes;
+toBytesMap[commands.getHalfHourDemandVari.id] = commands.getHalfHourDemandVari.toBytes;
 toBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.toBytes;
 toBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.toBytes;
 toBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.toBytes;
@@ -203,6 +207,7 @@ fromBytesMap[mtx1Commands.getExtendedCurrentValues.id] = mtx1Commands.getExtende
 fromBytesMap[mtx1Commands.getHalfHourDemand.id] = mtx1Commands.getHalfHourDemand.fromBytes;
 fromBytesMap[mtx1Commands.getHalfhoursEnergies.id] = mtx1Commands.getHalfhoursEnergies.fromBytes;
 fromBytesMap[mtx1Commands.getMagneticFieldThreshold.id] = mtx1Commands.getMagneticFieldThreshold.fromBytes;
+fromBytesMap[mtx1Commands.getMonthDemand.id] = mtx1Commands.getMonthDemand.fromBytes;
 fromBytesMap[mtx1Commands.getOperatorParameters.id] = mtx1Commands.getOperatorParameters.fromBytes;
 fromBytesMap[mtx1Commands.getRatePlanInfo.id] = mtx1Commands.getRatePlanInfo.fromBytes;
 fromBytesMap[mtx1Commands.getSaldo.id] = mtx1Commands.getSaldo.fromBytes;
@@ -229,9 +234,12 @@ fromBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.fromBytes;
 
 // commands different from MTX1
 fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes;
+fromBytesMap[commands.getDayDemand.id] = commands.getDayDemand.fromBytes;
 fromBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.fromBytes;
 fromBytesMap[commands.getEnergy.id] = commands.getEnergy.fromBytes;
 fromBytesMap[commands.getEnergyDayPrevious.id] = commands.getEnergyDayPrevious.fromBytes;
+fromBytesMap[commands.getHalfHourDemandVare.id] = commands.getHalfHourDemandVare.fromBytes;
+fromBytesMap[commands.getHalfHourDemandVari.id] = commands.getHalfHourDemandVari.fromBytes;
 fromBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.fromBytes;
 fromBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.fromBytes;
 fromBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.fromBytes;
@@ -255,6 +263,7 @@ nameMap[mtx1Commands.getExtendedCurrentValues.id] = mtx1Commands.getExtendedCurr
 nameMap[mtx1Commands.getHalfHourDemand.id] = mtx1Commands.getHalfHourDemand.name;
 nameMap[mtx1Commands.getHalfhoursEnergies.id] = mtx1Commands.getHalfhoursEnergies.name;
 nameMap[mtx1Commands.getMagneticFieldThreshold.id] = mtx1Commands.getMagneticFieldThreshold.name;
+nameMap[mtx1Commands.getMonthDemand.id] = mtx1Commands.getMonthDemand.name;
 nameMap[mtx1Commands.getOperatorParameters.id] = mtx1Commands.getOperatorParameters.name;
 nameMap[mtx1Commands.getRatePlanInfo.id] = mtx1Commands.getRatePlanInfo.name;
 nameMap[mtx1Commands.getSaldo.id] = mtx1Commands.getSaldo.name;
@@ -281,9 +290,12 @@ nameMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.name;
 
 // commands different from MTX1
 nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
+nameMap[commands.getDayDemand.id] = commands.getDayDemand.name;
 nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;
 nameMap[commands.getEnergy.id] = commands.getEnergy.name;
 nameMap[commands.getEnergyDayPrevious.id] = commands.getEnergyDayPrevious.name;
+nameMap[commands.getHalfHourDemandVare.id] = commands.getHalfHourDemandVare.name;
+nameMap[commands.getHalfHourDemandVari.id] = commands.getHalfHourDemandVari.name;
 nameMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.name;
 nameMap[commands.setDisplayParam.id] = commands.setDisplayParam.name;
 nameMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.name;
