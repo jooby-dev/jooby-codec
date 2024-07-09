@@ -51,6 +51,7 @@ export * as getCriticalEvent from './getCriticalEvent.js';
 export * as getDisplayParam from './getDisplayParam.js';
 export * as getEnergy from './getEnergy.js';
 export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';
+export * as getEnergyExport from './getEnergyExport.js';
 export * as getOperatorParametersExtended from './getOperatorParametersExtended.js';
 export * as setDisplayParam from './setDisplayParam.js';
 export * as setOperatorParameters from './setOperatorParameters.js';

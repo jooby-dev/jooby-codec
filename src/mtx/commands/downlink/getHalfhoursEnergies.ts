@@ -3,6 +3,8 @@
  *
  * **This command can be transmitted only via Lora.**
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example
