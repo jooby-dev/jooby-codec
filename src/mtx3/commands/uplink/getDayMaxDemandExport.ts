@@ -190,5 +190,7 @@ export const toBytes = ( parameters: IGetDayMaxDemandResponseParameters ): types
 
     buffer.setDayMaxDemandResponse(parameters);
 
+    // todo: investigate all uses of getBytesToOffset in mtx
+    // consider some additional mechanism to validate user input
     return command.toBytes(id, buffer.getBytesToOffset());
 };
