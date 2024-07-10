@@ -30,13 +30,13 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IEnergies} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, TEnergies} from '../../utils/CommandBinaryBuffer.js';
 
 
 interface IGetMonthDemandResponseParameters {
     year: types.TYear2000,
     month: types.TMonth,
-    energies: IEnergies
+    energies: TEnergies
 }
 
 

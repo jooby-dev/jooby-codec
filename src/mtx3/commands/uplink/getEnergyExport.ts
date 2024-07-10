@@ -1,13 +1,13 @@
 /**
- * Uplink command to get current energies `A+`, `R+`, `R-` for 4 tariffs (`T1`-`T4`).
+ * Uplink command to get current energies `A-`, `R+`, `R-` (II - III quadrant) for 4 tariffs (`T1`-`T4`).
  *
- * The corresponding downlink command: `getEnergy`.
+ * The corresponding downlink command: `getEnergyExport`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getEnergy from 'jooby-codec/mtx3/commands/uplink/getEnergy.js';
+ * import * as getEnergyExport from 'jooby-codec/mtx3/commands/uplink/getEnergyExport.js';
  *
  * // simple response
  * const bytes = [
@@ -17,7 +17,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = getEnergy.fromBytes(bytes);
+ * const parameters = getEnergyExport.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -28,7 +28,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetEnergy.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetEnergyExport.md#response)
  */
 
 import * as command from '../../../mtx/utils/command.js';
@@ -37,8 +37,8 @@ import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IEnergies} from '../../utils/CommandBinaryBuffer.js';
 
 
-export const id: types.TCommandId = 0x0f;
-export const name: types.TCommandName = 'getEnergy';
+export const id: types.TCommandId = 0x4e;
+export const name: types.TCommandName = 'getEnergyExport';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 48;
@@ -57,7 +57,7 @@ export const examples: command.TCommandExamples = {
             vare: [987654, 654321, 123456, 789012]
         },
         bytes: [
-            0x0f, 0x30,
+            0x4e, 0x30,
             0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x61, 0xa8, 0x00, 0x0f, 0x12, 0x06, // tariff 1
             0x00, 0x32, 0xe0, 0x64, 0x00, 0x12, 0xd6, 0x87, 0x00, 0x09, 0xfb, 0xf1, // tariff 2
             0x00, 0x00, 0x3a, 0x98, 0x00, 0x0c, 0x0b, 0xd0, 0x00, 0x01, 0xe2, 0x40, // tariff 3
