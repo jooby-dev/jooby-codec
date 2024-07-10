@@ -1,5 +1,8 @@
 /**
- * Downlink command to get the maximum `P-` power for the day.
+ * Downlink command to get the maximum `P-` power for the day for MTX1
+ * and the maximum power for the day (`II` - `III` quadrant) for MTX3.
+ *
+ * Supported in MTX1 and MTX3 devices.
  *
  * @packageDocumentation
  *

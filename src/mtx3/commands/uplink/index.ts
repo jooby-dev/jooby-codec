@@ -48,6 +48,7 @@ export * as getCriticalEvent from './getCriticalEvent.js';
 export * as getCurrentStatusMeter from './getCurrentStatusMeter.js';
 export * as getCurrentValues from './getCurrentValues.js';
 export * as getDayDemand from './getDayDemand.js';
+export * as getDayMaxDemandExport from './getDayMaxDemandExport.js';
 export * as getDisplayParam from './getDisplayParam.js';
 export * as getEnergy from './getEnergy.js';
 export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';

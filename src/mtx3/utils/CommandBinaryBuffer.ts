@@ -1226,6 +1226,31 @@ export interface IGetHalfHourDemandResponseParameters {
     dstHour?: types.TUint8
 }
 
+export interface IMaxDemand {
+    /** hour */
+    hourPmax: types.TUint8,
+    /** minute */
+    minPmax: types.TUint8,
+    pmax: types.TInt32,
+    /** hour */
+    hourVariMax: types.TUint8,
+    /** minute */
+    minVariMax: types.TUint8,
+    variMax: types.TInt32,
+    /** hour */
+    hourVareMax: types.TUint8,
+    /** minute */
+    minVareMax: types.TUint8,
+    vareMax: types.TInt32
+}
+
+export interface IGetDayMaxDemandResponseParameters {
+    date: types.IDate,
+
+    /** values for tariffs */
+    maxDemands: Array<IMaxDemand>
+}
+
 export const OPERATOR_PARAMETERS_SIZE = 95;
 export const OPERATOR_PARAMETERS_EXTENDED_SIZE = 9;
 export const PACKED_ENERGY_TYPE_SIZE = 1;
@@ -1498,7 +1523,13 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ),
 
     getEnergyPeriods ( energiesNumber: number ): IEnergyPeriods,
-    setEnergyPeriods ( energies: IEnergyPeriods )
+    setEnergyPeriods ( energies: IEnergyPeriods ),
+
+    getMaxDemand (): IMaxDemand,
+    setMaxDemand ( maxDemand: IMaxDemand ),
+
+    getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
+    setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
 }>;
 
 
@@ -1761,6 +1792,47 @@ CommandBinaryBuffer.prototype.getEnergyPeriods = function ( energiesNumber: numb
 
 CommandBinaryBuffer.prototype.setEnergyPeriods = function ( energies: IEnergyPeriods ) {
     energies.forEach(energy => this.setUint16(energy === undefined ? 0xffff : energy));
+};
+
+CommandBinaryBuffer.prototype.getMaxDemand = function (): IMaxDemand {
+    return {
+        hourPmax: this.getUint8(),
+        minPmax: this.getUint8(),
+        pmax: this.getInt32(),
+        hourVariMax: this.getUint8(),
+        minVariMax: this.getUint8(),
+        variMax: this.getInt32(),
+        hourVareMax: this.getUint8(),
+        minVareMax: this.getUint8(),
+        vareMax: this.getInt32()
+    };
+};
+
+CommandBinaryBuffer.prototype.setMaxDemand = function ( maxDemand: IMaxDemand ) {
+    this.setUint8(maxDemand.hourPmax);
+    this.setUint8(maxDemand.minPmax);
+    this.setInt32(maxDemand.pmax);
+    this.setUint8(maxDemand.hourVariMax);
+    this.setUint8(maxDemand.minVariMax);
+    this.setInt32(maxDemand.variMax);
+    this.setUint8(maxDemand.hourVareMax);
+    this.setUint8(maxDemand.minVareMax);
+    this.setInt32(maxDemand.vareMax);
+};
+
+CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxDemandResponseParameters {
+    const date = this.getDate();
+
+    // 4 tariffs
+    const maxDemands = Array.from({length: TARIFF_NUMBER}, () => this.getMaxDemand());
+
+    return {date, maxDemands};
+};
+
+CommandBinaryBuffer.prototype.setDayMaxDemandResponse = function ( parameters: IGetDayMaxDemandResponseParameters ) {
+    this.setDate(parameters.date);
+
+    parameters.maxDemands.forEach(value => this.setMaxDemand(value));
 };
 
 export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithType ): number => {
