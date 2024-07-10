@@ -707,12 +707,12 @@ export interface IEnergyPeriod {
 }
 
 /** active energy by tariffs `T1`-`T4` */
-export interface IEnergies extends Array<types.TUint32 | null> {}
+export type TEnergies = Array<types.TUint32 | null>;
 
 export interface IPackedEnergiesWithType {
     energyType?: types.TEnergyType,
 
-    energies: IEnergies
+    energies: TEnergies
 }
 
 export interface IEventStatus {
@@ -1192,9 +1192,9 @@ const operatorParametersExtended3RelaySetMask = {
 };
 
 
-function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: types.TEnergyType, tariffMapByte: number ): IEnergies {
+function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: types.TEnergyType, tariffMapByte: number ): TEnergies {
     const byte = tariffMapByte >> TARIFF_NUMBER;
-    const energies = Array.from({length: TARIFF_NUMBER}) as IEnergies;
+    const energies = Array.from({length: TARIFF_NUMBER}) as TEnergies;
 
     energies.forEach((energy, index) => {
         // read flags by one bit
@@ -1210,7 +1210,7 @@ function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: types.TEn
     return energies;
 }
 
-function setPackedEnergyType ( buffer: ICommandBinaryBuffer, energyType: types.TEnergyType, energies: IEnergies ) {
+function setPackedEnergyType ( buffer: ICommandBinaryBuffer, energyType: types.TEnergyType, energies: TEnergies ) {
     const indexShift = 1 + TARIFF_NUMBER;
     let tariffsByte = energyType;
 
@@ -1284,8 +1284,8 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getPackedEnergyWithType (): IPackedEnergiesWithType,
     setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ),
 
-    getEnergies(): IEnergies,
-    setEnergies ( energies: IEnergies ),
+    getEnergies(): TEnergies,
+    setEnergies ( energies: TEnergies ),
 
     getDate (): types.IDate,
     setDate ( date: types.IDate ),
@@ -1698,11 +1698,11 @@ CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, 
     });
 };
 
-CommandBinaryBuffer.prototype.getEnergies = function (): IEnergies {
+CommandBinaryBuffer.prototype.getEnergies = function (): TEnergies {
     return Array.from({length: TARIFF_NUMBER}, () => this.getInt32());
 };
 
-CommandBinaryBuffer.prototype.setEnergies = function ( energies: IEnergies ) {
+CommandBinaryBuffer.prototype.setEnergies = function ( energies: TEnergies ) {
     energies.forEach(value => this.setUint32(value));
 };
 

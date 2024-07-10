@@ -34,7 +34,7 @@ import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, IPackedEnergiesWithType, IEnergies,
+    ICommandBinaryBuffer, IPackedEnergiesWithType, TEnergies,
     TARIFF_NUMBER, PACKED_ENERGY_TYPE_SIZE, getPackedEnergiesWithDateSize
 } from '../../utils/CommandBinaryBuffer.js';
 
@@ -46,7 +46,7 @@ interface IGetEnergyDayPreviousResponseParameters extends IPackedEnergiesWithTyp
 
 const convertAPlusEnergyToObis = ( tariff: number = 0 ) => '1.8.x'.replace('x', tariff.toString(10));
 
-const convertEnergiesToDlms = ( energy: IEnergies ) => {
+const convertEnergiesToDlms = ( energy: TEnergies ) => {
     const dlms: Record<string, number> = {};
 
     for ( let tariff = 0; tariff < TARIFF_NUMBER; tariff++ ) {

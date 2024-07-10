@@ -1213,12 +1213,12 @@ export interface IPackedEnergiesWithType {
  *
  * In previous versions, this field also included tariff information.
  */
-interface IEnergyPeriods extends Array<types.TUint16 | undefined> {}
+type TEnergyPeriods = Array<types.TUint32 | undefined>;
 
 export interface IGetHalfHourDemandResponseParameters {
     date: types.IDate,
 
-    energies: IEnergyPeriods,
+    energies: TEnergyPeriods,
 
     /**
      * If DST start/end of this day, contain DST hour.
@@ -1497,8 +1497,8 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     getPackedEnergyWithType (): IPackedEnergiesWithType,
     setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ),
 
-    getEnergyPeriods ( energiesNumber: number ): IEnergyPeriods,
-    setEnergyPeriods ( energies: IEnergyPeriods )
+    getEnergyPeriods ( energiesNumber: number ): TEnergyPeriods,
+    setEnergyPeriods ( energies: TEnergyPeriods )
 }>;
 
 
@@ -1748,7 +1748,7 @@ CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, 
     }
 };
 
-CommandBinaryBuffer.prototype.getEnergyPeriods = function ( energiesNumber: number ): IEnergyPeriods {
+CommandBinaryBuffer.prototype.getEnergyPeriods = function ( energiesNumber: number ): TEnergyPeriods {
     return Array.from(
         {length: energiesNumber},
         () => {
@@ -1759,7 +1759,7 @@ CommandBinaryBuffer.prototype.getEnergyPeriods = function ( energiesNumber: numb
     );
 };
 
-CommandBinaryBuffer.prototype.setEnergyPeriods = function ( energies: IEnergyPeriods ) {
+CommandBinaryBuffer.prototype.setEnergyPeriods = function ( energies: TEnergyPeriods ) {
     energies.forEach(energy => this.setUint16(energy === undefined ? 0xffff : energy));
 };
 
