@@ -1,5 +1,5 @@
 /**
- * Downlink command to get the current negative active energy by tariffs (II - III quadrant).
+ * Downlink command to get current energies `A-`, `R+`, `R-` (II - III quadrant) for 4 tariffs (`T1`-`T4`).
  *
  * @packageDocumentation
  *

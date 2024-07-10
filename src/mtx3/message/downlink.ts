@@ -179,6 +179,7 @@ toBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.toBytes;
 // commands different from MTX1
 toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
 toBytesMap[commands.getDayDemand.id] = commands.getDayDemand.toBytes;
+toBytesMap[commands.getDayDemandExport.id] = commands.getDayDemandExport.toBytes;
 toBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.toBytes;
 toBytesMap[commands.getEnergy.id] = commands.getEnergy.toBytes;
 toBytesMap[commands.getEnergyDayPrevious.id] = commands.getEnergyDayPrevious.toBytes;
@@ -236,6 +237,7 @@ fromBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.fromBytes;
 // commands different from MTX1
 fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes;
 fromBytesMap[commands.getDayDemand.id] = commands.getDayDemand.fromBytes;
+fromBytesMap[commands.getDayDemandExport.id] = commands.getDayDemandExport.fromBytes;
 fromBytesMap[commands.getDisplayParam.id] = commands.getDisplayParam.fromBytes;
 fromBytesMap[commands.getEnergy.id] = commands.getEnergy.fromBytes;
 fromBytesMap[commands.getEnergyDayPrevious.id] = commands.getEnergyDayPrevious.fromBytes;
@@ -293,6 +295,7 @@ nameMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.name;
 // commands different from MTX1
 nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
 nameMap[commands.getDayDemand.id] = commands.getDayDemand.name;
+nameMap[commands.getDayDemandExport.id] = commands.getDayDemandExport.name;
 nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;
 nameMap[commands.getEnergy.id] = commands.getEnergy.name;
 nameMap[commands.getEnergyDayPrevious.id] = commands.getEnergyDayPrevious.name;
