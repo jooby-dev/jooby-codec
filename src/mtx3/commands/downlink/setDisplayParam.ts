@@ -69,7 +69,8 @@ export const examples: command.TCommandExamples = {
         },
         bytes: [
             0x5d, 0x05,
-            0x00, 0x04, 0x05, 0x06, 0x07
+            0x00,
+            0x04, 0x05, 0x06, 0x07
         ]
     },
     'set params without order': {
