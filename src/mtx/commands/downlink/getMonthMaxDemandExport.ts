@@ -1,5 +1,8 @@
 /**
- * Downlink command to get max power `A-` for 4 tariffs (`T1`-`T4`) for a given month.
+ * Downlink command to get max power `A-` for 4 tariffs (`T1`-`T4`) for a given month for MTX1
+ * and the maximum power for the month (`II` - `III` quadrant) for MTX3
+ *
+ * Supported in MTX1 and MTX3 devices.
  *
  * @packageDocumentation
  *
