@@ -23,6 +23,7 @@ export * as getHalfHourDemand from '../../../mtx/commands/downlink/getHalfHourDe
 export * as getHalfhoursEnergies from '../../../mtx/commands/downlink/getHalfhoursEnergies.js';
 export * as getMagneticFieldThreshold from '../../../mtx/commands/downlink/getMagneticFieldThreshold.js';
 export * as getMonthDemand from '../../../mtx/commands/downlink/getMonthDemand.js';
+export * as getMonthDemandExport from '../../../mtx/commands/downlink/getMonthDemandExport.js';
 export * as getMonthMaxDemandExport from '../../../mtx/commands/downlink/getMonthMaxDemandExport.js';
 export * as getOperatorParameters from '../../../mtx/commands/downlink/getOperatorParameters.js';
 export * as getRatePlanInfo from '../../../mtx/commands/downlink/getRatePlanInfo.js';
@@ -57,6 +58,7 @@ export * as getDisplayParam from './getDisplayParam.js';
 export * as getEnergy from './getEnergy.js';
 export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';
 export * as getEnergyExport from './getEnergyExport.js';
+export * as getEnergyExportDayPrevious from './getEnergyExportDayPrevious.js';
 export * as getHalfHourDemandVare from './getHalfHourDemandVare.js';
 export * as getHalfHourDemandVari from './getHalfHourDemandVari.js';
 export * as getOperatorParametersExtended from './getOperatorParametersExtended.js';

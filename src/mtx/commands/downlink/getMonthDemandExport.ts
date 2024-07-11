@@ -1,5 +1,7 @@
 /**
- * Downlink command to get energy `A-` for 4 tariffs (`T1`-`T4`) for a given month.
+ * Downlink command to get energies `A-` for `MTX1` and `A-`, `R+`, `R-` (`II` - `III` quadrant) for `MTX3` for 4 tariffs (`T1`-`T4`) for a given month.
+ *
+ * Supported in MTX1 and MTX3 devices.
  *
  * @packageDocumentation
  *
