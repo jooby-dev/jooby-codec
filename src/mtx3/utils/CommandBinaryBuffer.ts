@@ -1244,10 +1244,20 @@ export interface IMaxDemand {
     vareMax: types.TInt32
 }
 
-export interface IGetDayMaxDemandResponseParameters {
+export interface IGetDayMaxDemandExportResponseParameters {
     date: types.IDate,
 
-    /** values for tariffs */
+    /** values for 4 tariffs */
+    maxDemands: Array<IMaxDemand>
+}
+
+export interface IGetMonthMaxDemandExportResponseParameters {
+    date: {
+        year: types.TYear2000,
+        month: types.TMonth,
+    },
+
+    /** values for 4 tariffs */
     maxDemands: Array<IMaxDemand>
 }
 
@@ -1528,8 +1538,11 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     getMaxDemand (): IMaxDemand,
     setMaxDemand ( maxDemand: IMaxDemand ),
 
-    getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
-    setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
+    getDayMaxDemandResponse (): IGetDayMaxDemandExportResponseParameters,
+    setDayMaxDemandResponse ( event: IGetDayMaxDemandExportResponseParameters ),
+
+    getMonthMaxDemandResponse (): IGetMonthMaxDemandExportResponseParameters,
+    setMonthMaxDemandResponse ( event: IGetMonthMaxDemandExportResponseParameters ),
 }>;
 
 
@@ -1820,7 +1833,7 @@ CommandBinaryBuffer.prototype.setMaxDemand = function ( maxDemand: IMaxDemand ) 
     this.setInt32(maxDemand.vareMax);
 };
 
-CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxDemandResponseParameters {
+CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxDemandExportResponseParameters {
     const date = this.getDate();
 
     // 4 tariffs
@@ -1829,9 +1842,30 @@ CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxD
     return {date, maxDemands};
 };
 
-CommandBinaryBuffer.prototype.setDayMaxDemandResponse = function ( parameters: IGetDayMaxDemandResponseParameters ) {
+CommandBinaryBuffer.prototype.setDayMaxDemandResponse = function ( parameters: IGetDayMaxDemandExportResponseParameters ) {
     this.setDate(parameters.date);
 
+    // 4 tariffs
+    parameters.maxDemands.forEach(value => this.setMaxDemand(value));
+};
+
+CommandBinaryBuffer.prototype.getMonthMaxDemandResponse = function (): IGetMonthMaxDemandExportResponseParameters {
+    const date = {
+        year: this.getUint8(),
+        month: this.getUint8()
+    };
+
+    // 4 tariffs
+    const maxDemands = Array.from({length: TARIFF_NUMBER}, () => this.getMaxDemand());
+
+    return {date, maxDemands};
+};
+
+CommandBinaryBuffer.prototype.setMonthMaxDemandResponse = function ( parameters: IGetMonthMaxDemandExportResponseParameters ) {
+    this.setUint8(parameters.date.year);
+    this.setUint8(parameters.date.month);
+
+    // 4 tariffs
     parameters.maxDemands.forEach(value => this.setMaxDemand(value));
 };
 

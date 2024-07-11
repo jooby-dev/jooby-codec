@@ -61,6 +61,7 @@ export * as getHalfHourDemandVare from './getHalfHourDemandVare.js';
 export * as getHalfHourDemandVari from './getHalfHourDemandVari.js';
 export * as getMonthDemand from './getMonthDemand.js';
 export * as getMonthDemandExport from './getMonthDemandExport.js';
+export * as getMonthMaxDemandExport from './getMonthMaxDemandExport.js';
 export * as getOperatorParameters from './getOperatorParameters.js';
 export * as getOperatorParametersExtended from './getOperatorParametersExtended.js';
 export * as setOperatorParametersExtended from './setOperatorParametersExtended.js';
