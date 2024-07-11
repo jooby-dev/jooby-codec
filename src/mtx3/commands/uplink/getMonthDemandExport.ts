@@ -1,5 +1,5 @@
 /**
- * Uplink command to get energies (`A-` for `MTX1` and `A-`, `R+`, `R-` (`II` - `III` quadrant) for `MTX3`) for 4 tariffs (`T1`-`T4`) for a given month.
+ * Uplink command to get `A-`, `R+`, `R-` energies (`II` - `III` quadrant) for 4 tariffs (`T1`-`T4`) for a given month.
  *
  * The corresponding downlink command: `getMonthDemandExport`.
  *
