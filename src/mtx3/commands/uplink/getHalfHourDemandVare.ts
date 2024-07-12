@@ -158,7 +158,8 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandResponsePara
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetHalfHourDemandResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(parameters.energies.length > MIN_HALF_HOUR_PERIODS ? MAX_HALF_HOUR_COMMAND_SIZE : MIN_HALF_HOUR_COMMAND_SIZE);
+    const size = parameters.energies.length > MIN_HALF_HOUR_PERIODS ? MAX_HALF_HOUR_COMMAND_SIZE : MIN_HALF_HOUR_COMMAND_SIZE;
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
 
     // body
     buffer.setDate(parameters.date);

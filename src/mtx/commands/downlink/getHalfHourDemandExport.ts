@@ -1,5 +1,6 @@
 /**
- * Downlink command to get active energy (`A-`) in half hours by date.
+ * Downlink command to get active energy `A-` in half hours by date for MTX1
+ * and active energy `A-` (`II` - `III` quadrant) in half hours by date for MTX3.
  *
  * Supported in MTX1 and MTX3 devices.
  *
