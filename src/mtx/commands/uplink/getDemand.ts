@@ -31,8 +31,6 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDemand.md#response)
  */
 
-/** eslint-disable */
-
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetDemandParameters} from '../../utils/CommandBinaryBuffer.js';
@@ -387,7 +385,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
     }
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const parameters: IGetDemandResponseParameters = buffer.getDemandParameters();
+    const parameters: IGetDemandResponseParameters = buffer.getDemand();
 
     if ( bytes.length !== getDemand.maxSize + (2 * parameters.count) ) {
         throw new Error('Invalid uplink GetDemand demands byte length.');
@@ -413,7 +411,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
 export const toBytes = ( parameters: IGetDemandResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getDemand.maxSize + parameters.count * 2);
 
-    buffer.setDemandParameters(parameters);
+    buffer.setDemand(parameters);
 
     if ( parameters.energyType === demandTypes.A_PLUS || parameters.energyType === demandTypes.A_MINUS ) {
         demands.energyToBinary(parameters.demands).forEach((value: number) => buffer.setUint16(value));

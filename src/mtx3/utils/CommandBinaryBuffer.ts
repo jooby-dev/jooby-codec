@@ -5,7 +5,7 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import * as types from '../../types.js';
+import * as types from '../types.js';
 import MtxBinaryBuffer, {
     ICommandBinaryBuffer as IMtxCommandBinaryBuffer,
     TARIFF_NUMBER,
@@ -1261,6 +1261,42 @@ export interface IGetMonthMaxDemandExportResponseParameters {
     maxDemands: Array<IMaxDemand>
 }
 
+export interface IGetDemandParameters {
+    /**
+     * Packed date.
+     */
+    date: types.IDate,
+
+    demandParam: types.TDemandParam,
+
+    /**
+     * Starting block number of requested data.
+     */
+    firstIndex: types.TUint16,
+
+    /**
+     * Number of requested blocks (`48` max).
+     */
+    count: types.TUint8,
+
+    /**
+     * Accumulation period.
+     *
+     * 0/30 – 30 minutes,
+     * 15 – 15 minutes,
+     * 10 – 10 minutes (only for voltages)
+     */
+    period: types.TUint8
+}
+
+export interface IGetDemandResponseParameters extends IGetDemandParameters {
+    /**
+     * Load data.
+     */
+    demands: Array<types.TUint16>
+}
+
+
 export const OPERATOR_PARAMETERS_SIZE = 95;
 export const OPERATOR_PARAMETERS_EXTENDED_SIZE = 9;
 export const PACKED_ENERGY_TYPE_SIZE = 1;
@@ -1543,6 +1579,9 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
 
     getMonthMaxDemandResponse (): IGetMonthMaxDemandExportResponseParameters,
     setMonthMaxDemandResponse ( event: IGetMonthMaxDemandExportResponseParameters ),
+
+    getDemand (): IGetDemandParameters,
+    setDemand ( parameters: IGetDemandParameters )
 }>;
 
 
@@ -1867,6 +1906,35 @@ CommandBinaryBuffer.prototype.setMonthMaxDemandResponse = function ( parameters:
 
     // 4 tariffs
     parameters.maxDemands.forEach(value => this.setMaxDemand(value));
+};
+
+CommandBinaryBuffer.prototype.getDemand = function (): IGetDemandParameters {
+    const date0 = this.getUint8();
+    const date1 = this.getUint8();
+
+    return {
+        date: {
+            year: date0 >> 1,
+            month: ((date0 << 3) & 0x0f) | (date1 >> 5),
+            date: date1 & 0x1f
+        },
+        demandParam: this.getUint8(),
+        firstIndex: this.getUint16(),
+        count: this.getUint8(),
+        period: this.getUint8()
+    };
+};
+
+CommandBinaryBuffer.prototype.setDemand = function ( parameters: IGetDemandParameters ) {
+    const date0 = (parameters.date.year << 1) | ((parameters.date.month >> 3) & 0x01);
+    const date1 = ((parameters.date.month << 5) & 0xe0) | (parameters.date.date & 0x1f);
+
+    this.setUint8(date0);
+    this.setUint8(date1);
+    this.setUint8(parameters.demandParam);
+    this.setUint16(parameters.firstIndex);
+    this.setUint8(parameters.count);
+    this.setUint8(parameters.period);
 };
 
 export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithType ): number => {

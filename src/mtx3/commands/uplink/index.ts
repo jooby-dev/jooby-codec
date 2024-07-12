@@ -50,6 +50,7 @@ export * as getCurrentValues from './getCurrentValues.js';
 export * as getDayDemand from './getDayDemand.js';
 export * as getDayDemandExport from './getDayDemandExport.js';
 export * as getDayMaxDemandExport from './getDayMaxDemandExport.js';
+export * as getDemand from './getDemand.js';
 export * as getDisplayParam from './getDisplayParam.js';
 export * as getEnergy from './getEnergy.js';
 export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';

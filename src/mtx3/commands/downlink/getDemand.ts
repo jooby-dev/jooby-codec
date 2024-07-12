@@ -1,11 +1,11 @@
 /**
- * Downlink command to read load and voltage graphs.
+ * Downlink command to read load graphs.
  *
  * @packageDocumentation
  *
  * @example
  * ```js
- * import * as getDemand from 'jooby-codec/mtx/commands/downlink/getDemand.js';
+ * import * as getDemand from 'jooby-codec/mtx3/commands/downlink/getDemand.js';
  *
  * const parameters = {
  *     date: {
@@ -13,7 +13,7 @@
  *         month: 6,
  *         date: 18
  *     },
- *     energyType: 1,
+ *     demandParam: 0x81,
  *     firstIndex: 0,
  *     count: 2,
  *     period: 30
@@ -24,17 +24,16 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [118, 7, 42, 210, 1, 0, 0, 2, 30]
+ * [118, 7, 42, 210, 129, 0, 0, 2, 30]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx/commands/GetDemand.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetDemand.md#request)
  */
 
-import * as command from '../../utils/command.js';
+import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetDemandParameters} from '../../utils/CommandBinaryBuffer.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
-import * as demandTypes from '../../constants/demandTypes.js';
+import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
 
 
 export const id: types.TCommandId = 0x76;
@@ -56,14 +55,18 @@ export const examples: command.TCommandExamples = {
                 month: 6,
                 date: 18
             },
-            energyType: demandTypes.A_PLUS,
+            demandParam: 0x81,
             firstIndex: 0,
             count: 2,
             period: 30
         },
         bytes: [
             0x76, 0x07,
-            0x2a, 0xd2, 0x01, 0x00, 0x00, 0x02, 0x1e
+            0x2a, 0xd2,
+            0x81,
+            0x00, 0x00,
+            0x02,
+            0x1e
         ]
     }
 };
