@@ -55,6 +55,7 @@ export * as turnRelayOn from '../../../mtx/commands/downlink/turnRelayOn.js';
 export * as getCriticalEvent from './getCriticalEvent.js';
 export * as getDayDemand from './getDayDemand.js';
 export * as getDayDemandExport from './getDayDemandExport.js';
+export * as getDemand from './getDemand.js';
 export * as getDisplayParam from './getDisplayParam.js';
 export * as getEnergy from './getEnergy.js';
 export * as getEnergyDayPrevious from './getEnergyDayPrevious.js';

@@ -891,7 +891,7 @@ export interface IGetDemandParameters {
     /**
      * Packed date.
      */
-    date: types.IDate;
+    date: types.IDate,
 
     /**
      * Possible value is one of {@link demandTypes}.
@@ -1308,8 +1308,8 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getEvent (): IEvent,
     setEvent ( event: IEvent ),
 
-    getDemandParameters (): IGetDemandParameters,
-    setDemandParameters ( parameters: IGetDemandParameters ),
+    getDemand (): IGetDemandParameters,
+    setDemand ( parameters: IGetDemandParameters ),
 
     getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
     setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
@@ -1861,13 +1861,13 @@ CommandBinaryBuffer.prototype.setEvent = function ( event: IEvent ) {
     }
 };
 
-CommandBinaryBuffer.prototype.getDemandParameters = function (): IGetDemandParameters {
+CommandBinaryBuffer.prototype.getDemand = function (): IGetDemandParameters {
     const date0 = this.getUint8();
     const date1 = this.getUint8();
 
     return {
         date: {
-            year: (date0 >> 1),
+            year: date0 >> 1,
             month: ((date0 << 3) & 0x0f) | (date1 >> 5),
             date: date1 & 0x1f
         },
@@ -1878,7 +1878,7 @@ CommandBinaryBuffer.prototype.getDemandParameters = function (): IGetDemandParam
     };
 };
 
-CommandBinaryBuffer.prototype.setDemandParameters = function ( parameters: IGetDemandParameters ) {
+CommandBinaryBuffer.prototype.setDemand = function ( parameters: IGetDemandParameters ) {
     const date0 = (parameters.date.year << 1) | ((parameters.date.month >> 3) & 0x01);
     const date1 = ((parameters.date.month << 5) & 0xe0) | (parameters.date.date & 0x1f);
 
