@@ -1,15 +1,15 @@
 /**
- * Uplink command to get the maximum power for the day (`II` - `III` quadrant).
+ * Uplink command to get the maximum power for the day.
  *
- * The corresponding downlink command: `getDayMaxDemandExport`.
+ * The corresponding downlink command: `getDayMaxDemand`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getDayMaxDemandExport from 'jooby-codec/mtx3/commands/uplink/getDayMaxDemandExport.js';
+ * import * as getDayMaxDemand from 'jooby-codec/mtx3/commands/uplink/getDayMaxDemand.js';
  *
- * // response to getDayMaxDemandExport downlink command
+ * // response to getDayMaxDemand downlink command
  * const bytes = [
  *     0x17, 0x03, 0x0c,
  *     0x00, 0x0a, 0x00, 0x00, 0x00, 0x64, 0x01, 0x17, 0x00, 0x00, 0x07, 0xd0, 0x08, 0x0f, 0x00, 0x00, 0x15, 0xb3,
@@ -19,7 +19,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = getDayMaxDemandExport.fromBytes(bytes);
+ * const parameters = getDayMaxDemand.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -78,7 +78,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/uplink/GetDayMaxDemandExport.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/uplink/GetDayMaxDemand.md#response)
  */
 
 import * as types from '../../types.js';
@@ -87,8 +87,8 @@ import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetDayMaxDemandResponseParameters} from '../../utils/CommandBinaryBuffer.js';
 
 
-export const id: types.TCommandId = 0x58;
-export const name: types.TCommandName = 'getDayMaxDemandExport';
+export const id: types.TCommandId = 0x31;
+export const name: types.TCommandName = 'getDayMaxDemand';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 75;
@@ -155,7 +155,7 @@ export const examples: command.TCommandExamples = {
             ]
         },
         bytes: [
-            0x58, 0x4b,
+            0x31, 0x4b,
             0x17, 0x03, 0x0c,
             0x00, 0x0a, 0x00, 0x00, 0x00, 0x64, 0x01, 0x17, 0x00, 0x00, 0x07, 0xd0, 0x08, 0x0f, 0x00, 0x00, 0x15, 0xb3,
             0x02, 0x14, 0x00, 0x00, 0x03, 0xe8, 0x03, 0x18, 0x00, 0x00, 0x4e, 0x20, 0x09, 0x10, 0x00, 0x00, 0xd9, 0x03,
@@ -190,7 +190,5 @@ export const toBytes = ( parameters: IGetDayMaxDemandResponseParameters ): types
 
     buffer.setDayMaxDemandResponse(parameters);
 
-    // todo: investigate all uses of getBytesToOffset in mtx
-    // consider some additional mechanism to validate user input
     return command.toBytes(id, buffer.getBytesToOffset());
 };
