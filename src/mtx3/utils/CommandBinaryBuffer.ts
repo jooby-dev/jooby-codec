@@ -1244,7 +1244,7 @@ export interface IMaxDemand {
     vareMax: types.TInt32
 }
 
-export interface IGetDayMaxDemandExportResponseParameters {
+export interface IGetDayMaxDemandResponseParameters {
     date: types.IDate,
 
     /** values for 4 tariffs */
@@ -1574,8 +1574,8 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     getMaxDemand (): IMaxDemand,
     setMaxDemand ( maxDemand: IMaxDemand ),
 
-    getDayMaxDemandResponse (): IGetDayMaxDemandExportResponseParameters,
-    setDayMaxDemandResponse ( event: IGetDayMaxDemandExportResponseParameters ),
+    getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
+    setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
 
     getMonthMaxDemandResponse (): IGetMonthMaxDemandExportResponseParameters,
     setMonthMaxDemandResponse ( event: IGetMonthMaxDemandExportResponseParameters ),
@@ -1872,7 +1872,7 @@ CommandBinaryBuffer.prototype.setMaxDemand = function ( maxDemand: IMaxDemand ) 
     this.setInt32(maxDemand.vareMax);
 };
 
-CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxDemandExportResponseParameters {
+CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxDemandResponseParameters {
     const date = this.getDate();
 
     // 4 tariffs
@@ -1881,7 +1881,7 @@ CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxD
     return {date, maxDemands};
 };
 
-CommandBinaryBuffer.prototype.setDayMaxDemandResponse = function ( parameters: IGetDayMaxDemandExportResponseParameters ) {
+CommandBinaryBuffer.prototype.setDayMaxDemandResponse = function ( parameters: IGetDayMaxDemandResponseParameters ) {
     this.setDate(parameters.date);
 
     // 4 tariffs

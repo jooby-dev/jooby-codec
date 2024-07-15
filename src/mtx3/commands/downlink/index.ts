@@ -11,6 +11,7 @@ export * as getCorrectTime from '../../../mtx/commands/downlink/getCorrectTime.j
 export * as getCurrentStatusMeter from '../../../mtx/commands/downlink/getCurrentStatusMeter.js';
 export * as getCurrentValues from '../../../mtx/commands/downlink/getCurrentValues.js';
 export * as getDateTime from '../../../mtx/commands/downlink/getDateTime.js';
+export * as getDayMaxDemand from '../../../mtx/commands/downlink/getDayMaxDemand.js';
 export * as getDayMaxDemandExport from '../../../mtx/commands/downlink/getDayMaxDemandExport.js';
 export * as getDayProfile from '../../../mtx/commands/downlink/getDayProfile.js';
 export * as getDeviceId from '../../../mtx/commands/downlink/getDeviceId.js';

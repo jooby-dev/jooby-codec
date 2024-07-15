@@ -1,6 +1,8 @@
 /**
  * Downlink command to get the maximum power of active energy (A+) for the day.
  *
+ * Supported in MTX1 and MTX3 devices.
+ *
  * @packageDocumentation
  *
  * @example
