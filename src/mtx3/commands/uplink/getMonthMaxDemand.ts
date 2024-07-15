@@ -1,15 +1,15 @@
 /**
- * Uplink command to get the maximum power for the month (`II` - `III` quadrant).
+ * Uplink command to get the maximum power for the month.
  *
- * The corresponding downlink command: `getMonthMaxDemandExport`.
+ * The corresponding downlink command: `getMonthMaxDemand`.
  *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getMonthMaxDemandExport from 'jooby-codec/mtx3/commands/uplink/getMonthMaxDemandExport.js';
+ * import * as getMonthMaxDemand from 'jooby-codec/mtx3/commands/uplink/getMonthMaxDemand.js';
  *
- * // response to getMonthMaxDemandExport downlink command
+ * // response to getMonthMaxDemand downlink command
  * const bytes = [
  *     0x17, 0x03,
  *     0x00, 0x0a, 0x00, 0x00, 0x00, 0x64, 0x01, 0x17, 0x00, 0x00, 0x07, 0xd0, 0x08, 0x0f, 0x00, 0x00, 0x15, 0xb3,
@@ -19,7 +19,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = getMonthMaxDemandExport.fromBytes(bytes);
+ * const parameters = getMonthMaxDemand.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -77,7 +77,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/uplink/GetMonthMaxDemandExport.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/uplink/GetMonthMaxDemand.md#response)
  */
 
 import * as types from '../../types.js';
@@ -86,8 +86,8 @@ import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetMonthMaxDemandResponseParameters} from '../../utils/CommandBinaryBuffer.js';
 
 
-export const id: types.TCommandId = 0x59;
-export const name: types.TCommandName = 'getMonthMaxDemandExport';
+export const id: types.TCommandId = 0x32;
+export const name: types.TCommandName = 'getMonthMaxDemand';
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 74;
@@ -153,7 +153,7 @@ export const examples: command.TCommandExamples = {
             ]
         },
         bytes: [
-            0x59, 0x4a,
+            0x32, 0x4a,
             0x17, 0x03,
             0x00, 0x0a, 0x00, 0x00, 0x00, 0x64, 0x01, 0x17, 0x00, 0x00, 0x07, 0xd0, 0x08, 0x0f, 0x00, 0x00, 0x15, 0xb3,
             0x02, 0x14, 0x00, 0x00, 0x03, 0xe8, 0x03, 0x18, 0x00, 0x00, 0x4e, 0x20, 0x09, 0x10, 0x00, 0x00, 0xd9, 0x03,

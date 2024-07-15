@@ -1251,7 +1251,7 @@ export interface IGetDayMaxDemandResponseParameters {
     maxDemands: Array<IMaxDemand>
 }
 
-export interface IGetMonthMaxDemandExportResponseParameters {
+export interface IGetMonthMaxDemandResponseParameters {
     date: {
         year: types.TYear2000,
         month: types.TMonth,
@@ -1577,8 +1577,8 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
     setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
 
-    getMonthMaxDemandResponse (): IGetMonthMaxDemandExportResponseParameters,
-    setMonthMaxDemandResponse ( event: IGetMonthMaxDemandExportResponseParameters ),
+    getMonthMaxDemandResponse (): IGetMonthMaxDemandResponseParameters,
+    setMonthMaxDemandResponse ( event: IGetMonthMaxDemandResponseParameters ),
 
     getDemand (): IGetDemandParameters,
     setDemand ( parameters: IGetDemandParameters )
@@ -1888,7 +1888,7 @@ CommandBinaryBuffer.prototype.setDayMaxDemandResponse = function ( parameters: I
     parameters.maxDemands.forEach(value => this.setMaxDemand(value));
 };
 
-CommandBinaryBuffer.prototype.getMonthMaxDemandResponse = function (): IGetMonthMaxDemandExportResponseParameters {
+CommandBinaryBuffer.prototype.getMonthMaxDemandResponse = function (): IGetMonthMaxDemandResponseParameters {
     const date = {
         year: this.getUint8(),
         month: this.getUint8()
@@ -1900,7 +1900,7 @@ CommandBinaryBuffer.prototype.getMonthMaxDemandResponse = function (): IGetMonth
     return {date, maxDemands};
 };
 
-CommandBinaryBuffer.prototype.setMonthMaxDemandResponse = function ( parameters: IGetMonthMaxDemandExportResponseParameters ) {
+CommandBinaryBuffer.prototype.setMonthMaxDemandResponse = function ( parameters: IGetMonthMaxDemandResponseParameters ) {
     this.setUint8(parameters.date.year);
     this.setUint8(parameters.date.month);
 
