@@ -26,6 +26,7 @@ export * as getHalfhoursEnergies from '../../../mtx/commands/downlink/getHalfhou
 export * as getMagneticFieldThreshold from '../../../mtx/commands/downlink/getMagneticFieldThreshold.js';
 export * as getMonthDemand from '../../../mtx/commands/downlink/getMonthDemand.js';
 export * as getMonthDemandExport from '../../../mtx/commands/downlink/getMonthDemandExport.js';
+export * as getMonthMaxDemand from '../../../mtx/commands/downlink/getMonthMaxDemand.js';
 export * as getMonthMaxDemandExport from '../../../mtx/commands/downlink/getMonthMaxDemandExport.js';
 export * as getOperatorParameters from '../../../mtx/commands/downlink/getOperatorParameters.js';
 export * as getRatePlanInfo from '../../../mtx/commands/downlink/getRatePlanInfo.js';
