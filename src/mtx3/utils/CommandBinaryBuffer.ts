@@ -1267,7 +1267,7 @@ export interface IGetDemandParameters {
      */
     date: types.IDate,
 
-    demandParam: types.TDemandParam,
+    demandParam: TDemandParam,
 
     /**
      * Starting block number of requested data.
@@ -1296,6 +1296,96 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
     demands: Array<types.TUint16>
 }
 
+/**
+ * Type of energy, or other parameters for averaged energy and voltage profiles.
+ *
+ * | Value  | Description                                          |
+ * | ------ | ---------------------------------------------------- |
+ * | `1`    | Get `15/30/60`-minute load profile `A+` phase `A`    |
+ * | `2`    | Get `15/30/60`-minute load profile `A+` phase `B`    |
+ * | `3`    | Get `15/30/60`-minute load profile `A+` phase `C`    |
+ * | `4`    | Get `15/30/60`-minute load profile `A-` phase `A`    |
+ * | `5`    | Get `15/30/60`-minute load profile `A-` phase `B`    |
+ * | `6`    | Get `15/30/60`-minute load profile `A-` phase `C`    |
+ * | `7`    | Get `15/30/60`-minute load profile `A+R+` phase `A`  |
+ * | `8`    | Get `15/30/60`-minute load profile `A+R+` phase `B`  |
+ * | `9`    | Get `15/30/60`-minute load profile `A+R+` phase `C`  |
+ * | `10`   | Get `15/30/60`-minute load profile `A+R-` phase `A`  |
+ * | `11`   | Get `15/30/60`-minute load profile `A+R-` phase `B`  |
+ * | `12`   | Get `15/30/60`-minute load profile `A+R-` phase `C`  |
+ * | `13`   | Get `15/30/60`-minute load profile `A-R+` phase `A`  |
+ * | `14`   | Get `15/30/60`-minute load profile `A-R+` phase `B`  |
+ * | `15`   | Get `15/30/60`-minute load profile `A-R+` phase `C`  |
+ * | `16`   | Get `15/30/60`-minute load profile `A-R-` phase `A`  |
+ * | `17`   | Get `15/30/60`-minute load profile `A-R-` phase `B`  |
+ * | `18`   | Get `15/30/60`-minute load profile `A-R-` phase `C`  |
+ * | `19`   | Get `15/30/60`-minute load profile `R+` phase `A`    |
+ * | `20`   | Get `15/30/60`-minute load profile `R+` phase `B`    |
+ * | `21`   | Get `15/30/60`-minute load profile `R+` phase `C`    |
+ * | `22`   | Get `15/30/60`-minute load profile `R-` phase `A`    |
+ * | `23`   | Get `15/30/60`-minute load profile `R-` phase `B`    |
+ * | `24`   | Get `15/30/60`-minute load profile `R-` phase `C`    |
+ * | `25`   | Get `15/30/60`-minute voltage profile phase `A`      |
+ * | `26`   | Get `15/30/60`-minute voltage profile phase `B`      |
+ * | `27`   | Get `15/30/60`-minute voltage profile phase `C`      |
+ * | `28`   | Get `10`-minute voltage profile phase `A`            |
+ * | `29`   | Get `10`-minute voltage profile phase `B`            |
+ * | `30`   | Get `10`-minute voltage profile phase `C`            |
+ * | `31`   | Get `15/30/60`-minute current profile phase `A`      |
+ * | `32`   | Get `15/30/60`-minute current profile phase `B`      |
+ * | `33`   | Get `15/30/60`-minute current profile phase `C`      |
+ * | `0x81` | Get active energy profile `A+` `1.4.0`               |
+ * | `0x82` | Get active energy profile `A-` `2.4.0`               |
+ * | `0x84` | Get reactive energy profile `A+R+` `3.4.0` (`7.4.0`) |
+ * | `0x88` | Get reactive energy profile `A+R-` `4.4.0` (`8.4.0`) |
+ * | `0x90` | Get reactive energy profile `A-R+` `5.8.0`           |
+ * | `0xA0` | Get reactive energy profile `A-R-` `6.8.0`           |
+ * | `0xB0` | Get profile recorded in `Channel 1`                  |
+ * | `0xB1` | Get profile recorded in `Channel 2`                  |
+ * | `0xB2` | Get profile recorded in `Channel 3`                  |
+ * | `0xB3` | Get profile recorded in `Channel 4`                  |
+ * | `0xB4` | Get profile recorded in `Channel 5`                  |
+ * | `0xB5` | Get profile recorded in `Channel 6`                  |
+ */
+export type TDemandParam = types.TUint8;
+
+/**
+ * Load profile.
+ *
+ * | Value | Parameter                                                                    |
+ * | ----- | ---------------------------------------------------------------------------- |
+ * | `0`   | Get load profile specified by `channel`                                      |
+ * | `1`   | Get `15/30/60`-minute load profile `A+` phase `A`                            |
+ * | `2`   | Get `15/30/60`-minute load profile `A+` phase `B`                            |
+ * | `3`   | Get `15/30/60`-minute load profile `A+` phase `C`                            |
+ * | `4`   | Get `15/30/60`-minute load profile `A-` phase `A`                            |
+ * | `5`   | Get `15/30/60`-minute load profile `A-` phase `B`                            |
+ * | `6`   | Get `15/30/60`-minute load profile `A-` phase `C`                            |
+ * | `7`   | Get `15/30/60`-minute load profile `A+R+` phase `A`                          |
+ * | `8`   | Get `15/30/60`-minute load profile `A+R+` phase `B`                          |
+ * | `9`   | Get `15/30/60`-minute load profile `A+R+` phase `C`                          |
+ * | `10`  | Get `15/30/60`-minute load profile `A+R-` phase `A`                          |
+ * | `11`  | Get `15/30/60`-minute load profile `A+R-` phase `B`                          |
+ * | `12`  | Get `15/30/60`-minute load profile `A+R-` phase `C`                          |
+ * | `13`  | Get `15/30/60`-minute load profile `A-R+` phase `A`                          |
+ * | `14`  | Get `15/30/60`-minute load profile `A-R+` phase `B`                          |
+ * | `15`  | Get `15/30/60`-minute load profile `A-R+` phase `C`                          |
+ * | `16`  | Get `15/30/60`-minute load profile `A-R-` phase `A`                          |
+ * | `17`  | Get `15/30/60`-minute load profile `A-R-` phase `B`                          |
+ * | `18`  | Get `15/30/60`-minute load profile `A-R-` phase `C`                          |
+ * | `19`  | Get `15/30/60`-minute load profile `R+` phase `A` (since build `302.17.009`) |
+ * | `20`  | Get `15/30/60`-minute load profile `R+` phase `B` (since build `302.17.009`) |
+ * | `21`  | Get `15/30/60`-minute load profile `R+` phase `C` (since build `302.17.009`) |
+ * | `22`  | Get `15/30/60`-minute load profile `R-` phase `A` (since build `302.17.009`) |
+ * | `23`  | Get `15/30/60`-minute load profile `R-` phase `B` (since build `302.17.009`) |
+ * | `24`  | Get `15/30/60`-minute load profile `R-` phase `C` (since build `302.17.009`) |
+ */
+export type TChannelParameter = types.TUint8;
+
+/**
+ * Channel number from `0` to `5`. If `channelParameter` is `0`, representing different load profiles.
+ */
+export type TChannel = types.TUint8;
 
 export const OPERATOR_PARAMETERS_SIZE = 95;
 export const OPERATOR_PARAMETERS_EXTENDED_SIZE = 9;

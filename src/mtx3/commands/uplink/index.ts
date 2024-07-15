@@ -59,6 +59,7 @@ export * as getEnergyExport from './getEnergyExport.js';
 export * as getEnergyExportDayPrevious from './getEnergyExportDayPrevious.js';
 export * as getExtendedCurrentValues from './getExtendedCurrentValues.js';
 export * as getHalfHourDemand from './getHalfHourDemand.js';
+export * as getHalfHourDemandChannel from './getHalfHourDemandChannel.js';
 export * as getHalfHourDemandExport from './getHalfHourDemandExport.js';
 export * as getHalfHourDemandVare from './getHalfHourDemandVare.js';
 export * as getHalfHourDemandVareExport from './getHalfHourDemandVareExport.js';
