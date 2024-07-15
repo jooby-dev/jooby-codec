@@ -1,5 +1,5 @@
 /**
- * Uplink command to get the maximum power for the day (`II` - `III` quadrant).
+ * Uplink command to get the maximum power for the month.
  *
  * The corresponding downlink command: `getMonthMaxDemand`.
  *
