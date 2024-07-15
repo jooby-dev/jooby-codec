@@ -1,5 +1,5 @@
 /**
- * Uplink command to get half hours for a programmable channel by date.
+ * Uplink command to get half hours for the selected channel by date.
  *
  * The corresponding downlink command: `getHalfHourDemandChannel`.
  *

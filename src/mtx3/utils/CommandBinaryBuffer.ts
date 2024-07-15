@@ -1383,7 +1383,8 @@ export type TDemandParam = types.TUint8;
 export type TChannelParameter = types.TUint8;
 
 /**
- * Channel number from `0` to `5`. If `channelParameter` is `0`, representing different load profiles.
+ * Channel number from `0` to `5`.
+ * If `channelParameter` is `0`, representing different load profiles.
  */
 export type TChannel = types.TUint8;
 
