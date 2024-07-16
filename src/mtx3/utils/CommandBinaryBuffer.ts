@@ -1388,8 +1388,189 @@ export type TChannelParameter = types.TUint8;
  */
 export type TChannel = types.TUint8;
 
+export interface IRelaySetExtOperatorParameter2 {
+    /**
+     * Turn off relay upon detection of a magnetic field.
+     */
+    RELAY_OFF_MAGNET: boolean,
+
+    /**
+     * Turn on after timeout {@link IOperatorParametersExtended.timeoutRelayOn}.
+     */
+    RELAY_ON_MAGNET_TIMEOUT: boolean,
+
+    /**
+     * Turn on relay after removal of the magnetic field.
+     */
+    RELAY_ON_MAGNET_AUTO: boolean
+}
+
+/**
+ * Load profile parameter number.
+ *
+ * | Value | Parameter                                                                    |
+ * | ----- | ---------------------------------------------------------------------------- |
+ * | `0`   | Additional load profile not used                                             |
+ * | `1`   | Get `15/30/60`-minute load profile `A+` phase `A`                            |
+ * | `2`   | Get `15/30/60`-minute load profile `A+` phase `B`                            |
+ * | `3`   | Get `15/30/60`-minute load profile `A+` phase `C`                            |
+ * | `4`   | Get `15/30/60`-minute load profile `A-` phase `A`                            |
+ * | `5`   | Get `15/30/60`-minute load profile `A-` phase `B`                            |
+ * | `6`   | Get `15/30/60`-minute load profile `A-` phase `C`                            |
+ * | `7`   | Get `15/30/60`-minute load profile `A+R+` phase `A`                          |
+ * | `8`   | Get `15/30/60`-minute load profile `A+R+` phase `B`                          |
+ * | `9`   | Get `15/30/60`-minute load profile `A+R+` phase `C`                          |
+ * | `10`  | Get `15/30/60`-minute load profile `A+R-` phase `A`                          |
+ * | `11`  | Get `15/30/60`-minute load profile `A+R-` phase `B`                          |
+ * | `12`  | Get `15/30/60`-minute load profile `A+R-` phase `C`                          |
+ * | `13`  | Get `15/30/60`-minute load profile `A-R+` phase `A`                          |
+ * | `14`  | Get `15/30/60`-minute load profile `A-R+` phase `B`                          |
+ * | `15`  | Get `15/30/60`-minute load profile `A-R+` phase `C`                          |
+ * | `16`  | Get `15/30/60`-minute load profile `A-R-` phase `A`                          |
+ * | `17`  | Get `15/30/60`-minute load profile `A-R-` phase `B`                          |
+ * | `18`  | Get `15/30/60`-minute load profile `A-R-` phase `C`                          |
+ * | `19`  | Get `15/30/60`-minute load profile `R+` phase `A` (since build `302.17.009`) |
+ * | `20`  | Get `15/30/60`-minute load profile `R+` phase `B` (since build `302.17.009`) |
+ * | `21`  | Get `15/30/60`-minute load profile `R+` phase `C` (since build `302.17.009`) |
+ * | `22`  | Get `15/30/60`-minute load profile `R-` phase `A` (since build `302.17.009`) |
+ * | `23`  | Get `15/30/60`-minute load profile `R-` phase `B` (since build `302.17.009`) |
+ * | `24`  | Get `15/30/60`-minute load profile `R-` phase `C` (since build `302.17.009`) |
+ * | `25`  | Get `15/30`-minute voltage profile phase `A` (since build `20.03.23.0.0.19`) |
+ * | `26`  | Get `15/30`-minute voltage profile phase `B` (since build `20.03.23.0.0.19`) |
+ * | `27`  | Get `15/30`-minute voltage profile phase `C` (since build `20.03.23.0.0.19`) |
+ * | `28`  | Get `10`-minute voltage profile phase `A` (since build `20.03.23.0.0.19`)    |
+ * | `29`  | Get `10`-minute voltage profile phase `B` (since build `20.03.23.0.0.19`)    |
+ * | `30`  | Get `10`-minute voltage profile phase `C` (since build `20.03.23.0.0.19`)    |
+ * | `31`  | Get `15/30`-minute current profile phase `A` (since build `20.03.23.0.0.19`) |
+ * | `32`  | Get `15/30`-minute current profile phase `B` (since build `20.03.23.0.0.19`) |
+ * | `33`  | Get `15/30`-minute current profile phase `C` (since build `20.03.23.0.0.19`) |
+ */
+export type TChannelOperatorParameter2 = types.TUint8;
+
+export interface IDisplaySet24OperatorParameter2 {
+    /**
+     * Optical port speed (for additional display only).
+     */
+    OPTOPORT_SPEED: boolean;
+}
+
+export interface IOperatorParametersExtended2 {
+    /**
+     * Allowed correction interval.
+     * This parameter can only be set with third-level access.
+     */
+    deltaCorMin: types.TUint8,
+
+    /**
+     * Timeout for relay deactivation due to magnetic interference, in seconds.
+     */
+    timeoutMagnetOff: types.TUint8,
+
+    /**
+     * Extended relay settings.
+     */
+    relaySetExt: IRelaySetExtOperatorParameter2,
+
+    /**
+     * Timeout for relay activation after removal of magnetic field, in seconds.
+     */
+    timeoutMagnetOn: types.TUint8,
+
+    /**
+     * Default PLC phase.
+     *
+     * | Value | Phase |
+     * | ----- | ----- |
+     * | `0`   | `A`   |
+     * | `1`   | `A`   |
+     * | `2`   | `B`   |
+     * | `3`   | `C`   |
+     */
+    phaseDefault: types.TUint8,
+
+    /**
+     * Display settings for additional meter readings screens.
+     *
+     * since build `302.15.001`
+     */
+    displaySet21: types.TUint32,
+
+    /**
+     * Display settings for additional meter readings screens.
+     *
+     * since build `302.15.001`
+     */
+    displaySet22: types.TUint32,
+
+    /**
+     * Display settings for additional meter readings screens.
+     *
+     * since build `302.15.001`
+     */
+    displaySet23: types.TUint32,
+
+    /**
+     * Display settings for additional meter readings screens.
+     *
+     * since build `302.15.001`
+     */
+    displaySet24: IDisplaySet24OperatorParameter2,
+
+    /**
+     * Additional load profile parameter 1.
+     *
+     * since build `302.17.001`
+     */
+    channel1: TChannelOperatorParameter2,
+
+    /**
+     * Additional load profile parameter 2.
+     *
+     * since build `302.17.001`
+     */
+    channel2: TChannelOperatorParameter2,
+
+    /**
+     * Additional load profile parameter 3.
+     *
+     * since build `302.17.001`
+     */
+    channel3: TChannelOperatorParameter2,
+
+    /**
+     * Additional load profile parameter 4.
+     *
+     * since build `302.17.001`
+     */
+    channel4: TChannelOperatorParameter2,
+
+    /**
+     * Additional load profile parameter 5.
+     *
+     * since build `302.17.001`
+     */
+    channel5: TChannelOperatorParameter2,
+
+    /**
+     * Additional load profile parameter 6.
+     *
+     * since build `302.17.001`
+     */
+    channel6: TChannelOperatorParameter2,
+
+    /**
+     * Allowed correction period, in hours (`24` hours by default).
+     *
+     * If `BIT7`=`0` (default is `0`), time correction crossing the half-hour boundary is prohibited.
+     *
+     * since build `302.25.001`
+     */
+    timeCorrectPeriod: types.TUint8
+}
+
 export const OPERATOR_PARAMETERS_SIZE = 95;
 export const OPERATOR_PARAMETERS_EXTENDED_SIZE = 9;
+export const OPERATOR_PARAMETERS_EXTENDED2_SIZE = 28;
 export const PACKED_ENERGY_TYPE_SIZE = 1;
 const ENERGY_TYPE_BITS = 4;
 
@@ -1581,6 +1762,16 @@ export const define1Mask = {
     ALLOW_BROWNOUT_INDICATION: 1 << 7
 };
 
+export const displaySet24Mask = {
+    OPTOPORT_SPEED: 1 << 26
+};
+
+export const relaySetExtMask = {
+    RELAY_OFF_MAGNET: 1 << 0,
+    RELAY_ON_MAGNET_TIMEOUT: 1 << 1,
+    RELAY_ON_MAGNET_AUTO: 1 << 2
+};
+
 
 const getSpeedOptoPort = ( value: number ): ISpeedOptoPortOperatorParameter => ({
     plc: baudRates.valueToRate.plc[bitSet.extractBits(value, 4, 1)],
@@ -1672,7 +1863,10 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     setMonthMaxDemandResponse ( event: IGetMonthMaxDemandResponseParameters ),
 
     getDemand (): IGetDemandParameters,
-    setDemand ( parameters: IGetDemandParameters )
+    setDemand ( parameters: IGetDemandParameters ),
+
+    getOperatorParametersExtended2(): IOperatorParametersExtended2,
+    setOperatorParametersExtended2 ( operatorParametersExtended: IOperatorParametersExtended2 )
 }>;
 
 
@@ -2026,6 +2220,46 @@ CommandBinaryBuffer.prototype.setDemand = function ( parameters: IGetDemandParam
     this.setUint16(parameters.firstIndex);
     this.setUint8(parameters.count);
     this.setUint8(parameters.period);
+};
+
+CommandBinaryBuffer.prototype.getOperatorParametersExtended2 = function (): IOperatorParametersExtended2 {
+    return {
+        deltaCorMin: this.getUint8(),
+        timeoutMagnetOff: this.getUint8(),
+        relaySetExt: (bitSet.toObject(relaySetExtMask, this.getUint8()) as unknown) as IRelaySetExtOperatorParameter2,
+        timeoutMagnetOn: this.getUint8(),
+        phaseDefault: this.getUint8(),
+        displaySet21: this.getUint32(),
+        displaySet22: this.getUint32(),
+        displaySet23: this.getUint32(),
+        displaySet24: (bitSet.toObject(displaySet24Mask, this.getUint32()) as unknown) as IDisplaySet24OperatorParameter2,
+        channel1: this.getUint8(),
+        channel2: this.getUint8(),
+        channel3: this.getUint8(),
+        channel4: this.getUint8(),
+        channel5: this.getUint8(),
+        channel6: this.getUint8(),
+        timeCorrectPeriod: this.getUint8()
+    };
+};
+
+CommandBinaryBuffer.prototype.setOperatorParametersExtended2 = function (operatorParametersExtended2: IOperatorParametersExtended2) {
+    this.setUint8(operatorParametersExtended2.deltaCorMin);
+    this.setUint8(operatorParametersExtended2.timeoutMagnetOff);
+    this.setUint8(bitSet.fromObject(relaySetExtMask, operatorParametersExtended2.relaySetExt as unknown as bitSet.TBooleanObject));
+    this.setUint8(operatorParametersExtended2.timeoutMagnetOn);
+    this.setUint8(operatorParametersExtended2.phaseDefault);
+    this.setUint32(operatorParametersExtended2.displaySet21);
+    this.setUint32(operatorParametersExtended2.displaySet22);
+    this.setUint32(operatorParametersExtended2.displaySet23);
+    this.setUint32(bitSet.fromObject(displaySet24Mask, operatorParametersExtended2.displaySet24 as unknown as bitSet.TBooleanObject));
+    this.setUint8(operatorParametersExtended2.channel1);
+    this.setUint8(operatorParametersExtended2.channel2);
+    this.setUint8(operatorParametersExtended2.channel3);
+    this.setUint8(operatorParametersExtended2.channel4);
+    this.setUint8(operatorParametersExtended2.channel5);
+    this.setUint8(operatorParametersExtended2.channel6);
+    this.setUint8(operatorParametersExtended2.timeCorrectPeriod);
 };
 
 export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithType ): number => {
