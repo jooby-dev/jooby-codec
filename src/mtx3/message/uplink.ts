@@ -138,8 +138,10 @@ toBytesMap[commands.getMonthMaxDemand.id] = commands.getMonthMaxDemand.toBytes;
 toBytesMap[commands.getMonthMaxDemandExport.id] = commands.getMonthMaxDemandExport.toBytes;
 toBytesMap[commands.getOperatorParameters.id] = commands.getOperatorParameters.toBytes;
 toBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.toBytes;
+toBytesMap[commands.getOperatorParametersExtended2.id] = commands.getOperatorParametersExtended2.toBytes;
 toBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.toBytes;
 toBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.toBytes;
+toBytesMap[commands.setOperatorParametersExtended2.id] = commands.setOperatorParametersExtended2.toBytes;
 
 
 // commands identical to MTX1
@@ -208,8 +210,10 @@ fromBytesMap[commands.getMonthMaxDemand.id] = commands.getMonthMaxDemand.fromByt
 fromBytesMap[commands.getMonthMaxDemandExport.id] = commands.getMonthMaxDemandExport.fromBytes;
 fromBytesMap[commands.getOperatorParameters.id] = commands.getOperatorParameters.fromBytes;
 fromBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.fromBytes;
+fromBytesMap[commands.getOperatorParametersExtended2.id] = commands.getOperatorParametersExtended2.fromBytes;
 fromBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.fromBytes;
 fromBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.fromBytes;
+fromBytesMap[commands.setOperatorParametersExtended2.id] = commands.setOperatorParametersExtended2.fromBytes;
 
 
 // commands identical to MTX1
@@ -278,5 +282,7 @@ nameMap[commands.getMonthMaxDemand.id] = commands.getMonthMaxDemand.name;
 nameMap[commands.getMonthMaxDemandExport.id] = commands.getMonthMaxDemandExport.name;
 nameMap[commands.getOperatorParameters.id] = commands.getOperatorParameters.name;
 nameMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.name;
+nameMap[commands.getOperatorParametersExtended2.id] = commands.getOperatorParametersExtended2.name;
 nameMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.name;
 nameMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.name;
+nameMap[commands.setOperatorParametersExtended2.id] = commands.setOperatorParametersExtended2.name;

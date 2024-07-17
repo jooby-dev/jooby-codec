@@ -199,9 +199,11 @@ toBytesMap[commands.getHalfHourDemandVareExport.id] = commands.getHalfHourDemand
 toBytesMap[commands.getHalfHourDemandVari.id] = commands.getHalfHourDemandVari.toBytes;
 toBytesMap[commands.getHalfHourDemandVariExport.id] = commands.getHalfHourDemandVariExport.toBytes;
 toBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.toBytes;
+toBytesMap[commands.getOperatorParametersExtended2.id] = commands.getOperatorParametersExtended2.toBytes;
 toBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.toBytes;
 toBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.toBytes;
 toBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.toBytes;
+toBytesMap[commands.setOperatorParametersExtended2.id] = commands.setOperatorParametersExtended2.toBytes;
 
 
 // commands identical to MTX1
@@ -268,9 +270,11 @@ fromBytesMap[commands.getHalfHourDemandVareExport.id] = commands.getHalfHourDema
 fromBytesMap[commands.getHalfHourDemandVari.id] = commands.getHalfHourDemandVari.fromBytes;
 fromBytesMap[commands.getHalfHourDemandVariExport.id] = commands.getHalfHourDemandVariExport.fromBytes;
 fromBytesMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.fromBytes;
+fromBytesMap[commands.getOperatorParametersExtended2.id] = commands.getOperatorParametersExtended2.fromBytes;
 fromBytesMap[commands.setDisplayParam.id] = commands.setDisplayParam.fromBytes;
 fromBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.fromBytes;
 fromBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.fromBytes;
+fromBytesMap[commands.setOperatorParametersExtended2.id] = commands.setOperatorParametersExtended2.fromBytes;
 
 
 // commands identical to MTX1
@@ -337,6 +341,8 @@ nameMap[commands.getHalfHourDemandVareExport.id] = commands.getHalfHourDemandVar
 nameMap[commands.getHalfHourDemandVari.id] = commands.getHalfHourDemandVari.name;
 nameMap[commands.getHalfHourDemandVariExport.id] = commands.getHalfHourDemandVariExport.name;
 nameMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.name;
+nameMap[commands.getOperatorParametersExtended2.id] = commands.getOperatorParametersExtended2.name;
 nameMap[commands.setDisplayParam.id] = commands.setDisplayParam.name;
 nameMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.name;
 nameMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.name;
+nameMap[commands.setOperatorParametersExtended2.id] = commands.setOperatorParametersExtended2.name;

@@ -69,6 +69,8 @@ export * as getHalfHourDemandVareExport from './getHalfHourDemandVareExport.js';
 export * as getHalfHourDemandVari from './getHalfHourDemandVari.js';
 export * as getHalfHourDemandVariExport from './getHalfHourDemandVariExport.js';
 export * as getOperatorParametersExtended from './getOperatorParametersExtended.js';
+export * as getOperatorParametersExtended2 from './getOperatorParametersExtended2.js';
 export * as setDisplayParam from './setDisplayParam.js';
 export * as setOperatorParameters from './setOperatorParameters.js';
 export * as setOperatorParametersExtended from './setOperatorParametersExtended.js';
+export * as setOperatorParametersExtended2 from './setOperatorParametersExtended2.js';
