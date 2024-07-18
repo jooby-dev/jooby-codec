@@ -1568,9 +1568,57 @@ export interface IOperatorParametersExtended2 {
     timeCorrectPeriod: types.TUint8
 }
 
+export interface IOperatorParametersExtended4 {
+    /** Configuration for displaying meter readings in the main mode. */
+    displaySet5: IDisplaySet5OperatorParameter,
+
+    /** Configuration for displaying meter readings in the extended mode. */
+    displaySet25: IDisplaySet5OperatorParameter,
+
+    /** Configuration for displaying meter readings in the battery mode. */
+    displaySet31: IDisplaySet1OperatorParameter,
+
+    /** Configuration for displaying meter readings in the battery mode. */
+    displaySet32: IDisplaySet1OperatorParameter,
+
+    /** Configuration for displaying meter readings in the battery mode. */
+    displaySet33: IDisplaySet1OperatorParameter,
+
+    /** Configuration for displaying meter readings in the battery mode. */
+    displaySet34: IDisplaySet1OperatorParameter,
+
+    /** Configuration for displaying meter readings in the battery mode. */
+    displaySet35: IDisplaySet5OperatorParameter
+}
+
+export interface IDisplaySet5OperatorParameter {
+    /** Journal of event profile `P.98`. */
+    EVENT: boolean,
+
+    /** Journal of load graph profile `1.5.0` `P.01`. */
+    PROFILE_P01: boolean,
+
+    /** Journal of load graph profile `2.5.0` `P.02`. */
+    PROFILE_P02: boolean,
+
+    /** Journal of load graph profile `3.5.0` (`5.5.0`) `P.03`. */
+    PROFILE_P03: boolean,
+
+    /** Journal of load graph profile `4.5.0` (`6.5.0`) `P.05`. */
+    PROFILE_P04: boolean,
+
+    /** Journal of load graph profile `7.5.0` `P.05`. */
+    PROFILE_P05: boolean,
+
+    /** Journal of load graph profile `8.5.0` `P.06`. */
+    PROFILE_P06: boolean
+}
+
+
 export const OPERATOR_PARAMETERS_SIZE = 95;
 export const OPERATOR_PARAMETERS_EXTENDED_SIZE = 9;
 export const OPERATOR_PARAMETERS_EXTENDED2_SIZE = 28;
+export const OPERATOR_PARAMETERS_EXTENDED4_SIZE = 28;
 export const PACKED_ENERGY_TYPE_SIZE = 1;
 const ENERGY_TYPE_BITS = 4;
 
@@ -1712,6 +1760,16 @@ export const displaySet4Mask = {
     SORT_DISPLAY_SCREENS: 1 << 29,
     TURN_OFF_DISPLAY: 1 << 30,
     AUTO_SCREEN_SCROLLING: 1 << 31
+};
+
+const displaySet5Mask = {
+    EVENT: 1 << 0,
+    PROFILE_P01: 1 << 1,
+    PROFILE_P02: 1 << 2,
+    PROFILE_P03: 1 << 3,
+    PROFILE_P04: 1 << 4,
+    PROFILE_P05: 1 << 5,
+    PROFILE_P06: 1 << 6
 };
 
 export const relaySetMask = {
@@ -1867,6 +1925,9 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
 
     getOperatorParametersExtended2(): IOperatorParametersExtended2,
     setOperatorParametersExtended2 ( operatorParametersExtended: IOperatorParametersExtended2 )
+
+    getOperatorParametersExtended4(): IOperatorParametersExtended4,
+    setOperatorParametersExtended4 ( operatorParametersExtended: IOperatorParametersExtended4 )
 }>;
 
 
@@ -2243,7 +2304,7 @@ CommandBinaryBuffer.prototype.getOperatorParametersExtended2 = function (): IOpe
     };
 };
 
-CommandBinaryBuffer.prototype.setOperatorParametersExtended2 = function (operatorParametersExtended2: IOperatorParametersExtended2) {
+CommandBinaryBuffer.prototype.setOperatorParametersExtended2 = function ( operatorParametersExtended2: IOperatorParametersExtended2 ) {
     this.setUint8(operatorParametersExtended2.deltaCorMin);
     this.setUint8(operatorParametersExtended2.timeoutMagnetOff);
     this.setUint8(bitSet.fromObject(relaySetExtMask, operatorParametersExtended2.relaySetExt as unknown as bitSet.TBooleanObject));
@@ -2260,6 +2321,28 @@ CommandBinaryBuffer.prototype.setOperatorParametersExtended2 = function (operato
     this.setUint8(operatorParametersExtended2.channel5);
     this.setUint8(operatorParametersExtended2.channel6);
     this.setUint8(operatorParametersExtended2.timeCorrectPeriod);
+};
+
+CommandBinaryBuffer.prototype.getOperatorParametersExtended4 = function (): IOperatorParametersExtended4 {
+    return {
+        displaySet5: (bitSet.toObject(displaySet5Mask, this.getUint32()) as unknown) as IDisplaySet5OperatorParameter,
+        displaySet25: (bitSet.toObject(displaySet5Mask, this.getUint32()) as unknown) as IDisplaySet5OperatorParameter,
+        displaySet31: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet32: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet33: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet34: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet35: (bitSet.toObject(displaySet5Mask, this.getUint32()) as unknown) as IDisplaySet5OperatorParameter
+    };
+};
+
+CommandBinaryBuffer.prototype.setOperatorParametersExtended4 = function ( operatorParametersExtended: IOperatorParametersExtended4 ) {
+    this.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet5 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet25 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended.displaySet31 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended.displaySet32 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended.displaySet33 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended.displaySet34 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet35 as unknown as bitSet.TBooleanObject));
 };
 
 export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithType ): number => {

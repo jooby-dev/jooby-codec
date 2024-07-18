@@ -24,11 +24,13 @@ export * as getHalfHourDemand from '../../../mtx/commands/downlink/getHalfHourDe
 export * as getHalfHourDemandExport from '../../../mtx/commands/downlink/getHalfHourDemandExport.js';
 export * as getHalfhoursEnergies from '../../../mtx/commands/downlink/getHalfhoursEnergies.js';
 export * as getMagneticFieldThreshold from '../../../mtx/commands/downlink/getMagneticFieldThreshold.js';
+export * as getMeterInfo from '../../../mtx/commands/downlink/getMeterInfo.js';
 export * as getMonthDemand from '../../../mtx/commands/downlink/getMonthDemand.js';
 export * as getMonthDemandExport from '../../../mtx/commands/downlink/getMonthDemandExport.js';
 export * as getMonthMaxDemand from '../../../mtx/commands/downlink/getMonthMaxDemand.js';
 export * as getMonthMaxDemandExport from '../../../mtx/commands/downlink/getMonthMaxDemandExport.js';
 export * as getOperatorParameters from '../../../mtx/commands/downlink/getOperatorParameters.js';
+export * as getOperatorParametersExtended3 from '../../../mtx/commands/downlink/getOperatorParametersExtended3.js';
 export * as getRatePlanInfo from '../../../mtx/commands/downlink/getRatePlanInfo.js';
 export * as getSaldo from '../../../mtx/commands/downlink/getSaldo.js';
 export * as getSaldoParameters from '../../../mtx/commands/downlink/getSaldoParameters.js';
@@ -44,6 +46,7 @@ export * as setCorrectDateTime from '../../../mtx/commands/downlink/setCorrectDa
 export * as setCorrectTime from '../../../mtx/commands/downlink/setCorrectTime.js';
 export * as setDateTime from '../../../mtx/commands/downlink/setDateTime.js';
 export * as setDayProfile from '../../../mtx/commands/downlink/setDayProfile.js';
+export * as setOperatorParametersExtended3 from '../../../mtx/commands/downlink/setOperatorParametersExtended3.js';
 export * as setSaldo from '../../../mtx/commands/downlink/setSaldo.js';
 export * as setSaldoParameters from '../../../mtx/commands/downlink/setSaldoParameters.js';
 export * as setSeasonProfile from '../../../mtx/commands/downlink/setSeasonProfile.js';
@@ -74,3 +77,4 @@ export * as setDisplayParam from './setDisplayParam.js';
 export * as setOperatorParameters from './setOperatorParameters.js';
 export * as setOperatorParametersExtended from './setOperatorParametersExtended.js';
 export * as setOperatorParametersExtended2 from './setOperatorParametersExtended2.js';
+export * as setOperatorParametersExtended4 from './setOperatorParametersExtended4.js';
