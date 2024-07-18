@@ -34,7 +34,10 @@
 import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import {IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../utils/command.js';
+import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IEnergies} from '../../utils/CommandBinaryBuffer.js';
+import {A_PLUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
 
 
 export const id: types.TCommandId = 0x0f;
@@ -93,3 +96,10 @@ export const toBytes = ( parameters: IEnergies ): types.TBytes => {
 
     return command.toBytes(id, buffer.data);
 };
+
+
+export const toJson = ( parameters: IEnergies, {dlms, isGreen}: IDlmsJsonOptions = defaultDlmsJsonOptions ) => (
+    dlms
+        ? JSON.stringify(mapEnergiesToObisCodes(parameters, isGreen, A_PLUS_R_PLUS_R_MINUS))
+        : JSON.stringify(parameters)
+);

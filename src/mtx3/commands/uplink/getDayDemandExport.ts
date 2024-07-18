@@ -42,16 +42,22 @@
 import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import {IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../utils/command.js';
+import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
 import CommandBinaryBuffer, {
     ICommandBinaryBuffer,
     IEnergies
 } from '../../utils/CommandBinaryBuffer.js';
+import {A_MINUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
 
 
 interface IGetDayDemandExportResponseParameters {
     date: types.IDate,
     energies: IEnergies
 }
+
+
+const isGreen = true;
 
 
 export const id: types.TCommandId = 0x4f;
@@ -122,4 +128,18 @@ export const toBytes = ( parameters: IGetDayDemandExportResponseParameters ): ty
     buffer.setEnergies(parameters.energies);
 
     return command.toBytes(id, buffer.data);
+};
+
+
+export const toJson = ( parameters: IGetDayDemandExportResponseParameters, {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) => {
+    if ( !dlms ) {
+        return JSON.stringify(parameters);
+    }
+
+    const {date, energies} = parameters;
+
+    return JSON.stringify({
+        date,
+        ...mapEnergiesToObisCodes(energies, isGreen, A_MINUS_R_PLUS_R_MINUS)
+    });
 };

@@ -11,6 +11,7 @@
  *
  * // received energies
  * const bytes = [
+ *     0x18, 0x03,
  *     0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x61, 0xa8, 0x00, 0x0f, 0x12, 0x06,
  *     0x00, 0x32, 0xe0, 0x64, 0x00, 0x12, 0xd6, 0x87, 0x00, 0x09, 0xfb, 0xf1,
  *     0x00, 0x00, 0x3a, 0x98, 0x00, 0x0c, 0x0b, 0xd0, 0x00, 0x01, 0xe2, 0x40,
@@ -23,9 +24,13 @@
  * console.log(parameters);
  * // output:
  * {
- *     wh: [40301230, 3334244, 15000, 2145623],
- *     vari: [25000, 1234567, 789456, 9876543],
- *     vare: [987654, 654321, 123456, 789012]
+ *     year: 24,
+ *     month: 3,
+ *     energies: {
+ *         wh: [40301230, 3334244, 15000, 2145623],
+ *         vari: [25000, 1234567, 789456, 9876543],
+ *         vare: [987654, 654321, 123456, 789012]
+ *     }
  * }
  * ```
  *
@@ -35,13 +40,26 @@
 import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import {IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../utils/command.js';
+import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IEnergies} from '../../utils/CommandBinaryBuffer.js';
+import {A_MINUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
+
+
+interface IGetMonthDemandExportResponseParameters {
+    year: types.TYear2000,
+    month: types.TMonth,
+    energies: IEnergies
+}
+
+
+const isGreen = true;
 
 
 export const id: types.TCommandId = 0x52;
 export const name: types.TCommandName = 'getMonthDemandExport';
 export const headerSize = 2;
-export const maxSize = 48;
+export const maxSize = 50;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
@@ -53,12 +71,17 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            wh: [40301230, 3334244, 15000, 2145623],
-            vari: [25000, 1234567, 789456, 9876543],
-            vare: [987654, 654321, 123456, 789012]
+            year: 24,
+            month: 3,
+            energies: {
+                wh: [40301230, 3334244, 15000, 2145623],
+                vari: [25000, 1234567, 789456, 9876543],
+                vare: [987654, 654321, 123456, 789012]
+            }
         },
         bytes: [
-            0x52, 0x30,
+            0x52, 0x32,
+            0x18, 0x03, // date
             0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x61, 0xa8, 0x00, 0x0f, 0x12, 0x06, // tariff 1
             0x00, 0x32, 0xe0, 0x64, 0x00, 0x12, 0xd6, 0x87, 0x00, 0x09, 0xfb, 0xf1, // tariff 2
             0x00, 0x00, 0x3a, 0x98, 0x00, 0x0c, 0x0b, 0xd0, 0x00, 0x01, 0xe2, 0x40, // tariff 3
@@ -74,10 +97,14 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IEnergies => {
+export const fromBytes = ( bytes: types.TBytes ): IGetMonthDemandExportResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
-    return buffer.getEnergies();
+    return {
+        year: buffer.getUint8() as unknown as types.TYear2000,
+        month: buffer.getUint8() as unknown as types.TMonth,
+        energies: buffer.getEnergies()
+    };
 };
 
 
@@ -87,10 +114,28 @@ export const fromBytes = ( bytes: types.TBytes ): IEnergies => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IEnergies ): types.TBytes => {
+export const toBytes = ( parameters: IGetMonthDemandExportResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
 
-    buffer.setEnergies(parameters);
+    // body
+    buffer.setUint8(parameters.year as unknown as types.TUint8);
+    buffer.setUint8(parameters.month as unknown as types.TUint8);
+    buffer.setEnergies(parameters.energies);
 
     return command.toBytes(id, buffer.data);
+};
+
+
+export const toJson = ( parameters: IGetMonthDemandExportResponseParameters, {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) => {
+    if ( !dlms ) {
+        return JSON.stringify(parameters);
+    }
+
+    const {year, month, energies} = parameters;
+
+    return JSON.stringify({
+        year,
+        month,
+        ...mapEnergiesToObisCodes(energies, isGreen, A_MINUS_R_PLUS_R_MINUS)
+    });
 };
