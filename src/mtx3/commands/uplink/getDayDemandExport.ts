@@ -42,7 +42,7 @@
 import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
-import {IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../utils/command.js';
+import * as dlms from '../../constants/dlms.js';
 import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
 import CommandBinaryBuffer, {
     ICommandBinaryBuffer,
@@ -131,8 +131,8 @@ export const toBytes = ( parameters: IGetDayDemandExportResponseParameters ): ty
 };
 
 
-export const toJson = ( parameters: IGetDayDemandExportResponseParameters, {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) => {
-    if ( !dlms ) {
+export const toJson = ( parameters: IGetDayDemandExportResponseParameters, options: dlms.IJsonOptions = dlms.defaultJsonOptions ) => {
+    if ( !options.dlms ) {
         return JSON.stringify(parameters);
     }
 

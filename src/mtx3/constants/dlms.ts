@@ -4,7 +4,7 @@ import {
 } from '../../mtx/utils/command.js';
 
 
-export interface IDlmsJsonOptions extends BaseIDlmsJsonOptions {
+export interface IJsonOptions extends BaseIDlmsJsonOptions {
     /**
      * Indicates if the meter is of `G`-type (Green).
      *
@@ -16,7 +16,7 @@ export interface IDlmsJsonOptions extends BaseIDlmsJsonOptions {
     isGreen: boolean;
 }
 
-export const defaultDlmsJsonOptions = {
+export const defaultJsonOptions: IJsonOptions = {
     ...baseDefaultDlmsJsonOptions,
     isGreen: false
 };

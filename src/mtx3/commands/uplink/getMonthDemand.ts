@@ -39,7 +39,7 @@
 import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
-import {IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../utils/command.js';
+import * as dlms from '../../constants/dlms.js';
 import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IEnergies} from '../../utils/CommandBinaryBuffer.js';
 import {A_PLUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
@@ -122,8 +122,8 @@ export const toBytes = ( parameters: IGetMonthDemandResponseParameters ): types.
 };
 
 
-export const toJson = ( parameters: IGetMonthDemandResponseParameters, {dlms, isGreen}: IDlmsJsonOptions = defaultDlmsJsonOptions ) => {
-    if ( !dlms ) {
+export const toJson = ( parameters: IGetMonthDemandResponseParameters, options: dlms.IJsonOptions = dlms.defaultJsonOptions ) => {
+    if ( !options.dlms ) {
         return JSON.stringify(parameters);
     }
 
@@ -132,6 +132,6 @@ export const toJson = ( parameters: IGetMonthDemandResponseParameters, {dlms, is
     return JSON.stringify({
         year,
         month,
-        ...mapEnergiesToObisCodes(energies, isGreen, A_PLUS_R_PLUS_R_MINUS)
+        ...mapEnergiesToObisCodes(energies, options.isGreen, A_PLUS_R_PLUS_R_MINUS)
     });
 };

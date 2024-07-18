@@ -42,7 +42,7 @@
 import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
-import {IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../utils/command.js';
+import * as dlms from '../../constants/dlms.js';
 import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
 import CommandBinaryBuffer, {
     getPackedEnergiesWithDateSize,
@@ -171,8 +171,8 @@ export const toBytes = ( parameters: IGetDayDemandResponseParameters ): types.TB
 };
 
 
-export const toJson = ( parameters: IGetDayDemandResponseParameters, {dlms, isGreen}: IDlmsJsonOptions = defaultDlmsJsonOptions ) => {
-    if ( !dlms ) {
+export const toJson = ( parameters: IGetDayDemandResponseParameters, options: dlms.IJsonOptions = dlms.defaultJsonOptions ) => {
+    if ( !options.dlms ) {
         return JSON.stringify(parameters);
     }
 
@@ -180,6 +180,6 @@ export const toJson = ( parameters: IGetDayDemandResponseParameters, {dlms, isGr
 
     return JSON.stringify({
         date,
-        ...mapEnergiesToObisCodes(energies, isGreen, energyType ?? A_PLUS_R_PLUS_R_MINUS)
+        ...mapEnergiesToObisCodes(energies, options.isGreen, energyType ?? A_PLUS_R_PLUS_R_MINUS)
     });
 };

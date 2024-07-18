@@ -40,7 +40,7 @@
 import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
-import {IDlmsJsonOptions, defaultDlmsJsonOptions} from '../../utils/command.js';
+import * as dlms from '../../constants/dlms.js';
 import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IEnergies} from '../../utils/CommandBinaryBuffer.js';
 import {A_MINUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
@@ -126,8 +126,8 @@ export const toBytes = ( parameters: IGetMonthDemandExportResponseParameters ): 
 };
 
 
-export const toJson = ( parameters: IGetMonthDemandExportResponseParameters, {dlms}: IDlmsJsonOptions = defaultDlmsJsonOptions ) => {
-    if ( !dlms ) {
+export const toJson = ( parameters: IGetMonthDemandExportResponseParameters, options: dlms.IJsonOptions = dlms.defaultJsonOptions ) => {
+    if ( !options.dlms ) {
         return JSON.stringify(parameters);
     }
 
