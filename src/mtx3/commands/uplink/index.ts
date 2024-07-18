@@ -17,6 +17,8 @@ export * as getEventsCounters from '../../../mtx/commands/uplink/getEventsCounte
 export * as getEventStatus from '../../../mtx/commands/uplink/getEventStatus.js';
 export * as getHalfhoursEnergies from '../../../mtx/commands/uplink/getHalfhoursEnergies.js';
 export * as getMagneticFieldThreshold from '../../../mtx/commands/uplink/getMagneticFieldThreshold.js';
+export * as getMeterInfo from '../../../mtx/commands/uplink/getMeterInfo.js';
+export * as getOperatorParametersExtended3 from '../../../mtx/commands/uplink/getOperatorParametersExtended3.js';
 export * as getRatePlanInfo from '../../../mtx/commands/uplink/getRatePlanInfo.js';
 export * as getSaldo from '../../../mtx/commands/uplink/getSaldo.js';
 export * as getSaldoParameters from '../../../mtx/commands/uplink/getSaldoParameters.js';
@@ -34,6 +36,7 @@ export * as setDateTime from '../../../mtx/commands/uplink/setDateTime.js';
 export * as setDayProfile from '../../../mtx/commands/uplink/setDayProfile.js';
 export * as setDisplayParam from '../../../mtx/commands/uplink/setDisplayParam.js';
 export * as setOperatorParameters from '../../../mtx/commands/uplink/setOperatorParameters.js';
+export * as setOperatorParametersExtended3 from '../../../mtx/commands/uplink/setOperatorParametersExtended3.js';
 export * as setSaldo from '../../../mtx/commands/uplink/setSaldo.js';
 export * as setSaldoParameters from '../../../mtx/commands/uplink/setSaldoParameters.js';
 export * as setSeasonProfile from '../../../mtx/commands/uplink/setSeasonProfile.js';
@@ -74,3 +77,4 @@ export * as getOperatorParametersExtended from './getOperatorParametersExtended.
 export * as getOperatorParametersExtended2 from './getOperatorParametersExtended2.js';
 export * as setOperatorParametersExtended from './setOperatorParametersExtended.js';
 export * as setOperatorParametersExtended2 from './setOperatorParametersExtended2.js';
+export * as setOperatorParametersExtended4 from './setOperatorParametersExtended4.js';
