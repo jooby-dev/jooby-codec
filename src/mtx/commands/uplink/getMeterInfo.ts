@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `getMeterInfo`.
  *
+ * Supported in MTX1 and MTX3 (since `13.05.24.0.0.15`) devices.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

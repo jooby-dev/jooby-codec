@@ -1,6 +1,8 @@
 /**
  * Downlink command to get the shutdown thresholds for negative active power (`A-`).
  *
+ * Supported in MTX1 and MTX3 (since `26.05.21.0.0.5`) devices.
+ *
  * @packageDocumentation
  *
  * @example
