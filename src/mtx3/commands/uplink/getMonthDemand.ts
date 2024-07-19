@@ -39,7 +39,10 @@
 import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import * as dlms from '../../constants/dlms.js';
+import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IEnergies} from '../../utils/CommandBinaryBuffer.js';
+import {A_PLUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
 
 
 interface IGetMonthDemandResponseParameters {
@@ -116,4 +119,19 @@ export const toBytes = ( parameters: IGetMonthDemandResponseParameters ): types.
     buffer.setEnergies(parameters.energies);
 
     return command.toBytes(id, buffer.data);
+};
+
+
+export const toJson = ( parameters: IGetMonthDemandResponseParameters, options: dlms.IJsonOptions = dlms.defaultJsonOptions ) => {
+    if ( !options.dlms ) {
+        return JSON.stringify(parameters);
+    }
+
+    const {year, month, energies} = parameters;
+
+    return JSON.stringify({
+        year,
+        month,
+        ...mapEnergiesToObisCodes(energies, options.isGreen, A_PLUS_R_PLUS_R_MINUS)
+    });
 };
