@@ -1,8 +1,8 @@
 # Jooby message encoders/decoders
 
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/jooby-dev/jooby-codec/test.yml?label=test&style=flat-square)](https://github.com/jooby-dev/jooby-codec/actions)
-[![Docs](https://img.shields.io/badge/docs-orange.svg?style=flat-square)](https://cool-crepe-c6640a.netlify.app/)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/5c9d5b48-26e4-45b2-b6bf-11c40746105e/deploy-status)](https://app.netlify.com/sites/cool-crepe-c6640a/deploys)
+[![npm version](https://img.shields.io/npm/v/jooby-codec.svg?style=flat-square)](https://www.npmjs.com/package/jooby-codec)
+[![Docs](https://img.shields.io/badge/docs-orange.svg?style=flat-square)](https://jooby-dev.github.io/jooby-codec)
 
 This library contains message encoders and decoders for [Jooby](https://jooby.eu) LoRaWAN devices.
 
@@ -19,6 +19,7 @@ This will provide 3 protocols of codecs:
 
 - Analog
 - MTX
+- MTX3
 - OBIS Observer
 
 There is a low-level documentation available in a separate [repository](https://github.com/jooby-dev/jooby-docs).
