@@ -1194,7 +1194,7 @@ const operatorParametersExtended3RelaySetMask = {
 
 function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: types.TEnergyType, tariffMapByte: number ): TEnergies {
     const byte = tariffMapByte >> TARIFF_NUMBER;
-    const energies = Array.from({length: TARIFF_NUMBER}) as TEnergies;
+    const energies = new Array(TARIFF_NUMBER).fill(0) as TEnergies;
 
     energies.forEach((energy, index) => {
         // read flags by one bit
@@ -1528,10 +1528,7 @@ CommandBinaryBuffer.prototype.getSeasonProfile = function (): ISeasonProfile {
     return {
         month: this.getUint8(),
         date: this.getUint8(),
-        dayIndexes: Array.from(
-            {length: SEASON_PROFILE_DAYS_NUMBER},
-            () => this.getUint8()
-        )
+        dayIndexes: new Array(SEASON_PROFILE_DAYS_NUMBER).fill(0).map(() => this.getUint8())
     };
 };
 
@@ -1699,7 +1696,7 @@ CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, 
 };
 
 CommandBinaryBuffer.prototype.getEnergies = function (): TEnergies {
-    return Array.from({length: TARIFF_NUMBER}, () => this.getInt32());
+    return new Array(TARIFF_NUMBER).fill(0).map(() => this.getInt32());
 };
 
 CommandBinaryBuffer.prototype.setEnergies = function ( energies: TEnergies ) {
@@ -1722,7 +1719,7 @@ CommandBinaryBuffer.prototype.setDate = function ( date: types.IDate ) {
 
 CommandBinaryBuffer.prototype.getSaldoParameters = function (): ISaldoParameters {
     return {
-        coefficients: Array.from({length: 4}, () => this.getUint32()),
+        coefficients: new Array(4).fill(0).map(() => this.getUint32()),
         decimalPointTariff: this.getUint8(),
         indicationThreshold: this.getInt32(),
         relayThreshold: this.getInt32(),
@@ -1749,7 +1746,7 @@ CommandBinaryBuffer.prototype.setSaldoParameters = function ( saldoParameters: I
 };
 
 CommandBinaryBuffer.prototype.getEnergyPeriods = function ( periodsNumber: number ): Array<IEnergyPeriod> {
-    const periods = Array.from({length: periodsNumber}, () => this.getUint16());
+    const periods = new Array(periodsNumber).fill(0).map(() => this.getUint16());
 
     return periods.map(period => getEnergyPeriod(period));
 };
@@ -1894,7 +1891,7 @@ CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxD
     const date = this.getDate();
 
     // 4 tariffs
-    const power = Array.from({length: TARIFF_NUMBER}, () => ({
+    const power = new Array(TARIFF_NUMBER).fill(0).map(() => ({
         hours: this.getUint8(),
         minutes: this.getUint8(),
         power: this.getUint32()
@@ -1934,7 +1931,7 @@ CommandBinaryBuffer.prototype.setOperatorParametersExtended3 = function ( parame
 };
 
 CommandBinaryBuffer.prototype.getMonthMaxPowerByTariffs = function () {
-    return Array.from({length: TARIFF_NUMBER}, () => ({
+    return new Array(TARIFF_NUMBER).fill(0).map(() => ({
         date: this.getUint8(),
         hours: this.getUint8(),
         minutes: this.getUint8(),

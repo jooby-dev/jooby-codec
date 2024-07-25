@@ -130,7 +130,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetSaldoResponseParameters =>
     return {
         currentSaldo: buffer.getInt32(),
         count: buffer.getUint8(),
-        energy: Array.from({length: 4}, () => buffer.getInt32()),
+        energy: new Array(4).fill(0).map(() => buffer.getInt32()),
         beginSaldoOfPeriod: buffer.getInt32(),
         date: {
             month: buffer.getUint8() as unknown as types.TMonth,
