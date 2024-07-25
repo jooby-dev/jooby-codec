@@ -96,7 +96,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
         throw new Error('Invalid uplink GetDemand demands byte length.');
     }
 
-    const demands = Array.from({length: parameters.count}, () => buffer.getUint16());
+    const demands = new Array(parameters.count).fill(0).map(() => buffer.getUint16());
 
     return {
         ...parameters,

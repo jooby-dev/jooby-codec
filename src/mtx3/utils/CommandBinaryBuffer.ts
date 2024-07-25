@@ -2178,14 +2178,11 @@ CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, 
 };
 
 CommandBinaryBuffer.prototype.getEnergyPeriods = function ( energiesNumber: number ): TEnergyPeriods {
-    return Array.from(
-        {length: energiesNumber},
-        () => {
-            const energy = this.getUint16();
+    return new Array(energiesNumber).fill(0).map(() => {
+        const energy = this.getUint16();
 
-            return energy === 0xffff ? undefined : energy;
-        }
-    );
+        return energy === 0xffff ? undefined : energy;
+    });
 };
 
 CommandBinaryBuffer.prototype.setEnergyPeriods = function ( energies: TEnergyPeriods ) {
@@ -2222,7 +2219,7 @@ CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxD
     const date = this.getDate();
 
     // 4 tariffs
-    const maxDemands = Array.from({length: TARIFF_NUMBER}, () => this.getMaxDemand());
+    const maxDemands = new Array(TARIFF_NUMBER).fill(0).map(() => this.getMaxDemand());
 
     return {date, maxDemands};
 };
@@ -2241,7 +2238,7 @@ CommandBinaryBuffer.prototype.getMonthMaxDemandResponse = function (): IGetMonth
     };
 
     // 4 tariffs
-    const maxDemands = Array.from({length: TARIFF_NUMBER}, () => this.getMaxDemand());
+    const maxDemands = new Array(TARIFF_NUMBER).fill(0).map(() => this.getMaxDemand());
 
     return {date, maxDemands};
 };
