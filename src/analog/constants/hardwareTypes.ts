@@ -124,3 +124,9 @@ export const IMP4AS = 15;
  * 1 channel
  */
 export const NBIOT = 24;
+
+/**
+ * RM installed inside ultrasound water meters.
+ * Based on  STM32WLE5.
+ */
+export const US_WATER = 13;

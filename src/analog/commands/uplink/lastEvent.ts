@@ -147,6 +147,34 @@ export const examples: command.TCommandExamples = {
             0x63,
             0x30, 0x83, 0x0a
         ]
+    },
+    'status for Ultrasound water meter': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            sequenceNumber: 48,
+            status: {
+                event: {
+                    transportMode: false,
+                    frequencyOutput: false,
+                    reverseFlow: true,
+                    tamperBreak: false,
+                    leakage: true,
+                    pipeBreak: true,
+                    pipeEmpty: false,
+                    batteryDischarge: false
+                },
+                error: 0
+            }
+        },
+        config: {
+            hardwareType: hardwareTypes.US_WATER
+        },
+        bytes: [
+            0x63,
+            0x30, 0x34, 0x00
+        ]
     }
 };
 

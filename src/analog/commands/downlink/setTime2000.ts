@@ -66,7 +66,7 @@ export const examples = {
  * @returns command payload
  */
 export const fromBytes = ( data: types.TBytes ): ISetTime2000Parameters => {
-    if (data.length !== COMMAND_BODY_SIZE) {
+    if ( data.length !== COMMAND_BODY_SIZE ) {
         throw new Error(`Wrong buffer size: ${data.length}.`);
     }
 

@@ -163,6 +163,34 @@ export interface IEventMtxStatus {
     isNewTariffPlanReceived?: boolean
 }
 
+export interface IUSWaterMeterEvent {
+    /** transport mode activated/deactivated */
+    transportMode: boolean,
+    /** frequency output activated/deactivated */
+    frequencyOutput: boolean,
+    /** reverse flow detected/prevented */
+    reverseFlow: boolean,
+    /** tamper break detected/prevented */
+    tamperBreak: boolean,
+    /** leakage detected/prevented */
+    leakage: boolean,
+    /** pipe break detected/prevented */
+    pipeBreak: boolean,
+    /** empty pipe detected/prevented */
+    pipeEmpty: boolean,
+    /** battery discharge detected/prevented */
+    batteryDischarge: boolean
+}
+
+export interface IEventUSWaterMeterStatus {
+    event: IUSWaterMeterEvent
+
+    /**
+     * Measurement error code 0 - normal, 1-255 - error
+     */
+    error: types.TUint8
+}
+
 
 /**
  * Device send data periodically using this interval.
@@ -660,7 +688,8 @@ export type TEventStatus =
     IEventElimpStatus |
     //IEventWaterStatus |
     IEvent4ChannelStatus |
-    IEventMtxStatus;
+    IEventMtxStatus |
+    IEventUSWaterMeterStatus;
 
 /* sorted by parameter id */
 type TParameterData =
@@ -820,6 +849,16 @@ const mtxBitMask = {
     isModuleCompartmentOpen: Math.pow(2, 10),
     isTariffPlanChanged: Math.pow(2, 11),
     isNewTariffPlanReceived: Math.pow(2, 12)
+};
+const usWaterMeterEventBitMask = {
+    transportMode: 0x01,
+    frequencyOutput: 0x02,
+    reverseFlow: 0x04,
+    tamperBreak: 0x08,
+    leakage: 0x10,
+    pipeBreak: 0x20,
+    pipeEmpty: 0x40,
+    batteryDischarge: 0x80
 };
 
 
@@ -1983,6 +2022,13 @@ CommandBinaryBuffer.prototype.getEventStatus = function ( hardwareType: number )
         status = bitSet.toObject(fourChannelBitMask, this.getUint16());
     } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         status = bitSet.toObject(mtxBitMask, this.getUint16());
+    } else if ( hardwareType === hardwareTypes.US_WATER ) {
+        // ultrasound water meter
+        const event = bitSet.toObject(usWaterMeterEventBitMask, this.getUint8()) as unknown as IUSWaterMeterEvent;
+        status = {
+            event,
+            error: this.getUint8()
+        };
     } else {
         throw new Error('wrong hardwareType');
     }
@@ -2007,6 +2053,10 @@ CommandBinaryBuffer.prototype.setEventStatus = function ( hardwareType: number, 
         );
     } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         this.setUint16(bitSet.fromObject(mtxBitMask, status as bitSet.TBooleanObject));
+    } else if ( hardwareType === hardwareTypes.US_WATER ) {
+        const data = status as IEventUSWaterMeterStatus;
+        this.setUint8(bitSet.fromObject(usWaterMeterEventBitMask, data.event as unknown as bitSet.TBooleanObject));
+        this.setUint8(data.error);
     } else {
         throw new Error('wrong hardwareType');
     }
