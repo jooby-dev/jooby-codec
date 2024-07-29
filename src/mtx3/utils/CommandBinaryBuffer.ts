@@ -1271,6 +1271,18 @@ export interface IGetDemandParameters {
 
     /**
      * Starting block number of requested data.
+     *
+     * Possible values:
+     *
+     * | Period | Value range |
+     * | ------ | ----------- |
+     * | `1`    | `0`..`1440` |
+     * | `3`    | `0`..`480`  |
+     * | `5`    | `0`..`288`  |
+     * | `10`   | `0`..`144`  |
+     * | `15`   | `0`..`96`   |
+     * | `30`   | `0`..`48`   |
+     * | `60`   | `0`..`24`   |
      */
     firstIndex: types.TUint16,
 
@@ -1280,11 +1292,8 @@ export interface IGetDemandParameters {
     count: types.TUint8,
 
     /**
-     * Accumulation period.
-     *
-     * 0/30 – 30 minutes,
-     * 15 – 15 minutes,
-     * 10 – 10 minutes (only for voltages)
+     * Accumulation period (`0` – `30` minutes, `1`, `3`, `5`, `10`, `15`, `30`, `60` minutes).
+     * Depends on the `ten` parameter in {@link IOperatorParameters}.
      */
     period: types.TUint8
 }
@@ -1299,53 +1308,53 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
 /**
  * Type of energy, or other parameters for averaged energy and voltage profiles.
  *
- * | Value  | Description                                          |
- * | ------ | ---------------------------------------------------- |
- * | `1`    | Get `15/30/60`-minute load profile `A+` phase `A`    |
- * | `2`    | Get `15/30/60`-minute load profile `A+` phase `B`    |
- * | `3`    | Get `15/30/60`-minute load profile `A+` phase `C`    |
- * | `4`    | Get `15/30/60`-minute load profile `A-` phase `A`    |
- * | `5`    | Get `15/30/60`-minute load profile `A-` phase `B`    |
- * | `6`    | Get `15/30/60`-minute load profile `A-` phase `C`    |
- * | `7`    | Get `15/30/60`-minute load profile `A+R+` phase `A`  |
- * | `8`    | Get `15/30/60`-minute load profile `A+R+` phase `B`  |
- * | `9`    | Get `15/30/60`-minute load profile `A+R+` phase `C`  |
- * | `10`   | Get `15/30/60`-minute load profile `A+R-` phase `A`  |
- * | `11`   | Get `15/30/60`-minute load profile `A+R-` phase `B`  |
- * | `12`   | Get `15/30/60`-minute load profile `A+R-` phase `C`  |
- * | `13`   | Get `15/30/60`-minute load profile `A-R+` phase `A`  |
- * | `14`   | Get `15/30/60`-minute load profile `A-R+` phase `B`  |
- * | `15`   | Get `15/30/60`-minute load profile `A-R+` phase `C`  |
- * | `16`   | Get `15/30/60`-minute load profile `A-R-` phase `A`  |
- * | `17`   | Get `15/30/60`-minute load profile `A-R-` phase `B`  |
- * | `18`   | Get `15/30/60`-minute load profile `A-R-` phase `C`  |
- * | `19`   | Get `15/30/60`-minute load profile `R+` phase `A`    |
- * | `20`   | Get `15/30/60`-minute load profile `R+` phase `B`    |
- * | `21`   | Get `15/30/60`-minute load profile `R+` phase `C`    |
- * | `22`   | Get `15/30/60`-minute load profile `R-` phase `A`    |
- * | `23`   | Get `15/30/60`-minute load profile `R-` phase `B`    |
- * | `24`   | Get `15/30/60`-minute load profile `R-` phase `C`    |
- * | `25`   | Get `15/30/60`-minute voltage profile phase `A`      |
- * | `26`   | Get `15/30/60`-minute voltage profile phase `B`      |
- * | `27`   | Get `15/30/60`-minute voltage profile phase `C`      |
- * | `28`   | Get `10`-minute voltage profile phase `A`            |
- * | `29`   | Get `10`-minute voltage profile phase `B`            |
- * | `30`   | Get `10`-minute voltage profile phase `C`            |
- * | `31`   | Get `15/30/60`-minute current profile phase `A`      |
- * | `32`   | Get `15/30/60`-minute current profile phase `B`      |
- * | `33`   | Get `15/30/60`-minute current profile phase `C`      |
- * | `0x81` | Get active energy profile `A+` `1.4.0`               |
- * | `0x82` | Get active energy profile `A-` `2.4.0`               |
- * | `0x84` | Get reactive energy profile `A+R+` `3.4.0` (`7.4.0`) |
- * | `0x88` | Get reactive energy profile `A+R-` `4.4.0` (`8.4.0`) |
- * | `0x90` | Get reactive energy profile `A-R+` `5.8.0`           |
- * | `0xA0` | Get reactive energy profile `A-R-` `6.8.0`           |
- * | `0xB0` | Get profile recorded in `Channel 1`                  |
- * | `0xB1` | Get profile recorded in `Channel 2`                  |
- * | `0xB2` | Get profile recorded in `Channel 3`                  |
- * | `0xB3` | Get profile recorded in `Channel 4`                  |
- * | `0xB4` | Get profile recorded in `Channel 5`                  |
- * | `0xB5` | Get profile recorded in `Channel 6`                  |
+ * | Value  | Description                                                                     |
+ * | ------ | ------------------------------------------------------------------------------- |
+ * | `1`    | get `ten` = `1/3/5/10/15/30/60`-minute load profile `A+` phase `A`              |
+ * | `2`    | get `1/3/5/10/15/30/60`-minute load profile `A+` phase `B`                      |
+ * | `3`    | get `1/3/5/10/15/30/60`-minute load profile `A+` phase `C`                      |
+ * | `4`    | get `1/3/5/10/15/30/60`-minute load profile `A-` phase `A`                      |
+ * | `5`    | get `1/3/5/10/15/30/60`-minute load profile `A-` phase `B`                      |
+ * | `6`    | get `1/3/5/10/15/30/60`-minute load profile `A-` phase `C`                      |
+ * | `7`    | get `1/3/5/10/15/30/60`-minute load profile `A+R+` phase `A`                    |
+ * | `8`    | get `1/3/5/10/15/30/60`-minute load profile `A+R+` phase `B`                    |
+ * | `9`    | get `1/3/5/10/15/30/60`-minute load profile `A+R+` phase `C`                    |
+ * | `10`   | get `1/3/5/10/15/30/60`-minute load profile `A+R-` phase `A`                    |
+ * | `11`   | get `1/3/5/10/15/30/60`-minute load profile `A+R-` phase `B`                    |
+ * | `12`   | get `1/3/5/10/15/30/60`-minute load profile `A+R-` phase `C`                    |
+ * | `13`   | get `1/3/5/10/15/30/60`-minute load profile `A-R+` phase `A`                    |
+ * | `14`   | get `1/3/5/10/15/30/60`-minute load profile `A-R+` phase `B`                    |
+ * | `15`   | get `1/3/5/10/15/30/60`-minute load profile `A-R+` phase `C`                    |
+ * | `16`   | get `1/3/5/10/15/30/60`-minute load profile `A-R-` phase `A`                    |
+ * | `17`   | get `1/3/5/10/15/30/60`-minute load profile `A-R-` phase `B`                    |
+ * | `18`   | get `1/3/5/10/15/30/60`-minute load profile `A-R-` phase `C`                    |
+ * | `19`   | get `1/3/5/10/15/30/60`-minute load profile `R+` phase `A`                      |
+ * | `20`   | get `1/3/5/10/15/30/60`-minute load profile `R+` phase `B`                      |
+ * | `21`   | get `1/3/5/10/15/30/60`-minute load profile `R+` phase `C`                      |
+ * | `22`   | get `1/3/5/10/15/30/60`-minute load profile `R-` phase `A`                      |
+ * | `23`   | get `1/3/5/10/15/30/60`-minute load profile `R-` phase `B`                      |
+ * | `24`   | get `1/3/5/10/15/30/60`-minute load profile `R-` phase `C`                      |
+ * | `25`   | get `1/3/5/10/15/30/60`-minute voltage profile phase `A`                        |
+ * | `26`   | get `1/3/5/10/15/30/60`-minute voltage profile phase `B`                        |
+ * | `27`   | get `1/3/5/10/15/30/60`-minute voltage profile phase `C`                        |
+ * | `28`   | get `10`-minute voltage profile phase `A`                                       |
+ * | `29`   | get `10`-minute voltage profile phase `B`                                       |
+ * | `30`   | get `10`-minute voltage profile phase `C`                                       |
+ * | `31`   | get `1/3/5/10/15/30/60`-minute current profile phase `A`                        |
+ * | `32`   | get `1/3/5/10/15/30/60`-minute current profile phase `B`                        |
+ * | `33`   | get `1/3/5/10/15/30/60`-minute current profile phase `C`                        |
+ * | `0x81` | get `1/3/5/10/15/30/60`-minute active energy profile (`A+`) `1.4.0`             |
+ * | `0x82` | get `1/3/5/10/15/30/60`-minute active energy profile (`A-`) `2.4.0`             |
+ * | `0x84` | get `1/3/5/10/15/30/60`-minute reactive energy profile `A+R+` `3.4.0` (`7.4.0`) |
+ * | `0x88` | get `1/3/5/10/15/30/60`-minute reactive energy profile `A+R-` `4.4.0` (`8.4.0`) |
+ * | `0x90` | get `1/3/5/10/15/30/60`-minute reactive energy profile `A-R+` `5.4.0`           |
+ * | `0xA0` | get `1/3/5/10/15/30/60`-minute reactive energy profile `A-R-` `6.4.0`           |
+ * | `0xB0` | get profile recorded in `Channel 1`                                             |
+ * | `0xB1` | get profile recorded in `Channel 2`                                             |
+ * | `0xB2` | get profile recorded in `Channel 3`                                             |
+ * | `0xB3` | get profile recorded in `Channel 4`                                             |
+ * | `0xB4` | get profile recorded in `Channel 5`                                             |
+ * | `0xB5` | get profile recorded in `Channel 6`                                             |
  */
 export type TDemandParam = types.TUint8;
 
