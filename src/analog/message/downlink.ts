@@ -64,6 +64,7 @@ toBytesMap[commands.setParameter.id] = commands.setParameter.toBytes;
 toBytesMap[commands.setTime2000.id] = commands.setTime2000.toBytes;
 toBytesMap[commands.softRestart.id] = commands.softRestart.toBytes;
 toBytesMap[commands.updateRun.id] = commands.updateRun.toBytes;
+toBytesMap[commands.usWaterMeterCommand.id] = commands.usWaterMeterCommand.toBytes;
 toBytesMap[commands.verifyImage.id] = commands.verifyImage.toBytes;
 toBytesMap[commands.writeImage.id] = commands.writeImage.toBytes;
 
@@ -90,6 +91,7 @@ fromBytesMap[commands.setParameter.id] = commands.setParameter.fromBytes;
 fromBytesMap[commands.setTime2000.id] = commands.setTime2000.fromBytes;
 fromBytesMap[commands.softRestart.id] = commands.softRestart.fromBytes;
 fromBytesMap[commands.updateRun.id] = commands.updateRun.fromBytes;
+fromBytesMap[commands.usWaterMeterCommand.id] = commands.usWaterMeterCommand.fromBytes;
 fromBytesMap[commands.verifyImage.id] = commands.verifyImage.fromBytes;
 fromBytesMap[commands.writeImage.id] = commands.writeImage.fromBytes;
 
@@ -115,5 +117,6 @@ nameMap[commands.setParameter.id] = commands.setParameter.name;
 nameMap[commands.setTime2000.id] = commands.setTime2000.name;
 nameMap[commands.softRestart.id] = commands.softRestart.name;
 nameMap[commands.updateRun.id] = commands.updateRun.name;
+nameMap[commands.usWaterMeterCommand.id] = commands.usWaterMeterCommand.name;
 nameMap[commands.verifyImage.id] = commands.verifyImage.name;
 nameMap[commands.writeImage.id] = commands.writeImage.name;

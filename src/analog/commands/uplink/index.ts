@@ -35,5 +35,7 @@ export * as softRestart from './softRestart.js';
 export * as status from './status.js';
 export * as time2000 from './time2000.js';
 export * as updateRun from './updateRun.js';
+export * as usWaterMeterBatteryStatus from './usWaterMeterBatteryStatus.js';
+export * as usWaterMeterCommand from './usWaterMeterCommand.js';
 export * as verifyImage from './verifyImage.js';
 export * as writeImage from './writeImage.js';

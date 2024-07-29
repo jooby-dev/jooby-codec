@@ -117,6 +117,8 @@ toBytesMap[commands.softRestart.id] = commands.softRestart.toBytes;
 toBytesMap[commands.status.id] = commands.status.toBytes;
 toBytesMap[commands.time2000.id] = commands.time2000.toBytes;
 toBytesMap[commands.updateRun.id] = commands.updateRun.toBytes;
+toBytesMap[commands.usWaterMeterBatteryStatus.id] = commands.usWaterMeterBatteryStatus.toBytes;
+toBytesMap[commands.usWaterMeterCommand.id] = commands.usWaterMeterCommand.toBytes;
 toBytesMap[commands.verifyImage.id] = commands.verifyImage.toBytes;
 toBytesMap[commands.writeImage.id] = commands.writeImage.toBytes;
 
@@ -152,6 +154,8 @@ fromBytesMap[commands.softRestart.id] = commands.softRestart.fromBytes;
 fromBytesMap[commands.status.id] = commands.status.fromBytes;
 fromBytesMap[commands.time2000.id] = commands.time2000.fromBytes;
 fromBytesMap[commands.updateRun.id] = commands.updateRun.fromBytes;
+fromBytesMap[commands.usWaterMeterBatteryStatus.id] = commands.usWaterMeterBatteryStatus.fromBytes;
+fromBytesMap[commands.usWaterMeterCommand.id] = commands.usWaterMeterCommand.fromBytes;
 fromBytesMap[commands.verifyImage.id] = commands.verifyImage.fromBytes;
 fromBytesMap[commands.writeImage.id] = commands.writeImage.fromBytes;
 
@@ -186,5 +190,7 @@ nameMap[commands.softRestart.id] = commands.softRestart.name;
 nameMap[commands.status.id] = commands.status.name;
 nameMap[commands.time2000.id] = commands.time2000.name;
 nameMap[commands.updateRun.id] = commands.updateRun.name;
+nameMap[commands.usWaterMeterBatteryStatus.id] = commands.usWaterMeterBatteryStatus.name;
+nameMap[commands.usWaterMeterCommand.id] = commands.usWaterMeterCommand.name;
 nameMap[commands.verifyImage.id] = commands.verifyImage.name;
 nameMap[commands.writeImage.id] = commands.writeImage.name;

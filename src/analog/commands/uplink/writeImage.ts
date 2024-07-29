@@ -12,14 +12,14 @@
  * const bytes = [0x00, 0x00, 0x00, 0x40, 0x01];
  *
  * // decoded payload
- * const parameters = time2000.fromBytes(bytes);
+ * const parameters = writeImage.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
  * {offset: 64, status: 1}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/WriteImage.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/WriteImage.md#response)
  */
 
 import * as command from '../../utils/command.js';
