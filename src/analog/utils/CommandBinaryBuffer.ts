@@ -2025,10 +2025,7 @@ CommandBinaryBuffer.prototype.getEventStatus = function ( hardwareType: number )
     } else if ( hardwareType === hardwareTypes.US_WATER ) {
         // ultrasound water meter
         const event = bitSet.toObject(usWaterMeterEventBitMask, this.getUint8()) as unknown as IUSWaterMeterEvent;
-        status = {
-            event,
-            error: this.getUint8()
-        };
+        status = {event, error: this.getUint8()};
     } else {
         throw new Error('wrong hardwareType');
     }
