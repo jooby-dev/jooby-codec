@@ -19,6 +19,7 @@
  *     [
  *         {
  *             id: 12,
+ *             name: "correctTime2000",
  *             headerSize: 2,
  *             bytes: [ 12, 1, 0 ],
  *             parameters: { status: 0 }
