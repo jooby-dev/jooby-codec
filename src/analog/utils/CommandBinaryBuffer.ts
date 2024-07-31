@@ -591,6 +591,14 @@ interface IParameterNbiotBands {
 }
 
 /**
+ * Set preferred nbiot bands to be searched for.
+ * deviceParameters.NBIOT_APN = `53`
+ */
+interface IParameterNbiotApn {
+    apn: string
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -725,7 +733,8 @@ type TParameterData =
     IParameterReportingDataConfig |
     IParameterEventsConfig |
     IParameterNbiotModuleInfo |
-    IParameterNbiotBands;
+    IParameterNbiotBands |
+    IParameterNbiotApn;
 
 
 type TRequestParameterData =
@@ -762,7 +771,8 @@ type TResponseParameterData =
     IParameterReportingDataConfig |
     IParameterEventsConfig |
     IParameterNbiotModuleInfo |
-    IParameterNbiotBands;
+    IParameterNbiotBands |
+    IParameterNbiotApn;
 
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
@@ -784,7 +794,8 @@ const GAS_HARDWARE_TYPES = [
     hardwareTypes.GASI2,
     hardwareTypes.GASI3,
     hardwareTypes.GASI1,
-    hardwareTypes.GASIC
+    hardwareTypes.GASIC,
+    hardwareTypes.NBIOT
 ];
 const TWO_CHANNELS_HARDWARE_TYPES = [
     hardwareTypes.IMP2AS,
@@ -1322,6 +1333,14 @@ const deviceParameterConvertersMap = {
                 buffer.setUint8(band);
             }
         }
+    },
+    [deviceParameters.NBIOT_APN]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotApn => (
+            {apn: buffer.getString()}
+        ),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotApn ) => {
+            buffer.setString(parameter.apn);
+        }
     }
 };
 
@@ -1401,6 +1420,13 @@ export const getParameterSize = ( parameter: IParameter ): number => {
 
             break;
 
+        case deviceParameters.NBIOT_APN:
+            data = parameter.data as IParameterNbiotApn;
+            // size: parameter id + string length + apn string
+            size = 1 + 1 + data.apn.length;
+
+            break;
+
         default:
             size = parametersSizeMap[parameter.id];
     }
@@ -1457,6 +1483,7 @@ export const getResponseParameterSize = ( parameter: IParameter ): number => {
         case deviceParameters.MQTT_TOPIC_PREFIX:
         case deviceParameters.NBIOT_MODULE_INFO:
         case deviceParameters.NBIOT_BANDS:
+        case deviceParameters.NBIOT_APN:
             size = getParameterSize(parameter);
 
             break;
