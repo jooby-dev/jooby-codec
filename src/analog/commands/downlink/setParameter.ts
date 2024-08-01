@@ -236,6 +236,19 @@ export const examples: command.TCommandExamples = {
             0x03, 0x05,
             0x34, 0x03, 0x03, 0x08, 0x14
         ]
+    },
+    'set nbiot apn': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 53,
+            data: {apn: 'nbiot'}
+        },
+        bytes: [
+            0x03, 0x07,
+            0x35, 0x05, 0x6e, 0x62, 0x69, 0x6f, 0x74
+        ]
     }
 };
 
