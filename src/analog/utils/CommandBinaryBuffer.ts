@@ -1601,7 +1601,8 @@ CommandBinaryBuffer.prototype.getExtendedValue = function (): number {
         const byte = this.getUint8();
 
         isByteExtended = !!(byte & EXTEND_BIT_MASK);
-        value += (byte & 0x7f) << (7 * position);
+        // https://stackoverflow.com/a/30089815/7119054
+        value += ((byte & 0x7f) << (7 * position)) >>> 0;
         ++position;
     }
 
@@ -1625,7 +1626,7 @@ CommandBinaryBuffer.prototype.setExtendedValue = function ( value: number ) {
 
     while ( encodedValue ) {
         data.push(EXTEND_BIT_MASK | (encodedValue & 0x7f));
-        encodedValue >>= 7;
+        encodedValue >>>= 7;
     }
 
     const lastByte = data.pop();

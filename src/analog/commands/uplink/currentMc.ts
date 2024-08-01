@@ -94,6 +94,20 @@ export const examples: command.TCommandExamples = {
             0x18, 0x07,
             0xb0, 0x10, 0xd2, 0x3f, 0xa4, 0x01, 0x4b
         ]
+    },
+    'single channel - max module value': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            channelList: [
+                {value: 4294967295, index: 1}
+            ]
+        },
+        bytes: [
+            0x18, 0x06,
+            0x01, 0xff, 0xff, 0xff, 0xff, 0x0f
+        ]
     }
 };
 
