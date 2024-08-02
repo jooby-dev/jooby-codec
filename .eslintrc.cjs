@@ -63,6 +63,7 @@ module.exports = {
         '@typescript-eslint/no-useless-constructor': 'off',
         '@typescript-eslint/object-curly-spacing': ['error', 'never'],
         '@typescript-eslint/space-before-function-paren': ['error', {anonymous: 'always', named: 'always'}],
+        '@typescript-eslint/unbound-method': 'off',
 
         'import/no-extraneous-dependencies': 'off',
         'import/prefer-default-export': 'off',
