@@ -43,6 +43,7 @@
 import * as command from '../../../mtx/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import * as dlms from '../../constants/dlms.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
@@ -78,32 +79,32 @@ export interface IGetCurrentValuesResponseParameters {
     icRms: types.TInt32,
 
     /**
-     * Active power in channel `A`.
+     * Active power in channel `A` (`1.21.7.0`).
      */
     powerA: types.TInt32,
 
     /**
-     * Active power in channel `B`.
+     * Active power in channel `B` (`1.41.7.0`).
      */
     powerB: types.TInt32,
 
     /**
-     * Active power in channel `C`.
+     * Active power in channel `C` (`1.61.7.0`).
      */
     powerC: types.TInt32,
 
     /**
-     * Reactive power in channel `A`.
+     * Reactive power in channel `A` (`1.23.7.0` if `varA >= 0`; `1.24.7.0` if `varA < 0`).
      */
     varA: types.TInt32,
 
     /**
-     * Reactive power in channel `B`.
+     * Reactive power in channel `B` (`1.43.7.0` if `varB >= 0`; `1.44.7.0` if `varB < 0`).
      */
     varB: types.TInt32,
 
     /**
-     * Reactive power in channel `C`.
+     * Reactive power in channel `C` (`1.63.7.0` if `varC >= 0`; `1.64.7.0` if `varC < 0`).
      */
     varC: types.TInt32,
 
@@ -215,4 +216,34 @@ export const toBytes = ( parameters: IGetCurrentValuesResponseParameters ): type
     buffer.setInt32(parameters.iNeutral);
 
     return command.toBytes(id, buffer.data);
+};
+
+
+export const toJson = ( parameters: IGetCurrentValuesResponseParameters, options: dlms.IJsonOptions = dlms.defaultJsonOptions ) => {
+    if ( !options.dlms ) {
+        return JSON.stringify(parameters);
+    }
+
+    const result: Record<string, number> = {
+        '32.7.0': parameters.vaRms,
+        '52.7.0': parameters.vbRms,
+        '72.7.0': parameters.vcRms,
+        '31.7.0': parameters.iaRms,
+        '51.7.0': parameters.ibRms,
+        '71.7.0': parameters.icRms,
+        '1.21.7.0': parameters.powerA,
+        '1.41.7.0': parameters.powerB,
+        '1.61.7.0': parameters.powerC,
+        '91.7.0': parameters.iNeutral
+    };
+
+    const varAKey = parameters.varA >= 0 ? '1.23.7.0' : '1.24.7.0';
+    const varBKey = parameters.varB >= 0 ? '1.43.7.0' : '1.44.7.0';
+    const varCKey = parameters.varC >= 0 ? '1.63.7.0' : '1.64.7.0';
+
+    result[varAKey] = parameters.varA;
+    result[varBKey] = parameters.varB;
+    result[varCKey] = parameters.varC;
+
+    return JSON.stringify(result);
 };
