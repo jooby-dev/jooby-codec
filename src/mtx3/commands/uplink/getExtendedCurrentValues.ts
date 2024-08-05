@@ -42,17 +42,18 @@
 import * as command from '../../../mtx/utils/command.js';
 import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
 import * as types from '../../types.js';
+import * as dlms from '../../constants/dlms.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
-interface IGetExtendedCurrentValuesResponseParameters {
+export interface IGetExtendedCurrentValuesResponseParameters {
     /**
-     * Device temperature.
+     * Device temperature (`0.11.0`).
      */
     temperature: types.TInt16;
 
     /**
-     * The frequency of voltage in the power grid.
+     * The frequency of voltage in the power grid (`14.7.0`).
      */
     frequency: types.TUint16;
 
@@ -87,27 +88,27 @@ interface IGetExtendedCurrentValuesResponseParameters {
     pf: types.TInt16;
 
     /**
-     * Apparent power of phase `A`.
+     * Apparent power of phase `A` (`29.7.0`).
      */
     vaA: types.TInt32;
 
     /**
-     * Apparent power of phase `B`.
+     * Apparent power of phase `B` (`49.7.0`).
      */
     vaB: types.TInt32;
 
     /**
-     * Apparent power of phase `C`.
+     * Apparent power of phase `C` (`69.7.0`).
      */
     vaC: types.TInt32;
 
     /**
-     * Total apparent power.
+     * Total apparent power (`9.7.0`).
      */
     vaSum: types.TInt32;
 
     /**
-     * Battery voltage for the real-time clock (RTC) in the device.
+     * Battery voltage for the real-time clock (RTC) in the device (`96.6.3`).
      */
     uBatteryRtc: types.TInt16;
 }
@@ -214,4 +215,30 @@ export const toBytes = ( parameters: IGetExtendedCurrentValuesResponseParameters
     buffer.setInt16(parameters.uBatteryRtc);
 
     return command.toBytes(id, buffer.data);
+};
+
+
+export const toJson = ( parameters: IGetExtendedCurrentValuesResponseParameters, options: dlms.IJsonOptions = dlms.defaultJsonOptions ) => {
+    if ( !options.dlms ) {
+        return JSON.stringify(parameters);
+    }
+
+    const result: Record<string, number> = {
+        '0.11.0': parameters.temperature,
+        '14.7.0': parameters.frequency,
+        '33.7.0': parameters.pfA,
+        '53.7.0': parameters.pfB,
+        '73.7.0': parameters.pfC,
+        '13.7.0': parameters.pf,
+        '29.7.0': parameters.vaA,
+        '49.7.0': parameters.vaB,
+        '69.7.0': parameters.vaC,
+        '9.7.0': parameters.vaSum,
+        '96.6.3': parameters.uBatteryRtc,
+        // TODO: Add OBIS codes for vPhaseAB and vPhaseAC once the MTX3 documentation is updated.
+        vPhaseAB: parameters.vPhaseAB,
+        vPhaseAC: parameters.vPhaseAC
+    };
+
+    return JSON.stringify(result);
 };
