@@ -11,8 +11,8 @@ export interface IFrame {
     /** payload after processing (unstuffing, crc check ...) */
     payload: TBytes,
     crc: {
-        expected: number,
-        actual: number
+        received: number,
+        calculated: number
     }
 }
 
@@ -120,8 +120,8 @@ export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
                 bytes,
                 payload: [],
                 crc: {
-                    actual: 0,
-                    expected: undefined
+                    calculated: 0,
+                    received: undefined
                 }
             },
             error: 'Not a frame.'
@@ -129,19 +129,19 @@ export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
     }
 
     const unstuffed = arrayUnstuff(bytes.slice(1, bytes.length - 1), dataBits);
-    const expectedCrc = getFrameCrc(unstuffed);
+    const receivedCrc = getFrameCrc(unstuffed);
     const payload = unstuffed.slice(0, unstuffed.length - 2);
-    const actualCrc = calculateCrc16(payload);
+    const calculatedCrc = calculateCrc16(payload);
     const frame = {
         bytes,
         payload,
         crc: {
-            actual: actualCrc,
-            expected: expectedCrc
+            calculated: calculatedCrc,
+            received: receivedCrc
         }
     };
 
-    if ( actualCrc !== expectedCrc ) {
+    if ( calculatedCrc !== receivedCrc ) {
         return {
             frame,
             error: 'Mismatch CRC.'

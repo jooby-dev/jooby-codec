@@ -25,8 +25,8 @@ const validDownlinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0xfe,
-            actual: 0xfe
+            received: 0xfe,
+            calculated: 0xfe
         }
     },
     'setParameters + getParameters': {
@@ -69,8 +69,8 @@ const validDownlinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0x63,
-            actual: 0x63
+            received: 0x63,
+            calculated: 0x63
         }
     },
     'multiple commands in the message': {
@@ -238,8 +238,8 @@ const validDownlinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0xf6,
-            actual: 0xf6
+            received: 0xf6,
+            calculated: 0xf6
         }
     }
 };
@@ -258,8 +258,8 @@ const invalidDownlinkMessages: TMessageExamples = {
                 }
             ],
             lrc: {
-                expected: 0,
-                actual: 0xfe
+                received: 0,
+                calculated: 0xfe
             }
         },
         error: 'Mismatch LRC.'
@@ -305,8 +305,8 @@ const invalidDownlinkMessages: TMessageExamples = {
                 }
             ],
             lrc: {
-                expected: 0x4c,
-                actual: 0x4f
+                received: 0x4c,
+                calculated: 0x4f
             }
         },
         error: 'Mismatch LRC.'
@@ -329,8 +329,8 @@ const validUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0x58,
-            actual: 0x58
+            received: 0x58,
+            calculated: 0x58
         }
     },
     'setTime2000 + currentMc + dayMc': {
@@ -383,8 +383,8 @@ const validUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0xb5,
-            actual: 0xb5
+            received: 0xb5,
+            calculated: 0xb5
         }
     },
     'old status + currentMc': {
@@ -435,8 +435,8 @@ const validUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0x33,
-            actual: 0x33
+            received: 0x33,
+            calculated: 0x33
         }
     },
     'new status + currentMc': {
@@ -488,8 +488,8 @@ const validUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0x55,
-            actual: 0x55
+            received: 0x55,
+            calculated: 0x55
         }
     },
     'currentMc + lastEvent response': {
@@ -532,8 +532,8 @@ const validUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0x58,
-            actual: 0x58
+            received: 0x58,
+            calculated: 0x58
         }
     },
     'hourMc + lastEvent response': {
@@ -579,8 +579,8 @@ const validUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0x54,
-            actual: 0x54
+            received: 0x54,
+            calculated: 0x54
         }
     },
     'time2000 + new status response': {
@@ -631,8 +631,8 @@ const validUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0xf6,
-            actual: 0xf6
+            received: 0xf6,
+            calculated: 0xf6
         }
     },
     'exAbsHourMc + lastEvent response': {
@@ -679,8 +679,8 @@ const validUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0x79,
-            actual: 0x79
+            received: 0x79,
+            calculated: 0x79
         }
     }
 };
@@ -754,8 +754,8 @@ const validMultichannelUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0xad,
-            actual: 0xad
+            received: 0xad,
+            calculated: 0xad
         }
     }
 };
@@ -774,8 +774,8 @@ const invalidUplinkMessages: TMessageExamples = {
                 }
             ],
             lrc: {
-                expected: 0,
-                actual: 0x58
+                received: 0,
+                calculated: 0x58
             }
         },
         error: 'Mismatch LRC.'
@@ -823,8 +823,8 @@ const invalidUplinkMessages: TMessageExamples = {
                 }
             ],
             lrc: {
-                expected: 0xdd,
-                actual: 0xd3
+                received: 0xdd,
+                calculated: 0xd3
             }
         },
         error: 'Mismatch LRC.'
@@ -853,8 +853,8 @@ const mtxUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0x33,
-            actual: 0x33
+            received: 0x33,
+            calculated: 0x33
         }
     },
     'mtx uplink segment #2': {
@@ -905,8 +905,8 @@ const mtxUplinkMessages: TMessageExamples = {
             }
         ],
         lrc: {
-            expected: 0x07,
-            actual: 0x07
+            received: 0x07,
+            calculated: 0x07
         }
     }
 };

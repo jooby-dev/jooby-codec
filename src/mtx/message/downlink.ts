@@ -80,7 +80,7 @@
  *         }
  *     ],
  *     bytes: [3,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
- *     lrc: {expected: 119, actual: 119}
+ *     lrc: {received: 119, calculated: 119}
  * }
  *
  * // decode message back from frame
@@ -90,7 +90,7 @@
  * // output:
  * {
  *     bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
- *     crc: {actual: 47969, expected: 47969},
+ *     crc: {calculated: 47969, received: 47969},
  *     header: {type: 80, destination: 43690, source: 65535}
  * }
  *
@@ -113,7 +113,7 @@
  *             }
  *         ],
  *         bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
- *         lrc: {expected: 119, actual: 119}
+ *         lrc: {received: 119, calculated: 119}
  *     }
  * }
  * ```

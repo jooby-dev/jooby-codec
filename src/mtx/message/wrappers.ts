@@ -45,7 +45,7 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
         accessLevel,
         commands,
         bytes,
-        lrc: {expected: undefined, actual: 0}
+        lrc: {received: undefined, calculated: 0}
     };
     let messageBody = bytes.slice(MESSAGE_HEADER_SIZE);
     let error;
@@ -55,14 +55,14 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
     }
 
     // take from the end
-    const expectedLrc = messageBody[messageBody.length - 1];
+    const receivedLrc = messageBody[messageBody.length - 1];
 
     // remove lrc from message
     messageBody = messageBody.slice(0, -1);
-    const actualLrc = calculateLrc(messageBody);
+    const calculatedLrc = calculateLrc(messageBody);
 
-    if ( accessLevel !== accessLevels.UNENCRYPTED || expectedLrc !== 0 ) {
-        if ( expectedLrc !== actualLrc ) {
+    if ( accessLevel !== accessLevels.UNENCRYPTED || receivedLrc !== 0 ) {
+        if ( receivedLrc !== calculatedLrc ) {
             error = 'Mismatch LRC.';
         }
     }
@@ -113,8 +113,8 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
         position += commandSize;
     } while ( position <= commandsData.length );
 
-    message.lrc.actual = actualLrc;
-    message.lrc.expected = expectedLrc;
+    message.lrc.calculated = calculatedLrc;
+    message.lrc.received = receivedLrc;
 
     if ( error ) {
         return {
