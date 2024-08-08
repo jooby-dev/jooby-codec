@@ -2195,7 +2195,7 @@ export const checkMessage = ( messageLink, messageParams: IMessage ) => {
 
     if ( 'bytes' in messageData ) {
         // valid message
-        expect(getHexFromBytes([messageData.lrc.actual])).toEqual(getHexFromBytes([lrc]));
+        expect(getHexFromBytes([messageData.lrc.calculated])).toEqual(getHexFromBytes([lrc]));
         expect(messageData.messageId).toEqual(messageId);
         expect(messageData.accessLevel).toEqual(accessLevel);
         expect(messageData.commands).toStrictEqual(commands);
@@ -2210,7 +2210,7 @@ export const checkMessage = ( messageLink, messageParams: IMessage ) => {
         throw new Error('Field error should be missing!');
     } else {
         expect(getHexFromBytes(parsedFrame.payload)).toEqual(hex);
-        expect(parsedFrame.crc.actual.toString(16)).toStrictEqual(crc.toString(16));
+        expect(parsedFrame.crc.calculated.toString(16)).toStrictEqual(crc.toString(16));
         expect(parsedFrame.header?.source).toStrictEqual(source);
         expect(parsedFrame.header?.destination).toStrictEqual(destination);
         expect(parsedFrame.header?.type).toStrictEqual(frameType);

@@ -98,7 +98,7 @@ console.log('parsedMessage:', parsedMessage);
       }
     ],
     bytes: [ 12, 2, 45, 136, 254 ],
-    lrc: { expected: 254, actual: 254 }
+    lrc: { received: 254, calculated: 254 }
 }
 ```
 
@@ -284,7 +284,7 @@ console.log('parsed message:', parsedMessage);
     }
     ],
     bytes: [3,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
-    lrc: {expected: 119, actual: 119}
+    lrc: {received: 119, calculated: 119}
 } */
 
 // decode message back from frame
@@ -294,7 +294,7 @@ console.log('parsedFrame:', parsedFrame);
 // output:
 /* {
     bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
-    crc: {actual: 47969, expected: 47969},
+    crc: {calculated: 47969, received: 47969},
     header: {type: 80, destination: 43690, source: 65535}
 } */
 
@@ -316,7 +316,7 @@ if ( 'bytes' in parsedFrame ) {
             }
         ],
         bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
-        lrc: {expected: 119, actual: 119}
+        lrc: {received: 119, calculated: 119}
     } */
 }
 ```
@@ -352,7 +352,7 @@ console.log('parsed message:', parsedMessage);
         }
     ],
     bytes: [10,19,155,75,247,42,209,229,73,165,9,80,154,89,126,194,181,136],
-    lrc: {expected: 53, actual: 53}
+    lrc: {received: 53, calculated: 53}
 } */
 
 const parsedFrame = frame.fromBytes(frameBytes);
@@ -361,7 +361,7 @@ console.log('parsed frame:', parsedFrame);
 // output:
 /* {
     bytes: [10,19,155,75,247,42,209,229,73,165,9,80,154,89,126,194,181,136],
-    crc: {actual: 21537, expected: 21537},
+    crc: {calculated: 21537, received: 21537},
     header: {type: 81, destination: 43690, source: 65535}
 } */
 

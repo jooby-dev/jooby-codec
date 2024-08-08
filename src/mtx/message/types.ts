@@ -16,8 +16,8 @@ import {TCommand} from '../utils/command.js';
  *         }
  *     ],
  *     lrc: {
- *         expected: 0xfe,
- *         actual: 0xfe
+ *         received: 0xfe,
+ *         calculated: 0xfe
  *     }
  * }
  * ```
@@ -28,8 +28,8 @@ export interface IMessage {
     accessLevel: TAccessLevel,
     bytes: TBytes,
     lrc: {
-        expected: number,
-        actual: number
+        received: number,
+        calculated: number
     }
 }
 
@@ -48,8 +48,8 @@ export interface IMessage {
  *            }
  *        ],
  *        lrc: {
- *            expected: 0,
- *            actual: 0xfe
+ *            received: 0,
+ *            calculated: 0xfe
  *        }
  *    },
  *    error: 'Mismatch LRC.'

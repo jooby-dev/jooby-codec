@@ -31,7 +31,7 @@
  *         }
  *     ],
  *     bytes: [10,19,155,75,247,42,209,229,73,165,9,80,154,89,126,194,181,136],
- *     lrc: {expected: 53, actual: 53}
+ *     lrc: {received: 53, calculated: 53}
  * }
  *
  * const parsedFrame = frame.fromBytes(frameBytes);
@@ -40,7 +40,7 @@
  * // output:
  * {
  *     bytes: [10,19,155,75,247,42,209,229,73,165,9,80,154,89,126,194,181,136],
- *     crc: {actual: 21537, expected: 21537},
+ *     crc: {calculated: 21537, received: 21537},
  *     header: {type: 81, destination: 43690, source: 65535}
  * }
  *

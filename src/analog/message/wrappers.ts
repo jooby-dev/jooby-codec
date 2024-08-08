@@ -17,11 +17,11 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
     const message: IMessage = {
         commands,
         bytes,
-        lrc: {expected: undefined, actual: 0}
+        lrc: {received: undefined, calculated: 0}
     };
     let processedBytes = 0;
-    let expectedLrc: number;
-    let actualLrc: number;
+    let receivedLrc: number;
+    let calculatedLrc: number;
 
     if ( !bytes.length ) {
         return message;
@@ -64,17 +64,17 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
     // check the last byte left unprocessed
     if ( bytes.length - processedBytes === 1 ) {
         // LRC is present
-        expectedLrc = bytes[bytes.length - 1];
-        actualLrc = calculateLrc(bytes.slice(0, -1));
+        receivedLrc = bytes[bytes.length - 1];
+        calculatedLrc = calculateLrc(bytes.slice(0, -1));
     } else {
         // LRC is absent
-        actualLrc = calculateLrc(bytes);
+        calculatedLrc = calculateLrc(bytes);
     }
 
-    message.lrc.actual = actualLrc;
-    message.lrc.expected = expectedLrc;
+    message.lrc.calculated = calculatedLrc;
+    message.lrc.received = receivedLrc;
 
-    if ( expectedLrc === actualLrc ) {
+    if ( receivedLrc === calculatedLrc ) {
         return message;
     }
 
@@ -124,8 +124,8 @@ export const getToMessage = toBytesMap => ( commands: Array<TCommand> ): IMessag
         commands: commandsWithBytes,
         bytes: [...body, lrc],
         lrc: {
-            expected: lrc,
-            actual: lrc
+            received: lrc,
+            calculated: lrc
         }
     };
 };
