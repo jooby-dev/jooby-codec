@@ -249,6 +249,38 @@ export const examples: command.TCommandExamples = {
             0x03, 0x07,
             0x35, 0x05, 0x6e, 0x62, 0x69, 0x6f, 0x74
         ]
+    },
+    'set nbiot led indication': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 54,
+            data: {
+                enableLed: 1,
+                enableNbiotNetworkLed: 1
+            }
+        },
+        bytes: [
+            0x03, 0x03,
+            0x36, 0x01, 0x01
+        ]
+    },
+    'set nbiot sim pin code': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 55,
+            data: {
+                enable: 1,
+                pin: 9999
+            }
+        },
+        bytes: [
+            0x03, 0x04,
+            0x37, 0x01, 0x27, 0x0f
+        ]
     }
 };
 
