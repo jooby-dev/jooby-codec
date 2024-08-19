@@ -7,11 +7,21 @@ import {TBytes} from '../types.js';
  * @param hex - input bytes hex representation
  *
  * @example
- * input: '02 05 0c ff 69 8b 7d' or '02050cff698b7d' or ' 0x23 0xaa 0x00'
+ * input: '02 05 0c ff 69 8b 7d' or '2 5 c ff 69 8b 7d' or '02050cff698b7d' or '0x23 0xaa 0x00'
  * output: [2, 5, 12, 255, 105, 139, 125]
  */
 export default ( hex: string ): TBytes => {
-    let cleanHex = hex.replace(/\s+|0x/g, '');
+    let cleanHex = hex.trim();
+
+    if ( !cleanHex ) {
+        return [];
+    }
+
+    cleanHex = cleanHex
+        .replace(/0x/g, '')
+        .split(/\s+/)
+        .map(byte => byte.padStart(2, '0'))
+        .join('');
 
     // correct wrong input
     if ( cleanHex.length % 2 !== 0 ) {
