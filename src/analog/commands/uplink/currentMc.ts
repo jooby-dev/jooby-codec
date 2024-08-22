@@ -7,7 +7,7 @@
  * ```js
  * import * as currentMc from 'jooby-codec/analog/commands/uplink/currentMc.js';
  *
- * // 4 first channels
+ * // 4 channels for IMP4EU
  * const bytes = [0x0f, 0x83, 0x01, 0x08, 0x0a, 0x0c];
  *
  * // decoded payload
@@ -48,7 +48,7 @@ export const headerSize = 2;
 const COMMAND_BODY_MAX_SIZE = 37;
 
 export const examples: command.TCommandExamples = {
-    '4 first channels': {
+    '4 channels for IMP4EU': {
         id,
         name,
         headerSize,
@@ -65,7 +65,7 @@ export const examples: command.TCommandExamples = {
             0x0f, 0x83, 0x01, 0x08, 0x0a, 0x0c
         ]
     },
-    'single channel 2': {
+    'single channel for IMP2EU': {
         id,
         name,
         headerSize,
@@ -79,23 +79,23 @@ export const examples: command.TCommandExamples = {
             0x02, 0x32
         ]
     },
-    'channels 5, 6, 12': {
+    '3 channels for IMP4EU': {
         id,
         name,
         headerSize,
         parameters: {
             channelList: [
-                {value: 8146, index: 5},
-                {value: 164, index: 6},
-                {value: 75, index: 12}
+                {value: 8146, index: 1},
+                {value: 164, index: 3},
+                {value: 75, index: 4}
             ]
         },
         bytes: [
-            0x18, 0x07,
-            0xb0, 0x10, 0xd2, 0x3f, 0xa4, 0x01, 0x4b
+            0x18, 0x06,
+            0x0d, 0xd2, 0x3f, 0xa4, 0x01, 0x4b
         ]
     },
-    'single channel - max module value': {
+    'single channel for ELIMP - max module value': {
         id,
         name,
         headerSize,
