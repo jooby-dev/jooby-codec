@@ -138,3 +138,9 @@ export const NBIOT_BANDS = 52;
 
 /** Set NB-IoT APN */
 export const NBIOT_APN = 53;
+
+/** Set NB-IoT LED indication */
+export const NBIOT_LED_INDICATION = 54;
+
+/** Set NB-IoT SIM PIN code */
+export const NBIOT_SIM = 55;

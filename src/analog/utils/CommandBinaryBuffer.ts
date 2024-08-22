@@ -461,7 +461,7 @@ interface IParameterMqttSessionConfig {
     clientId: string,
     username: string,
     password: string,
-    cleanSession: number
+    cleanSession: types.TUint8
 }
 
 /**
@@ -470,7 +470,7 @@ interface IParameterMqttSessionConfig {
  */
 interface IParameterMqttBrokerAddress {
     hostName: string,
-    port: number
+    port: types.TUint16
 }
 
 /**
@@ -478,7 +478,7 @@ interface IParameterMqttBrokerAddress {
  * deviceParameters.MQTT_SSL_ENABLE = `36`
  */
 interface IParameterMqttSslEnable {
-    enable: number
+    enable: types.TUint8
 }
 
 /**
@@ -494,7 +494,9 @@ interface IParameterMqttTopicPrefix {
  * deviceParameters.MQTT_DATA_RECEIVE_CONFIG = `38`
  */
 interface IParameterMqttDataReceiveConfig {
-    qos: number
+    qos: types.TUint8,
+    count: types.TUint8,
+    timeout: types.TUint8
 }
 
 /**
@@ -502,11 +504,9 @@ interface IParameterMqttDataReceiveConfig {
  * deviceParameters.MQTT_DATA_SEND_CONFIG = `39`
  */
 interface IParameterMqttDataSendConfig {
-    qos: number,
-    retain: number,
-    newestSendFirst: number,
-    sendCountAttempts: number,
-    sendTimeoutBetweenAttempts: number
+    qos: types.TUint8,
+    retain: types.TUint8,
+    newestSendFirst: types.TUint8
 }
 
 /**
@@ -514,8 +514,8 @@ interface IParameterMqttDataSendConfig {
  * deviceParameters.NBIOT_SSL_CONFIG = `40`
  */
 interface IParameterNbiotSslConfig {
-    securityLevel: number,
-    version: number
+    securityLevel: types.TUint8,
+    version: types.TUint8
 }
 
 /**
@@ -523,8 +523,8 @@ interface IParameterNbiotSslConfig {
  * deviceParameters.NBIOT_SSL_CACERT_WRITE = `41`
  */
 interface IParameterNbiotSslWrite {
-    size: number,
-    position: number,
+    size: types.TUint16,
+    position: types.TUint16,
     chunk: types.TBytes
 }
 
@@ -533,7 +533,7 @@ interface IParameterNbiotSslWrite {
  * deviceParameters.NBIOT_SSL_CACERT_SET = `42`
  */
 interface IParameterNbiotSslSet {
-    crc32: number
+    crc32: types.TUint32
 }
 
 /**
@@ -557,10 +557,10 @@ interface IParameterNbiotModuleFirmwareUpdate {
  * deviceParameters.REPORTING_DATA_CONFIG = `49`
  */
 interface IParameterReportingDataConfig {
-    dataType: number,
-    hour: number,
-    minutes: number,
-    countToSend: number
+    dataType: types.TUint8,
+    hour: types.TUint8,
+    minutes: types.TUint8,
+    countToSend: types.TUint8
 }
 
 /**
@@ -568,10 +568,9 @@ interface IParameterReportingDataConfig {
  * deviceParameters.EVENTS_CONFIG = `50`
  */
 interface IParameterEventsConfig {
-    eventId: number,
-    enableEvent: number,
-    sendEvent: number,
-    saveEvent: number
+    eventId: types.TUint8,
+    sendEvent: types.TUint8,
+    saveEvent: types.TUint8
 }
 
 /**
@@ -587,7 +586,7 @@ interface IParameterNbiotModuleInfo {
  * deviceParameters.NBIOT_BANDS = `52`
  */
 interface IParameterNbiotBands {
-    bands: Array<number>
+    bands: Array<types.TUint8>
 }
 
 /**
@@ -596,6 +595,24 @@ interface IParameterNbiotBands {
  */
 interface IParameterNbiotApn {
     apn: string
+}
+
+/**
+ * Enable LED indication.
+ * deviceParameters.NBIOT_LED_INDICATION = `54`
+ */
+interface IParameterNbiotLedIndication {
+    enableLed: types.TUint8,
+    enableNbiotNetworkLed: types.TUint8
+}
+
+/**
+ * Set NB-IoT SIM PIN code.
+ * deviceParameters.NBIOT_SIM = `55`
+ */
+interface IParameterNbiotSim {
+    enable: types.TUint8,
+    pin: types.TUint16
 }
 
 /**
@@ -734,7 +751,9 @@ type TParameterData =
     IParameterEventsConfig |
     IParameterNbiotModuleInfo |
     IParameterNbiotBands |
-    IParameterNbiotApn;
+    IParameterNbiotApn |
+    IParameterNbiotLedIndication |
+    IParameterNbiotSim;
 
 
 type TRequestParameterData =
@@ -772,7 +791,9 @@ type TResponseParameterData =
     IParameterEventsConfig |
     IParameterNbiotModuleInfo |
     IParameterNbiotBands |
-    IParameterNbiotApn;
+    IParameterNbiotApn |
+    IParameterNbiotLedIndication |
+    IParameterNbiotSim;
 
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
@@ -898,14 +919,16 @@ const parametersSizeMap = {
     [deviceParameters.PULSE_CHANNELS_SET_CONFIG]: 1 + 1,
     [deviceParameters.BATTERY_DEPASSIVATION_CONFIG]: 1 + 4,
     [deviceParameters.MQTT_SSL_ENABLE]: 1 + 1,
-    [deviceParameters.MQTT_DATA_RECEIVE_CONFIG]: 1 + 1,
-    [deviceParameters.MQTT_DATA_SEND_CONFIG]: 1 + 5,
+    [deviceParameters.MQTT_DATA_RECEIVE_CONFIG]: 1 + 3,
+    [deviceParameters.MQTT_DATA_SEND_CONFIG]: 1 + 3,
     [deviceParameters.NBIOT_SSL_CONFIG]: 1 + 2,
     [deviceParameters.NBIOT_SSL_CACERT_SET]: 1 + 4,
     [deviceParameters.NBIOT_SSL_CLIENT_CERT_SET]: 1 + 4,
     [deviceParameters.NBIOT_SSL_CLIENT_KEY_SET]: 1 + 4,
     [deviceParameters.REPORTING_DATA_CONFIG]: 1 + 4,
-    [deviceParameters.EVENTS_CONFIG]: 1 + 4
+    [deviceParameters.EVENTS_CONFIG]: 1 + 3,
+    [deviceParameters.NBIOT_LED_INDICATION]: 1 + 2,
+    [deviceParameters.NBIOT_SIM]: 1 + 3
 };
 
 const fourChannelsBitMask = {
@@ -1068,11 +1091,9 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.SERIAL_NUMBER]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterSerialNumber => (
-            {
-                value: getHexFromBytes(buffer.getBytes(SERIAL_NUMBER_SIZE))
-            }
-        ),
+        get: ( buffer: ICommandBinaryBuffer ): IParameterSerialNumber => ({
+            value: getHexFromBytes(buffer.getBytes(SERIAL_NUMBER_SIZE))
+        }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterSerialNumber ) => {
             getBytesFromHex(parameter.value).forEach(byte => buffer.setUint8(byte));
         }
@@ -1203,26 +1224,26 @@ const deviceParameterConvertersMap = {
     },
     [deviceParameters.MQTT_DATA_RECEIVE_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterMqttDataReceiveConfig => ({
-            qos: buffer.getUint8()
+            qos: buffer.getUint8(),
+            count: buffer.getUint8(),
+            timeout: buffer.getUint8()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttDataReceiveConfig ) => {
             buffer.setUint8(parameter.qos);
+            buffer.setUint8(parameter.count);
+            buffer.setUint8(parameter.timeout);
         }
     },
     [deviceParameters.MQTT_DATA_SEND_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterMqttDataSendConfig => ({
             qos: buffer.getUint8(),
             retain: buffer.getUint8(),
-            newestSendFirst: buffer.getUint8(),
-            sendCountAttempts: buffer.getUint8(),
-            sendTimeoutBetweenAttempts: buffer.getUint8()
+            newestSendFirst: buffer.getUint8()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttDataSendConfig ) => {
             buffer.setUint8(parameter.qos);
             buffer.setUint8(parameter.retain);
             buffer.setUint8(parameter.newestSendFirst);
-            buffer.setUint8(parameter.sendCountAttempts);
-            buffer.setUint8(parameter.sendTimeoutBetweenAttempts);
         }
     },
     [deviceParameters.NBIOT_SSL_CONFIG]: {
@@ -1260,30 +1281,28 @@ const deviceParameterConvertersMap = {
         set: setNbiotSslSet
     },
     [deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotDeviceSoftwareUpdate => (
-            {softwareImageUrl: buffer.getString()}
-        ),
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotDeviceSoftwareUpdate => ({
+            softwareImageUrl: buffer.getString()
+        }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotDeviceSoftwareUpdate ) => {
             buffer.setString(parameter.softwareImageUrl);
         }
     },
     [deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotModuleFirmwareUpdate => (
-            {moduleFirmwareImageUrl: buffer.getString()}
-        ),
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotModuleFirmwareUpdate => ({
+            moduleFirmwareImageUrl: buffer.getString()
+        }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotModuleFirmwareUpdate ) => {
             buffer.setString(parameter.moduleFirmwareImageUrl);
         }
     },
     [deviceParameters.REPORTING_DATA_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataConfig => (
-            {
-                dataType: buffer.getUint8(),
-                hour: buffer.getUint8(),
-                minutes: buffer.getUint8(),
-                countToSend: buffer.getUint8()
-            }
-        ),
+        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataConfig => ({
+            dataType: buffer.getUint8(),
+            hour: buffer.getUint8(),
+            minutes: buffer.getUint8(),
+            countToSend: buffer.getUint8()
+        }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataConfig ) => {
             buffer.setUint8(parameter.dataType);
             buffer.setUint8(parameter.hour);
@@ -1292,25 +1311,21 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.EVENTS_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterEventsConfig => (
-            {
-                eventId: buffer.getUint8(),
-                enableEvent: buffer.getUint8(),
-                sendEvent: buffer.getUint8(),
-                saveEvent: buffer.getUint8()
-            }
-        ),
+        get: ( buffer: ICommandBinaryBuffer ): IParameterEventsConfig => ({
+            eventId: buffer.getUint8(),
+            sendEvent: buffer.getUint8(),
+            saveEvent: buffer.getUint8()
+        }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterEventsConfig ) => {
             buffer.setUint8(parameter.eventId);
-            buffer.setUint8(parameter.enableEvent);
             buffer.setUint8(parameter.sendEvent);
             buffer.setUint8(parameter.saveEvent);
         }
     },
     [deviceParameters.NBIOT_MODULE_INFO]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotModuleInfo => (
-            {moduleInfo: buffer.getString()}
-        ),
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotModuleInfo => ({
+            moduleInfo: buffer.getString()
+        }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotModuleInfo ) => {
             buffer.setString(parameter.moduleInfo);
         }
@@ -1335,11 +1350,31 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.NBIOT_APN]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotApn => (
-            {apn: buffer.getString()}
-        ),
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotApn => ({
+            apn: buffer.getString()
+        }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotApn ) => {
             buffer.setString(parameter.apn);
+        }
+    },
+    [deviceParameters.NBIOT_LED_INDICATION]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotLedIndication => ({
+            enableLed: buffer.getUint8(),
+            enableNbiotNetworkLed: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotLedIndication ) => {
+            buffer.setUint8(parameter.enableLed);
+            buffer.setUint8(parameter.enableNbiotNetworkLed);
+        }
+    },
+    [deviceParameters.NBIOT_SIM]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotSim => ({
+            enable: buffer.getUint8(),
+            pin: buffer.getUint16(false)
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotSim ) => {
+            buffer.setUint8(parameter.enable);
+            buffer.setUint16(parameter.pin, false);
         }
     }
 };
