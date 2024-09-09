@@ -82,7 +82,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysResponseParamete
     const dayList = [];
 
     while ( buffer.offset < buffer.data.length ) {
-        dayList.push(buffer.getLegacyCounter());
+        dayList.push(buffer.getLegacyCounter(undefined, true));
     }
 
     return {startTime2000: getTime2000FromDate(date), dayList};
@@ -102,7 +102,7 @@ export const toBytes = ( parameters: IGetArchiveDaysResponseParameters ): types.
     buffer.setDate(startTime2000);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    dayList.forEach(dayCounter => buffer.setLegacyCounter(dayCounter));
+    dayList.forEach(dayCounter => buffer.setLegacyCounter(dayCounter, undefined, true));
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

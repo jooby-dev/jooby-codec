@@ -109,7 +109,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcResponseParam
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
 
-    return buffer.getChannelsValuesWithHourDiff();
+    return buffer.getChannelsValuesWithHourDiff(true);
 };
 
 /**
@@ -122,7 +122,7 @@ export const toBytes = ( parameters: IGetArchiveHoursMcResponseParameters ): typ
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
     const {hours, startTime2000, channelList} = parameters;
 
-    buffer.setChannelsValuesWithHourDiff(hours, startTime2000, channelList);
+    buffer.setChannelsValuesWithHourDiff(hours, startTime2000, channelList, true);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

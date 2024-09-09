@@ -7,14 +7,15 @@
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
-import {getDateFromTime2000, getTime2000FromDate, TTime2000} from './time.js';
+import invertObject from '../../utils/invertObject.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
 import roundNumber from '../../utils/roundNumber.js';
 import {extractBits, fillBits} from '../../utils/bitSet.js';
+import {getDateFromTime2000, getTime2000FromDate, TTime2000} from './time.js';
 import * as hardwareTypes from '../constants/hardwareTypes.js';
 import * as deviceParameters from '../constants/deviceParameters.js';
-import invertObject from '../../utils/invertObject.js';
+import * as archive from '../constants/archive.js';
 
 
 export interface IBatteryVoltage {
@@ -1555,14 +1556,14 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getLegacyCounterValue (): types.TUint24,
     setLegacyCounterValue ( value: types.TUint24 ),
 
-    getLegacyCounter (): ILegacyCounter,
-    setLegacyCounter ( counter: ILegacyCounter, byte?: types.TUint8 ),
+    getLegacyCounter ( byte?: types.TUint8, isArchiveValue?: boolean ): ILegacyCounter,
+    setLegacyCounter ( counter: ILegacyCounter, byte?: types.TUint8, isArchiveValue?: boolean ),
 
     getChannels (): Array<number>,
     setChannels ( channelList: Array<IChannel> );
 
-    getChannelsValuesWithHourDiff (): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>},
-    setChannelsValuesWithHourDiff ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours> ),
+    getChannelsValuesWithHourDiff ( isArchiveValue?: boolean ): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>},
+    setChannelsValuesWithHourDiff ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>, isArchiveValue?: boolean ),
 
     getHours ( byte?: types.TUint8 ): {hour: number, hours: number},
     setHours ( hour: number, hours: number ),
@@ -1594,11 +1595,11 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getLegacyHourDiff (): ILegacyCounter,
     setLegacyHourDiff ( diff: ILegacyCounter ),
 
-    getLegacyHourCounterWithDiff (): ILegacyHourCounterWithDiff,
-    setLegacyHourCounterWithDiff ( hourCounter: ILegacyHourCounterWithDiff )
+    getLegacyHourCounterWithDiff ( isArchiveValue?: boolean ): ILegacyHourCounterWithDiff,
+    setLegacyHourCounterWithDiff ( hourCounter: ILegacyHourCounterWithDiff, isArchiveValue?: boolean ),
 
-    getChannelsValuesWithHourDiffExtended (): IChannelValuesWithHourDiffExtended,
-    setChannelsValuesWithHourDiffExtended ( parameters: IChannelValuesWithHourDiffExtended )
+    getChannelsValuesWithHourDiffExtended ( isArchiveValue?: boolean ): IChannelValuesWithHourDiffExtended,
+    setChannelsValuesWithHourDiffExtended ( parameters: IChannelValuesWithHourDiffExtended, isArchiveValue?: boolean ),
 
     getDataSegment (): IDataSegment,
     setDataSegment ( parameters: IDataSegment )
@@ -1639,10 +1640,6 @@ CommandBinaryBuffer.prototype.getExtendedValue = function (): number {
         // https://stackoverflow.com/a/30089815/7119054
         value += ((byte & 0x7f) << (7 * position)) >>> 0;
         ++position;
-    }
-
-    if ( value < 0 ) {
-        value = 0;
     }
 
     return value;
@@ -1753,16 +1750,18 @@ CommandBinaryBuffer.prototype.setLegacyCounterValue = function ( value: types.TU
     this.setUint24(value, false);
 };
 
-CommandBinaryBuffer.prototype.getLegacyCounter = function ( byte = this.getUint8() ): ILegacyCounter {
+CommandBinaryBuffer.prototype.getLegacyCounter = function ( byte = this.getUint8(), isArchiveValue = false ): ILegacyCounter {
+    const value = this.getLegacyCounterValue();
+
     return {
         isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(byte),
-        value: this.getLegacyCounterValue()
+        value: isArchiveValue && value === archive.EMPTY_VALUE ? 0 : value
     };
 };
 
-CommandBinaryBuffer.prototype.setLegacyCounter = function ( counter: ILegacyCounter, byte = 0 ) {
+CommandBinaryBuffer.prototype.setLegacyCounter = function ( counter: ILegacyCounter, byte = 0, isArchiveValue = false ) {
     this.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, counter.isMagneticInfluence));
-    this.setLegacyCounterValue(counter.value);
+    this.setLegacyCounterValue(isArchiveValue && counter.value === 0 ? archive.EMPTY_VALUE : counter.value);
 };
 
 
@@ -1854,7 +1853,9 @@ CommandBinaryBuffer.prototype.setChannels = function ( channelList: Array<IChann
 };
 
 
-CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiff = function (): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>} {
+CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiff = function (
+    isArchiveValue = false
+): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>} {
     const date = this.getDate();
     const {hour, hours} = this.getHours();
     const channels = this.getChannels();
@@ -1874,7 +1875,7 @@ CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiff = function (): {hour
         }
 
         channelList.push({
-            value,
+            value: value === isArchiveValue && archive.EMPTY_VALUE ? 0 : value,
             diff,
             index: channelIndex
         });
@@ -1884,7 +1885,7 @@ CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiff = function (): {hour
 };
 
 
-CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiff = function ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours> ) {
+CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiff = function ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>, isArchiveValue = false ) {
     const date = getDateFromTime2000(startTime2000);
     const hour = date.getUTCHours();
 
@@ -1893,7 +1894,7 @@ CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiff = function ( hours: 
     this.setChannels(channelList);
 
     channelList.forEach(({value, diff}) => {
-        this.setExtendedValue(value);
+        this.setExtendedValue(isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
         diff.forEach(diffValue => this.setExtendedValue(diffValue));
     });
 };
@@ -2278,13 +2279,14 @@ CommandBinaryBuffer.prototype.setLegacyHourDiff = function ( diff: ILegacyCounte
 };
 
 
-CommandBinaryBuffer.prototype.getLegacyHourCounterWithDiff = function (): ILegacyHourCounterWithDiff {
+CommandBinaryBuffer.prototype.getLegacyHourCounterWithDiff = function ( isArchiveValue = false ): ILegacyHourCounterWithDiff {
     const date = this.getDate();
     const byte = this.getUint8();
     const {hour} = this.getHours(byte);
+    const value = this.getLegacyCounterValue();
     const counter = {
         isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(byte),
-        value: this.getLegacyCounterValue()
+        value: isArchiveValue && value === archive.EMPTY_VALUE ? 0 : value
     };
     const diff = [];
 
@@ -2298,9 +2300,10 @@ CommandBinaryBuffer.prototype.getLegacyHourCounterWithDiff = function (): ILegac
 };
 
 
-CommandBinaryBuffer.prototype.setLegacyHourCounterWithDiff = function ( hourCounter: ILegacyHourCounterWithDiff ): void {
+CommandBinaryBuffer.prototype.setLegacyHourCounterWithDiff = function ( hourCounter: ILegacyHourCounterWithDiff, isArchiveValue = false ): void {
     const date = getDateFromTime2000(hourCounter.startTime2000);
     const hour = date.getUTCHours();
+    const {value} = hourCounter.counter;
 
     this.setDate(date);
     // force hours to 0
@@ -2312,12 +2315,12 @@ CommandBinaryBuffer.prototype.setLegacyHourCounterWithDiff = function ( hourCoun
     this.seek(this.offset - 1);
     this.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, hourCounter.counter.isMagneticInfluence));
 
-    this.setLegacyCounterValue(hourCounter.counter.value);
+    this.setLegacyCounterValue(isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
     hourCounter.diff.forEach(diffItem => this.setLegacyHourDiff(diffItem));
 };
 
 
-CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiffExtended = function (): IChannelValuesWithHourDiffExtended {
+CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiffExtended = function ( isArchiveValue = false ): IChannelValuesWithHourDiffExtended {
     const date = this.getDate();
     const hour = this.getUint8();
     const hours = this.getUint8();
@@ -2338,7 +2341,7 @@ CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiffExtended = function (
         }
 
         channelList.push({
-            value,
+            value: value === isArchiveValue && archive.EMPTY_VALUE ? 0 : value,
             diff,
             index: channelIndex
         });
@@ -2348,7 +2351,7 @@ CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiffExtended = function (
 };
 
 
-CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiffExtended = function ( parameters: IChannelValuesWithHourDiffExtended ): void {
+CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiffExtended = function ( parameters: IChannelValuesWithHourDiffExtended, isArchiveValue = false ): void {
     const date = getDateFromTime2000(parameters.startTime2000);
 
     this.setDate(date);
@@ -2357,7 +2360,7 @@ CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiffExtended = function (
     this.setChannels(parameters.channelList);
 
     parameters.channelList.forEach(({value, diff}) => {
-        this.setExtendedValue(value);
+        this.setExtendedValue(isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
         diff.forEach(diffValue => this.setExtendedValue(diffValue));
     });
 };

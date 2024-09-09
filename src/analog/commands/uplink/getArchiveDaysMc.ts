@@ -29,6 +29,7 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelDays} from '../../utils/CommandBinaryBuffer.js';
+import * as archive from '../../constants/archive.js';
 
 
 interface IGetArchiveDaysMcResponseParameters {
@@ -81,8 +82,8 @@ export const examples: command.TCommandExamples = {
             channelList: [{dayList: [0], index: 1}]
         },
         bytes: [
-            0x1b, 0x05,
-            0x15, 0x49, 0x01, 0x01, 0x00
+            0x1b, 0x09,
+            0x15, 0x49, 0x01, 0x01, 0xff, 0xff, 0xff, 0xff, 0x0f
         ]
     }
 };
@@ -106,7 +107,9 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysMcResponseParame
         channelList.push({dayList, index: channelIndex});
 
         for ( let day = 0; day < days; ++day ) {
-            dayList.push(buffer.getExtendedValue());
+            const value = buffer.getExtendedValue();
+
+            dayList.push(value === archive.EMPTY_VALUE ? 0 : value);
         }
     });
 
@@ -130,7 +133,7 @@ export const toBytes = ( parameters: IGetArchiveDaysMcResponseParameters ): type
 
     channelList.forEach(({dayList}) => {
         dayList.forEach(value => {
-            buffer.setExtendedValue(value);
+            buffer.setExtendedValue(value === 0 ? archive.EMPTY_VALUE : value);
         });
     });
 
