@@ -67,7 +67,7 @@ export const examples: command.TCommandExamples = {
 export const fromBytes = ( data: types.TBytes ): ILegacyHourCounterWithDiff => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
 
-    return buffer.getLegacyHourCounterWithDiff();
+    return buffer.getLegacyHourCounterWithDiff(true);
 };
 
 /**
@@ -79,7 +79,7 @@ export const fromBytes = ( data: types.TBytes ): ILegacyHourCounterWithDiff => {
 export const toBytes = ( parameters: ILegacyHourCounterWithDiff ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(CommandBinaryBuffer.getLegacyHourCounterSize(parameters));
 
-    buffer.setLegacyHourCounterWithDiff(parameters);
+    buffer.setLegacyHourCounterWithDiff(parameters, true);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

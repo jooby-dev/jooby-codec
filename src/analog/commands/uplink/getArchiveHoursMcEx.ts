@@ -96,7 +96,7 @@ export const fromBytes = ( data: types.TBytes ): IChannelValuesWithHourDiffExten
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
 
-    return buffer.getChannelsValuesWithHourDiffExtended();
+    return buffer.getChannelsValuesWithHourDiffExtended(true);
 };
 
 
@@ -109,7 +109,7 @@ export const fromBytes = ( data: types.TBytes ): IChannelValuesWithHourDiffExten
 export const toBytes = ( parameters: IChannelValuesWithHourDiffExtended ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
 
-    buffer.setChannelsValuesWithHourDiffExtended(parameters);
+    buffer.setChannelsValuesWithHourDiffExtended(parameters, true);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

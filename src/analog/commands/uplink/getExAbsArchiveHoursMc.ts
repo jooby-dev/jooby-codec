@@ -106,7 +106,7 @@ export const examples: command.TCommandExamples = {
 export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
 
-    return buffer.getChannelsValuesWithHourDiff();
+    return buffer.getChannelsValuesWithHourDiff(true);
 };
 
 
@@ -119,7 +119,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcResponseParam
 export const toBytes = ( parameters: IGetArchiveHoursMcResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
 
-    buffer.setChannelsValuesWithHourDiff(parameters.hours, parameters.startTime2000, parameters.channelList);
+    buffer.setChannelsValuesWithHourDiff(parameters.hours, parameters.startTime2000, parameters.channelList, true);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };
