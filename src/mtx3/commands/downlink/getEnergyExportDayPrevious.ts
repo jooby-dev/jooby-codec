@@ -18,9 +18,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetEnergyExportDayPrevious.md#request)
  */
 
-import * as command from '../../../mtx/utils/command.js';
+import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
-import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 
 
 export const id: types.TCommandId = 0x50;

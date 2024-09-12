@@ -4,10 +4,10 @@
  * @example
  * ```js
  * import * as message from 'jooby-codec/mtx3/message/downlink';
- * import * as frame from 'jooby-codec/mtx/utils/frame.js';
+ * import * as frame from 'jooby-codec/mtx1/utils/frame.js';
  * import * as downlinkCommands from 'jooby-codec/mtx3/commands/downlink';
  * import getHexFromBytes from 'jooby-codec/utils/getHexFromBytes.js';
- * import * as frameTypes from 'jooby-codec/mtx/constants/frameTypes.js';
+ * import * as frameTypes from 'jooby-codec/mtx1/constants/frameTypes.js';
  *
  * const aesKey = [...Array(16).keys()];
  * const messageId = 10;
@@ -121,8 +121,8 @@
  * @packageDocumentation
  */
 
-import * as mtx1Commands from '../../mtx/commands/downlink/index.js';
-import * as wrappers from '../../mtx/message/wrappers.js';
+import * as mtx1Commands from '../../mtx1/commands/downlink/index.js';
+import * as wrappers from '../../mtx1/message/wrappers.js';
 import * as commands from '../commands/downlink/index.js';
 
 

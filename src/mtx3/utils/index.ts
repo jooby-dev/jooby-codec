@@ -4,4 +4,4 @@
  * @packageDocumentation
  */
 
-export * from '../../mtx/utils/index.js';
+export * from '../../mtx1/utils/index.js';

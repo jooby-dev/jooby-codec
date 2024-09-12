@@ -49,9 +49,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetOperatorParametersExtended2.md#response)
  */
 
-import * as command from '../../../mtx/utils/command.js';
+import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
-import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IOperatorParametersExtended2, OPERATOR_PARAMETERS_EXTENDED2_SIZE} from '../../utils/CommandBinaryBuffer.js';
 
 

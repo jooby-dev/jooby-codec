@@ -1,5 +1,5 @@
 import {getCurrentValues} from '../../../src/mtx3/commands/uplink/index.js';
-import {runCommandDlmsTest} from '../../mtx/dlms/utils/runCommandDlmsTest.js';
+import {runCommandDlmsTest} from '../../mtx1/dlms/utils/runCommandDlmsTest.js';
 
 
 const example = {

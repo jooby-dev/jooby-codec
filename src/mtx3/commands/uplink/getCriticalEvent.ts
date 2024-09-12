@@ -36,7 +36,7 @@
  */
 
 import * as types from '../../types.js';
-import * as command from '../../../mtx/utils/command.js';
+import * as command from '../../../mtx1/utils/command.js';
 import {accessLevels} from '../../constants/index.js';
 
 
