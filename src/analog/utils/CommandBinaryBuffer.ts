@@ -965,8 +965,8 @@ const setChannelValue = ( buffer: ICommandBinaryBuffer, value: number ) => {
 };
 
 const getNbiotSslWrite = ( buffer: ICommandBinaryBuffer ) => ({
-    size: buffer.getUint16(false),
-    position: buffer.getUint16(false),
+    size: buffer.getUint16(),
+    position: buffer.getUint16(),
     chunk: buffer.getBytesLeft()
 });
 
@@ -975,16 +975,16 @@ const setNbiotSslWrite = ( buffer: ICommandBinaryBuffer, parameter: IParameterNb
         throw new Error('ssl chunk size parameter doesn\'t match actual ssl chunk size');
     }
 
-    buffer.setUint16(parameter.size, false);
-    buffer.setUint16(parameter.position, false);
+    buffer.setUint16(parameter.size);
+    buffer.setUint16(parameter.position);
     buffer.setBytes(parameter.chunk);
 };
 
 
-const getNbiotSslSet = ( buffer: ICommandBinaryBuffer ) => ({crc32: buffer.getUint32(false)});
+const getNbiotSslSet = ( buffer: ICommandBinaryBuffer ) => ({crc32: buffer.getUint32()});
 
 const setNbiotSslSet = ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotSslSet ) => {
-    buffer.setUint32(parameter.crc32, false);
+    buffer.setUint32(parameter.crc32);
 };
 
 
@@ -1035,22 +1035,22 @@ const deviceParameterConvertersMap = {
     },
     [deviceParameters.BATTERY_DEPASSIVATION_INFO]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryDepassivationInfo => ({
-            loadTime: buffer.getUint16(false),
-            internalResistance: buffer.getUint16(false),
-            lowVoltage: buffer.getUint16(false)
+            loadTime: buffer.getUint16(),
+            internalResistance: buffer.getUint16(),
+            lowVoltage: buffer.getUint16()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterBatteryDepassivationInfo ) => {
-            buffer.setUint16(parameter.loadTime, false);
-            buffer.setUint16(parameter.internalResistance, false);
-            buffer.setUint16(parameter.lowVoltage, false);
+            buffer.setUint16(parameter.loadTime);
+            buffer.setUint16(parameter.internalResistance);
+            buffer.setUint16(parameter.lowVoltage);
         }
     },
     [deviceParameters.BATTERY_MINIMAL_LOAD_TIME]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryMinimalLoadTime => ({
-            value: buffer.getUint32(false)
+            value: buffer.getUint32()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterBatteryMinimalLoadTime ) => {
-            buffer.setUint32(parameter.value, false);
+            buffer.setUint32(parameter.value);
         }
     },
     [deviceParameters.CHANNELS_CONFIG]: {
@@ -1066,23 +1066,23 @@ const deviceParameterConvertersMap = {
     [deviceParameters.RX2_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterRx2Config => ({
             spreadFactor: buffer.getUint8(),
-            frequency: buffer.getUint24(false) * PARAMETER_RX2_FREQUENCY_COEFFICIENT
+            frequency: buffer.getUint24() * PARAMETER_RX2_FREQUENCY_COEFFICIENT
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterRx2Config ) => {
             buffer.setUint8(parameter.spreadFactor);
-            buffer.setUint24(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT, false);
+            buffer.setUint24(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT);
         }
     },
     [deviceParameters.ABSOLUTE_DATA]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteData => ({
-            meterValue: buffer.getUint32(false),
+            meterValue: buffer.getUint32(),
             pulseCoefficient: buffer.getPulseCoefficient(),
-            value: buffer.getUint32(false)
+            value: buffer.getUint32()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteData ) => {
-            buffer.setUint32(parameter.meterValue, false);
+            buffer.setUint32(parameter.meterValue);
             buffer.setPulseCoefficient(parameter.pulseCoefficient);
-            buffer.setUint32(parameter.value, false);
+            buffer.setUint32(parameter.value);
         }
     },
     [deviceParameters.ABSOLUTE_DATA_ENABLE]: {
@@ -1101,9 +1101,9 @@ const deviceParameterConvertersMap = {
     },
     [deviceParameters.GEOLOCATION]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterGeolocation => ({
-            latitude: roundNumber( buffer.getFloat32()),
-            longitude: roundNumber( buffer.getFloat32()),
-            altitude: roundNumber( buffer.getUint16())
+            latitude: roundNumber(buffer.getFloat32()),
+            longitude: roundNumber(buffer.getFloat32()),
+            altitude: roundNumber(buffer.getUint16())
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterGeolocation ) => {
             buffer.setFloat32(roundNumber(parameter.latitude));
@@ -1120,15 +1120,15 @@ const deviceParameterConvertersMap = {
     [deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataMC => ({
             channel: getChannelValue(buffer),
-            meterValue: buffer.getUint32(false),
+            meterValue: buffer.getUint32(),
             pulseCoefficient: buffer.getPulseCoefficient(),
-            value: buffer.getUint32(false)
+            value: buffer.getUint32()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteDataMC ) => {
             setChannelValue(buffer, parameter.channel);
-            buffer.setUint32(parameter.meterValue, false);
+            buffer.setUint32(parameter.meterValue);
             buffer.setPulseCoefficient(parameter.pulseCoefficient);
-            buffer.setUint32(parameter.value, false);
+            buffer.setUint32(parameter.value);
         }
     },
     [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL]: {
@@ -1175,12 +1175,12 @@ const deviceParameterConvertersMap = {
     },
     [deviceParameters.BATTERY_DEPASSIVATION_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryDepassivationConfig => ({
-            resistanceStartThreshold: buffer.getUint16(false),
-            resistanceStopThreshold: buffer.getUint16(false)
+            resistanceStartThreshold: buffer.getUint16(),
+            resistanceStopThreshold: buffer.getUint16()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterBatteryDepassivationConfig ) => {
-            buffer.setUint16(parameter.resistanceStartThreshold, false);
-            buffer.setUint16(parameter.resistanceStopThreshold, false);
+            buffer.setUint16(parameter.resistanceStartThreshold);
+            buffer.setUint16(parameter.resistanceStopThreshold);
         }
     },
     [deviceParameters.MQTT_SESSION_CONFIG]: {
@@ -1200,11 +1200,11 @@ const deviceParameterConvertersMap = {
     [deviceParameters.MQTT_BROKER_ADDRESS]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterMqttBrokerAddress => ({
             hostName: buffer.getString(),
-            port: buffer.getUint16(false)
+            port: buffer.getUint16()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttBrokerAddress ) => {
             buffer.setString(parameter.hostName);
-            buffer.setUint16(parameter.port, false);
+            buffer.setUint16(parameter.port);
         }
     },
     [deviceParameters.MQTT_SSL_ENABLE]: {
@@ -1371,11 +1371,11 @@ const deviceParameterConvertersMap = {
     [deviceParameters.NBIOT_SIM]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotSim => ({
             enable: buffer.getUint8(),
-            pin: buffer.getUint16(false)
+            pin: buffer.getUint16()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotSim ) => {
             buffer.setUint8(parameter.enable);
-            buffer.setUint16(parameter.pin, false);
+            buffer.setUint16(parameter.pin);
         }
     }
 };
@@ -1605,7 +1605,7 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     setDataSegment ( parameters: IDataSegment )
 }
 
-function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = true ) {
+function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
     BinaryBuffer.call(this, dataOrLength, isLittleEndian);
 }
 
@@ -1694,12 +1694,12 @@ CommandBinaryBuffer.prototype.getExtendedValueSize = function ( bits: number ): 
 
 
 CommandBinaryBuffer.prototype.getTime = function (): number {
-    return this.getUint32(false);
+    return this.getUint32();
 };
 
 
 CommandBinaryBuffer.prototype.setTime = function ( value: TTime2000 ): void {
-    this.setUint32(value, false);
+    this.setUint32(value);
 };
 
 
@@ -1743,11 +1743,11 @@ CommandBinaryBuffer.prototype.setBatteryVoltage = function ( batteryVoltage: IBa
 };
 
 CommandBinaryBuffer.prototype.getLegacyCounterValue = function (): types.TUint24 {
-    return this.getUint24(false);
+    return this.getUint24();
 };
 
 CommandBinaryBuffer.prototype.setLegacyCounterValue = function ( value: types.TUint24 ) {
-    this.setUint24(value, false);
+    this.setUint24(value);
 };
 
 CommandBinaryBuffer.prototype.getLegacyCounter = function ( byte = this.getUint8(), isArchiveValue = false ): ILegacyCounter {
@@ -2083,9 +2083,9 @@ CommandBinaryBuffer.prototype.getEventStatus = function ( hardwareType: number )
     // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
     //     status = bitSet.toObject(waterBitMask, this.getUint8());
     } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        status = bitSet.toObject(fourChannelBitMask, this.getUint16());
+        status = bitSet.toObject(fourChannelBitMask, this.getUint16(true));
     } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        status = bitSet.toObject(mtxBitMask, this.getUint16());
+        status = bitSet.toObject(mtxBitMask, this.getUint16(true));
     } else if ( hardwareType === hardwareTypes.US_WATER ) {
         // ultrasound water meter
         const event = bitSet.toObject(usWaterMeterEventBitMask, this.getUint8()) as unknown as IUSWaterMeterEvent;
@@ -2108,12 +2108,15 @@ CommandBinaryBuffer.prototype.setEventStatus = function ( hardwareType: number, 
     // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
     //     this.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
     } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        // apply 2 bytes with always set extended bit to 1 (on the 7-th position)
         this.setUint16(
-            bitSet.fromObject(fourChannelBitMask, status as bitSet.TBooleanObject) | (1 << 7)
+            bitSet.fromObject(fourChannelBitMask, status as bitSet.TBooleanObject) | (1 << 7),
+            true
         );
     } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        this.setUint16(bitSet.fromObject(mtxBitMask, status as bitSet.TBooleanObject));
+        this.setUint16(
+            bitSet.fromObject(mtxBitMask, status as bitSet.TBooleanObject),
+            true
+        );
     } else if ( hardwareType === hardwareTypes.US_WATER ) {
         const data = status as IEventUSWaterMeterStatus;
         this.setUint8(bitSet.fromObject(usWaterMeterEventBitMask, data.event as unknown as bitSet.TBooleanObject));

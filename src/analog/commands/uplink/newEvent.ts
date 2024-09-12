@@ -194,8 +194,8 @@ export const examples: command.TCommandExamples = {
 };
 
 
-const getVoltage = ( buffer: ICommandBinaryBuffer ): number => buffer.getUint16(false);
-const setVoltage = ( buffer: ICommandBinaryBuffer, value: number ): void => buffer.setUint16(value, false);
+const getVoltage = ( buffer: ICommandBinaryBuffer ): number => buffer.getUint16();
+const setVoltage = ( buffer: ICommandBinaryBuffer, value: number ): void => buffer.setUint16(value);
 
 const getDeviceId = ( buffer: ICommandBinaryBuffer ): string => (
     getHexFromBytes(buffer.getBytes(MTX_ADDRESS_SIZE))
