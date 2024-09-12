@@ -30,7 +30,7 @@ const validDownlinkMessages: TMessageExamples = {
         }
     },
     'setParameters + getParameters': {
-        bytes: getBytesFromHex('03 02 04 0c  03 0b 1a 52 b8 09 42 52 b8 2d 42 17 00  04 01 04  04 01 1a  63'),
+        bytes: getBytesFromHex('03 02 04 0c  03 0b 1a 42 09 b8 52 42 2d b8 52 00 17  04 01 04  04 01 1a  63'),
         commands: [
             {
                 id: downlinkCommands.setParameter.id,
@@ -51,7 +51,7 @@ const validDownlinkMessages: TMessageExamples = {
                         altitude: 23
                     }
                 },
-                bytes: getBytesFromHex('03 0b 1a 52 b8 09 42 52 b8 2d 42 17 00')
+                bytes: getBytesFromHex('03 0b 1a 42 09 b8 52 42 2d b8 52 00 17')
             },
             {
                 id: downlinkCommands.getParameter.id,

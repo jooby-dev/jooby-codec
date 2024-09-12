@@ -71,7 +71,7 @@ export const fromBytes = ( data: types.TBytes ): IWriteImageResponseParameters =
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
 
     return {
-        offset: buffer.getUint32(false),
+        offset: buffer.getUint32(),
         status: buffer.getUint8()
     };
 };
@@ -86,7 +86,7 @@ export const fromBytes = ( data: types.TBytes ): IWriteImageResponseParameters =
 export const toBytes = ( parameters: IWriteImageResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
 
-    buffer.setUint32(parameters.offset, false);
+    buffer.setUint32(parameters.offset);
     buffer.setUint8(parameters.status);
 
     return command.toBytes(id, buffer.data);

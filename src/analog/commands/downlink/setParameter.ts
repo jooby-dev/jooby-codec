@@ -161,7 +161,7 @@ export const examples: command.TCommandExamples = {
         parameters: {id: 26, data: {latitude: 34.43, longitude: 43.43, altitude: 23}},
         bytes: [
             0x03, 0x0b,
-            0x1a, 0x52, 0xb8, 0x09, 0x42, 0x52, 0xb8, 0x2d, 0x42, 0x17, 0x00
+            0x1a, 0x42, 0x09, 0xb8, 0x52, 0x42, 0x2d, 0xb8, 0x52, 0x00, 0x17
         ]
     },
     'set interval to send EXTRA FRAME': {
@@ -171,7 +171,7 @@ export const examples: command.TCommandExamples = {
         parameters: {id: 28, data: {value: 3600}},
         bytes: [
             0x03, 0x03,
-            0x1c, 0x10, 0x0e
+            0x1c, 0x0e, 0x10
         ]
     },
     'set absolute data for multichannel device (1 channel)': {

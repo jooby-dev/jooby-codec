@@ -160,7 +160,7 @@ export const examples: command.TCommandExamples = {
         },
         bytes: [
             0x14, 0x14,
-            0x02, 0x0a, 0x07, 0x01, 0x5c, 0x11, 0x00, 0x00,
+            0x02, 0x0a, 0x07, 0x01, 0x00, 0x00, 0x11, 0x5c,
             0x01, 0x02, 0x06, 0x2a, 0x53, 0x8f, 0x02, 0x05,
             0x0c, 0x0a, 0x02, 0x21
         ]
@@ -195,7 +195,7 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
             {
                 const statusData: IGasStatus = {
                     batteryVoltage: buffer.getBatteryVoltage(),
-                    batteryInternalResistance: buffer.getUint16(false),
+                    batteryInternalResistance: buffer.getUint16(),
                     temperature: buffer.getUint8(),
                     remainingBatteryCapacity: buffer.getUint8(),
                     lastEventSequenceNumber: buffer.getUint8()
@@ -281,9 +281,9 @@ export const toBytes = ( parameters: IStatusParameters ): types.TBytes => {
                 buffer.setBatteryVoltage(statusData.batteryVoltage);
 
                 if ( statusData.batteryInternalResistance === undefined ) {
-                    buffer.setUint16(UNKNOWN_BATTERY_RESISTANCE, false);
+                    buffer.setUint16(UNKNOWN_BATTERY_RESISTANCE);
                 } else {
-                    buffer.setUint16(statusData.batteryInternalResistance, false);
+                    buffer.setUint16(statusData.batteryInternalResistance);
                 }
 
                 buffer.setUint8(statusData.temperature);
