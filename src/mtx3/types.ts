@@ -3,7 +3,7 @@ import {BrandType} from '../types.js';
 import * as energyTypes from './constants/energyTypes.js';
 
 
-export * from '../mtx/types.js';
+export * from '../mtx1/types.js';
 
 /**
  * `1` - `A+`, `R+`, `R-`,

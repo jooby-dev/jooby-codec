@@ -32,10 +32,10 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetDemand.md#response)
  */
 
-import * as command from '../../../mtx/utils/command.js';
+import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetDemandParameters, IGetDemandResponseParameters} from '../../utils/CommandBinaryBuffer.js';
-import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as getDemand from '../downlink/getDemand.js';
 
 

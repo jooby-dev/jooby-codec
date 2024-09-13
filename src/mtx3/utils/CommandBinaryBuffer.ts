@@ -11,7 +11,7 @@ import MtxBinaryBuffer, {
     TARIFF_NUMBER,
     DATE_SIZE,
     ENERGY_SIZE
-} from '../../mtx/utils/CommandBinaryBuffer.js';
+} from '../../mtx1/utils/CommandBinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import * as baudRates from '../constants/baudRates.js';
 import {TEnergyType} from '../types.js';

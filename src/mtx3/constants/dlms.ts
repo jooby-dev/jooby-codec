@@ -1,7 +1,7 @@
 import {
     IDlmsJsonOptions as BaseIDlmsJsonOptions,
     defaultDlmsJsonOptions as baseDefaultDlmsJsonOptions
-} from '../../mtx/utils/command.js';
+} from '../../mtx1/utils/command.js';
 
 
 export interface IJsonOptions extends BaseIDlmsJsonOptions {

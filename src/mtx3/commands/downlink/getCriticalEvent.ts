@@ -24,7 +24,7 @@
  */
 
 import * as types from '../../types.js';
-import * as command from '../../../mtx/utils/command.js';
+import * as command from '../../../mtx1/utils/command.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {accessLevels, criticalEvents} from '../../constants/index.js';
 

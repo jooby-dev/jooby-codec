@@ -9,11 +9,11 @@ import fs from 'fs';
 import path from 'path';
 
 import {commands as analogCommands} from '../src/analog/index.js';
-import {commands as mtxCommands} from '../src/mtx/index.js';
+import {commands as mtx1Commands} from '../src/mtx1/index.js';
 import {commands as mtx3Commands} from '../src/mtx3/index.js';
 import {commands as obisObserverCommands} from '../src/obis-observer/index.js';
 import * as analogMessage from '../src/analog/message/index.js';
-import * as mtxMessage from '../src/mtx/message/index.js';
+import * as mtx1Message from '../src/mtx1/message/index.js';
 import * as mtx3Message from '../src/mtx3/message/index.js';
 import * as obisObserverMessage from '../src/obis-observer/message/index.js';
 
@@ -25,12 +25,12 @@ const ANALOG_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/analog/messag
 const ANALOG_DOWNLINK_INDEX_PATH = path.resolve(ANALOG_DOWNLINK_PATH, 'index.ts');
 const ANALOG_UPLINK_INDEX_PATH = path.resolve(ANALOG_UPLINK_PATH, 'index.ts');
 
-const MTX_DOWNLINK_PATH = path.resolve(__dirname, '../src/mtx/commands/downlink');
-const MTX_UPLINK_PATH = path.resolve(__dirname, '../src/mtx/commands/uplink');
-const MTX_MESSAGE_DOWNLINK_PATH = path.resolve(__dirname, '../src/mtx/message/downlink.ts');
-const MTX_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/mtx/message/uplink.ts');
-const MTX_DOWNLINK_INDEX_PATH = path.resolve(MTX_DOWNLINK_PATH, 'index.ts');
-const MTX_UPLINK_INDEX_PATH = path.resolve(MTX_UPLINK_PATH, 'index.ts');
+const MTX1_DOWNLINK_PATH = path.resolve(__dirname, '../src/mtx1/commands/downlink');
+const MTX1_UPLINK_PATH = path.resolve(__dirname, '../src/mtx1/commands/uplink');
+const MTX1_MESSAGE_DOWNLINK_PATH = path.resolve(__dirname, '../src/mtx1/message/downlink.ts');
+const MTX1_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/mtx1/message/uplink.ts');
+const MTX1_DOWNLINK_INDEX_PATH = path.resolve(MTX1_DOWNLINK_PATH, 'index.ts');
+const MTX1_UPLINK_INDEX_PATH = path.resolve(MTX1_UPLINK_PATH, 'index.ts');
 
 const MTX3_DOWNLINK_PATH = path.resolve(__dirname, '../src/mtx3/commands/downlink');
 const MTX3_UPLINK_PATH = path.resolve(__dirname, '../src/mtx3/commands/uplink');
@@ -143,19 +143,19 @@ describe('commands consistency', () => {
         );
     });
 
-    test('mtx downlink IDs should match', () => {
+    test('mtx1 downlink IDs should match', () => {
         checkIdConsistency(
-            mtxCommands.downlink,
-            getCommandIdsFromMessageImport(mtxMessage.downlink),
-            MTX_MESSAGE_DOWNLINK_PATH
+            mtx1Commands.downlink,
+            getCommandIdsFromMessageImport(mtx1Message.downlink),
+            MTX1_MESSAGE_DOWNLINK_PATH
         );
     });
 
-    test('mtx uplink IDs should match', () => {
+    test('mtx1 uplink IDs should match', () => {
         checkIdConsistency(
-            mtxCommands.uplink,
-            getCommandIdsFromMessageImport(mtxMessage.uplink),
-            MTX_MESSAGE_UPLINK_PATH
+            mtx1Commands.uplink,
+            getCommandIdsFromMessageImport(mtx1Message.uplink),
+            MTX1_MESSAGE_UPLINK_PATH
         );
     });
 
@@ -195,8 +195,8 @@ describe('commands consistency', () => {
         checkUplinkDownlinkConsistency(analogCommands.uplink, analogCommands.downlink);
     });
 
-    test('mtx uplink/downlink IDs should match', () => {
-        checkUplinkDownlinkConsistency(mtxCommands.uplink, mtxCommands.downlink);
+    test('mtx1 uplink/downlink IDs should match', () => {
+        checkUplinkDownlinkConsistency(mtx1Commands.uplink, mtx1Commands.downlink);
     });
 
     test('mtx3 uplink/downlink IDs should match', () => {
@@ -208,9 +208,9 @@ describe('commands consistency', () => {
         checkCommandNamesConsistency(ANALOG_UPLINK_PATH, ANALOG_UPLINK_INDEX_PATH, analogCommands.uplink);
     });
 
-    test('mtx command file names should match imported commands', () => {
-        checkCommandNamesConsistency(MTX_DOWNLINK_PATH, MTX_DOWNLINK_INDEX_PATH, mtxCommands.downlink);
-        checkCommandNamesConsistency(MTX_UPLINK_PATH, MTX_UPLINK_INDEX_PATH, mtxCommands.uplink);
+    test('mtx1 command file names should match imported commands', () => {
+        checkCommandNamesConsistency(MTX1_DOWNLINK_PATH, MTX1_DOWNLINK_INDEX_PATH, mtx1Commands.downlink);
+        checkCommandNamesConsistency(MTX1_UPLINK_PATH, MTX1_UPLINK_INDEX_PATH, mtx1Commands.uplink);
     });
 
     test('obis-observer command file names should match imported commands', () => {

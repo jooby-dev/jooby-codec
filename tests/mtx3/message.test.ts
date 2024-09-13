@@ -6,9 +6,9 @@
 import * as message from '../../src/mtx3/message/index.js';
 import * as downlinkCommands from '../../src/mtx3/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/mtx3/commands/uplink/index.js';
-// import * as accessLevels from '../../src/mtx/constants/accessLevels.js';
-import * as frameTypes from '../../src/mtx/constants/frameTypes.js';
-import {checkMessage, TMessageList} from '../mtx/message.test.js';
+// import * as accessLevels from '../../src/mtx1/constants/accessLevels.js';
+import * as frameTypes from '../../src/mtx1/constants/frameTypes.js';
+import {checkMessage, TMessageList} from '../mtx1/message.test.js';
 
 
 const downlinkMessages: TMessageList = [

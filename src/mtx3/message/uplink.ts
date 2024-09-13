@@ -4,7 +4,7 @@
  * @example
  * ```js
  * import * as message from 'jooby-codec/mtx3/message/uplink';
- * import * as frame from 'jooby-codec/mtx/utils/frame.js';
+ * import * as frame from 'jooby-codec/mtx1/utils/frame.js';
  * import getBytesFromHex from 'jooby-codec/utils/getBytesFromHex.js';
  *
  * const aesKey = [...Array(16).keys()];
@@ -59,8 +59,8 @@
  * @packageDocumentation
  */
 
-import * as mtx1Commands from '../../mtx/commands/uplink/index.js';
-import * as wrappers from '../../mtx/message/wrappers.js';
+import * as mtx1Commands from '../../mtx1/commands/uplink/index.js';
+import * as wrappers from '../../mtx1/message/wrappers.js';
 import * as commands from '../commands/uplink/index.js';
 
 

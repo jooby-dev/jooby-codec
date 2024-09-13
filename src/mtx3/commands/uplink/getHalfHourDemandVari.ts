@@ -44,9 +44,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetHalfHourDemandVari.md#response)
  */
 
-import * as command from '../../../mtx/utils/command.js';
-import {MIN_HALF_HOUR_PERIODS, MAX_HALF_HOUR_PERIODS, MIN_HALF_HOUR_COMMAND_SIZE, MAX_HALF_HOUR_COMMAND_SIZE} from '../../../mtx/utils/CommandBinaryBuffer.js';
-import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import * as command from '../../../mtx1/utils/command.js';
+import {MIN_HALF_HOUR_PERIODS, MAX_HALF_HOUR_PERIODS, MIN_HALF_HOUR_COMMAND_SIZE, MAX_HALF_HOUR_COMMAND_SIZE} from '../../../mtx1/utils/CommandBinaryBuffer.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetHalfHourDemandResponseParameters} from '../../utils/CommandBinaryBuffer.js';
 

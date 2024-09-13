@@ -4,7 +4,7 @@
  * @packageDocumentation
  */
 
-export * from '../../mtx/constants/index.js';
+export * from '../../mtx1/constants/index.js';
 
 export * as baudRates from './baudRates.js';
 export * as energyTypes from './energyTypes.js';

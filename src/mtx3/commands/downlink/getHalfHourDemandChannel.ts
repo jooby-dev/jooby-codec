@@ -28,8 +28,8 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetHalfHourDemandChannel.md#request)
  */
 
-import * as command from '../../../mtx/utils/command.js';
-import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
+import * as command from '../../../mtx1/utils/command.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, TChannelParameter, TChannel} from '../../utils/CommandBinaryBuffer.js';
 import * as types from '../../types.js';
 

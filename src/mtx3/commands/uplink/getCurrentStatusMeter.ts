@@ -59,9 +59,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetCurrentStatusMeter.md#response)
  */
 
-import * as command from '../../../mtx/utils/command.js';
-import {READ_ONLY} from '../../../mtx/constants/accessLevels.js';
-import {IEventStatus, eventStatusMask} from '../../../mtx/utils/CommandBinaryBuffer.js';
+import * as command from '../../../mtx1/utils/command.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
+import {IEventStatus, eventStatusMask} from '../../../mtx1/utils/CommandBinaryBuffer.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
 import * as types from '../../types.js';
