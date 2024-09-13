@@ -15,10 +15,10 @@ Install required dependencies:
 npm install jooby-codec
 ```
 
-This will provide 3 protocols of codecs:
+This will provide 4 protocols of codecs:
 
 - Analog
-- MTX
+- MTX1
 - MTX3
 - OBIS Observer
 
@@ -177,7 +177,7 @@ if ( 'error' in payload ) {
 Add to the project:
 
 ```js
-import {commands, message} from 'jooby-codec/mtx';
+import {commands, message} from 'jooby-codec/mtx1';
 
 // output all available downlink and uplink commands tree
 console.log(commands);
@@ -194,12 +194,12 @@ But it's better to add only necessary commands to the project:
 
 ```js
 // to get only downlink commands
-import {downlink} from 'jooby-codec/mtx/commands';
+import {downlink} from 'jooby-codec/mtx1/commands';
 // or slightly more efficient
-import * as downlink from 'jooby-codec/mtx/commands/downlink';
+import * as downlink from 'jooby-codec/mtx1/commands/downlink';
 
 // to get one particular command
-import * as setDateTime from 'jooby-codec/mtx/commands/downlink/setDateTime.js';
+import * as setDateTime from 'jooby-codec/mtx1/commands/downlink/setDateTime.js';
 ```
 
 The last approach is preferred as it is more efficient and will init only a necessary commands.
@@ -207,11 +207,11 @@ The last approach is preferred as it is more efficient and will init only a nece
 Prepare and parse downlink message and frame:
 
 ```js
-import * as message from 'jooby-codec/mtx/message/downlink';
-import * as frame from 'jooby-codec/mtx/utils/frame.js';
-import * as downlinkCommands from 'jooby-codec/mtx/commands/downlink';
+import * as message from 'jooby-codec/mtx1/message/downlink';
+import * as frame from 'jooby-codec/mtx1/utils/frame.js';
+import * as downlinkCommands from 'jooby-codec/mtx1/commands/downlink';
 import getHexFromBytes from 'jooby-codec/utils/getHexFromBytes.js';
-import * as frameTypes from 'jooby-codec/mtx/constants/frameTypes.js';
+import * as frameTypes from 'jooby-codec/mtx1/constants/frameTypes.js';
 
 const aesKey = [...Array(16).keys()];
 const messageId = 10;
@@ -324,8 +324,8 @@ if ( 'bytes' in parsedFrame ) {
 Parse uplink message:
 
 ```js
-import * as message from 'jooby-codec/mtx/message/uplink';
-import * as frame from 'jooby-codec/mtx/utils/frame.js';
+import * as message from 'jooby-codec/mtx1/message/uplink';
+import * as frame from 'jooby-codec/mtx1/utils/frame.js';
 import getBytesFromHex from 'jooby-codec/utils/getBytesFromHex.js';
 
 const aesKey = [...Array(16).keys()];

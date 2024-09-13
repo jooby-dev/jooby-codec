@@ -4,13 +4,13 @@
 ## Encoding
 
 ```js
-import * as mtxMessage from 'jooby-codec/mtx/message/uplink';
+import * as mtxMessage from 'jooby-codec/mtx1/message/uplink';
 import * as analogMessage from 'jooby-codec/analog/message/uplink';
-import * as uplinkCommands from 'jooby-codec/mtx/commands/uplink';
+import * as uplinkCommands from 'jooby-codec/mtx1/commands/uplink';
 import {dataSegment} from 'jooby-codec/analog/commands/downlink';
 import getHexFromBytes from 'jooby-codec/utils/getHexFromBytes.js';
 import {splitBytesToDataSegments} from 'jooby-codec/analog/utils/splitBytesToDataSegments.js';
-import {accessLevels} from 'jooby-codec/mtx/constants/index.js';
+import {accessLevels} from 'jooby-codec/mtx1/constants/index.js';
 
 
 const messageId = 2;
@@ -82,7 +82,7 @@ output:
 ## Decoding
 
 ```js
-import * as mtxMessage from 'jooby-codec/mtx/message/uplink';
+import * as mtxMessage from 'jooby-codec/mtx1/message/uplink';
 import * as analogMessage from 'jooby-codec/analog/message/uplink';
 import {dataSegment} from 'jooby-codec/analog/commands/downlink';
 import getBytesFromHex from 'jooby-codec/utils/getBytesFromHex.js';
