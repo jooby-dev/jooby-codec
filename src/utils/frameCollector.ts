@@ -32,8 +32,15 @@ class FrameCollector {
         this.buffer.push(byte);
 
         if ( byte === STOP_BYTE ) {
-            this.frames.push(this.buffer);
-            this.reset();
+            if ( this.buffer?.length < 5 ) {
+                // start byte + 2 crc byte + at least 1 byte content + stop byte
+                // will found valid frame in sequence 7e017e52fffefffe51147e
+                // treat STOP byte as START byte for the new frame
+                this.buffer = [START_BYTE];
+            } else {
+                this.frames.push(this.buffer);
+                this.reset();
+            }
 
             return;
         }

@@ -62,4 +62,10 @@ describe('frame collector', () => {
 
         expect(collectFrames(input)).toStrictEqual(['7e 52 ff fe ff fe 51 14 7e']);
     });
+
+    test('correct sequence 5', () => {
+        const input = ['7e 01 7e 52 ff fe ff fe 51 14 7e'];
+
+        expect(collectFrames(input)).toStrictEqual(['7e 52 ff fe ff fe 51 14 7e']);
+    });
 });
