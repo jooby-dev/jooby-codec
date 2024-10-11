@@ -15,6 +15,7 @@ const MAX_SEGMENTS_IN_SESSION = 7;
 
 export const splitBytesToDataSegments = ( bytes: types.TBytes, {segmentationSessionId, maxSegmentSize}: IDataSegmentSplitOptions ): Array<object> => {
     const segmentsNumber = Math.ceil(bytes.length / maxSegmentSize);
+    const baseSegmentSize = Math.ceil(bytes.length / segmentsNumber);
     const segments = [];
     let segmentIndex = 1;
     let position = 0;
@@ -29,10 +30,10 @@ export const splitBytesToDataSegments = ( bytes: types.TBytes, {segmentationSess
             segmentIndex,
             segmentsNumber,
             isLast: false,
-            data: bytes.slice(position, position + maxSegmentSize)
+            data: bytes.slice(position, position + baseSegmentSize)
         };
 
-        position += maxSegmentSize;
+        position += baseSegmentSize;
         segmentIndex++;
 
         segments.push(segment);
