@@ -53,9 +53,7 @@ export const id: types.TCommandId = 0x1b;
 export const name: types.TCommandName = 'getArchiveDaysMc';
 export const headerSize = 2;
 
-// date 2 bytes, channelList 1 byte (max channelList: 4), days 1 byte (max days - 255)
-// 4 + (4 channelList * 5 bytes of day values * 255 max days)
-const COMMAND_BODY_MAX_SIZE = 5104;
+const COMMAND_BODY_MAX_SIZE = 255;
 
 export const examples: command.TCommandExamples = {
     'get day values from 2001.03.10 12:00:00 GMT for channel 1': {

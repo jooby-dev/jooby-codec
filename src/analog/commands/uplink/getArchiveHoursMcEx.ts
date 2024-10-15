@@ -39,10 +39,7 @@ export const id: types.TCommandId = 0x301f;
 export const name: types.TCommandName = 'getArchiveHoursMcEx';
 export const headerSize = 3;
 
-// date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
-// max hours diff - 7 (3 bit value)
-// 4 + (4 channelList * 5 bytes of hour values) + (4 * 5 bytes of diff * 7 max hours diff)
-const COMMAND_BODY_MAX_SIZE = 164;
+const COMMAND_BODY_MAX_SIZE = 255;
 
 export const examples: command.TCommandExamples = {
     '4 channels at 2023.12.23 12:00:00 GMT': {

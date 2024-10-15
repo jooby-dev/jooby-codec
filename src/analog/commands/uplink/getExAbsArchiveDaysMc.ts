@@ -59,9 +59,7 @@ export const id: types.TCommandId = 0x0d1f;
 export const name: types.TCommandName = 'getExAbsArchiveDaysMc';
 export const headerSize = 3;
 
-// date 2 bytes, channelList 1 byte (max channelList: 4), days 1 byte (max days - 255)
-// 4 + (4 channelList * (1 byte pulse coefficient + 5 bytes of day values) * 255 max days)
-const COMMAND_BODY_MAX_SIZE = 6124;
+const COMMAND_BODY_MAX_SIZE = 255;
 
 export const examples: command.TCommandExamples = {
     'archive days values at 4 channel from 2023.03.10 00:00:00 GMT': {
