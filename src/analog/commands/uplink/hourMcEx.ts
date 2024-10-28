@@ -39,10 +39,7 @@ export const id: types.TCommandId = 0x311f;
 export const name: types.TCommandName = 'hourMcEx';
 export const headerSize = 3;
 
-// date 2 bytes, hour 2 byte, channelList - 1 byte, so max channelList = 5
-// max hours diff - 7 (3 bit value)
-// 5 + (4 channelList * 5 bytes of hour values) + (4 * 5 bytes of diff * 255 max hours diff)
-const COMMAND_BODY_MAX_SIZE = 5125;
+const COMMAND_BODY_MAX_SIZE = 255;
 
 export const examples: command.TCommandExamples = {
     '1 channel at 2023.12.23 12:00:00 GMT': {
