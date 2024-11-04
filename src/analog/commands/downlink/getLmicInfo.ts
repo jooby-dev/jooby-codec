@@ -11,7 +11,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [2, 31, 0]
+ * [31, 2, 0]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetLmicInfo.md#request)
