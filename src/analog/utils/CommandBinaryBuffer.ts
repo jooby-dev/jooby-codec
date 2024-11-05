@@ -192,6 +192,13 @@ export interface IEventUSWaterMeterStatus {
     error: types.TUint8
 }
 
+export interface IChannelsMask {
+    channel1: boolean,
+    channel2: boolean,
+    channel3: boolean,
+    channel4: boolean
+}
+
 
 /**
  * Device send data periodically using this interval.
@@ -428,11 +435,7 @@ interface IParameterPulseChannelsScanConfig {
  * Set channels for pulse devices.
  * deviceParameters.PULSE_CHANNELS_SET_CONFIG = `32`
  */
-interface IParameterPulseChannelsSetConfig {
-    channel1: boolean,
-    channel2: boolean,
-    channel3: boolean,
-    channel4: boolean
+interface IParameterPulseChannelsSetConfig extends IChannelsMask {
 }
 
 /**
@@ -939,6 +942,24 @@ const fourChannelsBitMask = {
     channel4: Math.pow(2, 3)
 };
 
+export const getChannelsMaskFromNumber = ( value: types.TUint8 ): IChannelsMask => {
+    const object = bitSet.toObject(fourChannelsBitMask, value);
+
+    return {channel1: object.channel1, channel2: object.channel2, channel3: object.channel3, channel4: object.channel4};
+};
+
+export const setChannelsMaskToNumber = ( channelsMask: IChannelsMask ): types.TUint8 => {
+    const {channel1, channel2, channel3, channel4} = channelsMask;
+
+    return bitSet.fromObject(fourChannelsBitMask, {channel1, channel2, channel3, channel4});
+};
+
+const getChannelsMask = ( buffer: ICommandBinaryBuffer ): IChannelsMask => getChannelsMaskFromNumber(buffer.getUint8());
+
+const setChannelsMask = ( buffer: ICommandBinaryBuffer, channelsMask: IChannelsMask ) => (
+    buffer.setUint8(setChannelsMaskToNumber(channelsMask))
+);
+
 // 0x80 - 0x86
 const byteToPulseCoefficientMap = {
     128: 1,
@@ -1162,16 +1183,8 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.PULSE_CHANNELS_SET_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterPulseChannelsSetConfig => {
-            const object = bitSet.toObject(fourChannelsBitMask, buffer.getUint8());
-
-            return {channel1: object.channel1, channel2: object.channel2, channel3: object.channel3, channel4: object.channel4};
-        },
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterPulseChannelsSetConfig ) => {
-            const {channel1, channel2, channel3, channel4} = parameter;
-
-            buffer.setUint8(bitSet.fromObject(fourChannelsBitMask, {channel1, channel2, channel3, channel4}));
-        }
+        get: getChannelsMask,
+        set: setChannelsMask
     },
     [deviceParameters.BATTERY_DEPASSIVATION_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryDepassivationConfig => ({
@@ -2392,6 +2405,5 @@ CommandBinaryBuffer.prototype.setDataSegment = function ( parameters: IDataSegme
     this.setUint8(flag);
     this.setBytes(parameters.data);
 };
-
 
 export default CommandBinaryBuffer;

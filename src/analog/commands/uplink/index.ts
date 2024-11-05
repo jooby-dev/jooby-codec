@@ -20,6 +20,7 @@ export * as getArchiveHours from './getArchiveHours.js';
 export * as getArchiveHoursMc from './getArchiveHoursMc.js';
 export * as getArchiveHoursMcEx from './getArchiveHoursMcEx.js';
 export * as getBatteryStatus from './getBatteryStatus.js';
+export * as getChannelsStatus from './getChannelsStatus.js';
 export * as getExAbsArchiveDaysMc from './getExAbsArchiveDaysMc.js';
 export * as getExAbsArchiveHoursMc from './getExAbsArchiveHoursMc.js';
 export * as getLmicInfo from './getLmicInfo.js';
