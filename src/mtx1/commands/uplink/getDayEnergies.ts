@@ -48,7 +48,7 @@ interface IGetDayEnergiesResponseParameters {
 
 
 const DATE_SIZE = 3; // year, month, date
-const MAX_TARIFFS_ENERGIES_SIZE = 5 * 4 * 4; // 5 energy types, 4 tariffs, 4 bytes - energy value
+const MAX_TARIFFS_ENERGIES_SIZE = 6 * 4 * 4; // 6 energy types, 4 tariffs, 4 bytes - energy value
 
 
 const energiesToObis: Record<string, string> = {
@@ -114,8 +114,8 @@ export const examples: command.TCommandExamples = {
             ]
         },
         bytes: [
-            0x78, 0x08,
-            0x2a, 0x43, 0x11, 0x11, 0x10, 0x00, 0x20, 0x00
+            0x78, 0x0c,
+            0x2a, 0x43, 0x11, 0x11, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x20, 0x00
         ]
     }
 };

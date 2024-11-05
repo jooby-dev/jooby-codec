@@ -223,15 +223,15 @@ CommandBinaryBuffer.prototype.getAPlusTariffEnergies = function ( energyFlags: n
     const energies: IEnergies = {};
 
     if ( energyFlags & energiesMask['A+'] ) {
-        energies['A+'] = this.getUint16();
+        energies['A+'] = this.getUint32();
     }
 
     if ( energyFlags & energiesMask['A+R+'] ) {
-        energies['A+R+'] = this.getUint16();
+        energies['A+R+'] = this.getUint32();
     }
 
     if ( energyFlags & energiesMask['A+R-'] ) {
-        energies['A+R-'] = this.getUint16();
+        energies['A+R-'] = this.getUint32();
     }
 
     return energies;
@@ -240,15 +240,15 @@ CommandBinaryBuffer.prototype.getAPlusTariffEnergies = function ( energyFlags: n
 CommandBinaryBuffer.prototype.setAPlusTariffEnergies = function ( energies: IEnergies | undefined ) {
     if ( energies ) {
         if ( energies['A+'] ) {
-            this.setUint16(energies['A+']);
+            this.setUint32(energies['A+']);
         }
 
         if ( energies['A+R+'] ) {
-            this.setUint16(energies['A+R+']);
+            this.setUint32(energies['A+R+']);
         }
 
         if ( energies['A+R-'] ) {
-            this.setUint16(energies['A+R-']);
+            this.setUint32(energies['A+R-']);
         }
     }
 };
@@ -257,15 +257,15 @@ CommandBinaryBuffer.prototype.getAMinusTariffEnergies = function ( energyFlags: 
     const energies: IEnergies = {};
 
     if ( energyFlags & energiesMask['A-'] ) {
-        energies['A-'] = this.getUint16();
+        energies['A-'] = this.getUint32();
     }
 
     if ( energyFlags & energiesMask['A-R+'] ) {
-        energies['A-R+'] = this.getUint16();
+        energies['A-R+'] = this.getUint32();
     }
 
     if ( energyFlags & energiesMask['A-R-'] ) {
-        energies['A-R-'] = this.getUint16();
+        energies['A-R-'] = this.getUint32();
     }
 
     return energies;
@@ -274,15 +274,15 @@ CommandBinaryBuffer.prototype.getAMinusTariffEnergies = function ( energyFlags: 
 CommandBinaryBuffer.prototype.setAMinusTariffEnergies = function ( energies: IEnergies | undefined ) {
     if ( energies ) {
         if ( energies['A-'] ) {
-            this.setUint16(energies['A-']);
+            this.setUint32(energies['A-']);
         }
 
         if ( energies['A-R+'] ) {
-            this.setUint16(energies['A-R+']);
+            this.setUint32(energies['A-R+']);
         }
 
         if ( energies['A-R-'] ) {
-            this.setUint16(energies['A-R-']);
+            this.setUint32(energies['A-R-']);
         }
     }
 };
