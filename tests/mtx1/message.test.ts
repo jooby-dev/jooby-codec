@@ -1229,15 +1229,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getDayEnergies',
-        hex: '0a 10 10 78 08 2a 43 11 11 10 00 20 00 00 6c',
-        frameHex: '7e 51 aa aa ff ff 0a 10 10 78 08 2a 43 7d 31 7d 31 10 00 20 00 00 6c b3 a1 7e',
+        hex: '0a 10 10 78 0c 2a 43 11 11 00 00 10 00 00 00 20 00 00 68',
+        frameHex: '7e 51 aa aa ff ff 0a 10 10 78 0c 2a 43 7d 31 7d 31 00 00 10 00 00 00 20 00 00 68 79 4c 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getDayEnergies.accessLevel,
         commands: [
             uplinkCommands.getDayEnergies.examples['get day energies']
         ],
-        lrc: 0x6c,
-        crc: 0xa1b3,
+        lrc: 0x68,
+        crc: 0x4c79,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
