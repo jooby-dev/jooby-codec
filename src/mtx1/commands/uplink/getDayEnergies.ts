@@ -10,7 +10,7 @@
  * import * as getDayEnergies from 'jooby-codec/mtx1/commands/uplink/getDayEnergies.js';
  *
  * // response to getDayEnergies downlink command
- * const bytes = [0x2a, 0x43, 0x11, 0x11, 0x10, 0x00, 0x20, 0x00];
+ * const bytes = [0x2a, 0x43, 0x11, 0x22, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x20, 0x00];
  *
  * // decoded payload
  * const parameters = getDayEnergies.fromBytes(bytes);
@@ -24,10 +24,13 @@
  *         date: 3
  *     },
  *     energies: [
- *          {
- *              'A+': 0x1000,
- *              'A-R+': 0x2000
- *          }
+ *         null,
+ *         {
+ *             'A+': 0x1000,
+ *             'A-R+': 0x2000
+ *         },
+ *         null,
+ *         null
  *     ]
  * }
  * ```
@@ -47,7 +50,9 @@ interface IGetDayEnergiesResponseParameters {
 }
 
 
-const DATE_SIZE = 3; // year, month, date
+const DATE_SIZE = 2;
+const ENERGY_FLAGS_SIZE = 1;
+const TARIFF_FLAGS_SIZE = 1;
 const MAX_TARIFFS_ENERGIES_SIZE = 6 * 4 * 4; // 6 energy types, 4 tariffs, 4 bytes - energy value
 
 
@@ -90,7 +95,7 @@ const convertTariffsEnergiesToDlms = ( energies: TTariffsEnergies ) => {
 export const id: types.TCommandId = 0x78;
 export const name: types.TCommandName = 'getDayEnergies';
 export const headerSize = 2;
-export const maxSize = DATE_SIZE + MAX_TARIFFS_ENERGIES_SIZE;
+export const maxSize = DATE_SIZE + ENERGY_FLAGS_SIZE + TARIFF_FLAGS_SIZE + MAX_TARIFFS_ENERGIES_SIZE;
 export const accessLevel: types.TAccessLevel = UNENCRYPTED;
 export const isLoraOnly = true;
 
@@ -107,15 +112,18 @@ export const examples: command.TCommandExamples = {
                 date: 3
             },
             energies: [
+                null,
                 {
                     'A+': 0x1000,
                     'A-R+': 0x2000
-                }
+                },
+                null,
+                null
             ]
         },
         bytes: [
             0x78, 0x0c,
-            0x2a, 0x43, 0x11, 0x11, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x20, 0x00
+            0x2a, 0x43, 0x11, 0x22, 0x00, 0x00, 0x10, 0x00, 0x00, 0x00, 0x20, 0x00
         ]
     }
 };

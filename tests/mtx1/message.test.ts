@@ -1229,15 +1229,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getDayEnergies',
-        hex: '0a 10 10 78 0c 2a 43 11 11 00 00 10 00 00 00 20 00 00 68',
-        frameHex: '7e 51 aa aa ff ff 0a 10 10 78 0c 2a 43 7d 31 7d 31 00 00 10 00 00 00 20 00 00 68 79 4c 7e',
+        hex: '0a 10 10 78 0c 2a 43 11 22 00 00 10 00 00 00 20 00 00 5b',
+        frameHex: '7e 51 aa aa ff ff 0a 10 10 78 0c 2a 43 7d 31 22 00 00 10 00 00 00 20 00 00 5b 1d 22 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getDayEnergies.accessLevel,
         commands: [
             uplinkCommands.getDayEnergies.examples['get day energies']
         ],
-        lrc: 0x68,
-        crc: 0x4c79,
+        lrc: 0x5b,
+        crc: 0x221d,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1289,15 +1289,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getDayMaxPower',
-        hex: '0a 10 10 79 10 2a 43 11 11 02 03 00 00 10 00 04 05 00 00 20 00 00 75',
-        frameHex: '7e 51 aa aa ff ff 0a 10 10 79 10 2a 43 7d 31 7d 31 02 03 00 00 10 00 04 05 00 00 20 00 00 75 b6 8c 7e',
+        hex: '0a 10 10 79 10 2a 43 11 44 02 03 00 00 10 00 04 05 00 00 20 00 00 20',
+        frameHex: '7e 51 aa aa ff ff 0a 10 10 79 10 2a 43 7d 31 44 02 03 00 00 10 00 04 05 00 00 20 00 00 20 5b d0 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getDayMaxPower.accessLevel,
         commands: [
             uplinkCommands.getDayMaxPower.examples['get day max power']
         ],
-        lrc: 0x75,
-        crc: 0x8cb6,
+        lrc: 0x20,
+        crc: 0xd05b,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

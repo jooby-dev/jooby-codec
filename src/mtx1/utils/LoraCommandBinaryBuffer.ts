@@ -290,7 +290,7 @@ CommandBinaryBuffer.prototype.setAMinusTariffEnergies = function ( energies: IEn
 CommandBinaryBuffer.prototype.getTariffsEnergies = function (): TTariffsEnergies {
     const energyFlags = this.getUint8();
     const tariffFlags = this.getUint8();
-    const tariffs: TTariffsEnergies = [];
+    const tariffs: TTariffsEnergies = new Array(TARIFF_NUMBER).fill(null);
 
     for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
         if ( tariffFlags & getAPlusTariffBit(index) ) {
@@ -398,7 +398,7 @@ CommandBinaryBuffer.prototype.setAMinusTariffPowerMax = function ( energies: IEn
 CommandBinaryBuffer.prototype.getTariffsPowerMax = function (): TTariffsPowerMax {
     const energyFlags = this.getUint8();
     const tariffFlags = this.getUint8();
-    const tariffs: TTariffsPowerMax = [];
+    const tariffs: TTariffsPowerMax = new Array(TARIFF_NUMBER).fill(null);
 
     for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
         if ( tariffFlags & getAPlusTariffBit(index) ) {
