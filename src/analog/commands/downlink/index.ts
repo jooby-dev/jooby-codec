@@ -13,6 +13,7 @@ export * as getArchiveHours from './getArchiveHours.js';
 export * as getArchiveHoursMc from './getArchiveHoursMc.js';
 export * as getArchiveHoursMcEx from './getArchiveHoursMcEx.js';
 export * as getBatteryStatus from './getBatteryStatus.js';
+export * as getChannelsMap from './getChannelsMap.js';
 export * as getChannelsStatus from './getChannelsStatus.js';
 export * as getCurrent from './getCurrent.js';
 export * as getCurrentMc from './getCurrentMc.js';
