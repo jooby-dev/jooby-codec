@@ -91,6 +91,16 @@ export const examples: command.TCommandExamples = {
             0x04, 0x02,
             0x32, 0x01
         ]
+    },
+    'get channel settings. channel: 2': {
+        id,
+        name,
+        headerSize,
+        parameters: {id: 56, data: {channel: 2}},
+        bytes: [
+            0x04, 0x02,
+            0x38, 0x01
+        ]
     }
 };
 
