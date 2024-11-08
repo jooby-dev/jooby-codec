@@ -26,9 +26,10 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetChannelsStatus.md#response)
  */
 
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
+import {TTime2000} from '../../utils/time.js';
 import * as channelsTypes from '../../constants/channelsTypes.js';
 
 
@@ -38,6 +39,7 @@ interface IBinarySensorStatus {
 
 interface ITemperatureSensorStatus {
     temperature: types.TInt8,
+    time2000: TTime2000
 }
 
 interface IChannelStatus {
@@ -53,14 +55,14 @@ export const headerSize = 3;
 
 
 export const examples: command.TCommandExamples = {
-    'binary sensor, channel: 0, state: true': {
+    'binary sensor, channel: 1, state: true': {
         id,
         name,
         headerSize,
         parameters: [
             {
                 type: channelsTypes.BINARY_SENSOR,
-                channel: 0,
+                channel: 1,
                 status: {
                     state: true
                 }
@@ -70,21 +72,22 @@ export const examples: command.TCommandExamples = {
             0x1f, 0x32, 0x03, 0x03, 0x00, 0x01
         ]
     },
-    'temperature sensor, channel: 1, temperature: 20': {
+    'temperature sensor, channel: 3, temperature: 24': {
         id,
         name,
         headerSize,
         parameters: [
             {
                 type: channelsTypes.TEMPERATURE_SENSOR,
-                channel: 1,
+                channel: 3,
                 status: {
-                    temperature: 20
+                    temperature: 24,
+                    time2000: 22720
                 }
             }
         ],
         bytes: [
-            0x1f, 0x32, 0x03, 0x04, 0x01, 0x14
+            0x1f, 0x32, 0x07, 0x04, 0x02, 0x18, 0x00, 0x00, 0x58, 0xc0
         ]
     },
     'binary and temperature sensors': {
@@ -94,21 +97,22 @@ export const examples: command.TCommandExamples = {
         parameters: [
             {
                 type: channelsTypes.BINARY_SENSOR,
-                channel: 0,
+                channel: 1,
                 status: {
                     state: true
                 }
             },
             {
                 type: channelsTypes.TEMPERATURE_SENSOR,
-                channel: 1,
+                channel: 3,
                 status: {
-                    temperature: 20
+                    temperature: 20,
+                    time2000: 22720
                 }
             }
         ],
         bytes: [
-            0x1f, 0x32, 0x06, 0x03, 0x00, 0x01, 0x04, 0x01, 0x14
+            0x1f, 0x32, 0x0a, 0x03, 0x00, 0x01, 0x04, 0x02, 0x14, 0x00, 0x00, 0x58, 0xc0
         ]
     }
 
@@ -134,20 +138,22 @@ const getBufferSize = ( channelsStatus: Array<IChannelStatus> ) => {
     return size;
 };
 
-const getBinarySensorStatus = ( buffer: IBinaryBuffer ): IBinarySensorStatus => ({
+const getBinarySensorStatus = ( buffer: ICommandBinaryBuffer ): IBinarySensorStatus => ({
     state: buffer.getUint8() !== 0
 });
 
-const setBinarySensorStatus = ( status: IBinarySensorStatus, buffer: IBinaryBuffer ) => {
+const setBinarySensorStatus = ( status: IBinarySensorStatus, buffer: ICommandBinaryBuffer ) => {
     buffer.setUint8(status.state ? 1 : 0);
 };
 
-const getTemperatureSensorStatus = ( buffer: IBinaryBuffer ): ITemperatureSensorStatus => ({
-    temperature: buffer.getInt8()
+const getTemperatureSensorStatus = ( buffer: ICommandBinaryBuffer ): ITemperatureSensorStatus => ({
+    temperature: buffer.getInt8(),
+    time2000: buffer.getTime()
 });
 
-const setTemperatureSensorStatus = ( status: ITemperatureSensorStatus, buffer: IBinaryBuffer ) => {
+const setTemperatureSensorStatus = ( status: ITemperatureSensorStatus, buffer: ICommandBinaryBuffer ) => {
     buffer.setInt8(status.temperature);
+    buffer.setTime(status.time2000);
 };
 
 
@@ -158,13 +164,13 @@ const setTemperatureSensorStatus = ( status: ITemperatureSensorStatus, buffer: I
  * @returns command payload
  */
 export const fromBytes = ( data: types.TBytes ): Array<IChannelStatus> => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(data);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const result: Array<IChannelStatus> = [];
 
     while ( buffer.bytesLeft !== 0 ) {
         const channelStatus: IChannelStatus = {
             type: buffer.getUint8(),
-            channel: buffer.getUint8()
+            channel: buffer.getChannelValue()
         };
 
         switch (channelStatus.type) {
@@ -194,13 +200,13 @@ export const fromBytes = ( data: types.TBytes ): Array<IChannelStatus> => {
  * @returns full message (header with body)
  */
 export const toBytes = ( channelsStatus: Array<IChannelStatus> ): types.TBytes => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(getBufferSize(channelsStatus));
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getBufferSize(channelsStatus));
 
     for ( let index = 0; index < channelsStatus.length; index++ ) {
         const {type, channel, status} = channelsStatus[index];
 
         buffer.setUint8(type);
-        buffer.setUint8(channel);
+        buffer.setChannelValue(channel);
 
         switch ( type ) {
             case channelsTypes.BINARY_SENSOR:
