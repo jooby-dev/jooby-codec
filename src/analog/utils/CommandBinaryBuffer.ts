@@ -16,6 +16,7 @@ import {getDateFromTime2000, getTime2000FromDate, TTime2000} from './time.js';
 import * as hardwareTypes from '../constants/hardwareTypes.js';
 import * as deviceParameters from '../constants/deviceParameters.js';
 import * as archive from '../constants/archive.js';
+import * as channelsTypes from '../constants/channelsTypes.js';
 
 
 export interface IBatteryVoltage {
@@ -620,6 +621,45 @@ interface IParameterNbiotSim {
 }
 
 /**
+ * Idle channel
+ */
+interface IParameterIdleChannel {
+}
+
+/**
+ * Power channel settings
+ */
+interface IParameterPowerChannel {
+}
+
+/**
+ * Binary sensor settings
+ */
+interface IParameterBinarySensor {
+    activeStateTimeMs: types.TUint16;
+}
+
+/**
+ * Temperature sensor settings
+ */
+interface IParameterTemperatureSensor {
+    readPeriodSec: types.TUint32;
+    hysteresisSec: types.TUint8;
+    highTemperatureThreshold: types.TUint8;
+    lowTemperatureThreshold: types.TUint8;
+}
+
+/**
+ * Defines the functional type for each device channel,
+ * mapping channels to roles like idle, temperature or binary sensor
+ */
+interface IParameterChannelType {
+    channel: types.TUint8,
+    type: types.TUint8
+    parameters: IParameterIdleChannel | IParameterPowerChannel | IParameterBinarySensor | IParameterTemperatureSensor
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -757,7 +797,8 @@ type TParameterData =
     IParameterNbiotBands |
     IParameterNbiotApn |
     IParameterNbiotLedIndication |
-    IParameterNbiotSim;
+    IParameterNbiotSim |
+    IParameterChannelType;
 
 
 type TRequestParameterData =
@@ -797,7 +838,8 @@ type TResponseParameterData =
     IParameterNbiotBands |
     IParameterNbiotApn |
     IParameterNbiotLedIndication |
-    IParameterNbiotSim;
+    IParameterNbiotSim |
+    IParameterChannelType;
 
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
@@ -897,6 +939,30 @@ const usWaterMeterEventBitMask = {
     batteryDischarge: 0x80
 };
 
+const getChannelTypeSize = ( {type}: IParameterChannelType ) => {
+    let size = 1; // channel index
+
+    switch ( type ) {
+        case channelsTypes.IDLE:
+        case channelsTypes.POWER_CHANNEL:
+            break;
+
+        case channelsTypes.BINARY_SENSOR:
+            size += 2;
+
+            break;
+
+        case channelsTypes.TEMPERATURE_SENSOR:
+            size += 5;
+
+            break;
+
+        default:
+            break;
+    }
+
+    return size;
+};
 
 /**
  * device parameter data size + byte for parameter id
@@ -959,6 +1025,7 @@ const getChannelsMask = ( buffer: ICommandBinaryBuffer ): IChannelsMask => getCh
 const setChannelsMask = ( buffer: ICommandBinaryBuffer, channelsMask: IChannelsMask ) => (
     buffer.setUint8(setChannelsMaskToNumber(channelsMask))
 );
+
 
 // 0x80 - 0x86
 const byteToPulseCoefficientMap = {
@@ -1390,6 +1457,12 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.enable);
             buffer.setUint16(parameter.pin);
         }
+    },
+    [deviceParameters.CHANNEL_TYPE]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterChannelType => (buffer.getChannelType()),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterChannelType ) => (
+            buffer.setChannelType(parameter)
+        )
     }
 };
 
@@ -1476,6 +1549,13 @@ export const getParameterSize = ( parameter: IParameter ): number => {
 
             break;
 
+        case deviceParameters.CHANNEL_TYPE:
+            data = parameter.data as IParameterChannelType;
+            // size: parameter id + parameter size
+            size = 1 + getChannelTypeSize(data);
+
+            break;
+
         default:
             size = parametersSizeMap[parameter.id];
     }
@@ -1496,6 +1576,7 @@ export const getRequestParameterSize = ( parameter: IRequestParameter ): number 
         case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
         case deviceParameters.REPORTING_DATA_CONFIG:
         case deviceParameters.EVENTS_CONFIG:
+        case deviceParameters.CHANNEL_TYPE:
             // 1 byte ID + parameter 1 byte
             size = 2;
             break;
@@ -1533,6 +1614,7 @@ export const getResponseParameterSize = ( parameter: IParameter ): number => {
         case deviceParameters.NBIOT_MODULE_INFO:
         case deviceParameters.NBIOT_BANDS:
         case deviceParameters.NBIOT_APN:
+        case deviceParameters.CHANNEL_TYPE:
             size = getParameterSize(parameter);
 
             break;
@@ -1616,6 +1698,15 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getDataSegment (): IDataSegment,
     setDataSegment ( parameters: IDataSegment )
+
+    getBinarySensor(): IParameterBinarySensor,
+    setBinarySensor( parameters: IParameterBinarySensor ),
+
+    getTemperatureSensor(): IParameterTemperatureSensor,
+    setTemperatureSensor( parameters: IParameterTemperatureSensor ),
+
+    getChannelType(): IParameterChannelType,
+    setChannelType( parameters: IParameterChannelType)
 }
 
 function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
@@ -2171,6 +2262,7 @@ CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParamet
     switch ( id ) {
         case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
         case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
+        case deviceParameters.CHANNEL_TYPE:
             data = {channel: getChannelValue(this)};
             break;
 
@@ -2199,6 +2291,7 @@ CommandBinaryBuffer.prototype.setRequestParameter = function ( parameter: IReque
     switch ( id ) {
         case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
         case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
+        case deviceParameters.CHANNEL_TYPE:
             data = parameterData as IRequestChannelParameter;
             setChannelValue(this, data.channel);
             break;
@@ -2405,5 +2498,86 @@ CommandBinaryBuffer.prototype.setDataSegment = function ( parameters: IDataSegme
     this.setUint8(flag);
     this.setBytes(parameters.data);
 };
+
+
+CommandBinaryBuffer.prototype.getBinarySensor = function (): IParameterBinarySensor {
+    const activeStateTimeMs = this.getUint16();
+
+    return {activeStateTimeMs};
+};
+
+
+CommandBinaryBuffer.prototype.setBinarySensor = function ( parameters: IParameterBinarySensor ) {
+    this.setUint16(parameters.activeStateTimeMs);
+};
+
+
+CommandBinaryBuffer.prototype.getTemperatureSensor = function (): IParameterTemperatureSensor {
+    const readPeriodSec = this.getUint16();
+    const hysteresisSec = this.getUint8();
+    const highTemperatureThreshold = this.getUint8();
+    const lowTemperatureThreshold = this.getUint8();
+
+    return {
+        readPeriodSec,
+        hysteresisSec,
+        highTemperatureThreshold,
+        lowTemperatureThreshold
+    };
+};
+
+CommandBinaryBuffer.prototype.setTemperatureSensor = function ( parameters: IParameterTemperatureSensor ) {
+    this.setUint16(parameters.readPeriodSec);
+    this.setUint8(parameters.hysteresisSec);
+    this.setUint8(parameters.highTemperatureThreshold);
+    this.setUint8(parameters.lowTemperatureThreshold);
+};
+
+
+CommandBinaryBuffer.prototype.getChannelType = function (): IParameterChannelType {
+    const channel = getChannelValue(this);
+    const type = this.getUint8();
+    let parameters = {};
+
+
+    switch ( type ) {
+        case channelsTypes.BINARY_SENSOR:
+            parameters = this.getBinarySensor();
+            break;
+
+        case channelsTypes.TEMPERATURE_SENSOR:
+            parameters = this.getTemperatureSensor();
+            break;
+
+        default:
+            break;
+    }
+
+    return {
+        channel,
+        type,
+        parameters
+    };
+};
+
+
+CommandBinaryBuffer.prototype.setChannelType = function ( {type, channel, parameters}: IParameterChannelType ) {
+    setChannelValue(this, channel);
+    this.setUint8(type);
+
+    switch ( type ) {
+        case channelsTypes.BINARY_SENSOR:
+            this.setBinarySensor(parameters as IParameterBinarySensor);
+            break;
+
+        case channelsTypes.TEMPERATURE_SENSOR:
+            this.setTemperatureSensor(parameters as IParameterTemperatureSensor);
+            break;
+
+        default:
+            break;
+    }
+};
+
 
 export default CommandBinaryBuffer;

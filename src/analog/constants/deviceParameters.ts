@@ -144,3 +144,6 @@ export const NBIOT_LED_INDICATION = 54;
 
 /** Set NB-IoT SIM PIN code */
 export const NBIOT_SIM = 55;
+
+/** Set channel type */
+export const CHANNEL_TYPE = 56;
