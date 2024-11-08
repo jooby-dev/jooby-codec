@@ -66,12 +66,25 @@ interface IEventMtx extends IEventBase {
     status: IEventMtxStatus;
 }
 
+interface IEventBinarySensor extends IEventBase {
+    time2000: TTime2000;
+    channel: types.TUint8
+}
+
+interface IEventTemperatureSensor extends IEventBase {
+    time2000: TTime2000;
+    channel: types.TUint8,
+    temperature: types.TInt8
+}
+
 type TEventData =
     IEventTime |
     IEventBatteryAlarm |
     IEventActivateMtx |
     IEventConnection |
-    IEventMtx;
+    IEventMtx |
+    IEventBinarySensor |
+    IEventTemperatureSensor;
 
 /**
  * NewEvent command parameters.
@@ -254,6 +267,17 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
             eventData = {status: buffer.getEventStatus(hardwareTypes.MTXLORA)};
             break;
 
+        case events.BINARY_SENSOR_ON:
+        case events.BINARY_SENSOR_OFF:
+            eventData = {time2000: buffer.getTime(), channel: buffer.getUint8()};
+            break;
+
+        case events.TEMPERATURE_SENSOR_HYSTERESIS:
+        case events.TEMPERATURE_SENSOR_LOW_TEMPERATURE:
+        case events.TEMPERATURE_SENSOR_HIGH_TEMPERATURE:
+            eventData = {time2000: buffer.getTime(), channel: buffer.getUint8(), temperature: buffer.getInt8()};
+            break;
+
         default:
             throw new Error(`Event ${id} is not supported`);
     }
@@ -307,6 +331,20 @@ export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
 
         case events.MTX:
             buffer.setEventStatus(hardwareTypes.MTXLORA, (data as IEventMtx).status);
+            break;
+
+        case events.BINARY_SENSOR_ON:
+        case events.BINARY_SENSOR_OFF:
+            buffer.setTime((data as IEventBinarySensor).time2000);
+            buffer.setUint8((data as IEventBinarySensor).channel);
+            break;
+
+        case events.TEMPERATURE_SENSOR_HYSTERESIS:
+        case events.TEMPERATURE_SENSOR_LOW_TEMPERATURE:
+        case events.TEMPERATURE_SENSOR_HIGH_TEMPERATURE:
+            buffer.setTime((data as IEventTemperatureSensor).time2000);
+            buffer.setUint8((data as IEventTemperatureSensor).channel);
+            buffer.setInt8((data as IEventTemperatureSensor).temperature);
             break;
 
         default:

@@ -26,6 +26,7 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
+import * as channelsTypes from '../../constants/channelsTypes.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IParameter, getParameterSize} from '../../utils/CommandBinaryBuffer.js';
 
 
@@ -280,6 +281,81 @@ export const examples: command.TCommandExamples = {
         bytes: [
             0x03, 0x04,
             0x37, 0x01, 0x27, 0x0f
+        ]
+    },
+    'set channel type. Channel index: 1, type: power channel': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 56,
+            data: {
+                channel: 1,
+                type: channelsTypes.POWER_CHANNEL,
+                parameters: {}
+            }
+        },
+        bytes: [
+            0x03, 0x03,
+            0x38, 0x00, 0x02
+        ]
+    },
+    'set channel type. Channel index: 2, type: binary sensor': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 56,
+            data: {
+                channel: 2,
+                type: channelsTypes.BINARY_SENSOR,
+                parameters: {
+                    activeStateTimeMs: 5000
+                }
+            }
+        },
+        bytes: [
+            0x03, 0x05,
+            0x38, 0x01, 0x03, 0x13, 0x88
+        ]
+    },
+    'set channel type. Channel index: 3, type: temperature sensor': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 56,
+            data: {
+                channel: 3,
+                type: channelsTypes.TEMPERATURE_SENSOR,
+                parameters: {
+                    readPeriodSec: 3600,
+                    hysteresisSec: 2,
+                    highTemperatureThreshold: 40,
+                    lowTemperatureThreshold: 5
+                }
+            }
+        },
+        bytes: [
+            0x03, 0x08,
+            0x38, 0x02, 0x04, 0x0e, 0x10, 0x02, 0x28, 0x05
+        ]
+    },
+    'set channel type. Channel index: 4, type: idle': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 56,
+            data: {
+                channel: 4,
+                type: channelsTypes.IDLE,
+                parameters: {}
+            }
+        },
+        bytes: [
+            0x03, 0x03,
+            0x38, 0x03, 0x00
         ]
     }
 };
