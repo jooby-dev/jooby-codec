@@ -10,7 +10,7 @@
  * import * as getDayMaxPower from 'jooby-codec/mtx1/commands/uplink/getDayMaxPower.js';
  *
  * // response to getDayMaxPower downlink command
- * const bytes = [0x2a, 0x43, 0x11, 0x11, 0x02, 0x03, 0x00, 0x00, 0x10, 0x00, 0x04, 0x05, 0x00, 0x00, 0x20, 0x00];
+ * const bytes = [0x2a, 0x43, 0x11, 0x44, 0x02, 0x03, 0x00, 0x00, 0x10, 0x00, 0x04, 0x05, 0x00, 0x00, 0x20, 0x00];
  *
  * // decoded payload
  * const parameters = getDayMaxPower.fromBytes(bytes);
@@ -24,18 +24,21 @@
  *         date: 3
  *     },
  *     tariffs: [
- *          {
- *              'A+': {
- *                  hours: 2,
- *                  minutes: 3,
- *                  power: 0x1000
- *              },
- *              'A-R+': {
- *                  hours: 4,
- *                  minutes: 5,
- *                  power: 0x2000
- *              }
- *          }
+ *         null,
+ *         null,
+ *         {
+ *             'A+': {
+ *                 hours: 2,
+ *                 minutes: 3,
+ *                 power: 0x1000
+ *             },
+ *             'A-R+': {
+ *                 hours: 4,
+ *                 minutes: 5,
+ *                 power: 0x2000
+ *             }
+ *         },
+ *         null
  *     ]
  * }
  * ```
@@ -55,8 +58,10 @@ interface IGetDayMaxPowerResponseParameters {
 }
 
 
-const DATE_SIZE = 3; // year, month, date
-const MAX_TARIFFS_ENERGIES_SIZE = 5 * 4 * (1 + 1 + 4); // 5 energy types, 4 tariffs, 1 hours, 1 minutes, 4 bytes - energy value
+const DATE_SIZE = 2;
+const ENERGY_FLAGS_SIZE = 1;
+const TARIFF_FLAGS_SIZE = 1;
+const MAX_TARIFFS_ENERGIES_SIZE = 6 * 4 * (1 + 1 + 4); // 6 energy types, 4 tariffs, 1 hours, 1 minutes, 4 bytes - energy value
 
 const energiesToObis: Record<string, string> = {
     'A+': '1.6.x',
@@ -97,7 +102,7 @@ const convertTariffsPowerMaxToDlms = ( energies: TTariffsPowerMax ) => {
 export const id: types.TCommandId = 0x79;
 export const name: types.TCommandName = 'getDayMaxPower';
 export const headerSize = 2;
-export const maxSize = DATE_SIZE + MAX_TARIFFS_ENERGIES_SIZE;
+export const maxSize = DATE_SIZE + ENERGY_FLAGS_SIZE + TARIFF_FLAGS_SIZE + MAX_TARIFFS_ENERGIES_SIZE;
 export const accessLevel: types.TAccessLevel = UNENCRYPTED;
 export const isLoraOnly = true;
 
@@ -114,6 +119,8 @@ export const examples: command.TCommandExamples = {
                 date: 3
             },
             tariffs: [
+                null,
+                null,
                 {
                     'A+': {
                         hours: 2,
@@ -125,12 +132,13 @@ export const examples: command.TCommandExamples = {
                         minutes: 5,
                         power: 0x2000
                     }
-                }
+                },
+                null
             ]
         },
         bytes: [
             0x79, 0x10,
-            0x2a, 0x43, 0x11, 0x11, 0x02, 0x03, 0x00, 0x00, 0x10, 0x00, 0x04, 0x05, 0x00, 0x00, 0x20, 0x00
+            0x2a, 0x43, 0x11, 0x44, 0x02, 0x03, 0x00, 0x00, 0x10, 0x00, 0x04, 0x05, 0x00, 0x00, 0x20, 0x00
         ]
     }
 };

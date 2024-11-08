@@ -51,8 +51,11 @@ export interface IGetHalfhoursEnergiesResponseParameters {
 }
 
 
-const DATE_SIZE = 3; // year, month, date
-const MAX_HALFHOURS_ENERGY_SIZE = 5 * 3 * 4; // 5 energy types, 3 channels, 4 bytes - energy value
+const DATE_SIZE = 2;
+const ENERGY_FLAGS_SIZE = 1;
+const START_HALFHOUR_SIZE = 1;
+const HALFHOURS_NUMBER_SIZE = 1;
+const MAX_HALFHOURS_ENERGY_SIZE = 247; // 6 * n * 2 * 3 <= 247 (6 energy types, n - halfhours number, 2 bytes - energy value, 3 channels)
 
 const energiesToObis: Record<string, string> = {
     'A+': '1.5.x',
@@ -91,7 +94,7 @@ const convertHalfhoursEnergiesToDlms = ( energies: THalfhoursEnergies ) => {
 export const id: types.TCommandId = 0x6f;
 export const name: types.TCommandName = 'getHalfhoursEnergies';
 export const headerSize = 2;
-export const maxSize = DATE_SIZE + MAX_HALFHOURS_ENERGY_SIZE;
+export const maxSize = DATE_SIZE + ENERGY_FLAGS_SIZE + START_HALFHOUR_SIZE + HALFHOURS_NUMBER_SIZE + MAX_HALFHOURS_ENERGY_SIZE;
 export const accessLevel: types.TAccessLevel = UNENCRYPTED;
 export const isLoraOnly = true;
 
