@@ -1031,16 +1031,6 @@ const pulseCoefficientToByteMap = invertObject(byteToPulseCoefficientMap);
 
 const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 
-const getChannelValue = ( buffer: ICommandBinaryBuffer ): number => buffer.getUint8() + 1;
-
-const setChannelValue = ( buffer: ICommandBinaryBuffer, value: number ) => {
-    if ( value < 1 ) {
-        throw new Error('channel must be 1 or greater');
-    }
-
-    buffer.setUint8(value - 1);
-};
-
 const getNbiotSslWrite = ( buffer: ICommandBinaryBuffer ) => ({
     size: buffer.getUint16(),
     position: buffer.getUint16(),
@@ -1196,13 +1186,13 @@ const deviceParameterConvertersMap = {
     },
     [deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataMC => ({
-            channel: getChannelValue(buffer),
+            channel: buffer.getChannelValue(),
             meterValue: buffer.getUint32(),
             pulseCoefficient: buffer.getPulseCoefficient(),
             value: buffer.getUint32()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteDataMC ) => {
-            setChannelValue(buffer, parameter.channel);
+            buffer.setChannelValue(parameter.channel);
             buffer.setUint32(parameter.meterValue);
             buffer.setPulseCoefficient(parameter.pulseCoefficient);
             buffer.setUint32(parameter.value);
@@ -1210,11 +1200,11 @@ const deviceParameterConvertersMap = {
     },
     [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataEnableMC => ({
-            channel: getChannelValue(buffer),
+            channel: buffer.getChannelValue(),
             state: buffer.getUint8()
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteDataEnableMC ) => {
-            setChannelValue(buffer, parameter.channel);
+            buffer.setChannelValue(parameter.channel);
             buffer.setUint8(parameter.state);
         }
     },
@@ -1646,6 +1636,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getChannels (): Array<number>,
     setChannels ( channelList: Array<IChannel> );
 
+    getChannelValue (): number;
+    setChannelValue( value: number );
+
     getChannelsValuesWithHourDiff ( isArchiveValue?: boolean ): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>},
     setChannelsValuesWithHourDiff ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>, isArchiveValue?: boolean ),
 
@@ -1943,6 +1936,19 @@ CommandBinaryBuffer.prototype.setChannels = function ( channelList: Array<IChann
     });
 
     data.forEach((value: number) => this.setUint8(value));
+};
+
+
+CommandBinaryBuffer.prototype.getChannelValue = function (): number {
+    return this.getUint8() + 1;
+};
+
+CommandBinaryBuffer.prototype.setChannelValue = function ( value: number ) {
+    if ( value < 1 ) {
+        throw new Error('channel must be 1 or greater');
+    }
+
+    this.setUint8(value - 1);
 };
 
 
@@ -2252,7 +2258,7 @@ CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParamet
         case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
         case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
         case deviceParameters.CHANNEL_TYPE:
-            data = {channel: getChannelValue(this)};
+            data = {channel: this.getChannelValue()};
             break;
 
         case deviceParameters.REPORTING_DATA_CONFIG:
@@ -2282,7 +2288,7 @@ CommandBinaryBuffer.prototype.setRequestParameter = function ( parameter: IReque
         case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
         case deviceParameters.CHANNEL_TYPE:
             data = parameterData as IRequestChannelParameter;
-            setChannelValue(this, data.channel);
+            this.setChannelValue(data.channel);
             break;
 
         case deviceParameters.REPORTING_DATA_CONFIG:
@@ -2524,7 +2530,7 @@ CommandBinaryBuffer.prototype.setTemperatureSensor = function ( parameters: IPar
 
 
 CommandBinaryBuffer.prototype.getChannelType = function (): IParameterChannelType {
-    const channel = getChannelValue(this);
+    const channel = this.getChannelValue();
     const type = this.getUint8();
     let parameters = {};
 
@@ -2550,7 +2556,7 @@ CommandBinaryBuffer.prototype.getChannelType = function (): IParameterChannelTyp
 
 
 CommandBinaryBuffer.prototype.setChannelType = function ( {type, channel, parameters}: IParameterChannelType ) {
-    setChannelValue(this, channel);
+    this.setChannelValue(channel);
     this.setUint8(type);
 
     switch ( type ) {
