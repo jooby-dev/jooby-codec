@@ -1,5 +1,5 @@
 /**
- * Information about the current status of channels on the device,
+ * Information about the current status of channels on the device.
  *
  * @packageDocumentation
  *
@@ -16,8 +16,8 @@
  * // output:
  * [{
  *     type: 2,
+ *     channel: 0,
  *     status: {
- *         channel: 0,
  *         state: true
  *     }
  * }]
@@ -30,11 +30,6 @@ import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import * as channelsTypes from '../../constants/channelsTypes.js';
-
-
-export const id: types.TCommandId = 0x321f;
-export const name: types.TCommandName = 'getChannelsStatus';
-export const headerSize = 3;
 
 
 interface IBinarySensorStatus {
@@ -50,6 +45,11 @@ interface IChannelStatus {
     channel: types.TUint8,
     status?: IBinarySensorStatus | ITemperatureSensorStatus;
 }
+
+
+export const id: types.TCommandId = 0x321f;
+export const name: types.TCommandName = 'getChannelsStatus';
+export const headerSize = 3;
 
 
 export const examples: command.TCommandExamples = {
@@ -160,7 +160,6 @@ const setTemperatureSensorStatus = ( status: ITemperatureSensorStatus, buffer: I
 export const fromBytes = ( data: types.TBytes ): Array<IChannelStatus> => {
     const buffer: IBinaryBuffer = new BinaryBuffer(data);
     const result: Array<IChannelStatus> = [];
-
 
     while ( buffer.bytesLeft !== 0 ) {
         const channelStatus: IChannelStatus = {

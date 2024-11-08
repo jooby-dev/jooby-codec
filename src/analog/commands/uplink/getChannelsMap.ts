@@ -1,5 +1,5 @@
 /**
- * Information about the current role of channels on the device,
+ * Information about the current role of channels on the device.
  *
  * @packageDocumentation
  *
@@ -35,7 +35,7 @@ interface IChannelsMap {
 
 
 export const examples: command.TCommandExamples = {
-    'channels map. [POWER_CHANNEL (2), BINARY_SENSOR (3), TEMPERATURE_SENSOR (4), IDLE (0)]': {
+    'channels map: [POWER_CHANNEL (2), BINARY_SENSOR (3), TEMPERATURE_SENSOR (4), IDLE (0)]': {
         id,
         name,
         headerSize,

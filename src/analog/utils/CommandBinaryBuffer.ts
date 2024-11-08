@@ -200,6 +200,7 @@ export interface IChannelsMask {
     channel4: boolean
 }
 
+interface IParameterEmpty {}
 
 /**
  * Device send data periodically using this interval.
@@ -621,18 +622,6 @@ interface IParameterNbiotSim {
 }
 
 /**
- * Idle channel
- */
-interface IParameterIdleChannel {
-}
-
-/**
- * Power channel settings
- */
-interface IParameterPowerChannel {
-}
-
-/**
  * Binary sensor settings
  */
 interface IParameterBinarySensor {
@@ -656,7 +645,7 @@ interface IParameterTemperatureSensor {
 interface IParameterChannelType {
     channel: types.TUint8,
     type: types.TUint8
-    parameters: IParameterIdleChannel | IParameterPowerChannel | IParameterBinarySensor | IParameterTemperatureSensor
+    parameters: IParameterEmpty | IParameterBinarySensor | IParameterTemperatureSensor
 }
 
 /**
@@ -2538,7 +2527,6 @@ CommandBinaryBuffer.prototype.getChannelType = function (): IParameterChannelTyp
     const channel = getChannelValue(this);
     const type = this.getUint8();
     let parameters = {};
-
 
     switch ( type ) {
         case channelsTypes.BINARY_SENSOR:

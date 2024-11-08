@@ -1,7 +1,7 @@
 /**
  * Command to get the status of device channels.
- * Optionally, specify a channels to get the status of the subsystem assigned to that channels.
- * Without a channels , the command returns the status of all channels.
+ * Optionally, specify channels to get the status of the subsystem assigned to that channels.
+ * Without channels, the command returns the status of all channels.
  *
  * @packageDocumentation
  *
@@ -34,7 +34,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: null,
+        parameters: {},
         bytes: [
             0x1f, 0x32, 0x00
         ]
@@ -50,6 +50,7 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+type TGetChannelsStatusParameters = IChannelsMask | command.IEmptyCommandParameters;
 
 /**
  * Decode command parameters.
@@ -58,8 +59,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-export const fromBytes = ( data: types.TBytes ): IChannelsMask | undefined => (
-    data.length === 0 ? null : getChannelsMaskFromNumber(data[0])
+export const fromBytes = ( data: types.TBytes ): TGetChannelsStatusParameters => (
+    data.length === 0 ? {} : getChannelsMaskFromNumber(data[0])
 );
 
 
@@ -69,9 +70,9 @@ export const fromBytes = ( data: types.TBytes ): IChannelsMask | undefined => (
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( channelsMask?: IChannelsMask ): types.TBytes => (
+export const toBytes = ( parameters: TGetChannelsStatusParameters ): types.TBytes => (
     command.toBytes(
         id,
-        channelsMask ? [setChannelsMaskToNumber(channelsMask)] : []
+        Object.keys(parameters).length !== 0 ? [setChannelsMaskToNumber(parameters as IChannelsMask)] : []
     )
 );
