@@ -109,13 +109,19 @@ export const ELIMP = 11;
 export const GASIC = 12;
 
 /**
+ * RM installed inside ultrasound water meters.
+ * Based on `STM32WLE5`
+ */
+export const US_WATER = 13;
+
+/**
  * RM with 4 ports for the Asian region, `AS923`.
  * 4 channels
  *
  * Models:
- * Jooby RM 4PI`
+ * `Jooby RM 4PI`
  * `Jooby OMNI RM LoRaWAN 4PI 200 AS`
- * `Jooby OMNI RM LoRaWAN 4PI 202 AS
+ * `Jooby OMNI RM LoRaWAN 4PI 202 AS`
  */
 export const IMP4AS = 15;
 
@@ -124,9 +130,3 @@ export const IMP4AS = 15;
  * 1 channel
  */
 export const NBIOT = 24;
-
-/**
- * RM installed inside ultrasound water meters.
- * Based on `STM32WLE5`
- */
-export const US_WATER = 13;
