@@ -269,13 +269,13 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
 
         case events.BINARY_SENSOR_ON:
         case events.BINARY_SENSOR_OFF:
-            eventData = {time2000: buffer.getTime(), channel: buffer.getUint8()};
+            eventData = {time2000: buffer.getTime(), channel: buffer.getChannelValue()};
             break;
 
         case events.TEMPERATURE_SENSOR_HYSTERESIS:
         case events.TEMPERATURE_SENSOR_LOW_TEMPERATURE:
         case events.TEMPERATURE_SENSOR_HIGH_TEMPERATURE:
-            eventData = {time2000: buffer.getTime(), channel: buffer.getUint8(), temperature: buffer.getInt8()};
+            eventData = {time2000: buffer.getTime(), channel: buffer.getChannelValue(), temperature: buffer.getInt8()};
             break;
 
         default:
@@ -336,14 +336,14 @@ export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
         case events.BINARY_SENSOR_ON:
         case events.BINARY_SENSOR_OFF:
             buffer.setTime((data as IEventBinarySensor).time2000);
-            buffer.setUint8((data as IEventBinarySensor).channel);
+            buffer.setChannelValue((data as IEventBinarySensor).channel);
             break;
 
         case events.TEMPERATURE_SENSOR_HYSTERESIS:
         case events.TEMPERATURE_SENSOR_LOW_TEMPERATURE:
         case events.TEMPERATURE_SENSOR_HIGH_TEMPERATURE:
             buffer.setTime((data as IEventTemperatureSensor).time2000);
-            buffer.setUint8((data as IEventTemperatureSensor).channel);
+            buffer.setChannelValue((data as IEventTemperatureSensor).channel);
             buffer.setInt8((data as IEventTemperatureSensor).temperature);
             break;
 
