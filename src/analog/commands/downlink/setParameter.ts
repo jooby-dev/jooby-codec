@@ -329,7 +329,7 @@ export const examples: command.TCommandExamples = {
                 channel: 3,
                 type: channelsTypes.TEMPERATURE_SENSOR,
                 parameters: {
-                    measurementPeriodSec: 3600,
+                    measurementPeriod: 3600,
                     hysteresisSec: 2,
                     highTemperatureThreshold: 40,
                     lowTemperatureThreshold: 5
