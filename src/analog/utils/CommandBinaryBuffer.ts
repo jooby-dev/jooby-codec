@@ -635,7 +635,7 @@ interface IParameterTemperatureSensor {
     measurementPeriod: types.TUint16;
     hysteresisSec: types.TUint8;
     highTemperatureThreshold: types.TUint8;
-    lowTemperatureThreshold: types.TUint8;
+    lowTemperatureThreshold: types.TInt8;
 }
 
 /**
@@ -2510,8 +2510,8 @@ CommandBinaryBuffer.prototype.setBinarySensor = function ( parameters: IParamete
 CommandBinaryBuffer.prototype.getTemperatureSensor = function (): IParameterTemperatureSensor {
     const measurementPeriod = this.getUint16();
     const hysteresisSec = this.getUint8();
-    const highTemperatureThreshold = this.getUint8();
-    const lowTemperatureThreshold = this.getUint8();
+    const highTemperatureThreshold = this.getInt8();
+    const lowTemperatureThreshold = this.getInt8();
 
     return {
         measurementPeriod,
@@ -2522,10 +2522,10 @@ CommandBinaryBuffer.prototype.getTemperatureSensor = function (): IParameterTemp
 };
 
 CommandBinaryBuffer.prototype.setTemperatureSensor = function ( parameters: IParameterTemperatureSensor ) {
-    this.setUint16(parameters.measurementPeriod);
-    this.setUint8(parameters.hysteresisSec);
-    this.setUint8(parameters.highTemperatureThreshold);
-    this.setUint8(parameters.lowTemperatureThreshold);
+    this.setInt16(parameters.measurementPeriod);
+    this.setInt8(parameters.hysteresisSec);
+    this.setInt8(parameters.highTemperatureThreshold);
+    this.setInt8(parameters.lowTemperatureThreshold);
 };
 
 
