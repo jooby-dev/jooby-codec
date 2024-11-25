@@ -93,7 +93,7 @@
         "jooby-codec": "file:.",
         "ts-jest": "^29.1.2",
         "ts-node": "^10.9.2",
-        "typedoc-plugin-missing-exports": "^2.2.0",
+        "typedoc-plugin-missing-exports": "^3.1.0",
         "typedoc": "^0.25.12",
         "typescript": "^5.4.3"
     },
