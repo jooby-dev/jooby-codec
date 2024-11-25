@@ -16,6 +16,7 @@
  * // output:
  * [{
  *     type: 2,
+ *     typeName: 'POWER_CHANNEL',
  *     channel: 0,
  *     status: {
  *         state: true
@@ -31,6 +32,7 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
 import * as channelsTypes from '../../constants/channelsTypes.js';
+import channelsNames from '../../constants/channelsNames.js';
 
 
 interface IBinarySensorStatus {
@@ -44,6 +46,7 @@ interface ITemperatureSensorStatus {
 
 interface IChannelStatus {
     type: types.TUint8;
+    typeName: string,
     channel: types.TUint8,
     status?: IBinarySensorStatus | ITemperatureSensorStatus;
 }
@@ -62,6 +65,7 @@ export const examples: command.TCommandExamples = {
         parameters: [
             {
                 type: channelsTypes.BINARY_SENSOR,
+                typeName: 'BINARY_SENSOR',
                 channel: 1,
                 status: {
                     state: true
@@ -79,6 +83,7 @@ export const examples: command.TCommandExamples = {
         parameters: [
             {
                 type: channelsTypes.TEMPERATURE_SENSOR,
+                typeName: 'TEMPERATURE_SENSOR',
                 channel: 3,
                 status: {
                     temperature: 24,
@@ -97,6 +102,7 @@ export const examples: command.TCommandExamples = {
         parameters: [
             {
                 type: channelsTypes.BINARY_SENSOR,
+                typeName: 'BINARY_SENSOR',
                 channel: 1,
                 status: {
                     state: true
@@ -104,6 +110,7 @@ export const examples: command.TCommandExamples = {
             },
             {
                 type: channelsTypes.TEMPERATURE_SENSOR,
+                typeName: 'TEMPERATURE_SENSOR',
                 channel: 3,
                 status: {
                     temperature: 20,
@@ -168,8 +175,11 @@ export const fromBytes = ( data: types.TBytes ): Array<IChannelStatus> => {
     const result: Array<IChannelStatus> = [];
 
     while ( buffer.bytesLeft !== 0 ) {
+        const type = buffer.getUint8();
+
         const channelStatus: IChannelStatus = {
-            type: buffer.getUint8(),
+            type,
+            typeName: channelsNames[type] as string,
             channel: buffer.getChannelValue()
         };
 
