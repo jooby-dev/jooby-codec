@@ -43,6 +43,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 1,
+            name: 'REPORTING_DATA_INTERVAL',
             data: {value: 2400}
         },
         bytes: [
@@ -56,6 +57,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 23,
+            name: 'ABSOLUTE_DATA',
             data: {meterValue: 204, pulseCoefficient: 100, value: 2023}
         },
         bytes: [
@@ -69,6 +71,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 24,
+            name: 'ABSOLUTE_DATA_ENABLE',
             data: {state: 1}
         },
         bytes: [
@@ -82,6 +85,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 29,
+            name: 'ABSOLUTE_DATA_MULTI_CHANNEL',
             data: {channel: 1, meterValue: 402, pulseCoefficient: 1000, value: 2032}
         },
         bytes: [
@@ -95,6 +99,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 30,
+            name: 'ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL',
             data: {channel: 2, state: 1}
         },
         bytes: [
@@ -108,6 +113,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 51,
+            name: 'NBIOT_MODULE_INFO',
             data: {
                 moduleInfo: 'BC660KGLAAR01A05'
             }
@@ -123,6 +129,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 52,
+            name: 'NBIOT_BANDS',
             data: {bands: [3, 20]}
         },
         bytes: [

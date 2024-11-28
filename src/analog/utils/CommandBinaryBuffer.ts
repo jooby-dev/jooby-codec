@@ -15,6 +15,7 @@ import {extractBits, fillBits} from '../../utils/bitSet.js';
 import {getDateFromTime2000, getTime2000FromDate, TTime2000} from './time.js';
 import * as hardwareTypes from '../constants/hardwareTypes.js';
 import * as deviceParameters from '../constants/deviceParameters.js';
+import deviceParametersNames from '../constants/deviceParametersNames.js';
 import * as archive from '../constants/archive.js';
 import * as channelsTypes from '../constants/channelsTypes.js';
 
@@ -679,6 +680,7 @@ interface IRequestEventIdParameter {
 
 export interface IParameter {
     id: types.TUint8,
+    name?: string,
 
     data: TParameterData
 }
@@ -686,6 +688,7 @@ export interface IParameter {
 export interface IRequestParameter {
     /** One of the {@link deviceParameters | parameter types}. */
     id: types.TUint8,
+    name?: string,
 
     data: TRequestParameterData | null
 }
@@ -2228,6 +2231,7 @@ CommandBinaryBuffer.prototype.setEventStatus = function ( hardwareType: number, 
 
 CommandBinaryBuffer.prototype.getParameter = function (): IParameter {
     const id = this.getUint8();
+    const name = deviceParametersNames[id] as string;
 
     if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].get ) {
         throw new Error(`parameter ${id} is not supported`);
@@ -2235,7 +2239,7 @@ CommandBinaryBuffer.prototype.getParameter = function (): IParameter {
 
     const data = deviceParameterConvertersMap[id].get(this);
 
-    return {id, data};
+    return {id, name, data};
 };
 
 CommandBinaryBuffer.prototype.setParameter = function ( parameter: IParameter ): void {
@@ -2252,6 +2256,7 @@ CommandBinaryBuffer.prototype.setParameter = function ( parameter: IParameter ):
 
 CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParameter {
     const id = this.getUint8();
+    const name = deviceParametersNames[id] as string;
     let data = null;
 
     switch ( id ) {
@@ -2273,7 +2278,7 @@ CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParamet
             break;
     }
 
-    return {id, data};
+    return {id, name, data};
 };
 
 
@@ -2309,6 +2314,7 @@ CommandBinaryBuffer.prototype.setRequestParameter = function ( parameter: IReque
 
 CommandBinaryBuffer.prototype.getResponseParameter = function (): IParameter {
     const id = this.getUint8();
+    const name = deviceParametersNames[id] as string;
     let data;
 
     if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].get ) {
@@ -2332,7 +2338,7 @@ CommandBinaryBuffer.prototype.getResponseParameter = function (): IParameter {
             data = deviceParameterConvertersMap[id].get(this);
     }
 
-    return {id, data};
+    return {id, name, data};
 };
 
 
