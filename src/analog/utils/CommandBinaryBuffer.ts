@@ -18,6 +18,7 @@ import * as deviceParameters from '../constants/deviceParameters.js';
 import deviceParametersNames from '../constants/deviceParametersNames.js';
 import * as archive from '../constants/archive.js';
 import * as channelsTypes from '../constants/channelsTypes.js';
+import spreadFactorsNames from '../constants/rx2SpreadFactorsNames.js';
 
 
 export interface IBatteryVoltage {
@@ -292,7 +293,9 @@ interface IParameterRx2Config {
      *
      * @see https://www.thethingsnetwork.org/docs/lorawan/spreading-factors/
      */
-    spreadFactor: types.TUint8
+    spreadFactor: types.TUint8,
+
+    spreadFactorName?: string,
 
     /**
      * RX2 data rate frequency.
@@ -1134,10 +1137,13 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.RX2_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterRx2Config => ({
-            spreadFactor: buffer.getUint8(),
-            frequency: buffer.getUint24() * PARAMETER_RX2_FREQUENCY_COEFFICIENT
-        }),
+        get: ( buffer: ICommandBinaryBuffer ): IParameterRx2Config => {
+            const spreadFactor = buffer.getUint8();
+            const spreadFactorName = spreadFactorsNames[spreadFactor] as string;
+            const frequency = buffer.getUint24() * PARAMETER_RX2_FREQUENCY_COEFFICIENT;
+
+            return {spreadFactor, spreadFactorName, frequency};
+        },
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterRx2Config ) => {
             buffer.setUint8(parameter.spreadFactor);
             buffer.setUint24(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT);

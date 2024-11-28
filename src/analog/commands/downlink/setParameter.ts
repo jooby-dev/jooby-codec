@@ -127,7 +127,15 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 18, name: 'RX2_CONFIG', data: {spreadFactor: 5, frequency: 20000}},
+        parameters: {
+            id: 18,
+            name: 'RX2_CONFIG',
+            data: {
+                spreadFactor: 5,
+                spreadFactorName: 'SF7B125',
+                frequency: 20000
+            }
+        },
         bytes: [
             0x03, 0x05,
             0x12, 0x05, 0x00, 0x00, 0xc8

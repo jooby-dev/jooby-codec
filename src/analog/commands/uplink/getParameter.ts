@@ -51,6 +51,24 @@ export const examples: command.TCommandExamples = {
             0x01, 0x00, 0x00, 0x00, 0x04
         ]
     },
+    'get spread factor and frequency for RX2 window': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 18,
+            name: 'RX2_CONFIG',
+            data: {
+                spreadFactor: 5,
+                spreadFactorName: 'SF7B125',
+                frequency: 20000
+            }
+        },
+        bytes: [
+            0x04, 0x05,
+            0x12, 0x05, 0x00, 0x00, 0xc8
+        ]
+    },
     'absolute data (not multichannel device)': {
         id,
         name,
