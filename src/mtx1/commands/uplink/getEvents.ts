@@ -35,6 +35,7 @@
  *             minutes: 12,
  *             seconds: 33,
  *             event: 157,
+ *             name: 'POWER_OVER_RELAY_OFF',
  *             power: [22, 25, 12, 143]
  *         },
  *         {
@@ -42,6 +43,7 @@
  *             minutes: 12,
  *             seconds: 33,
  *             event: 121,
+ *             name: 'TIME_CORRECT',
  *             newDate: {
  *                 isSummerTime: 0,
  *                 seconds: 10,
@@ -103,6 +105,7 @@ export const examples: command.TCommandExamples = {
                     minutes: 12,
                     seconds: 33,
                     event: 157,
+                    name: 'POWER_OVER_RELAY_OFF',
                     power: [22, 25, 12, 143]
                 },
                 {
@@ -110,6 +113,7 @@ export const examples: command.TCommandExamples = {
                     minutes: 12,
                     seconds: 33,
                     event: 121,
+                    name: 'TIME_CORRECT',
                     newDate: {
                         isSummerTime: false,
                         seconds: 10,

@@ -17,6 +17,7 @@ import * as screenIds from '../constants/screenIds.js';
 import * as frameTypes from '../constants/frameTypes.js';
 import frameNames from '../constants/frameNames.js';
 import * as events from '../constants/events.js';
+import eventsNames from '../constants/eventsNames.js';
 //import * as energyTypes from '../constants/energyTypes.js';
 
 import * as demandTypes from '../constants/demandTypes.js';
@@ -804,6 +805,7 @@ export interface IEvent {
     minutes: types.TUint8,
     seconds: types.TUint8,
     event: types.TUint8,
+    name?: string,
     power?: Array<types.TUint8>,
     newDate?: IDateTime
 }
@@ -1819,6 +1821,8 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
     };
     const {event} = data;
     const {bytesLeft} = this;
+
+    data.name = eventsNames[event] as string;
 
     switch ( event ) {
         case events.POWER_OVER_RELAY_OFF:
