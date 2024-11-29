@@ -15,6 +15,7 @@ import getBytesFromHex from '../../utils/getBytesFromHex.js';
 import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
 import * as screenIds from '../constants/screenIds.js';
 import * as frameTypes from '../constants/frameTypes.js';
+import frameNames from '../constants/frameNames.js';
 import * as events from '../constants/events.js';
 //import * as energyTypes from '../constants/energyTypes.js';
 
@@ -28,6 +29,8 @@ export interface IFrameHeader {
      * Frame type from the list of {@link frameTypes | available types}.
      */
     type: number,
+
+    name?: string,
 
     /**
      * Source device address.
@@ -1406,10 +1409,16 @@ CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => (
 
 
 CommandBinaryBuffer.prototype.getFrameHeader = function (): IFrameHeader {
+    const type = this.getUint8();
+    const name = frameNames[type] as string;
+    const destination = this.getUint16();
+    const source = this.getUint16();
+
     return {
-        type: this.getUint8(),
-        destination: this.getUint16(),
-        source: this.getUint16()
+        type,
+        name,
+        destination,
+        source
     };
 };
 
