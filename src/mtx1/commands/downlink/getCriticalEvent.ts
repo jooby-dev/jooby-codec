@@ -28,6 +28,7 @@ import * as command from '../../utils/command.js';
 import * as accessLevels from '../../constants/accessLevels.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as criticalEvents from '../../constants/criticalEvents.js';
+import criticalEventsNames from '../../constants/criticalEventsNames.js';
 
 
 interface IGetCriticalEventParameters {
@@ -37,6 +38,8 @@ interface IGetCriticalEventParameters {
      * ({@link criticalEvents | critical event identifiers})
      */
     event: types.TUint8,
+
+    name?: string,
 
     index: types.TUint8
 }
@@ -58,6 +61,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         parameters: {
             event: 1,
+            name: 'MAGNETIC_ON',
             index: 22
         },
         bytes: [
@@ -81,7 +85,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventParameters =>
 
     const [event, index] = bytes;
 
-    return {event, index};
+    return {
+        event,
+        name: criticalEventsNames[event] as string,
+        index
+    };
 };
 
 
