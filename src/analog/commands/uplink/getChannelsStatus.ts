@@ -46,7 +46,7 @@ interface ITemperatureSensorStatus {
 
 interface IChannelStatus {
     type: types.TUint8;
-    typeName: string,
+    typeName?: string,
     channel: types.TUint8,
     status?: IBinarySensorStatus | ITemperatureSensorStatus;
 }

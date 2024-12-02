@@ -77,7 +77,6 @@ export const fromBytes = ( data: types.TBytes ): IChannels => ({
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( {channels}: IChannels ): types.TBytes => (command.toBytes(
-    id,
-    channels.map(channel => channel.type)
-));
+export const toBytes = ( {channels}: IChannels ): types.TBytes => (
+    command.toBytes(id, channels.map(channel => channel.type))
+);
