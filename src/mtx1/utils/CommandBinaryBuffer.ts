@@ -31,7 +31,7 @@ export interface IFrameHeader {
      */
     type: number,
 
-    name?: string,
+    typeName?: string,
 
     /**
      * Source device address.
@@ -805,7 +805,7 @@ export interface IEvent {
     minutes: types.TUint8,
     seconds: types.TUint8,
     event: types.TUint8,
-    name?: string,
+    eventName?: string,
     power?: Array<types.TUint8>,
     newDate?: IDateTime
 }
@@ -1412,13 +1412,13 @@ CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => (
 
 CommandBinaryBuffer.prototype.getFrameHeader = function (): IFrameHeader {
     const type = this.getUint8();
-    const name = frameNames[type] as string;
+    const typeName = frameNames[type] as string;
     const destination = this.getUint16();
     const source = this.getUint16();
 
     return {
         type,
-        name,
+        typeName,
         destination,
         source
     };
@@ -1822,7 +1822,7 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
     const {event} = data;
     const {bytesLeft} = this;
 
-    data.name = eventsNames[event] as string;
+    data.eventName = eventsNames[event] as string;
 
     switch ( event ) {
         case events.POWER_OVER_RELAY_OFF:

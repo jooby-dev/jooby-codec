@@ -2276,7 +2276,7 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
     const {event} = data;
     const {bytesLeft} = this;
 
-    data.name = eventsNames[event] as string;
+    data.eventName = eventsNames[event] as string;
 
     switch ( event ) {
         case events.POWER_OVER_RELAY_OFF:

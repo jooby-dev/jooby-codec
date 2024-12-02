@@ -32,7 +32,7 @@ export const headerSize = 3;
 
 interface IChannel {
     type: types.TUint8,
-    name?: string
+    typeName?: string
 }
 
 interface IChannels {
@@ -47,10 +47,10 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             channels: [
-                {type: 2, name: 'POWER_CHANNEL'},
-                {type: 3, name: 'BINARY_SENSOR'},
-                {type: 4, name: 'TEMPERATURE_SENSOR'},
-                {type: 0, name: 'IDLE'}
+                {type: 2, typeName: 'POWER_CHANNEL'},
+                {type: 3, typeName: 'BINARY_SENSOR'},
+                {type: 4, typeName: 'TEMPERATURE_SENSOR'},
+                {type: 0, typeName: 'IDLE'}
             ]
         },
         bytes: [
@@ -67,7 +67,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( data: types.TBytes ): IChannels => ({
-    channels: data.map(type => ({type, name: channelsNames[type] as string}))
+    channels: data.map(type => ({type, typeName: channelsNames[type] as string}))
 });
 
 
