@@ -31,8 +31,8 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
-import * as channelsTypes from '../../constants/channelsTypes.js';
-import channelsNames from '../../constants/channelsNames.js';
+import * as channelTypes from '../../constants/channelTypes.js';
+import channelNames from '../../constants/channelNames.js';
 
 
 interface IBinarySensorStatus {
@@ -64,7 +64,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: [
             {
-                type: channelsTypes.BINARY_SENSOR,
+                type: channelTypes.BINARY_SENSOR,
                 typeName: 'BINARY_SENSOR',
                 channel: 1,
                 status: {
@@ -82,7 +82,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: [
             {
-                type: channelsTypes.TEMPERATURE_SENSOR,
+                type: channelTypes.TEMPERATURE_SENSOR,
                 typeName: 'TEMPERATURE_SENSOR',
                 channel: 3,
                 status: {
@@ -101,7 +101,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: [
             {
-                type: channelsTypes.BINARY_SENSOR,
+                type: channelTypes.BINARY_SENSOR,
                 typeName: 'BINARY_SENSOR',
                 channel: 1,
                 status: {
@@ -109,7 +109,7 @@ export const examples: command.TCommandExamples = {
                 }
             },
             {
-                type: channelsTypes.TEMPERATURE_SENSOR,
+                type: channelTypes.TEMPERATURE_SENSOR,
                 typeName: 'TEMPERATURE_SENSOR',
                 channel: 3,
                 status: {
@@ -133,8 +133,8 @@ const getBufferSize = ( channelsStatus: Array<IChannelStatus> ) => {
         size += 2;
 
         switch ( channelsStatus[index].type ) {
-            case channelsTypes.BINARY_SENSOR:
-            case channelsTypes.TEMPERATURE_SENSOR:
+            case channelTypes.BINARY_SENSOR:
+            case channelTypes.TEMPERATURE_SENSOR:
                 size += 1;
                 break;
             default:
@@ -179,16 +179,16 @@ export const fromBytes = ( data: types.TBytes ): Array<IChannelStatus> => {
 
         const channelStatus: IChannelStatus = {
             type,
-            typeName: channelsNames[type] as string,
+            typeName: channelNames[type] as string,
             channel: buffer.getChannelValue()
         };
 
         switch (channelStatus.type) {
-            case channelsTypes.BINARY_SENSOR:
+            case channelTypes.BINARY_SENSOR:
                 channelStatus.status = getBinarySensorStatus(buffer);
                 break;
 
-            case channelsTypes.TEMPERATURE_SENSOR:
+            case channelTypes.TEMPERATURE_SENSOR:
                 channelStatus.status = getTemperatureSensorStatus(buffer);
                 break;
 
@@ -219,11 +219,11 @@ export const toBytes = ( channelsStatus: Array<IChannelStatus> ): types.TBytes =
         buffer.setChannelValue(channel);
 
         switch ( type ) {
-            case channelsTypes.BINARY_SENSOR:
+            case channelTypes.BINARY_SENSOR:
                 setBinarySensorStatus(status as IBinarySensorStatus, buffer);
                 break;
 
-            case channelsTypes.TEMPERATURE_SENSOR:
+            case channelTypes.TEMPERATURE_SENSOR:
                 setTemperatureSensorStatus(status as ITemperatureSensorStatus, buffer);
                 break;
 

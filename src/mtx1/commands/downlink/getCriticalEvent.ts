@@ -28,7 +28,7 @@ import * as command from '../../utils/command.js';
 import * as accessLevels from '../../constants/accessLevels.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as criticalEvents from '../../constants/criticalEvents.js';
-import criticalEventsNames from '../../constants/criticalEventsNames.js';
+import criticalEventNames from '../../constants/criticalEventNames.js';
 
 
 interface IGetCriticalEventParameters {
@@ -87,7 +87,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventParameters =>
 
     return {
         event,
-        name: criticalEventsNames[event] as string,
+        name: criticalEventNames[event] as string,
         index
     };
 };

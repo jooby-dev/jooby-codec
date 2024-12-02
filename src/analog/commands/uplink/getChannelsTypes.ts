@@ -22,7 +22,7 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import channelsNames from '../../constants/channelsNames.js';
+import channelNames from '../../constants/channelNames.js';
 
 
 export const id: types.TCommandId = 0x331f;
@@ -67,7 +67,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( data: types.TBytes ): IChannels => ({
-    channels: data.map(type => ({type, typeName: channelsNames[type] as string}))
+    channels: data.map(type => ({type, typeName: channelNames[type] as string}))
 });
 
 

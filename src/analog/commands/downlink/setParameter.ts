@@ -26,7 +26,7 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import * as channelsTypes from '../../constants/channelsTypes.js';
+import * as channelTypes from '../../constants/channelTypes.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IParameter, getParameterSize} from '../../utils/CommandBinaryBuffer.js';
 
 
@@ -361,7 +361,7 @@ export const examples: command.TCommandExamples = {
             name: 'CHANNEL_TYPE',
             data: {
                 channel: 1,
-                type: channelsTypes.POWER_CHANNEL,
+                type: channelTypes.POWER_CHANNEL,
                 parameters: {}
             }
         },
@@ -379,7 +379,7 @@ export const examples: command.TCommandExamples = {
             name: 'CHANNEL_TYPE',
             data: {
                 channel: 2,
-                type: channelsTypes.BINARY_SENSOR,
+                type: channelTypes.BINARY_SENSOR,
                 parameters: {
                     activeStateTimeMs: 5000
                 }
@@ -399,7 +399,7 @@ export const examples: command.TCommandExamples = {
             name: 'CHANNEL_TYPE',
             data: {
                 channel: 3,
-                type: channelsTypes.TEMPERATURE_SENSOR,
+                type: channelTypes.TEMPERATURE_SENSOR,
                 parameters: {
                     measurementPeriod: 3600,
                     hysteresisSec: 2,
@@ -422,7 +422,7 @@ export const examples: command.TCommandExamples = {
             name: 'CHANNEL_TYPE',
             data: {
                 channel: 4,
-                type: channelsTypes.IDLE,
+                type: channelTypes.IDLE,
                 parameters: {}
             }
         },

@@ -17,7 +17,7 @@ import * as bitSet from '../../utils/bitSet.js';
 import * as baudRates from '../constants/baudRates.js';
 import {TEnergyType} from '../types.js';
 import * as events from '../constants/events.js';
-import eventsNames from '../constants/eventsNames.js';
+import eventNames from '../constants/eventNames.js';
 
 
 export interface IDisplaySet1OperatorParameter {
@@ -2276,7 +2276,7 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
     const {event} = data;
     const {bytesLeft} = this;
 
-    data.eventName = eventsNames[event] as string;
+    data.eventName = eventNames[event] as string;
 
     switch ( event ) {
         case events.POWER_OVER_RELAY_OFF:

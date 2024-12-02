@@ -5,11 +5,11 @@
  */
 
 
-export {default as criticalEventsNames} from './criticalEventsNames.js';
+export {default as criticalEventNames} from './criticalEventNames.js';
 export {default as frameNames} from './frameNames.js';
 export {default as resultNames} from './resultNames.js';
 export {default as screenNames} from './screenNames.js';
-export {default as eventsNames} from './eventsNames.js';
+export {default as eventNames} from './eventNames.js';
 export * as accessLevels from './accessLevels.js';
 export * as criticalEvents from './criticalEvents.js';
 export * as energyTypes from './energyTypes.js';

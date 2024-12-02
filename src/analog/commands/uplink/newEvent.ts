@@ -28,7 +28,7 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import * as events from '../../constants/events.js';
-import eventsNames from '../../constants/eventsNames.js';
+import eventNames from '../../constants/eventNames.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IEventMtxStatus} from '../../utils/CommandBinaryBuffer.js';
@@ -240,7 +240,7 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const eventId = buffer.getUint8();
-    const eventName = eventsNames[eventId] as string;
+    const eventName = eventNames[eventId] as string;
     const sequenceNumber = buffer.getUint8();
     let eventData;
 

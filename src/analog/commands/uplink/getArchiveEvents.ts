@@ -36,7 +36,7 @@ import * as command from '../../utils/command.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as events from '../../constants/events.js';
-import eventsNames from '../../constants/eventsNames.js';
+import eventNames from '../../constants/eventNames.js';
 
 
 interface IArchiveEvent {
@@ -131,7 +131,7 @@ const getEvent = ( buffer: ICommandBinaryBuffer ): IArchiveEvent => {
     return {
         time2000,
         id: eventId,
-        name: eventsNames[eventId] as string,
+        name: eventNames[eventId] as string,
         sequenceNumber
     };
 };

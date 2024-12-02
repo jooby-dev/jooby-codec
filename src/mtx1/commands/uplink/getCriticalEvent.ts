@@ -39,7 +39,7 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import * as accessLevels from '../../constants/accessLevels.js';
-import criticalEventsNames from '../../constants/criticalEventsNames.js';
+import criticalEventNames from '../../constants/criticalEventNames.js';
 
 
 interface IGetCriticalEventResponseParameters {
@@ -128,7 +128,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventResponseParam
 
     return {
         event,
-        name: criticalEventsNames[event] as string,
+        name: criticalEventNames[event] as string,
         index,
         date: {
             year,
