@@ -114,6 +114,7 @@ toBytesMap[mtx1Commands.turnRelayOff.id] = mtx1Commands.turnRelayOff.toBytes;
 toBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.toBytes;
 
 // commands different from MTX1
+toBytesMap[commands.errorResponse.id] = commands.errorResponse.toBytes;
 toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
 toBytesMap[commands.getCurrentStatusMeter.id] = commands.getCurrentStatusMeter.toBytes;
 toBytesMap[commands.getCurrentValues.id] = commands.getCurrentValues.toBytes;
@@ -190,6 +191,7 @@ fromBytesMap[mtx1Commands.turnRelayOff.id] = mtx1Commands.turnRelayOff.fromBytes
 fromBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.fromBytes;
 
 // commands different from MTX1
+fromBytesMap[commands.errorResponse.id] = commands.errorResponse.fromBytes;
 fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes;
 fromBytesMap[commands.getCurrentStatusMeter.id] = commands.getCurrentStatusMeter.fromBytes;
 fromBytesMap[commands.getCurrentValues.id] = commands.getCurrentValues.fromBytes;
@@ -266,6 +268,7 @@ nameMap[mtx1Commands.turnRelayOff.id] = mtx1Commands.turnRelayOff.name;
 nameMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.name;
 
 // commands different from MTX1
+nameMap[commands.errorResponse.id] = commands.errorResponse.name;
 nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
 nameMap[commands.getCurrentStatusMeter.id] = commands.getCurrentStatusMeter.name;
 nameMap[commands.getCurrentValues.id] = commands.getCurrentValues.name;

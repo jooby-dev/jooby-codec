@@ -33,7 +33,7 @@ import resultNames from '../../constants/resultNames.js';
 import {nameMap} from '../../message/downlink.js';
 
 
-interface IErrorResponseParameters {
+export interface IErrorResponseParameters {
     /**
      * Downlink command id.
      *

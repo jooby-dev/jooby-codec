@@ -46,6 +46,7 @@ export * as turnRelayOn from '../../../mtx1/commands/uplink/turnRelayOn.js';
 
 
 // commands different from MTX1
+export * as errorResponse from './errorResponse.js';
 export * as getCriticalEvent from './getCriticalEvent.js';
 export * as getCurrentStatusMeter from './getCurrentStatusMeter.js';
 export * as getCurrentValues from './getCurrentValues.js';
