@@ -30,6 +30,7 @@ import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as resultCodes from '../../constants/resultCodes.js';
 import resultNames from '../../constants/resultNames.js';
+import {nameMap} from '../../message/downlink.js';
 
 
 interface IErrorResponseParameters {
@@ -40,6 +41,8 @@ interface IErrorResponseParameters {
      * 7 (GetDateTime)
      */
     commandId: types.TUint8,
+
+    commandName?: string,
 
     /**
      * Error code from the list of {@link resultCodes | available codes}.
@@ -66,6 +69,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {
             commandId: 0x18,
+            commandName: 'turnRelayOn',
             errorCode: resultCodes.ACCESS_DENIED,
             errorName: 'ACCESS_DENIED'
         },
@@ -86,11 +90,13 @@ export const examples: command.TCommandExamples = {
 export const fromBytes = ( bytes: types.TBytes ): IErrorResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const commandId = buffer.getUint8();
+    const commandName = nameMap[commandId];
     const errorCode = buffer.getUint8();
     const errorName = resultNames[errorCode] as string;
 
     return {
         commandId,
+        commandName,
         errorCode,
         errorName
     };
