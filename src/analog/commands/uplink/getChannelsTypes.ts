@@ -22,6 +22,7 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
+import channelNames from '../../constants/channelNames.js';
 
 
 export const id: types.TCommandId = 0x331f;
@@ -29,18 +30,28 @@ export const name: types.TCommandName = 'getChannelsTypes';
 export const headerSize = 3;
 
 
-interface IChannelsMap {
-    channelsMap: Array<types.TUint8>
+interface IChannel {
+    type: types.TUint8,
+    typeName?: string
+}
+
+interface IChannels {
+    channels: Array<IChannel>
 }
 
 
 export const examples: command.TCommandExamples = {
-    'channels types: [POWER_CHANNEL (2), BINARY_SENSOR (3), TEMPERATURE_SENSOR (4), IDLE (0)]': {
+    'channels: [POWER_CHANNEL (2), BINARY_SENSOR (3), TEMPERATURE_SENSOR (4), IDLE (0)]': {
         id,
         name,
         headerSize,
         parameters: {
-            channelsMap: [2, 3, 4, 0]
+            channels: [
+                {type: 2, typeName: 'POWER_CHANNEL'},
+                {type: 3, typeName: 'BINARY_SENSOR'},
+                {type: 4, typeName: 'TEMPERATURE_SENSOR'},
+                {type: 0, typeName: 'IDLE'}
+            ]
         },
         bytes: [
             0x1f, 0x33, 0x04, 0x02, 0x03, 0x04, 0x00
@@ -55,7 +66,9 @@ export const examples: command.TCommandExamples = {
  * @param data - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IChannelsMap => ({channelsMap: data});
+export const fromBytes = ( data: types.TBytes ): IChannels => ({
+    channels: data.map(type => ({type, typeName: channelNames[type] as string}))
+});
 
 
 /**
@@ -64,4 +77,6 @@ export const fromBytes = ( data: types.TBytes ): IChannelsMap => ({channelsMap: 
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( {channelsMap}: IChannelsMap ): types.TBytes => (command.toBytes(id, channelsMap));
+export const toBytes = ( {channels}: IChannels ): types.TBytes => (
+    command.toBytes(id, channels.map(channel => channel.type))
+);

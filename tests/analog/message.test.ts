@@ -36,7 +36,7 @@ const validDownlinkMessages: TMessageExamples = {
                 id: downlinkCommands.setParameter.id,
                 name: 'setParameter',
                 headerSize: 2,
-                parameters: {id: 4, data: {value: 12}},
+                parameters: {id: 4, name: 'DAY_CHECKOUT_HOUR', data: {value: 12}},
                 bytes: getBytesFromHex('03 02 04 0c')
             },
             {
@@ -45,6 +45,7 @@ const validDownlinkMessages: TMessageExamples = {
                 headerSize: 2,
                 parameters: {
                     id: 26,
+                    name: 'GEOLOCATION',
                     data: {
                         latitude: 34.43,
                         longitude: 43.43,
@@ -57,14 +58,14 @@ const validDownlinkMessages: TMessageExamples = {
                 id: downlinkCommands.getParameter.id,
                 name: 'getParameter',
                 headerSize: 2,
-                parameters: {id: 4, data: null},
+                parameters: {id: 4, name: 'DAY_CHECKOUT_HOUR', data: null},
                 bytes: getBytesFromHex('04 01 04')
             },
             {
                 id: downlinkCommands.getParameter.id,
                 name: 'getParameter',
                 headerSize: 2,
-                parameters: {id: 26, data: null},
+                parameters: {id: 26, name: 'GEOLOCATION', data: null},
                 bytes: getBytesFromHex('04 01 1a')
             }
         ],
@@ -272,21 +273,21 @@ const invalidDownlinkMessages: TMessageExamples = {
                     id: downlinkCommands.getParameter.id,
                     name: 'getParameter',
                     headerSize: 2,
-                    parameters: {id: 23, data: null},
+                    parameters: {id: 23, name: 'ABSOLUTE_DATA', data: null},
                     bytes: getBytesFromHex('04 01 17')
                 },
                 {
                     id: downlinkCommands.getParameter.id,
                     name: 'getParameter',
                     headerSize: 2,
-                    parameters: {id: 24, data: null},
+                    parameters: {id: 24, name: 'ABSOLUTE_DATA_ENABLE', data: null},
                     bytes: getBytesFromHex('04 01 18')
                 },
                 {
                     id: downlinkCommands.setParameter.id,
                     name: 'setParameter',
                     headerSize: 2,
-                    parameters: {id: 13, data: {value: 0}},
+                    parameters: {id: 13, name: 'CHANNELS_CONFIG', data: {value: 0}},
                     bytes: getBytesFromHex('03 02 0d 00')
                 },
                 {
@@ -295,6 +296,7 @@ const invalidDownlinkMessages: TMessageExamples = {
                     headerSize: 2,
                     parameters: {
                         id: 10,
+                        name: 'BATTERY_DEPASSIVATION_INFO',
                         data: {
                             loadTime: 100,
                             internalResistance: 3222,

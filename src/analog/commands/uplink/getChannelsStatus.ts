@@ -16,6 +16,7 @@
  * // output:
  * [{
  *     type: 2,
+ *     typeName: 'POWER_CHANNEL',
  *     channel: 0,
  *     status: {
  *         state: true
@@ -30,7 +31,8 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
-import * as channelsTypes from '../../constants/channelsTypes.js';
+import * as channelTypes from '../../constants/channelTypes.js';
+import channelNames from '../../constants/channelNames.js';
 
 
 interface IBinarySensorStatus {
@@ -44,6 +46,7 @@ interface ITemperatureSensorStatus {
 
 interface IChannelStatus {
     type: types.TUint8;
+    typeName?: string,
     channel: types.TUint8,
     status?: IBinarySensorStatus | ITemperatureSensorStatus;
 }
@@ -61,7 +64,8 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: [
             {
-                type: channelsTypes.BINARY_SENSOR,
+                type: channelTypes.BINARY_SENSOR,
+                typeName: 'BINARY_SENSOR',
                 channel: 1,
                 status: {
                     state: true
@@ -78,7 +82,8 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: [
             {
-                type: channelsTypes.TEMPERATURE_SENSOR,
+                type: channelTypes.TEMPERATURE_SENSOR,
+                typeName: 'TEMPERATURE_SENSOR',
                 channel: 3,
                 status: {
                     temperature: 24,
@@ -96,14 +101,16 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: [
             {
-                type: channelsTypes.BINARY_SENSOR,
+                type: channelTypes.BINARY_SENSOR,
+                typeName: 'BINARY_SENSOR',
                 channel: 1,
                 status: {
                     state: true
                 }
             },
             {
-                type: channelsTypes.TEMPERATURE_SENSOR,
+                type: channelTypes.TEMPERATURE_SENSOR,
+                typeName: 'TEMPERATURE_SENSOR',
                 channel: 3,
                 status: {
                     temperature: 20,
@@ -126,8 +133,8 @@ const getBufferSize = ( channelsStatus: Array<IChannelStatus> ) => {
         size += 2;
 
         switch ( channelsStatus[index].type ) {
-            case channelsTypes.BINARY_SENSOR:
-            case channelsTypes.TEMPERATURE_SENSOR:
+            case channelTypes.BINARY_SENSOR:
+            case channelTypes.TEMPERATURE_SENSOR:
                 size += 1;
                 break;
             default:
@@ -168,17 +175,20 @@ export const fromBytes = ( data: types.TBytes ): Array<IChannelStatus> => {
     const result: Array<IChannelStatus> = [];
 
     while ( buffer.bytesLeft !== 0 ) {
+        const type = buffer.getUint8();
+
         const channelStatus: IChannelStatus = {
-            type: buffer.getUint8(),
+            type,
+            typeName: channelNames[type] as string,
             channel: buffer.getChannelValue()
         };
 
         switch (channelStatus.type) {
-            case channelsTypes.BINARY_SENSOR:
+            case channelTypes.BINARY_SENSOR:
                 channelStatus.status = getBinarySensorStatus(buffer);
                 break;
 
-            case channelsTypes.TEMPERATURE_SENSOR:
+            case channelTypes.TEMPERATURE_SENSOR:
                 channelStatus.status = getTemperatureSensorStatus(buffer);
                 break;
 
@@ -209,11 +219,11 @@ export const toBytes = ( channelsStatus: Array<IChannelStatus> ): types.TBytes =
         buffer.setChannelValue(channel);
 
         switch ( type ) {
-            case channelsTypes.BINARY_SENSOR:
+            case channelTypes.BINARY_SENSOR:
                 setBinarySensorStatus(status as IBinarySensorStatus, buffer);
                 break;
 
-            case channelsTypes.TEMPERATURE_SENSOR:
+            case channelTypes.TEMPERATURE_SENSOR:
                 setTemperatureSensorStatus(status as ITemperatureSensorStatus, buffer);
                 break;
 

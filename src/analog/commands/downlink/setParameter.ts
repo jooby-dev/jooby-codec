@@ -26,7 +26,7 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import * as channelsTypes from '../../constants/channelsTypes.js';
+import * as channelTypes from '../../constants/channelTypes.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IParameter, getParameterSize} from '../../utils/CommandBinaryBuffer.js';
 
 
@@ -39,7 +39,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 1, data: {value: 3600}},
+        parameters: {id: 1, name: 'REPORTING_DATA_INTERVAL', data: {value: 3600}},
         bytes: [
             0x03, 0x05,
             0x01, 0x00, 0x00, 0x00, 0x06
@@ -49,7 +49,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 4, data: {value: 12}},
+        parameters: {id: 4, name: 'DAY_CHECKOUT_HOUR', data: {value: 12}},
         bytes: [
             0x03, 0x02,
             0x04, 0x0c
@@ -59,7 +59,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 5, data: {type: 1}},
+        parameters: {id: 5, name: 'REPORTING_DATA_TYPE', data: {type: 1}},
         bytes: [
             0x03, 0x02,
             0x05, 0x01
@@ -69,7 +69,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 8, data: {value: 0}},
+        parameters: {id: 8, name: 'PRIORITY_DATA_DELIVERY_TYPE', data: {value: 0}},
         bytes: [
             0x03, 0x02,
             0x08, 0x00
@@ -79,7 +79,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 9, data: {type: 1}},
+        parameters: {id: 9, name: 'ACTIVATION_METHOD', data: {type: 1}},
         bytes: [
             0x03, 0x02,
             0x09, 0x01
@@ -89,7 +89,15 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 10, data: {loadTime: 100, internalResistance: 3222, lowVoltage: 233}},
+        parameters: {
+            id: 10,
+            name: 'BATTERY_DEPASSIVATION_INFO',
+            data: {
+                loadTime: 100,
+                internalResistance: 3222,
+                lowVoltage: 233
+            }
+        },
         bytes: [
             0x03, 0x07,
             0x0a, 0x00, 0x64, 0x0c, 0x96, 0x00, 0xe9
@@ -99,7 +107,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 11, data: {value: 100}},
+        parameters: {id: 11, name: 'BATTERY_MINIMAL_LOAD_TIME', data: {value: 100}},
         bytes: [
             0x03, 0x05,
             0x0b, 0x00, 0x00, 0x00, 0x64
@@ -109,7 +117,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 13, data: {value: 0}},
+        parameters: {id: 13, name: 'CHANNELS_CONFIG', data: {value: 0}},
         bytes: [
             0x03, 0x02,
             0x0d, 0x00
@@ -119,7 +127,15 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 18, data: {spreadFactor: 5, frequency: 20000}},
+        parameters: {
+            id: 18,
+            name: 'RX2_CONFIG',
+            data: {
+                spreadFactor: 5,
+                spreadFactorName: 'SF7B125',
+                frequency: 20000
+            }
+        },
         bytes: [
             0x03, 0x05,
             0x12, 0x05, 0x00, 0x00, 0xc8
@@ -129,7 +145,15 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 23, data: {meterValue: 204, pulseCoefficient: 100, value: 2023}},
+        parameters: {
+            id: 23,
+            name: 'ABSOLUTE_DATA',
+            data: {
+                meterValue: 204,
+                pulseCoefficient: 100,
+                value: 2023
+            }
+        },
         bytes: [
             0x03, 0x0a,
             0x17, 0x00, 0x00, 0x00, 0xcc, 0x83, 0x00, 0x00, 0x07, 0xe7
@@ -139,7 +163,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 24, data: {state: 1}},
+        parameters: {id: 24, name: 'ABSOLUTE_DATA_ENABLE', data: {state: 1}},
         bytes: [
             0x03, 0x02,
             0x18, 0x01
@@ -149,7 +173,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 25, data: {value: '1b 0a 3e dc 3e 22'}},
+        parameters: {id: 25, name: 'SERIAL_NUMBER', data: {value: '1b 0a 3e dc 3e 22'}},
         bytes: [
             0x03, 0x07,
             0x19, 0x1b, 0x0a, 0x3e, 0xdc, 0x3e, 0x22
@@ -159,7 +183,15 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 26, data: {latitude: 34.43, longitude: 43.43, altitude: 23}},
+        parameters: {
+            id: 26,
+            name: 'GEOLOCATION',
+            data: {
+                latitude: 34.43,
+                longitude: 43.43,
+                altitude: 23
+            }
+        },
         bytes: [
             0x03, 0x0b,
             0x1a, 0x42, 0x09, 0xb8, 0x52, 0x42, 0x2d, 0xb8, 0x52, 0x00, 0x17
@@ -169,7 +201,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 28, data: {value: 3600}},
+        parameters: {id: 28, name: 'EXTRA_FRAME_INTERVAL', data: {value: 3600}},
         bytes: [
             0x03, 0x03,
             0x1c, 0x0e, 0x10
@@ -179,7 +211,16 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 29, data: {channel: 1, meterValue: 402, pulseCoefficient: 1000, value: 2032}},
+        parameters: {
+            id: 29,
+            name: 'ABSOLUTE_DATA_MULTI_CHANNEL',
+            data: {
+                channel: 1,
+                meterValue: 402,
+                pulseCoefficient: 1000,
+                value: 2032
+            }
+        },
         bytes: [
             0x03, 0x0b,
             0x1d, 0x00, 0x00, 0x00, 0x01, 0x92, 0x84, 0x00, 0x00, 0x07, 0xf0
@@ -189,7 +230,7 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 30, data: {channel: 2, state: 1}},
+        parameters: {id: 30, name: 'ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL', data: {channel: 2, state: 1}},
         bytes: [
             0x03, 0x03,
             0x1e, 0x01, 0x01
@@ -199,7 +240,15 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 31, data: {channelList: [1, 4], pullUpTime: 18, scanTime: 23}},
+        parameters: {
+            id: 31,
+            name: 'PULSE_CHANNELS_SCAN_CONFIG',
+            data: {
+                channelList: [1, 4],
+                pullUpTime: 18,
+                scanTime: 23
+            }
+        },
         bytes: [
             0x03, 0x04,
             0x1f, 0x09, 0x12, 0x17
@@ -209,7 +258,16 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 32, data: {channel1: true, channel2: true, channel3: false, channel4: false}},
+        parameters: {
+            id: 32,
+            name: 'PULSE_CHANNELS_SET_CONFIG',
+            data: {
+                channel1: true,
+                channel2: true,
+                channel3: false,
+                channel4: false
+            }
+        },
         bytes: [
             0x03, 0x02,
             0x20, 0x03
@@ -219,7 +277,14 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 33, data: {resistanceStartThreshold: 36000, resistanceStopThreshold: 26000}},
+        parameters: {
+            id: 33,
+            name: 'BATTERY_DEPASSIVATION_CONFIG',
+            data: {
+                resistanceStartThreshold: 36000,
+                resistanceStopThreshold: 26000
+            }
+        },
         bytes: [
             0x03, 0x05,
             0x21, 0x8c, 0xa0, 0x65, 0x90
@@ -231,6 +296,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 52,
+            name: 'NBIOT_BANDS',
             data: {bands: [3, 8, 20]}
         },
         bytes: [
@@ -244,6 +310,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 53,
+            name: 'NBIOT_APN',
             data: {apn: 'nbiot'}
         },
         bytes: [
@@ -257,6 +324,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 54,
+            name: 'NBIOT_LED_INDICATION',
             data: {
                 enableLed: 1,
                 enableNbiotNetworkLed: 1
@@ -273,6 +341,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 55,
+            name: 'NBIOT_SIM',
             data: {
                 enable: 1,
                 pin: 9999
@@ -289,9 +358,10 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 56,
+            name: 'CHANNEL_TYPE',
             data: {
                 channel: 1,
-                type: channelsTypes.POWER_CHANNEL,
+                type: channelTypes.POWER_CHANNEL,
                 parameters: {}
             }
         },
@@ -306,9 +376,10 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 56,
+            name: 'CHANNEL_TYPE',
             data: {
                 channel: 2,
-                type: channelsTypes.BINARY_SENSOR,
+                type: channelTypes.BINARY_SENSOR,
                 parameters: {
                     activeStateTimeMs: 5000
                 }
@@ -325,9 +396,10 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 56,
+            name: 'CHANNEL_TYPE',
             data: {
                 channel: 3,
-                type: channelsTypes.TEMPERATURE_SENSOR,
+                type: channelTypes.TEMPERATURE_SENSOR,
                 parameters: {
                     measurementPeriod: 3600,
                     hysteresisSec: 2,
@@ -347,9 +419,10 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 56,
+            name: 'CHANNEL_TYPE',
             data: {
                 channel: 4,
-                type: channelsTypes.IDLE,
+                type: channelTypes.IDLE,
                 parameters: {}
             }
         },

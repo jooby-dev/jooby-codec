@@ -28,6 +28,7 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import * as events from '../../constants/events.js';
+import eventNames from '../../constants/eventNames.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IEventMtxStatus} from '../../utils/CommandBinaryBuffer.js';
@@ -91,6 +92,7 @@ type TEventData =
  */
 interface INewEventParameters {
     id: number;
+    name: string,
     sequenceNumber: types.TUint8;
     data: TEventData;
 }
@@ -110,6 +112,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 1,
+            name: 'MAGNET_ON',
             sequenceNumber: 2,
             data: {time2000: 734015840}
         },
@@ -124,6 +127,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 5,
+            name: 'BATTERY_ALARM',
             sequenceNumber: 2,
             data: {voltage: 3308}
         },
@@ -138,6 +142,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 11,
+            name: 'ACTIVATE_MTX',
             sequenceNumber: 2,
             data: {time2000: 734015840, deviceId: '00 1a 79 88 17 01 23 56'}
         },
@@ -152,6 +157,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 12,
+            name: 'CONNECT',
             sequenceNumber: 2,
             data: {channel: 1, value: 131}
         },
@@ -166,6 +172,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 13,
+            name: 'DISCONNECT',
             sequenceNumber: 2,
             data: {channel: 1, value: 131}
         },
@@ -180,6 +187,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 17,
+            name: 'MTX',
             sequenceNumber: 2,
             data: {
                 status: {
@@ -232,6 +240,7 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const eventId = buffer.getUint8();
+    const eventName = eventNames[eventId] as string;
     const sequenceNumber = buffer.getUint8();
     let eventData;
 
@@ -282,7 +291,7 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
             throw new Error(`Event ${id} is not supported`);
     }
 
-    return {id: eventId, sequenceNumber, data: eventData};
+    return {id: eventId, name: eventName, sequenceNumber, data: eventData};
 };
 
 

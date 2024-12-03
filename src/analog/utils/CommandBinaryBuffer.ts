@@ -15,8 +15,10 @@ import {extractBits, fillBits} from '../../utils/bitSet.js';
 import {getDateFromTime2000, getTime2000FromDate, TTime2000} from './time.js';
 import * as hardwareTypes from '../constants/hardwareTypes.js';
 import * as deviceParameters from '../constants/deviceParameters.js';
+import deviceParameterNames from '../constants/deviceParameterNames.js';
 import * as archive from '../constants/archive.js';
-import * as channelsTypes from '../constants/channelsTypes.js';
+import * as channelTypes from '../constants/channelTypes.js';
+import spreadFactorNames from '../constants/rx2SpreadFactorNames.js';
 
 
 export interface IBatteryVoltage {
@@ -291,7 +293,9 @@ interface IParameterRx2Config {
      *
      * @see https://www.thethingsnetwork.org/docs/lorawan/spreading-factors/
      */
-    spreadFactor: types.TUint8
+    spreadFactor: types.TUint8,
+
+    spreadFactorName?: string,
 
     /**
      * RX2 data rate frequency.
@@ -679,6 +683,7 @@ interface IRequestEventIdParameter {
 
 export interface IParameter {
     id: types.TUint8,
+    name?: string,
 
     data: TParameterData
 }
@@ -686,6 +691,7 @@ export interface IParameter {
 export interface IRequestParameter {
     /** One of the {@link deviceParameters | parameter types}. */
     id: types.TUint8,
+    name?: string,
 
     data: TRequestParameterData | null
 }
@@ -932,16 +938,16 @@ const getChannelTypeSize = ( {type}: IParameterChannelType ) => {
     let size = 1; // channel index
 
     switch ( type ) {
-        case channelsTypes.IDLE:
-        case channelsTypes.POWER_CHANNEL:
+        case channelTypes.IDLE:
+        case channelTypes.POWER_CHANNEL:
             break;
 
-        case channelsTypes.BINARY_SENSOR:
+        case channelTypes.BINARY_SENSOR:
             size += 2;
 
             break;
 
-        case channelsTypes.TEMPERATURE_SENSOR:
+        case channelTypes.TEMPERATURE_SENSOR:
             size += 5;
 
             break;
@@ -1131,10 +1137,13 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.RX2_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterRx2Config => ({
-            spreadFactor: buffer.getUint8(),
-            frequency: buffer.getUint24() * PARAMETER_RX2_FREQUENCY_COEFFICIENT
-        }),
+        get: ( buffer: ICommandBinaryBuffer ): IParameterRx2Config => {
+            const spreadFactor = buffer.getUint8();
+            const spreadFactorName = spreadFactorNames[spreadFactor] as string;
+            const frequency = buffer.getUint24() * PARAMETER_RX2_FREQUENCY_COEFFICIENT;
+
+            return {spreadFactor, spreadFactorName, frequency};
+        },
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterRx2Config ) => {
             buffer.setUint8(parameter.spreadFactor);
             buffer.setUint24(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT);
@@ -2228,6 +2237,7 @@ CommandBinaryBuffer.prototype.setEventStatus = function ( hardwareType: number, 
 
 CommandBinaryBuffer.prototype.getParameter = function (): IParameter {
     const id = this.getUint8();
+    const name = deviceParameterNames[id] as string;
 
     if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].get ) {
         throw new Error(`parameter ${id} is not supported`);
@@ -2235,7 +2245,7 @@ CommandBinaryBuffer.prototype.getParameter = function (): IParameter {
 
     const data = deviceParameterConvertersMap[id].get(this);
 
-    return {id, data};
+    return {id, name, data};
 };
 
 CommandBinaryBuffer.prototype.setParameter = function ( parameter: IParameter ): void {
@@ -2252,6 +2262,7 @@ CommandBinaryBuffer.prototype.setParameter = function ( parameter: IParameter ):
 
 CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParameter {
     const id = this.getUint8();
+    const name = deviceParameterNames[id] as string;
     let data = null;
 
     switch ( id ) {
@@ -2273,7 +2284,7 @@ CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParamet
             break;
     }
 
-    return {id, data};
+    return {id, name, data};
 };
 
 
@@ -2309,6 +2320,7 @@ CommandBinaryBuffer.prototype.setRequestParameter = function ( parameter: IReque
 
 CommandBinaryBuffer.prototype.getResponseParameter = function (): IParameter {
     const id = this.getUint8();
+    const name = deviceParameterNames[id] as string;
     let data;
 
     if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].get ) {
@@ -2332,7 +2344,7 @@ CommandBinaryBuffer.prototype.getResponseParameter = function (): IParameter {
             data = deviceParameterConvertersMap[id].get(this);
     }
 
-    return {id, data};
+    return {id, name, data};
 };
 
 
@@ -2535,11 +2547,11 @@ CommandBinaryBuffer.prototype.getChannelType = function (): IParameterChannelTyp
     let parameters = {};
 
     switch ( type ) {
-        case channelsTypes.BINARY_SENSOR:
+        case channelTypes.BINARY_SENSOR:
             parameters = this.getBinarySensor();
             break;
 
-        case channelsTypes.TEMPERATURE_SENSOR:
+        case channelTypes.TEMPERATURE_SENSOR:
             parameters = this.getTemperatureSensor();
             break;
 
@@ -2560,11 +2572,11 @@ CommandBinaryBuffer.prototype.setChannelType = function ( {type, channel, parame
     this.setUint8(type);
 
     switch ( type ) {
-        case channelsTypes.BINARY_SENSOR:
+        case channelTypes.BINARY_SENSOR:
             this.setBinarySensor(parameters as IParameterBinarySensor);
             break;
 
-        case channelsTypes.TEMPERATURE_SENSOR:
+        case channelTypes.TEMPERATURE_SENSOR:
             this.setTemperatureSensor(parameters as IParameterTemperatureSensor);
             break;
 

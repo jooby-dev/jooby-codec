@@ -19,6 +19,7 @@ const command2 = {
     name: 'setParameter',
     parameters: {
         id: 10,
+        name: 'BATTERY_DEPASSIVATION_INFO',
         data: {
             loadTime: 100,
             internalResistance: 3222,

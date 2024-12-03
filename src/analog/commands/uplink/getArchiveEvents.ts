@@ -36,6 +36,7 @@ import * as command from '../../utils/command.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as events from '../../constants/events.js';
+import eventNames from '../../constants/eventNames.js';
 
 
 interface IArchiveEvent {
@@ -43,6 +44,7 @@ interface IArchiveEvent {
 
     /** One of the {@link events | device events}. */
     id: types.TUint8;
+    name?: string,
 
     /** It's a unique number for each event. */
     sequenceNumber: types.TUint8;
@@ -69,6 +71,7 @@ export const examples: command.TCommandExamples = {
                 {
                     time2000: 734015840,
                     id: 1,
+                    name: 'MAGNET_ON',
                     sequenceNumber: 1
                 }
             ]
@@ -87,21 +90,25 @@ export const examples: command.TCommandExamples = {
                 {
                     time2000: 734015840,
                     id: 2,
+                    name: 'MAGNET_OFF',
                     sequenceNumber: 1
                 },
                 {
                     time2000: 734025840,
                     id: 1,
+                    name: 'MAGNET_ON',
                     sequenceNumber: 2
                 },
                 {
                     time2000: 734035840,
                     id: 3,
+                    name: 'ACTIVATE',
                     sequenceNumber: 3
                 },
                 {
                     time2000: 734045840,
                     id: 4,
+                    name: 'DEACTIVATE',
                     sequenceNumber: 4
                 }
             ]
@@ -116,11 +123,18 @@ export const examples: command.TCommandExamples = {
 };
 
 
-const getEvent = ( buffer: ICommandBinaryBuffer ): IArchiveEvent => ({
-    time2000: buffer.getTime(),
-    id: buffer.getUint8(),
-    sequenceNumber: buffer.getUint8()
-});
+const getEvent = ( buffer: ICommandBinaryBuffer ): IArchiveEvent => {
+    const time2000 = buffer.getTime();
+    const eventId = buffer.getUint8();
+    const sequenceNumber = buffer.getUint8();
+
+    return {
+        time2000,
+        id: eventId,
+        name: eventNames[eventId] as string,
+        sequenceNumber
+    };
+};
 
 const setEvent = ( buffer: ICommandBinaryBuffer, event: IArchiveEvent ): void => {
     buffer.setTime(event.time2000);

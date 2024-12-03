@@ -19,6 +19,7 @@
  * // output:
  * {
  *      event: 1,
+ *      name: 'MAGNETIC_ON',
  *      index: 1,
  *      date: {
  *          year: 233,
@@ -38,6 +39,7 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import * as accessLevels from '../../constants/accessLevels.js';
+import criticalEventNames from '../../constants/criticalEventNames.js';
 
 
 interface IGetCriticalEventResponseParameters {
@@ -47,6 +49,8 @@ interface IGetCriticalEventResponseParameters {
      * ({@link criticalEvents | critical event identifiers})
      */
     event: types.TUint8,
+
+    name?: string,
 
     index: types.TUint8,
 
@@ -79,6 +83,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         parameters: {
             event: 1,
+            name: 'MAGNETIC_ON',
             index: 1,
             date: {
                 year: 23,
@@ -123,6 +128,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventResponseParam
 
     return {
         event,
+        name: criticalEventNames[event] as string,
         index,
         date: {
             year,

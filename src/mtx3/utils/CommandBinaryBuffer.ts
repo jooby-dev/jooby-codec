@@ -8,6 +8,7 @@
 import * as types from '../types.js';
 import MtxBinaryBuffer, {
     ICommandBinaryBuffer as IMtxCommandBinaryBuffer,
+    IEvent,
     TARIFF_NUMBER,
     DATE_SIZE,
     ENERGY_SIZE
@@ -15,6 +16,8 @@ import MtxBinaryBuffer, {
 import * as bitSet from '../../utils/bitSet.js';
 import * as baudRates from '../constants/baudRates.js';
 import {TEnergyType} from '../types.js';
+import * as events from '../constants/events.js';
+import eventNames from '../constants/eventNames.js';
 
 
 export interface IDisplaySet1OperatorParameter {
@@ -1929,6 +1932,9 @@ export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     getMonthMaxDemandResponse (): IGetMonthMaxDemandResponseParameters,
     setMonthMaxDemandResponse ( event: IGetMonthMaxDemandResponseParameters ),
 
+    getEvent (): IEvent,
+    setEvent ( event: IEvent ),
+
     getDemand (): IGetDemandParameters,
     setDemand ( parameters: IGetDemandParameters ),
 
@@ -2258,6 +2264,65 @@ CommandBinaryBuffer.prototype.setMonthMaxDemandResponse = function ( parameters:
 
     // 4 tariffs
     parameters.maxDemands.forEach(value => this.setMaxDemand(value));
+};
+
+CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
+    const data: IEvent = {
+        hours: this.getUint8(),
+        minutes: this.getUint8(),
+        seconds: this.getUint8(),
+        event: this.getUint8()
+    };
+    const {event} = data;
+    const {bytesLeft} = this;
+
+    data.eventName = eventNames[event] as string;
+
+    switch ( event ) {
+        case events.POWER_OVER_RELAY_OFF:
+            if ( bytesLeft < 4 ) {
+                return data;
+            }
+
+            data.power = [this.getUint8(), this.getUint8(), this.getUint8(), this.getUint8()];
+            break;
+
+        case events.CMD_CHANGE_TIME:
+        case events.TIME_CORRECT:
+            if ( bytesLeft < 8 ) {
+                return data;
+            }
+
+            data.newDate = this.getDateTime();
+            break;
+
+        default:
+            break;
+    }
+
+    return data;
+};
+
+CommandBinaryBuffer.prototype.setEvent = function ( event: IEvent ) {
+    this.setUint8(event.hours);
+    this.setUint8(event.minutes);
+    this.setUint8(event.seconds);
+    this.setUint8(event.event);
+
+    switch ( event.event ) {
+        case events.POWER_OVER_RELAY_OFF:
+            for ( const item of event.power ) {
+                this.setUint8(item);
+            }
+            break;
+
+        case events.CMD_CHANGE_TIME:
+        case events.TIME_CORRECT:
+            this.setDateTime(event.newDate);
+            break;
+
+        default: break;
+    }
 };
 
 CommandBinaryBuffer.prototype.getDemand = function (): IGetDemandParameters {

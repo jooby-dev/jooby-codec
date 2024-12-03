@@ -15,7 +15,9 @@ import getBytesFromHex from '../../utils/getBytesFromHex.js';
 import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
 import * as screenIds from '../constants/screenIds.js';
 import * as frameTypes from '../constants/frameTypes.js';
+import frameNames from '../constants/frameNames.js';
 import * as events from '../constants/events.js';
+import eventNames from '../constants/eventNames.js';
 //import * as energyTypes from '../constants/energyTypes.js';
 
 import * as demandTypes from '../constants/demandTypes.js';
@@ -28,6 +30,8 @@ export interface IFrameHeader {
      * Frame type from the list of {@link frameTypes | available types}.
      */
     type: number,
+
+    typeName?: string,
 
     /**
      * Source device address.
@@ -801,6 +805,7 @@ export interface IEvent {
     minutes: types.TUint8,
     seconds: types.TUint8,
     event: types.TUint8,
+    eventName?: string,
     power?: Array<types.TUint8>,
     newDate?: IDateTime
 }
@@ -1406,10 +1411,16 @@ CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => (
 
 
 CommandBinaryBuffer.prototype.getFrameHeader = function (): IFrameHeader {
+    const type = this.getUint8();
+    const typeName = frameNames[type] as string;
+    const destination = this.getUint16();
+    const source = this.getUint16();
+
     return {
-        type: this.getUint8(),
-        destination: this.getUint16(),
-        source: this.getUint16()
+        type,
+        typeName,
+        destination,
+        source
     };
 };
 
@@ -1810,6 +1821,8 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
     };
     const {event} = data;
     const {bytesLeft} = this;
+
+    data.eventName = eventNames[event] as string;
 
     switch ( event ) {
         case events.POWER_OVER_RELAY_OFF:

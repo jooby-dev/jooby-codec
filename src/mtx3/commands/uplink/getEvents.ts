@@ -42,7 +42,7 @@
  *             hours: 1,
  *             minutes: 12,
  *             seconds: 33,
- *             event: 121,
+ *             event: 142,
  *             eventName: 'TIME_CORRECT',
  *             newDate: {
  *                 isSummerTime: 0,
@@ -59,31 +59,23 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetEvents.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetEvents.md#response)
  */
 
-import * as types from '../../types.js';
-import * as command from '../../utils/command.js';
-import * as accessLevels from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IEvent} from '../../utils/CommandBinaryBuffer.js';
+import * as types from '../../../mtx1/types.js';
+import * as command from '../../../mtx1/utils/command.js';
+import * as mtx1 from '../../../mtx1/commands/uplink/getEvents.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 
 
-export interface IGetCriticalEventResponseParameters {
-    date: types.IDate,
-    eventsNumber: types.TUint8,
-    events: Array<IEvent>
-}
-
-// date + event number byte
-const BODY_WITHOUT_EVENTS_SIZE = 3 + 1;
-const EVENT_SIZE = 4;
-
-export const id: types.TCommandId = 0x33;
-export const name: types.TCommandName = 'getEvents';
-export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
-export const maxSize = BODY_WITHOUT_EVENTS_SIZE + 255 * EVENT_SIZE;
-export const isLoraOnly = false;
+export const {
+    id,
+    name,
+    headerSize,
+    accessLevel,
+    maxSize,
+    isLoraOnly
+} = mtx1;
 
 export const examples: command.TCommandExamples = {
     'simple response': {
@@ -112,7 +104,7 @@ export const examples: command.TCommandExamples = {
                     hours: 1,
                     minutes: 12,
                     seconds: 33,
-                    event: 121,
+                    event: 142,
                     eventName: 'TIME_CORRECT',
                     newDate: {
                         isSummerTime: false,
@@ -130,7 +122,7 @@ export const examples: command.TCommandExamples = {
         bytes: [
             0x33, 0x18,
             0x17, 0x03, 0x0c, 0x02, 0x01, 0x0c, 0x21, 0x9d, 0x16, 0x19, 0x0c, 0x8f,
-            0x01, 0x0c, 0x21, 0x79, 0x00, 0x0a, 0x16, 0x03, 0x04, 0x0c, 0x07, 0x18
+            0x01, 0x0c, 0x21, 0x8e, 0x00, 0x0a, 0x16, 0x03, 0x04, 0x0c, 0x07, 0x18
         ]
     }
 };
@@ -142,7 +134,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventResponseParameters => {
+export const fromBytes = ( bytes: types.TBytes ): mtx1.IGetCriticalEventResponseParameters => {
     if ( bytes.length > maxSize ) {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
@@ -166,7 +158,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventResponseParam
  * @param parameters - command parameters
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetCriticalEventResponseParameters ): types.TBytes => {
+export const toBytes = ( parameters: mtx1.IGetCriticalEventResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
 
     buffer.setDate(parameters.date);
