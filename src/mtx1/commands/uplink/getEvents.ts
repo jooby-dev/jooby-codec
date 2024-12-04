@@ -136,28 +136,51 @@ export const examples: command.TCommandExamples = {
 };
 
 
+export const getFromBytes = BinaryBufferConstructor => (
+    ( bytes: types.TBytes ): IGetCriticalEventResponseParameters => {
+        if ( bytes.length > maxSize ) {
+            throw new Error(`Wrong buffer size: ${bytes.length}.`);
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const buffer: ICommandBinaryBuffer = new BinaryBufferConstructor(bytes);
+        const date = buffer.getDate();
+        const eventsNumber = buffer.getUint8();
+        const events = [];
+
+        while ( !buffer.isEmpty ) {
+            events.push(buffer.getEvent());
+        }
+
+        return {date, eventsNumber, events};
+    }
+);
+
+
+export const getToBytes = BinaryBufferConstructor => (
+    ( parameters: IGetCriticalEventResponseParameters ): types.TBytes => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        const buffer: ICommandBinaryBuffer = new BinaryBufferConstructor(maxSize);
+
+        buffer.setDate(parameters.date);
+        buffer.setUint8(parameters.eventsNumber);
+
+        for ( const event of parameters.events ) {
+            buffer.setEvent(event);
+        }
+
+        return command.toBytes(id, buffer.getBytesToOffset());
+    }
+);
+
+
 /**
  * Decode command parameters.
  *
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventResponseParameters => {
-    if ( bytes.length > maxSize ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
-
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
-    const eventsNumber = buffer.getUint8();
-    const events = [];
-
-    while ( !buffer.isEmpty ) {
-        events.push(buffer.getEvent());
-    }
-
-    return {date, eventsNumber, events};
-};
+export const fromBytes = getFromBytes(CommandBinaryBuffer);
 
 
 /**
@@ -166,15 +189,4 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventResponseParam
  * @param parameters - command parameters
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetCriticalEventResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
-
-    buffer.setDate(parameters.date);
-    buffer.setUint8(parameters.eventsNumber);
-
-    for ( const event of parameters.events ) {
-        buffer.setEvent(event);
-    }
-
-    return command.toBytes(id, buffer.getBytesToOffset());
-};
+export const toBytes = getToBytes(CommandBinaryBuffer);

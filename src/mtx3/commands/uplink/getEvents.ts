@@ -62,10 +62,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetEvents.md#response)
  */
 
-import * as types from '../../../mtx1/types.js';
 import * as command from '../../../mtx1/utils/command.js';
 import * as mtx1 from '../../../mtx1/commands/uplink/getEvents.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer from '../../utils/CommandBinaryBuffer.js';
 
 
 export const {
@@ -76,6 +75,7 @@ export const {
     maxSize,
     isLoraOnly
 } = mtx1;
+
 
 export const examples: command.TCommandExamples = {
     'simple response': {
@@ -134,22 +134,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( bytes: types.TBytes ): mtx1.IGetCriticalEventResponseParameters => {
-    if ( bytes.length > maxSize ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
-
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
-    const eventsNumber = buffer.getUint8();
-    const events = [];
-
-    while ( !buffer.isEmpty ) {
-        events.push(buffer.getEvent());
-    }
-
-    return {date, eventsNumber, events};
-};
+export const fromBytes = mtx1.getFromBytes(CommandBinaryBuffer);
 
 
 /**
@@ -158,15 +143,4 @@ export const fromBytes = ( bytes: types.TBytes ): mtx1.IGetCriticalEventResponse
  * @param parameters - command parameters
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: mtx1.IGetCriticalEventResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
-
-    buffer.setDate(parameters.date);
-    buffer.setUint8(parameters.eventsNumber);
-
-    for ( const event of parameters.events ) {
-        buffer.setEvent(event);
-    }
-
-    return command.toBytes(id, buffer.getBytesToOffset());
-};
+export const toBytes = mtx1.getToBytes(CommandBinaryBuffer);
