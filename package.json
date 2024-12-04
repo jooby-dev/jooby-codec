@@ -1,6 +1,6 @@
 {
     "name": "jooby-codec",
-    "version": "5.2.1",
+    "version": "5.3.0",
     "description": "Jooby message encoders/decoders",
     "type": "module",
     "main": "./dist/index.js",
@@ -68,7 +68,7 @@
         "lint": "npm run lint:tsc && npm run lint:eslint -- --max-warnings=0",
         "lint-cached": "npm run lint:tsc && npm run lint:eslint -- --cache --max-warnings=0",
         "lint:fix": "npm run lint:eslint -- --fix --max-warnings=0",
-        "test": "npm run lint && jest",
+        "test": "npm run lint && npm run build:docs && jest",
         "test:watch": "jest --watchAll",
         "preinstall": "git config core.hooksPath .githooks",
         "publish": "clean-publish",
