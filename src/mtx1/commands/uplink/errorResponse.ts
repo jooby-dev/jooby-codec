@@ -30,9 +30,10 @@ import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as resultCodes from '../../constants/resultCodes.js';
 import resultNames from '../../constants/resultNames.js';
+import {nameMap} from '../../message/downlink.js';
 
 
-interface IErrorResponseParameters {
+export interface IErrorResponseParameters {
     /**
      * Downlink command id.
      *
@@ -40,6 +41,8 @@ interface IErrorResponseParameters {
      * 7 (GetDateTime)
      */
     commandId: types.TUint8,
+
+    commandName?: string,
 
     /**
      * Error code from the list of {@link resultCodes | available codes}.
@@ -66,6 +69,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {
             commandId: 0x18,
+            commandName: 'turnRelayOn',
             errorCode: resultCodes.ACCESS_DENIED,
             errorName: 'ACCESS_DENIED'
         },
@@ -77,25 +81,31 @@ export const examples: command.TCommandExamples = {
 };
 
 
+export const getFromBytes = commandNames => (
+    (bytes: types.TBytes): IErrorResponseParameters => {
+        const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+        const commandId = buffer.getUint8();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const commandName = commandNames[commandId];
+        const errorCode = buffer.getUint8();
+        const errorName = resultNames[errorCode] as string;
+
+        return {
+            commandId,
+            commandName,
+            errorCode,
+            errorName
+        };
+    }
+);
+
 /**
  * Decode command parameters.
  *
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IErrorResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const commandId = buffer.getUint8();
-    const errorCode = buffer.getUint8();
-    const errorName = resultNames[errorCode] as string;
-
-    return {
-        commandId,
-        errorCode,
-        errorName
-    };
-};
-
+export const fromBytes = getFromBytes(nameMap);
 
 /**
  * Encode command parameters.
