@@ -24,12 +24,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/ErrorResponse.md)
  */
 
-import * as types from '../../../mtx1/types.js';
 import * as command from '../../../mtx1/utils/command.js';
 import * as mtx1 from '../../../mtx1/commands/uplink/errorResponse.js';
 import * as resultCodes from '../../../mtx1/constants/resultCodes.js';
-import resultNames from '../../../mtx1/constants/resultNames.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import {nameMap} from '../../message/downlink.js';
 
 
@@ -71,17 +68,4 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): mtx1.IErrorResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const commandId = buffer.getUint8();
-    const commandName = nameMap[commandId];
-    const errorCode = buffer.getUint8();
-    const errorName = resultNames[errorCode] as string;
-
-    return {
-        commandId,
-        commandName,
-        errorCode,
-        errorName
-    };
-};
+export const fromBytes = mtx1.getFromBytes(nameMap);

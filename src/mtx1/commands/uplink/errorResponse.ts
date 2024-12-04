@@ -81,26 +81,31 @@ export const examples: command.TCommandExamples = {
 };
 
 
+export const getFromBytes = commandNames => (
+    ( bytes: types.TBytes ): IErrorResponseParameters => {
+        const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+        const commandId = buffer.getUint8();
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        const commandName = commandNames[commandId];
+        const errorCode = buffer.getUint8();
+        const errorName = resultNames[errorCode] as string;
+
+        return {
+            commandId,
+            commandName,
+            errorCode,
+            errorName
+        };
+    }
+);
+
 /**
  * Decode command parameters.
  *
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IErrorResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const commandId = buffer.getUint8();
-    const commandName = nameMap[commandId];
-    const errorCode = buffer.getUint8();
-    const errorName = resultNames[errorCode] as string;
-
-    return {
-        commandId,
-        commandName,
-        errorCode,
-        errorName
-    };
-};
+export const fromBytes = getFromBytes(nameMap);
 
 
 /**
