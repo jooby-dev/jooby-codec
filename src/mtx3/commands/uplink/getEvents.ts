@@ -76,7 +76,6 @@ export const {
     isLoraOnly
 } = mtx1;
 
-
 export const examples: command.TCommandExamples = {
     'simple response': {
         id,
@@ -127,7 +126,6 @@ export const examples: command.TCommandExamples = {
     }
 };
 
-
 /**
  * Decode command parameters.
  *
@@ -135,7 +133,6 @@ export const examples: command.TCommandExamples = {
  * @returns decoded parameters
  */
 export const fromBytes = mtx1.getFromBytes(CommandBinaryBuffer);
-
 
 /**
  * Encode command parameters.

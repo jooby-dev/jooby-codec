@@ -107,7 +107,6 @@ export const getFromBytes = commandNames => (
  */
 export const fromBytes = getFromBytes(nameMap);
 
-
 /**
  * Encode command parameters.
  *

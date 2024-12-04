@@ -40,9 +40,8 @@ export const {
     toBytes
 } = mtx1;
 
-
 export const examples: command.TCommandExamples = {
-    'ACCESS_DENIED on setDisplayParam command': {
+    'NO_DATA_FOR_DATE on getHalfHourDemandVariExport command': {
         id,
         name,
         headerSize,
@@ -60,7 +59,6 @@ export const examples: command.TCommandExamples = {
         ]
     }
 };
-
 
 /**
  * Decode command parameters.
