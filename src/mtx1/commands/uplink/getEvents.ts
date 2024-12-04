@@ -136,7 +136,7 @@ export const examples: command.TCommandExamples = {
 };
 
 export const getFromBytes = BinaryBufferConstructor => (
-    ( bytes: types.TBytes ): IGetCriticalEventResponseParameters => {
+    (bytes: types.TBytes): IGetCriticalEventResponseParameters => {
         if ( bytes.length > maxSize ) {
             throw new Error(`Wrong buffer size: ${bytes.length}.`);
         }
@@ -156,7 +156,7 @@ export const getFromBytes = BinaryBufferConstructor => (
 );
 
 export const getToBytes = BinaryBufferConstructor => (
-    ( parameters: IGetCriticalEventResponseParameters ): types.TBytes => {
+    (parameters: IGetCriticalEventResponseParameters): types.TBytes => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         const buffer: ICommandBinaryBuffer = new BinaryBufferConstructor(maxSize);
 

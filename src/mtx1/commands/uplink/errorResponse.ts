@@ -82,7 +82,7 @@ export const examples: command.TCommandExamples = {
 
 
 export const getFromBytes = commandNames => (
-    ( bytes: types.TBytes ): IErrorResponseParameters => {
+    (bytes: types.TBytes): IErrorResponseParameters => {
         const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
         const commandId = buffer.getUint8();
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
