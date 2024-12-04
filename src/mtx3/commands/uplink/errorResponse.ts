@@ -27,7 +27,6 @@
 import * as command from '../../../mtx1/utils/command.js';
 import * as mtx1 from '../../../mtx1/commands/uplink/errorResponse.js';
 import * as resultCodes from '../../../mtx1/constants/resultCodes.js';
-import {nameMap} from '../../message/downlink.js';
 
 
 export const {
@@ -49,7 +48,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {
             commandId: 0x54,
-            commandName: 'getHalfHourDemandVariExport',
+            //commandName: 'getHalfHourDemandVariExport',
             errorCode: resultCodes.NO_DATA_FOR_DATE,
             errorName: 'NO_DATA_FOR_DATE'
         },
@@ -66,4 +65,4 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = mtx1.getFromBytes(nameMap);
+export const fromBytes = mtx1.getFromBytes();
