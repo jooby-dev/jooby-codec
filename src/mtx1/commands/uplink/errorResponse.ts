@@ -89,6 +89,10 @@ export const getFromBytes = ( commandNamesParameter: Record<number, string> ) =>
         const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
         const errorCommandId = buffer.getUint8();
         const errorCode = buffer.getUint8();
+<<<<<<< HEAD
+=======
+        const errorName = resultNames[errorCode];
+>>>>>>> 3f6d55fc (use explicit Record<number, string> type in const/*names* files)
 
         return {
             commandId: errorCommandId,
