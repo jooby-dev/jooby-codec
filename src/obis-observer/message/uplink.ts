@@ -40,11 +40,12 @@
 
 import * as commands from '../commands/uplink/index.js';
 import * as wrappers from './wrappers.js';
+import uplinkNames from '../constants/uplinkNames.js';
 
 
 export const toBytesMap = {};
 export const fromBytesMap = {};
-export const nameMap = {};
+export const nameMap = uplinkNames;
 
 export const fromBytes = wrappers.getFromBytes(fromBytesMap, nameMap);
 export const toBytes = wrappers.getToBytes(toBytesMap);
@@ -136,45 +137,3 @@ fromBytesMap[commands.setupObis.id] = commands.setupObis.fromBytes;
 fromBytesMap[commands.updateImageVerify.id] = commands.updateImageVerify.fromBytes;
 fromBytesMap[commands.updateImageWrite.id] = commands.updateImageWrite.fromBytes;
 fromBytesMap[commands.updateRun.id] = commands.updateRun.fromBytes;
-
-nameMap[commands.errorResponse.id] = commands.errorResponse.name;
-nameMap[commands.getArchiveState.id] = commands.getArchiveState.name;
-nameMap[commands.getLorawanInfo.id] = commands.getLorawanInfo.name;
-nameMap[commands.getLorawanState.id] = commands.getLorawanState.name;
-nameMap[commands.getMeterDate.id] = commands.getMeterDate.name;
-nameMap[commands.getMeterId.id] = commands.getMeterId.name;
-nameMap[commands.getMeterIdList.id] = commands.getMeterIdList.name;
-nameMap[commands.getMeterInfo.id] = commands.getMeterInfo.name;
-nameMap[commands.getMeterProfile.id] = commands.getMeterProfile.name;
-nameMap[commands.getMeterProfileIdList.id] = commands.getMeterProfileIdList.name;
-nameMap[commands.getMeterReadoutState.id] = commands.getMeterReadoutState.name;
-nameMap[commands.getObisContent.id] = commands.getObisContent.name;
-nameMap[commands.getObisContentById.id] = commands.getObisContentById.name;
-nameMap[commands.getObisContentByIdString.id] = commands.getObisContentByIdString.name;
-nameMap[commands.getObisIdList.id] = commands.getObisIdList.name;
-nameMap[commands.getObisInfo.id] = commands.getObisInfo.name;
-nameMap[commands.getObserverCapabilities.id] = commands.getObserverCapabilities.name;
-nameMap[commands.getObserverInfo.id] = commands.getObserverInfo.name;
-nameMap[commands.getObserverSingleMode.id] = commands.getObserverSingleMode.name;
-nameMap[commands.getObserverUptime.id] = commands.getObserverUptime.name;
-nameMap[commands.getSerialPort.id] = commands.getSerialPort.name;
-nameMap[commands.getSettingsMemory.id] = commands.getSettingsMemory.name;
-nameMap[commands.observationReport.id] = commands.observationReport.name;
-nameMap[commands.observationReportString.id] = commands.observationReportString.name;
-nameMap[commands.readArchive.id] = commands.readArchive.name;
-nameMap[commands.readMeterArchive.id] = commands.readMeterArchive.name;
-nameMap[commands.readMeterArchiveWithDate.id] = commands.readMeterArchiveWithDate.name;
-nameMap[commands.reboot.id] = commands.reboot.name;
-nameMap[commands.removeMeter.id] = commands.removeMeter.name;
-nameMap[commands.removeMeterProfile.id] = commands.removeMeterProfile.name;
-nameMap[commands.removeObis.id] = commands.removeObis.name;
-nameMap[commands.resetSettings.id] = commands.resetSettings.name;
-nameMap[commands.setLorawanActivationMethod.id] = commands.setLorawanActivationMethod.name;
-nameMap[commands.setObserverSingleMode.id] = commands.setObserverSingleMode.name;
-nameMap[commands.setSerialPort.id] = commands.setSerialPort.name;
-nameMap[commands.setupMeter.id] = commands.setupMeter.name;
-nameMap[commands.setupMeterProfile.id] = commands.setupMeterProfile.name;
-nameMap[commands.setupObis.id] = commands.setupObis.name;
-nameMap[commands.updateImageVerify.id] = commands.updateImageVerify.name;
-nameMap[commands.updateImageWrite.id] = commands.updateImageWrite.name;
-nameMap[commands.updateRun.id] = commands.updateRun.name;

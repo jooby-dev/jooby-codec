@@ -124,11 +124,12 @@
 import * as mtx1Commands from '../../mtx1/commands/downlink/index.js';
 import * as wrappers from '../../mtx1/message/wrappers.js';
 import * as commands from '../commands/downlink/index.js';
+import downlinkNames from '../constants/downlinkNames.js';
 
 
 export const toBytesMap = {};
 export const fromBytesMap = {};
-export const nameMap = {};
+export const nameMap = downlinkNames;
 
 export const fromBytes = wrappers.getFromBytes(fromBytesMap, nameMap);
 export const toBytes = wrappers.getToBytes(toBytesMap);
@@ -283,78 +284,3 @@ fromBytesMap[commands.setOperatorParameters.id] = commands.setOperatorParameters
 fromBytesMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.fromBytes;
 fromBytesMap[commands.setOperatorParametersExtended2.id] = commands.setOperatorParametersExtended2.fromBytes;
 fromBytesMap[commands.setOperatorParametersExtended4.id] = commands.setOperatorParametersExtended4.fromBytes;
-
-
-// commands identical to MTX1
-nameMap[mtx1Commands.activateRatePlan.id] = mtx1Commands.activateRatePlan.name;
-nameMap[mtx1Commands.getBuildVersion.id] = mtx1Commands.getBuildVersion.name;
-nameMap[mtx1Commands.getCorrectTime.id] = mtx1Commands.getCorrectTime.name;
-nameMap[mtx1Commands.getCurrentStatusMeter.id] = mtx1Commands.getCurrentStatusMeter.name;
-nameMap[mtx1Commands.getCurrentValues.id] = mtx1Commands.getCurrentValues.name;
-nameMap[mtx1Commands.getDateTime.id] = mtx1Commands.getDateTime.name;
-nameMap[mtx1Commands.getDayMaxDemand.id] = mtx1Commands.getDayMaxDemand.name;
-nameMap[mtx1Commands.getDayMaxDemandExport.id] = mtx1Commands.getDayMaxDemandExport.name;
-nameMap[mtx1Commands.getDayProfile.id] = mtx1Commands.getDayProfile.name;
-nameMap[mtx1Commands.getDeviceId.id] = mtx1Commands.getDeviceId.name;
-nameMap[mtx1Commands.getDeviceType.id] = mtx1Commands.getDeviceType.name;
-nameMap[mtx1Commands.getEvents.id] = mtx1Commands.getEvents.name;
-nameMap[mtx1Commands.getEventsCounters.id] = mtx1Commands.getEventsCounters.name;
-nameMap[mtx1Commands.getEventStatus.id] = mtx1Commands.getEventStatus.name;
-nameMap[mtx1Commands.getExtendedCurrentValues.id] = mtx1Commands.getExtendedCurrentValues.name;
-nameMap[mtx1Commands.getHalfHourDemand.id] = mtx1Commands.getHalfHourDemand.name;
-nameMap[mtx1Commands.getHalfHourDemandExport.id] = mtx1Commands.getHalfHourDemandExport.name;
-nameMap[mtx1Commands.getHalfhoursEnergies.id] = mtx1Commands.getHalfhoursEnergies.name;
-nameMap[mtx1Commands.getMagneticFieldThreshold.id] = mtx1Commands.getMagneticFieldThreshold.name;
-nameMap[mtx1Commands.getMeterInfo.id] = mtx1Commands.getMeterInfo.name;
-nameMap[mtx1Commands.getMonthDemand.id] = mtx1Commands.getMonthDemand.name;
-nameMap[mtx1Commands.getMonthDemandExport.id] = mtx1Commands.getMonthDemandExport.name;
-nameMap[mtx1Commands.getMonthMaxDemand.id] = mtx1Commands.getMonthMaxDemand.name;
-nameMap[mtx1Commands.getMonthMaxDemandExport.id] = mtx1Commands.getMonthMaxDemandExport.name;
-nameMap[mtx1Commands.getOperatorParameters.id] = mtx1Commands.getOperatorParameters.name;
-nameMap[mtx1Commands.getOperatorParametersExtended3.id] = mtx1Commands.getOperatorParametersExtended3.name;
-nameMap[mtx1Commands.getRatePlanInfo.id] = mtx1Commands.getRatePlanInfo.name;
-nameMap[mtx1Commands.getSaldo.id] = mtx1Commands.getSaldo.name;
-nameMap[mtx1Commands.getSaldoParameters.id] = mtx1Commands.getSaldoParameters.name;
-nameMap[mtx1Commands.getSeasonProfile.id] = mtx1Commands.getSeasonProfile.name;
-nameMap[mtx1Commands.getSpecialDay.id] = mtx1Commands.getSpecialDay.name;
-nameMap[mtx1Commands.getVersion.id] = mtx1Commands.getVersion.name;
-nameMap[mtx1Commands.prepareRatePlan.id] = mtx1Commands.prepareRatePlan.name;
-nameMap[mtx1Commands.resetPowerMaxDay.id] = mtx1Commands.resetPowerMaxDay.name;
-nameMap[mtx1Commands.resetPowerMaxMonth.id] = mtx1Commands.resetPowerMaxMonth.name;
-nameMap[mtx1Commands.runTariffPlan.id] = mtx1Commands.runTariffPlan.name;
-nameMap[mtx1Commands.setAccessKey.id] = mtx1Commands.setAccessKey.name;
-nameMap[mtx1Commands.setCorrectDateTime.id] = mtx1Commands.setCorrectDateTime.name;
-nameMap[mtx1Commands.setCorrectTime.id] = mtx1Commands.setCorrectTime.name;
-nameMap[mtx1Commands.setDateTime.id] = mtx1Commands.setDateTime.name;
-nameMap[mtx1Commands.setDayProfile.id] = mtx1Commands.setDayProfile.name;
-nameMap[mtx1Commands.setOperatorParametersExtended3.id] = mtx1Commands.setOperatorParametersExtended3.name;
-nameMap[mtx1Commands.setSaldo.id] = mtx1Commands.setSaldo.name;
-nameMap[mtx1Commands.setSaldoParameters.id] = mtx1Commands.setSaldoParameters.name;
-nameMap[mtx1Commands.setSeasonProfile.id] = mtx1Commands.setSeasonProfile.name;
-nameMap[mtx1Commands.setSpecialDay.id] = mtx1Commands.setSpecialDay.name;
-nameMap[mtx1Commands.setSpecialOperation.id] = mtx1Commands.setSpecialOperation.name;
-nameMap[mtx1Commands.turnRelayOff.id] = mtx1Commands.turnRelayOff.name;
-nameMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.name;
-
-// commands different from MTX1
-nameMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.name;
-nameMap[commands.getDayDemand.id] = commands.getDayDemand.name;
-nameMap[commands.getDayDemandExport.id] = commands.getDayDemandExport.name;
-nameMap[commands.getDemand.id] = commands.getDemand.name;
-nameMap[commands.getDisplayParam.id] = commands.getDisplayParam.name;
-nameMap[commands.getEnergy.id] = commands.getEnergy.name;
-nameMap[commands.getEnergyDayPrevious.id] = commands.getEnergyDayPrevious.name;
-nameMap[commands.getEnergyExport.id] = commands.getEnergyExport.name;
-nameMap[commands.getEnergyExportDayPrevious.id] = commands.getEnergyExportDayPrevious.name;
-nameMap[commands.getHalfHourDemandChannel.id] = commands.getHalfHourDemandChannel.name;
-nameMap[commands.getHalfHourDemandVare.id] = commands.getHalfHourDemandVare.name;
-nameMap[commands.getHalfHourDemandVareExport.id] = commands.getHalfHourDemandVareExport.name;
-nameMap[commands.getHalfHourDemandVari.id] = commands.getHalfHourDemandVari.name;
-nameMap[commands.getHalfHourDemandVariExport.id] = commands.getHalfHourDemandVariExport.name;
-nameMap[commands.getOperatorParametersExtended.id] = commands.getOperatorParametersExtended.name;
-nameMap[commands.getOperatorParametersExtended2.id] = commands.getOperatorParametersExtended2.name;
-nameMap[commands.setDisplayParam.id] = commands.setDisplayParam.name;
-nameMap[commands.setOperatorParameters.id] = commands.setOperatorParameters.name;
-nameMap[commands.setOperatorParametersExtended.id] = commands.setOperatorParametersExtended.name;
-nameMap[commands.setOperatorParametersExtended2.id] = commands.setOperatorParametersExtended2.name;
-nameMap[commands.setOperatorParametersExtended4.id] = commands.setOperatorParametersExtended4.name;
