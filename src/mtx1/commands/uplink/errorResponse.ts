@@ -87,6 +87,7 @@ export const examples: command.TCommandExamples = {
 export const getFromBytes = ( commandNamesParameter: Record<number, string> ) => (
     (bytes: types.TBytes): IErrorResponseParameters => {
         const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+<<<<<<< HEAD
         const errorCommandId = buffer.getUint8();
         const errorCode = buffer.getUint8();
 <<<<<<< HEAD
@@ -99,6 +100,16 @@ export const getFromBytes = ( commandNamesParameter: Record<number, string> ) =>
             commandName: commandNamesParameter[errorCommandId],
             errorCode,
             errorName: resultNames[errorCode]
+=======
+        const result = {
+            commandId: buffer.getUint8(),
+            errorCode: buffer.getUint8()
+        };
+
+        return {
+            ...result,
+            errorName: resultNames[result.errorCode]
+>>>>>>> 5257e04e (use const/downlink/uplink id and names in command sources)
         };
     }
 );
