@@ -29,6 +29,8 @@
 import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getObserverUptime as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -39,8 +41,8 @@ interface IGetObserverUptimeResponseParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x06;
-export const name: types.TCommandName = 'getObserverUptime';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

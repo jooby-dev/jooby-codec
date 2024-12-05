@@ -38,6 +38,8 @@ import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as getDemand from '../downlink/getDemand.js';
 import * as demandTypes from '../../constants/demandTypes.js';
 import * as demands from '../../utils/demands.js';
+import {getDemand as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IGetDemandResponseParameters extends IGetDemandParameters {
@@ -55,8 +57,8 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
 }
 
 
-export const id: types.TCommandId = 0x76;
-export const name: types.TCommandName = 'getDemand';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = getDemand.maxSize + 48;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

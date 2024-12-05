@@ -34,6 +34,8 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelHours} from '../../utils/CommandBinaryBuffer.js';
+import {getExAbsArchiveHoursMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetArchiveHoursMcResponseParameters {
@@ -51,8 +53,8 @@ interface IGetArchiveHoursMcResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x0c1f;
-export const name: types.TCommandName = 'getExAbsArchiveHoursMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4

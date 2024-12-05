@@ -30,6 +30,8 @@ import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as resultCodes from '../../constants/resultCodes.js';
 import resultNames from '../../constants/resultNames.js';
+import {errorResponse as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IErrorResponseParameters {
@@ -52,8 +54,8 @@ export interface IErrorResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0xfe;
-export const name: types.TCommandName = 'errorResponse';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 2;
@@ -83,17 +85,14 @@ export const examples: command.TCommandExamples = {
 export const getFromBytes = ( /* commandNames */ ) => (
     (bytes: types.TBytes): IErrorResponseParameters => {
         const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-        const commandId = buffer.getUint8();
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        //const commandName = commandNames[commandId];
-        const errorCode = buffer.getUint8();
-        const errorName = resultNames[errorCode];
+        const result = {
+            commandId: buffer.getUint8(),
+            errorCode: buffer.getUint8()
+        };
 
         return {
-            commandId,
-            //commandName,
-            errorCode,
-            errorName
+            ...result,
+            errorName: resultNames[result.errorCode]
         };
     }
 );

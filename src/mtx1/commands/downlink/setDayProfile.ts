@@ -34,6 +34,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IDayProfile} from '../../utils/CommandBinaryBuffer.js';
+import {setDayProfile as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface ISetDayProfileParameters {
@@ -57,8 +59,8 @@ interface ISetDayProfileParameters {
 const MAX_PERIODS_NUMBER = 8;
 const PERIODS_FINAL_BYTE = 0xff;
 
-export const id: types.TCommandId = 0x10;
-export const name: types.TCommandName = 'setDayProfile';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 2 + MAX_PERIODS_NUMBER;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

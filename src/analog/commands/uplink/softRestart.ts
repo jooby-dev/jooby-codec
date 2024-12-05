@@ -24,10 +24,12 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
+import {softRestart as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x19;
-export const name: types.TCommandName = 'softRestart';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 0;

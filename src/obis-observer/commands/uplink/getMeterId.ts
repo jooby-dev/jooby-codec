@@ -27,6 +27,8 @@
 import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, METER_ID_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getMeterId as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -40,8 +42,8 @@ interface IGetMeterIdResponseParameters extends ICommandParameters {
 const COMMAND_BODY_SIZE = REQUEST_ID_SIZE + METER_ID_SIZE;
 
 
-export const id: types.TCommandId = 0x77;
-export const name: types.TCommandName = 'getMeterId';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

@@ -35,6 +35,8 @@ import CommandBinaryBuffer, {
     ICommandBinaryBuffer, METER_ID_SIZE, DATE_TIME_SIZE, IObisValueFloat
 } from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000} from '../../../analog/utils/time.js';
+import {observationReport as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IObservationReportParameters {
@@ -45,8 +47,8 @@ interface IObservationReportParameters {
 }
 
 
-export const id: types.TCommandId = 0x53;
-export const name: types.TCommandName = 'observationReport';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

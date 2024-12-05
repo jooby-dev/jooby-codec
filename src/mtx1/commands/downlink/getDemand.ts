@@ -35,10 +35,12 @@ import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetDemandParameters} from '../../utils/CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as demandTypes from '../../constants/demandTypes.js';
+import {getDemand as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
-export const id: types.TCommandId = 0x76;
-export const name: types.TCommandName = 'getDemand';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 7;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

@@ -39,10 +39,12 @@ import * as types from '../../types.js';
 import {IDateTime} from '../../utils/dateTime.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {getDateTime as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x07;
-export const name: types.TCommandName = 'getDateTime';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 8;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

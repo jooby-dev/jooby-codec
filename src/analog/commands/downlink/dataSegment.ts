@@ -33,10 +33,12 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IDataSegment} from '../../utils/CommandBinaryBuffer.js';
 import {getStringFromBytes, IBytesConversionFormatOptions} from '../../../utils/bytesConversion.js';
+import {dataSegment as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
-export const id: types.TCommandId = 0x1e;
-export const name: types.TCommandName = 'dataSegment';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_MIN_SIZE = 2;

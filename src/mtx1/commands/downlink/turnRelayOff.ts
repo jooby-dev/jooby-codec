@@ -24,10 +24,12 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {turnRelayOff as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
-export const id: types.TCommandId = 0x19;
-export const name: types.TCommandName = 'turnRelayOff';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

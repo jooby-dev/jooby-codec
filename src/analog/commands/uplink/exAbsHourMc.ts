@@ -36,6 +36,8 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate, getDateFromTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHourAbsoluteValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {exAbsHourMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IUplinkExAbsHourMcResponseParameters {
@@ -52,8 +54,8 @@ export interface IUplinkExAbsHourMcResponseParameters {
     hours: types.TUint8;
 }
 
-export const id: types.TCommandId = 0x0a1f;
-export const name: types.TCommandName = 'exAbsHourMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 // date 2 bytes, hour 1 byte (max hours: 7), channelList 1 byte (max channelList: 4)

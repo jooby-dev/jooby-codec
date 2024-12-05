@@ -26,6 +26,8 @@
 import * as types from '../../../types.js';
 import {ICommandParameters} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getMeterProfile as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 /**
@@ -36,8 +38,8 @@ interface IGetMeterProfileParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x66;
-export const name: types.TCommandName = 'getMeterProfile';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

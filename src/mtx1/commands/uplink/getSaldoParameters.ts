@@ -43,10 +43,12 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, ISaldoParameters} from '../../utils/CommandBinaryBuffer.js';
+import {getSaldoParameters as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x2e;
-export const name: types.TCommandName = 'getSaldoParameters';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 37;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

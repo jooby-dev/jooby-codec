@@ -50,6 +50,8 @@ import CommandBinaryBuffer, {
 } from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {contentTypes} from '../../constants/index.js';
+import {getObisInfo as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -61,8 +63,8 @@ interface IGetObisInfoResponseParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x47;
-export const name: types.TCommandName = 'getObisInfo';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

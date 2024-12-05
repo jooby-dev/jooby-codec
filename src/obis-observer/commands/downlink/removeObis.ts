@@ -26,6 +26,8 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, ICommandParameters} from '../../utils/CommandBinaryBuffer.js';
+import {removeObis as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IRemoveObisParameters extends ICommandParameters {
@@ -34,8 +36,8 @@ interface IRemoveObisParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x44;
-export const name: types.TCommandName = 'removeObis';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

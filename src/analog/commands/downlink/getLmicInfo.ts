@@ -19,10 +19,12 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
+import {getLmicInfo as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
-export const id: types.TCommandId = 0x021f;
-export const name: types.TCommandName = 'getLmicInfo';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 0;

@@ -27,6 +27,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {setCorrectDateTime as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface ISetCorrectDateTimeParameters {
@@ -37,8 +39,8 @@ interface ISetCorrectDateTimeParameters {
 }
 
 
-export const id: types.TCommandId = 0x5c;
-export const name: types.TCommandName = 'setCorrectDateTime';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

@@ -33,6 +33,8 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IBatteryVoltage} from '../../utils/CommandBinaryBuffer.js';
+import {usWaterMeterBatteryStatus as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IUSWaterMeterBatteryStatusParameters {
@@ -52,8 +54,8 @@ export interface IUSWaterMeterBatteryStatusParameters {
 }
 
 
-export const id: types.TCommandId = 0x141f;
-export const name: types.TCommandName = 'usWaterMeterBatteryStatus';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE: number = 7;

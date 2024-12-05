@@ -27,6 +27,8 @@
 import * as types from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {correctTime2000 as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -44,8 +46,8 @@ interface ICorrectTime2000ResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x0c;
-export const name: types.TCommandName = 'correctTime2000';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 1;

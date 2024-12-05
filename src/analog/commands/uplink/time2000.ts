@@ -29,6 +29,8 @@ import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000} from '../../utils/time.js';
 import * as types from '../../../types.js';
+import {time2000 as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -43,8 +45,8 @@ interface ITime2000Parameters {
 }
 
 
-export const id: types.TCommandId = 0x09;
-export const name: types.TCommandName = 'time2000';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 5;

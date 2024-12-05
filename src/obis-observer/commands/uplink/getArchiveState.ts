@@ -30,6 +30,8 @@ import * as types from '../../../types.js';
 import {TTime2000} from '../../../analog/utils/time.js';
 import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, DATE_TIME_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getArchiveState as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -55,8 +57,8 @@ const isValidParameterSet = ( parameters: IGetArchiveStateResponseParameters | I
 };
 
 
-export const id: types.TCommandId = 0x10;
-export const name: types.TCommandName = 'getArchiveState';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

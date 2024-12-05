@@ -27,10 +27,12 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {activateRatePlan as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x13;
-export const name: types.TCommandName = 'activateRatePlan';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

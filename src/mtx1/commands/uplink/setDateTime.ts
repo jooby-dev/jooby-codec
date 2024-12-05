@@ -29,9 +29,12 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import {setDateTime as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
-export const id: types.TCommandId = 0x08;
-export const name: types.TCommandName = 'setDateTime';
+
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

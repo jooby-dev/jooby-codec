@@ -31,6 +31,8 @@ import CommandBinaryBuffer, {
     ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE, METER_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000} from '../../../analog/utils/time.js';
+import {readMeterArchiveWithDate as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 export interface IReadMeterArchiveWithDateParameters extends ICommandParameters {
@@ -41,8 +43,8 @@ export interface IReadMeterArchiveWithDateParameters extends ICommandParameters 
 }
 
 
-export const id: types.TCommandId = 0x13;
-export const name: types.TCommandName = 'readMeterArchiveWithDate';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = REQUEST_ID_SIZE + METER_ID_SIZE + 9;

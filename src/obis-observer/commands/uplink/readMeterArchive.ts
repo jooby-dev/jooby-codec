@@ -41,6 +41,8 @@ import CommandBinaryBuffer, {
 } from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000} from '../../../analog/utils/time.js';
 import roundNumber from '../../../utils/roundNumber.js';
+import {readMeterArchive as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IArchiveRecord {
@@ -54,8 +56,8 @@ interface IReadMeterArchiveResponseParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x12;
-export const name: types.TCommandName = 'readMeterArchive';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

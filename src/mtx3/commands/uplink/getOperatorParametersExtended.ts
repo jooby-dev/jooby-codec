@@ -38,10 +38,12 @@ import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IOperatorParametersExtended, OPERATOR_PARAMETERS_EXTENDED_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import {getOperatorParametersExtended as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x3f;
-export const name: types.TCommandName = 'getOperatorParametersExtended';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = OPERATOR_PARAMETERS_EXTENDED_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

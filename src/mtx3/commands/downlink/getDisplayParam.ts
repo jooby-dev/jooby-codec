@@ -25,6 +25,8 @@ import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {getDisplayParam as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetDisplayParamParameters {
@@ -42,8 +44,8 @@ interface IGetDisplayParamParameters {
 }
 
 
-export const id: types.TCommandId = 0x5e;
-export const name: types.TCommandName = 'getDisplayParam';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 1;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

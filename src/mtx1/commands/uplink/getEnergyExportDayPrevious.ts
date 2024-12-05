@@ -38,6 +38,8 @@ import CommandBinaryBuffer, {
     ICommandBinaryBuffer, IPackedEnergiesWithType, TEnergies,
     TARIFF_NUMBER, PACKED_ENERGY_TYPE_SIZE, getPackedEnergiesWithDateSize
 } from '../../utils/CommandBinaryBuffer.js';
+import {getEnergyExportDayPrevious as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetEnergyExportDayPreviousResponseParameters extends IPackedEnergiesWithType {
@@ -65,8 +67,8 @@ const convertEnergiesToDlms = ( energy: TEnergies ) => {
 const COMMAND_SIZE = 19;
 const MAX_COMMAND_SIZE = COMMAND_SIZE + PACKED_ENERGY_TYPE_SIZE;
 
-export const id: types.TCommandId = 0x50;
-export const name: types.TCommandName = 'getEnergyExportDayPrevious';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

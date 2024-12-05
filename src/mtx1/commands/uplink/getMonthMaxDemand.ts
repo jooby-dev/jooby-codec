@@ -62,6 +62,8 @@ import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IMonthMaxPower, TARIFF_NUMBER} from '../../utils/CommandBinaryBuffer.js';
+import {getMonthMaxDemand as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetMonthDemandResponseParameters {
@@ -71,8 +73,8 @@ interface IGetMonthDemandResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x32;
-export const name: types.TCommandName = 'getMonthMaxDemand';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 2 + TARIFF_NUMBER * 7;

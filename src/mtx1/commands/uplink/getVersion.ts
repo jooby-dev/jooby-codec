@@ -30,6 +30,8 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import {getVersion as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetVersionResponseParameters {
@@ -43,8 +45,8 @@ interface IGetVersionResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x28;
-export const name: types.TCommandName = 'getVersion';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 10;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

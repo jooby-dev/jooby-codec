@@ -30,10 +30,12 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {IResponseParameter, getResponseParameterSize, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {getParameter as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x04;
-export const name: types.TCommandName = 'getParameter';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

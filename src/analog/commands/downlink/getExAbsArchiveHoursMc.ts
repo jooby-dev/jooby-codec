@@ -23,6 +23,8 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate, getDateFromTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannel} from '../../utils/CommandBinaryBuffer.js';
+import {getExAbsArchiveHoursMc as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetExAbsArchiveHoursMcParameters {
@@ -44,8 +46,8 @@ interface IGetExAbsArchiveHoursMcParameters {
 }
 
 
-export const id: types.TCommandId = 0x0c1f;
-export const name: types.TCommandName = 'getExAbsArchiveHoursMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 4;

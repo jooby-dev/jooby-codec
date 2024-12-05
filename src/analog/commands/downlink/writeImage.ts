@@ -26,6 +26,8 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {writeImage as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 export interface IWriteImageParameters {
@@ -43,8 +45,8 @@ export interface IWriteImageParameters {
 }
 
 
-export const id: types.TCommandId = 0x2a1f;
-export const name: types.TCommandName = 'writeImage';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_MIN_SIZE: number = 4;

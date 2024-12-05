@@ -38,6 +38,8 @@
 import * as types from '../../types.js';
 import * as command from '../../../mtx1/utils/command.js';
 import {accessLevels} from '../../constants/index.js';
+import {getCriticalEvent as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetCriticalEventResponseParameters {
@@ -63,8 +65,8 @@ interface IGetCriticalEventResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x56;
-export const name: types.TCommandName = 'getCriticalEvent';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
 export const maxSize = 9;

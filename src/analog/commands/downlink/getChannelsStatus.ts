@@ -22,10 +22,12 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {IChannelsMask, getChannelsMaskFromNumber, setChannelsMaskToNumber} from '../../utils/CommandBinaryBuffer.js';
+import {getChannelsStatus as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
-export const id: types.TCommandId = 0x321f;
-export const name: types.TCommandName = 'getChannelsStatus';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 

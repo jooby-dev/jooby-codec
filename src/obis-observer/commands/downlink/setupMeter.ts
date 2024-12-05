@@ -29,6 +29,8 @@ import * as types from '../../../types.js';
 import CommandBinaryBuffer, {
     ICommandBinaryBuffer, ICommandParameters, METER_ID_SIZE, REQUEST_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
+import {setupMeter as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 /**
@@ -41,8 +43,8 @@ interface ISetupMeterParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x70;
-export const name: types.TCommandName = 'setupMeter';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

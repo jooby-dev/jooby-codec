@@ -23,10 +23,12 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import channelNames from '../../constants/channelNames.js';
+import {getChannelsTypes as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x331f;
-export const name: types.TCommandName = 'getChannelsTypes';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 

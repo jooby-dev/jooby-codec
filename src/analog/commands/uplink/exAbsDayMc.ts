@@ -34,6 +34,8 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelAbsoluteValue} from '../../utils/CommandBinaryBuffer.js';
+import {exAbsDayMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IExAbsDayMcResponseParameters {
@@ -45,8 +47,8 @@ interface IExAbsDayMcResponseParameters {
     startTime2000: TTime2000;
 }
 
-export const id: types.TCommandId = 0x0b1f;
-export const name: types.TCommandName = 'exAbsDayMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 // date 2 bytes, channelList 3 bytes (max channelList: 14)

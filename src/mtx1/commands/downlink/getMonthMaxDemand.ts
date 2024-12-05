@@ -26,6 +26,8 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import {getMonthMaxDemand as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetMonthDemandParameters {
@@ -34,8 +36,8 @@ interface IGetMonthDemandParameters {
 }
 
 
-export const id: types.TCommandId = 0x32;
-export const name: types.TCommandName = 'getMonthMaxDemand';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

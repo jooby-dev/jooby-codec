@@ -50,6 +50,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, TTariffsPowerMax, TARIFF_NUMBER} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
+import {getDayMaxPower as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetDayMaxPowerResponseParameters {
@@ -99,8 +101,8 @@ const convertTariffsPowerMaxToDlms = ( energies: TTariffsPowerMax ) => {
 };
 
 
-export const id: types.TCommandId = 0x79;
-export const name: types.TCommandName = 'getDayMaxPower';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = DATE_SIZE + ENERGY_FLAGS_SIZE + TARIFF_FLAGS_SIZE + MAX_TARIFFS_ENERGIES_SIZE;
 export const accessLevel: types.TAccessLevel = UNENCRYPTED;

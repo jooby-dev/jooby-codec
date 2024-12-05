@@ -33,6 +33,8 @@ import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
 import * as channelTypes from '../../constants/channelTypes.js';
 import channelNames from '../../constants/channelNames.js';
+import {getChannelsStatus as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IBinarySensorStatus {
@@ -52,8 +54,8 @@ interface IChannelStatus {
 }
 
 
-export const id: types.TCommandId = 0x321f;
-export const name: types.TCommandName = 'getChannelsStatus';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 
