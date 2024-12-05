@@ -131,7 +131,7 @@ const getEvent = ( buffer: ICommandBinaryBuffer ): IArchiveEvent => {
     return {
         time2000,
         id: eventId,
-        name: eventNames[eventId] as string,
+        name: eventNames[eventId],
         sequenceNumber
     };
 };

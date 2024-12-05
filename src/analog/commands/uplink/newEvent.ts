@@ -240,7 +240,7 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const eventId = buffer.getUint8();
-    const eventName = eventNames[eventId] as string;
+    const eventName = eventNames[eventId];
     const sequenceNumber = buffer.getUint8();
     let eventData;
 

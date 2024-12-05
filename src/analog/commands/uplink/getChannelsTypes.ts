@@ -67,7 +67,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( data: types.TBytes ): IChannels => ({
-    channels: data.map(type => ({type, typeName: channelNames[type] as string}))
+    channels: data.map(type => ({type, typeName: channelNames[type]}))
 });
 
 

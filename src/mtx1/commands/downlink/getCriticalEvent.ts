@@ -87,7 +87,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventParameters =>
 
     return {
         event,
-        name: criticalEventNames[event] as string,
+        name: criticalEventNames[event],
         index
     };
 };

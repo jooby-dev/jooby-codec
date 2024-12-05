@@ -1139,7 +1139,7 @@ const deviceParameterConvertersMap = {
     [deviceParameters.RX2_CONFIG]: {
         get: ( buffer: ICommandBinaryBuffer ): IParameterRx2Config => {
             const spreadFactor = buffer.getUint8();
-            const spreadFactorName = spreadFactorNames[spreadFactor] as string;
+            const spreadFactorName = spreadFactorNames[spreadFactor];
             const frequency = buffer.getUint24() * PARAMETER_RX2_FREQUENCY_COEFFICIENT;
 
             return {spreadFactor, spreadFactorName, frequency};
@@ -2237,7 +2237,7 @@ CommandBinaryBuffer.prototype.setEventStatus = function ( hardwareType: number, 
 
 CommandBinaryBuffer.prototype.getParameter = function (): IParameter {
     const id = this.getUint8();
-    const name = deviceParameterNames[id] as string;
+    const name = deviceParameterNames[id];
 
     if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].get ) {
         throw new Error(`parameter ${id} is not supported`);
@@ -2262,7 +2262,7 @@ CommandBinaryBuffer.prototype.setParameter = function ( parameter: IParameter ):
 
 CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParameter {
     const id = this.getUint8();
-    const name = deviceParameterNames[id] as string;
+    const name = deviceParameterNames[id];
     let data = null;
 
     switch ( id ) {
@@ -2320,7 +2320,7 @@ CommandBinaryBuffer.prototype.setRequestParameter = function ( parameter: IReque
 
 CommandBinaryBuffer.prototype.getResponseParameter = function (): IParameter {
     const id = this.getUint8();
-    const name = deviceParameterNames[id] as string;
+    const name = deviceParameterNames[id];
     let data;
 
     if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].get ) {

@@ -87,7 +87,7 @@ export const getFromBytes = ( /* commandNames */ ) => (
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         //const commandName = commandNames[commandId];
         const errorCode = buffer.getUint8();
-        const errorName = resultNames[errorCode] as string;
+        const errorName = resultNames[errorCode];
 
         return {
             commandId,

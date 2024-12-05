@@ -179,7 +179,7 @@ export const fromBytes = ( data: types.TBytes ): Array<IChannelStatus> => {
 
         const channelStatus: IChannelStatus = {
             type,
-            typeName: channelNames[type] as string,
+            typeName: channelNames[type],
             channel: buffer.getChannelValue()
         };
 
