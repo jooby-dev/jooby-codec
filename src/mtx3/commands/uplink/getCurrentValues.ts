@@ -45,6 +45,8 @@ import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as dlms from '../../constants/dlms.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {getCurrentValues as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IGetCurrentValuesResponseParameters {
@@ -115,8 +117,8 @@ export interface IGetCurrentValuesResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x0d;
-export const name: types.TCommandName = 'getCurrentValues';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 52;

@@ -29,11 +29,12 @@
 
 import * as commands from '../commands/downlink/index.js';
 import * as wrappers from './wrappers.js';
+import downlinkNames from '../constants/downlinkNames.js';
 
 
 export const toBytesMap = {};
 export const fromBytesMap = {};
-export const nameMap = {};
+export const nameMap = downlinkNames;
 
 export const fromBytes = wrappers.getFromBytes(fromBytesMap, nameMap);
 export const toBytes = wrappers.getToBytes(toBytesMap);
@@ -98,31 +99,3 @@ fromBytesMap[commands.updateRun.id] = commands.updateRun.fromBytes;
 fromBytesMap[commands.usWaterMeterCommand.id] = commands.usWaterMeterCommand.fromBytes;
 fromBytesMap[commands.verifyImage.id] = commands.verifyImage.fromBytes;
 fromBytesMap[commands.writeImage.id] = commands.writeImage.fromBytes;
-
-nameMap[commands.correctTime2000.id] = commands.correctTime2000.name;
-nameMap[commands.dataSegment.id] = commands.dataSegment.name;
-nameMap[commands.getArchiveDays.id] = commands.getArchiveDays.name;
-nameMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.name;
-nameMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.name;
-nameMap[commands.getArchiveHours.id] = commands.getArchiveHours.name;
-nameMap[commands.getArchiveHoursMc.id] = commands.getArchiveHoursMc.name;
-nameMap[commands.getArchiveHoursMcEx.id] = commands.getArchiveHoursMcEx.name;
-nameMap[commands.getBatteryStatus.id] = commands.getBatteryStatus.name;
-nameMap[commands.getChannelsStatus.id] = commands.getChannelsStatus.name;
-nameMap[commands.getChannelsTypes.id] = commands.getChannelsTypes.name;
-nameMap[commands.getCurrent.id] = commands.getCurrent.name;
-nameMap[commands.getCurrentMc.id] = commands.getCurrentMc.name;
-nameMap[commands.getExAbsArchiveDaysMc.id] = commands.getExAbsArchiveDaysMc.name;
-nameMap[commands.getExAbsArchiveHoursMc.id] = commands.getExAbsArchiveHoursMc.name;
-nameMap[commands.getExAbsCurrentMc.id] = commands.getExAbsCurrentMc.name;
-nameMap[commands.getLmicInfo.id] = commands.getLmicInfo.name;
-nameMap[commands.getParameter.id] = commands.getParameter.name;
-nameMap[commands.getStatus.id] = commands.getStatus.name;
-nameMap[commands.getTime2000.id] = commands.getTime2000.name;
-nameMap[commands.setParameter.id] = commands.setParameter.name;
-nameMap[commands.setTime2000.id] = commands.setTime2000.name;
-nameMap[commands.softRestart.id] = commands.softRestart.name;
-nameMap[commands.updateRun.id] = commands.updateRun.name;
-nameMap[commands.usWaterMeterCommand.id] = commands.usWaterMeterCommand.name;
-nameMap[commands.verifyImage.id] = commands.verifyImage.name;
-nameMap[commands.writeImage.id] = commands.writeImage.name;

@@ -26,6 +26,8 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {usWaterMeterCommand as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IUSWaterMeterCommandParameters {
@@ -37,8 +39,8 @@ interface IUSWaterMeterCommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x071f;
-export const name: types.TCommandName = 'usWaterMeterCommand';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 export const examples = {

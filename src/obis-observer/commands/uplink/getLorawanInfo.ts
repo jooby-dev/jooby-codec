@@ -34,6 +34,8 @@ import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, ICommandParameters, EUI_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import * as deviceClasses from '../../constants/deviceClasses.js';
+import {getLorawanInfo as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -53,8 +55,8 @@ interface IGetLorawanInfoResponseParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x21;
-export const name: types.TCommandName = 'getLorawanInfo';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

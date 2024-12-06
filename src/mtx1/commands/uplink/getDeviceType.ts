@@ -34,10 +34,12 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, IDeviceType} from '../../util
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as meterTypes from '../../constants/meterTypes.js';
+import {getDeviceType as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x04;
-export const name: types.TCommandName = 'getDeviceType';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 9;

@@ -29,6 +29,8 @@ import * as accessLevels from '../../constants/accessLevels.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as criticalEvents from '../../constants/criticalEvents.js';
 import criticalEventNames from '../../constants/criticalEventNames.js';
+import {getCriticalEvent as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetCriticalEventParameters {
@@ -45,8 +47,8 @@ interface IGetCriticalEventParameters {
 }
 
 
-export const id: types.TCommandId = 0x41;
-export const name: types.TCommandName = 'getCriticalEvent';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
 export const maxSize = 2;
@@ -87,7 +89,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventParameters =>
 
     return {
         event,
-        name: criticalEventNames[event] as string,
+        name: criticalEventNames[event],
         index
     };
 };

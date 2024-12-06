@@ -65,6 +65,8 @@ import {IEventStatus, eventStatusMask} from '../../../mtx1/utils/CommandBinaryBu
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
 import * as types from '../../types.js';
+import {getCurrentStatusMeter as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface ITariffs {
@@ -156,8 +158,8 @@ interface IGetCurrentStatusMeterResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x39;
-export const name: types.TCommandName = 'getCurrentStatusMeter';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 41;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

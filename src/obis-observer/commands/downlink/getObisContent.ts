@@ -36,6 +36,8 @@ import CommandBinaryBuffer, {
     METER_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getObisContent as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 /**
@@ -47,8 +49,8 @@ interface IGetObisContentParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x4e;
-export const name: types.TCommandName = 'getObisContent';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

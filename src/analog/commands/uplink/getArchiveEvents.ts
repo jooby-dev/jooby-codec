@@ -33,6 +33,8 @@ import * as types from '../../../types.js';
 import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getArchiveEvents as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as events from '../../constants/events.js';
@@ -55,8 +57,8 @@ interface IGetArchiveEventsResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x0b;
-export const name: types.TCommandName = 'getArchiveEvents';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_MIN_SIZE = 4 + 1 + 1;
@@ -131,7 +133,7 @@ const getEvent = ( buffer: ICommandBinaryBuffer ): IArchiveEvent => {
     return {
         time2000,
         id: eventId,
-        name: eventNames[eventId] as string,
+        name: eventNames[eventId],
         sequenceNumber
     };
 };

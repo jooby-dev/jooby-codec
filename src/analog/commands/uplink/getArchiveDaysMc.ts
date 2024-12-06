@@ -30,6 +30,8 @@ import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelDays} from '../../utils/CommandBinaryBuffer.js';
 import * as archive from '../../constants/archive.js';
+import {getArchiveDaysMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetArchiveDaysMcResponseParameters {
@@ -49,8 +51,8 @@ interface IGetArchiveDaysMcResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x1b;
-export const name: types.TCommandName = 'getArchiveDaysMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_MAX_SIZE = 255;

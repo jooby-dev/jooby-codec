@@ -32,6 +32,8 @@ import * as command from '../../../mtx1/utils/command.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, TChannelParameter, TChannel} from '../../utils/CommandBinaryBuffer.js';
 import * as types from '../../types.js';
+import {getHalfHourDemandChannel as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetHalfHourDemandChannelRequestParameters {
@@ -41,8 +43,8 @@ interface IGetHalfHourDemandChannelRequestParameters {
 }
 
 
-export const id: types.TCommandId = 0x5a;
-export const name: types.TCommandName = 'getHalfHourDemandChannel';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 5;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

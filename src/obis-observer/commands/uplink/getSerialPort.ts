@@ -31,10 +31,12 @@ import * as types from '../../../types.js';
 import CommandBinaryBuffer, {
     ICommandBinaryBuffer, ICommandParameters, ISerialPortParameters, REQUEST_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
+import {getSerialPort as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x08;
-export const name: types.TCommandName = 'getSerialPort';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = REQUEST_ID_SIZE + 3;

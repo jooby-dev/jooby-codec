@@ -66,6 +66,8 @@ import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import * as accessLevels from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IEvent} from '../../utils/CommandBinaryBuffer.js';
+import {getEvents as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IGetCriticalEventResponseParameters {
@@ -78,8 +80,8 @@ export interface IGetCriticalEventResponseParameters {
 const BODY_WITHOUT_EVENTS_SIZE = 3 + 1;
 const EVENT_SIZE = 4;
 
-export const id: types.TCommandId = 0x33;
-export const name: types.TCommandName = 'getEvents';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
 export const maxSize = BODY_WITHOUT_EVENTS_SIZE + 255 * EVENT_SIZE;

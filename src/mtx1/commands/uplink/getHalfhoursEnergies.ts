@@ -41,6 +41,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfhoursEnergies, TARIFF_NUMBER} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
+import {getHalfhoursEnergies as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IGetHalfhoursEnergiesResponseParameters {
@@ -91,8 +93,8 @@ const convertHalfhoursEnergiesToDlms = ( energies: THalfhoursEnergies ) => {
 };
 
 
-export const id: types.TCommandId = 0x6f;
-export const name: types.TCommandName = 'getHalfhoursEnergies';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = DATE_SIZE + ENERGY_FLAGS_SIZE + START_HALFHOUR_SIZE + HALFHOURS_NUMBER_SIZE + MAX_HALFHOURS_ENERGY_SIZE;
 export const accessLevel: types.TAccessLevel = UNENCRYPTED;

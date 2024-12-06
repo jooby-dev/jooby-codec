@@ -65,10 +65,12 @@ import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IExtendedCurrentValues2Parameters} from '../../utils/CommandBinaryBuffer.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import {getExtendedCurrentValues2 as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x2d;
-export const name: types.TCommandName = 'getExtendedCurrentValues2';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 7;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

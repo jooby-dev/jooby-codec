@@ -74,11 +74,12 @@
 
 import * as commands from '../commands/uplink/index.js';
 import * as wrappers from './wrappers.js';
+import uplinkNames from '../constants/uplinkNames.js';
 
 
 export const toBytesMap = {};
 export const fromBytesMap = {};
-export const nameMap = {};
+export const nameMap = uplinkNames;
 
 export const fromBytes = wrappers.getFromBytes(fromBytesMap, nameMap);
 export const toBytes = wrappers.getToBytes(toBytesMap);
@@ -163,41 +164,3 @@ fromBytesMap[commands.usWaterMeterBatteryStatus.id] = commands.usWaterMeterBatte
 fromBytesMap[commands.usWaterMeterCommand.id] = commands.usWaterMeterCommand.fromBytes;
 fromBytesMap[commands.verifyImage.id] = commands.verifyImage.fromBytes;
 fromBytesMap[commands.writeImage.id] = commands.writeImage.fromBytes;
-
-nameMap[commands.correctTime2000.id] = commands.correctTime2000.name;
-nameMap[commands.current.id] = commands.current.name;
-nameMap[commands.currentMc.id] = commands.currentMc.name;
-nameMap[commands.dataSegment.id] = commands.dataSegment.name;
-nameMap[commands.day.id] = commands.day.name;
-nameMap[commands.dayMc.id] = commands.dayMc.name;
-nameMap[commands.exAbsCurrentMc.id] = commands.exAbsCurrentMc.name;
-nameMap[commands.exAbsDayMc.id] = commands.exAbsDayMc.name;
-nameMap[commands.exAbsHourMc.id] = commands.exAbsHourMc.name;
-nameMap[commands.getArchiveDays.id] = commands.getArchiveDays.name;
-nameMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.name;
-nameMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.name;
-nameMap[commands.getArchiveHours.id] = commands.getArchiveHours.name;
-nameMap[commands.getArchiveHoursMc.id] = commands.getArchiveHoursMc.name;
-nameMap[commands.getArchiveHoursMcEx.id] = commands.getArchiveHoursMcEx.name;
-nameMap[commands.getBatteryStatus.id] = commands.getBatteryStatus.name;
-nameMap[commands.getChannelsStatus.id] = commands.getChannelsStatus.name;
-nameMap[commands.getChannelsTypes.id] = commands.getChannelsTypes.name;
-nameMap[commands.getExAbsArchiveDaysMc.id] = commands.getExAbsArchiveDaysMc.name;
-nameMap[commands.getExAbsArchiveHoursMc.id] = commands.getExAbsArchiveHoursMc.name;
-nameMap[commands.getLmicInfo.id] = commands.getLmicInfo.name;
-nameMap[commands.getParameter.id] = commands.getParameter.name;
-nameMap[commands.hour.id] = commands.hour.name;
-nameMap[commands.hourMc.id] = commands.hourMc.name;
-nameMap[commands.hourMcEx.id] = commands.hourMcEx.name;
-nameMap[commands.lastEvent.id] = commands.lastEvent.name;
-nameMap[commands.newEvent.id] = commands.newEvent.name;
-nameMap[commands.setParameter.id] = commands.setParameter.name;
-nameMap[commands.setTime2000.id] = commands.setTime2000.name;
-nameMap[commands.softRestart.id] = commands.softRestart.name;
-nameMap[commands.status.id] = commands.status.name;
-nameMap[commands.time2000.id] = commands.time2000.name;
-nameMap[commands.updateRun.id] = commands.updateRun.name;
-nameMap[commands.usWaterMeterBatteryStatus.id] = commands.usWaterMeterBatteryStatus.name;
-nameMap[commands.usWaterMeterCommand.id] = commands.usWaterMeterCommand.name;
-nameMap[commands.verifyImage.id] = commands.verifyImage.name;
-nameMap[commands.writeImage.id] = commands.writeImage.name;

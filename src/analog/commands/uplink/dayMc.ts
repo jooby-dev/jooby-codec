@@ -36,6 +36,8 @@ import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelValue} from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import {ICurrentMcResponseParameters} from './currentMc.js';
+import {dayMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IDayMcResponseParameters extends ICurrentMcResponseParameters {
@@ -45,8 +47,8 @@ export interface IDayMcResponseParameters extends ICurrentMcResponseParameters {
     startTime2000: TTime2000;
 }
 
-export const id: types.TCommandId = 0x16;
-export const name: types.TCommandName = 'dayMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 // 2 byte for date + 2 for channels (max channels: 7)

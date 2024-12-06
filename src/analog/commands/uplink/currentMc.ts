@@ -31,6 +31,8 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {IChannelValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {currentMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface ICurrentMcResponseParameters {
@@ -40,8 +42,8 @@ export interface ICurrentMcResponseParameters {
     channelList: Array<IChannelValue>;
 }
 
-export const id: types.TCommandId = 0x18;
-export const name: types.TCommandName = 'currentMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 // 2 bytes for 7 channelList + (7 channelList * 5 byte for current value of channel)

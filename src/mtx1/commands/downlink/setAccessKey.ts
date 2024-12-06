@@ -32,6 +32,8 @@ import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import * as accessLevels from '../../constants/accessLevels.js';
+import {setAccessKey as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface ISetAccessKeyParameters {
@@ -54,8 +56,8 @@ interface ISetAccessKeyParameters {
 const KEY_SIZE = 16;
 
 
-export const id: types.TCommandId = 0x09;
-export const name: types.TCommandName = 'setAccessKey';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 1 + KEY_SIZE;
 export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;

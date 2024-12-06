@@ -36,10 +36,12 @@ import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {ITimeCorrectionParameters} from '../../utils/dateTime.js';
+import {setCorrectTime as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
-export const id: types.TCommandId = 0x1c;
-export const name: types.TCommandName = 'setCorrectTime';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 9;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

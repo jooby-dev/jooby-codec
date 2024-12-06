@@ -28,6 +28,8 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as energyTypes from '../../constants/energyTypes.js';
+import {getEnergy as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetEnergyCurrentParameters {
@@ -39,8 +41,8 @@ const MIN_COMMAND_SIZE = 0;
 const MAX_COMMAND_SIZE = 1;
 
 
-export const id: types.TCommandId = 0x0f;
-export const name: types.TCommandName = 'getEnergy';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

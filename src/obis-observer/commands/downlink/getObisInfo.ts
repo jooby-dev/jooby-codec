@@ -26,6 +26,8 @@
 import * as types from '../../../types.js';
 import {ICommandParameters} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getObisInfo as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 /**
@@ -37,8 +39,8 @@ interface IGetObisInfoParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x46;
-export const name: types.TCommandName = 'getObisInfo';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

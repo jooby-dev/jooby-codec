@@ -29,6 +29,8 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import {getSettingsMemory as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetSettingsMemoryResponseParameters extends ICommandParameters {
@@ -38,8 +40,8 @@ interface IGetSettingsMemoryResponseParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x91;
-export const name: types.TCommandName = 'getSettingsMemory';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_WITHOUT_DATA_SIZE = REQUEST_ID_SIZE + 4 + 4;

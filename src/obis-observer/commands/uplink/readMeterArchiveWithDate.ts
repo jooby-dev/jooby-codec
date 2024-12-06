@@ -30,6 +30,8 @@ import * as types from '../../../types.js';
 import CommandBinaryBuffer, {
     ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE, IObisValueFloat
 } from '../../utils/CommandBinaryBuffer.js';
+import {readMeterArchiveWithDate as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IReadMeterArchiveWithDateResponseParameters extends ICommandParameters {
@@ -38,8 +40,8 @@ interface IReadMeterArchiveWithDateResponseParameters extends ICommandParameters
 }
 
 
-export const id: types.TCommandId = 0x14;
-export const name: types.TCommandName = 'readMeterArchiveWithDate';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

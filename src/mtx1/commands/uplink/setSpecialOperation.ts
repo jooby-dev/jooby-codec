@@ -29,6 +29,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {setSpecialOperation as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface ISetSpecialOperationResponseParameters {
@@ -40,8 +42,8 @@ interface ISetSpecialOperationResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x64;
-export const name: types.TCommandName = 'setSpecialOperation';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 1;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

@@ -29,6 +29,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {getSeasonProfile as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetSeasonProfileParameters {
@@ -52,8 +54,8 @@ interface IGetSeasonProfileParameters {
 }
 
 
-export const id: types.TCommandId = 0x3c;
-export const name: types.TCommandName = 'getSeasonProfile';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 3;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

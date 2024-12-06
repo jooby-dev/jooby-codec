@@ -34,6 +34,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {getMagneticFieldThreshold as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetMagneticFieldThresholdParameters {
@@ -59,8 +61,8 @@ interface IGetMagneticFieldThresholdParameters {
 }
 
 
-export const id: types.TCommandId = 0x6d;
-export const name: types.TCommandName = 'getMagneticFieldThreshold';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 10;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

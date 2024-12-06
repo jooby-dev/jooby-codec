@@ -34,6 +34,8 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {getBatteryStatus as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -84,8 +86,8 @@ export interface IGetBatteryStatusResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x051f;
-export const name: types.TCommandName = 'getBatteryStatus';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE: number = 11;

@@ -42,6 +42,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, TTariffsEnergies, TARIFF_NUMBER} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
+import {getDayEnergies as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetDayEnergiesResponseParameters {
@@ -92,8 +94,8 @@ const convertTariffsEnergiesToDlms = ( energies: TTariffsEnergies ) => {
 };
 
 
-export const id: types.TCommandId = 0x78;
-export const name: types.TCommandName = 'getDayEnergies';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = DATE_SIZE + ENERGY_FLAGS_SIZE + TARIFF_FLAGS_SIZE + MAX_TARIFFS_ENERGIES_SIZE;
 export const accessLevel: types.TAccessLevel = UNENCRYPTED;

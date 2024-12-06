@@ -27,6 +27,8 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {setParameter as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as deviceParameters from '../../constants/deviceParameters.js';
@@ -44,8 +46,8 @@ interface ISetParameterResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x03;
-export const name: types.TCommandName = 'setParameter';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 2;

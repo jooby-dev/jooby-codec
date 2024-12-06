@@ -32,6 +32,8 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {IChannelAbsoluteValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {exAbsCurrentMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IExAbsCurrentMcResponseParameters {
@@ -39,8 +41,8 @@ interface IExAbsCurrentMcResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x0f1f;
-export const name: types.TCommandName = 'exAbsCurrentMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 // channelList 3 byte (max channelList: 14)

@@ -32,6 +32,8 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, ILegacyCounter} from '../../utils/CommandBinaryBuffer.js';
+import {getArchiveDays as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetArchiveDaysResponseParameters {
@@ -44,8 +46,8 @@ interface IGetArchiveDaysResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x06;
-export const name: types.TCommandName = 'getArchiveDays';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 // date 2 bytes

@@ -38,6 +38,8 @@ import * as types from '../../types.js';
 import CommandBinaryBuffer, {ITariffPlan, ICommandBinaryBuffer, TARIFF_PLAN_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {activateRatePlan as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IActivateRatePlanParameters {
@@ -53,8 +55,8 @@ interface IActivateRatePlanParameters {
 }
 
 
-export const id: types.TCommandId = 0x13;
-export const name: types.TCommandName = 'activateRatePlan';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 1 + TARIFF_PLAN_SIZE;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

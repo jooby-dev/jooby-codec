@@ -26,9 +26,12 @@
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../../mtx1/constants/accessLevels.js';
+import {setOperatorParametersExtended4 as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
-export const id: types.TCommandId = 0x75;
-export const name: types.TCommandName = 'setOperatorParametersExtended4';
+
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 0;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

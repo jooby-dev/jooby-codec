@@ -33,6 +33,8 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as energyTypes from '../../constants/energyTypes.js';
+import {getDayDemand as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetDayDemandParameters {
@@ -45,8 +47,8 @@ const MIN_COMMAND_SIZE = 3;
 const MAX_COMMAND_SIZE = 4;
 
 
-export const id: types.TCommandId = 0x16;
-export const name: types.TCommandName = 'getDayDemand';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

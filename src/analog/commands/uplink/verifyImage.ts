@@ -26,6 +26,8 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {verifyImage as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IVerifyImageResponseParameters {
@@ -37,8 +39,8 @@ interface IVerifyImageResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x2b1f;
-export const name: types.TCommandName = 'verifyImage';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 1;

@@ -51,6 +51,8 @@ import CommandBinaryBuffer, {
     PACKED_ENERGY_TYPE_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
 import {A_PLUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
+import {getDayDemand as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetDayDemandResponseParameters extends IPackedEnergiesWithType {
@@ -63,8 +65,8 @@ const COMMAND_SIZE = 51;
 const MAX_COMMAND_SIZE = COMMAND_SIZE + PACKED_ENERGY_TYPE_SIZE;
 
 
-export const id: types.TCommandId = 0x16;
-export const name: types.TCommandName = 'getDayDemand';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

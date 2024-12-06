@@ -49,6 +49,8 @@ import CommandBinaryBuffer, {
     IEnergies
 } from '../../utils/CommandBinaryBuffer.js';
 import {A_MINUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
+import {getDayDemandExport as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetDayDemandExportResponseParameters {
@@ -60,8 +62,8 @@ interface IGetDayDemandExportResponseParameters {
 const isGreen = true;
 
 
-export const id: types.TCommandId = 0x4f;
-export const name: types.TCommandName = 'getDayDemandExport';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 51;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

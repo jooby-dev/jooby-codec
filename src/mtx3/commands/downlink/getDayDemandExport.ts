@@ -30,6 +30,8 @@ import * as command from '../../../mtx1/utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as types from '../../types.js';
+import {getDayDemandExport as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetDayDemandExportParameters {
@@ -37,8 +39,8 @@ interface IGetDayDemandExportParameters {
 }
 
 
-export const id: types.TCommandId = 0x4f;
-export const name: types.TCommandName = 'getDayDemandExport';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 3;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

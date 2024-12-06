@@ -33,6 +33,8 @@ import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import {getDayMaxDemandExport as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 export interface IGetDayMaxDemandExportParameters {
@@ -40,8 +42,8 @@ export interface IGetDayMaxDemandExportParameters {
 }
 
 
-export const id: types.TCommandId = 0x58;
-export const name: types.TCommandName = 'getDayMaxDemandExport';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 3;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

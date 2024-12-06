@@ -35,6 +35,8 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {TEventStatus, ICommandBinaryBuffer, getEventStatusSize} from '../../utils/CommandBinaryBuffer.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
+import {lastEvent as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface ILastEventParameters {
@@ -46,8 +48,8 @@ interface ILastEventConfig {
     hardwareType?: number;
 }
 
-export const id: types.TCommandId = 0x60;
-export const name: types.TCommandName = 'lastEvent';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 1;
 
 export const examples: command.TCommandExamples = {

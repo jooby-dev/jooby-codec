@@ -31,6 +31,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, ISeasonProfile, SEASON_PROFILE_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import {setSeasonProfile as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface ISetSeasonProfileParameters extends ISeasonProfile {
@@ -49,8 +51,8 @@ interface ISetSeasonProfileParameters extends ISeasonProfile {
 }
 
 
-export const id: types.TCommandId = 0x11;
-export const name: types.TCommandName = 'setSeasonProfile';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = SEASON_PROFILE_SIZE;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

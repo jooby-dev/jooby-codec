@@ -24,6 +24,8 @@ import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
+import {getArchiveEvents as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 /**
@@ -42,8 +44,8 @@ interface IGetArchiveEventsParameters {
 }
 
 
-export const id: types.TCommandId = 0x0b;
-export const name: types.TCommandName = 'getArchiveEvents';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 5;

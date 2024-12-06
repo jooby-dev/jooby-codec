@@ -27,6 +27,8 @@
 import * as types from '../../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, ICommandParameters, METER_ID_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getArchiveState as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 /**
@@ -38,8 +40,8 @@ interface IGetArchiveStateParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x0f;
-export const name: types.TCommandName = 'getArchiveState';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

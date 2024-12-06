@@ -32,6 +32,8 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000, getDateFromTime2000, getTime2000FromDate} from '../../utils/time.js';
+import {day as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -52,8 +54,8 @@ interface IDayResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x20;
-export const name: types.TCommandName = 'day';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 1;
 
 const COMMAND_BODY_SIZE = 6;

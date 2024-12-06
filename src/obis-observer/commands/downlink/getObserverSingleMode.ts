@@ -24,10 +24,12 @@
 import * as types from '../../../types.js';
 import {ICommandParameters} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getObserverSingleMode as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
-export const id: types.TCommandId = 0x0d;
-export const name: types.TCommandName = 'getObserverSingleMode';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

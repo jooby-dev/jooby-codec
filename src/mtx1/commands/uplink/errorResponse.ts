@@ -17,7 +17,9 @@
  * // output:
  * {
  *     commandId: 0x18,
- *     errorCode: 0x93
+ *     commandName: 'turnRelayOn',
+ *     errorCode: 0x93,
+ *     errorName: 'ACCESS_DENIED'
  * }
  * ```
  *
@@ -30,6 +32,8 @@ import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as resultCodes from '../../constants/resultCodes.js';
 import resultNames from '../../constants/resultNames.js';
+import {errorResponse as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IErrorResponseParameters {
@@ -41,7 +45,7 @@ export interface IErrorResponseParameters {
      */
     commandId: types.TUint8,
 
-    //commandName?: string,
+    commandName?: string,
 
     /**
      * Error code from the list of {@link resultCodes | available codes}.
@@ -52,8 +56,8 @@ export interface IErrorResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0xfe;
-export const name: types.TCommandName = 'errorResponse';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 2;
@@ -68,7 +72,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {
             commandId: 0x18,
-            //commandName: 'turnRelayOn',
+            commandName: 'turnRelayOn',
             errorCode: resultCodes.ACCESS_DENIED,
             errorName: 'ACCESS_DENIED'
         },
@@ -80,20 +84,17 @@ export const examples: command.TCommandExamples = {
 };
 
 
-export const getFromBytes = ( /* commandNames */ ) => (
+export const getFromBytes = ( commandNamesParameter: Record<number, string> ) => (
     (bytes: types.TBytes): IErrorResponseParameters => {
         const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-        const commandId = buffer.getUint8();
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        //const commandName = commandNames[commandId];
+        const errorCommandId = buffer.getUint8();
         const errorCode = buffer.getUint8();
-        const errorName = resultNames[errorCode] as string;
 
         return {
-            commandId,
-            //commandName,
+            commandId: errorCommandId,
+            commandName: commandNamesParameter[errorCommandId],
             errorCode,
-            errorName
+            errorName: resultNames[errorCode]
         };
     }
 );
@@ -104,7 +105,7 @@ export const getFromBytes = ( /* commandNames */ ) => (
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = getFromBytes();
+export const fromBytes = getFromBytes(commandNames);
 
 /**
  * Encode command parameters.

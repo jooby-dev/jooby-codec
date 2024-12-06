@@ -40,6 +40,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, TEnergiesFlags} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
+import {getHalfhoursEnergies as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetHalfhoursEnergiesParameters {
@@ -65,8 +67,8 @@ interface IGetHalfhoursEnergiesParameters {
 }
 
 
-export const id: types.TCommandId = 0x6f;
-export const name: types.TCommandName = 'getHalfhoursEnergies';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 5;
 export const accessLevel: types.TAccessLevel = UNENCRYPTED;

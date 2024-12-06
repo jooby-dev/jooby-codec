@@ -29,6 +29,8 @@
 import * as types from '../../../types.js';
 import {ICommandParameters} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getObserverSingleMode as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -39,8 +41,8 @@ interface IGetObserverSingleModeResponseParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x0e;
-export const name: types.TCommandName = 'getObserverSingleMode';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

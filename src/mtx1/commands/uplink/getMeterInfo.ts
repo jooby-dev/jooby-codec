@@ -31,6 +31,8 @@ import {READ_ONLY} from '../../constants/accessLevels.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {IOperatorParameters} from '../../utils/CommandBinaryBuffer.js';
+import {getMeterInfo as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetMeterInfoParameters {
@@ -39,8 +41,8 @@ interface IGetMeterInfoParameters {
 }
 
 
-export const id: types.TCommandId = 0x7a;
-export const name: types.TCommandName = 'getMeterInfo';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 1;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

@@ -38,6 +38,8 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {IChannelHours, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {hourMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IHourMcResponseParameters {
@@ -54,8 +56,8 @@ export interface IHourMcResponseParameters {
     hours: types.TUint8;
 }
 
-export const id: types.TCommandId = 0x17;
-export const name: types.TCommandName = 'hourMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4

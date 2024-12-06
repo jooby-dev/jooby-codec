@@ -23,10 +23,12 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import channelNames from '../../constants/channelNames.js';
+import {getChannelsTypes as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x331f;
-export const name: types.TCommandName = 'getChannelsTypes';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 
@@ -67,7 +69,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( data: types.TBytes ): IChannels => ({
-    channels: data.map(type => ({type, typeName: channelNames[type] as string}))
+    channels: data.map(type => ({type, typeName: channelNames[type]}))
 });
 
 

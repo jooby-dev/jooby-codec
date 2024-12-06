@@ -28,10 +28,12 @@ import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import * as channelTypes from '../../constants/channelTypes.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IParameter, getParameterSize} from '../../utils/CommandBinaryBuffer.js';
+import {setParameter as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
-export const id: types.TCommandId = 0x03;
-export const name: types.TCommandName = 'setParameter';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

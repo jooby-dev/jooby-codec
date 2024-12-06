@@ -26,6 +26,8 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
+import {runTariffPlan as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IRunTariffPlanParameters {
@@ -39,8 +41,8 @@ interface IRunTariffPlanParameters {
 }
 
 
-export const id: types.TCommandId = 0x46;
-export const name: types.TCommandName = 'runTariffPlan';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 1;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

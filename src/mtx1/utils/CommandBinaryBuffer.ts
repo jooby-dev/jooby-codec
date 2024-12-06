@@ -1412,7 +1412,7 @@ CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => (
 
 CommandBinaryBuffer.prototype.getFrameHeader = function (): IFrameHeader {
     const type = this.getUint8();
-    const typeName = frameNames[type] as string;
+    const typeName = frameNames[type];
     const destination = this.getUint16();
     const source = this.getUint16();
 
@@ -1822,7 +1822,7 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
     const {event} = data;
     const {bytesLeft} = this;
 
-    data.eventName = eventNames[event] as string;
+    data.eventName = eventNames[event];
 
     switch ( event ) {
         case events.POWER_OVER_RELAY_OFF:

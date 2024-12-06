@@ -22,6 +22,8 @@ import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as energyTypes from '../../constants/energyTypes.js';
+import {getEnergyExportDayPrevious as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetEnergyExportDayPreviousParameters {
@@ -31,8 +33,8 @@ interface IGetEnergyExportDayPreviousParameters {
 const MIN_COMMAND_SIZE = 0;
 const MAX_COMMAND_SIZE = 1;
 
-export const id: types.TCommandId = 0x50;
-export const name: types.TCommandName = 'getEnergyExportDayPrevious';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

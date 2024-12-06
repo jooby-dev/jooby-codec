@@ -38,6 +38,8 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBina
 import * as getSaldoDownlink from './getSaldo.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as getSaldoUplink from '../uplink/getSaldo.js';
+import {setSaldo as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface ISetSaldoParameters {
@@ -63,8 +65,8 @@ interface ISetSaldoParameters {
 }
 
 
-export const id: types.TCommandId = 0x2a;
-export const name: types.TCommandName = 'setSaldo';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 12;
 export const accessLevel: types.TAccessLevel = READ_WRITE;

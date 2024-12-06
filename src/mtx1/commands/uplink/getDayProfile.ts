@@ -36,6 +36,8 @@ import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IDayProfile} from '../../utils/CommandBinaryBuffer.js';
+import {getDayProfile as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetDayProfileResponseParameters {
@@ -46,8 +48,8 @@ interface IGetDayProfileResponseParameters {
 const MAX_PERIODS_NUMBER = 8;
 const PERIODS_FINAL_BYTE = 0xff;
 
-export const id: types.TCommandId = 0x3b;
-export const name: types.TCommandName = 'getDayProfile';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = MAX_PERIODS_NUMBER;
 export const accessLevel: types.TAccessLevel = READ_ONLY;

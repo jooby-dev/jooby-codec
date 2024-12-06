@@ -34,6 +34,8 @@ import {TTime2000} from '../../utils/time.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IEventMtxStatus} from '../../utils/CommandBinaryBuffer.js';
 import getHexFromBytes from '../../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../../utils/getBytesFromHex.js';
+import {newEvent as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IEventBase {}
@@ -97,8 +99,8 @@ interface INewEventParameters {
     data: TEventData;
 }
 
-export const id: types.TCommandId = 0x15;
-export const name: types.TCommandName = 'newEvent';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 // ACTIVATE_MTX are biggest,1 byte event id, 1 byte sequence number, 4 bytes time, 8 bytes mtx address
@@ -240,7 +242,7 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
     const eventId = buffer.getUint8();
-    const eventName = eventNames[eventId] as string;
+    const eventName = eventNames[eventId];
     const sequenceNumber = buffer.getUint8();
     let eventData;
 

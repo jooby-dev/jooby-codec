@@ -28,6 +28,8 @@ import * as types from '../../../types.js';
 import CommandBinaryBuffer, {
     ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
+import {getSettingsMemory as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetSettingsMemoryParameters extends ICommandParameters {
@@ -36,8 +38,8 @@ interface IGetSettingsMemoryParameters extends ICommandParameters {
 }
 
 
-export const id: types.TCommandId = 0x90;
-export const name: types.TCommandName = 'getSettingsMemory';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {

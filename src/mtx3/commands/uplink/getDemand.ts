@@ -37,10 +37,12 @@ import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetDemandParameters, IGetDemandResponseParameters} from '../../utils/CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as getDemand from '../downlink/getDemand.js';
+import {getDemand as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x76;
-export const name: types.TCommandName = 'getDemand';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = getDemand.maxSize + 48 * 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
