@@ -43,6 +43,9 @@ interface ISetDisplayParamParameters {
     /**
      * List of display numbers.
      *
+     * To set partial list `0` should be used at the end.
+     * E.g. to set `[1, 2, 3]` send `[1, 2, 3, 0]`.
+     *
      * ({@link screenIds | display identifiers})
      */
     order: Array<types.TUint8>
