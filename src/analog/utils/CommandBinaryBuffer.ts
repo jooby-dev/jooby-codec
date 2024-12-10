@@ -653,6 +653,14 @@ interface IParameterChannelType {
 }
 
 /**
+ * Enable extra signal quality payload
+ * deviceParameters.EXTRA_PAYLOAD_ENABLE = `57`
+ */
+interface IParameterExtraPayloadEnable {
+    enable: types.TUint8
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -793,7 +801,8 @@ type TParameterData =
     IParameterNbiotApn |
     IParameterNbiotLedIndication |
     IParameterNbiotSim |
-    IParameterChannelType;
+    IParameterChannelType |
+    IParameterExtraPayloadEnable;
 
 
 type TRequestParameterData =
@@ -834,7 +843,8 @@ type TResponseParameterData =
     IParameterNbiotApn |
     IParameterNbiotLedIndication |
     IParameterNbiotSim |
-    IParameterChannelType;
+    IParameterChannelType |
+    IParameterExtraPayloadEnable;
 
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
@@ -993,7 +1003,8 @@ const parametersSizeMap = {
     [deviceParameters.REPORTING_DATA_CONFIG]: 1 + 4,
     [deviceParameters.EVENTS_CONFIG]: 1 + 3,
     [deviceParameters.NBIOT_LED_INDICATION]: 1 + 2,
-    [deviceParameters.NBIOT_SIM]: 1 + 3
+    [deviceParameters.NBIOT_SIM]: 1 + 3,
+    [deviceParameters.EXTRA_PAYLOAD_ENABLE]: 1 + 1
 };
 
 const fourChannelsBitMask = {
@@ -1451,6 +1462,14 @@ const deviceParameterConvertersMap = {
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterChannelType ) => (
             buffer.setChannelType(parameter)
         )
+    },
+    [deviceParameters.EXTRA_PAYLOAD_ENABLE]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterExtraPayloadEnable => ({
+            enable: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterExtraPayloadEnable ) => {
+            buffer.setUint8(parameter.enable);
+        }
     }
 };
 

@@ -25,3 +25,4 @@ export const updateRun = 0x2c1f; // 11295
 export const getArchiveHoursMcEx = 0x301f; // 12319
 export const getChannelsStatus = 0x321f; // 12831
 export const getChannelsTypes = 0x331f; // 13087
+export const getSignalQuality = 0x341f; // 13343

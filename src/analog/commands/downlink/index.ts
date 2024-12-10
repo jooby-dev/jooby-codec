@@ -22,6 +22,7 @@ export * as getExAbsArchiveHoursMc from './getExAbsArchiveHoursMc.js';
 export * as getExAbsCurrentMc from './getExAbsCurrentMc.js';
 export * as getLmicInfo from './getLmicInfo.js';
 export * as getParameter from './getParameter.js';
+export * as getSignalQuality from './getSignalQuality.js';
 export * as getStatus from './getStatus.js';
 export * as getTime2000 from './getTime2000.js';
 export * as setParameter from './setParameter.js';

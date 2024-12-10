@@ -26,6 +26,7 @@ export * as getExAbsArchiveDaysMc from './getExAbsArchiveDaysMc.js';
 export * as getExAbsArchiveHoursMc from './getExAbsArchiveHoursMc.js';
 export * as getLmicInfo from './getLmicInfo.js';
 export * as getParameter from './getParameter.js';
+export * as signalQuality from './signalQuality.js';
 export * as hour from './hour.js';
 export * as hourMc from './hourMc.js';
 export * as hourMcEx from './hourMcEx.js';

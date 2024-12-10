@@ -35,3 +35,4 @@ export const getArchiveHoursMcEx = 0x301f; // 12319
 export const hourMcEx = 0x311f; // 12575
 export const getChannelsStatus = 0x321f; // 12831
 export const getChannelsTypes = 0x331f; // 13087
+export const signalQuality = 0x341f; // 13343
