@@ -432,6 +432,16 @@ export const examples: command.TCommandExamples = {
             0x03, 0x03,
             0x38, 0x03, 0x00
         ]
+    },
+    'enable extra payload with signal quality on every uplink command': {
+        id,
+        name,
+        headerSize,
+        parameters: {id: 57, name: 'EXTRA_PAYLOAD_ENABLE', data: {enable: 1}},
+        bytes: [
+            0x03, 0x02,
+            0x39, 0x01
+        ]
     }
 };
 
