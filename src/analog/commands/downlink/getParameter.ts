@@ -38,7 +38,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 23, name: 'ABSOLUTE_DATA', data: null},
+        parameters: {
+            id: 23,
+            name: 'ABSOLUTE_DATA',
+            data: null
+        },
         bytes: [
             0x04, 0x01,
             0x17
@@ -48,7 +52,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 24, name: 'ABSOLUTE_DATA_ENABLE', data: null},
+        parameters: {
+            id: 24,
+            name: 'ABSOLUTE_DATA_ENABLE',
+            data: null
+        },
         bytes: [
             0x04, 0x01,
             0x18
@@ -58,7 +66,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 29, name: 'ABSOLUTE_DATA_MULTI_CHANNEL', data: {channel: 1}},
+        parameters: {
+            id: 29,
+            name: 'ABSOLUTE_DATA_MULTI_CHANNEL',
+            data: {channel: 1}
+        },
         bytes: [
             0x04, 0x02,
             0x1d, 0x00
@@ -68,7 +80,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 30, name: 'ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL', data: {channel: 1}},
+        parameters: {
+            id: 30,
+            name: 'ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL',
+            data: {channel: 1}
+        },
         bytes: [
             0x04, 0x02,
             0x1e, 0x00
@@ -78,7 +94,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 49, name: 'REPORTING_DATA_CONFIG', data: {dataType: 0}},
+        parameters: {
+            id: 49,
+            name: 'REPORTING_DATA_CONFIG',
+            data: {dataType: 0}
+        },
         bytes: [
             0x04, 0x02,
             0x31, 0x00
@@ -88,7 +108,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 50, name: 'EVENTS_CONFIG', data: {eventId: 1}},
+        parameters: {
+            id: 50,
+            name: 'EVENTS_CONFIG',
+            data: {eventId: 1}
+        },
         bytes: [
             0x04, 0x02,
             0x32, 0x01
@@ -98,7 +122,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 56, name: 'CHANNEL_TYPE', data: {channel: 2}},
+        parameters: {
+            id: 56,
+            name: 'CHANNEL_TYPE',
+            data: {channel: 2}
+        },
         bytes: [
             0x04, 0x02,
             0x38, 0x01

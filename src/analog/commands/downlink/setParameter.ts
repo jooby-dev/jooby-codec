@@ -41,7 +41,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 1, name: 'REPORTING_DATA_INTERVAL', data: {value: 3600}},
+        parameters: {
+            id: 1,
+            name: 'REPORTING_DATA_INTERVAL',
+            data: {value: 3600}
+        },
         bytes: [
             0x03, 0x05,
             0x01, 0x00, 0x00, 0x00, 0x06
@@ -51,7 +55,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 4, name: 'DAY_CHECKOUT_HOUR', data: {value: 12}},
+        parameters: {
+            id: 4,
+            name: 'DAY_CHECKOUT_HOUR',
+            data: {value: 12}
+        },
         bytes: [
             0x03, 0x02,
             0x04, 0x0c
@@ -61,7 +69,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 5, name: 'REPORTING_DATA_TYPE', data: {type: 1}},
+        parameters: {
+            id: 5,
+            name: 'REPORTING_DATA_TYPE',
+            data: {type: 1}
+        },
         bytes: [
             0x03, 0x02,
             0x05, 0x01
@@ -71,7 +83,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 8, name: 'PRIORITY_DATA_DELIVERY_TYPE', data: {value: 0}},
+        parameters: {
+            id: 8,
+            name: 'PRIORITY_DATA_DELIVERY_TYPE',
+            data: {value: 0}
+        },
         bytes: [
             0x03, 0x02,
             0x08, 0x00
@@ -81,7 +97,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 9, name: 'ACTIVATION_METHOD', data: {type: 1}},
+        parameters: {
+            id: 9,
+            name: 'ACTIVATION_METHOD',
+            data: {type: 1}
+        },
         bytes: [
             0x03, 0x02,
             0x09, 0x01
@@ -109,7 +129,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 11, name: 'BATTERY_MINIMAL_LOAD_TIME', data: {value: 100}},
+        parameters: {
+            id: 11,
+            name: 'BATTERY_MINIMAL_LOAD_TIME',
+            data: {value: 100}
+        },
         bytes: [
             0x03, 0x05,
             0x0b, 0x00, 0x00, 0x00, 0x64
@@ -119,7 +143,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 13, name: 'CHANNELS_CONFIG', data: {value: 0}},
+        parameters: {
+            id: 13,
+            name: 'CHANNELS_CONFIG',
+            data: {value: 0}
+        },
         bytes: [
             0x03, 0x02,
             0x0d, 0x00
@@ -165,7 +193,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 24, name: 'ABSOLUTE_DATA_ENABLE', data: {state: 1}},
+        parameters: {
+            id: 24,
+            name: 'ABSOLUTE_DATA_ENABLE',
+            data: {state: 1}
+        },
         bytes: [
             0x03, 0x02,
             0x18, 0x01
@@ -175,7 +207,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 25, name: 'SERIAL_NUMBER', data: {value: '1b 0a 3e dc 3e 22'}},
+        parameters: {
+            id: 25,
+            name: 'SERIAL_NUMBER',
+            data: {value: '1b 0a 3e dc 3e 22'}
+        },
         bytes: [
             0x03, 0x07,
             0x19, 0x1b, 0x0a, 0x3e, 0xdc, 0x3e, 0x22
@@ -203,7 +239,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 28, name: 'EXTRA_FRAME_INTERVAL', data: {value: 3600}},
+        parameters: {
+            id: 28,
+            name: 'EXTRA_FRAME_INTERVAL',
+            data: {value: 3600}
+        },
         bytes: [
             0x03, 0x03,
             0x1c, 0x0e, 0x10
@@ -232,7 +272,14 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 30, name: 'ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL', data: {channel: 2, state: 1}},
+        parameters: {
+            id: 30,
+            name: 'ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL',
+            data: {
+                channel: 2,
+                state: 1
+            }
+        },
         bytes: [
             0x03, 0x03,
             0x1e, 0x01, 0x01
@@ -437,7 +484,11 @@ export const examples: command.TCommandExamples = {
         id,
         name,
         headerSize,
-        parameters: {id: 57, name: 'EXTRA_PAYLOAD_ENABLE', data: {enable: 1}},
+        parameters: {
+            id: 57,
+            name: 'EXTRA_PAYLOAD_ENABLE',
+            data: {enable: 1}
+        },
         bytes: [
             0x03, 0x02,
             0x39, 0x01

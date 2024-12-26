@@ -1,5 +1,5 @@
 /**
- * Signal quality for NB-IoT modules
+ * Signal quality for NB-IoT modules.
  *
  * Used as a response to a downlink command or as an addition command to each uplink message if parameter 0x39 is enabled.
  *
@@ -38,12 +38,52 @@ import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IGetSignalQualityResponseParameters {
+    /**
+     * RSSI (Received Signal Strength Indicator):
+     * The total power of all received signals, including both desired signals and interference, measured in dBm.
+     * It provides a general indication of the signal strength but does not differentiate between useful and interfering signals.
+     */
     rssi: types.TInt8;
+
+    /**
+     * RSRP (Reference Signal Received Power):
+     * The average power level of the received reference signal, measured in dBm.
+     * It indicates the signal strength specifically from the serving cell.
+     */
     rsrp: types.TInt8;
+
+    /**
+     * RSRQ (Reference Signal Received Quality):
+     * A ratio of RSRP to the total received power, measured in dB.
+     * It reflects signal quality by considering interference and noise levels, affecting data transmission reliability.
+     */
     rsrq: types.TInt8;
+
+    /**
+     * SINR (Signal-to-Interference-plus-Noise Ratio):
+     * The ratio of the desired signal strength to the sum of interference and noise, measured in dB.
+     * A higher SINR indicates better signal quality and higher data throughput.
+     */
     sinr: types.TInt8;
+
+    /**
+     * Tx Power (Transmission Power):
+     * The power level at which the device transmits signals to the network, measured in dBm.
+     * It adjusts dynamically based on network conditions to ensure effective communication while conserving energy.
+     */
     txPower: types.TInt8;
-    ecl: types.TInt8;
+
+    /**
+     * ECL (Energy Consumption Level):
+     * Indicates the coverage enhancement level, which can be:
+     * 0: Normal coverage.
+     * 1: Extended coverage.
+     * 2: Ultra-extended coverage.
+     * Typically indicating whether the device is operating in normal, extended, or ultra-extended coverage areas.
+     * It influences the power consumption and communication reliability.
+     * With higher levels used in areas with weaker signals to improve connectivity at the cost of increased power consumption.
+     */
+    ecl: types.TUint8;
 }
 
 export const id: types.TCommandId = commandId;
@@ -91,7 +131,7 @@ export const fromBytes = ( data: types.TBytes ): IGetSignalQualityResponseParame
         rsrq: buffer.getInt8(),
         sinr: buffer.getInt8(),
         txPower: buffer.getInt8(),
-        ecl: buffer.getInt8()
+        ecl: buffer.getUint8()
     };
 
     if ( !buffer.isEmpty ) {
@@ -124,7 +164,7 @@ export const toBytes = ( parameters: IGetSignalQualityResponseParameters ): type
     buffer.setInt8(rsrq);
     buffer.setInt8(sinr);
     buffer.setInt8(txPower);
-    buffer.setInt8(ecl);
+    buffer.setUint8(ecl);
 
     return command.toBytes(id, buffer.data);
 };
