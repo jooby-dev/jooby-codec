@@ -15,15 +15,12 @@ const {uplink, downlink} = commands;
 const checkExample = (
     {headerSize, fromBytes, toBytes}: ICommandImplementation,
     commandExample: TCommand
-    // {parameters: exampleParameters, config, bytes: exampleBytes}
 ) => {
     // valid command
     if ( 'bytes' in commandExample ) {
         const parametersFromBytes = fromBytes(commandExample.bytes?.slice(headerSize) || [], commandExample.config);
         const bytesFromParameters = toBytes(commandExample.parameters, commandExample.config);
 
-        // console.log('bytesFromParameters:', bytesFromParameters);
-        // console.log('parametersFromBytes:', parametersFromBytes);
         expect(getHexFromBytes(bytesFromParameters)).toBe(getHexFromBytes(commandExample.bytes || []));
         expect(parametersFromBytes).toStrictEqual(commandExample.parameters);
         // testing parameters for full equality
@@ -32,37 +29,6 @@ const checkExample = (
         // everything else
         throw new Error('wrong command format');
     }
-
-    //const exampleHex = getHexFromBytes(getBytesFromHex(`${header} ${body}`));
-    //const exampleBytes = getBytesFromHex(exampleHex);
-    //const exampleBytes = getBytesFromHex(`${header} ${body}`);
-    //const commandBase64 = getBase64FromBytes(exampleBytes);
-    //const messageHex = `${exampleHex} ${calculateLrc(exampleBytes).toString(16)}`;
-    //console.log('messageHex:', messageHex);
-
-    //const command = new constructor(parameters, config);
-    //    const parametersFromHex = fromBytes(body ? getBytesFromHex(body) : [], config);
-    //    const bytesFromParameters = toBytes(exampleParameters, config);
-    //console.log('parametersFromHex:', parametersFromHex);
-    //console.log('bytes:', bytesFromParameters);
-    //    expect(exampleBytes).toStrictEqual(bytesFromParameters);
-    //    expect(exampleParameters).toStrictEqual(parametersFromHex);
-    //    expect(toBytes(parametersFromHex, config)).toStrictEqual(exampleBytes);
-
-    //expect(command).toBeInstanceOf(command);
-    //expect(command).toBeInstanceOf(Command);
-    //expect(command.parameters).toStrictEqual(parameters);
-    //expect(command.getParameters()).toStrictEqual(parameters);
-    //expect(command.toHex()).toBe(exampleHex);
-    // if ( !(command instanceof DataSegmentBase) ) {
-    //     expect(command.toJson()).toBe(JSON.stringify(command.getParameters()));
-    // }
-    //expect(command.toBase64()).toBe(commandBase64);
-
-    // expect(parametersFromHex).toStrictEqual(command);
-    // expect(parametersFromHex.toHex()).toBe(exampleHex);
-    // expect(parametersFromHex.parameters).toStrictEqual(parameters);
-    // expect(parametersFromHex.getParameters()).toStrictEqual(parameters);
 };
 
 
@@ -76,10 +42,6 @@ const processExamples = ( commandMap: Record<string, ICommandImplementation> ) =
             for ( const [exampleName, example] of Object.entries(commandImplementation.examples) ) {
                 test(exampleName, () => checkExample(commandImplementation, example));
             }
-
-            // command.examples.forEach((example: ICommandExample) => {
-            //     test(example.name, () => checkExample(command, example));
-            // });
         });
     }
 };
