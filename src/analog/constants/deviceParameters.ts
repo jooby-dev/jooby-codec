@@ -147,3 +147,6 @@ export const NBIOT_SIM = 55;
 
 /** Set channel type */
 export const CHANNEL_TYPE = 56;
+
+/** Enable extra payload with signal quality on every uplink command */
+export const EXTRA_PAYLOAD_ENABLE = 57;
