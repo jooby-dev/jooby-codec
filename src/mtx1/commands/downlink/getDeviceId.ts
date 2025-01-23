@@ -22,7 +22,7 @@
 
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
-import * as accessLevels from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getDeviceId as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -30,7 +30,7 @@ import commandNames from '../../constants/downlinkNames.js';
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 0;
 export const isLoraOnly = false;
 

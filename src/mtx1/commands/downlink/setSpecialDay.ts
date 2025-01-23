@@ -22,7 +22,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [0x12, 0x06, 0x01, 0x05, 0x01, 0x09, 0x03, 0x00]
+ * [18, 6, 1, 5, 1, 9, 3, 0]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetSpecialDay.md#request)

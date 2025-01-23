@@ -31,7 +31,7 @@
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
-import * as accessLevels from '../../constants/accessLevels.js';
+import {READ_ONLY, READ_WRITE} from '../../constants/accessLevels.js';
 import {setAccessKey as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -60,7 +60,7 @@ export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const maxSize = 1 + KEY_SIZE;
-export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
+export const accessLevel: types.TAccessLevel = READ_WRITE;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
@@ -71,7 +71,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            accessLevel: accessLevels.READ_ONLY,
+            accessLevel: READ_ONLY,
             key: [
                 0, 1, 2, 3, 4, 5, 6, 7,
                 7, 6, 5, 4, 3, 2, 1, 0
