@@ -31,7 +31,7 @@
 
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
-import * as accessLevels from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import {getEvents as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -46,7 +46,7 @@ interface IGetEventsParameters {
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 4;
 export const isLoraOnly = false;
 

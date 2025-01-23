@@ -24,7 +24,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [0x10, 0x07, 0x00, 0x05, 0x10, 0x1d, 0x22, 0x2f, 0xff]
+ * [16, 7, 0, 5, 16, 29, 34, 47, 255]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetDayProfile.md#request)

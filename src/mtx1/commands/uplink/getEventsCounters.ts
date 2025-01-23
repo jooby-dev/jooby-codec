@@ -35,7 +35,7 @@
 
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
-import * as accessLevels from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import {getEventsCounters as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -58,7 +58,7 @@ const OLD_COMMAND_BODY_SIZE = 20;
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = OLD_COMMAND_BODY_SIZE;
 export const isLoraOnly = false;
 

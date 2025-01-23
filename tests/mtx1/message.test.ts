@@ -749,15 +749,15 @@ const downlinkMessages: TMessageList = [
     },
     {
         name: 'setAccessKey',
-        hex: '0a 13 24 84 59 d8 fa 4e 1f 2a 49 56 5b ea 4c 46 70 ba f7 f9 69 ca fd 7e 18 2e 3c f1 60 ea ec 17 25 b7',
-        frameHex: '7e 50 aa aa ff ff 0a 7d 33 24 84 59 d8 fa 4e 1f 2a 49 56 5b ea 4c 46 70 ba f7 f9 69 ca fd 7d 5e 18 2e 3c f1 60 ea ec 17 25 b7 b2 00 7e',
+        hex: '0a 12 f1 b6 e0 a9 84 51 a5 08 c7 b0 3b 82 6c 0b b1 a4 f3 45 64 f3 06 94 d4 a9 93 e3 ea 2c 8a 9b bc 8a',
+        frameHex: '7e 50 aa aa ff ff 0a 12 f1 b6 e0 a9 84 51 a5 08 c7 b0 3b 82 6c 0b b1 a4 f3 45 64 f3 06 94 d4 a9 93 e3 ea 2c 8a 9b bc 8a d2 28 7e',
         messageId: 10,
         accessLevel: downlinkCommands.setAccessKey.accessLevel,
         commands: [
             downlinkCommands.setAccessKey.examples['set key for READ_ONLY access level']
         ],
-        lrc: 0x5d,
-        crc: 0x00b2,
+        lrc: 0x5c,
+        crc: 0x28d2,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa

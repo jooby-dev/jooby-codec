@@ -1,6 +1,7 @@
 /dist
 /docs
 /node_modules
+/src/test.js
 /src/test.ts
 
 tsconfig.eslint.tsbuildinfo

@@ -25,7 +25,7 @@
 
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
-import * as accessLevels from '../../constants/accessLevels.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as criticalEvents from '../../constants/criticalEvents.js';
 import criticalEventNames from '../../constants/criticalEventNames.js';
@@ -50,7 +50,7 @@ interface IGetCriticalEventParameters {
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 2;
 export const isLoraOnly = false;
 

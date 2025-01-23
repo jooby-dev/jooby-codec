@@ -14,7 +14,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [0x29, 0x00]
+ * [41, 0]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetSaldo.md#request)
