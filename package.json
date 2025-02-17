@@ -88,7 +88,7 @@
         "eslint-import-resolver-typescript": "^3.6.1",
         "eslint-plugin-import": "^2.29.1",
         "eslint-plugin-tsdoc": "^0.4.0",
-        "eslint": "^8.57.0",
+        "eslint": "^9.20.1",
         "jest": "^29.7.0",
         "jooby-codec": "file:.",
         "ts-jest": "^29.1.2",
