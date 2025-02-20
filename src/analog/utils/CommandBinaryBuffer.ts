@@ -661,6 +661,14 @@ interface IParameterExtraPayloadEnable {
 }
 
 /**
+ * Time synchronization period in seconds via MAC commands
+ * deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC = `58`
+ */
+interface IParameterTimeSynchronizationPeriodMac {
+    period: types.TUint32
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -802,7 +810,8 @@ type TParameterData =
     IParameterNbiotLedIndication |
     IParameterNbiotSim |
     IParameterChannelType |
-    IParameterExtraPayloadEnable;
+    IParameterExtraPayloadEnable |
+    IParameterTimeSynchronizationPeriodMac;
 
 
 type TRequestParameterData =
@@ -1004,7 +1013,8 @@ const parametersSizeMap = {
     [deviceParameters.EVENTS_CONFIG]: 1 + 3,
     [deviceParameters.NBIOT_LED_INDICATION]: 1 + 2,
     [deviceParameters.NBIOT_SIM]: 1 + 3,
-    [deviceParameters.EXTRA_PAYLOAD_ENABLE]: 1 + 1
+    [deviceParameters.EXTRA_PAYLOAD_ENABLE]: 1 + 1,
+    [deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC]: 1 + 4
 };
 
 const fourChannelsBitMask = {
@@ -1469,6 +1479,14 @@ const deviceParameterConvertersMap = {
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterExtraPayloadEnable ) => {
             buffer.setUint8(parameter.enable);
+        }
+    },
+    [deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterTimeSynchronizationPeriodMac => ({
+            period: buffer.getUint32()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterTimeSynchronizationPeriodMac ) => {
+            buffer.setUint32(parameter.period);
         }
     }
 };

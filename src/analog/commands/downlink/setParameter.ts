@@ -493,6 +493,22 @@ export const examples: command.TCommandExamples = {
             0x03, 0x02,
             0x39, 0x01
         ]
+    },
+    'Time synchronization period in seconds via MAC commands': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 58,
+            name: 'TIME_SYNCHRONIZATION_PERIOD_VIA_MAC',
+            data: {
+                period: 1440
+            }
+        },
+        bytes: [
+            0x03, 0x05,
+            0x3a, 0x00, 0x00, 0x05, 0xa0
+        ]
     }
 };
 

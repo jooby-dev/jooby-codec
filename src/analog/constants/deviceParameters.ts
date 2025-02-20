@@ -150,3 +150,6 @@ export const CHANNEL_TYPE = 56;
 
 /** Enable extra payload with signal quality on every uplink command */
 export const EXTRA_PAYLOAD_ENABLE = 57;
+
+/** Time synchronization period in seconds via MAC commands */
+export const TIME_SYNCHRONIZATION_PERIOD_VIA_MAC = 58;
