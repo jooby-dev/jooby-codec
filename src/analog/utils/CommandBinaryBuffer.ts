@@ -210,10 +210,25 @@ interface IParameterEmpty {}
  */
 interface IParameterReportingDataInterval {
     /**
+     * Minimal interval for data sending from device (in seconds) for a special schedule.
+     * Real value = value + pseudo-random value which is not more than `255` * `4`.
+     */
+    specialSchedulePeriod: number,
+    /**
+     * The number of days at the beginning of the month that follow a special schedule.
+     * Must be less than 4. If set to 0, no special schedule is applied.
+     */
+    firstDaysSpecialSchedule: number,
+    /**
+     * The number of days at the end of the month that follow a special schedule.
+     * Must be less than 4. If set to 0, no special schedule is applied.
+     */
+    lastDaysSpecialSchedule: number,
+    /**
      * Minimal interval for data sending from device (in seconds).
      * Real value = value + pseudo-random value which is not more than `255` * `4`.
      */
-    value: number
+    period: number
 }
 
 /**
@@ -864,7 +879,6 @@ const EXTEND_BIT_MASK = 0x80;
 const LAST_BIT_INDEX = 7;
 const DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT = 600;
 /** 'reserved' bytes which not used */
-const DATA_SENDING_INTERVAL_RESERVED_BYTES = 3;
 const PARAMETER_RX2_FREQUENCY_COEFFICIENT = 100;
 const SERIAL_NUMBER_SIZE = 6;
 const MAGNETIC_INFLUENCE_BIT_INDEX = 8;
@@ -1084,17 +1098,17 @@ const setNbiotSslSet = ( buffer: ICommandBinaryBuffer, parameter: IParameterNbio
 
 const deviceParameterConvertersMap = {
     [deviceParameters.REPORTING_DATA_INTERVAL]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataInterval => {
-            buffer.seek( buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
-
-            return {
-                value: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
-            };
-        },
+        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataInterval => ({
+            specialSchedulePeriod: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT,
+            firstDaysSpecialSchedule: buffer.getUint8(),
+            lastDaysSpecialSchedule: buffer.getUint8(),
+            period: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
+        }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataInterval ) => {
-            buffer.seek( buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
-
-            buffer.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
+            buffer.setUint8(parameter.specialSchedulePeriod / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
+            buffer.setUint8(parameter.firstDaysSpecialSchedule);
+            buffer.setUint8(parameter.lastDaysSpecialSchedule);
+            buffer.setUint8(parameter.period / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
         }
     },
     [deviceParameters.DAY_CHECKOUT_HOUR]: {

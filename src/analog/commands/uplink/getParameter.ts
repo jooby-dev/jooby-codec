@@ -46,7 +46,12 @@ export const examples: command.TCommandExamples = {
         parameters: {
             id: 1,
             name: 'REPORTING_DATA_INTERVAL',
-            data: {value: 2400}
+            data: {
+                specialSchedulePeriod: 0,
+                firstDaysSpecialSchedule: 0,
+                lastDaysSpecialSchedule: 0,
+                period: 2400
+            }
         },
         bytes: [
             0x04, 0x05,
