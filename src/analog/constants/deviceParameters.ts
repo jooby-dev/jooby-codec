@@ -153,3 +153,6 @@ export const EXTRA_PAYLOAD_ENABLE = 57;
 
 /** Time synchronization period in seconds via MAC commands */
 export const TIME_SYNCHRONIZATION_PERIOD_VIA_MAC = 58;
+
+/** keep its lora connection even after being removed */
+export const KEEP_LORA_CONNECTION_ON_REMOVAL = 59;

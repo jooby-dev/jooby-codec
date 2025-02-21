@@ -684,6 +684,14 @@ interface IParameterTimeSynchronizationPeriodMac {
 }
 
 /**
+ * keep its lora connection even after being removed
+ * deviceParameters.KEEP_LORA_CONNECTION_ON_REMOVAL = `59`
+ */
+interface IParameterKeepLoraConnectionOnRemoval {
+    value: boolean
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -826,8 +834,8 @@ type TParameterData =
     IParameterNbiotSim |
     IParameterChannelType |
     IParameterExtraPayloadEnable |
-    IParameterTimeSynchronizationPeriodMac;
-
+    IParameterTimeSynchronizationPeriodMac |
+    IParameterKeepLoraConnectionOnRemoval;
 
 type TRequestParameterData =
     IRequestChannelParameter |
@@ -1028,7 +1036,8 @@ const parametersSizeMap = {
     [deviceParameters.NBIOT_LED_INDICATION]: 1 + 2,
     [deviceParameters.NBIOT_SIM]: 1 + 3,
     [deviceParameters.EXTRA_PAYLOAD_ENABLE]: 1 + 1,
-    [deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC]: 1 + 4
+    [deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC]: 1 + 4,
+    [deviceParameters.KEEP_LORA_CONNECTION_ON_REMOVAL]: 1 + 1
 };
 
 const fourChannelsBitMask = {
@@ -1501,6 +1510,14 @@ const deviceParameterConvertersMap = {
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterTimeSynchronizationPeriodMac ) => {
             buffer.setUint32(parameter.period);
+        }
+    },
+    [deviceParameters.KEEP_LORA_CONNECTION_ON_REMOVAL]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterKeepLoraConnectionOnRemoval => ({
+            value: buffer.getUint8() !== 0
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterKeepLoraConnectionOnRemoval ) => {
+            buffer.setUint8(parameter.value ? 1 : 0);
         }
     }
 };

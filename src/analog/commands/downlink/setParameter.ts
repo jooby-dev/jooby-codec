@@ -514,6 +514,22 @@ export const examples: command.TCommandExamples = {
             0x03, 0x05,
             0x3a, 0x00, 0x00, 0x05, 0xa0
         ]
+    },
+    'keep its lora connection even after being removed': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 59,
+            name: 'KEEP_LORA_CONNECTION_ON_REMOVAL',
+            data: {
+                value: true
+            }
+        },
+        bytes: [
+            0x03, 0x02,
+            0x3b, 0x01
+        ]
     }
 };
 
