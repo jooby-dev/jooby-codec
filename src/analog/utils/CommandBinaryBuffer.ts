@@ -213,22 +213,22 @@ interface IParameterReportingDataInterval {
      * Minimal interval for data sending from device (in seconds) for a special schedule.
      * Real value = value + pseudo-random value which is not more than `255` * `4`.
      */
-    specialSchedulePeriod: number,
+    specialSchedulePeriod: types.TUint8,
     /**
      * The number of days at the beginning of the month that follow a special schedule.
      * Must be less than 4. If set to 0, no special schedule is applied.
      */
-    firstDaysSpecialSchedule: number,
+    firstDaysSpecialSchedule: types.TUint8,
     /**
      * The number of days at the end of the month that follow a special schedule.
      * Must be less than 4. If set to 0, no special schedule is applied.
      */
-    lastDaysSpecialSchedule: number,
+    lastDaysSpecialSchedule: types.TUint8,
     /**
      * Minimal interval for data sending from device (in seconds).
      * Real value = value + pseudo-random value which is not more than `255` * `4`.
      */
-    period: number
+    period: types.TUint8
 }
 
 /**

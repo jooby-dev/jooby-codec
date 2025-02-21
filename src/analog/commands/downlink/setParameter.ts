@@ -499,7 +499,7 @@ export const examples: command.TCommandExamples = {
             0x39, 0x01
         ]
     },
-    'Time synchronization period in seconds via MAC commands': {
+    'time synchronization period in seconds via MAC commands': {
         id,
         name,
         headerSize,
