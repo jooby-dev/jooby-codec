@@ -684,7 +684,7 @@ interface IParameterTimeSynchronizationPeriodMac {
 }
 
 /**
- * keep its lora connection even after being removed
+ * Keep its lora connection even after being removed
  * deviceParameters.KEEP_LORA_CONNECTION_ON_REMOVAL = `59`
  */
 interface IParameterKeepLoraConnectionOnRemoval {
