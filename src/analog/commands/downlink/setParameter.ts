@@ -44,7 +44,12 @@ export const examples: command.TCommandExamples = {
         parameters: {
             id: 1,
             name: 'REPORTING_DATA_INTERVAL',
-            data: {value: 3600}
+            data: {
+                specialSchedulePeriod: 0,
+                firstDaysSpecialSchedule: 0,
+                lastDaysSpecialSchedule: 0,
+                period: 3600
+            }
         },
         bytes: [
             0x03, 0x05,
@@ -492,6 +497,22 @@ export const examples: command.TCommandExamples = {
         bytes: [
             0x03, 0x02,
             0x39, 0x01
+        ]
+    },
+    'time synchronization period in seconds via MAC commands': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 58,
+            name: 'TIME_SYNCHRONIZATION_PERIOD_VIA_MAC',
+            data: {
+                period: 1440
+            }
+        },
+        bytes: [
+            0x03, 0x05,
+            0x3a, 0x00, 0x00, 0x05, 0xa0
         ]
     }
 };

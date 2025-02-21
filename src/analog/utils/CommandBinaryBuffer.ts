@@ -210,10 +210,25 @@ interface IParameterEmpty {}
  */
 interface IParameterReportingDataInterval {
     /**
+     * Minimal interval for data sending from device (in seconds) for a special schedule.
+     * Real value = value + pseudo-random value which is not more than `255` * `4`.
+     */
+    specialSchedulePeriod: types.TUint8,
+    /**
+     * The number of days at the beginning of the month that follow a special schedule.
+     * Must be less than 4. If set to 0, no special schedule is applied.
+     */
+    firstDaysSpecialSchedule: types.TUint8,
+    /**
+     * The number of days at the end of the month that follow a special schedule.
+     * Must be less than 4. If set to 0, no special schedule is applied.
+     */
+    lastDaysSpecialSchedule: types.TUint8,
+    /**
      * Minimal interval for data sending from device (in seconds).
      * Real value = value + pseudo-random value which is not more than `255` * `4`.
      */
-    value: number
+    period: types.TUint8
 }
 
 /**
@@ -661,6 +676,14 @@ interface IParameterExtraPayloadEnable {
 }
 
 /**
+ * Time synchronization period in seconds via MAC commands
+ * deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC = `58`
+ */
+interface IParameterTimeSynchronizationPeriodMac {
+    period: types.TUint32
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -802,7 +825,8 @@ type TParameterData =
     IParameterNbiotLedIndication |
     IParameterNbiotSim |
     IParameterChannelType |
-    IParameterExtraPayloadEnable;
+    IParameterExtraPayloadEnable |
+    IParameterTimeSynchronizationPeriodMac;
 
 
 type TRequestParameterData =
@@ -855,7 +879,6 @@ const EXTEND_BIT_MASK = 0x80;
 const LAST_BIT_INDEX = 7;
 const DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT = 600;
 /** 'reserved' bytes which not used */
-const DATA_SENDING_INTERVAL_RESERVED_BYTES = 3;
 const PARAMETER_RX2_FREQUENCY_COEFFICIENT = 100;
 const SERIAL_NUMBER_SIZE = 6;
 const MAGNETIC_INFLUENCE_BIT_INDEX = 8;
@@ -1004,7 +1027,8 @@ const parametersSizeMap = {
     [deviceParameters.EVENTS_CONFIG]: 1 + 3,
     [deviceParameters.NBIOT_LED_INDICATION]: 1 + 2,
     [deviceParameters.NBIOT_SIM]: 1 + 3,
-    [deviceParameters.EXTRA_PAYLOAD_ENABLE]: 1 + 1
+    [deviceParameters.EXTRA_PAYLOAD_ENABLE]: 1 + 1,
+    [deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC]: 1 + 4
 };
 
 const fourChannelsBitMask = {
@@ -1074,17 +1098,17 @@ const setNbiotSslSet = ( buffer: ICommandBinaryBuffer, parameter: IParameterNbio
 
 const deviceParameterConvertersMap = {
     [deviceParameters.REPORTING_DATA_INTERVAL]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataInterval => {
-            buffer.seek( buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
-
-            return {
-                value: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
-            };
-        },
+        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataInterval => ({
+            specialSchedulePeriod: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT,
+            firstDaysSpecialSchedule: buffer.getUint8(),
+            lastDaysSpecialSchedule: buffer.getUint8(),
+            period: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
+        }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataInterval ) => {
-            buffer.seek( buffer.offset + DATA_SENDING_INTERVAL_RESERVED_BYTES);
-
-            buffer.setUint8(parameter.value / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
+            buffer.setUint8(parameter.specialSchedulePeriod / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
+            buffer.setUint8(parameter.firstDaysSpecialSchedule);
+            buffer.setUint8(parameter.lastDaysSpecialSchedule);
+            buffer.setUint8(parameter.period / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
         }
     },
     [deviceParameters.DAY_CHECKOUT_HOUR]: {
@@ -1469,6 +1493,14 @@ const deviceParameterConvertersMap = {
         }),
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterExtraPayloadEnable ) => {
             buffer.setUint8(parameter.enable);
+        }
+    },
+    [deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterTimeSynchronizationPeriodMac => ({
+            period: buffer.getUint32()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterTimeSynchronizationPeriodMac ) => {
+            buffer.setUint32(parameter.period);
         }
     }
 };
