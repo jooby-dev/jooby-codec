@@ -1,10 +1,10 @@
 /**
- * Display test (0.2.0)
+ * Display test
  */
 export const SET_ALL_SEGMENT_DISPLAY = 1;
 
 /**
- * Software version
+ * Software version (0.2.0)
  */
 export const SOFTWARE_VERSION = 2;
 
@@ -54,7 +54,7 @@ export const CURRENT_IN_PHASE = 10;
 export const CURRENT_IN_NEUTRAL = 11;
 
 /**
- * Voltage (31.7.0)
+ * Voltage (32.7.0)
  */
 export const VOLTAGE = 12;
 
