@@ -116,6 +116,12 @@ export const GASIC = 12;
 export const US_WATER = 13;
 
 /**
+ * RM installed inside MTX meters.
+ * Supports both LORA and PLC.
+ */
+export const PLC2LORA = 14;
+
+/**
  * RM with 4 ports for the Asian region, `AS923`.
  * 4 channels
  *
@@ -125,6 +131,16 @@ export const US_WATER = 13;
  * - Jooby OMNI RM LoRaWAN 4PI 202 AS
  */
 export const IMP4AS = 15;
+
+/**
+ * RM installed inside MTX meters.
+ */
+export const PLC2 = 20;
+
+/**
+ * RM installed inside MTX meters.
+ */
+export const LORA = 21;
 
 /**
  * NB-IoT GAS module based on CPU `STM32WLE5`.

@@ -226,6 +226,8 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
             break;
 
         case hardwareTypes.MTXLORA:
+        case hardwareTypes.PLC2LORA:
+        case hardwareTypes.LORA:
             data = {
                 time2000: buffer.getUint32(),
                 resetReason: buffer.getUint8(),
