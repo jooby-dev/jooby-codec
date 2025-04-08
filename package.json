@@ -1,6 +1,6 @@
 {
     "name": "jooby-codec",
-    "version": "5.7.0",
+    "version": "5.8.0",
     "description": "Jooby message encoders/decoders",
     "type": "module",
     "main": "./dist/index.js",
@@ -54,7 +54,7 @@
     },
     "scripts": {
         "start": "node ./dist/index.js",
-        "dev": "node --loader ts-node/esm --watch ./src/test.ts",
+        "dev": "node --watch ./src/test.js",
         "build:js": "tsc --extendedDiagnostics",
         "build:js:clean": "rm -rf ./dist && tsc --incremental false --extendedDiagnostics",
         "build:js:watch": "tsc --watch",

@@ -428,6 +428,7 @@ export interface IOperatorParameters {
 
     /**
      * Allowed correction interval (`15` minutes by default).
+     * `0` - correction is disabled.
      */
     deltaCorMin: types.TUint8,
 
@@ -549,7 +550,7 @@ export interface IOperatorParameters {
     relaySet5: IRelaySet5OperatorParameter,
 
     /**
-     * Allowed correction period, in hours (`24` hours by default).
+     * Allowed correction period, in hours (`24` hours by default, `0` - no limitations).
      */
     timeCorrectPeriod: types.TUint8,
 
