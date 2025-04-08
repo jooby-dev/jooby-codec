@@ -12,7 +12,7 @@
  * // simple response
  * const bytes = [
  *     0x0f, 0x05, 0x05, 0x05, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
- *     0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x18
+ *     0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x98
  * ];
  *
  * // decoded payload
@@ -42,7 +42,8 @@
  *     channel4: 4,
  *     channel5: 5,
  *     channel6: 6,
- *     timeCorrectPeriod: 24
+ *     timeCorrectPeriod: 24,
+ *     timeCorrectPassHalfhour: true
  * }
  * ```
  *
@@ -93,7 +94,8 @@ export const examples: command.TCommandExamples = {
             channel4: 4,
             channel5: 5,
             channel6: 6,
-            timeCorrectPeriod: 24
+            timeCorrectPeriod: 24,
+            timeCorrectPassHalfhour: true
         },
         bytes: [
             0x47, 0x1c,
@@ -112,7 +114,7 @@ export const examples: command.TCommandExamples = {
             0x04, // channel4
             0x05, // channel5
             0x06, // channel6
-            0x18 // timeCorrectPeriod
+            0x98 // timeCorrectPeriod with timeCorrectPassHalfhour
         ]
     }
 };
