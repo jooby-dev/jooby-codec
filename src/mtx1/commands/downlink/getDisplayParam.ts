@@ -6,9 +6,10 @@
  * @example
  * ```js
  * import * as getDisplayParam from 'jooby-codec/mtx1/commands/downlink/getDisplayParam.js';
+ * import {displayModes} from 'jooby-codec/mtx1/constants/index.js';
  *
  * const parameters = {
- *     displayMode: 1
+ *     displayMode: displayModes.ADDITIONAL
  * };
  * const bytes = getDisplayParam.toBytes(parameters);
  *
@@ -27,18 +28,16 @@ import {READ_ONLY} from '../../constants/accessLevels.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import {getDisplayParam as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import {displayModes} from '../../constants/index.js';
 
+
+type TDisplayMode = typeof displayModes.MAIN | typeof displayModes.ADDITIONAL;
 
 interface IGetDisplayParamParameters {
     /**
-     * Display mode.
-     *
-     * | Value | Screen type  | Screen range |
-     * | ----- | ------------ | ------------ |
-     * | `0`   | `main`       | `1..32`      |
-     * | `1`   | `additional` | `1..32`      |
+     * {@link displayModes | available modes}.
      */
-    displayMode: types.TUint8;
+    displayMode: TDisplayMode;
 }
 
 
@@ -57,7 +56,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            displayMode: 1
+            displayMode: displayModes.ADDITIONAL
         },
         bytes: [
             0x5e, 0x01,
@@ -73,7 +72,9 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( [displayMode]: types.TBytes ): IGetDisplayParamParameters => ({displayMode});
+export const fromBytes = ( [displayMode]: types.TBytes ): IGetDisplayParamParameters => ({
+    displayMode: displayMode as TDisplayMode
+});
 
 
 /**
