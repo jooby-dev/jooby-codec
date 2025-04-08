@@ -14,6 +14,7 @@ export {default as screenNames} from './screenNames.js';
 export {default as uplinkNames} from './uplinkNames.js';
 export * as accessLevels from './accessLevels.js';
 export * as criticalEvents from './criticalEvents.js';
+export * as displayModes from './displayModes.js';
 export * as downlinkIds from './downlinkIds.js';
 export * as energyTypes from './energyTypes.js';
 export * as events from './events.js';
