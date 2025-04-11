@@ -29,14 +29,15 @@
  *     channel4: 4,
  *     channel5: 5,
  *     channel6: 6,
- *     timeCorrectPeriod: 24
+ *     timeCorrectPeriod: 24,
+ *     timeCorrectPassHalfhour: true
  * };
  * const bytes = setOperatorParametersExtended2.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [69, 28, 15, 5, 5, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 2, 3, 4, 5, 6, 24]
+ * [69, 28, 15, 5, 5, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 1, 2, 3, 4, 5, 6, 152]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/SetOperatorParametersExtended2.md#request)
@@ -86,7 +87,8 @@ export const examples: command.TCommandExamples = {
             channel4: 4,
             channel5: 5,
             channel6: 6,
-            timeCorrectPeriod: 24
+            timeCorrectPeriod: 24,
+            timeCorrectPassHalfhour: true
         },
         bytes: [
             0x45, 0x1c,
@@ -105,7 +107,7 @@ export const examples: command.TCommandExamples = {
             0x04, // channel4
             0x05, // channel5
             0x06, // channel6
-            0x18 // timeCorrectPeriod
+            0x98 // timeCorrectPeriod with timeCorrectPassHalfhour
         ]
     }
 };

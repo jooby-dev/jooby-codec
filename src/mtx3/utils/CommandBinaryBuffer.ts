@@ -1572,12 +1572,15 @@ export interface IOperatorParametersExtended2 {
 
     /**
      * Allowed correction period, in hours (`24` hours by default).
-     *
-     * If `BIT7`=`0` (default is `0`), time correction crossing the half-hour boundary is prohibited.
+     */
+    timeCorrectPeriod: types.TUint8,
+
+    /**
+     * Is the time correction with a transition across the half-hour boundary allowed.
      *
      * since build `302.25.001`
      */
-    timeCorrectPeriod: types.TUint8
+    timeCorrectPassHalfhour: boolean
 }
 
 export interface IOperatorParametersExtended4 {
@@ -2355,7 +2358,7 @@ CommandBinaryBuffer.prototype.setDemand = function ( parameters: IGetDemandParam
 };
 
 CommandBinaryBuffer.prototype.getOperatorParametersExtended2 = function (): IOperatorParametersExtended2 {
-    return {
+    const operatorParametersExtended2 = {
         deltaCorMin: this.getUint8(),
         timeoutMagnetOff: this.getUint8(),
         relaySetExt: (bitSet.toObject(relaySetExtMask, this.getUint8()) as unknown) as IRelaySetExtOperatorParameter2,
@@ -2371,11 +2374,22 @@ CommandBinaryBuffer.prototype.getOperatorParametersExtended2 = function (): IOpe
         channel4: this.getUint8(),
         channel5: this.getUint8(),
         channel6: this.getUint8(),
-        timeCorrectPeriod: this.getUint8()
+        timeCorrectPeriod: 0,
+        timeCorrectPassHalfhour: false
     };
+
+    const timeCorrectPeriod = this.getUint8();
+
+    operatorParametersExtended2.timeCorrectPeriod = timeCorrectPeriod & 0x7f;
+    operatorParametersExtended2.timeCorrectPassHalfhour = !!(timeCorrectPeriod & 0x80);
+
+    return operatorParametersExtended2;
 };
 
 CommandBinaryBuffer.prototype.setOperatorParametersExtended2 = function ( operatorParametersExtended2: IOperatorParametersExtended2 ) {
+    const timeCorrectPeriod = operatorParametersExtended2.timeCorrectPeriod
+        | (operatorParametersExtended2.timeCorrectPassHalfhour ? 0x80 : 0);
+
     this.setUint8(operatorParametersExtended2.deltaCorMin);
     this.setUint8(operatorParametersExtended2.timeoutMagnetOff);
     this.setUint8(bitSet.fromObject(relaySetExtMask, operatorParametersExtended2.relaySetExt as unknown as bitSet.TBooleanObject));
@@ -2391,7 +2405,7 @@ CommandBinaryBuffer.prototype.setOperatorParametersExtended2 = function ( operat
     this.setUint8(operatorParametersExtended2.channel4);
     this.setUint8(operatorParametersExtended2.channel5);
     this.setUint8(operatorParametersExtended2.channel6);
-    this.setUint8(operatorParametersExtended2.timeCorrectPeriod);
+    this.setUint8(timeCorrectPeriod);
 };
 
 CommandBinaryBuffer.prototype.getOperatorParametersExtended4 = function (): IOperatorParametersExtended4 {
