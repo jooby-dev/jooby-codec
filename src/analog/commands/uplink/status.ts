@@ -194,6 +194,7 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
         case hardwareTypes.IMP4IN:
         case hardwareTypes.GASIC:
         case hardwareTypes.NBIOT:
+        case hardwareTypes.US_WATER:
             {
                 const statusData: IGasStatus = {
                     batteryVoltage: buffer.getBatteryVoltage(),
