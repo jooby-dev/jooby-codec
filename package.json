@@ -1,6 +1,6 @@
 {
     "name": "jooby-codec",
-    "version": "5.8.0",
+    "version": "5.9.0",
     "description": "Jooby message encoders/decoders",
     "type": "module",
     "main": "./dist/index.js",
@@ -93,8 +93,8 @@
         "jooby-codec": "file:.",
         "ts-jest": "^29.1.2",
         "ts-node": "^10.9.2",
-        "typedoc-plugin-missing-exports": "^3.1.0",
-        "typedoc": "^0.27.2",
+        "typedoc-plugin-missing-exports": "^4.0.0",
+        "typedoc": "^0.28.2",
         "typescript": "^5.4.3"
     },
     "license": "MIT"
