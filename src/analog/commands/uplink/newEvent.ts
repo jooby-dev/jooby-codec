@@ -31,7 +31,7 @@ import * as events from '../../constants/events.js';
 import eventNames from '../../constants/eventNames.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 import {TTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IEventMtxStatus} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, IEventMtxStatus, IEventUSWaterMeterStatus} from '../../utils/CommandBinaryBuffer.js';
 import getHexFromBytes from '../../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../../utils/getBytesFromHex.js';
 import {newEvent as commandId} from '../../constants/uplinkIds.js';
@@ -80,6 +80,11 @@ interface IEventTemperatureSensor extends IEventBase {
     temperature: types.TInt8
 }
 
+interface IEventUSWater extends IEventBase {
+    time2000: TTime2000;
+    status: IEventUSWaterMeterStatus;
+}
+
 type TEventData =
     IEventTime |
     IEventBatteryAlarm |
@@ -87,7 +92,8 @@ type TEventData =
     IEventConnection |
     IEventMtx |
     IEventBinarySensor |
-    IEventTemperatureSensor;
+    IEventTemperatureSensor |
+    IEventUSWater;
 
 /**
  * NewEvent command parameters.
@@ -151,6 +157,35 @@ export const examples: command.TCommandExamples = {
         bytes: [
             0x15, 0x0e,
             0x0b, 0x02, 0x2b, 0xc0, 0x31, 0x60, 0x00, 0x1a, 0x79, 0x88, 0x17, 0x01, 0x23, 0x56
+        ]
+    },
+    'event for WATER_EVENT': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 19,
+            name: 'WATER_EVENT',
+            sequenceNumber: 46,
+            data: {
+                time2000: 798110025,
+                status: {
+                    event: {
+                        transportMode: false,
+                        frequencyOutput: false,
+                        reverseFlow: true,
+                        tamperBreak: false,
+                        leakage: false,
+                        pipeBreak: false,
+                        pipeEmpty: false,
+                        batteryDischarge: false
+                    },
+                    error: 0
+                }
+            }
+        },
+        bytes: [
+            0x15, 0x08, 0x13, 0x2e, 0x2f, 0x92, 0x31, 0x49, 0x04, 0x00
         ]
     },
     'event for CONNECT': {
@@ -258,6 +293,9 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
         case events.OPTOLOW:
         case events.OPTOFLASH:
         case events.JOIN_ACCEPT:
+        case events.DEPASS_DONE:
+        case events.WATER_NO_RESPONSE:
+        case events.OPTOSENSOR_ERROR:
             eventData = {time2000: buffer.getTime()};
             break;
 
@@ -287,6 +325,10 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
         case events.TEMPERATURE_SENSOR_LOW_TEMPERATURE:
         case events.TEMPERATURE_SENSOR_HIGH_TEMPERATURE:
             eventData = {time2000: buffer.getTime(), channel: buffer.getChannelValue(), temperature: buffer.getInt8()};
+            break;
+
+        case events.WATER_EVENT:
+            eventData = {time2000: buffer.getTime(), status: buffer.getEventStatus(hardwareTypes.US_WATER)};
             break;
 
         default:
@@ -322,6 +364,9 @@ export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
         case events.OPTOLOW:
         case events.OPTOFLASH:
         case events.JOIN_ACCEPT:
+        case events.DEPASS_DONE:
+        case events.WATER_NO_RESPONSE:
+        case events.OPTOSENSOR_ERROR:
             buffer.setTime((data as IEventTime).time2000);
             break;
 
@@ -356,6 +401,11 @@ export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
             buffer.setTime((data as IEventTemperatureSensor).time2000);
             buffer.setChannelValue((data as IEventTemperatureSensor).channel);
             buffer.setInt8((data as IEventTemperatureSensor).temperature);
+            break;
+
+        case events.WATER_EVENT:
+            buffer.setTime((data as IEventUSWater).time2000);
+            buffer.setEventStatus(hardwareTypes.US_WATER, (data as IEventUSWater).status);
             break;
 
         default:
