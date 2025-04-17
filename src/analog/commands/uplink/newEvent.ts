@@ -290,7 +290,7 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
             break;
 
         default:
-            throw new Error(`Event ${id} is not supported`);
+            throw new Error(`Event ${eventId} is not supported`);
     }
 
     return {id: eventId, name: eventName, sequenceNumber, data: eventData};
@@ -359,7 +359,7 @@ export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
             break;
 
         default:
-            throw new Error(`Event ${id} is not supported`);
+            throw new Error(`Event ${eventId} is not supported`);
     }
 
     return command.toBytes(id, buffer.getBytesToOffset());
