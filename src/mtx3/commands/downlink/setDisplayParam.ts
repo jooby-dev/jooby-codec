@@ -6,9 +6,10 @@
  * @example
  * ```js
  * import * as setDisplayParam from 'jooby-codec/mtx3/commands/downlink/setDisplayParam.js';
+ * import {displayModes} from 'jooby-codec/mtx3/constants/index.js';
  *
  * const parameters = {
- *     displayMode: 0,
+ *     displayMode: displayModes.MAIN_1,
  *     order: [4, 5, 6, 7]
  * };
  * const bytes = setDisplayParam.toBytes(parameters);
@@ -25,22 +26,17 @@
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../../mtx1/constants/accessLevels.js';
+import {TDisplayMode} from '../../utils/CommandBinaryBuffer.js';
 import {setDisplayParam as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import {displayModes} from '../../constants/index.js';
 
 
 interface ISetDisplayParamParameters {
     /**
-     * Display mode.
-     *
-     * | Value | Screen type  | Screen range |
-     * | ----- | ------------ | ------------ |
-     * | `0`   | `main`       | `1..64`      |
-     * | `1`   | `main`       | `65..128`    |
-     * | `2`   | `additional` | `1..64`      |
-     * | `3`   | `additional` | `65..128`    |
+     * {@link displayModes | available modes}.
      */
-    displayMode: types.TUint8,
+    displayMode: TDisplayMode;
 
     /**
      * List of display numbers.
@@ -66,7 +62,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            displayMode: 0,
+            displayMode: displayModes.MAIN_1,
             order: [4, 5, 6, 7]
         },
         bytes: [
@@ -106,7 +102,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetDisplayParamParameters => 
 
     const [displayMode, ...order] = bytes;
 
-    return {displayMode, order};
+    return {displayMode: displayMode as TDisplayMode, order};
 };
 
 

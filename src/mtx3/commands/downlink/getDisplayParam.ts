@@ -25,13 +25,11 @@
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, TDisplayMode} from '../../utils/CommandBinaryBuffer.js';
 import {getDisplayParam as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 import {displayModes} from '../../constants/index.js';
 
-
-type TDisplayMode = typeof displayModes.MAIN_1 | typeof displayModes.MAIN_2 | typeof displayModes.ADDITIONAL_1 | typeof displayModes.ADDITIONAL_2;
 
 interface IGetDisplayParamParameters {
     /**
