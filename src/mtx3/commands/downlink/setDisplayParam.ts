@@ -26,7 +26,6 @@
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../../mtx1/constants/accessLevels.js';
-import {TDisplayMode} from '../../utils/CommandBinaryBuffer.js';
 import {setDisplayParam as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 import {displayModes} from '../../constants/index.js';
@@ -36,7 +35,7 @@ interface ISetDisplayParamParameters {
     /**
      * {@link displayModes | available modes}.
      */
-    displayMode: TDisplayMode;
+    displayMode: types.TUint8;
 
     /**
      * List of display numbers.
@@ -78,7 +77,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            displayMode: 1,
+            displayMode: displayModes.MAIN_2,
             order: []
         },
         bytes: [
@@ -102,7 +101,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetDisplayParamParameters => 
 
     const [displayMode, ...order] = bytes;
 
-    return {displayMode: displayMode as TDisplayMode, order};
+    return {displayMode, order};
 };
 
 

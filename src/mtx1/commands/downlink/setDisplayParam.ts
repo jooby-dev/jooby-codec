@@ -8,7 +8,7 @@
  * import * as setDisplayParam from 'jooby-codec/mtx1/commands/downlink/setDisplayParam.js';
  *
  * const parameters = {
- *     displayMode: 0,
+ *     displayMode: displayModes.MAIN,
  *     order: [4, 5, 6, 7]
  * };
  * const bytes = setDisplayParam.toBytes(parameters);
@@ -27,18 +27,14 @@ import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {setDisplayParam as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import {displayModes} from '../../constants/index.js';
 
 
 interface ISetDisplayParamParameters {
     /**
-     * Display mode.
-     *
-     * | Value | Screen type  | Screen range |
-     * | ----- | ------------ | ------------ |
-     * | `0`   | `main`       | `1..32`      |
-     * | `1`   | `additional` | `1..32`      |
+     * {@link displayModes | available modes}.
      */
-    displayMode: types.TUint8,
+    displayMode: types.TUint8;
 
     /**
      * List of display numbers.
@@ -48,7 +44,7 @@ interface ISetDisplayParamParameters {
      *
      * ({@link screenIds | display identifiers})
      */
-    order: Array<types.TUint8>
+    order: Array<types.TUint8>;
 }
 
 
@@ -67,7 +63,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            displayMode: 0,
+            displayMode: displayModes.MAIN,
             order: [4, 5, 6, 7]
         },
         bytes: [
@@ -82,7 +78,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            displayMode: 1,
+            displayMode: displayModes.ADDITIONAL,
             order: []
         },
         bytes: [

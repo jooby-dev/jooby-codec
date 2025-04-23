@@ -18,7 +18,7 @@
  * console.log(parameters);
  * // output:
  * {
- *     displayMode: 0,
+ *     displayMode: displayModes.MAIN_1,
  *     order: [4, 5, 6, 7]
  * }
  * ```
@@ -29,7 +29,6 @@
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
-import {TDisplayMode} from '../../utils/CommandBinaryBuffer.js';
 import {getDisplayParam as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 import {displayModes} from '../../constants/index.js';
@@ -39,14 +38,14 @@ interface IGetDisplayParamResponseParameters {
     /**
      * {@link displayModes | available modes}.
      */
-    displayMode: TDisplayMode,
+    displayMode: types.TUint8;
 
     /**
      * List of display numbers.
      *
      * ({@link screenIds | display identifiers})
      */
-    order: Array<types.TUint8>
+    order: Array<types.TUint8>;
 }
 
 
@@ -79,7 +78,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            displayMode: 1,
+            displayMode: displayModes.MAIN_2,
             order: []
         },
         bytes: [
@@ -99,7 +98,7 @@ export const examples: command.TCommandExamples = {
 export const fromBytes = ( bytes: types.TBytes ): IGetDisplayParamResponseParameters => {
     const [displayMode, ...order] = bytes;
 
-    return {displayMode: displayMode as TDisplayMode, order};
+    return {displayMode, order};
 };
 
 

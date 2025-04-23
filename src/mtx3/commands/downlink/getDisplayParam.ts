@@ -25,7 +25,7 @@
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, TDisplayMode} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import {getDisplayParam as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 import {displayModes} from '../../constants/index.js';
@@ -35,7 +35,7 @@ interface IGetDisplayParamParameters {
     /**
      * {@link displayModes | available modes}.
      */
-    displayMode: TDisplayMode;
+    displayMode: types.TUint8;
 }
 
 
@@ -70,9 +70,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( [displayMode]: types.TBytes ): IGetDisplayParamParameters => ({
-    displayMode: displayMode as TDisplayMode
-});
+export const fromBytes = ( [displayMode]: types.TBytes ): IGetDisplayParamParameters => ({displayMode});
 
 
 /**

@@ -1619,8 +1619,6 @@ export interface IDisplaySet5OperatorParameter {
     PROFILE_P06: boolean
 }
 
-export type TDisplayMode = typeof displayModes.MAIN_1 | typeof displayModes.MAIN_2 | typeof displayModes.ADDITIONAL_1 | typeof displayModes.ADDITIONAL_2;
-
 
 export const OPERATOR_PARAMETERS_SIZE = 95;
 export const OPERATOR_PARAMETERS_EXTENDED_SIZE = 9;
