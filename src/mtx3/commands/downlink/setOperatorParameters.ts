@@ -253,10 +253,7 @@ export const examples: command.TCommandExamples = {
                 POWER_THRESHOLD_T2: false,
                 POWER_THRESHOLD_T3: false,
                 POWER_THRESHOLD_T4: false,
-                OPTOPORT_SPEED: false,
-                MAGNET_INDUCTION: false,
                 SORT_DISPLAY_SCREENS: false,
-                TURN_OFF_DISPLAY: false,
                 AUTO_SCREEN_SCROLLING: true
             }
         },

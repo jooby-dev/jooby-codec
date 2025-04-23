@@ -14,10 +14,8 @@ import MtxBinaryBuffer, {
     ENERGY_SIZE
 } from '../../mtx1/utils/CommandBinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
-import * as baudRates from '../constants/baudRates.js';
 import {TEnergyType} from '../types.js';
-import * as events from '../constants/events.js';
-import eventNames from '../constants/eventNames.js';
+import {displayModes, baudRates, events, eventNames} from '../constants/index.js';
 
 
 export interface IDisplaySet1OperatorParameter {
@@ -506,7 +504,7 @@ export interface IDisplaySet3OperatorParameter {
     MAX_EXPORTED_ACTIVE_POWER_MONTH_T3: boolean;
 }
 
-export interface IDisplaySet4OperatorParameter {
+interface IDisplaySet4BaseOperatorParameter {
     /**
      * Maximum monthly active power for tariff `T4` (`P-`, `2.16.4` for `G`-type meters).
      */
@@ -638,26 +636,13 @@ export interface IDisplaySet4OperatorParameter {
      * Display power threshold for tariff `T4` (`5.2.4`).
      */
     POWER_THRESHOLD_T4: boolean;
+}
 
-    /**
-     * Optical port speed (for additional display only).
-     */
-    OPTOPORT_SPEED: boolean;
-
-    /**
-     * Magnetic induction (for additional display only).
-     */
-    MAGNET_INDUCTION: boolean;
-
+export interface IDisplaySet4OperatorParameter extends IDisplaySet4BaseOperatorParameter {
     /**
      * Enable display sorting (see commands `getDisplayParam`, `setDisplayParam`).
      */
     SORT_DISPLAY_SCREENS: boolean;
-
-    /**
-     * Turn off display.
-     */
-    TURN_OFF_DISPLAY: boolean;
 
     /**
      * Automatic display scrolling after pressing a button.
@@ -1459,11 +1444,16 @@ export interface IRelaySetExtOperatorParameter2 {
  */
 export type TChannelOperatorParameter2 = types.TUint8;
 
-export interface IDisplaySet24OperatorParameter2 {
+export interface IDisplaySet24OperatorParameter2 extends IDisplaySet4BaseOperatorParameter {
     /**
      * Optical port speed (for additional display only).
      */
     OPTOPORT_SPEED: boolean;
+
+    /**
+     * Magnetic induction (for additional display only).
+     */
+    MAGNET_INDUCTION: boolean;
 }
 
 export interface IOperatorParametersExtended2 {
@@ -1505,21 +1495,21 @@ export interface IOperatorParametersExtended2 {
      *
      * since build `302.15.001`
      */
-    displaySet21: types.TUint32,
+    displaySet21: IDisplaySet1OperatorParameter,
 
     /**
      * Display settings for additional meter readings screens.
      *
      * since build `302.15.001`
      */
-    displaySet22: types.TUint32,
+    displaySet22: IDisplaySet2OperatorParameter
 
     /**
      * Display settings for additional meter readings screens.
      *
      * since build `302.15.001`
      */
-    displaySet23: types.TUint32,
+    displaySet23: IDisplaySet3OperatorParameter,
 
     /**
      * Display settings for additional meter readings screens.
@@ -1743,7 +1733,7 @@ const displaySet3Mask = {
     MAX_EXPORTED_ACTIVE_POWER_MONTH_T3: 1 << 31
 };
 
-export const displaySet4Mask = {
+export const displaySet4BaseMask = {
     MAX_EXPORTED_ACTIVE_POWER_MONTH_T4: 1 << 0,
     MAX_EXPORTED_REACTIVE_POWER_DAY_T1: 1 << 1,
     MAX_EXPORTED_REACTIVE_POWER_DAY_T2: 1 << 2,
@@ -1769,11 +1759,12 @@ export const displaySet4Mask = {
     POWER_THRESHOLD_T1: 1 << 22,
     POWER_THRESHOLD_T2: 1 << 23,
     POWER_THRESHOLD_T3: 1 << 24,
-    POWER_THRESHOLD_T4: 1 << 25,
-    OPTOPORT_SPEED: 1 << 26,
-    MAGNET_INDUCTION: 1 << 27,
+    POWER_THRESHOLD_T4: 1 << 25
+};
+
+export const displaySet4Mask = {
+    ...displaySet4BaseMask,
     SORT_DISPLAY_SCREENS: 1 << 29,
-    TURN_OFF_DISPLAY: 1 << 30,
     AUTO_SCREEN_SCROLLING: 1 << 31
 };
 
@@ -1836,7 +1827,9 @@ export const define1Mask = {
 };
 
 export const displaySet24Mask = {
-    OPTOPORT_SPEED: 1 << 26
+    ...displaySet4BaseMask,
+    OPTOPORT_SPEED: 1 << 26,
+    MAGNET_INDUCTION: 1 << 27
 };
 
 export const relaySetExtMask = {
@@ -2364,9 +2357,9 @@ CommandBinaryBuffer.prototype.getOperatorParametersExtended2 = function (): IOpe
         relaySetExt: (bitSet.toObject(relaySetExtMask, this.getUint8()) as unknown) as IRelaySetExtOperatorParameter2,
         timeoutMagnetOn: this.getUint8(),
         phaseDefault: this.getUint8(),
-        displaySet21: this.getUint32(),
-        displaySet22: this.getUint32(),
-        displaySet23: this.getUint32(),
+        displaySet21: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet22: (bitSet.toObject(displaySet2Mask, this.getUint32()) as unknown) as IDisplaySet2OperatorParameter,
+        displaySet23: (bitSet.toObject(displaySet3Mask, this.getUint32()) as unknown) as IDisplaySet3OperatorParameter,
         displaySet24: (bitSet.toObject(displaySet24Mask, this.getUint32()) as unknown) as IDisplaySet24OperatorParameter2,
         channel1: this.getUint8(),
         channel2: this.getUint8(),
@@ -2395,9 +2388,9 @@ CommandBinaryBuffer.prototype.setOperatorParametersExtended2 = function ( operat
     this.setUint8(bitSet.fromObject(relaySetExtMask, operatorParametersExtended2.relaySetExt as unknown as bitSet.TBooleanObject));
     this.setUint8(operatorParametersExtended2.timeoutMagnetOn);
     this.setUint8(operatorParametersExtended2.phaseDefault);
-    this.setUint32(operatorParametersExtended2.displaySet21);
-    this.setUint32(operatorParametersExtended2.displaySet22);
-    this.setUint32(operatorParametersExtended2.displaySet23);
+    this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended2.displaySet21 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet2Mask, operatorParametersExtended2.displaySet22 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet3Mask, operatorParametersExtended2.displaySet23 as unknown as bitSet.TBooleanObject));
     this.setUint32(bitSet.fromObject(displaySet24Mask, operatorParametersExtended2.displaySet24 as unknown as bitSet.TBooleanObject));
     this.setUint8(operatorParametersExtended2.channel1);
     this.setUint8(operatorParametersExtended2.channel2);

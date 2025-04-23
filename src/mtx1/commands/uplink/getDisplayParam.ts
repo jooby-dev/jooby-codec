@@ -18,7 +18,7 @@
  * console.log(parameters);
  * // output:
  * {
- *     displayMode: 0,
+ *     displayMode: displayModes.MAIN,
  *     order: [4, 5, 6, 7]
  * }
  * ```
@@ -31,16 +31,12 @@ import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getDisplayParam as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import {displayModes} from '../../constants/index.js';
 
 
 interface IGetDisplayParamResponseParameters {
     /**
-     * Display mode.
-     *
-     * | Value | Screen type  | Screen range |
-     * | ----- | ------------ | ------------ |
-     * | `0`   | `main`       | `1..32`      |
-     * | `1`   | `additional` | `1..32`      |
+     * {@link displayModes | available modes}.
      */
     displayMode: types.TUint8,
 
@@ -68,7 +64,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            displayMode: 0,
+            displayMode: displayModes.MAIN,
             order: [4, 5, 6, 7]
         },
         bytes: [
@@ -82,7 +78,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            displayMode: 1,
+            displayMode: displayModes.ADDITIONAL,
             order: []
         },
         bytes: [

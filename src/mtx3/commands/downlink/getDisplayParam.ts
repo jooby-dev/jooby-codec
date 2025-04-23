@@ -31,13 +31,11 @@ import commandNames from '../../constants/downlinkNames.js';
 import {displayModes} from '../../constants/index.js';
 
 
-type TDisplayMode = typeof displayModes.MAIN_1 | typeof displayModes.MAIN_2 | typeof displayModes.ADDITIONAL_1 | typeof displayModes.ADDITIONAL_2;
-
 interface IGetDisplayParamParameters {
     /**
      * {@link displayModes | available modes}.
      */
-    displayMode: TDisplayMode;
+    displayMode: types.TUint8
 }
 
 
@@ -72,9 +70,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( [displayMode]: types.TBytes ): IGetDisplayParamParameters => ({
-    displayMode: displayMode as TDisplayMode
-});
+export const fromBytes = ( [displayMode]: types.TBytes ): IGetDisplayParamParameters => ({displayMode});
 
 
 /**
