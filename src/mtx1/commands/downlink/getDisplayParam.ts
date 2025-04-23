@@ -35,7 +35,7 @@ interface IGetDisplayParamParameters {
     /**
      * {@link displayModes | available modes}.
      */
-    displayMode: types.TUint8;
+    displayMode: types.TUint8
 }
 
 

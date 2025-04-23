@@ -38,14 +38,14 @@ interface IGetDisplayParamResponseParameters {
     /**
      * {@link displayModes | available modes}.
      */
-    displayMode: types.TUint8;
+    displayMode: types.TUint8,
 
     /**
      * List of display numbers.
      *
      * ({@link screenIds | display identifiers})
      */
-    order: Array<types.TUint8>;
+    order: Array<types.TUint8>
 }
 
 
