@@ -1898,7 +1898,9 @@ function getPackedEnergyType ( energyType: TEnergyType, energies: IEnergies ) {
 
 export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
     // static methods
-    getDefaultOperatorParameters (): IOperatorParameters
+    getDefaultOperatorParameters (): IOperatorParameters,
+    getDefaultOperatorParametersExtended (): IOperatorParametersExtended,
+    getDefaultOperatorParametersExtended2 (): IOperatorParametersExtended2,
 
     // instance methods
     // getFrameHeader (): IFrameHeader,
@@ -1997,6 +1999,39 @@ CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => (
         displaySet4: (bitSet.toObject(displaySet4Mask, 2147876864) as unknown) as IDisplaySet4OperatorParameter
     }
 );
+
+CommandBinaryBuffer.getDefaultOperatorParametersExtended = (): IOperatorParametersExtended => (
+    {
+        timeoutRelayOn: 1,
+        define1: (bitSet.toObject(define1Mask, 0) as unknown) as IDefine1OperatorParameterExtended,
+        timeoutRelayKey: 0,
+        timeoutRelayAuto: 5
+    }
+);
+
+CommandBinaryBuffer.getDefaultOperatorParametersExtended2 = (): IOperatorParametersExtended2 => (
+    {
+        deltaCorMin: 0,
+        timeoutMagnetOff: 5,
+        relaySetExt: (bitSet.toObject(relaySetExtMask, 0) as unknown) as IRelaySetExtOperatorParameter2,
+        timeoutMagnetOn: 5,
+        phaseDefault: 3,
+        displaySet21: (bitSet.toObject(displaySet1Mask, 4231) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet22: (bitSet.toObject(displaySet2Mask, 31597303) as unknown) as IDisplaySet2OperatorParameter,
+        displaySet23: (bitSet.toObject(displaySet3Mask, 0) as unknown) as IDisplaySet3OperatorParameter,
+        displaySet24: (bitSet.toObject(displaySet24Mask, 393216) as unknown) as IDisplaySet24OperatorParameter2,
+        channel1: 0,
+        channel2: 0,
+        channel3: 0,
+        channel4: 0,
+        channel5: 0,
+        channel6: 0,
+        timeCorrectPeriod: 24,
+        timeCorrectPassHalfhour: false
+    }
+);
+
+CommandBinaryBuffer.getDefaultOperatorParametersExtended3 = MtxBinaryBuffer.getDefaultOperatorParametersExtended3;
 
 
 // CommandBinaryBuffer.prototype.getFrameHeader = function (): IFrameHeader {

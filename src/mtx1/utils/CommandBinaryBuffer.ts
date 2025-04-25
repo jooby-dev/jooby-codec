@@ -1259,6 +1259,8 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getDefaultOperatorParameters (): IOperatorParameters,
 
+    getDefaultOperatorParametersExtended3 (): IOperatorParametersExtended3,
+
     // instance methods
     getFrameHeader (): IFrameHeader,
     setFrameHeader ( frameHeader: IFrameHeader ),
@@ -1407,6 +1409,16 @@ CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => (
         relaySet5: (bitSet.toObject(relaySet5Mask, 0) as unknown) as IRelaySet5OperatorParameter,
         timeCorrectPeriod: 24,
         timeCorrectPassHalfhour: false
+    }
+);
+
+CommandBinaryBuffer.getDefaultOperatorParametersExtended3 = (): IOperatorParametersExtended3 => (
+    {
+        pmaxMinusThreshold0: 0,
+        pmaxMinusThreshold1: 0,
+        pmaxMinusThreshold2: 0,
+        pmaxMinusThreshold3: 0,
+        relaySet: (bitSet.toObject(operatorParametersExtended3RelaySetMask, 0) as unknown) as IOperatorParametersExtended3RelaySet
     }
 );
 
