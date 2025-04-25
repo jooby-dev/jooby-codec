@@ -1953,83 +1953,77 @@ CommandBinaryBuffer.prototype = Object.create(MtxBinaryBuffer.prototype);
 CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
 
 
-CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => (
-    {
-        vpThreshold: 265000,
-        vThreshold: 156000,
-        ipThreshold: 120000,
-        pmaxThreshold0: 31800,
-        pmaxThreshold1: 31800,
-        pmaxThreshold2: 31800,
-        pmaxThreshold3: 31800,
-        rmaxThreshold0: 31800,
-        rmaxThreshold1: 31800,
-        rmaxThreshold2: 31800,
-        rmaxThreshold3: 31800,
-        tint: 30,
-        calcPeriodDate: 1,
-        timeoutDisplay: 127,
-        timeoutScreen: 7,
-        displaySet1: (bitSet.toObject(displaySet1Mask, 4229) as unknown) as IDisplaySet1OperatorParameter,
-        displaySet2: (bitSet.toObject(displaySet2Mask, 139776) as unknown) as IDisplaySet2OperatorParameter,
-        displaySet3: (bitSet.toObject(displaySet3Mask, 0) as unknown) as IDisplaySet3OperatorParameter,
-        relaySet: (bitSet.toObject(relaySetMask, 771) as unknown) as IRelaySetOperatorParameter,
-        speedOptoPort: getSpeedOptoPort(64),
-        ten: 30,
-        tu: 30,
-        timeIntervalPowerOff: 3,
-        reserved: 0,
-        timeoutBadVAVB: 5,
-        freqMax: 55,
-        freqMin: 45,
-        year: 0,
-        month: 0,
-        date: 0,
-        energyDecimalPoint: 2,
-        voltageTransformationRatioNumerator: 1,
-        voltageTransformationRatioDenominator: 1,
-        currentTransformationRatioNumerator: 1,
-        currentTransformationRatioDenominator: 1,
-        typeMeter: (bitSet.toObject(typeMeterMask, 0) as unknown) as ITypeMeterOperatorParameter,
-        phMin: 0,
-        timeoutIMax: 5,
-        timeoutPMax: 5,
-        timeoutCos: 5,
-        pMaxDef: 1,
-        displaySet4: (bitSet.toObject(displaySet4Mask, 2147876864) as unknown) as IDisplaySet4OperatorParameter
-    }
-);
+CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => ({
+    vpThreshold: 265000,
+    vThreshold: 156000,
+    ipThreshold: 120000,
+    pmaxThreshold0: 31800,
+    pmaxThreshold1: 31800,
+    pmaxThreshold2: 31800,
+    pmaxThreshold3: 31800,
+    rmaxThreshold0: 31800,
+    rmaxThreshold1: 31800,
+    rmaxThreshold2: 31800,
+    rmaxThreshold3: 31800,
+    tint: 30,
+    calcPeriodDate: 1,
+    timeoutDisplay: 127,
+    timeoutScreen: 7,
+    displaySet1: (bitSet.toObject(displaySet1Mask, 4229) as unknown) as IDisplaySet1OperatorParameter,
+    displaySet2: (bitSet.toObject(displaySet2Mask, 139776) as unknown) as IDisplaySet2OperatorParameter,
+    displaySet3: (bitSet.toObject(displaySet3Mask, 0) as unknown) as IDisplaySet3OperatorParameter,
+    relaySet: (bitSet.toObject(relaySetMask, 771) as unknown) as IRelaySetOperatorParameter,
+    speedOptoPort: getSpeedOptoPort(64),
+    ten: 30,
+    tu: 30,
+    timeIntervalPowerOff: 3,
+    reserved: 0,
+    timeoutBadVAVB: 5,
+    freqMax: 55,
+    freqMin: 45,
+    year: 0,
+    month: 0,
+    date: 0,
+    energyDecimalPoint: 2,
+    voltageTransformationRatioNumerator: 1,
+    voltageTransformationRatioDenominator: 1,
+    currentTransformationRatioNumerator: 1,
+    currentTransformationRatioDenominator: 1,
+    typeMeter: (bitSet.toObject(typeMeterMask, 0) as unknown) as ITypeMeterOperatorParameter,
+    phMin: 0,
+    timeoutIMax: 5,
+    timeoutPMax: 5,
+    timeoutCos: 5,
+    pMaxDef: 1,
+    displaySet4: (bitSet.toObject(displaySet4Mask, 2147876864) as unknown) as IDisplaySet4OperatorParameter
+});
 
-CommandBinaryBuffer.getDefaultOperatorParametersExtended = (): IOperatorParametersExtended => (
-    {
-        timeoutRelayOn: 1,
-        define1: (bitSet.toObject(define1Mask, 0) as unknown) as IDefine1OperatorParameterExtended,
-        timeoutRelayKey: 0,
-        timeoutRelayAuto: 5
-    }
-);
+CommandBinaryBuffer.getDefaultOperatorParametersExtended = (): IOperatorParametersExtended => ({
+    timeoutRelayOn: 1,
+    define1: (bitSet.toObject(define1Mask, 0) as unknown) as IDefine1OperatorParameterExtended,
+    timeoutRelayKey: 0,
+    timeoutRelayAuto: 5
+});
 
-CommandBinaryBuffer.getDefaultOperatorParametersExtended2 = (): IOperatorParametersExtended2 => (
-    {
-        deltaCorMin: 0,
-        timeoutMagnetOff: 5,
-        relaySetExt: (bitSet.toObject(relaySetExtMask, 0) as unknown) as IRelaySetExtOperatorParameter2,
-        timeoutMagnetOn: 5,
-        phaseDefault: 3,
-        displaySet21: (bitSet.toObject(displaySet1Mask, 4231) as unknown) as IDisplaySet1OperatorParameter,
-        displaySet22: (bitSet.toObject(displaySet2Mask, 31597303) as unknown) as IDisplaySet2OperatorParameter,
-        displaySet23: (bitSet.toObject(displaySet3Mask, 0) as unknown) as IDisplaySet3OperatorParameter,
-        displaySet24: (bitSet.toObject(displaySet24Mask, 393216) as unknown) as IDisplaySet24OperatorParameter2,
-        channel1: 0,
-        channel2: 0,
-        channel3: 0,
-        channel4: 0,
-        channel5: 0,
-        channel6: 0,
-        timeCorrectPeriod: 24,
-        timeCorrectPassHalfhour: false
-    }
-);
+CommandBinaryBuffer.getDefaultOperatorParametersExtended2 = (): IOperatorParametersExtended2 => ({
+    deltaCorMin: 0,
+    timeoutMagnetOff: 5,
+    relaySetExt: (bitSet.toObject(relaySetExtMask, 0) as unknown) as IRelaySetExtOperatorParameter2,
+    timeoutMagnetOn: 5,
+    phaseDefault: 3,
+    displaySet21: (bitSet.toObject(displaySet1Mask, 4231) as unknown) as IDisplaySet1OperatorParameter,
+    displaySet22: (bitSet.toObject(displaySet2Mask, 31597303) as unknown) as IDisplaySet2OperatorParameter,
+    displaySet23: (bitSet.toObject(displaySet3Mask, 0) as unknown) as IDisplaySet3OperatorParameter,
+    displaySet24: (bitSet.toObject(displaySet24Mask, 393216) as unknown) as IDisplaySet24OperatorParameter2,
+    channel1: 0,
+    channel2: 0,
+    channel3: 0,
+    channel4: 0,
+    channel5: 0,
+    channel6: 0,
+    timeCorrectPeriod: 24,
+    timeCorrectPassHalfhour: false
+});
 
 CommandBinaryBuffer.getDefaultOperatorParametersExtended3 = MtxBinaryBuffer.getDefaultOperatorParametersExtended3;
 
