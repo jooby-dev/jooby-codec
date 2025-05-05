@@ -46,7 +46,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {},
         bytes: [
-            0x75, 0x00
+            0x74, 0x00
         ]
     }
 };

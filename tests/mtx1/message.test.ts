@@ -1621,15 +1621,15 @@ const uplinkMessages: TMessageList = [
     {
         // does not match empro
         name: 'getHalfhoursEnergies',
-        hex: '0a 10 10 6f 0d 2a 43 11 01 02 10 00 20 00 30 00 40 00 00 1c',
-        frameHex: '7e 51 aa aa ff ff 0a 10 10 6f 0d 2a 43 7d 31 01 02 10 00 20 00 30 00 40 00 00 1c ec 0d 7e',
+        hex: '0a 10 10 6f 0d 2a 43 11 01 02 40 00 80 2f 44 d2 b0 39 00 ac',
+        frameHex: '7e 51 aa aa ff ff 0a 10 10 6f 0d 2a 43 7d 31 01 02 40 00 80 2f 44 d2 b0 39 00 ac a2 6d 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getHalfhoursEnergies.accessLevel,
         commands: [
             uplinkCommands.getHalfhoursEnergies.examples['get halfhours energies']
         ],
-        lrc: 0x1c,
-        crc: 0x0dec,
+        lrc: 0xac,
+        crc: 0x6da2,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
