@@ -371,7 +371,7 @@ export const examples: command.TCommandExamples = {
             }
         },
         bytes: [
-            0x75, 0x1c,
+            0x74, 0x1c,
             0x00, 0x00, 0x00, 0x5b, // displaySet5
             0x00, 0x00, 0x00, 0x55, // displaySet25
             0x40, 0x04, 0x02, 0x20, // displaySet31

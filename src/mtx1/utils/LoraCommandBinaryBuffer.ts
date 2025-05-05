@@ -28,7 +28,7 @@ interface IPowerMax {
 
 export type TEnergiesFlags = IEnergies<boolean>;
 
-type THalfhoursEnergy = Array<number | undefined>;
+type THalfhoursEnergy = Array<{tariff: number; energy: number} | undefined>;
 
 export type THalfhoursEnergies = IEnergies<THalfhoursEnergy>;
 
@@ -164,7 +164,13 @@ CommandBinaryBuffer.prototype.getHalfhoursEnergy = function ( halfhoursNumber: n
     for ( let index = 0; index < halfhoursNumber; index++ ) {
         const value = this.getUint16();
 
-        halfhours.push(value === UNDEFINED_ENERGY_VALUE ? undefined : value);
+        // extract the top 2 bits (shift right by 14 positions)
+        const tariff = (value >> 14) & 0b11;
+
+        // extract the remaining 14 bits (0x3FFF as mask)
+        const energy = value & 0b00111111_11111111;
+
+        halfhours.push(value === UNDEFINED_ENERGY_VALUE ? undefined : {tariff, energy});
     }
 
     return halfhours;
@@ -173,7 +179,12 @@ CommandBinaryBuffer.prototype.getHalfhoursEnergy = function ( halfhoursNumber: n
 CommandBinaryBuffer.prototype.setHalfhoursEnergy = function ( halfhours: THalfhoursEnergy | undefined ) {
     if ( halfhours ) {
         for ( let index = 0; index < halfhours.length; index++ ) {
-            const value = halfhours[index];
+            const {tariff, energy} = halfhours[index];
+
+            // combine the parts into a single uint16
+            // - shift tariff left by 14 positions
+            // - use bitwise OR to combine with energy
+            const value = (tariff << 14) | energy;
 
             this.setUint16(value === undefined ? UNDEFINED_ENERGY_VALUE : value);
         }
