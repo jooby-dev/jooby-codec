@@ -3,7 +3,7 @@
  *
  * **This command can be transmitted only via Lora.**
  *
- * Supported in MTX1 and MTX3 devices.
+ * Supported in MTX1 devices.
  *
  * @packageDocumentation
  *
@@ -45,7 +45,7 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfhoursEnergies, TARIFF_NUMBER} from '../../utils/LoraCommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfhoursEnergies1, TARIFF_NUMBER} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 import {getHalfhoursEnergies as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -55,7 +55,7 @@ export interface IGetHalfhoursEnergiesResponseParameters {
     date: types.IDate;
     firstHalfhour: number;
     halfhoursNumber: number;
-    energies: THalfhoursEnergies;
+    energies: THalfhoursEnergies1;
 }
 
 
@@ -80,7 +80,7 @@ const convertEnergyToObis = ( energy: string, tariff: number = 0 ) => {
     return obis ? obis.replace('x', tariff.toString(10)) : '';
 };
 
-const convertHalfhoursEnergiesToDlms = ( energies: THalfhoursEnergies ) => {
+const convertHalfhoursEnergiesToDlms = ( energies: THalfhoursEnergies1 ) => {
     const dlms: Record<string, number> = {};
 
     Object.keys(energies).forEach(energy => {
@@ -164,7 +164,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfhoursEnergiesResponseP
         date,
         firstHalfhour,
         halfhoursNumber,
-        energies: buffer.getHalfhoursEnergies(energiesFlags, halfhoursNumber)
+        energies: buffer.getHalfhoursEnergies1(energiesFlags, halfhoursNumber)
     };
 };
 
@@ -183,7 +183,7 @@ export const toBytes = ( parameters: IGetHalfhoursEnergiesResponseParameters ): 
     buffer.setEnergiesFlags(energies);
     buffer.setUint8(firstHalfhour);
     buffer.setUint8(halfhoursNumber);
-    buffer.setHalfhoursEnergies(energies);
+    buffer.setHalfhoursEnergies1(energies);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };
