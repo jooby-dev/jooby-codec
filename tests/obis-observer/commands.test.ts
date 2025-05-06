@@ -4,6 +4,7 @@ import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 
 
 const {uplink, downlink} = commands;
+const SCOPE = 'obis-observer';
 
 
 const checkExample = (
@@ -25,13 +26,13 @@ const checkExample = (
     }
 };
 
-const processExamples = ( commandMap: Record<string, ICommandImplementation> ) => {
+const processExamples = ( scope: string, commandMap: Record<string, ICommandImplementation> ) => {
     for ( const [commandName, commandImplementation] of Object.entries(commandMap) ) {
         // each command should export at least 1 example
         expect(Object.keys(commandImplementation.examples).length).toBeGreaterThan(0);
 
         // eslint-disable-next-line @typescript-eslint/no-loop-func
-        describe(`${commandName} ${getHexFromBytes([commandImplementation.id])}/${commandImplementation.id}`, () => {
+        describe(`${scope} ${commandName} ${getHexFromBytes([commandImplementation.id])}/${commandImplementation.id}`, () => {
             for ( const [exampleName, example] of Object.entries(commandImplementation.examples) ) {
                 test(exampleName, () => checkExample(commandImplementation, example));
             }
@@ -41,9 +42,9 @@ const processExamples = ( commandMap: Record<string, ICommandImplementation> ) =
 
 
 describe('downlink commands', () => {
-    processExamples(downlink);
+    processExamples(`${SCOPE} downlink`, downlink);
 });
 
 describe('uplink commands', () => {
-    processExamples(uplink);
+    processExamples(`${SCOPE} uplink`, uplink);
 });

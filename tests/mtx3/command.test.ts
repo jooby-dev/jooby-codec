@@ -3,12 +3,13 @@ import {processExamples} from '../mtx1/command.test.js';
 
 
 const {uplink, downlink} = commands;
+const SCOPE = 'mtx3';
 
 
 describe('downlink commands', () => {
-    processExamples(downlink);
+    processExamples(`${SCOPE} downlink`, downlink);
 });
 
 describe('uplink commands', () => {
-    processExamples(uplink);
+    processExamples(`${SCOPE} uplink`, uplink);
 });
