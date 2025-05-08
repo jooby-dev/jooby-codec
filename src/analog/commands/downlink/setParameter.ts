@@ -530,6 +530,37 @@ export const examples: command.TCommandExamples = {
             0x03, 0x02,
             0x3b, 0x01
         ]
+    },
+    'set nbiot ntp server': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 60,
+            name: 'NBIOT_NTP_SERVER',
+            data: {
+                server: '162.159.200.1',
+                port: 123
+            }
+        },
+        bytes: [
+            0x03, 0x11,
+            0x3c, 0x0d, 0x31, 0x36, 0x32, 0x2e, 0x31, 0x35, 0x39, 0x2e, 0x32, 0x30, 0x30, 0x2e, 0x31, 0x00, 0x7b
+        ]
+    },
+    'activate module': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 61,
+            name: 'ACTIVATE_MODULE',
+            data: {enable: 1}
+        },
+        bytes: [
+            0x03, 0x02,
+            0x3d, 0x01
+        ]
     }
 };
 
