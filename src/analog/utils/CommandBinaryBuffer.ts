@@ -692,6 +692,23 @@ interface IParameterKeepLoraConnectionOnRemoval {
 }
 
 /**
+ * Set the NTP server. Module will synchronizes the local time with the Universal Time Coordinated (UTC) via the NTP server if synchronization period is set
+ * deviceParameters.NBIOT_NTP_SERVER = `60`
+ */
+interface IParameterNbiotNtpServer {
+    server: string
+    port: types.TUint16
+}
+
+/**
+ * Activate/deactivate module
+ * deviceParameters.ACTIVATE_MODULE = `61`
+ */
+interface IParameterActivateModule {
+    enable: types.TUint8
+}
+
+/**
  * Request parameter for specific channel, works for multichannel devices only.
  */
 interface IRequestChannelParameter {
@@ -835,7 +852,9 @@ type TParameterData =
     IParameterChannelType |
     IParameterExtraPayloadEnable |
     IParameterTimeSynchronizationPeriodMac |
-    IParameterKeepLoraConnectionOnRemoval;
+    IParameterKeepLoraConnectionOnRemoval |
+    IParameterNbiotNtpServer |
+    IParameterActivateModule;
 
 type TRequestParameterData =
     IRequestChannelParameter |
@@ -876,7 +895,9 @@ type TResponseParameterData =
     IParameterNbiotLedIndication |
     IParameterNbiotSim |
     IParameterChannelType |
-    IParameterExtraPayloadEnable;
+    IParameterExtraPayloadEnable |
+    IParameterNbiotNtpServer |
+    IParameterActivateModule;
 
 const INITIAL_YEAR = 2000;
 const MONTH_BIT_SIZE = 4;
@@ -1037,7 +1058,8 @@ const parametersSizeMap = {
     [deviceParameters.NBIOT_SIM]: 1 + 3,
     [deviceParameters.EXTRA_PAYLOAD_ENABLE]: 1 + 1,
     [deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC]: 1 + 4,
-    [deviceParameters.KEEP_LORA_CONNECTION_ON_REMOVAL]: 1 + 1
+    [deviceParameters.KEEP_LORA_CONNECTION_ON_REMOVAL]: 1 + 1,
+    [deviceParameters.ACTIVATE_MODULE]: 1 + 1
 };
 
 const fourChannelsBitMask = {
@@ -1519,6 +1541,24 @@ const deviceParameterConvertersMap = {
         set: ( buffer: ICommandBinaryBuffer, parameter: IParameterKeepLoraConnectionOnRemoval ) => {
             buffer.setUint8(parameter.value ? 1 : 0);
         }
+    },
+    [deviceParameters.NBIOT_NTP_SERVER]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotNtpServer => ({
+            server: buffer.getString(),
+            port: buffer.getUint16()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotNtpServer ) => {
+            buffer.setString(parameter.server);
+            buffer.setUint16(parameter.port);
+        }
+    },
+    [deviceParameters.ACTIVATE_MODULE]: {
+        get: ( buffer: ICommandBinaryBuffer ): IParameterActivateModule => ({
+            enable: buffer.getUint8()
+        }),
+        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterActivateModule ) => {
+            buffer.setUint8(parameter.enable);
+        }
     }
 };
 
@@ -1612,6 +1652,13 @@ export const getParameterSize = ( parameter: IParameter ): number => {
 
             break;
 
+        case deviceParameters.NBIOT_NTP_SERVER:
+            data = parameter.data as IParameterNbiotNtpServer;
+            // size: parameter id + string length + server string + port
+            size = 1 + 1 + data.server.length + 2;
+
+            break;
+
         default:
             size = parametersSizeMap[parameter.id];
     }
@@ -1671,6 +1718,7 @@ export const getResponseParameterSize = ( parameter: IParameter ): number => {
         case deviceParameters.NBIOT_BANDS:
         case deviceParameters.NBIOT_APN:
         case deviceParameters.CHANNEL_TYPE:
+        case deviceParameters.NBIOT_NTP_SERVER:
             size = getParameterSize(parameter);
 
             break;

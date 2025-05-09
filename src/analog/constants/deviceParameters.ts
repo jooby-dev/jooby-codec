@@ -156,3 +156,18 @@ export const TIME_SYNCHRONIZATION_PERIOD_VIA_MAC = 58;
 
 /** Keep its lora connection even after being removed */
 export const KEEP_LORA_CONNECTION_ON_REMOVAL = 59;
+
+/**
+ * Set the NTP server.
+ * Module will synchronizes the local time with the Universal Time Coordinated (UTC) via the NTP server if synchronization period is set
+ */
+export const NBIOT_NTP_SERVER = 60;
+
+/**
+ * Activate/deactivate module
+ *
+ * Parameter available for 4PU IP68:
+ * HARDWARE_TYPE - 6
+ * HARDWARE_VERSION - 15
+ */
+export const ACTIVATE_MODULE = 61;
