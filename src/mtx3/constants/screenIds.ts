@@ -199,14 +199,14 @@ export const VOLTAGE_IN_PHASE_C = 39;
 export const BATTERY_VOLTAGE = 40;
 
 /**
- * Network frequency (`14.7.0`).
+ * Supply frequency (`14.7.0`).
  */
-export const FREQUENCY = 41;
+export const SUPPLY_FREQUENCY = 41;
 
 /**
- * Active power of all phases (`P`, `1.7.0` for `R`-type meters), (`±P`, `16.7.0` for `G`-type meters).
+ * Total active power across all phases (`P`, `1.7.0` for `R`-type meters), (`±P`, `16.7.0` for `G`-type meters).
  */
-export const ACTIVE_POWER_SUM = 42;
+export const TOTAL_ACTIVE_POWER = 42;
 
 /**
  * Active power of phase `A` (`P`, `21.7.0` for `R`-type meters), (`±P`, `36.7.0` for `G`-type meters).
@@ -224,9 +224,9 @@ export const ACTIVE_POWER_PHASE_B = 44;
 export const ACTIVE_POWER_PHASE_C = 45;
 
 /**
- * Reactive power of all phases, `Q+` (quadrant `QI + QII`) (`3.7.0`).
+ * Total reactive power across all phases, `Q+` (quadrant `QI + QII`) (`3.7.0`).
  */
-export const REACTIVE_POWER_QPLUS_SUM = 46;
+export const TOTAL_REACTIVE_POWER_QPLUS = 46;
 
 /**
  * Reactive power of phase `A`, `Q+` (quadrant `QI + QII`) (`23.7.0`).
@@ -244,9 +244,9 @@ export const REACTIVE_POWER_QPLUS_PHASE_B = 48;
 export const REACTIVE_POWER_QPLUS_PHASE_C = 49;
 
 /**
- * Reactive power of all phases, `Q-` (quadrant `QIII + QIV`) (`4.7.0`).
+ * Total reactive power across all phases, `Q-` (quadrant `QIII + QIV`) (`4.7.0`).
  */
-export const REACTIVE_POWER_QMINUS_SUM = 50;
+export const TOTAL_REACTIVE_POWER_QMINUS = 50;
 
 /**
  * Reactive power of phase `A`, `Q-` (quadrant `QIII + QIV`) (`24.7.0`).
@@ -264,9 +264,9 @@ export const REACTIVE_POWER_QMINUS_PHASE_B = 52;
 export const REACTIVE_POWER_QMINUS_PHASE_C = 53;
 
 /**
- * Power factor (`cos φ`) of all phases (`13.7.0`).
+ * Total power factor (`cos φ`) of all phases (`13.7.0`).
  */
-export const POWER_COEFFICIENT_SUM = 54;
+export const TOTAL_POWER_FACTOR = 54;
 
 /**
  * Power factor (`cos φ`) of phase `A` (`33.7.0`).
@@ -284,9 +284,9 @@ export const POWER_COEFFICIENT_PHASE_B = 56;
 export const POWER_COEFFICIENT_PHASE_C = 57;
 
 /**
- * Total apparent power `S+` (quadrant `QI + QIV`) (`9.7.0`).
+ * Total apparent power `S+` across all phases (quadrant `QI + QIV`) (`9.7.0`).
  */
-export const APPARENT_POWER_QPLUS_SUM = 58;
+export const TOTAL_APPARENT_POWER_QPLUS = 58;
 
 /**
  * Apparent power `S+` of phase `A` (quadrant `QI + QIV`) (`29.7.0`).
@@ -304,9 +304,9 @@ export const APPARENT_POWER_QPLUS_PHASE_B = 60;
 export const APPARENT_POWER_QPLUS_PHASE_C = 61;
 
 /**
- * Total apparent power `S-` (quadrant `QII + QIII`) (`10.7.0`).
+ * Total apparent power `S-` across all phases (quadrant `QII + QIII`) (`10.7.0`).
  */
-export const APPARENT_POWER_QMINUS_SUM = 62;
+export const TOTAL_APPARENT_POWER_QMINUS = 62;
 
 /**
  * Apparent power `S-` of phase `A` (quadrant `QII + QIII`) (`30.7.0`).
@@ -526,42 +526,42 @@ export const MAX_EXPORTED_REACTIVE_POWER_MONTH_T4 = 105;
 /**
  * Maximum daily negative exported reactive power for tariff `T1` (`Q3`, `7.26.1` for `G`-type meters).
  */
-export const MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T1 = 106;
+export const MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T1 = 106;
 
 /**
  * Maximum daily negative exported reactive power for tariff `T2` (`Q3`, `7.26.2` for `G`-type meters).
  */
-export const MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T2 = 107;
+export const MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T2 = 107;
 
 /**
  * Maximum daily negative exported reactive power for tariff `T3` (`Q3`, `7.26.3` for `G`-type meters).
  */
-export const MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T3 = 108;
+export const MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T3 = 108;
 
 /**
  * Maximum daily negative exported reactive power for tariff `T4` (`Q3`, `7.26.4` for `G`-type meters).
  */
-export const MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T4 = 109;
+export const MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T4 = 109;
 
 /**
  * Maximum monthly negative exported reactive power for tariff `T1` (`Q3`, `7.16.1` for `G`-type meters).
  */
-export const MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T1 = 110;
+export const MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T1 = 110;
 
 /**
  * Maximum monthly negative exported reactive power for tariff `T2` (`Q3`, `7.16.2` for `G`-type meters).
  */
-export const MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T2 = 111;
+export const MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T2 = 111;
 
 /**
  * Maximum monthly negative exported reactive power for tariff `T3` (`Q3`, `7.16.3` for `G`-type meters).
  */
-export const MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T3 = 112;
+export const MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T3 = 112;
 
 /**
  * Maximum monthly negative exported reactive power for tariff `T4` (`Q3`, `7.16.4` for `G`-type meters).
  */
-export const MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T4 = 113;
+export const MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T4 = 113;
 
 /**
  * Current time of the meter clock (`0.9.1`).
