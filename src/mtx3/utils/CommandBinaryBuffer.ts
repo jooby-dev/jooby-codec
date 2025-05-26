@@ -1039,16 +1039,6 @@ export interface IOperatorParameters {
     energyDecimalPoint: types.TUint8,
 
     /**
-     * Numerator of the voltage transformation ratio.
-     */
-    voltageTransformationRatioNumerator: types.TUint16,
-
-    /**
-     * Denominator of the voltage transformation ratio.
-     */
-    voltageTransformationRatioDenominator: types.TUint16,
-
-    /**
      * Numerator of the current transformation ratio.
      */
     currentTransformationRatioNumerator: types.TUint16,
@@ -1057,6 +1047,16 @@ export interface IOperatorParameters {
      * Denominator of the current transformation ratio.
      */
     currentTransformationRatioDenominator: types.TUint16,
+
+    /**
+     * Numerator of the voltage transformation ratio.
+     */
+    voltageTransformationRatioNumerator: types.TUint16,
+
+    /**
+     * Denominator of the voltage transformation ratio.
+     */
+    voltageTransformationRatioDenominator: types.TUint16,
 
     /**
      * Measurement type settings.
