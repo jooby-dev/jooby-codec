@@ -50,7 +50,7 @@ import * as command from '../../../mtx1/utils/command.js';
 import {MIN_HALF_HOUR_PERIODS, MAX_HALF_HOUR_PERIODS, MIN_HALF_HOUR_COMMAND_SIZE, MAX_HALF_HOUR_COMMAND_SIZE} from '../../../mtx1/utils/CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetHalfHourDemandResponseParameters, TChannelParameter, TChannel} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetHalfHourDemandResponseParameters, THalfHourLoadProfile, TChannel} from '../../utils/CommandBinaryBuffer.js';
 import {getHalfHourDemandChannel as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -61,7 +61,7 @@ const MAX_COMMAND_SIZE = MAX_HALF_HOUR_COMMAND_SIZE + 2;
 
 interface IGetHalfHourDemandChannelResponseParameters extends IGetHalfHourDemandResponseParameters {
     channel: TChannel,
-    channelParameter: TChannelParameter
+    loadProfile: THalfHourLoadProfile
 }
 
 
@@ -81,7 +81,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {
             channel: 1,
-            channelParameter: 16,
+            loadProfile: 16,
             date: {
                 year: 24,
                 month: 3,
@@ -98,7 +98,7 @@ export const examples: command.TCommandExamples = {
         bytes: [
             0x5a, 0x65,
             0x01, // channel
-            0x10, // channel parameter
+            0x10, // load profile
             0x18, 0x03, 0x16, // date
             0x04, 0x57, 0x04, 0xc6, 0x05, 0x35, 0x05, 0xa4, 0x06, 0x13, 0x06, 0x82, 0x06, 0xf1, 0x07, 0x60,
             0x07, 0xcf, 0x07, 0xd0, 0x08, 0x3f, 0x08, 0xae, 0x09, 0x1d, 0x09, 0x8c, 0x09, 0xfb, 0x0a, 0x6a,
@@ -116,7 +116,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {
             channel: 1,
-            channelParameter: 16,
+            loadProfile: 16,
             date: {
                 year: 24,
                 month: 2,
@@ -134,7 +134,7 @@ export const examples: command.TCommandExamples = {
         bytes: [
             0x5a, 0x6a,
             0x01, // channel
-            0x10, // channel parameter
+            0x10, // load profile
             0x18, 0x02, 0x1f, // date
             0x04, 0x57, 0x04, 0xc6, 0x05, 0x35, 0x05, 0xa4, 0x06, 0x13, 0x06, 0x82, 0x06, 0xf1, 0x07, 0x60,
             0x07, 0xcf, 0x07, 0xd0, 0x08, 0x3f, 0x08, 0xae, 0x09, 0x1d, 0x09, 0x8c, 0x09, 0xfb, 0x0a, 0x6a,
@@ -159,14 +159,14 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandChannelRespo
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const hasDst = bytes.length > MIN_COMMAND_SIZE;
     const channel = buffer.getUint8();
-    const channelParameter = buffer.getUint8();
+    const loadProfile = buffer.getUint8();
     const date = buffer.getDate();
     const energies = buffer.getEnergyPeriods(hasDst ? MAX_HALF_HOUR_PERIODS : MIN_HALF_HOUR_PERIODS);
 
     if ( hasDst ) {
         return {
             channel,
-            channelParameter,
+            loadProfile,
             date,
             energies,
             dstHour: buffer.getUint8()
@@ -175,7 +175,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandChannelRespo
 
     return {
         channel,
-        channelParameter,
+        loadProfile,
         date,
         energies
     };
@@ -194,7 +194,7 @@ export const toBytes = ( parameters: IGetHalfHourDemandChannelResponseParameters
 
     // body
     buffer.setUint8(parameters.channel);
-    buffer.setUint8(parameters.channelParameter);
+    buffer.setUint8(parameters.loadProfile);
     buffer.setDate(parameters.date);
     buffer.setEnergyPeriods(parameters.energies);
 
