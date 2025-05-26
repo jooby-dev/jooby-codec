@@ -1488,7 +1488,7 @@ export interface IOperatorParametersExtended2 {
      * | `2`   | `B`   |
      * | `3`   | `C`   |
      */
-    phaseDefault: types.TUint8,
+    defaultPlcPhase: types.TUint8,
 
     /**
      * Display settings for additional meter readings screens.
@@ -2010,7 +2010,7 @@ CommandBinaryBuffer.getDefaultOperatorParametersExtended2 = (): IOperatorParamet
     timeoutMagnetOff: 5,
     relaySetExt: (bitSet.toObject(relaySetExtMask, 0) as unknown) as IRelaySetExtOperatorParameter2,
     timeoutMagnetOn: 5,
-    phaseDefault: 3,
+    defaultPlcPhase: 3,
     displaySet21: (bitSet.toObject(displaySet1Mask, 4231) as unknown) as IDisplaySet1OperatorParameter,
     displaySet22: (bitSet.toObject(displaySet2Mask, 31597303) as unknown) as IDisplaySet2OperatorParameter,
     displaySet23: (bitSet.toObject(displaySet3Mask, 0) as unknown) as IDisplaySet3OperatorParameter,
@@ -2385,7 +2385,7 @@ CommandBinaryBuffer.prototype.getOperatorParametersExtended2 = function (): IOpe
         timeoutMagnetOff: this.getUint8(),
         relaySetExt: (bitSet.toObject(relaySetExtMask, this.getUint8()) as unknown) as IRelaySetExtOperatorParameter2,
         timeoutMagnetOn: this.getUint8(),
-        phaseDefault: this.getUint8(),
+        defaultPlcPhase: this.getUint8(),
         displaySet21: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
         displaySet22: (bitSet.toObject(displaySet2Mask, this.getUint32()) as unknown) as IDisplaySet2OperatorParameter,
         displaySet23: (bitSet.toObject(displaySet3Mask, this.getUint32()) as unknown) as IDisplaySet3OperatorParameter,
@@ -2416,7 +2416,7 @@ CommandBinaryBuffer.prototype.setOperatorParametersExtended2 = function ( operat
     this.setUint8(operatorParametersExtended2.timeoutMagnetOff);
     this.setUint8(bitSet.fromObject(relaySetExtMask, operatorParametersExtended2.relaySetExt as unknown as bitSet.TBooleanObject));
     this.setUint8(operatorParametersExtended2.timeoutMagnetOn);
-    this.setUint8(operatorParametersExtended2.phaseDefault);
+    this.setUint8(operatorParametersExtended2.defaultPlcPhase);
     this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended2.displaySet21 as unknown as bitSet.TBooleanObject));
     this.setUint32(bitSet.fromObject(displaySet2Mask, operatorParametersExtended2.displaySet22 as unknown as bitSet.TBooleanObject));
     this.setUint32(bitSet.fromObject(displaySet3Mask, operatorParametersExtended2.displaySet23 as unknown as bitSet.TBooleanObject));

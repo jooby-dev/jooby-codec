@@ -29,7 +29,7 @@
  *         RELAY_ON_MAGNET_AUTO: true
  *     },
  *     timeoutMagnetOn: 5,
- *     phaseDefault: 1,
+ *     defaultPlcPhase: 1,
  *     displaySet21: {
  *         SET_ALL_SEGMENT_DISPLAY: false,
  *         SOFTWARE_VERSION: false,
@@ -207,7 +207,7 @@ export const examples: command.TCommandExamples = {
                 RELAY_ON_MAGNET_AUTO: true
             },
             timeoutMagnetOn: 5,
-            phaseDefault: 1,
+            defaultPlcPhase: 1,
             displaySet21: {
                 SET_ALL_SEGMENT_DISPLAY: false,
                 SOFTWARE_VERSION: false,
@@ -355,7 +355,7 @@ export const examples: command.TCommandExamples = {
             0x05, // timeoutMagnetOff
             0x05, // relaySetExt
             0x05, // timeoutMagnetOn
-            0x01, // phaseDefault
+            0x01, // defaultPlcPhase
             0x00, 0x00, 0x00, 0x00, // displaySet21
             0x00, 0x00, 0x00, 0x00, // displaySet22
             0x00, 0x00, 0x00, 0x00, // displaySet23
