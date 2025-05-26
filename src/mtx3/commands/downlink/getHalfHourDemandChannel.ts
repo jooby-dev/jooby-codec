@@ -30,7 +30,7 @@
 
 import * as command from '../../../mtx1/utils/command.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, TChannelParameter, TChannel} from '../../utils/CommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfHourLoadProfile, TChannel} from '../../utils/CommandBinaryBuffer.js';
 import * as types from '../../types.js';
 import {getHalfHourDemandChannel as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -38,7 +38,7 @@ import commandNames from '../../constants/downlinkNames.js';
 
 interface IGetHalfHourDemandChannelRequestParameters {
     channel: TChannel,
-    channelParameter: TChannelParameter,
+    loadProfile: THalfHourLoadProfile,
     date: types.IDate
 }
 
@@ -59,7 +59,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {
             channel: 1,
-            channelParameter: 16,
+            loadProfile: 16,
             date: {
                 year: 24,
                 month: 3,
@@ -69,7 +69,7 @@ export const examples: command.TCommandExamples = {
         bytes: [
             0x5a, 0x05,
             0x01, // channel
-            0x10, // channelParameter
+            0x10, // load profile
             0x18, 0x03, 0x16 // date
         ]
     }
@@ -87,7 +87,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandChannelReque
 
     return {
         channel: buffer.getUint8(),
-        channelParameter: buffer.getUint8(),
+        loadProfile: buffer.getUint8(),
         date: buffer.getDate()
     };
 };
@@ -104,7 +104,7 @@ export const toBytes = ( parameters: IGetHalfHourDemandChannelRequestParameters 
 
     // body
     buffer.setUint8(parameters.channel);
-    buffer.setUint8(parameters.channelParameter);
+    buffer.setUint8(parameters.loadProfile);
     buffer.setDate(parameters.date);
 
     return command.toBytes(id, buffer.data);

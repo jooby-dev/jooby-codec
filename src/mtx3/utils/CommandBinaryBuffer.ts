@@ -1255,7 +1255,7 @@ export interface IGetDemandParameters {
      */
     date: types.IDate,
 
-    demandParam: TDemandParam,
+    demandParam: TDemandLoadProfile,
 
     /**
      * Starting block number of requested data.
@@ -1294,7 +1294,7 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
 }
 
 /**
- * Type of energy, or other parameters for averaged energy and voltage profiles.
+ * load profile, current, voltage or other.
  *
  * | Value  | Description                                                                     |
  * | ------ | ------------------------------------------------------------------------------- |
@@ -1344,40 +1344,46 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
  * | `0xB4` | get profile recorded in `Channel 5`                                             |
  * | `0xB5` | get profile recorded in `Channel 6`                                             |
  */
-export type TDemandParam = types.TUint8;
+export type TDemandLoadProfile = types.TUint8;
 
 /**
- * Load profile.
+ * Half hour load profile, current, voltage or other.
  *
- * | Value | Parameter                                                                    |
- * | ----- | ---------------------------------------------------------------------------- |
- * | `0`   | Get load profile specified by `channel`                                      |
- * | `1`   | Get `15/30/60`-minute load profile `A+` phase `A`                            |
- * | `2`   | Get `15/30/60`-minute load profile `A+` phase `B`                            |
- * | `3`   | Get `15/30/60`-minute load profile `A+` phase `C`                            |
- * | `4`   | Get `15/30/60`-minute load profile `A-` phase `A`                            |
- * | `5`   | Get `15/30/60`-minute load profile `A-` phase `B`                            |
- * | `6`   | Get `15/30/60`-minute load profile `A-` phase `C`                            |
- * | `7`   | Get `15/30/60`-minute load profile `A+R+` phase `A`                          |
- * | `8`   | Get `15/30/60`-minute load profile `A+R+` phase `B`                          |
- * | `9`   | Get `15/30/60`-minute load profile `A+R+` phase `C`                          |
- * | `10`  | Get `15/30/60`-minute load profile `A+R-` phase `A`                          |
- * | `11`  | Get `15/30/60`-minute load profile `A+R-` phase `B`                          |
- * | `12`  | Get `15/30/60`-minute load profile `A+R-` phase `C`                          |
- * | `13`  | Get `15/30/60`-minute load profile `A-R+` phase `A`                          |
- * | `14`  | Get `15/30/60`-minute load profile `A-R+` phase `B`                          |
- * | `15`  | Get `15/30/60`-minute load profile `A-R+` phase `C`                          |
- * | `16`  | Get `15/30/60`-minute load profile `A-R-` phase `A`                          |
- * | `17`  | Get `15/30/60`-minute load profile `A-R-` phase `B`                          |
- * | `18`  | Get `15/30/60`-minute load profile `A-R-` phase `C`                          |
- * | `19`  | Get `15/30/60`-minute load profile `R+` phase `A` (since build `302.17.009`) |
- * | `20`  | Get `15/30/60`-minute load profile `R+` phase `B` (since build `302.17.009`) |
- * | `21`  | Get `15/30/60`-minute load profile `R+` phase `C` (since build `302.17.009`) |
- * | `22`  | Get `15/30/60`-minute load profile `R-` phase `A` (since build `302.17.009`) |
- * | `23`  | Get `15/30/60`-minute load profile `R-` phase `B` (since build `302.17.009`) |
- * | `24`  | Get `15/30/60`-minute load profile `R-` phase `C` (since build `302.17.009`) |
+ * | Value | Parameter                                                                 |
+ * | ----- | ------------------------------------------------------------------------- |
+ * | `0`   | Get load profile specified by `channel`                                   |
+ * | `1`   | Get `30`-minute load profile `A+` phase `A`                               |
+ * | `2`   | Get `30`-minute load profile `A+` phase `B`                               |
+ * | `3`   | Get `30`-minute load profile `A+` phase `C`                               |
+ * | `4`   | Get `30`-minute load profile `A-` phase `A`                               |
+ * | `5`   | Get `30`-minute load profile `A-` phase `B`                               |
+ * | `6`   | Get `30`-minute load profile `A-` phase `C`                               |
+ * | `7`   | Get `30`-minute load profile `A+R+` phase `A`                             |
+ * | `8`   | Get `30`-minute load profile `A+R+` phase `B`                             |
+ * | `9`   | Get `30`-minute load profile `A+R+` phase `C`                             |
+ * | `10`  | Get `30`-minute load profile `A+R-` phase `A`                             |
+ * | `11`  | Get `30`-minute load profile `A+R-` phase `B`                             |
+ * | `12`  | Get `30`-minute load profile `A+R-` phase `C`                             |
+ * | `13`  | Get `30`-minute load profile `A-R+` phase `A`                             |
+ * | `14`  | Get `30`-minute load profile `A-R+` phase `B`                             |
+ * | `15`  | Get `30`-minute load profile `A-R+` phase `C`                             |
+ * | `16`  | Get `30`-minute load profile `A-R-` phase `A`                             |
+ * | `17`  | Get `30`-minute load profile `A-R-` phase `B`                             |
+ * | `18`  | Get `30`-minute load profile `A-R-` phase `C`                             |
+ * | `19`  | Get `30`-minute load profile `R+` phase `A` (since build `302.17.009`)    |
+ * | `20`  | Get `30`-minute load profile `R+` phase `B` (since build `302.17.009`)    |
+ * | `21`  | Get `30`-minute load profile `R+` phase `C` (since build `302.17.009`)    |
+ * | `22`  | Get `30`-minute load profile `R-` phase `A` (since build `302.17.009`)    |
+ * | `23`  | Get `30`-minute load profile `R-` phase `B` (since build `302.17.009`)    |
+ * | `24`  | Get `30`-minute load profile `R-` phase `C` (since build `302.17.009`)    |
+ * | `25`  | Get `30`-minute voltage profile phase `A` (since build `20.03.23.0.0.19`) |
+ * | `26`  | Get `30`-minute voltage profile phase `B` (since build `20.03.23.0.0.19`) |
+ * | `27`  | Get `30`-minute voltage profile phase `C` (since build `20.03.23.0.0.19`) |
+ * | `31`  | Get `30`-minute current profile phase `A` (since build `20.03.23.0.0.19`) |
+ * | `32`  | Get `30`-minute current profile phase `B` (since build `20.03.23.0.0.19`) |
+ * | `33`  | Get `30`-minute current profile phase `C` (since build `20.03.23.0.0.19`) |
  */
-export type TChannelParameter = types.TUint8;
+export type THalfHourLoadProfile = types.TUint8;
 
 /**
  * Channel number from `0` to `5`.
@@ -1403,46 +1409,46 @@ export interface IRelaySetExtOperatorParameter2 {
 }
 
 /**
- * Load profile parameter number.
+ * Channel load profile, current, voltage or other.
  *
- * | Value | Parameter                                                                    |
- * | ----- | ---------------------------------------------------------------------------- |
- * | `0`   | Additional load profile not used                                             |
- * | `1`   | Get `15/30/60`-minute load profile `A+` phase `A`                            |
- * | `2`   | Get `15/30/60`-minute load profile `A+` phase `B`                            |
- * | `3`   | Get `15/30/60`-minute load profile `A+` phase `C`                            |
- * | `4`   | Get `15/30/60`-minute load profile `A-` phase `A`                            |
- * | `5`   | Get `15/30/60`-minute load profile `A-` phase `B`                            |
- * | `6`   | Get `15/30/60`-minute load profile `A-` phase `C`                            |
- * | `7`   | Get `15/30/60`-minute load profile `A+R+` phase `A`                          |
- * | `8`   | Get `15/30/60`-minute load profile `A+R+` phase `B`                          |
- * | `9`   | Get `15/30/60`-minute load profile `A+R+` phase `C`                          |
- * | `10`  | Get `15/30/60`-minute load profile `A+R-` phase `A`                          |
- * | `11`  | Get `15/30/60`-minute load profile `A+R-` phase `B`                          |
- * | `12`  | Get `15/30/60`-minute load profile `A+R-` phase `C`                          |
- * | `13`  | Get `15/30/60`-minute load profile `A-R+` phase `A`                          |
- * | `14`  | Get `15/30/60`-minute load profile `A-R+` phase `B`                          |
- * | `15`  | Get `15/30/60`-minute load profile `A-R+` phase `C`                          |
- * | `16`  | Get `15/30/60`-minute load profile `A-R-` phase `A`                          |
- * | `17`  | Get `15/30/60`-minute load profile `A-R-` phase `B`                          |
- * | `18`  | Get `15/30/60`-minute load profile `A-R-` phase `C`                          |
- * | `19`  | Get `15/30/60`-minute load profile `R+` phase `A` (since build `302.17.009`) |
- * | `20`  | Get `15/30/60`-minute load profile `R+` phase `B` (since build `302.17.009`) |
- * | `21`  | Get `15/30/60`-minute load profile `R+` phase `C` (since build `302.17.009`) |
- * | `22`  | Get `15/30/60`-minute load profile `R-` phase `A` (since build `302.17.009`) |
- * | `23`  | Get `15/30/60`-minute load profile `R-` phase `B` (since build `302.17.009`) |
- * | `24`  | Get `15/30/60`-minute load profile `R-` phase `C` (since build `302.17.009`) |
- * | `25`  | Get `15/30`-minute voltage profile phase `A` (since build `20.03.23.0.0.19`) |
- * | `26`  | Get `15/30`-minute voltage profile phase `B` (since build `20.03.23.0.0.19`) |
- * | `27`  | Get `15/30`-minute voltage profile phase `C` (since build `20.03.23.0.0.19`) |
- * | `28`  | Get `10`-minute voltage profile phase `A` (since build `20.03.23.0.0.19`)    |
- * | `29`  | Get `10`-minute voltage profile phase `B` (since build `20.03.23.0.0.19`)    |
- * | `30`  | Get `10`-minute voltage profile phase `C` (since build `20.03.23.0.0.19`)    |
- * | `31`  | Get `15/30`-minute current profile phase `A` (since build `20.03.23.0.0.19`) |
- * | `32`  | Get `15/30`-minute current profile phase `B` (since build `20.03.23.0.0.19`) |
- * | `33`  | Get `15/30`-minute current profile phase `C` (since build `20.03.23.0.0.19`) |
+ * | Value | Parameter                                                                                |
+ * | ----- | ---------------------------------------------------------------------------------------- |
+ * | `0`   | Additional load profile not used                                                         |
+ * | `1`   | Get `1/3/5/10/15/30/60`-minute load profile `A+` phase `A`                               |
+ * | `2`   | Get `1/3/5/10/15/30/60`-minute load profile `A+` phase `B`                               |
+ * | `3`   | Get `1/3/5/10/15/30/60`-minute load profile `A+` phase `C`                               |
+ * | `4`   | Get `1/3/5/10/15/30/60`-minute load profile `A-` phase `A`                               |
+ * | `5`   | Get `1/3/5/10/15/30/60`-minute load profile `A-` phase `B`                               |
+ * | `6`   | Get `1/3/5/10/15/30/60`-minute load profile `A-` phase `C`                               |
+ * | `7`   | Get `1/3/5/10/15/30/60`-minute load profile `A+R+` phase `A`                             |
+ * | `8`   | Get `1/3/5/10/15/30/60`-minute load profile `A+R+` phase `B`                             |
+ * | `9`   | Get `1/3/5/10/15/30/60`-minute load profile `A+R+` phase `C`                             |
+ * | `10`  | Get `1/3/5/10/15/30/60`-minute load profile `A+R-` phase `A`                             |
+ * | `11`  | Get `1/3/5/10/15/30/60`-minute load profile `A+R-` phase `B`                             |
+ * | `12`  | Get `1/3/5/10/15/30/60`-minute load profile `A+R-` phase `C`                             |
+ * | `13`  | Get `1/3/5/10/15/30/60`-minute load profile `A-R+` phase `A`                             |
+ * | `14`  | Get `1/3/5/10/15/30/60`-minute load profile `A-R+` phase `B`                             |
+ * | `15`  | Get `1/3/5/10/15/30/60`-minute load profile `A-R+` phase `C`                             |
+ * | `16`  | Get `1/3/5/10/15/30/60`-minute load profile `A-R-` phase `A`                             |
+ * | `17`  | Get `1/3/5/10/15/30/60`-minute load profile `A-R-` phase `B`                             |
+ * | `18`  | Get `1/3/5/10/15/30/60`-minute load profile `A-R-` phase `C`                             |
+ * | `19`  | Get `1/3/5/10/15/30/60`-minute load profile `R+` phase `A` (since build `302.17.009`)    |
+ * | `20`  | Get `1/3/5/10/15/30/60`-minute load profile `R+` phase `B` (since build `302.17.009`)    |
+ * | `21`  | Get `1/3/5/10/15/30/60`-minute load profile `R+` phase `C` (since build `302.17.009`)    |
+ * | `22`  | Get `1/3/5/10/15/30/60`-minute load profile `R-` phase `A` (since build `302.17.009`)    |
+ * | `23`  | Get `1/3/5/10/15/30/60`-minute load profile `R-` phase `B` (since build `302.17.009`)    |
+ * | `24`  | Get `1/3/5/10/15/30/60`-minute load profile `R-` phase `C` (since build `302.17.009`)    |
+ * | `25`  | Get `1/3/5/10/15/30/60`-minute voltage profile phase `A` (since build `20.03.23.0.0.19`) |
+ * | `26`  | Get `1/3/5/10/15/30/60`-minute voltage profile phase `B` (since build `20.03.23.0.0.19`) |
+ * | `27`  | Get `1/3/5/10/15/30/60`-minute voltage profile phase `C` (since build `20.03.23.0.0.19`) |
+ * | `28`  | Get `10`-minute voltage profile phase `A` (since build `20.03.23.0.0.19`)                |
+ * | `29`  | Get `10`-minute voltage profile phase `B` (since build `20.03.23.0.0.19`)                |
+ * | `30`  | Get `10`-minute voltage profile phase `C` (since build `20.03.23.0.0.19`)                |
+ * | `31`  | Get `1/3/5/10/15/30/60`-minute current profile phase `A` (since build `20.03.23.0.0.19`) |
+ * | `32`  | Get `1/3/5/10/15/30/60`-minute current profile phase `B` (since build `20.03.23.0.0.19`) |
+ * | `33`  | Get `1/3/5/10/15/30/60`-minute current profile phase `C` (since build `20.03.23.0.0.19`) |
  */
-export type TChannelOperatorParameter2 = types.TUint8;
+export type TChannelLoadProfile = types.TUint8;
 
 export interface IDisplaySet24OperatorParameter2 extends IDisplaySet4BaseOperatorParameter {
     /**
@@ -1523,42 +1529,42 @@ export interface IOperatorParametersExtended2 {
      *
      * since build `302.17.001`
      */
-    channel1: TChannelOperatorParameter2,
+    channel1: TChannelLoadProfile,
 
     /**
      * Additional load profile parameter 2.
      *
      * since build `302.17.001`
      */
-    channel2: TChannelOperatorParameter2,
+    channel2: TChannelLoadProfile,
 
     /**
      * Additional load profile parameter 3.
      *
      * since build `302.17.001`
      */
-    channel3: TChannelOperatorParameter2,
+    channel3: TChannelLoadProfile,
 
     /**
      * Additional load profile parameter 4.
      *
      * since build `302.17.001`
      */
-    channel4: TChannelOperatorParameter2,
+    channel4: TChannelLoadProfile,
 
     /**
      * Additional load profile parameter 5.
      *
      * since build `302.17.001`
      */
-    channel5: TChannelOperatorParameter2,
+    channel5: TChannelLoadProfile,
 
     /**
      * Additional load profile parameter 6.
      *
      * since build `302.17.001`
      */
-    channel6: TChannelOperatorParameter2,
+    channel6: TChannelLoadProfile,
 
     /**
      * Allowed correction period, in hours (`24` hours by default).
