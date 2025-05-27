@@ -54,6 +54,11 @@ interface IGetCriticalEventResponseParameters {
 
     name?: string,
 
+    /**
+     * Offset of the event in the critical events list.
+     *
+     * `0..7`, `255` - the last critical event
+     */
     index: types.TUint8,
 
     date: {

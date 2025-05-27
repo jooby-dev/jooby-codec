@@ -10,7 +10,7 @@
  * const parameters = {
  *     event: 1,
  *     name: 'MAGNETIC_ON',
- *     index: 22
+ *     index: 2
  * };
  *
  * const bytes = getCriticalEvent.toBytes(parameters);
@@ -18,7 +18,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [86, 2, 1, 22]
+ * [86, 2, 1, 2]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetCriticalEvent.md#request)
@@ -44,6 +44,11 @@ interface IGetCriticalEventParameters {
 
     name?: string,
 
+    /**
+     * Offset of the event in the critical events list.
+     *
+     * `0..7`, `255` - the last critical event
+     */
     index: types.TUint8
 }
 
@@ -65,11 +70,27 @@ export const examples: command.TCommandExamples = {
         parameters: {
             event: 1,
             name: 'MAGNETIC_ON',
-            index: 22
+            index: 2
         },
         bytes: [
             0x56, 0x02,
-            0x01, 0x16
+            0x01, 0x02
+        ]
+    },
+    'the last event': {
+        id,
+        name,
+        headerSize,
+        accessLevel,
+        maxSize,
+        parameters: {
+            event: 4,
+            name: 'RESTART',
+            index: 255
+        },
+        bytes: [
+            0x56, 0x02,
+            0x04, 0xff
         ]
     }
 };

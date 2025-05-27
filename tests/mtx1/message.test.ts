@@ -96,15 +96,15 @@ const downlinkMessages: TMessageList = [
     },
     {
         name: 'getCriticalEvent',
-        hex: '0a 13 e2 b1 1c b9 3e 32 15 7b 9c 83 cf db 01 59 cb b1',
-        frameHex: '7e 50 aa aa ff ff 0a 7d 33 e2 b1 1c b9 3e 32 15 7b 9c 83 cf db 01 59 cb b1 84 fe 7e',
+        hex: '0a 13 18 96 23 b6 1a 81 8a 3b a5 e5 64 91 90 72 56 06',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 18 96 23 b6 1a 81 8a 3b a5 e5 64 91 90 72 56 06 ba 41 7e',
         messageId: 10,
         accessLevel: downlinkCommands.getCriticalEvent.accessLevel,
         commands: [
             downlinkCommands.getCriticalEvent.examples['simple request']
         ],
-        lrc: 0x12,
-        crc: 0xfe84,
+        lrc: 0x06,
+        crc: 0x41ba,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
