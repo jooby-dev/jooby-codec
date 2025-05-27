@@ -9,6 +9,7 @@
  *
  * const parameters = {
  *     event: 1,
+ *     name: 'MAGNETIC_ON',
  *     index: 22
  * };
  *

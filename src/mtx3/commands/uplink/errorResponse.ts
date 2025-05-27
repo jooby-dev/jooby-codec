@@ -8,7 +8,7 @@
  * import * as errorResponse from 'jooby-codec/mtx3/commands/uplink/errorResponse.js';
  *
  * // default parameters
- * const bytes = [0x18, 0x93];
+ * const bytes = [0x54, 0x91];
  *
  * // decoded payload
  * const parameters = errorResponse.fromBytes(bytes);

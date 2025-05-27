@@ -9,6 +9,7 @@
  *
  * const parameters = {
  *     event: 1,
+ *     name: 'MAGNETIC_ON',
  *     index: 22
  * };
  *
@@ -25,8 +26,10 @@
 
 import * as types from '../../types.js';
 import * as command from '../../../mtx1/utils/command.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {accessLevels, criticalEvents} from '../../constants/index.js';
+import * as criticalEvents from '../../../mtx1/constants/criticalEvents.js';
+import criticalEventNames from '../../../mtx1/constants/criticalEventNames.js';
 import {getCriticalEvent as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -39,6 +42,8 @@ interface IGetCriticalEventParameters {
      */
     event: types.TUint8,
 
+    name?: string,
+
     index: types.TUint8
 }
 
@@ -46,7 +51,7 @@ interface IGetCriticalEventParameters {
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 2;
 export const isLoraOnly = false;
 
@@ -59,6 +64,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         parameters: {
             event: 1,
+            name: 'MAGNETIC_ON',
             index: 22
         },
         bytes: [
@@ -82,7 +88,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventParameters =>
 
     const [event, index] = bytes;
 
-    return {event, index};
+    return {
+        event,
+        name: criticalEventNames[event],
+        index
+    };
 };
 
 
