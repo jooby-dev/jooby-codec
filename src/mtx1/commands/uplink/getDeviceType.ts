@@ -33,7 +33,6 @@ import * as command from '../../utils/command.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, IDeviceType} from '../../utils/CommandBinaryBuffer.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import * as meterTypes from '../../constants/meterTypes.js';
 import {getDeviceType as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -55,7 +54,12 @@ export const examples: command.TCommandExamples = {
         parameters: {
             type: 'MTX 1A10.DG.2L5-LD4',
             revision: 0x0b,
-            meterType: meterTypes.A
+            descriptor: {
+                meterType: 'mtx1',
+                typeMeterG: false,
+                downgradedToA: false,
+                supportMeterInfo: false
+            }
         },
         bytes: [
             0x04, 0x09,
@@ -71,7 +75,12 @@ export const examples: command.TCommandExamples = {
         parameters: {
             type: 'MTX 1G05.DH.2L2-DOB4',
             revision: 0x0b,
-            meterType: meterTypes.G_FULL
+            descriptor: {
+                meterType: 'mtx1',
+                typeMeterG: true,
+                downgradedToA: true,
+                supportMeterInfo: false
+            }
         },
         bytes: [
             0x04, 0x09,
