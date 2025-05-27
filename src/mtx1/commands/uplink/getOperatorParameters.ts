@@ -104,19 +104,19 @@ export const examples: command.TCommandExamples = {
                 RELAY_ON_MAGNET_AUTO: false
             },
             relaySet3: {
-                RELAY_OFF_LIM_TARIFF_0: false,
                 RELAY_OFF_LIM_TARIFF_1: false,
                 RELAY_OFF_LIM_TARIFF_2: false,
                 RELAY_OFF_LIM_TARIFF_3: false,
+                RELAY_OFF_LIM_TARIFF_4: false,
                 RELAY_OFF_PF_MIN: false
             },
             relaySet2: {
                 RELAY_OFF_Y: true,
                 RELAY_OFF_CENTER: true,
-                RELAY_OFF_TARIFF_0: false,
                 RELAY_OFF_TARIFF_1: false,
                 RELAY_OFF_TARIFF_2: false,
                 RELAY_OFF_TARIFF_3: false,
+                RELAY_OFF_TARIFF_4: false,
                 RELAY_OFF_I_LIMIT: false,
                 RELAY_OFF_V_BAD: false
             },
@@ -124,10 +124,10 @@ export const examples: command.TCommandExamples = {
                 RELAY_ON_Y: true,
                 RELAY_ON_CENTER: true,
                 RELAY_ON_PB: false,
-                RELAY_ON_TARIFF_0: false,
                 RELAY_ON_TARIFF_1: false,
                 RELAY_ON_TARIFF_2: false,
                 RELAY_ON_TARIFF_3: false,
+                RELAY_ON_TARIFF_4: false,
                 RELAY_ON_V_GOOD: false
             },
             displayType: 0,

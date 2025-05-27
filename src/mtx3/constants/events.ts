@@ -3,28 +3,28 @@
  *
  * Indication code: `C.001`.
  */
-export const ENERGY_T0_FAULT = 0x01;
+export const ENERGY_T1_FAULT = 0x01;
 
 /**
  * Tariff `2` cumulative register values lost.
  *
  * Indication code: `C.002`.
  */
-export const ENERGY_T1_FAULT = 0x02;
+export const ENERGY_T2_FAULT = 0x02;
 
 /**
  * Tariff `3` cumulative register values lost.
  *
  * Indication code: `C.003`.
  */
-export const ENERGY_T2_FAULT = 0x03;
+export const ENERGY_T3_FAULT = 0x03;
 
 /**
  * Tariff `4` cumulative register values lost.
  *
  * Indication code: `C.004`.
  */
-export const ENERGY_T3_FAULT = 0x04;
+export const ENERGY_T4_FAULT = 0x04;
 
 /**
  * Access locked until end of day due to key access errors.
@@ -563,84 +563,84 @@ export const CMD_RELAY_2_OFF = 0x72;
  *
  * Indication code: `C.115`.
  */
-export const CROSS_ZERO_ENT0 = 0x73;
+export const CROSS_ZERO_ENT1 = 0x73;
 
 /**
  * Active energy counter tariff `2` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.116`.
  */
-export const CROSS_ZERO_ENT1 = 0x74;
+export const CROSS_ZERO_ENT2 = 0x74;
 
 /**
  * Active energy counter tariff `3` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.117`.
  */
-export const CROSS_ZERO_ENT2 = 0x75;
+export const CROSS_ZERO_ENT3 = 0x75;
 
 /**
  * Active energy counter tariff `4` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.118`.
  */
-export const CROSS_ZERO_ENT3 = 0x76;
+export const CROSS_ZERO_ENT4 = 0x76;
 
 /**
  * Reactive positive energy counter tariff `1` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.119`.
  */
-export const CROSS_ZERO_VARI0 = 0x77;
+export const CROSS_ZERO_VARI1 = 0x77;
 
 /**
  * Reactive positive energy counter tariff `2` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.120`.
  */
-export const CROSS_ZERO_VARI1 = 0x78;
+export const CROSS_ZERO_VARI2 = 0x78;
 
 /**
  * Reactive positive energy counter tariff `3` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.121`.
  */
-export const CROSS_ZERO_VARI2 = 0x79;
+export const CROSS_ZERO_VARI3 = 0x79;
 
 /**
  * Reactive positive energy counter tariff `4` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.122`.
  */
-export const CROSS_ZERO_VARI3 = 0x7A;
+export const CROSS_ZERO_VARI4 = 0x7A;
 
 /**
  * Reactive negative energy counter tariff `1` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.123`.
  */
-export const CROSS_ZERO_VARE0 = 0x7B;
+export const CROSS_ZERO_VARE1 = 0x7B;
 
 /**
  * Reactive negative energy counter tariff `2` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.124`.
  */
-export const CROSS_ZERO_VARE1 = 0x7C;
+export const CROSS_ZERO_VARE2 = 0x7C;
 
 /**
  * Reactive negative energy counter tariff `3` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.125`.
  */
-export const CROSS_ZERO_VARE2 = 0x7D;
+export const CROSS_ZERO_VARE3 = 0x7D;
 
 /**
  * Reactive negative energy counter tariff `4` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.126`.
  */
-export const CROSS_ZERO_VARE3 = 0x7E;
+export const CROSS_ZERO_VARE4 = 0x7E;
 
 /**
  * Calibration flag set.
@@ -899,84 +899,84 @@ export const CHANGE_PARAM_CHANNEL6 = 0xA3;
  *
  * Indication code: `C.163`.
  */
-export const CROSS_ZERO_EXPORT_ENT0 = 0xA4;
+export const CROSS_ZERO_EXPORT_ENT1 = 0xA4;
 
 /**
  * Active export energy counter tariff `2` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.164`.
  */
-export const CROSS_ZERO_EXPORT_ENT1 = 0xA5;
+export const CROSS_ZERO_EXPORT_ENT2 = 0xA5;
 
 /**
  * Active export energy counter tariff `3` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.165`.
  */
-export const CROSS_ZERO_EXPORT_ENT2 = 0xA6;
+export const CROSS_ZERO_EXPORT_ENT3 = 0xA6;
 
 /**
  * Active export energy counter tariff `4` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.166`.
  */
-export const CROSS_ZERO_EXPORT_ENT3 = 0xA7;
+export const CROSS_ZERO_EXPORT_ENT4 = 0xA7;
 
 /**
  * Reactive positive energy counter (`Q3`) tariff `1` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.167`.
  */
-export const CROSS_ZERO_EXPORT_VARI0 = 0xA8;
+export const CROSS_ZERO_EXPORT_VARI1 = 0xA8;
 
 /**
  * Reactive positive energy counter (`Q3`) tariff `2` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.168`.
  */
-export const CROSS_ZERO_EXPORT_VARI1 = 0xA9;
+export const CROSS_ZERO_EXPORT_VARI2 = 0xA9;
 
 /**
  * Reactive positive energy counter (`Q3`) tariff `3` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.169`.
  */
-export const CROSS_ZERO_EXPORT_VARI2 = 0xAA;
+export const CROSS_ZERO_EXPORT_VARI3 = 0xAA;
 
 /**
  * Reactive positive energy counter (`Q3`) tariff `4` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.170`.
  */
-export const CROSS_ZERO_EXPORT_VARI3 = 0xAB;
+export const CROSS_ZERO_EXPORT_VARI4 = 0xAB;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `1` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.171`.
  */
-export const CROSS_ZERO_EXPORT_VARE0 = 0xAC;
+export const CROSS_ZERO_EXPORT_VARE1 = 0xAC;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `2` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.172`.
  */
-export const CROSS_ZERO_EXPORT_VARE1 = 0xAD;
+export const CROSS_ZERO_EXPORT_VARE2 = 0xAD;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `3` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.173`.
  */
-export const CROSS_ZERO_EXPORT_VARE2 = 0xAE;
+export const CROSS_ZERO_EXPORT_VARE3 = 0xAE;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `4` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.174`.
  */
-export const CROSS_ZERO_EXPORT_VARE3 = 0xAF;
+export const CROSS_ZERO_EXPORT_VARE4 = 0xAF;
 
 /**
  * Presence of alternating magnetic field detected.

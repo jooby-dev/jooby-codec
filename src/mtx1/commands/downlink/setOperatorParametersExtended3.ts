@@ -26,7 +26,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [114, 17, 0, 0, 0, 100, 0, 0, 0, 200, 0, 0, 1, 44, 0, 0, 1, 144, 20]
+ * [114, 17, 0, 0, 0, 100, 0, 0, 0, 200, 0, 0, 1, 44, 0, 0, 1, 144, 40]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetOperatorParametersExtended3.md#request)
@@ -72,7 +72,7 @@ export const examples: command.TCommandExamples = {
             0x00, 0x00, 0x00, 0xc8,
             0x00, 0x00, 0x01, 0x2c,
             0x00, 0x00, 0x01, 0x90,
-            0x14
+            0x28
         ]
     }
 };

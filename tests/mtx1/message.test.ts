@@ -854,15 +854,15 @@ const downlinkMessages: TMessageList = [
     },
     {
         name: 'setOperatorParametersExtended3',
-        hex: '0a 12 86 bb 64 fc 64 6e 2f 3c 76 db 6b d7 35 9b f6 02 ce dd 6d bc 69 ee 13 ad 50 f3 03 41 2b da 48 1e',
-        frameHex: '7e 50 aa aa ff ff 0a 12 86 bb 64 fc 64 6e 2f 3c 76 db 6b d7 35 9b f6 02 ce dd 6d bc 69 ee 7d 33 ad 50 f3 03 41 2b da 48 1e ff 1f 7e',
+        hex: '0a 12 86 bb 64 fc 64 6e 2f 3c 76 db 6b d7 35 9b f6 02 92 37 b0 e8 d8 2c 12 a0 ef 3a 57 9a 17 2e 07 35',
+        frameHex: '7e 50 aa aa ff ff 0a 12 86 bb 64 fc 64 6e 2f 3c 76 db 6b d7 35 9b f6 02 92 37 b0 e8 d8 2c 12 a0 ef 3a 57 9a 17 2e 07 35 bc f7 7e',
         messageId: 10,
         accessLevel: downlinkCommands.setOperatorParametersExtended3.accessLevel,
         commands: [
             downlinkCommands.setOperatorParametersExtended3.examples['simple request']
         ],
-        lrc: 0x20,
-        crc: 0x1fff,
+        lrc: 0x1c,
+        crc: 0xf7bc,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -1729,15 +1729,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getOperatorParametersExtended3',
-        hex: '0a 13 97 a1 04 b0 ec 3c f6 60 02 f3 d3 d3 d2 22 2b 6b ab 12 fa 37 6e cb 75 13 8a b4 f1 39 96 31 e6 2a',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 97 a1 04 b0 ec 3c f6 60 02 f3 d3 d3 d2 22 2b 6b ab 12 fa 37 6e cb 75 7d 33 8a b4 f1 39 96 31 e6 2a 60 33 7e',
+        hex: '0a 13 97 a1 04 b0 ec 3c f6 60 02 f3 d3 d3 d2 22 2b 6b f6 81 dc 18 fa e6 1b 6a c7 f3 00 25 11 7d ef a4',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 97 a1 04 b0 ec 3c f6 60 02 f3 d3 d3 d2 22 2b 6b f6 81 dc 18 fa e6 1b 6a c7 f3 00 25 7d 31 7d 5d ef a4 92 6c 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getOperatorParametersExtended3.accessLevel,
         commands: [
             uplinkCommands.getOperatorParametersExtended3.examples['simple response']
         ],
-        lrc: 0x22,
-        crc: 0x3360,
+        lrc: 0x1e,
+        crc: 0x6c92,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

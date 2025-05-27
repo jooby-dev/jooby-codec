@@ -222,14 +222,14 @@ export interface IDisplaySet2OperatorParameter {
     BATTERY_VOLTAGE: boolean;
 
     /**
-     * Network frequency (`14.7.0`).
+     * Supply frequency (`14.7.0`).
      */
-    FREQUENCY: boolean;
+    SUPPLY_FREQUENCY: boolean;
 
     /**
-     * Active power of all phases (`P`, `1.7.0` for `R`-type meters), (`±P`, `16.7.0` for `G`-type meters).
+     * Total active power across all phases (`P`, `1.7.0` for `R`-type meters), (`±P`, `16.7.0` for `G`-type meters).
      */
-    ACTIVE_POWER_SUM: boolean;
+    TOTAL_ACTIVE_POWER: boolean;
 
     /**
      * Active power of phase `A` (`P`, `21.7.0` for `R`-type meters), (`±P`, `36.7.0` for `G`-type meters).
@@ -247,9 +247,9 @@ export interface IDisplaySet2OperatorParameter {
     ACTIVE_POWER_PHASE_C: boolean;
 
     /**
-     * Reactive power of all phases, `Q+` (quadrant `QI + QII`) (`3.7.0`).
+     * Total reactive power across all phases, `Q+` (quadrant `QI + QII`) (`3.7.0`).
      */
-    REACTIVE_POWER_QPLUS_SUM: boolean;
+    TOTAL_REACTIVE_POWER_QPLUS: boolean;
 
     /**
      * Reactive power of phase `A`, `Q+` (quadrant `QI + QII`) (`23.7.0`).
@@ -267,9 +267,9 @@ export interface IDisplaySet2OperatorParameter {
     REACTIVE_POWER_QPLUS_PHASE_C: boolean;
 
     /**
-     * Reactive power of all phases, `Q-` (quadrant `QIII + QIV`) (`4.7.0`).
+     * Total reactive power across all phases, `Q-` (quadrant `QIII + QIV`) (`4.7.0`).
      */
-    REACTIVE_POWER_QMINUS_SUM: boolean;
+    TOTAL_REACTIVE_POWER_QMINUS: boolean;
 
     /**
      * Reactive power of phase `A`, `Q-` (quadrant `QIII + QIV`) (`24.7.0`).
@@ -287,9 +287,9 @@ export interface IDisplaySet2OperatorParameter {
     REACTIVE_POWER_QMINUS_PHASE_C: boolean;
 
     /**
-     * Power factor (`cos φ`) of all phases (`13.7.0`).
+     * Total power factor (`cos φ`) of all phases (`13.7.0`).
      */
-    POWER_COEFFICIENT_SUM: boolean;
+    TOTAL_POWER_FACTOR: boolean;
 
     /**
      * Power factor (`cos φ`) of phase `A` (`33.7.0`).
@@ -307,12 +307,12 @@ export interface IDisplaySet2OperatorParameter {
     POWER_COEFFICIENT_PHASE_C: boolean;
 
     /**
-     * Total apparent power `S+` (quadrant `QI + QIV`) (`9.7.0`).
+     * Total apparent power `S+` across all phases (quadrants `QI + QIV`) (`9.7.0`).
      */
-    APPARENT_POWER_QPLUS_SUM: boolean;
+    TOTAL_APPARENT_POWER_QPLUS: boolean;
 
     /**
-     * Apparent power `S+` of phase `A` (quadrant `QI + QIV`) (`29.7.0`).
+     * Apparent power `S+` of phase `A` (quadrants `QI + QIV`) (`29.7.0`).
      */
     APPARENT_POWER_QPLUS_PHASE_A: boolean;
 
@@ -327,9 +327,9 @@ export interface IDisplaySet2OperatorParameter {
     APPARENT_POWER_QPLUS_PHASE_C: boolean;
 
     /**
-     * Total apparent power `S-` (quadrant `QII + QIII`) (`10.7.0`).
+     * Total apparent power `S-` across all phases (quadrant `QII + QIII`) (`10.7.0`).
      */
-    APPARENT_POWER_QMINUS_SUM: boolean;
+    TOTAL_APPARENT_POWER_QMINUS: boolean;
 
     /**
      * Apparent power `S-` of phase `A` (quadrant `QII + QIII`) (`30.7.0`).
@@ -351,7 +351,7 @@ export interface IDisplaySet3OperatorParameter {
     /**
      * Maximum daily active power for tariff `T1` (`|P|`, `15.26.1` for `R`-type meters), (`P+`, `1.26.1` for `G`-type meters).
      */
-    MAX_ACTIVE_POWER_DAY_T1: boolean;
+    MAX_DAY_ACTIVE_POWER_DAY_T1: boolean;
 
     /**
      * Maximum daily active power for tariff `T2` (`|P|`, `15.26.2` for `R`-type meters), (`P+`, `1.26.2` for `G`-type meters).
@@ -551,44 +551,44 @@ interface IDisplaySet4BaseOperatorParameter {
     MAX_EXPORTED_REACTIVE_POWER_MONTH_T4: boolean;
 
     /**
-     * Maximum daily negative exported reactive power for tariff `T1` (`Q3`, `7.26.1` for `G`-type meters).
+     * Maximum daily exported negative reactive power for tariff `T1` (`Q3`, `7.26.1` for `G`-type meters).
      */
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T1: boolean;
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T1: boolean;
 
     /**
-     * Maximum daily negative exported reactive power for tariff `T2` (`Q3`, `7.26.2` for `G`-type meters).
+     * Maximum daily exported negative reactive power for tariff `T2` (`Q3`, `7.26.2` for `G`-type meters).
      */
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T2: boolean;
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T2: boolean;
 
     /**
-     * Maximum daily negative exported reactive power for tariff `T3` (`Q3`, `7.26.3` for `G`-type meters).
+     * Maximum daily exported negative reactive power for tariff `T3` (`Q3`, `7.26.3` for `G`-type meters).
      */
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T3: boolean;
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T3: boolean;
 
     /**
-     * Maximum daily negative exported reactive power for tariff `T4` (`Q3`, `7.26.4` for `G`-type meters).
+     * Maximum daily exported negative reactive power for tariff `T4` (`Q3`, `7.26.4` for `G`-type meters).
      */
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T4: boolean;
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T4: boolean;
 
     /**
-     * Maximum monthly negative exported reactive power for tariff `T1` (`Q3`, `7.16.1` for `G`-type meters).
+     * Maximum monthly exported negative reactive power for tariff `T1` (`Q3`, `7.16.1` for `G`-type meters).
      */
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T1: boolean;
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T1: boolean;
 
     /**
-     * Maximum monthly negative exported reactive power for tariff `T2` (`Q3`, `7.16.2` for `G`-type meters).
+     * Maximum monthly exported negative reactive power for tariff `T2` (`Q3`, `7.16.2` for `G`-type meters).
      */
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T2: boolean;
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T2: boolean;
 
     /**
-     * Maximum monthly negative exported reactive power for tariff `T3` (`Q3`, `7.16.3` for `G`-type meters).
+     * Maximum monthly exported negative reactive power for tariff `T3` (`Q3`, `7.16.3` for `G`-type meters).
      */
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T3: boolean;
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T3: boolean;
 
     /**
-     * Maximum monthly negative exported reactive power for tariff `T4` (`Q3`, `7.16.4` for `G`-type meters).
+     * Maximum monthly exported negative reactive power for tariff `T4` (`Q3`, `7.16.4` for `G`-type meters).
      */
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T4: boolean;
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T4: boolean;
 
     /**
      * Current time of the meter clock (`0.9.1`).
@@ -672,22 +672,22 @@ export interface IRelaySetOperatorParameter {
     /**
      * Turn on by tariff `T1`.
      */
-    RELAY_ON_TARIFF_0: boolean;
+    RELAY_ON_TARIFF_1: boolean;
 
     /**
      * Turn on by tariff `T2`.
      */
-    RELAY_ON_TARIFF_1: boolean;
+    RELAY_ON_TARIFF_2: boolean;
 
     /**
      * Turn on by tariff `T3`.
      */
-    RELAY_ON_TARIFF_2: boolean;
+    RELAY_ON_TARIFF_3: boolean;
 
     /**
      * Turn on by tariff `T4`.
      */
-    RELAY_ON_TARIFF_3: boolean;
+    RELAY_ON_TARIFF_4: boolean;
 
     /**
      * Turn on by restoration of good voltage.
@@ -710,22 +710,22 @@ export interface IRelaySetOperatorParameter {
     /**
      * Turn off by tariff `T1`.
      */
-    RELAY_OFF_TARIFF_0: boolean;
+    RELAY_OFF_TARIFF_1: boolean;
 
     /**
      * Turn off by tariff `T2`.
      */
-    RELAY_OFF_TARIFF_1: boolean;
+    RELAY_OFF_TARIFF_2: boolean;
 
     /**
      * Turn off by tariff `T3`.
      */
-    RELAY_OFF_TARIFF_2: boolean;
+    RELAY_OFF_TARIFF_3: boolean;
 
     /**
      * Turn off by tariff `T4`.
      */
-    RELAY_OFF_TARIFF_3: boolean;
+    RELAY_OFF_TARIFF_4: boolean;
 
     /**
      * Turn off on load current exceeding.
@@ -740,47 +740,47 @@ export interface IRelaySetOperatorParameter {
     /**
      * Turn off on exceeding the differential current limit.
      */
-    RELAY_OFF_DIFF_BAD: boolean;
+    RELAY_OFF_DIFF_CURRENT_BAD: boolean;
 
     /**
      * Turn off on exceeding the power consumption limit for tariff `T1`.
      */
-    RELAY_OFF_LIM_TARIFF_0: boolean;
+    RELAY_OFF_ACTIVE_POWER_TARIFF_1: boolean;
 
     /**
      * Turn off on exceeding the power consumption limit for tariff `T2`.
      */
-    RELAY_OFF_LIM_TARIFF_1: boolean;
+    RELAY_OFF_ACTIVE_POWER_TARIFF_2: boolean;
 
     /**
      * Turn off on exceeding the power consumption limit for tariff `T3`.
      */
-    RELAY_OFF_LIM_TARIFF_2: boolean;
+    RELAY_OFF_ACTIVE_POWER_TARIFF_3: boolean;
 
     /**
      * Turn off on exceeding the power consumption limit for tariff `T4`.
      */
-    RELAY_OFF_LIM_TARIFF_3: boolean;
+    RELAY_OFF_ACTIVE_POWER_TARIFF_4: boolean;
 
     /**
      * Turn off on exceeding the reactive power consumption limit for tariff `T1`.
      */
-    RELAY_OFF_LIM_VAR_TARIFF_0: boolean;
+    RELAY_OFF_REACTIVE_POWER_TARIFF_1: boolean;
 
     /**
      * Turn off on exceeding the reactive power consumption limit for tariff `T2`.
      */
-    RELAY_OFF_LIM_VAR_TARIFF_1: boolean;
+    RELAY_OFF_REACTIVE_POWER_TARIFF_2: boolean;
 
     /**
      * Turn off on exceeding the reactive power consumption limit for tariff `T3`.
      */
-    RELAY_OFF_LIM_VAR_TARIFF_2: boolean;
+    RELAY_OFF_REACTIVE_POWER_TARIFF_3: boolean;
 
     /**
      * Turn off on exceeding the reactive power consumption limit for tariff `T4`.
      */
-    RELAY_OFF_LIM_VAR_TARIFF_3: boolean;
+    RELAY_OFF_REACTIVE_POWER_TARIFF_4: boolean;
 
     /**
      * Turn on when `cos φ` is normalized.
@@ -1604,7 +1604,7 @@ export interface IOperatorParametersExtended4 {
 
 export interface IDisplaySet5OperatorParameter {
     /** Journal of event profile `P.98`. */
-    EVENT: boolean,
+    EVENT_P98: boolean,
 
     /** Journal of load graph profile `1.5.0` `P.01`. */
     PROFILE_P01: boolean,
@@ -1678,28 +1678,28 @@ const displaySet2Mask = {
     VOLTAGE_IN_PHASE_B: 1 << 5,
     VOLTAGE_IN_PHASE_C: 1 << 6,
     BATTERY_VOLTAGE: 1 << 7,
-    FREQUENCY: 1 << 8,
+    SUPPLY_FREQUENCY: 1 << 8,
     ACTIVE_POWER_SUM: 1 << 9,
     ACTIVE_POWER_PHASE_A: 1 << 10,
     ACTIVE_POWER_PHASE_B: 1 << 11,
     ACTIVE_POWER_PHASE_C: 1 << 12,
-    REACTIVE_POWER_QPLUS_SUM: 1 << 13,
+    TOTAL_REACTIVE_POWER_QPLUS: 1 << 13,
     REACTIVE_POWER_QPLUS_PHASE_A: 1 << 14,
     REACTIVE_POWER_QPLUS_PHASE_B: 1 << 15,
     REACTIVE_POWER_QPLUS_PHASE_C: 1 << 16,
-    REACTIVE_POWER_QMINUS_SUM: 1 << 17,
+    TOTAL_REACTIVE_POWER_QMINUS: 1 << 17,
     REACTIVE_POWER_QMINUS_PHASE_A: 1 << 18,
     REACTIVE_POWER_QMINUS_PHASE_B: 1 << 19,
     REACTIVE_POWER_QMINUS_PHASE_C: 1 << 20,
-    POWER_COEFFICIENT_SUM: 1 << 21,
+    TOTAL_POWER_FACTOR: 1 << 21,
     POWER_COEFFICIENT_PHASE_A: 1 << 22,
     POWER_COEFFICIENT_PHASE_B: 1 << 23,
     POWER_COEFFICIENT_PHASE_C: 1 << 24,
-    APPARENT_POWER_QPLUS_SUM: 1 << 25,
+    TOTAL_APPARENT_POWER_QPLUS: 1 << 25,
     APPARENT_POWER_QPLUS_PHASE_A: 1 << 26,
     APPARENT_POWER_QPLUS_PHASE_B: 1 << 27,
     APPARENT_POWER_QPLUS_PHASE_C: 1 << 28,
-    APPARENT_POWER_QMINUS_SUM: 1 << 29,
+    TOTAL_APPARENT_POWER_QMINUS: 1 << 29,
     APPARENT_POWER_QMINUS_PHASE_A: 1 << 30,
     APPARENT_POWER_QMINUS_PHASE_B: 1 << 31
 };
@@ -1749,14 +1749,14 @@ export const displaySet4BaseMask = {
     MAX_EXPORTED_REACTIVE_POWER_MONTH_T2: 1 << 6,
     MAX_EXPORTED_REACTIVE_POWER_MONTH_T3: 1 << 7,
     MAX_EXPORTED_REACTIVE_POWER_MONTH_T4: 1 << 8,
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T1: 1 << 9,
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T2: 1 << 10,
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T3: 1 << 11,
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_DAY_T4: 1 << 12,
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T1: 1 << 13,
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T2: 1 << 14,
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T3: 1 << 15,
-    MAX_NEGATIVE_EXPORTED_REACTIVE_POWER_MONTH_T4: 1 << 16,
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T1: 1 << 9,
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T2: 1 << 10,
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T3: 1 << 11,
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_DAY_T4: 1 << 12,
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T1: 1 << 13,
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T2: 1 << 14,
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T3: 1 << 15,
+    MAX_EXPORTED_NEGATIVE_REACTIVE_POWER_MONTH_T4: 1 << 16,
     HOUR_MINUTE_SECOND: 1 << 17,
     DATE_MONTH_YEAR: 1 << 18,
     CURRENT_TRANSFORMATION_RATIO: 1 << 19,
@@ -1788,28 +1788,28 @@ export const relaySetMask = {
     RELAY_ON_Y: 1 << 0,
     RELAY_ON_CENTER: 1 << 1,
     RELAY_ON_PB: 1 << 2,
-    RELAY_ON_TARIFF_0: 1 << 3,
-    RELAY_ON_TARIFF_1: 1 << 4,
-    RELAY_ON_TARIFF_2: 1 << 5,
-    RELAY_ON_TARIFF_3: 1 << 6,
+    RELAY_ON_TARIFF_1: 1 << 3,
+    RELAY_ON_TARIFF_2: 1 << 4,
+    RELAY_ON_TARIFF_3: 1 << 5,
+    RELAY_ON_TARIFF_4: 1 << 6,
     RELAY_ON_V_GOOD: 1 << 7,
     RELAY_OFF_Y: 1 << 8,
     RELAY_OFF_CENTER: 1 << 9,
-    RELAY_OFF_TARIFF_0: 1 << 10,
-    RELAY_OFF_TARIFF_1: 1 << 11,
-    RELAY_OFF_TARIFF_2: 1 << 12,
-    RELAY_OFF_TARIFF_3: 1 << 13,
+    RELAY_OFF_TARIFF_1: 1 << 10,
+    RELAY_OFF_TARIFF_2: 1 << 11,
+    RELAY_OFF_TARIFF_3: 1 << 12,
+    RELAY_OFF_TARIFF_4: 1 << 13,
     RELAY_OFF_I_LIMIT: 1 << 14,
     RELAY_OFF_V_BAD: 1 << 15,
-    RELAY_OFF_DIFF_BAD: 1 << 16,
-    RELAY_OFF_LIM_TARIFF_0: 1 << 17,
-    RELAY_OFF_LIM_TARIFF_1: 1 << 18,
-    RELAY_OFF_LIM_TARIFF_2: 1 << 19,
-    RELAY_OFF_LIM_TARIFF_3: 1 << 20,
-    RELAY_OFF_LIM_VAR_TARIFF_0: 1 << 21,
-    RELAY_OFF_LIM_VAR_TARIFF_1: 1 << 22,
-    RELAY_OFF_LIM_VAR_TARIFF_2: 1 << 23,
-    RELAY_OFF_LIM_VAR_TARIFF_3: 1 << 24,
+    RELAY_OFF_DIFF_CURRENT_BAD: 1 << 16,
+    RELAY_OFF_LIM_TARIFF_1: 1 << 17,
+    RELAY_OFF_LIM_TARIFF_2: 1 << 18,
+    RELAY_OFF_LIM_TARIFF_3: 1 << 19,
+    RELAY_OFF_LIM_TARIFF_4: 1 << 20,
+    RELAY_OFF_LIM_VAR_TARIFF_1: 1 << 21,
+    RELAY_OFF_LIM_VAR_TARIFF_2: 1 << 22,
+    RELAY_OFF_LIM_VAR_TARIFF_3: 1 << 23,
+    RELAY_OFF_LIM_VAR_TARIFF_4: 1 << 24,
     RELAY_ON_PF_MIN: 1 << 25,
     RELAY_OFF_PF_MIN: 1 << 26,
     RELAY_ON_TIMEOUT: 1 << 27,
