@@ -1,9 +1,23 @@
-import getBytesFromHex from '../../utils/getBytesFromHex.js';
 import {TUint8, TBytes} from '../../types.js';
+import * as bitSet from '../../utils/bitSet.js';
+import getBytesFromHex from '../../utils/getBytesFromHex.js';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import * as meterTypes from '../constants/meterTypes.js';
 
+export interface IMtx1DeviceTypeDescriptor extends bitSet.TBooleanObject {
+    typeMeterG: boolean;
+    downgradedToA: boolean;
+    supportMeterInfo: boolean;
+}
+
+export interface IMtx3DeviceTypeDescriptor extends bitSet.TBooleanObject {
+    typeMeterTransformer: boolean,
+    typeMeterG: boolean,
+    downgradedToR: boolean,
+    supportMeterInfo: boolean,
+    reactiveRPlusRMinus: boolean
+}
+
+export type IMtxDeviceTypeDescriptor = ({meterType: 'mtx1'} & IMtx1DeviceTypeDescriptor) | ({meterType: 'mtx3'} & IMtx3DeviceTypeDescriptor);
 
 export interface IDeviceType {
     /**
@@ -20,18 +34,9 @@ export interface IDeviceType {
      * @example
      * 0x0b
      */
-    revision?: TUint8
+    revision?: TUint8,
 
-    /**
-     * Meter type from the list of {@link meterTypes | available types}.
-     *
-     * Value           | Name
-     * ----------------|------
-     * 0b00000000 (0)  | A
-     * 0b00010001 (17) | G_FULL
-     * 0b00000001 (1)  | G_RESTRICTED
-     */
-    meterType: TUint8
+    descriptor?: IMtxDeviceTypeDescriptor
 }
 
 
@@ -48,6 +53,21 @@ const nibbles9 = ['.', 'D', 'B', 'C', 'E', 'P', 'R', 'O', 'L', 'F', 'S', 'M', 'Y
 const nibbles10 = ['.', '0', '1', '2', '3', '4', '5', '6', 'P', 'R', 'L', 'E', 'G', '-', '/'];
 const nibbles11 = ['.', 'H', 'A', 'T', '0', '0', '0', '0', '0', '1', '2', '3', '4', '0', '0', '0'];
 const nibbles12 = ['.', '0', '1', '2', '3', '4', '5', '6', '7', '8', 'I', 'X', 'G', 'W', 'M', '-'];
+
+const mtx1DeviceTypeDescriptorMask = {
+    typeMeterG: 1 << 0,
+    downgradedToA: 1 << 4,
+    supportMeterInfo: 1 << 6
+};
+
+const mtx3DeviceTypeDescriptorMask = {
+    typeMeterTransformer: 1 << 0,
+    downgradedToR: 1 << 3,
+    typeMeterG: 1 << 4,
+    supportMeterInfo: 1 << 6,
+    reactiveRPlusRMinus: 1 << 7
+};
+
 
 const splitByte = ( byte: number ): Array<number> => [
     byte >> 4,
@@ -140,8 +160,7 @@ const fromBytesMtx = ( nibbles: TBytes ): IDeviceType => {
 
     return {
         type: type.join(''),
-        revision,
-        meterType: 0
+        revision
     };
 };
 
@@ -226,10 +245,7 @@ const fromBytesMtx2 = ( nibbles: TBytes ): IDeviceType => {
         }
     }
 
-    return {
-        type: type.join(''),
-        meterType: 0
-    };
+    return {type: type.join('')};
 };
 
 const toBytesMtx2 = ( type: string ): TBytes => {
@@ -280,10 +296,7 @@ const fromBytesM = ( nibbles: TBytes ): IDeviceType => {
         }
     }
 
-    return {
-        type: type.join(''),
-        meterType: 0
-    };
+    return {type: type.join('')};
 };
 
 const toBytesM = ( type: string ): TBytes => {
@@ -322,20 +335,28 @@ export const fromBytes = ( bytes: TBytes ): IDeviceType => {
     const deviceType = nibbles1[deviceTypeNibble];
 
     if ( deviceType === '1' || deviceType === '3' ) {
-        result = fromBytesMtx(nibbles.slice(position));
+        result = {
+            ...fromBytesMtx(nibbles.slice(position)),
+            descriptor: deviceType === '1'
+                ? {
+                    meterType: 'mtx1',
+                    ...bitSet.toObject(mtx1DeviceTypeDescriptorMask, bytes[8]) as IMtx1DeviceTypeDescriptor
+                } as IMtxDeviceTypeDescriptor
+                : {
+                    meterType: 'mtx3',
+                    ...bitSet.toObject(mtx3DeviceTypeDescriptorMask, bytes[8]) as IMtx3DeviceTypeDescriptor
+                } as IMtxDeviceTypeDescriptor
+        };
     } else {
         result = deviceType === 'M'
             ? fromBytesM(nibbles)
             : fromBytesMtx2(nibbles);
     }
 
-    // eslint-disable-next-line prefer-destructuring
-    result.meterType = bytes[8];
-
     return result;
 };
 
-export const toBytes = ( {type, revision, meterType}: IDeviceType, prefix?: number ): TBytes => {
+export const toBytes = ( {type, revision, descriptor}: IDeviceType, prefix?: number ): TBytes => {
     if ( !type.startsWith('MTX ') ) {
         throw new Error('Wrong format');
     }
@@ -352,7 +373,14 @@ export const toBytes = ( {type, revision, meterType}: IDeviceType, prefix?: numb
             : toBytesMtx2(content);
     }
 
-    result[8] = meterType;
+    if ( descriptor?.meterType ) {
+        result[8] = descriptor.meterType === 'mtx1'
+            ? bitSet.fromObject(mtx1DeviceTypeDescriptorMask, descriptor)
+            : bitSet.fromObject(mtx3DeviceTypeDescriptorMask, descriptor);
+    } else {
+        result[8] = 0;
+    }
+
 
     return result;
 };
