@@ -12,7 +12,7 @@
  * import * as getHalfhoursEnergies from 'jooby-codec/mtx3/commands/uplink/getHalfhoursEnergies.js';
  *
  * // response to getHalfhoursEnergies downlink command
- * const bytes = [0x2a, 0x43, 0x11, 0x01, 0x02, 0x40, 0x00, 0x80, 0x2f, 0x44, 0xd2, 0xb0, 0x39];
+ * const bytes = [0x2a, 0x43, 0x11, 0x01, 0x02, 0x10, 0x00, 0x20, 0x00, 0x30, 0x00, 0x40, 0x00];
  *
  * // decoded payload
  * const parameters = getHalfhoursEnergies.fromBytes(bytes);
@@ -28,14 +28,8 @@
  *     firstHalfhour: 1,
  *     halfhoursNumber: 2,
  *     energies: {
- *         'A+': [
- *             {tariff: 1, energy: 0},
- *             {tariff: 2, energy: 47}
- *         ],
- *         'A-R+': [
- *             {tariff: 1, energy: 1234},
- *             {tariff: 2, energy: 12345}
- *         ]
+ *         'A+': [0x1000, 0x2000],
+ *         'A-R+': [0x3000, 0x4000]
  *     }
  * }
  * ```

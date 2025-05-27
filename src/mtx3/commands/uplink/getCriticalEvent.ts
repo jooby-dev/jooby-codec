@@ -19,6 +19,7 @@
  * // output:
  * {
  *      event: 1,
+ *      name: 'MAGNETIC_ON',
  *      index: 1,
  *      date: {
  *          year: 233,
@@ -37,7 +38,8 @@
 
 import * as types from '../../types.js';
 import * as command from '../../../mtx1/utils/command.js';
-import {accessLevels} from '../../constants/index.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
+import criticalEventNames from '../../../mtx1/constants/criticalEventNames.js';
 import {getCriticalEvent as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -49,6 +51,8 @@ interface IGetCriticalEventResponseParameters {
      * ({@link criticalEvents | critical event identifiers})
      */
     event: types.TUint8,
+
+    name?: string,
 
     index: types.TUint8,
 
@@ -68,7 +72,7 @@ interface IGetCriticalEventResponseParameters {
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = accessLevels.READ_ONLY;
+export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const maxSize = 9;
 export const isLoraOnly = false;
 
@@ -81,6 +85,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         parameters: {
             event: 1,
+            name: 'MAGNETIC_ON',
             index: 1,
             date: {
                 year: 23,
@@ -125,6 +130,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventResponseParam
 
     return {
         event,
+        name: criticalEventNames[event],
         index,
         date: {
             year,
