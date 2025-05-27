@@ -672,22 +672,22 @@ export interface IRelaySetOperatorParameter {
     /**
      * Turn on by tariff `T1`.
      */
-    RELAY_ON_TARIFF_0: boolean;
+    RELAY_ON_TARIFF_1: boolean;
 
     /**
      * Turn on by tariff `T2`.
      */
-    RELAY_ON_TARIFF_1: boolean;
+    RELAY_ON_TARIFF_2: boolean;
 
     /**
      * Turn on by tariff `T3`.
      */
-    RELAY_ON_TARIFF_2: boolean;
+    RELAY_ON_TARIFF_3: boolean;
 
     /**
      * Turn on by tariff `T4`.
      */
-    RELAY_ON_TARIFF_3: boolean;
+    RELAY_ON_TARIFF_4: boolean;
 
     /**
      * Turn on by restoration of good voltage.
@@ -710,22 +710,22 @@ export interface IRelaySetOperatorParameter {
     /**
      * Turn off by tariff `T1`.
      */
-    RELAY_OFF_TARIFF_0: boolean;
+    RELAY_OFF_TARIFF_1: boolean;
 
     /**
      * Turn off by tariff `T2`.
      */
-    RELAY_OFF_TARIFF_1: boolean;
+    RELAY_OFF_TARIFF_2: boolean;
 
     /**
      * Turn off by tariff `T3`.
      */
-    RELAY_OFF_TARIFF_2: boolean;
+    RELAY_OFF_TARIFF_3: boolean;
 
     /**
      * Turn off by tariff `T4`.
      */
-    RELAY_OFF_TARIFF_3: boolean;
+    RELAY_OFF_TARIFF_4: boolean;
 
     /**
      * Turn off on load current exceeding.
@@ -1788,28 +1788,28 @@ export const relaySetMask = {
     RELAY_ON_Y: 1 << 0,
     RELAY_ON_CENTER: 1 << 1,
     RELAY_ON_PB: 1 << 2,
-    RELAY_ON_TARIFF_0: 1 << 3,
-    RELAY_ON_TARIFF_1: 1 << 4,
-    RELAY_ON_TARIFF_2: 1 << 5,
-    RELAY_ON_TARIFF_3: 1 << 6,
+    RELAY_ON_TARIFF_1: 1 << 3,
+    RELAY_ON_TARIFF_2: 1 << 4,
+    RELAY_ON_TARIFF_3: 1 << 5,
+    RELAY_ON_TARIFF_4: 1 << 6,
     RELAY_ON_V_GOOD: 1 << 7,
     RELAY_OFF_Y: 1 << 8,
     RELAY_OFF_CENTER: 1 << 9,
-    RELAY_OFF_TARIFF_0: 1 << 10,
-    RELAY_OFF_TARIFF_1: 1 << 11,
-    RELAY_OFF_TARIFF_2: 1 << 12,
-    RELAY_OFF_TARIFF_3: 1 << 13,
+    RELAY_OFF_TARIFF_1: 1 << 10,
+    RELAY_OFF_TARIFF_2: 1 << 11,
+    RELAY_OFF_TARIFF_3: 1 << 12,
+    RELAY_OFF_TARIFF_4: 1 << 13,
     RELAY_OFF_I_LIMIT: 1 << 14,
     RELAY_OFF_V_BAD: 1 << 15,
     RELAY_OFF_DIFF_CURRENT_BAD: 1 << 16,
-    RELAY_OFF_LIM_TARIFF_0: 1 << 17,
-    RELAY_OFF_LIM_TARIFF_1: 1 << 18,
-    RELAY_OFF_LIM_TARIFF_2: 1 << 19,
-    RELAY_OFF_LIM_TARIFF_3: 1 << 20,
-    RELAY_OFF_LIM_VAR_TARIFF_0: 1 << 21,
-    RELAY_OFF_LIM_VAR_TARIFF_1: 1 << 22,
-    RELAY_OFF_LIM_VAR_TARIFF_2: 1 << 23,
-    RELAY_OFF_LIM_VAR_TARIFF_3: 1 << 24,
+    RELAY_OFF_LIM_TARIFF_1: 1 << 17,
+    RELAY_OFF_LIM_TARIFF_2: 1 << 18,
+    RELAY_OFF_LIM_TARIFF_3: 1 << 19,
+    RELAY_OFF_LIM_TARIFF_4: 1 << 20,
+    RELAY_OFF_LIM_VAR_TARIFF_1: 1 << 21,
+    RELAY_OFF_LIM_VAR_TARIFF_2: 1 << 22,
+    RELAY_OFF_LIM_VAR_TARIFF_3: 1 << 23,
+    RELAY_OFF_LIM_VAR_TARIFF_4: 1 << 24,
     RELAY_ON_PF_MIN: 1 << 25,
     RELAY_OFF_PF_MIN: 1 << 26,
     RELAY_ON_TIMEOUT: 1 << 27,

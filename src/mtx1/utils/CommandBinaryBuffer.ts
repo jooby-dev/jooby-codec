@@ -162,22 +162,22 @@ export interface IRelaySet1OperatorParameter {
     /**
      * Turn on by tariff `T1`.
      */
-    RELAY_ON_TARIFF_0: boolean,
+    RELAY_ON_TARIFF_1: boolean,
 
     /**
      * Turn on by tariff `T2`.
      */
-    RELAY_ON_TARIFF_1: boolean,
+    RELAY_ON_TARIFF_2: boolean,
 
     /**
      * Turn on by tariff `T3`.
      */
-    RELAY_ON_TARIFF_2: boolean,
+    RELAY_ON_TARIFF_3: boolean,
 
     /**
      * Turn on by tariff `T4`.
      */
-    RELAY_ON_TARIFF_3: boolean,
+    RELAY_ON_TARIFF_4: boolean,
 
     /**
      * Turn on by restoration of good voltage.
@@ -199,22 +199,22 @@ export interface IRelaySet2OperatorParameter {
     /**
      * Turn off by tariff `T1`.
      */
-    RELAY_OFF_TARIFF_0: boolean,
+    RELAY_OFF_TARIFF_1: boolean,
 
     /**
      * Turn off by tariff `T2`.
      */
-    RELAY_OFF_TARIFF_1: boolean,
+    RELAY_OFF_TARIFF_2: boolean,
 
     /**
      * Turn off by tariff `T3`.
      */
-    RELAY_OFF_TARIFF_2: boolean,
+    RELAY_OFF_TARIFF_3: boolean,
 
     /**
      * Turn off by tariff `T4`.
      */
-    RELAY_OFF_TARIFF_3: boolean,
+    RELAY_OFF_TARIFF_4: boolean,
 
     /**
      * Turn off on load current exceeding.
@@ -231,22 +231,22 @@ export interface IRelaySet3OperatorParameter {
     /**
      * Turn off on exceeding the power consumption limit for tariff `T1`.
      */
-    RELAY_OFF_LIM_TARIFF_0: boolean,
+    RELAY_OFF_LIM_TARIFF_1: boolean,
 
     /**
      * Turn off on exceeding the power consumption limit for tariff `T2`.
      */
-    RELAY_OFF_LIM_TARIFF_1: boolean,
+    RELAY_OFF_LIM_TARIFF_2: boolean,
 
     /**
      * Turn off on exceeding the power consumption limit for tariff `T3`.
      */
-    RELAY_OFF_LIM_TARIFF_2: boolean,
+    RELAY_OFF_LIM_TARIFF_3: boolean,
 
     /**
      * Turn off on exceeding the power consumption limit for tariff `T4`.
      */
-    RELAY_OFF_LIM_TARIFF_3: boolean,
+    RELAY_OFF_LIM_TARIFF_4: boolean,
 
     /**
      * Turn off on `cos φ`.
@@ -1080,29 +1080,29 @@ const relaySet1Mask = {
     RELAY_ON_Y: 0x01,
     RELAY_ON_CENTER: 0x02,
     RELAY_ON_PB: 0x04,
-    RELAY_ON_TARIFF_0: 0x08,
-    RELAY_ON_TARIFF_1: 0x10,
-    RELAY_ON_TARIFF_2: 0x20,
-    RELAY_ON_TARIFF_3: 0x40,
+    RELAY_ON_TARIFF_1: 0x08,
+    RELAY_ON_TARIFF_2: 0x10,
+    RELAY_ON_TARIFF_3: 0x20,
+    RELAY_ON_TARIFF_4: 0x40,
     RELAY_ON_V_GOOD: 0x80
 };
 
 const relaySet2Mask = {
     RELAY_OFF_Y: 0x01,
     RELAY_OFF_CENTER: 0x02,
-    RELAY_OFF_TARIFF_0: 0x04,
-    RELAY_OFF_TARIFF_1: 0x08,
-    RELAY_OFF_TARIFF_2: 0x10,
-    RELAY_OFF_TARIFF_3: 0x20,
+    RELAY_OFF_TARIFF_1: 0x04,
+    RELAY_OFF_TARIFF_2: 0x08,
+    RELAY_OFF_TARIFF_3: 0x10,
+    RELAY_OFF_TARIFF_4: 0x20,
     RELAY_OFF_I_LIMIT: 0x40,
     RELAY_OFF_V_BAD: 0x80
 };
 
 const relaySet3Mask = {
-    RELAY_OFF_LIM_TARIFF_0: 0x02,
-    RELAY_OFF_LIM_TARIFF_1: 0x04,
-    RELAY_OFF_LIM_TARIFF_2: 0x08,
-    RELAY_OFF_LIM_TARIFF_3: 0x10,
+    RELAY_OFF_LIM_TARIFF_1: 0x02,
+    RELAY_OFF_LIM_TARIFF_2: 0x04,
+    RELAY_OFF_LIM_TARIFF_3: 0x08,
+    RELAY_OFF_LIM_TARIFF_4: 0x10,
     RELAY_OFF_PF_MIN: 0x20
 };
 
