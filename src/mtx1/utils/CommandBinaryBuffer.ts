@@ -1191,10 +1191,10 @@ const extendedCurrentValues2Status3Mask = {
 };
 
 const operatorParametersExtended3RelaySetMask = {
-    RELAY_OFF_LIMIT_P_MINUS_T1: 0x04,
-    RELAY_OFF_LIMIT_P_MINUS_T2: 0x08,
-    RELAY_OFF_LIMIT_P_MINUS_T3: 0x10,
-    RELAY_OFF_LIMIT_P_MINUS_T4: 0x20
+    RELAY_OFF_LIMIT_P_MINUS_T1: 0x08,
+    RELAY_OFF_LIMIT_P_MINUS_T2: 0x10,
+    RELAY_OFF_LIMIT_P_MINUS_T3: 0x20,
+    RELAY_OFF_LIMIT_P_MINUS_T4: 0x40
 };
 
 
