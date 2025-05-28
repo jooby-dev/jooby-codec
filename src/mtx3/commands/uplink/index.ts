@@ -76,6 +76,7 @@ export * as getMonthMaxDemandExport from './getMonthMaxDemandExport.js';
 export * as getOperatorParameters from './getOperatorParameters.js';
 export * as getOperatorParametersExtended from './getOperatorParametersExtended.js';
 export * as getOperatorParametersExtended2 from './getOperatorParametersExtended2.js';
+export * as getOperatorParametersExtended4 from './getOperatorParametersExtended4.js';
 export * as setOperatorParametersExtended from './setOperatorParametersExtended.js';
 export * as setOperatorParametersExtended2 from './setOperatorParametersExtended2.js';
 export * as setOperatorParametersExtended4 from './setOperatorParametersExtended4.js';

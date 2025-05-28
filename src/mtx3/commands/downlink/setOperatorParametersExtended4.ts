@@ -173,7 +173,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [117, 28, 0, 0, 0, 91, 0, 0, 0, 85, 64, 4, 2, 32, 1, 0, 8, 34, 12, 0, 16, 24, 64, 24, 0, 24, 0, 0, 0, 28]
+ * [117, 28, 0, 0, 0, 91, 0, 0, 0, 85, 0, 0, 16, 133, 0, 2, 34, 0, 0, 0, 0, 0, 128, 6, 0, 0, 0, 0, 0, 28]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/SetOperatorParametersExtended4.md#request)
