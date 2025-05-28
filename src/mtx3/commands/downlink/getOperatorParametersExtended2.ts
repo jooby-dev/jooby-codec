@@ -1,5 +1,5 @@
 /**
- * Downlink command to get the extended operator parameters.
+ * Downlink command to get the extended operator parameters 2.
  *
  * @packageDocumentation
  *

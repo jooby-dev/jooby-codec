@@ -1590,13 +1590,13 @@ export interface IOperatorParametersExtended4 {
     displaySet31: IDisplaySet1OperatorParameter,
 
     /** Configuration for displaying meter readings in the battery mode. */
-    displaySet32: IDisplaySet1OperatorParameter,
+    displaySet32: IDisplaySet2OperatorParameter,
 
     /** Configuration for displaying meter readings in the battery mode. */
-    displaySet33: IDisplaySet1OperatorParameter,
+    displaySet33: IDisplaySet3OperatorParameter,
 
     /** Configuration for displaying meter readings in the battery mode. */
-    displaySet34: IDisplaySet1OperatorParameter,
+    displaySet34: IDisplaySet4OperatorParameter,
 
     /** Configuration for displaying meter readings in the battery mode. */
     displaySet35: IDisplaySet5OperatorParameter
@@ -2441,9 +2441,9 @@ CommandBinaryBuffer.prototype.getOperatorParametersExtended4 = function (): IOpe
         displaySet5: (bitSet.toObject(displaySet5Mask, this.getUint32()) as unknown) as IDisplaySet5OperatorParameter,
         displaySet25: (bitSet.toObject(displaySet5Mask, this.getUint32()) as unknown) as IDisplaySet5OperatorParameter,
         displaySet31: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
-        displaySet32: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
-        displaySet33: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
-        displaySet34: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet32: (bitSet.toObject(displaySet2Mask, this.getUint32()) as unknown) as IDisplaySet2OperatorParameter,
+        displaySet33: (bitSet.toObject(displaySet3Mask, this.getUint32()) as unknown) as IDisplaySet3OperatorParameter,
+        displaySet34: (bitSet.toObject(displaySet4Mask, this.getUint32()) as unknown) as IDisplaySet4OperatorParameter,
         displaySet35: (bitSet.toObject(displaySet5Mask, this.getUint32()) as unknown) as IDisplaySet5OperatorParameter
     };
 };
@@ -2452,9 +2452,9 @@ CommandBinaryBuffer.prototype.setOperatorParametersExtended4 = function ( operat
     this.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet5 as unknown as bitSet.TBooleanObject));
     this.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet25 as unknown as bitSet.TBooleanObject));
     this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended.displaySet31 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended.displaySet32 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended.displaySet33 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended.displaySet34 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet2Mask, operatorParametersExtended.displaySet32 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet3Mask, operatorParametersExtended.displaySet33 as unknown as bitSet.TBooleanObject));
+    this.setUint32(bitSet.fromObject(displaySet4Mask, operatorParametersExtended.displaySet34 as unknown as bitSet.TBooleanObject));
     this.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet35 as unknown as bitSet.TBooleanObject));
 };
 
