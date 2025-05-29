@@ -1,6 +1,6 @@
 /**
- * Downlink command to get the maximum `P-` power for the day for MTX1
- * and the maximum power for the day (`II` - `III` quadrant) for MTX3.
+ * Downlink command to get the maximum daily power `P-` for all tariffs (`T1`-`T4`) for MTX1
+ * and the maximum daily power (`II`-`III` quadrant) for MTX3.
  *
  * Supported in MTX1 and MTX3 devices.
  *

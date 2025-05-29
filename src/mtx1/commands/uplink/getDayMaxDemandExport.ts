@@ -1,5 +1,5 @@
 /**
- * Uplink command to get the maximum `P-` power for the day.
+ * Uplink command to get the maximum daily power `P-` for all tariffs (`T1`-`T4`).
  *
  * The corresponding downlink command: `getDayMaxDemandExport`.
  *

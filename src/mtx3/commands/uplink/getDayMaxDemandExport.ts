@@ -1,5 +1,5 @@
 /**
- * Uplink command to get the maximum power for the day (`II` - `III` quadrant).
+ * Uplink command to get the maximum daily power (`II`-`III` quadrant) for all tariffs (`T1`-`T4`).
  *
  * The corresponding downlink command: `getDayMaxDemandExport`.
  *
