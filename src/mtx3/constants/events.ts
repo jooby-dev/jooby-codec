@@ -1007,49 +1007,49 @@ export const RESET_EM_FLAG = 0xB2;
 export const RESET_MAGNETIC_FLAG = 0xB3;
 
 /**
- * `1`-minute load, voltage, and current graphs recording mode set.
+ * `1`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.224`.
  */
 export const SET_DEMAND_EN_1_MIN = 0xE0;
 
 /**
- * `3`-minute load, voltage, and current graphs recording mode set.
+ * `3`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.225`.
  */
 export const SET_DEMAND_EN_3_MIN = 0xE1;
 
 /**
- * `5`-minute load, voltage, and current graphs recording mode set.
+ * `5`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.226`.
  */
 export const SET_DEMAND_EN_5_MIN = 0xE2;
 
 /**
- * `10`-minute load, voltage, and current graphs recording mode set.
+ * `10`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.227`.
  */
 export const SET_DEMAND_EN_10_MIN = 0xE3;
 
 /**
- * `15`-minute load, voltage, and current graphs recording mode set.
+ * `15`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.228`.
  */
 export const SET_DEMAND_EN_15_MIN = 0xE4;
 
 /**
- * `30`-minute load, voltage, and current graphs recording mode set.
+ * `30`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.229`.
  */
 export const SET_DEMAND_EN_30_MIN = 0xE5;
 
 /**
- * `60`-minute load, voltage, and current graphs recording mode set.
+ * `60`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.230`.
  */
