@@ -114,7 +114,7 @@ export const examples: command.TCommandExamples = {
                 VOLTAGE_IN_PHASE_C: false,
                 BATTERY_VOLTAGE: false,
                 SUPPLY_FREQUENCY: false,
-                ACTIVE_POWER_SUM: true,
+                TOTAL_ACTIVE_POWER: true,
                 ACTIVE_POWER_PHASE_A: false,
                 ACTIVE_POWER_PHASE_B: false,
                 ACTIVE_POWER_PHASE_C: false,

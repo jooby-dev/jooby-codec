@@ -1679,7 +1679,7 @@ const displaySet2Mask = {
     VOLTAGE_IN_PHASE_C: 1 << 6,
     BATTERY_VOLTAGE: 1 << 7,
     SUPPLY_FREQUENCY: 1 << 8,
-    ACTIVE_POWER_SUM: 1 << 9,
+    TOTAL_ACTIVE_POWER: 1 << 9,
     ACTIVE_POWER_PHASE_A: 1 << 10,
     ACTIVE_POWER_PHASE_B: 1 << 11,
     ACTIVE_POWER_PHASE_C: 1 << 12,
