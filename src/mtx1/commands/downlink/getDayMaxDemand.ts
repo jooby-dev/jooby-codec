@@ -1,5 +1,5 @@
 /**
- * Downlink command to get the maximum power of active energy (A+) for the day.
+ * Downlink command to get the maximum daily power `P+` for all tariffs (`T1`-`T4`).
  *
  * Supported in MTX1 and MTX3 devices.
  *
