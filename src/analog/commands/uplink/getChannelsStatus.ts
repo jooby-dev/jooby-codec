@@ -97,15 +97,20 @@ export const examples: command.TCommandExamples = {
             0x1f, 0x32, 0x07, 0x04, 0x02, 0x18, 0x00, 0x00, 0x58, 0xc0
         ]
     },
-    'binary and temperature sensors': {
+    'power channel and pulse, binary and temperature sensors': {
         id,
         name,
         headerSize,
         parameters: [
             {
+                type: channelTypes.POWER_CHANNEL,
+                typeName: 'POWER_CHANNEL',
+                channel: 1
+            },
+            {
                 type: channelTypes.BINARY_SENSOR,
                 typeName: 'BINARY_SENSOR',
-                channel: 1,
+                channel: 2,
                 status: {
                     state: true
                 }
@@ -118,10 +123,15 @@ export const examples: command.TCommandExamples = {
                     temperature: 20,
                     time2000: 22720
                 }
+            },
+            {
+                type: channelTypes.PULSE_SENSOR,
+                typeName: 'PULSE_SENSOR',
+                channel: 4
             }
         ],
         bytes: [
-            0x1f, 0x32, 0x0a, 0x03, 0x00, 0x01, 0x04, 0x02, 0x14, 0x00, 0x00, 0x58, 0xc0
+            0x1f, 0x32, 0x0e, 0x02, 0x00, 0x03, 0x01, 0x01, 0x04, 0x02, 0x14, 0x00, 0x00, 0x58, 0xc0, 0x01, 0x03
         ]
     }
 
@@ -195,7 +205,7 @@ export const fromBytes = ( data: types.TBytes ): Array<IChannelStatus> => {
                 break;
 
             default:
-                return result;
+                break;
         }
 
         result.push(channelStatus);

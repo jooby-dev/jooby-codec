@@ -1001,6 +1001,7 @@ const getChannelTypeSize = ( {type}: IParameterChannelType ) => {
 
     switch ( type ) {
         case channelTypes.IDLE:
+        case channelTypes.PULSE_SENSOR:
         case channelTypes.POWER_CHANNEL:
             break;
 
