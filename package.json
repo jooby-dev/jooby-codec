@@ -1,6 +1,6 @@
 {
     "name": "jooby-codec",
-    "version": "5.13.0",
+    "version": "6.0.0",
     "description": "Jooby message encoders/decoders",
     "type": "module",
     "main": "./dist/index.js",
