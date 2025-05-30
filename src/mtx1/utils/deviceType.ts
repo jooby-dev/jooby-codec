@@ -68,12 +68,10 @@ const mtx3DeviceTypeDescriptorMask = {
     reactiveByQuadrants: 1 << 7
 };
 
-
+// In the MTX1 protocol, the meter is of type G when the corresponding bit is set to 1.
+// In the MTX3 protocol, the meter is of type G when the corresponding bit is set to 0.
+// To use the same field name across both protocols, the bit must be inverted for MTX3.
 const mtx3DeviceTypeDescriptorFromByte = ( byte: number ): IMtxDeviceTypeDescriptor => {
-    // In the MTX1 protocol, the meter is of type G when the corresponding bit is set to 1.
-    // In the MTX3 protocol, the meter is of type G when the corresponding bit is set to 0.
-    // To use the same field name across both protocols, the bit must be inverted for MTX3.
-
     const descriptor: IMtx3DeviceTypeDescriptor = bitSet.toObject(mtx3DeviceTypeDescriptorMask, byte) as IMtx3DeviceTypeDescriptor;
 
     return {
