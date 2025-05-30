@@ -14,7 +14,7 @@ export interface IMtx3DeviceTypeDescriptor extends bitSet.TBooleanObject {
     typeMeterG: boolean,
     downgradedToR: boolean,
     supportMeterInfo: boolean,
-    reactiveRPlusRMinus: boolean
+    reactiveByQuadrants: boolean
 }
 
 export type IMtxDeviceTypeDescriptor = ({meterType: 'mtx1'} & IMtx1DeviceTypeDescriptor) | ({meterType: 'mtx3'} & IMtx3DeviceTypeDescriptor);
@@ -65,9 +65,31 @@ const mtx3DeviceTypeDescriptorMask = {
     downgradedToR: 1 << 3,
     typeMeterG: 1 << 4,
     supportMeterInfo: 1 << 6,
-    reactiveRPlusRMinus: 1 << 7
+    reactiveByQuadrants: 1 << 7
 };
 
+// In the MTX1 protocol, the meter is of type G when the corresponding bit is set to 1.
+// In the MTX3 protocol, the meter is of type G when the corresponding bit is set to 0.
+// To use the same field name across both protocols, the bit must be inverted for MTX3.
+const mtx3DeviceTypeDescriptorFromByte = ( byte: number ): IMtxDeviceTypeDescriptor => {
+    const descriptor: IMtx3DeviceTypeDescriptor = bitSet.toObject(mtx3DeviceTypeDescriptorMask, byte) as IMtx3DeviceTypeDescriptor;
+
+    return {
+        meterType: 'mtx3',
+        ...descriptor,
+        typeMeterG: !descriptor.typeMeterG
+    } as IMtxDeviceTypeDescriptor;
+};
+
+// In the MTX1 protocol, the meter is of type G when the corresponding bit is set to 1.
+// In the MTX3 protocol, the meter is of type G when the corresponding bit is set to 0.
+// To use the same field name across both protocols, the bit must be inverted for MTX3.
+const mtx3DeviceTypeDescriptorToByte = ( descriptor: IMtx3DeviceTypeDescriptor ): number => (
+    bitSet.fromObject(mtx3DeviceTypeDescriptorMask, {
+        ...descriptor,
+        typeMeterG: !descriptor.typeMeterG
+    })
+);
 
 const splitByte = ( byte: number ): Array<number> => [
     byte >> 4,
@@ -337,14 +359,11 @@ export const fromBytes = ( bytes: TBytes ): IDeviceType => {
     if ( deviceType === '1' || deviceType === '3' ) {
         result = {
             ...fromBytesMtx(nibbles.slice(position)),
-            descriptor: deviceType === '1'
-                ? {
+            descriptor: deviceType === '3'
+                ? mtx3DeviceTypeDescriptorFromByte(bytes[8])
+                : {
                     meterType: 'mtx1',
                     ...bitSet.toObject(mtx1DeviceTypeDescriptorMask, bytes[8]) as IMtx1DeviceTypeDescriptor
-                } as IMtxDeviceTypeDescriptor
-                : {
-                    meterType: 'mtx3',
-                    ...bitSet.toObject(mtx3DeviceTypeDescriptorMask, bytes[8]) as IMtx3DeviceTypeDescriptor
                 } as IMtxDeviceTypeDescriptor
         };
     } else {
@@ -376,7 +395,7 @@ export const toBytes = ( {type, revision, descriptor}: IDeviceType, prefix?: num
     if ( descriptor?.meterType ) {
         result[8] = descriptor.meterType === 'mtx1'
             ? bitSet.fromObject(mtx1DeviceTypeDescriptorMask, descriptor)
-            : bitSet.fromObject(mtx3DeviceTypeDescriptorMask, descriptor);
+            : mtx3DeviceTypeDescriptorToByte(descriptor);
     } else {
         result[8] = 0;
     }
