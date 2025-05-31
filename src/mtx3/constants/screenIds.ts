@@ -271,17 +271,17 @@ export const TOTAL_POWER_FACTOR = 54;
 /**
  * Power factor (`cos φ`) of phase `A` (`33.7.0`).
  */
-export const POWER_COEFFICIENT_PHASE_A = 55;
+export const POWER_FACTOR_PHASE_A = 55;
 
 /**
  * Power factor (`cos φ`) of phase `B` (`53.7.0`).
  */
-export const POWER_COEFFICIENT_PHASE_B = 56;
+export const POWER_FACTOR_PHASE_B = 56;
 
 /**
  * Power factor (`cos φ`) of phase `C` (`73.7.0`).
  */
-export const POWER_COEFFICIENT_PHASE_C = 57;
+export const POWER_FACTOR_PHASE_C = 57;
 
 /**
  * Total apparent power `S+` across all phases (quadrant `QI + QIV`) (`9.7.0`).

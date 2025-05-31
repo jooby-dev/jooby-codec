@@ -294,17 +294,17 @@ export interface IDisplaySet2OperatorParameter {
     /**
      * Power factor (`cos φ`) of phase `A` (`33.7.0`).
      */
-    POWER_COEFFICIENT_PHASE_A: boolean;
+    POWER_FACTOR_PHASE_A: boolean;
 
     /**
      * Power factor (`cos φ`) of phase `B` (`53.7.0`).
      */
-    POWER_COEFFICIENT_PHASE_B: boolean;
+    POWER_FACTOR_PHASE_B: boolean;
 
     /**
      * Power factor (`cos φ`) of phase `C` (`73.7.0`).
      */
-    POWER_COEFFICIENT_PHASE_C: boolean;
+    POWER_FACTOR_PHASE_C: boolean;
 
     /**
      * Total apparent power `S+` across all phases (quadrants `QI + QIV`) (`9.7.0`).
@@ -1692,9 +1692,9 @@ const displaySet2Mask = {
     REACTIVE_POWER_QMINUS_PHASE_B: 1 << 19,
     REACTIVE_POWER_QMINUS_PHASE_C: 1 << 20,
     TOTAL_POWER_FACTOR: 1 << 21,
-    POWER_COEFFICIENT_PHASE_A: 1 << 22,
-    POWER_COEFFICIENT_PHASE_B: 1 << 23,
-    POWER_COEFFICIENT_PHASE_C: 1 << 24,
+    POWER_FACTOR_PHASE_A: 1 << 22,
+    POWER_FACTOR_PHASE_B: 1 << 23,
+    POWER_FACTOR_PHASE_C: 1 << 24,
     TOTAL_APPARENT_POWER_QPLUS: 1 << 25,
     APPARENT_POWER_QPLUS_PHASE_A: 1 << 26,
     APPARENT_POWER_QPLUS_PHASE_B: 1 << 27,
