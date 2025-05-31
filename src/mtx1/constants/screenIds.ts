@@ -96,12 +96,12 @@ export const EXPORTED_ACTIVE_ENERGY_T4 = 19;
 /**
  * Power ratio (cos φ) in channel A (33.7.0).
  */
-export const POWER_COEFFICIENT_PHASE_A = 20;
+export const POWER_FACTOR_PHASE_A = 20;
 
 /**
  * Power ratio (cos φ) in channel B (53.7.0).
  */
-export const POWER_COEFFICIENT_PHASE_B = 21;
+export const POWER_FACTOR_PHASE_B = 21;
 
 /**
  * Battery voltage (96.6.3).
