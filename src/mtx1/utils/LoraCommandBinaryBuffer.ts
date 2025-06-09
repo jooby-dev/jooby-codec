@@ -28,13 +28,11 @@ interface IPowerMax {
 
 export type TEnergiesFlags = IEnergies<boolean>;
 
-type THalfhoursEnergy1 = Array<{tariff: number; energy: number} | undefined>;
-type THalfhoursEnergy3 = Array<number | undefined>;
+type THalfHourEnergy1 = Array<{tariff: number; energy: number} | undefined>;
+type THalfHourEnergy3 = Array<number | undefined>;
 
-//type THalfhoursEnergy = THalfhoursEnergy1 | THalfhoursEnergy3;
-
-export type THalfhoursEnergies1 = IEnergies<THalfhoursEnergy1>;
-export type THalfhoursEnergies3 = IEnergies<THalfhoursEnergy3>;
+export type THalfHourEnergies1 = IEnergies<THalfHourEnergy1>;
+export type THalfHourEnergies3 = IEnergies<THalfHourEnergy3>;
 
 export type TTariffsEnergies = Array<IEnergies>;
 
@@ -95,17 +93,17 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
     getEnergiesFlags (): TEnergiesFlags,
     setEnergiesFlags <T>( energies: IEnergies<T> ),
 
-    getHalfhoursEnergy1 ( halfhoursNumber: number ): THalfhoursEnergy1,
-    setHalfhoursEnergy1 ( halfhours: THalfhoursEnergy1 | undefined ),
+    getHalfHourEnergy1 ( halfhoursNumber: number ): THalfHourEnergy1,
+    setHalfHourEnergy1 ( halfhours: THalfHourEnergy1 | undefined ),
 
-    getHalfhoursEnergy3 ( halfhoursNumber: number ): THalfhoursEnergy3,
-    setHalfhoursEnergy3 ( halfhours: THalfhoursEnergy3 | undefined ),
+    getHalfHourEnergy3 ( halfhoursNumber: number ): THalfHourEnergy3,
+    setHalfHourEnergy3 ( halfhours: THalfHourEnergy3 | undefined ),
 
-    getHalfhoursEnergies1 ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfhoursEnergies1,
-    setHalfhoursEnergies1 ( energies: THalfhoursEnergies1 ),
+    getHalfHourEnergies1 ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies1,
+    setHalfHourEnergies1 ( energies: THalfHourEnergies1 ),
 
-    getHalfhoursEnergies3 ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfhoursEnergies3,
-    setHalfhoursEnergies3 ( energies: THalfhoursEnergies3 ),
+    getHalfHourEnergies3 ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies3,
+    setHalfHourEnergies3 ( energies: THalfHourEnergies3 ),
 
     getAPlusTariffEnergies ( energyFlags: number ): IEnergies,
     setAPlusTariffEnergies ( energies: IEnergies | undefined ),
@@ -170,7 +168,7 @@ CommandBinaryBuffer.prototype.setEnergiesFlags = function <T>( energies: IEnergi
     );
 };
 
-CommandBinaryBuffer.prototype.getHalfhoursEnergy1 = function ( halfhoursNumber: number ): THalfhoursEnergy1 {
+CommandBinaryBuffer.prototype.getHalfHourEnergy1 = function ( halfhoursNumber: number ): THalfHourEnergy1 {
     const halfhours = [];
 
     for ( let index = 0; index < halfhoursNumber; index++ ) {
@@ -188,7 +186,7 @@ CommandBinaryBuffer.prototype.getHalfhoursEnergy1 = function ( halfhoursNumber: 
     return halfhours;
 };
 
-CommandBinaryBuffer.prototype.setHalfhoursEnergy1 = function ( halfhours: THalfhoursEnergy1 | undefined ) {
+CommandBinaryBuffer.prototype.setHalfHourEnergy1 = function ( halfhours: THalfHourEnergy1 | undefined ) {
     if ( halfhours ) {
         for ( let index = 0; index < halfhours.length; index++ ) {
             const {tariff, energy} = halfhours[index];
@@ -203,7 +201,7 @@ CommandBinaryBuffer.prototype.setHalfhoursEnergy1 = function ( halfhours: THalfh
     }
 };
 
-CommandBinaryBuffer.prototype.getHalfhoursEnergy3 = function ( halfhoursNumber: number ): THalfhoursEnergy3 {
+CommandBinaryBuffer.prototype.getHalfHourEnergy3 = function ( halfhoursNumber: number ): THalfHourEnergy3 {
     const halfhours = [];
 
     for ( let index = 0; index < halfhoursNumber; index++ ) {
@@ -215,7 +213,7 @@ CommandBinaryBuffer.prototype.getHalfhoursEnergy3 = function ( halfhoursNumber: 
     return halfhours;
 };
 
-CommandBinaryBuffer.prototype.setHalfhoursEnergy3 = function ( halfhours: THalfhoursEnergy3 | undefined ) {
+CommandBinaryBuffer.prototype.setHalfHourEnergy3 = function ( halfhours: THalfHourEnergy3 | undefined ) {
     if ( halfhours ) {
         for ( let index = 0; index < halfhours.length; index++ ) {
             const value = halfhours[index];
@@ -225,39 +223,39 @@ CommandBinaryBuffer.prototype.setHalfhoursEnergy3 = function ( halfhours: THalfh
     }
 };
 
-CommandBinaryBuffer.prototype.getHalfhoursEnergies1 = function ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfhoursEnergies1 {
-    const energies: THalfhoursEnergies1 = {};
+CommandBinaryBuffer.prototype.getHalfHourEnergies1 = function ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies1 {
+    const energies: THalfHourEnergies1 = {};
 
     ENERGY_NAMES.forEach(energyName => {
         if ( energiesFlags[energyName] ) {
-            energies[energyName] = this.getHalfhoursEnergy1(halfhoursNumber);
+            energies[energyName] = this.getHalfHourEnergy1(halfhoursNumber);
         }
     });
 
     return energies;
 };
 
-CommandBinaryBuffer.prototype.getHalfhoursEnergies3 = function ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfhoursEnergies3 {
-    const energies: THalfhoursEnergies3 = {};
+CommandBinaryBuffer.prototype.getHalfHourEnergies3 = function ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies3 {
+    const energies: THalfHourEnergies3 = {};
 
     ENERGY_NAMES.forEach(energyName => {
         if ( energiesFlags[energyName] ) {
-            energies[energyName] = this.getHalfhoursEnergy3(halfhoursNumber);
+            energies[energyName] = this.getHalfHourEnergy3(halfhoursNumber);
         }
     });
 
     return energies;
 };
 
-CommandBinaryBuffer.prototype.setHalfhoursEnergies1 = function ( energies: THalfhoursEnergies1 ) {
+CommandBinaryBuffer.prototype.setHalfHourEnergies1 = function ( energies: THalfHourEnergies1 ) {
     ENERGY_NAMES.forEach(energyName => {
-        this.setHalfhoursEnergy1(energies[energyName]);
+        this.setHalfHourEnergy1(energies[energyName]);
     });
 };
 
-CommandBinaryBuffer.prototype.setHalfhoursEnergies3 = function ( energies: THalfhoursEnergies3 ) {
+CommandBinaryBuffer.prototype.setHalfHourEnergies3 = function ( energies: THalfHourEnergies3 ) {
     ENERGY_NAMES.forEach(energyName => {
-        this.setHalfhoursEnergy3(energies[energyName]);
+        this.setHalfHourEnergy3(energies[energyName]);
     });
 };
 

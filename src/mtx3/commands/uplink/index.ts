@@ -68,7 +68,7 @@ export * as getHalfHourDemandVare from './getHalfHourDemandVare.js';
 export * as getHalfHourDemandVareExport from './getHalfHourDemandVareExport.js';
 export * as getHalfHourDemandVari from './getHalfHourDemandVari.js';
 export * as getHalfHourDemandVariExport from './getHalfHourDemandVariExport.js';
-export * as getHalfhoursEnergies from './getHalfhoursEnergies.js';
+export * as getHalfHourEnergies from './getHalfHourEnergies.js';
 export * as getMonthDemand from './getMonthDemand.js';
 export * as getMonthDemandExport from './getMonthDemandExport.js';
 export * as getMonthMaxDemand from './getMonthMaxDemand.js';

@@ -9,13 +9,13 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as getHalfhoursEnergies from 'jooby-codec/mtx3/commands/uplink/getHalfhoursEnergies.js';
+ * import * as getHalfHourEnergies from 'jooby-codec/mtx3/commands/uplink/getHalfHourEnergies.js';
  *
- * // response to getHalfhoursEnergies downlink command
+ * // response to getHalfHourEnergies downlink command
  * const bytes = [0x2a, 0x43, 0x11, 0x01, 0x02, 0x10, 0x00, 0x20, 0x00, 0x30, 0x00, 0x40, 0x00];
  *
  * // decoded payload
- * const parameters = getHalfhoursEnergies.fromBytes(bytes);
+ * const parameters = getHalfHourEnergies.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -34,12 +34,12 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetHalfhoursEnergies.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetHalfHourEnergies.md#response)
  */
 
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfhoursEnergies3} from '../../../mtx1/utils/LoraCommandBinaryBuffer.js';
+import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfHourEnergies3} from '../../../mtx1/utils/LoraCommandBinaryBuffer.js';
 import {
     id,
     name,
@@ -48,14 +48,14 @@ import {
     accessLevel,
     isLoraOnly,
     toJson
-} from '../../../mtx1/commands/uplink/getHalfhoursEnergies.js';
+} from '../../../mtx1/commands/uplink/getHalfHourEnergies.js';
 
 
-export interface IGetHalfhoursEnergiesResponseParameters {
+export interface IGetHalfHourEnergiesResponseParameters {
     date: types.IDate;
     firstHalfhour: number;
     halfhoursNumber: number;
-    energies: THalfhoursEnergies3;
+    energies: THalfHourEnergies3;
 }
 
 
@@ -98,7 +98,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - command body bytes
  * @returns decoded parameters
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetHalfhoursEnergiesResponseParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesResponseParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const date = buffer.getDate();
     const energiesFlags = buffer.getEnergiesFlags();
@@ -109,7 +109,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfhoursEnergiesResponseP
         date,
         firstHalfhour,
         halfhoursNumber,
-        energies: buffer.getHalfhoursEnergies3(energiesFlags, halfhoursNumber)
+        energies: buffer.getHalfHourEnergies3(energiesFlags, halfhoursNumber)
     };
 };
 
@@ -120,7 +120,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfhoursEnergiesResponseP
  * @param parameters - parameters to encode
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetHalfhoursEnergiesResponseParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetHalfHourEnergiesResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
     const {date, firstHalfhour, halfhoursNumber, energies} = parameters;
 
@@ -128,7 +128,7 @@ export const toBytes = ( parameters: IGetHalfhoursEnergiesResponseParameters ): 
     buffer.setEnergiesFlags(energies);
     buffer.setUint8(firstHalfhour);
     buffer.setUint8(halfhoursNumber);
-    buffer.setHalfhoursEnergies3(energies);
+    buffer.setHalfHourEnergies3(energies);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

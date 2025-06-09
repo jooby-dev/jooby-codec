@@ -9,7 +9,7 @@
  *
  * @example
  * ```js
- * import * as getHalfhoursEnergies from 'jooby-codec/mtx1/commands/downlink/getHalfhoursEnergies.js';
+ * import * as getHalfHourEnergies from 'jooby-codec/mtx1/commands/downlink/getHalfHourEnergies.js';
  *
  * const parameters = {
  *     date: {
@@ -25,7 +25,7 @@
  *     }
  *};
  *
- * const bytes = getHalfhoursEnergies.toBytes(parameters);
+ * const bytes = getHalfHourEnergies.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
@@ -33,18 +33,18 @@
  * [111, 5, 42, 67, 3, 5, 4]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetHalfhoursEnergies.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetHalfHourEnergies.md#request)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import CommandBinaryBuffer, {ICommandBinaryBuffer, TEnergiesFlags} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
-import {getHalfhoursEnergies as commandId} from '../../constants/downlinkIds.js';
+import {getHalfHourEnergies as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
 
-interface IGetHalfhoursEnergiesParameters {
+interface IGetHalfHourEnergiesParameters {
     /**
       * Date.
       */
@@ -111,7 +111,7 @@ export const examples: command.TCommandExamples = {
   * @param bytes - command body bytes
   * @returns decoded parameters
   */
-export const fromBytes = ( bytes: types.TBytes ): IGetHalfhoursEnergiesParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return {
@@ -129,7 +129,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfhoursEnergiesParameter
   * @param parameters - command payload
   * @returns full message (header with body)
   */
-export const toBytes = ( parameters: IGetHalfhoursEnergiesParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetHalfHourEnergiesParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
 
     buffer.setDate(parameters.date);

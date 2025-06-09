@@ -27,7 +27,7 @@
  * // output:
  * {
  *     channel: 1,
- *     channelParameter: 16,
+ *     loadProfile: 16,
  *     date: {
  *         year: 24,
  *         month: 3,

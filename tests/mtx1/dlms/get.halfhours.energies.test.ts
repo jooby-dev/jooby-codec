@@ -1,4 +1,4 @@
-import {getHalfhoursEnergies} from '../../../src/mtx1/commands/uplink/index.js';
+import {getHalfHourEnergies} from '../../../src/mtx1/commands/uplink/index.js';
 import {runCommandDlmsTest} from './utils/runCommandDlmsTest.js';
 
 
@@ -88,4 +88,4 @@ const examples = [
 ];
 
 
-describe('GetDayEnergies dlms tests', () => runCommandDlmsTest(getHalfhoursEnergies, examples));
+describe('GetDayEnergies dlms tests', () => runCommandDlmsTest(getHalfHourEnergies, examples));

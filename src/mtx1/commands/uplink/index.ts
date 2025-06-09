@@ -36,7 +36,7 @@ export * as getExtendedCurrentValues2 from './getExtendedCurrentValues2.js';
 export * as getHalfHourDemand from './getHalfHourDemand.js';
 export * as getHalfHourDemandExport from './getHalfHourDemandExport.js';
 export * as getHalfHourDemandPrevious from './getHalfHourDemandPrevious.js';
-export * as getHalfhoursEnergies from './getHalfhoursEnergies.js';
+export * as getHalfHourEnergies from './getHalfHourEnergies.js';
 export * as getMagneticFieldThreshold from './getMagneticFieldThreshold.js';
 export * as getMeterInfo from './getMeterInfo.js';
 export * as getMonthDemand from './getMonthDemand.js';
