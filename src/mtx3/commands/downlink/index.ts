@@ -22,7 +22,7 @@ export * as getEventStatus from '../../../mtx1/commands/downlink/getEventStatus.
 export * as getExtendedCurrentValues from '../../../mtx1/commands/downlink/getExtendedCurrentValues.js';
 export * as getHalfHourDemand from '../../../mtx1/commands/downlink/getHalfHourDemand.js';
 export * as getHalfHourDemandExport from '../../../mtx1/commands/downlink/getHalfHourDemandExport.js';
-export * as getHalfhoursEnergies from '../../../mtx1/commands/downlink/getHalfhoursEnergies.js';
+export * as getHalfHourEnergies from '../../../mtx1/commands/downlink/getHalfHourEnergies.js';
 export * as getMagneticFieldThreshold from '../../../mtx1/commands/downlink/getMagneticFieldThreshold.js';
 export * as getMeterInfo from '../../../mtx1/commands/downlink/getMeterInfo.js';
 export * as getMonthDemand from '../../../mtx1/commands/downlink/getMonthDemand.js';
