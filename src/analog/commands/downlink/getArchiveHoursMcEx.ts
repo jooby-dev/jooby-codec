@@ -71,11 +71,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveHoursMcExParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IGetExAbsArchiveHoursMcExParameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const date = buffer.getDate();
     const hour = buffer.getUint8();
     const hours = buffer.getUint8();
@@ -95,7 +95,7 @@ export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveHoursMcExParame
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetExAbsArchiveHoursMcExParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);

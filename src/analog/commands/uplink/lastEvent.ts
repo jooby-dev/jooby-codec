@@ -180,31 +180,33 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @param config - command configuration
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes, config: ILastEventConfig ): ILastEventParameters => {
+export const fromBytes = ( bytes: types.TBytes, config: ILastEventConfig ): ILastEventParameters => {
     if ( !config.hardwareType ) {
         throw new Error('hardwareType in config is mandatory');
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const sequenceNumber = buffer.getUint8();
     const status = buffer.getEventStatus(config.hardwareType);
 
     return {sequenceNumber, status};
 };
 
+
 /**
  * Encode command parameters.
  *
  * @param parameters - command payload
  * @param config - command configuration
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ILastEventParameters, config: ILastEventConfig ): types.TBytes => {
     if ( !config.hardwareType ) {

@@ -268,15 +268,15 @@ const setDeviceId = ( buffer: ICommandBinaryBuffer, value: string ): void => {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
-    if ( data.length > COMMAND_BODY_MAX_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): INewEventParameters => {
+    if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const eventId = buffer.getUint8();
     const eventName = eventNames[eventId];
     const sequenceNumber = buffer.getUint8();
@@ -344,7 +344,7 @@ export const fromBytes = ( data: types.TBytes ): INewEventParameters => {
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);

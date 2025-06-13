@@ -98,27 +98,29 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcResponseParameters => {
-    if ( data.length > COMMAND_BODY_MAX_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveHoursMcResponseParameters => {
+    if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return buffer.getChannelsValuesWithHourDiff(true);
 };
+
 
 /**
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveHoursMcResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);

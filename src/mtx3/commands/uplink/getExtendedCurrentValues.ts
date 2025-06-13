@@ -168,11 +168,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetExtendedCurrentValuesResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IGetExtendedCurrentValuesResponseParameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return {
         temperature: buffer.getInt16(),

@@ -99,6 +99,7 @@ export const getFromBytes = ( commandNamesParameter: Record<number, string> ) =>
     }
 );
 
+
 /**
  * Decode command parameters.
  *
@@ -106,6 +107,7 @@ export const getFromBytes = ( commandNamesParameter: Record<number, string> ) =>
  * @returns command payload
  */
 export const fromBytes = getFromBytes(commandNames);
+
 
 /**
  * Encode command parameters.

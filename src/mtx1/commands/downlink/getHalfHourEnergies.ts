@@ -106,11 +106,11 @@ export const examples: command.TCommandExamples = {
 
 
 /**
-  * Decode command parameters.
-  *
-  * @param bytes - command body bytes
-  * @returns decoded parameters
-  */
+ * Decode command parameters.
+ *
+ * @param bytes - only body (without header)
+ * @returns command payload
+ */
 export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
@@ -124,11 +124,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesParameters
 
 
 /**
-  * Encode command parameters.
-  *
-  * @param parameters - command payload
-  * @returns full message (header with body)
-  */
+ * Encode command parameters.
+ *
+ * @param parameters - command payload
+ * @returns full message (header with body)
+ */
 export const toBytes = ( parameters: IGetHalfHourEnergiesParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
 

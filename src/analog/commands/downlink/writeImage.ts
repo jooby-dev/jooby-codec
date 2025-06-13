@@ -71,18 +71,18 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IWriteImageParameters => {
-    if ( data.length < COMMAND_BODY_MIN_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IWriteImageParameters => {
+    if ( bytes.length < COMMAND_BODY_MIN_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const offset = buffer.getUint32();
 
-    return {offset, data: data.slice(COMMAND_BODY_MIN_SIZE)};
+    return {offset, data: bytes.slice(COMMAND_BODY_MIN_SIZE)};
 };
 
 

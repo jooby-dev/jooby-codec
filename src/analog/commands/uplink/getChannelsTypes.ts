@@ -65,11 +65,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IChannels => ({
-    channels: data.map(type => ({type, typeName: channelNames[type]}))
+export const fromBytes = ( bytes: types.TBytes ): IChannels => ({
+    channels: bytes.map(type => ({type, typeName: channelNames[type]}))
 });
 
 

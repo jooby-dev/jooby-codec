@@ -84,8 +84,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( [tariffTable, index, isActive]: types.TBytes ): IGetDayProfileParameters => (
     {tariffTable, index, isActive: isActive === 0}

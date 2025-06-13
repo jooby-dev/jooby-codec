@@ -69,7 +69,6 @@ export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameter
 /**
  * Encode command parameters.
  *
- * @param parameters - command payload
  * @returns full message (header with body)
  */
 export const toBytes = (): types.TBytes => command.toBytes(id);

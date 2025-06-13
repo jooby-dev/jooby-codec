@@ -54,15 +54,16 @@ export const examples: command.TCommandExamples = {
 
 type TGetChannelsStatusParameters = IChannelsMask | command.IEmptyCommandParameters;
 
+
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
 // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
-export const fromBytes = ( data: types.TBytes ): TGetChannelsStatusParameters => (
-    data.length === 0 ? {} : getChannelsMaskFromNumber(data[0])
+export const fromBytes = ( bytes: types.TBytes ): TGetChannelsStatusParameters => (
+    bytes.length === 0 ? {} : getChannelsMaskFromNumber(bytes[0])
 );
 
 

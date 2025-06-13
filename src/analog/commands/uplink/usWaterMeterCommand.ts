@@ -61,14 +61,14 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IUSWaterMeterCommandResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IUSWaterMeterCommandResponseParameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const length = buffer.getUint8();
 
-    return {length, data: data.slice(1)};
+    return {length, data: bytes.slice(1)};
 };
 
 

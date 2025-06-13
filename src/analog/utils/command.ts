@@ -52,13 +52,13 @@ export interface ICommandImplementation {
     headerSize: number,
     examples: TCommandExamples,
 
-    fromBytes ( data: types.TBytes, config?: ICommandConfig ),
+    fromBytes ( bytes: types.TBytes, config?: ICommandConfig ),
     toBytes ( parameters?: object, config?: ICommandConfig ): types.TBytes
 }
 
 
-export const toBytes = ( commandId: number, commandData: types.TBytes = [] ): types.TBytes => {
-    const headerData = header.toBytes(commandId, commandData.length);
+export const toBytes = ( commandId: number, commandBytes: types.TBytes = [] ): types.TBytes => {
+    const headerData = header.toBytes(commandId, commandBytes.length);
 
-    return [...headerData, ...commandData];
+    return [...headerData, ...commandBytes];
 };

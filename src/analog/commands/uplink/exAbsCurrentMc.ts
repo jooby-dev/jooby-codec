@@ -70,11 +70,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - binary data containing command parameters
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IExAbsCurrentMcResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IExAbsCurrentMcResponseParameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return {channelList: buffer.getChannelsWithAbsoluteValues()};
 };
