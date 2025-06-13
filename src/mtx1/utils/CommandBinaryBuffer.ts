@@ -130,7 +130,7 @@ export interface IDisplaySetBaseOperatorParameter {
     POWER_THRESHOLD_T2: boolean,
     POWER_THRESHOLD_T3: boolean,
     POWER_THRESHOLD_T4: boolean,
-    CURRENT_BALANCE: boolean,
+    CURRENT_BALANCE: boolean
 }
 
 export interface IDisplaySetOperatorParameter extends IDisplaySetBaseOperatorParameter {

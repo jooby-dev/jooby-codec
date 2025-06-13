@@ -28,7 +28,7 @@ import {TCommand} from '../utils/command.js';
  */
 export interface IMessage {
     commands: Array<TCommand>,
-    bytes: TBytes,
+    bytes: TBytes
 }
 
 /**
@@ -60,7 +60,7 @@ export interface IMessage {
  */
 export interface IInvalidMessage {
     message: IMessage,
-    error: string,
+    error: string
 }
 
 type TExampleName = string;

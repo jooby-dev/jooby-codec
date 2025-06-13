@@ -89,6 +89,6 @@ module.exports = {
                 ImportDeclaration: {minProperties: 6, multiline: true, consistent: true},
                 ExportDeclaration: {minProperties: 6, multiline: true, consistent: true}
             }
-        ],
+        ]
     }
 };

@@ -49,11 +49,11 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
     demands?: Array<{
         tariff?: number,
         energy?: number,
-        voltage?: number
+        voltage?: number,
 
         /** The number of the additional hour that occurs during the transition to winter time. */
-        lastSummerHour?: number,
-    }>,
+        lastSummerHour?: number
+    }>
 }
 
 

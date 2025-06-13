@@ -18,7 +18,7 @@ export interface IFrame {
 
 export interface IInvalidFrame {
     frame: IFrame,
-    error: string,
+    error: string
 }
 
 export type TFrame = IFrame | IInvalidFrame;

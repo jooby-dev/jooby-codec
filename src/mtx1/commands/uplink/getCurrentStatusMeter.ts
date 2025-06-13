@@ -113,7 +113,7 @@ interface IGetCurrentStatusMeterResponseParameters {
     currentTariffs: ITariffs,
 
     /** Is it DST or Standard time. */
-    isSummerTime: boolean,
+    isSummerTime: boolean
 }
 
 interface ICalibrationFlags {
