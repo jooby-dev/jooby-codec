@@ -832,7 +832,7 @@ export interface IExtendedCurrentValues2RelayStatus2 {
     /** Relay turned off due to balance. */
     RELAY_SALDO_OFF_FLAG: boolean,
     /** Relay turned off due to current imbalance between phase and neutral. */
-    RELAY_UNEQUIL_CURRENT_OFF: boolean,
+    RELAY_UNEQUAL_CURRENT_OFF: boolean,
     /** Relay turned off due to bidirectional power in phase and neutral. */
     RELAY_BIPOLAR_POWER_OFF: boolean,
     /** Relay turned off due to exceeding allowable power in net balance limit mode. */
@@ -873,7 +873,7 @@ export interface IExtendedCurrentValues2Status2 {
 
 export interface IExtendedCurrentValues2Status3 {
     /** Current imbalance. */
-    UNEQUIL_CURRENT: boolean,
+    UNEQUAL_CURRENT: boolean,
     /** Opposite power directions in phases A and B. */
     BIPOLAR_POWER: boolean,
     /** Negative power in phase A. */
@@ -1159,7 +1159,7 @@ export const extendedCurrentValues2RelayStatusMask = {
 const extendedCurrentValues2RelayStatus2Mask = {
     RELAY_COSFI: 2 ** 0,
     RELAY_SALDO_OFF_FLAG: 2 ** 1,
-    RELAY_UNEQUIL_CURRENT_OFF: 2 ** 2,
+    RELAY_UNEQUAL_CURRENT_OFF: 2 ** 2,
     RELAY_BIPOLAR_POWER_OFF: 2 ** 3,
     RELAY_SALDO_OFF_ON_MAX_POWER: 2 ** 4,
     RELAY_HARD_ST1: 2 ** 5
@@ -1184,7 +1184,7 @@ const extendedCurrentValues2Status2Mask = {
 };
 
 const extendedCurrentValues2Status3Mask = {
-    UNEQUIL_CURRENT: 2 ** 0,
+    UNEQUAL_CURRENT: 2 ** 0,
     BIPOLAR_POWER: 2 ** 1,
     POWER_A_NEGATIVE: 2 ** 6,
     POWER_B_NEGATIVE: 2 ** 7

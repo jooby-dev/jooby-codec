@@ -28,7 +28,7 @@
  *     relayStatus2: {
  *         RELAY_COSFI: true,
  *         RELAY_SALDO_OFF_FLAG: false,
- *         RELAY_UNEQUIL_CURRENT_OFF: false,
+ *         RELAY_UNEQUAL_CURRENT_OFF: false,
  *         RELAY_BIPOLAR_POWER_OFF: false,
  *         RELAY_SALDO_OFF_ON_MAX_POWER: false,
  *         RELAY_HARD_ST1: true
@@ -50,7 +50,7 @@
  *         MIN_COS_FI: false
  *     },
  *     status3: {
- *         UNEQUIL_CURRENT: true,
+ *         UNEQUAL_CURRENT: true,
  *         BIPOLAR_POWER: false,
  *         POWER_A_NEGATIVE: false,
  *         POWER_B_NEGATIVE: true
@@ -96,7 +96,7 @@ export const examples: command.TCommandExamples = {
             relayStatus2: {
                 RELAY_COSFI: true,
                 RELAY_SALDO_OFF_FLAG: false,
-                RELAY_UNEQUIL_CURRENT_OFF: false,
+                RELAY_UNEQUAL_CURRENT_OFF: false,
                 RELAY_BIPOLAR_POWER_OFF: false,
                 RELAY_SALDO_OFF_ON_MAX_POWER: false,
                 RELAY_HARD_ST1: true
@@ -118,7 +118,7 @@ export const examples: command.TCommandExamples = {
                 MIN_COS_FI: false
             },
             status3: {
-                UNEQUIL_CURRENT: true,
+                UNEQUAL_CURRENT: true,
                 BIPOLAR_POWER: false,
                 POWER_A_NEGATIVE: false,
                 POWER_B_NEGATIVE: true
