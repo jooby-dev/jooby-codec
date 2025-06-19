@@ -1,6 +1,8 @@
 /**
  * Uplink command to read load graphs.
  *
+ * The corresponding downlink command: `getDemand`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

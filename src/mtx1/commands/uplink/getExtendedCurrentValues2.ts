@@ -1,6 +1,8 @@
 /**
  * Uplink command to get get additional current parameters.
  *
+ * The corresponding downlink command: `getExtendedCurrentValues2`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

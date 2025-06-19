@@ -1,6 +1,8 @@
 /**
  * Uplink command to get current parameters.
  *
+ * The corresponding downlink command: `getCurrentStatusMeter`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

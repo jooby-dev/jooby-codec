@@ -1,6 +1,8 @@
 /**
  * Uplink command to get current values like voltage, power, etc.
  *
+ * The corresponding downlink command: `getCurrentValues`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

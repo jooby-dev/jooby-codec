@@ -4,6 +4,8 @@
 /**
  * Uplink command to read load and voltage graphs.
  *
+ * The corresponding downlink command: `getDemand`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

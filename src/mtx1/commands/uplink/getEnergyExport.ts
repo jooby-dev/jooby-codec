@@ -1,6 +1,8 @@
 /**
  * Uplink command to get current active energy (`A-`) by default or selected active energy (`A+` or `A-`) for 4 tariffs (`T1`-`T4`).
  *
+ * The corresponding downlink command: `getEnergyExport`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

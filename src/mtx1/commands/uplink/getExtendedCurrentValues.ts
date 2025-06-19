@@ -1,6 +1,8 @@
 /**
  * Uplink command to get extended current values like temperature and frequency.
  *
+ * The corresponding downlink command: `getExtendedCurrentValues`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
