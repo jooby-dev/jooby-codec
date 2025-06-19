@@ -59,5 +59,7 @@ export const getHalfHourEnergies = 0x6f; // 111
 export const getBuildVersion = 0x70; // 112
 export const getOperatorParametersExtended3 = 0x71; // 113
 export const setOperatorParametersExtended3 = 0x72; // 114
+export const setDemandParameters = 0x74; // 116
+export const getDemandParameters = 0x75; // 117
 export const getDemand = 0x76; // 118
 export const getMeterInfo = 0x7a; // 122

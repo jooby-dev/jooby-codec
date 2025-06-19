@@ -1020,6 +1020,29 @@ export interface IGetHalfHourDemandResponseParameters {
     dstHour?: types.TUint8
 }
 
+export interface IGetDemandParametersResponseParameters {
+    /**
+     * | Value | Hex    | Description                                                |
+     * | ----- | ------ | ---------------------------------------------------------- |
+     * | `0`   | `0x00` | voltage profile disabled                                   |
+     * | `64`  | `0x40` | `10`-minute phase voltage profile (archive depth `7` days) |
+     */
+    channelParam1: types.TUint8,
+
+    /**
+     * time interval for counting power-off events, minutes
+     */
+    counterInterval: types.TUint8,
+
+    /**
+     * | Value | Hex    | Description                                                                                      |
+     * | ----- | ------ | ------------------------------------------------------------------------------------------------ |
+     * | `0`   | `0x00` | voltage profile disabled                                                                         |
+     * | `160` | `0xa0` | `15/30/60`-minute phase voltage profile, determined by parameter `ten` (archive depth `1` month) |
+     */
+    channelParam2: types.TUint8,
+}
+
 export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
 export const SEASON_PROFILE_DAYS_NUMBER = 7;
@@ -1318,6 +1341,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getDemand (): IGetDemandParameters,
     setDemand ( parameters: IGetDemandParameters ),
+
+    getDemandParameters (): IGetDemandParametersResponseParameters,
+    setDemandParameters ( parameters: IGetDemandParametersResponseParameters ),
 
     getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
     setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
@@ -1905,6 +1931,23 @@ CommandBinaryBuffer.prototype.setDemand = function ( parameters: IGetDemandParam
     this.setUint16(parameters.firstIndex);
     this.setUint8(parameters.count);
     this.setUint8(parameters.period);
+};
+
+CommandBinaryBuffer.prototype.getDemandParameters = function (): IGetDemandParametersResponseParameters {
+    const channelParam1 = this.getUint8();
+    const counterInterval = this.getUint8();
+    const channelParam2 = this.getUint8();
+
+    return {channelParam1, counterInterval, channelParam2};
+};
+
+CommandBinaryBuffer.prototype.setDemandParameters = function ( parameters: IGetDemandParametersResponseParameters ) {
+    this.setUint8(parameters.channelParam1);
+    this.setUint8(parameters.counterInterval);
+    this.setUint8(parameters.channelParam2);
+
+    // the last byte is reserved and not used for now
+    this.setUint8(0);
 };
 
 CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxDemandResponseParameters {
