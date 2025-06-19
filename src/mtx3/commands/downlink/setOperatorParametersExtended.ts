@@ -19,6 +19,7 @@
  *     timeoutRelayKey: 0,
  *     timeoutRelayAuto: 5
  * };
+ *
  * const bytes = setOperatorParametersExtended.toBytes(parameters);
  *
  * // command binary representation

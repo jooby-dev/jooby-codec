@@ -18,6 +18,7 @@
  *     isLast: false,
  *     data: [0x00, 0x01, 0x02, 0x03, 0x04]
  * };
+ *
  * const bytes = dataSegment.toBytes(parameters);
  *
  * // command binary representation

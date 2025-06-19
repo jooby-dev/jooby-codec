@@ -7,9 +7,7 @@
  * ```js
  * import * as reboot from 'jooby-codec/obis-observer/commands/downlink/reboot.js';
  *
- * const parameters = {
- *     requestId: 3
- * };
+ * const parameters = {requestId: 3};
  * const bytes = reboot.toBytes(parameters);
  *
  * // output command binary in hex representation

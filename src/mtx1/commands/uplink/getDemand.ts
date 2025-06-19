@@ -19,13 +19,13 @@
  * console.log(parameters);
  * // output:
  * {
-*     date: { year: 24, month: 10, date: 2 },
-*     energyType: 160,
-*     firstIndex: 25,
-*     count: 1,
-*     period: 60,
-*     demands: [ { lastSummerHour: 4 } ]
-* }
+ *     date: { year: 24, month: 10, date: 2 },
+ *     energyType: 160,
+ *     firstIndex: 25,
+ *     count: 1,
+ *     period: 60,
+ *     demands: [ { lastSummerHour: 4 } ]
+ * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetDemand.md#response)

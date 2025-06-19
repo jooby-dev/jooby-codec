@@ -14,6 +14,7 @@
  *     index: 5,
  *     isActive: true
  * };
+ *
  * const bytes = getDayProfile.toBytes(parameters);
  *
  * // command binary representation

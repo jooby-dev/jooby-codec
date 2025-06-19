@@ -7,9 +7,7 @@
  * ```js
  * import * as getSerialPort from 'jooby-codec/obis-observer/commands/downlink/getSerialPort.js';
  *
- * const parameters = {
- *     requestId: 7
- * };
+ * const parameters = {requestId: 7};
  * const bytes = getSerialPort.toBytes(parameters);
  *
  * // output command binary in hex representation

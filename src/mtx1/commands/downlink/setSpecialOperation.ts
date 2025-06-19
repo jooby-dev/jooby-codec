@@ -16,6 +16,7 @@
  *     resetElectroMagneticIndication: true,
  *     resetMagneticIndication: true
  * };
+ *
  * const bytes = setSpecialOperation.toBytes(parameters);
  *
  * // command binary representation

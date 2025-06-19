@@ -13,6 +13,7 @@
  *     meterProfileId: 17,
  *     address: 'ma2375'
  * };
+ *
  * const bytes = setupMeter.toBytes(parameters);
  *
  * // output command binary in hex representation

@@ -29,6 +29,7 @@
  *         e: 1
  *     }
  * };
+ *
  * const bytes = setupObis.toBytes(parameters);
  *
  * // output command binary in hex representation

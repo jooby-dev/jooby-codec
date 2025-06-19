@@ -12,6 +12,7 @@
  *     length: 3,
  *     data: [0x21, 0x02]
  * };
+ *
  * const bytes = usWaterMeterCommand.toBytes(parameters);
  *
  * // command binary representation

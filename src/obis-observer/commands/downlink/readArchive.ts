@@ -12,6 +12,7 @@
  *     archiveType: 1,
  *     index: 4,
  * };
+ *
  * const bytes = readArchive.toBytes(parameters);
  *
  * // output command binary in hex representation

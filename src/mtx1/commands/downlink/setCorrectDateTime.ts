@@ -9,9 +9,7 @@
  * ```js
  * import * as setCorrectDateTime from 'jooby-codec/mtx1/commands/downlink/setCorrectDateTime.js';
  *
- * const parameters = {
- *     seconds: 5
- * };
+ * const parameters = {seconds: 5};
  * const bytes = setCorrectDateTime.toBytes(parameters);
  *
  * // command binary representation

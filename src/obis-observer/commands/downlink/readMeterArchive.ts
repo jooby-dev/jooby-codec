@@ -13,6 +13,7 @@
  *     index: 4,
  *     meterId: 2
  * };
+ *
  * const bytes = readMeterArchive.toBytes(parameters);
  *
  * // output command binary in hex representation

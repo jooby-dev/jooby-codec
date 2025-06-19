@@ -12,6 +12,7 @@
  *     offset: 16,
  *     size: 4
  * };
+ *
  * const bytes = getSettingsMemory.toBytes(parameters);
  *
  * // output command binary in hex representation

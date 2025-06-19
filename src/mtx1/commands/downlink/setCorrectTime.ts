@@ -20,6 +20,7 @@
  *     hoursCorrectWinter: 1,
  *     isCorrectionNeeded: true
  * };
+ *
  * const bytes = setCorrectTime.toBytes(parameters);
  *
  * // command binary representation

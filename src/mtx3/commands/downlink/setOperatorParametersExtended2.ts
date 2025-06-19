@@ -158,6 +158,7 @@
  *     timeCorrectPeriod: 24,
  *     timeCorrectPassHalfhour: true
  * };
+ *
  * const bytes = setOperatorParametersExtended2.toBytes(parameters);
  *
  * // command binary representation

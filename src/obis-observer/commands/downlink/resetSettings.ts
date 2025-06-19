@@ -7,9 +7,7 @@
  * ```js
  * import * as resetSettings from 'jooby-codec/obis-observer/commands/downlink/resetSettings.js';
  *
- * const parameters = {
- *     requestId: 3
- * };
+ * const parameters = {requestId: 3};
  * const bytes = resetSettings.toBytes(parameters);
  *
  * // output command binary in hex representation

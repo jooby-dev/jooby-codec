@@ -13,6 +13,7 @@
  *     archive1Period: 2880,
  *     archive2Period: 30
  * };
+ *
  * const bytes = setupMeterProfile.toBytes(parameters);
  *
  * // output command binary in hex representation

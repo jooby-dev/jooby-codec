@@ -11,6 +11,7 @@
  * const parameters = {
  *     displayMode: displayModes.ADDITIONAL
  * };
+ *
  * const bytes = getDisplayParam.toBytes(parameters);
  *
  * // command binary representation

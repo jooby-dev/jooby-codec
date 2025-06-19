@@ -11,6 +11,7 @@
  *     requestId: 3,
  *     meterId: 17
  * };
+ *
  * const bytes = removeMeter.toBytes(parameters);
  *
  * // output command binary in hex representation

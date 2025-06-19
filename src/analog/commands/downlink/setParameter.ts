@@ -13,6 +13,7 @@
  *     id: constants.deviceParameters.ABSOLUTE_DATA,
  *     data: { value: 2023, meterValue: 204, pulseCoefficient: 100 }
  * };
+ *
  * const bytes = setParameter.toBytes(parameters);
  *
  * // command binary representation

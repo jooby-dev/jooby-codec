@@ -9,9 +9,7 @@
  * ```js
  * import * as runTariffPlan from 'jooby-codec/mtx1/commands/downlink/runTariffPlan.js';
  *
- * const parameters = {
- *     tariffTable: 5
- * };
+ * const parameters = {tariffTable: 5};
  * const bytes = runTariffPlan.toBytes(parameters);
  *
  * // command binary representation

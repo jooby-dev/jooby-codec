@@ -19,6 +19,7 @@
  *     saldoNew: 2,
  *     saldoOld: 5
  * };
+ *
  * const bytes = setSaldo.toBytes(parameters);
  *
  * // command binary representation

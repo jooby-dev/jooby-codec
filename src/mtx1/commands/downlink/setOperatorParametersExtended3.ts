@@ -21,6 +21,7 @@
  *         RELAY_OFF_LIMIT_P_MINUS_T4: false
  *     }
  * };
+ *
  * const bytes = setOperatorParametersExtended3.toBytes(parameters);
  *
  * // command binary representation

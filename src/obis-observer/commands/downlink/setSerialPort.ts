@@ -14,6 +14,7 @@
  *     dataBits: 8,
  *     parity: parityTypes.ODD
  * };
+ *
  * const bytes = setSerialPort.toBytes(parameters);
  *
  * // output command binary in hex representation

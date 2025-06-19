@@ -14,6 +14,7 @@
  *     meterId: 1,
  *     time2000: 496333462
  * };
+ *
  * const bytes = readMeterArchiveWithDate.toBytes(parameters);
  *
  * // output command binary in hex representation

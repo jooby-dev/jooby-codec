@@ -12,6 +12,7 @@
  *     displayMode: displayModes.MAIN_1,
  *     order: [4, 5, 6, 7]
  * };
+ *
  * const bytes = setDisplayParam.toBytes(parameters);
  *
  * // command binary representation

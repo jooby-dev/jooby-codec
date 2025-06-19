@@ -7,9 +7,7 @@
  * ```js
  * import * as updateImageVerify from 'jooby-codec/obis-observer/commands/downlink/updateImageVerify.js';
  *
- * const parameters = {
- *     requestId: 33
- * };
+ * const parameters = {requestId: 33};
  * const bytes = updateImageVerify.toBytes(parameters);
  *
  * // output command binary in hex representation

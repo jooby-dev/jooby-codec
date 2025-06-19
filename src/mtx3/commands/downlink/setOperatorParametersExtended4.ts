@@ -168,6 +168,7 @@
  *         PROFILE_P06: false
  *     }
  * };
+ *
  * const bytes = setOperatorParametersExtended4.toBytes(parameters);
  *
  * // command binary representation

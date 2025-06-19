@@ -7,9 +7,7 @@
  * ```js
  * import * as updateRun from 'jooby-codec/obis-observer/commands/downlink/updateRun.js';
  *
- * const parameters = {
- *     requestId: 33
- * };
+ * const parameters = {requestId: 33};
  * const bytes = updateRun.toBytes(parameters);
  *
  * // output command binary in hex representation

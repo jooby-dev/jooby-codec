@@ -9,9 +9,7 @@
  * ```js
  * import * as getRatePlanInfo from 'jooby-codec/mtx1/commands/downlink/getRatePlanInfo.js';
  *
- * const parameters = {
- *     tariffTable: 5
- * };
+ * const parameters = {tariffTable: 5};
  * const bytes = getRatePlanInfo.toBytes(parameters);
  *
  * // command binary representation

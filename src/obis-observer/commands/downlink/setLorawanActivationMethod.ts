@@ -11,6 +11,7 @@
  *     requestId: 3,
  *     activationMethod: 1
  * };
+ *
  * const bytes = setLorawanActivationMethod.toBytes(parameters);
  *
  * // output command binary in hex representation

@@ -12,6 +12,7 @@
  *     meterProfileId: 17,
  *     obisId: 2
  * };
+ *
  * const bytes = removeObis.toBytes(parameters);
  *
  * // output command binary in hex representation

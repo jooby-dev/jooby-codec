@@ -19,6 +19,7 @@
  *         {tariff: 3, isFirstHalfHour: false, hour: 5}
  *     ]
  * };
+ *
  * const bytes = setDayProfile.toBytes(parameters);
  *
  * // command binary representation

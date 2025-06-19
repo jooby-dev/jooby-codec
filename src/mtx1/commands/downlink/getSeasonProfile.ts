@@ -14,6 +14,7 @@
  *     index: 5,
  *     isActive: false
  * };
+ *
  * const bytes = getSeasonProfile.toBytes(parameters);
  *
  * // command binary representation

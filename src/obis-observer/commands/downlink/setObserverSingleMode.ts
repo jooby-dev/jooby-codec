@@ -11,6 +11,7 @@
  *     requestId: 3,
  *     singleMode: true
  * };
+ *
  * const bytes = setObserverSingleMode.toBytes(parameters);
  *
  * // output command binary in hex representation

@@ -17,6 +17,7 @@
  *     dayIndex: 3,
  *     isPeriodic: true
  * };
+ *
  * const bytes = setSpecialDay.toBytes(parameters);
  *
  * // command binary representation

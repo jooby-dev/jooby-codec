@@ -13,6 +13,7 @@
  *     tariffTable: 0,
  *     id: 987654321
  * };
+ *
  * const bytes = prepareRatePlan.toBytes(parameters);
  *
  * // command binary representation

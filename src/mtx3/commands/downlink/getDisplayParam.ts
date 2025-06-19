@@ -8,9 +8,7 @@
  * import * as getDisplayParam from 'jooby-codec/mtx3/commands/downlink/getDisplayParam.js';
  * import {displayModes} from 'jooby-codec/mtx3/constants/index.js';
  *
- * const parameters = {
- *     displayMode: displayModes.MAIN_2
- * };
+ * const parameters = {displayMode: displayModes.MAIN_2};
  * const bytes = getDisplayParam.toBytes(parameters);
  *
  * // command binary representation

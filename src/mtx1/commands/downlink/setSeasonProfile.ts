@@ -16,6 +16,7 @@
  *     date: 1,
  *     dayIndexes: [0, 0, 0, 0, 0, 0, 0]
  * };
+ *
  * const bytes = setSeasonProfile.toBytes(parameters);
  *
  * // command binary representation

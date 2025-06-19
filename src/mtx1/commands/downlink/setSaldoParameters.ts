@@ -21,6 +21,7 @@
  *     powerThreshold: 13,
  *     creditThreshold: 14
  * };
+ *
  * const bytes = setSaldoParameters.toBytes(parameters);
  *
  * // command binary representation
