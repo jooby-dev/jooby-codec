@@ -28,7 +28,7 @@ import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {setDemandParameters as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-import validatePayload from '../../../utils/validatePayload.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export const id: types.TCommandId = commandId;
@@ -60,7 +60,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameters => {
-    validatePayload(name, bytes, maxSize);
+    validateCommandPayload(name, bytes, maxSize);
 
     return {};
 };

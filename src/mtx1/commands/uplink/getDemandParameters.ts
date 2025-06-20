@@ -33,7 +33,7 @@ import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetDemandParametersResponseP
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getDemandParameters as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-import validatePayload from '../../../utils/validatePayload.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export const id: types.TCommandId = commandId;
@@ -69,7 +69,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetDemandParametersResponseParameters => {
-    validatePayload(name, bytes, maxSize);
+    validateCommandPayload(name, bytes, maxSize);
 
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
