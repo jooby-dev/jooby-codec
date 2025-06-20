@@ -53,7 +53,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = (bytes: types.TBytes): command.IEmptyCommandParameters => {
+export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameters => {
     validatePayload(name, bytes, maxSize);
 
     return {};

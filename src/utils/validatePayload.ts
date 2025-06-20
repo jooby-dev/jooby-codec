@@ -1,7 +1,7 @@
 import * as types from '../types.js';
 
 
-export default (commandName: string, bytes: types.TBytes, expectedLength: number) => {
+export default ( commandName: string, bytes: types.TBytes, expectedLength: number ) => {
     if ( !commandName ) {
         throw new Error('Command name is required.');
     }
