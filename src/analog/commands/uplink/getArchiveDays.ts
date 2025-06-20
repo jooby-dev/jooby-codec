@@ -72,14 +72,15 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysResponseParameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const date = buffer.getDate();
     const dayList = [];
 
@@ -95,7 +96,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysResponseParamete
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveDaysResponseParameters ): types.TBytes => {
     const {startTime2000, dayList} = parameters;

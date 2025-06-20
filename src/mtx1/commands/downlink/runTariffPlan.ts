@@ -9,9 +9,7 @@
  * ```js
  * import * as runTariffPlan from 'jooby-codec/mtx1/commands/downlink/runTariffPlan.js';
  *
- * const parameters = {
- *     tariffTable: 5
- * };
+ * const parameters = {tariffTable: 5};
  * const bytes = runTariffPlan.toBytes(parameters);
  *
  * // command binary representation
@@ -67,10 +65,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IRunTariffPlanParameters => ({tariffTable: bytes[0]});
+
 
 /**
  * Encode command parameters.

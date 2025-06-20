@@ -273,8 +273,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
     if ( bytes.length !== maxSize ) {

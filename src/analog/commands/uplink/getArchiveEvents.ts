@@ -148,11 +148,11 @@ const setEvent = ( buffer: ICommandBinaryBuffer, event: IArchiveEvent ): void =>
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveEventsResponseParameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const eventList: Array<IArchiveEvent> = [];
 
     while ( buffer.bytesLeft > 0 ) {
@@ -161,6 +161,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsResponseParame
 
     return {eventList};
 };
+
 
 /**
  * Encode command parameters.

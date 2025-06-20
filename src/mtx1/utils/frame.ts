@@ -9,7 +9,7 @@ export interface IMtxFrame extends frame.IFrame {
 
 export interface IInvalidMtxFrame {
     frame: IMtxFrame,
-    error: string,
+    error: string
 }
 
 export type TMtxFrame = IMtxFrame | IInvalidMtxFrame;

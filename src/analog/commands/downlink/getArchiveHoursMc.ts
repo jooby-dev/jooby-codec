@@ -66,15 +66,15 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveHoursMcParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const date = buffer.getDate();
     const {hour, hours} = buffer.getHours();
     const channelList = buffer.getChannels();
@@ -93,7 +93,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcParameters =>
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveHoursMcParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);

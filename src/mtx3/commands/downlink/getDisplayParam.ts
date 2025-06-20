@@ -8,9 +8,7 @@
  * import * as getDisplayParam from 'jooby-codec/mtx3/commands/downlink/getDisplayParam.js';
  * import {displayModes} from 'jooby-codec/mtx3/constants/index.js';
  *
- * const parameters = {
- *     displayMode: displayModes.MAIN_2
- * };
+ * const parameters = {displayMode: displayModes.MAIN_2};
  * const bytes = getDisplayParam.toBytes(parameters);
  *
  * // command binary representation
@@ -67,8 +65,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( [displayMode]: types.TBytes ): IGetDisplayParamParameters => ({displayMode});
 

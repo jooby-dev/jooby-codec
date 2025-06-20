@@ -11,6 +11,7 @@
  *     requestId: 3,
  *     activationMethod: 1
  * };
+ *
  * const bytes = setLorawanActivationMethod.toBytes(parameters);
  *
  * // output command binary in hex representation
@@ -58,8 +59,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetLorawanActivationMethodParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);

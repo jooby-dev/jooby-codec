@@ -7,7 +7,7 @@
  * ```js
  * import * as getEnergy from 'jooby-codec/mtx3/commands/downlink/getEnergy.js';
  *
- * const bytes = getEnergy.toBytes(parameters);
+ * const bytes = getEnergy.toBytes();
  *
  * // command binary representation
  * console.log(bytes);
@@ -67,7 +67,6 @@ export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameter
 /**
  * Encode command parameters.
  *
- * @param parameters - command payload
  * @returns full message (header with body)
  */
 export const toBytes = (): types.TBytes => command.toBytes(id);

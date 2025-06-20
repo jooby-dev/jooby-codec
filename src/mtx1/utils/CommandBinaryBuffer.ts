@@ -130,7 +130,7 @@ export interface IDisplaySetBaseOperatorParameter {
     POWER_THRESHOLD_T2: boolean,
     POWER_THRESHOLD_T3: boolean,
     POWER_THRESHOLD_T4: boolean,
-    CURRENT_BALANCE: boolean,
+    CURRENT_BALANCE: boolean
 }
 
 export interface IDisplaySetOperatorParameter extends IDisplaySetBaseOperatorParameter {
@@ -832,7 +832,7 @@ export interface IExtendedCurrentValues2RelayStatus2 {
     /** Relay turned off due to balance. */
     RELAY_SALDO_OFF_FLAG: boolean,
     /** Relay turned off due to current imbalance between phase and neutral. */
-    RELAY_UNEQUIL_CURRENT_OFF: boolean,
+    RELAY_UNEQUAL_CURRENT_OFF: boolean,
     /** Relay turned off due to bidirectional power in phase and neutral. */
     RELAY_BIPOLAR_POWER_OFF: boolean,
     /** Relay turned off due to exceeding allowable power in net balance limit mode. */
@@ -873,7 +873,7 @@ export interface IExtendedCurrentValues2Status2 {
 
 export interface IExtendedCurrentValues2Status3 {
     /** Current imbalance. */
-    UNEQUIL_CURRENT: boolean,
+    UNEQUAL_CURRENT: boolean,
     /** Opposite power directions in phases A and B. */
     BIPOLAR_POWER: boolean,
     /** Negative power in phase A. */
@@ -1020,6 +1020,29 @@ export interface IGetHalfHourDemandResponseParameters {
     dstHour?: types.TUint8
 }
 
+export interface IGetDemandParametersResponseParameters {
+    /**
+     * | Value | Hex    | Description                                                |
+     * | ----- | ------ | ---------------------------------------------------------- |
+     * | `0`   | `0x00` | voltage profile disabled                                   |
+     * | `64`  | `0x40` | `10`-minute phase voltage profile (archive depth `7` days) |
+     */
+    channelParam1: types.TUint8,
+
+    /**
+     * time interval for counting power-off events, minutes
+     */
+    counterInterval: types.TUint8,
+
+    /**
+     * | Value | Hex    | Description                                                                                      |
+     * | ----- | ------ | ------------------------------------------------------------------------------------------------ |
+     * | `0`   | `0x00` | voltage profile disabled                                                                         |
+     * | `160` | `0xa0` | `15/30/60`-minute phase voltage profile, determined by parameter `ten` (archive depth `1` month) |
+     */
+    channelParam2: types.TUint8,
+}
+
 export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
 export const SEASON_PROFILE_DAYS_NUMBER = 7;
@@ -1159,7 +1182,7 @@ export const extendedCurrentValues2RelayStatusMask = {
 const extendedCurrentValues2RelayStatus2Mask = {
     RELAY_COSFI: 2 ** 0,
     RELAY_SALDO_OFF_FLAG: 2 ** 1,
-    RELAY_UNEQUIL_CURRENT_OFF: 2 ** 2,
+    RELAY_UNEQUAL_CURRENT_OFF: 2 ** 2,
     RELAY_BIPOLAR_POWER_OFF: 2 ** 3,
     RELAY_SALDO_OFF_ON_MAX_POWER: 2 ** 4,
     RELAY_HARD_ST1: 2 ** 5
@@ -1184,7 +1207,7 @@ const extendedCurrentValues2Status2Mask = {
 };
 
 const extendedCurrentValues2Status3Mask = {
-    UNEQUIL_CURRENT: 2 ** 0,
+    UNEQUAL_CURRENT: 2 ** 0,
     BIPOLAR_POWER: 2 ** 1,
     POWER_A_NEGATIVE: 2 ** 6,
     POWER_B_NEGATIVE: 2 ** 7
@@ -1318,6 +1341,9 @@ export interface ICommandBinaryBuffer extends IBinaryBuffer {
 
     getDemand (): IGetDemandParameters,
     setDemand ( parameters: IGetDemandParameters ),
+
+    getDemandParameters (): IGetDemandParametersResponseParameters,
+    setDemandParameters ( parameters: IGetDemandParametersResponseParameters ),
 
     getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
     setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
@@ -1905,6 +1931,23 @@ CommandBinaryBuffer.prototype.setDemand = function ( parameters: IGetDemandParam
     this.setUint16(parameters.firstIndex);
     this.setUint8(parameters.count);
     this.setUint8(parameters.period);
+};
+
+CommandBinaryBuffer.prototype.getDemandParameters = function (): IGetDemandParametersResponseParameters {
+    const channelParam1 = this.getUint8();
+    const counterInterval = this.getUint8();
+    const channelParam2 = this.getUint8();
+
+    return {channelParam1, counterInterval, channelParam2};
+};
+
+CommandBinaryBuffer.prototype.setDemandParameters = function ( parameters: IGetDemandParametersResponseParameters ) {
+    this.setUint8(parameters.channelParam1);
+    this.setUint8(parameters.counterInterval);
+    this.setUint8(parameters.channelParam2);
+
+    // the last byte is reserved and not used for now
+    this.setUint8(0);
 };
 
 CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxDemandResponseParameters {

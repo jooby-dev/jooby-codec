@@ -173,13 +173,15 @@ export const getToBytes = BinaryBufferConstructor => (
     }
 );
 
+
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = getFromBytes(CommandBinaryBuffer);
+
 
 /**
  * Encode command parameters.

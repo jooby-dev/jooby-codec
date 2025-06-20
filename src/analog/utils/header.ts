@@ -5,45 +5,45 @@ const shortCommandMask = 0xe0;
 const extraCommandMask = 0x1f;
 
 
-export const fromBytes = ( data: TBytes ) => {
-    if ( data.length === 0 ) {
+export const fromBytes = ( bytes: TBytes ) => {
+    if ( bytes.length === 0 ) {
         throw new Error('Invalid buffer size');
     }
 
     const header = {
-        shortCode: data[0] & shortCommandMask,
-        extraCode: data[0] & extraCommandMask
+        shortCode: bytes[0] & shortCommandMask,
+        extraCode: bytes[0] & extraCommandMask
     };
 
     if ( header.shortCode !== 0 ) {
         // short header
         return {
             headerSize: 1,
-            commandId: data[0] & (~header.extraCode),
+            commandId: bytes[0] & (~header.extraCode),
             commandSize: header.extraCode
         };
     }
 
     if ( header.extraCode === extraCommandMask ) {
         // extra command
-        if ( data.length < 3 ) {
+        if ( bytes.length < 3 ) {
             throw new Error('Invalid buffer size');
         }
         return {
             headerSize: 3,
-            commandId: (data[1] << 8) | extraCommandMask,
-            commandSize: data[2]
+            commandId: (bytes[1] << 8) | extraCommandMask,
+            commandSize: bytes[2]
         };
     }
 
-    if ( data.length < 2 ) {
+    if ( bytes.length < 2 ) {
         throw new Error('Invalid buffer size');
     }
 
     return {
         headerSize: 2,
         commandId: header.extraCode,
-        commandSize: data[1]
+        commandSize: bytes[1]
     };
 };
 

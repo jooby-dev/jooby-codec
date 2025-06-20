@@ -1,6 +1,8 @@
 /**
  * Uplink command to get get additional current parameters.
  *
+ * The corresponding downlink command: `getExtendedCurrentValues2`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
@@ -28,7 +30,7 @@
  *     relayStatus2: {
  *         RELAY_COSFI: true,
  *         RELAY_SALDO_OFF_FLAG: false,
- *         RELAY_UNEQUIL_CURRENT_OFF: false,
+ *         RELAY_UNEQUAL_CURRENT_OFF: false,
  *         RELAY_BIPOLAR_POWER_OFF: false,
  *         RELAY_SALDO_OFF_ON_MAX_POWER: false,
  *         RELAY_HARD_ST1: true
@@ -50,7 +52,7 @@
  *         MIN_COS_FI: false
  *     },
  *     status3: {
- *         UNEQUIL_CURRENT: true,
+ *         UNEQUAL_CURRENT: true,
  *         BIPOLAR_POWER: false,
  *         POWER_A_NEGATIVE: false,
  *         POWER_B_NEGATIVE: true
@@ -96,7 +98,7 @@ export const examples: command.TCommandExamples = {
             relayStatus2: {
                 RELAY_COSFI: true,
                 RELAY_SALDO_OFF_FLAG: false,
-                RELAY_UNEQUIL_CURRENT_OFF: false,
+                RELAY_UNEQUAL_CURRENT_OFF: false,
                 RELAY_BIPOLAR_POWER_OFF: false,
                 RELAY_SALDO_OFF_ON_MAX_POWER: false,
                 RELAY_HARD_ST1: true
@@ -118,7 +120,7 @@ export const examples: command.TCommandExamples = {
                 MIN_COS_FI: false
             },
             status3: {
-                UNEQUIL_CURRENT: true,
+                UNEQUAL_CURRENT: true,
                 BIPOLAR_POWER: false,
                 POWER_A_NEGATIVE: false,
                 POWER_B_NEGATIVE: true
@@ -135,11 +137,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IExtendedCurrentValues2Parameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IExtendedCurrentValues2Parameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return buffer.getExtendedCurrentValues2();
 };

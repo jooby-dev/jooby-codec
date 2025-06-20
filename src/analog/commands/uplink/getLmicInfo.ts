@@ -107,15 +107,15 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetLmicInfoResponseParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IGetLmicInfoResponseParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: IBinaryBuffer = new BinaryBuffer(data);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes);
 
     const capabilities = bitSet.toObject(lmicCapabilitiesBitMask, buffer.getUint8()) as ILmicCapabilities;
     const version = buffer.getUint8();

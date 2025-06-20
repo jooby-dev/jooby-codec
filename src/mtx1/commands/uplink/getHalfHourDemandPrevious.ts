@@ -1,6 +1,8 @@
 /**
  * Uplink command to get active energy (`A+`) for the previous day.
  *
+ * The corresponding downlink command: `getHalfHourDemandPrevious`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

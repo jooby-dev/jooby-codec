@@ -17,6 +17,7 @@
  *     dayIndex: 3,
  *     isPeriodic: true
  * };
+ *
  * const bytes = setSpecialDay.toBytes(parameters);
  *
  * // command binary representation
@@ -85,8 +86,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetSpecialDayParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);

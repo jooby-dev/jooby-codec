@@ -14,6 +14,7 @@
  *         0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
  *     ]
  * };
+ *
  * const bytes = updateImageWrite.toBytes(parameters);
  *
  * // output command binary in hex representation
@@ -69,8 +70,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IUpdateImageWriteParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);

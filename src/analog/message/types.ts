@@ -56,7 +56,7 @@ export interface IMessage {
  */
 export interface IInvalidMessage {
     message: IMessage,
-    error: string,
+    error: string
 }
 
 type TExampleName = string;

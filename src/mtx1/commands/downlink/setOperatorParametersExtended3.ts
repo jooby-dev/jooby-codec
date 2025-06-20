@@ -21,6 +21,7 @@
  *         RELAY_OFF_LIMIT_P_MINUS_T4: false
  *     }
  * };
+ *
  * const bytes = setOperatorParametersExtended3.toBytes(parameters);
  *
  * // command binary representation
@@ -81,8 +82,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParametersExtended3 => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);

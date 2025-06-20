@@ -12,6 +12,7 @@
  *     offset: 64,
  *     data: [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f]
  * };
+ *
  * const bytes = writeImage.toBytes(parameters);
  *
  * // command binary representation
@@ -71,18 +72,18 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IWriteImageParameters => {
-    if ( data.length < COMMAND_BODY_MIN_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IWriteImageParameters => {
+    if ( bytes.length < COMMAND_BODY_MIN_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const offset = buffer.getUint32();
 
-    return {offset, data: data.slice(COMMAND_BODY_MIN_SIZE)};
+    return {offset, data: bytes.slice(COMMAND_BODY_MIN_SIZE)};
 };
 
 

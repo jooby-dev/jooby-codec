@@ -44,17 +44,17 @@ export interface ICommandImplementation {
     headerSize: number,
     examples: TCommandExamples,
 
-    fromBytes ( data: types.TBytes ),
+    fromBytes ( bytes: types.TBytes ),
     toBytes ( parameters?: object ): types.TBytes
 }
 
 
-export const toBytes = ( commandId: number, commandData: types.TBytes = [] ): types.TBytes => {
-    const commandLength = commandData.length || 0;
+export const toBytes = ( commandId: number, commandBytes: types.TBytes = [] ): types.TBytes => {
+    const commandLength = commandBytes.length || 0;
     const headerData = [commandId, commandLength];
 
-    if ( commandData && commandLength ) {
-        return headerData.concat(commandData);
+    if ( commandBytes && commandLength ) {
+        return headerData.concat(commandBytes);
     }
 
     // simple command without body

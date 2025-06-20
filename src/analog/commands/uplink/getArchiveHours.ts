@@ -60,23 +60,25 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): ILegacyHourCounterWithDiff => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): ILegacyHourCounterWithDiff => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     return buffer.getLegacyHourCounterWithDiff(true);
 };
+
 
 /**
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ILegacyHourCounterWithDiff ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(CommandBinaryBuffer.getLegacyHourCounterSize(parameters));

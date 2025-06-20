@@ -11,6 +11,7 @@
  *     displayMode: displayModes.MAIN,
  *     order: [4, 5, 6, 7]
  * };
+ *
  * const bytes = setDisplayParam.toBytes(parameters);
  *
  * // command binary representation
@@ -92,8 +93,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetDisplayParamParameters => {
     if ( bytes.length < 1 || bytes.length > maxSize ) {

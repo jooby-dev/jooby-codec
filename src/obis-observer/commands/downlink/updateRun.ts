@@ -7,9 +7,7 @@
  * ```js
  * import * as updateRun from 'jooby-codec/obis-observer/commands/downlink/updateRun.js';
  *
- * const parameters = {
- *     requestId: 33
- * };
+ * const parameters = {requestId: 33};
  * const bytes = updateRun.toBytes(parameters);
  *
  * // output command binary in hex representation
@@ -51,8 +49,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);

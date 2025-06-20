@@ -179,11 +179,11 @@ const setTemperatureSensorStatus = ( status: ITemperatureSensorStatus, buffer: I
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): Array<IChannelStatus> => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): Array<IChannelStatus> => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const result: Array<IChannelStatus> = [];
 
     while ( buffer.bytesLeft !== 0 ) {

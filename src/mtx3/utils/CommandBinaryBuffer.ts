@@ -1242,7 +1242,7 @@ export interface IGetDayMaxDemandResponseParameters {
 export interface IGetMonthMaxDemandResponseParameters {
     date: {
         year: types.TYear2000,
-        month: types.TMonth,
+        month: types.TMonth
     },
 
     /** values for 4 tariffs */

@@ -14,6 +14,7 @@
  *     dataBits: 8,
  *     parity: parityTypes.ODD
  * };
+ *
  * const bytes = setSerialPort.toBytes(parameters);
  *
  * // output command binary in hex representation
@@ -77,8 +78,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISerialPortParameters & ICommandParameters => {
     if ( bytes.length !== COMMAND_BODY_SIZE ) {

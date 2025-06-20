@@ -79,15 +79,15 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - binary data containing command parameters
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): ISetParameterResponseParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): ISetParameterResponseParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const parameters: ISetParameterResponseParameters = {
         id: buffer.getUint8(),
         status: buffer.getUint8()
@@ -99,6 +99,7 @@ export const fromBytes = ( data: types.TBytes ): ISetParameterResponseParameters
 
     return parameters;
 };
+
 
 /**
  * Encode command parameters.

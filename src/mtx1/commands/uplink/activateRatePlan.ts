@@ -1,6 +1,8 @@
 /**
  * Uplink command to provide the date and parameters of tariff plan activation.
  *
+ * The corresponding downlink command: `activateRatePlan`.
+ *
  * Supported in MTX1 and MTX3 devices.
  *
  * @packageDocumentation
@@ -71,7 +73,6 @@ export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameter
 /**
  * Encode command parameters.
  *
- * @param parameters - command payload
  * @returns full message (header with body)
  */
 export const toBytes = (): types.TBytes => command.toBytes(id);

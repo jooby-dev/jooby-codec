@@ -11,6 +11,7 @@
  *     requestId: 3,
  *     meterId: 17
  * };
+ *
  * const bytes = removeMeter.toBytes(parameters);
  *
  * // output command binary in hex representation
@@ -62,8 +63,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IRemoveMeterParameters => {
     if ( bytes.length !== COMMAND_BODY_SIZE ) {

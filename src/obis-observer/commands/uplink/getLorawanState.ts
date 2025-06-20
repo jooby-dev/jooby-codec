@@ -50,7 +50,7 @@ interface IGetLorawanStateResponseParameters extends ICommandParameters {
     deviceMargin: types.TUint8,
     gateMargin: types.TUint8,
     resetFlag: types.TUint8,
-    senderCollision: types.TUint8,
+    senderCollision: types.TUint8
 }
 
 

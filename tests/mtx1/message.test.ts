@@ -248,6 +248,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getDemandParameters',
+        hex: '0a 13 7f 75 5e 03 80 f0 ef 5b d8 ed f5 5e b1 87 e3 7c',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 7f 75 5e 03 80 f0 ef 5b d8 ed f5 5e b1 87 e3 7c cd 8f 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getDemandParameters.accessLevel,
+        commands: [
+            downlinkCommands.getDemandParameters.examples['simple request']
+        ],
+        lrc: 0x33,
+        crc: 0x8fcd,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getDeviceId',
         hex: '0a 13 55 9e 05 01 4e 5c 2a 6c 0d 8a da 30 a7 4c 0f 86',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 55 9e 05 01 4e 5c 2a 6c 0d 8a da 30 a7 4c 0f 86 9c 30 7e',
@@ -838,6 +853,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'setDemandParameters',
+        hex: '0a 12 4b 23 7c db f7 26 90 be cb 72 9d e5 92 74 b9 06',
+        frameHex: '7e 50 aa aa ff ff 0a 12 4b 23 7c db f7 26 90 be cb 72 9d e5 92 74 b9 06 46 3c 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.setDemandParameters.accessLevel,
+        commands: [
+            downlinkCommands.setDemandParameters.examples['simple request']
+        ],
+        lrc: 0x83,
+        crc: 0x3c46,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'setDisplayParam',
         hex: '0a 12 a2 d2 eb 6b 01 e2 a3 41 9f 9d 56 e5 ff 83 e2 d8',
         frameHex: '7e 50 aa aa ff ff 0a 12 a2 d2 eb 6b 01 e2 a3 41 9f 9d 56 e5 ff 83 e2 d8 62 45 7e',
@@ -1403,6 +1433,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x1e,
         crc: 0x2e82,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDemandParameters',
+        hex: '0a 13 28 bb 0b b5 88 59 20 68 99 77 72 e1 f0 5e ca 1f',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 28 bb 0b b5 88 59 20 68 99 77 72 e1 f0 5e ca 1f 92 5e 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDemandParameters.accessLevel,
+        commands: [
+            uplinkCommands.getDemandParameters.examples['simple response']
+        ],
+        lrc: 0x83,
+        crc: 0x5e92,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1978,6 +2023,21 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x57,
         crc: 0x8348,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'setDemandParameters',
+        hex: '0c 12 71 bc c4 6e 53 43 b1 ef 9c 35 8a f3 36 76 4b 75',
+        frameHex: '7e 51 aa aa ff ff 0c 12 71 bc c4 6e 53 43 b1 ef 9c 35 8a f3 36 76 4b 75 81 6d 7e',
+        messageId: 12,
+        accessLevel: uplinkCommands.setDemandParameters.accessLevel,
+        commands: [
+            uplinkCommands.setDemandParameters.examples['simple response']
+        ],
+        lrc: 0x33,
+        crc: 0x6d81,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

@@ -64,13 +64,18 @@ export const examples: command.TCommandExamples = {
 };
 
 
-// data - only body (without header)
-export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+/**
+ * Decode command parameters.
+ *
+ * @param bytes - only body (without header)
+ * @returns command payload
+ */
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveEventsParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
     const startTime2000 = buffer.getTime();
     const events = buffer.getUint8();
 
@@ -81,7 +86,13 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsParameters => 
     return {startTime2000, events};
 };
 
-// returns full message - header with body
+
+/**
+ * Encode command parameters.
+ *
+ * @param parameters - command payload
+ * @returns full message (header with body)
+ */
 export const toBytes = ( parameters: IGetArchiveEventsParameters ): types.TBytes => {
     const {startTime2000, events} = parameters;
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);

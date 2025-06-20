@@ -7,9 +7,7 @@
  * ```js
  * import * as getSerialPort from 'jooby-codec/obis-observer/commands/downlink/getSerialPort.js';
  *
- * const parameters = {
- *     requestId: 7
- * };
+ * const parameters = {requestId: 7};
  * const bytes = getSerialPort.toBytes(parameters);
  *
  * // output command binary in hex representation
@@ -51,8 +49,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( [requestId]: types.TBytes ): ICommandParameters => ({requestId});
 

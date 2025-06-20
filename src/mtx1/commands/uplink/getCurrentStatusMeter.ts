@@ -1,6 +1,8 @@
 /**
  * Uplink command to get current parameters.
  *
+ * The corresponding downlink command: `getCurrentStatusMeter`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
@@ -113,7 +115,7 @@ interface IGetCurrentStatusMeterResponseParameters {
     currentTariffs: ITariffs,
 
     /** Is it DST or Standard time. */
-    isSummerTime: boolean,
+    isSummerTime: boolean
 }
 
 interface ICalibrationFlags {
@@ -235,11 +237,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetCurrentStatusMeterResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponseParameters => {
+    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
 
     const operatingSeconds = buffer.getUint32();
     const tbadVAVB = buffer.getUint32();

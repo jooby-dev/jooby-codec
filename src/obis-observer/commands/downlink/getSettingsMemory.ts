@@ -12,6 +12,7 @@
  *     offset: 16,
  *     size: 4
  * };
+ *
  * const bytes = getSettingsMemory.toBytes(parameters);
  *
  * // output command binary in hex representation
@@ -63,8 +64,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetSettingsMemoryParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);

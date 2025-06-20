@@ -116,15 +116,15 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetSignalQualityResponseParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IGetSignalQualityResponseParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: IBinaryBuffer = new BinaryBuffer(data, false);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters = {
         rssi: buffer.getInt8(),
         rsrp: buffer.getInt8(),

@@ -59,7 +59,7 @@ import commandNames from '../../constants/uplinkNames.js';
  */
 interface IGetObisInfoResponseParameters extends ICommandParameters {
     obis?: IObis,
-    obisProfile?: IObisProfile,
+    obisProfile?: IObisProfile
 }
 
 

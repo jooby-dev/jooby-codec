@@ -13,6 +13,7 @@
  *     meterProfileId: 17,
  *     address: 'ma2375'
  * };
+ *
  * const bytes = setupMeter.toBytes(parameters);
  *
  * // output command binary in hex representation
@@ -114,8 +115,8 @@ const getCommandSize = ( parameters: ISetupMeterParameters ): number => {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetupMeterParameters => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);

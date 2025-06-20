@@ -4,6 +4,8 @@
 /**
  * Uplink command to read load and voltage graphs.
  *
+ * The corresponding downlink command: `getDemand`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
@@ -19,13 +21,13 @@
  * console.log(parameters);
  * // output:
  * {
-*     date: { year: 24, month: 10, date: 2 },
-*     energyType: 160,
-*     firstIndex: 25,
-*     count: 1,
-*     period: 60,
-*     demands: [ { lastSummerHour: 4 } ]
-* }
+ *     date: { year: 24, month: 10, date: 2 },
+ *     energyType: 160,
+ *     firstIndex: 25,
+ *     count: 1,
+ *     period: 60,
+ *     demands: [ { lastSummerHour: 4 } ]
+ * }
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetDemand.md#response)
@@ -49,11 +51,11 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
     demands?: Array<{
         tariff?: number,
         energy?: number,
-        voltage?: number
+        voltage?: number,
 
         /** The number of the additional hour that occurs during the transition to winter time. */
-        lastSummerHour?: number,
-    }>,
+        lastSummerHour?: number
+    }>
 }
 
 
@@ -376,11 +378,11 @@ export const examples: command.TCommandExamples = {
 
 
 /**
-  * Decode command parameters.
-  *
-  * @param bytes - command body bytes
-  * @returns decoded parameters
-  */
+ * Decode command parameters.
+ *
+ * @param bytes - only body (without header)
+ * @returns command payload
+ */
 export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters => {
     if ( !bytes || bytes.length < getDemand.maxSize ) {
         throw new Error('Invalid uplink GetDemand byte length.');
@@ -405,11 +407,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
 
 
 /**
-  * Encode command parameters.
-  *
-  * @param parameters - command payload
-  * @returns full message (header with body)
-  */
+ * Encode command parameters.
+ *
+ * @param parameters - command payload
+ * @returns full message (header with body)
+ */
 export const toBytes = ( parameters: IGetDemandResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getDemand.maxSize + parameters.count * 2);
 

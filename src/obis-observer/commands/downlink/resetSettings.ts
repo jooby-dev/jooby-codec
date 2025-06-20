@@ -7,9 +7,7 @@
  * ```js
  * import * as resetSettings from 'jooby-codec/obis-observer/commands/downlink/resetSettings.js';
  *
- * const parameters = {
- *     requestId: 3
- * };
+ * const parameters = {requestId: 3};
  * const bytes = resetSettings.toBytes(parameters);
  *
  * // output command binary in hex representation
@@ -51,8 +49,8 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param bytes - command body bytes
- * @returns decoded parameters
+ * @param bytes - only body (without header)
+ * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ICommandParameters => ({requestId: bytes[0]});
 

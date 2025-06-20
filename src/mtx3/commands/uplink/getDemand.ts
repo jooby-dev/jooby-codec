@@ -1,6 +1,8 @@
 /**
  * Uplink command to read load graphs.
  *
+ * The corresponding downlink command: `getDemand`.
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump
@@ -81,11 +83,11 @@ export const examples: command.TCommandExamples = {
 
 
 /**
-  * Decode command parameters.
-  *
-  * @param bytes - command body bytes
-  * @returns decoded parameters
-  */
+ * Decode command parameters.
+ *
+ * @param bytes - only body (without header)
+ * @returns command payload
+ */
 export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters => {
     if ( !bytes || bytes.length < getDemand.maxSize ) {
         throw new Error('Invalid uplink GetDemand byte length.');
@@ -108,11 +110,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
 
 
 /**
-  * Encode command parameters.
-  *
-  * @param parameters - command payload
-  * @returns full message (header with body)
-  */
+ * Encode command parameters.
+ *
+ * @param parameters - command payload
+ * @returns full message (header with body)
+ */
 export const toBytes = ( parameters: IGetDemandResponseParameters ): types.TBytes => {
     const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getDemand.maxSize + parameters.count * 2);
 
