@@ -4,8 +4,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
+// import * as types from '../../types.js';
+import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import {IDate} from '../../types.js';
 
@@ -54,7 +54,7 @@ const energiesMask = {
     'A-R-': 0x20
 };
 
-const getEnergiesFlags = <T>( energies: IEnergies<T> ): number => {
+const getEnergiesFlagsLocal = <T>( energies: IEnergies<T> ): number => {
     const booleanObject = {};
 
     Object.keys(energies).forEach(name => {
@@ -85,61 +85,61 @@ const getTariffEnergiesFlag = <T>( tariff: number, energies: IEnergies<T> ): num
 };
 
 
-export interface ICommandBinaryBuffer extends IBinaryBuffer {
+/* export interface ICommandBinaryBuffer extends IBinaryBuffer {
     // instance methods
-    getDate (): IDate,
-    setDate ( {year, month, date}: IDate ),
+    // getDate (): IDate,
+    // setDate ( {year, month, date}: IDate ),
 
-    getEnergiesFlags (): TEnergiesFlags,
-    setEnergiesFlags <T>( energies: IEnergies<T> ),
+    // getEnergiesFlags (): TEnergiesFlags,
+    // setEnergiesFlags <T>( energies: IEnergies<T> ),
 
-    getHalfHourEnergy1 ( halfhoursNumber: number ): THalfHourEnergy1,
-    setHalfHourEnergy1 ( halfhours: THalfHourEnergy1 | undefined ),
+    // getHalfHourEnergy1 ( halfhoursNumber: number ): THalfHourEnergy1,
+    // setHalfHourEnergy1 ( halfhours: THalfHourEnergy1 | undefined ),
 
-    getHalfHourEnergy3 ( halfhoursNumber: number ): THalfHourEnergy3,
-    setHalfHourEnergy3 ( halfhours: THalfHourEnergy3 | undefined ),
+    // getHalfHourEnergy3 ( halfhoursNumber: number ): THalfHourEnergy3,
+    // setHalfHourEnergy3 ( halfhours: THalfHourEnergy3 | undefined ),
 
-    getHalfHourEnergies1 ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies1,
-    setHalfHourEnergies1 ( energies: THalfHourEnergies1 ),
+    // getHalfHourEnergies1 ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies1,
+    // setHalfHourEnergies1 ( energies: THalfHourEnergies1 ),
 
-    getHalfHourEnergies3 ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies3,
-    setHalfHourEnergies3 ( energies: THalfHourEnergies3 ),
+    // getHalfHourEnergies3 ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies3,
+    // setHalfHourEnergies3 ( energies: THalfHourEnergies3 ),
 
-    getAPlusTariffEnergies ( energyFlags: number ): IEnergies,
-    setAPlusTariffEnergies ( energies: IEnergies | undefined ),
+    // getAPlusTariffEnergies ( energyFlags: number ): IEnergies,
+    // setAPlusTariffEnergies ( energies: IEnergies | undefined ),
 
-    getAMinusTariffEnergies ( energyFlags: number ): IEnergies,
-    setAMinusTariffEnergies ( energies: IEnergies | undefined ),
+    // getAMinusTariffEnergies ( energyFlags: number ): IEnergies,
+    // setAMinusTariffEnergies ( energies: IEnergies | undefined ),
 
-    getTariffsEnergies (): TTariffsEnergies,
-    setTariffsEnergies ( tariffs: TTariffsEnergies ),
+    // getTariffsEnergies (): TTariffsEnergies,
+    // setTariffsEnergies ( tariffs: TTariffsEnergies ),
 
-    getPowerMax (): IPowerMax,
-    setPowerMax ( value: IPowerMax | undefined ),
-    getAPlusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax>,
-    setAPlusTariffPowerMax ( energies: IEnergies<IPowerMax> | undefined ),
+    // getPowerMax (): IPowerMax,
+    // setPowerMax ( value: IPowerMax | undefined ),
+    // getAPlusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax>,
+    // setAPlusTariffPowerMax ( energies: IEnergies<IPowerMax> | undefined ),
 
-    getAMinusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax>,
-    setAMinusTariffPowerMax ( energies: IEnergies<IPowerMax> | undefined ),
-    getTariffsPowerMax (): TTariffsPowerMax,
-    setTariffsPowerMax ( tariffs: TTariffsPowerMax )
-}
+    // getAMinusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax>,
+    // setAMinusTariffPowerMax ( energies: IEnergies<IPowerMax> | undefined ),
+    // getTariffsPowerMax (): TTariffsPowerMax,
+    // setTariffsPowerMax ( tariffs: TTariffsPowerMax )
+} */
 
 /**
  * Command specific byte array manipulation.
  */
-function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
-    BinaryBuffer.call(this, dataOrLength, isLittleEndian);
-}
+// function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
+//     BinaryBuffer.call(this, dataOrLength, isLittleEndian);
+// }
 
 // extending
-CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
-CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
+// CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
+// CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
 
 
-CommandBinaryBuffer.prototype.getDate = function (): IDate {
-    const date0 = this.getUint8();
-    const date1 = this.getUint8();
+export const getDate = function ( buffer: IBinaryBuffer ): IDate {
+    const date0 = buffer.getUint8();
+    const date1 = buffer.getUint8();
 
     return {
         year: date0 >> 1,
@@ -148,31 +148,31 @@ CommandBinaryBuffer.prototype.getDate = function (): IDate {
     };
 };
 
-CommandBinaryBuffer.prototype.setDate = function ( {year, month, date}: IDate ) {
+export const setDate = function ( buffer: IBinaryBuffer, {year, month, date}: IDate ) {
     const date0 = (year << 1) | ((month >> 3) & 0x01);
     const date1 = ((month << 5) & 0xe0) | (date & 0x1f);
 
-    this.setUint8(date0);
-    this.setUint8(date1);
+    buffer.setUint8(date0);
+    buffer.setUint8(date1);
 };
 
-CommandBinaryBuffer.prototype.getEnergiesFlags = function (): TEnergiesFlags {
-    const byte = this.getUint8();
+export const getEnergiesFlags = function ( buffer: IBinaryBuffer ): TEnergiesFlags {
+    const byte = buffer.getUint8();
 
     return (bitSet.toObject(energiesMask, byte) as unknown) as TEnergiesFlags;
 };
 
-CommandBinaryBuffer.prototype.setEnergiesFlags = function <T>( energies: IEnergies<T> ) {
-    this.setUint8(
-        getEnergiesFlags(energies)
+export const setEnergiesFlags = function <T>( buffer: IBinaryBuffer, energies: IEnergies<T> ) {
+    buffer.setUint8(
+        getEnergiesFlagsLocal(energies)
     );
 };
 
-CommandBinaryBuffer.prototype.getHalfHourEnergy1 = function ( halfhoursNumber: number ): THalfHourEnergy1 {
+export const getHalfHourEnergy1 = function ( buffer: IBinaryBuffer, halfhoursNumber: number ): THalfHourEnergy1 {
     const halfhours = [];
 
     for ( let index = 0; index < halfhoursNumber; index++ ) {
-        const value = this.getUint16();
+        const value = buffer.getUint16();
 
         // extract the top 2 bits (shift right by 14 positions)
         const tariff = (value >> 14) & 0b11;
@@ -186,7 +186,7 @@ CommandBinaryBuffer.prototype.getHalfHourEnergy1 = function ( halfhoursNumber: n
     return halfhours;
 };
 
-CommandBinaryBuffer.prototype.setHalfHourEnergy1 = function ( halfhours: THalfHourEnergy1 | undefined ) {
+export const setHalfHourEnergy1 = function ( buffer: IBinaryBuffer, halfhours: THalfHourEnergy1 | undefined ) {
     if ( halfhours ) {
         for ( let index = 0; index < halfhours.length; index++ ) {
             const {tariff, energy} = halfhours[index];
@@ -196,16 +196,16 @@ CommandBinaryBuffer.prototype.setHalfHourEnergy1 = function ( halfhours: THalfHo
             // - use bitwise OR to combine with energy
             const value = (tariff << 14) | energy;
 
-            this.setUint16(value === undefined ? UNDEFINED_ENERGY_VALUE : value);
+            buffer.setUint16(value === undefined ? UNDEFINED_ENERGY_VALUE : value);
         }
     }
 };
 
-CommandBinaryBuffer.prototype.getHalfHourEnergy3 = function ( halfhoursNumber: number ): THalfHourEnergy3 {
+export const getHalfHourEnergy3 = function ( buffer: IBinaryBuffer, halfhoursNumber: number ): THalfHourEnergy3 {
     const halfhours = [];
 
     for ( let index = 0; index < halfhoursNumber; index++ ) {
-        const value = this.getUint16();
+        const value = buffer.getUint16();
 
         halfhours.push(value === UNDEFINED_ENERGY_VALUE ? undefined : value);
     }
@@ -213,265 +213,265 @@ CommandBinaryBuffer.prototype.getHalfHourEnergy3 = function ( halfhoursNumber: n
     return halfhours;
 };
 
-CommandBinaryBuffer.prototype.setHalfHourEnergy3 = function ( halfhours: THalfHourEnergy3 | undefined ) {
+export const setHalfHourEnergy3 = function ( buffer: IBinaryBuffer, halfhours: THalfHourEnergy3 | undefined ) {
     if ( halfhours ) {
         for ( let index = 0; index < halfhours.length; index++ ) {
             const value = halfhours[index];
 
-            this.setUint16(value === undefined ? UNDEFINED_ENERGY_VALUE : value);
+            buffer.setUint16(value === undefined ? UNDEFINED_ENERGY_VALUE : value);
         }
     }
 };
 
-CommandBinaryBuffer.prototype.getHalfHourEnergies1 = function ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies1 {
+export const getHalfHourEnergies1 = function ( buffer: IBinaryBuffer, energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies1 {
     const energies: THalfHourEnergies1 = {};
 
     ENERGY_NAMES.forEach(energyName => {
         if ( energiesFlags[energyName] ) {
-            energies[energyName] = this.getHalfHourEnergy1(halfhoursNumber);
+            energies[energyName] = getHalfHourEnergy1(buffer, halfhoursNumber);
         }
     });
 
     return energies;
 };
 
-CommandBinaryBuffer.prototype.getHalfHourEnergies3 = function ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies3 {
+export const getHalfHourEnergies3 = function ( buffer: IBinaryBuffer, energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies3 {
     const energies: THalfHourEnergies3 = {};
 
     ENERGY_NAMES.forEach(energyName => {
         if ( energiesFlags[energyName] ) {
-            energies[energyName] = this.getHalfHourEnergy3(halfhoursNumber);
+            energies[energyName] = getHalfHourEnergy3(buffer, halfhoursNumber);
         }
     });
 
     return energies;
 };
 
-CommandBinaryBuffer.prototype.setHalfHourEnergies1 = function ( energies: THalfHourEnergies1 ) {
+export const setHalfHourEnergies1 = function ( buffer: IBinaryBuffer, energies: THalfHourEnergies1 ) {
     ENERGY_NAMES.forEach(energyName => {
-        this.setHalfHourEnergy1(energies[energyName]);
+        setHalfHourEnergy1(buffer, energies[energyName]);
     });
 };
 
-CommandBinaryBuffer.prototype.setHalfHourEnergies3 = function ( energies: THalfHourEnergies3 ) {
+export const setHalfHourEnergies3 = function ( buffer: IBinaryBuffer, energies: THalfHourEnergies3 ) {
     ENERGY_NAMES.forEach(energyName => {
-        this.setHalfHourEnergy3(energies[energyName]);
+        setHalfHourEnergy3(buffer, energies[energyName]);
     });
 };
 
-CommandBinaryBuffer.prototype.getAPlusTariffEnergies = function ( energyFlags: number ): IEnergies {
+export const getAPlusTariffEnergies = function ( buffer: IBinaryBuffer, energyFlags: number ): IEnergies {
     const energies: IEnergies = {};
 
     if ( energyFlags & energiesMask['A+'] ) {
-        energies['A+'] = this.getUint32();
+        energies['A+'] = buffer.getUint32();
     }
 
     if ( energyFlags & energiesMask['A+R+'] ) {
-        energies['A+R+'] = this.getUint32();
+        energies['A+R+'] = buffer.getUint32();
     }
 
     if ( energyFlags & energiesMask['A+R-'] ) {
-        energies['A+R-'] = this.getUint32();
+        energies['A+R-'] = buffer.getUint32();
     }
 
     return energies;
 };
 
-CommandBinaryBuffer.prototype.setAPlusTariffEnergies = function ( energies: IEnergies | undefined ) {
+export const setAPlusTariffEnergies = function ( buffer: IBinaryBuffer, energies: IEnergies | undefined ) {
     if ( energies ) {
         if ( energies['A+'] ) {
-            this.setUint32(energies['A+']);
+            buffer.setUint32(energies['A+']);
         }
 
         if ( energies['A+R+'] ) {
-            this.setUint32(energies['A+R+']);
+            buffer.setUint32(energies['A+R+']);
         }
 
         if ( energies['A+R-'] ) {
-            this.setUint32(energies['A+R-']);
+            buffer.setUint32(energies['A+R-']);
         }
     }
 };
 
-CommandBinaryBuffer.prototype.getAMinusTariffEnergies = function ( energyFlags: number ): IEnergies {
+export const getAMinusTariffEnergies = function ( buffer: IBinaryBuffer, energyFlags: number ): IEnergies {
     const energies: IEnergies = {};
 
     if ( energyFlags & energiesMask['A-'] ) {
-        energies['A-'] = this.getUint32();
+        energies['A-'] = buffer.getUint32();
     }
 
     if ( energyFlags & energiesMask['A-R+'] ) {
-        energies['A-R+'] = this.getUint32();
+        energies['A-R+'] = buffer.getUint32();
     }
 
     if ( energyFlags & energiesMask['A-R-'] ) {
-        energies['A-R-'] = this.getUint32();
+        energies['A-R-'] = buffer.getUint32();
     }
 
     return energies;
 };
 
-CommandBinaryBuffer.prototype.setAMinusTariffEnergies = function ( energies: IEnergies | undefined ) {
+export const setAMinusTariffEnergies = function ( buffer: IBinaryBuffer, energies: IEnergies | undefined ) {
     if ( energies ) {
         if ( energies['A-'] ) {
-            this.setUint32(energies['A-']);
+            buffer.setUint32(energies['A-']);
         }
 
         if ( energies['A-R+'] ) {
-            this.setUint32(energies['A-R+']);
+            buffer.setUint32(energies['A-R+']);
         }
 
         if ( energies['A-R-'] ) {
-            this.setUint32(energies['A-R-']);
+            buffer.setUint32(energies['A-R-']);
         }
     }
 };
 
-CommandBinaryBuffer.prototype.getTariffsEnergies = function (): TTariffsEnergies {
-    const energyFlags = this.getUint8();
-    const tariffFlags = this.getUint8();
+export const getTariffsEnergies = function ( buffer: IBinaryBuffer ): TTariffsEnergies {
+    const energyFlags = buffer.getUint8();
+    const tariffFlags = buffer.getUint8();
     const tariffs: TTariffsEnergies = new Array(TARIFF_NUMBER).fill(null);
 
     for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
         if ( tariffFlags & getAPlusTariffBit(index) ) {
-            tariffs[index] = this.getAPlusTariffEnergies(energyFlags);
+            tariffs[index] = getAPlusTariffEnergies(buffer, energyFlags);
         }
     }
 
     for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
         if ( tariffFlags & getAMinusTariffBit(index) ) {
-            tariffs[index] = {...tariffs[index], ...this.getAMinusTariffEnergies(energyFlags)};
+            tariffs[index] = {...tariffs[index], ...getAMinusTariffEnergies(buffer, energyFlags)};
         }
     }
 
     return tariffs;
 };
 
-CommandBinaryBuffer.prototype.setTariffsEnergies = function ( tariffs: TTariffsEnergies ) {
+export const setTariffsEnergies = function ( buffer: IBinaryBuffer, tariffs: TTariffsEnergies ) {
     let energiesFlags = 0;
     let tariffsFlags = 0;
 
     tariffs.forEach((tariff, index) => {
         if ( tariff ) {
-            energiesFlags |= getEnergiesFlags(tariff);
+            energiesFlags |= getEnergiesFlagsLocal(tariff);
             tariffsFlags |= getTariffEnergiesFlag(index, tariff);
         }
     });
 
-    this.setUint8(energiesFlags);
-    this.setUint8(tariffsFlags);
+    buffer.setUint8(energiesFlags);
+    buffer.setUint8(tariffsFlags);
 
-    tariffs.forEach(tariff => this.setAPlusTariffEnergies(tariff));
-    tariffs.forEach(tariff => this.setAMinusTariffEnergies(tariff));
+    tariffs.forEach(tariff => setAPlusTariffEnergies(buffer, tariff));
+    tariffs.forEach(tariff => setAMinusTariffEnergies(buffer, tariff));
 };
 
-CommandBinaryBuffer.prototype.getPowerMax = function (): IPowerMax {
+export const getPowerMax = function ( buffer: IBinaryBuffer ): IPowerMax {
     return {
-        hours: this.getUint8(),
-        minutes: this.getUint8(),
-        power: this.getUint32()
+        hours: buffer.getUint8(),
+        minutes: buffer.getUint8(),
+        power: buffer.getUint32()
     };
 };
 
-CommandBinaryBuffer.prototype.setPowerMax = function ( value: IPowerMax | undefined ) {
+export const setPowerMax = function ( buffer: IBinaryBuffer, value: IPowerMax | undefined ) {
     if ( value ) {
         const {hours, minutes, power} = value;
 
-        this.setUint8(hours);
-        this.setUint8(minutes);
-        this.setUint32(power);
+        buffer.setUint8(hours);
+        buffer.setUint8(minutes);
+        buffer.setUint32(power);
     }
 };
 
-CommandBinaryBuffer.prototype.getAPlusTariffPowerMax = function ( energyFlags: number ): IEnergies<IPowerMax> {
+export const getAPlusTariffPowerMax = function ( buffer: IBinaryBuffer, energyFlags: number ): IEnergies<IPowerMax> {
     const energies: IEnergies<IPowerMax> = {};
 
     if ( energyFlags & energiesMask['A+'] ) {
-        energies['A+'] = this.getPowerMax();
+        energies['A+'] = getPowerMax(buffer);
     }
 
     if ( energyFlags & energiesMask['A+R+'] ) {
-        energies['A+R+'] = this.getPowerMax();
+        energies['A+R+'] = getPowerMax(buffer);
     }
 
     if ( energyFlags & energiesMask['A+R-'] ) {
-        energies['A+R-'] = this.getPowerMax();
+        energies['A+R-'] = getPowerMax(buffer);
     }
 
     return energies;
 };
 
-CommandBinaryBuffer.prototype.setAPlusTariffPowerMax = function ( energies: IEnergies<IPowerMax> | undefined ) {
+export const setAPlusTariffPowerMax = function ( buffer: IBinaryBuffer, energies: IEnergies<IPowerMax> | undefined ) {
     if ( energies ) {
-        this.setPowerMax(energies['A+']);
-        this.setPowerMax(energies['A+R+']);
-        this.setPowerMax(energies['A+R+']);
+        setPowerMax(buffer, energies['A+']);
+        setPowerMax(buffer, energies['A+R+']);
+        setPowerMax(buffer, energies['A+R+']);
     }
 };
 
-CommandBinaryBuffer.prototype.getAMinusTariffPowerMax = function ( energyFlags: number ): IEnergies<IPowerMax> {
+export const getAMinusTariffPowerMax = function ( buffer: IBinaryBuffer, energyFlags: number ): IEnergies<IPowerMax> {
     const energies: IEnergies<IPowerMax> = {};
 
     if ( energyFlags & energiesMask['A-'] ) {
-        energies['A-'] = this.getPowerMax();
+        energies['A-'] = getPowerMax(buffer);
     }
 
     if ( energyFlags & energiesMask['A-R+'] ) {
-        energies['A-R+'] = this.getPowerMax();
+        energies['A-R+'] = getPowerMax(buffer);
     }
 
     if ( energyFlags & energiesMask['A-R-'] ) {
-        energies['A-R-'] = this.getPowerMax();
+        energies['A-R-'] = getPowerMax(buffer);
     }
 
     return energies;
 };
 
-CommandBinaryBuffer.prototype.setAMinusTariffPowerMax = function ( energies: IEnergies<IPowerMax> | undefined ) {
+export const setAMinusTariffPowerMax = function ( buffer: IBinaryBuffer, energies: IEnergies<IPowerMax> | undefined ) {
     if ( energies ) {
-        this.setPowerMax(energies['A-']);
-        this.setPowerMax(energies['A-R+']);
-        this.setPowerMax(energies['A-R-']);
+        setPowerMax(buffer, energies['A-']);
+        setPowerMax(buffer, energies['A-R+']);
+        setPowerMax(buffer, energies['A-R-']);
     }
 };
 
-CommandBinaryBuffer.prototype.getTariffsPowerMax = function (): TTariffsPowerMax {
-    const energyFlags = this.getUint8();
-    const tariffFlags = this.getUint8();
+export const getTariffsPowerMax = function ( buffer: IBinaryBuffer ): TTariffsPowerMax {
+    const energyFlags = buffer.getUint8();
+    const tariffFlags = buffer.getUint8();
     const tariffs: TTariffsPowerMax = new Array(TARIFF_NUMBER).fill(null);
 
     for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
         if ( tariffFlags & getAPlusTariffBit(index) ) {
-            tariffs[index] = this.getAPlusTariffPowerMax(energyFlags);
+            tariffs[index] = getAPlusTariffPowerMax(buffer, energyFlags);
         }
     }
 
     for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
         if ( tariffFlags & getAMinusTariffBit(index) ) {
-            tariffs[index] = {...tariffs[index], ...this.getAMinusTariffPowerMax(energyFlags)};
+            tariffs[index] = {...tariffs[index], ...getAMinusTariffPowerMax(buffer, energyFlags)};
         }
     }
 
     return tariffs;
 };
 
-CommandBinaryBuffer.prototype.setTariffsPowerMax = function ( tariffs: TTariffsPowerMax ) {
+export const setTariffsPowerMax = function ( buffer: IBinaryBuffer, tariffs: TTariffsPowerMax ) {
     let energiesFlags = 0;
     let tariffsFlags = 0;
 
     tariffs.forEach( (tariff, index) => {
         if ( tariff ) {
-            energiesFlags |= getEnergiesFlags(tariff);
+            energiesFlags |= getEnergiesFlagsLocal(tariff);
             tariffsFlags |= getTariffEnergiesFlag(index, tariff);
         }
     });
 
-    this.setUint8(energiesFlags);
-    this.setUint8(tariffsFlags);
+    buffer.setUint8(energiesFlags);
+    buffer.setUint8(tariffsFlags);
 
-    tariffs.forEach(tariff => this.setAPlusTariffPowerMax(tariff));
-    tariffs.forEach(tariff => this.setAMinusTariffPowerMax(tariff));
+    tariffs.forEach(tariff => setAPlusTariffPowerMax(buffer, tariff));
+    tariffs.forEach(tariff => setAMinusTariffPowerMax(buffer, tariff));
 };
 
 
-export default CommandBinaryBuffer;
+// export default CommandBinaryBuffer;

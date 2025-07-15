@@ -24,7 +24,7 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {setCorrectDateTime as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -82,7 +82,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetCorrectDateTimeParameters 
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {seconds: buffer.getInt16()};
 };
@@ -95,7 +95,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetCorrectDateTimeParameters 
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISetCorrectDateTimeParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     buffer.setInt16(parameters.seconds);
 

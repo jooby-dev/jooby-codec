@@ -38,7 +38,14 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, TEnergiesFlags} from '../../utils/LoraCommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    TEnergiesFlags,
+    getEnergiesFlags,
+    setEnergiesFlags,
+    getDate,
+    setDate
+} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 import {getHalfHourEnergies as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -112,11 +119,11 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
-        date: buffer.getDate(),
-        energies: buffer.getEnergiesFlags(),
+        date: getDate(buffer),
+        energies: getEnergiesFlags(buffer),
         firstHalfhour: buffer.getUint8(),
         halfhoursNumber: buffer.getUint8()
     };
@@ -130,10 +137,10 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesParameters
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetHalfHourEnergiesParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setDate(parameters.date);
-    buffer.setEnergiesFlags(parameters.energies);
+    setDate(buffer, parameters.date);
+    setEnergiesFlags(buffer, parameters.energies);
     buffer.setUint8(parameters.firstHalfhour);
     buffer.setUint8(parameters.halfhoursNumber);
 

@@ -31,8 +31,13 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, ISeasonProfile} from '../../utils/CommandBinaryBuffer.js';
+import {
+    ISeasonProfile,
+    getSeasonProfile,
+    setSeasonProfile
+} from '../../utils/CommandBinaryBuffer.js';
 import {getSeasonProfile as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -71,9 +76,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISeasonProfile => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getSeasonProfile();
+    return getSeasonProfile(buffer);
 };
 
 
@@ -84,9 +89,9 @@ export const fromBytes = ( bytes: types.TBytes ): ISeasonProfile => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISeasonProfile ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setSeasonProfile(parameters);
+    setSeasonProfile(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

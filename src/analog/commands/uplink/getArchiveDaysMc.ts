@@ -28,7 +28,16 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelDays} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelDays,
+    getExtendedValue,
+    setExtendedValue,
+    getChannels,
+    setChannels,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
 import * as archive from '../../constants/archive.js';
 import {getArchiveDaysMc as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -96,9 +105,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysMcResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
-    const channels = buffer.getChannels();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const channels = getChannels(buffer);
     const days = buffer.getUint8();
     const channelList: Array<IChannelDays> = [];
 
@@ -108,7 +117,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysMcResponseParam
         channelList.push({dayList, index: channelIndex});
 
         for ( let day = 0; day < days; ++day ) {
-            const value = buffer.getExtendedValue();
+            const value = getExtendedValue(buffer);
 
             dayList.push(value === archive.EMPTY_VALUE ? 0 : value);
         }
@@ -125,16 +134,16 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysMcResponseParam
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveDaysMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {startTime2000, days, channelList} = parameters;
 
-    buffer.setDate(startTime2000);
-    buffer.setChannels(channelList);
+    setDate(buffer, startTime2000);
+    setChannels(buffer, channelList);
     buffer.setUint8(days);
 
     channelList.forEach(({dayList}) => {
         dayList.forEach(value => {
-            buffer.setExtendedValue(value === 0 ? archive.EMPTY_VALUE : value);
+            setExtendedValue(buffer, value === 0 ? archive.EMPTY_VALUE : value);
         });
     });
 

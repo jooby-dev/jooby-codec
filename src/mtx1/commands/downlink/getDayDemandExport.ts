@@ -29,7 +29,11 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as energyTypes from '../../constants/energyTypes.js';
@@ -102,16 +106,16 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandExportParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     if ( bytes.length === MAX_COMMAND_SIZE ) {
         return {
-            date: buffer.getDate(),
+            date: getDate(buffer),
             energyType: buffer.getUint8()
         };
     }
 
-    return {date: buffer.getDate()};
+    return {date: getDate(buffer)};
 };
 
 
@@ -122,10 +126,10 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandExportParameters 
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDayDemandExportParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(parameters?.energyType ? MAX_COMMAND_SIZE : MIN_COMMAND_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(parameters?.energyType ? MAX_COMMAND_SIZE : MIN_COMMAND_SIZE, false);
 
     // body
-    buffer.setDate(parameters?.date);
+    setDate(buffer, parameters?.date);
 
     if ( parameters?.energyType ) {
         buffer.setUint8(parameters.energyType);

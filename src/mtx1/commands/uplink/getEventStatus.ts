@@ -42,9 +42,14 @@
  */
 
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IEventStatus} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IEventStatus,
+    getEventStatus,
+    setEventStatus
+} from '../../utils/CommandBinaryBuffer.js';
 import {getEventStatus as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -95,9 +100,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IEventStatus => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes, true);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, true);
 
-    return buffer.getEventStatus();
+    return getEventStatus(buffer);
 };
 
 
@@ -108,10 +113,10 @@ export const fromBytes = ( bytes: types.TBytes ): IEventStatus => {
  * @returns full message (header with body)
  */
 export const toBytes = ( eventStatus: IEventStatus ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize, true);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, true);
 
     // body
-    buffer.setEventStatus(eventStatus);
+    setEventStatus(buffer, eventStatus);
 
     return command.toBytes(id, buffer.data);
 };

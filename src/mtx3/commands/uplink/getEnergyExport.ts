@@ -33,10 +33,15 @@
 
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as dlms from '../../constants/dlms.js';
 import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IEnergies} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IEnergies,
+    getEnergies,
+    setEnergies
+} from '../../utils/CommandBinaryBuffer.js';
 import {A_MINUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
 import {getEnergyExport as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -82,9 +87,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IEnergies => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getEnergies();
+    return getEnergies(buffer);
 };
 
 
@@ -95,9 +100,9 @@ export const fromBytes = ( bytes: types.TBytes ): IEnergies => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IEnergies ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setEnergies(parameters);
+    setEnergies(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

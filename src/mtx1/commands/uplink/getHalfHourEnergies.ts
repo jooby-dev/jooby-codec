@@ -45,7 +45,17 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfHourEnergies1, TARIFF_NUMBER} from '../../utils/LoraCommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    THalfHourEnergies1,
+    TARIFF_NUMBER,
+    getHalfHourEnergies1,
+    setHalfHourEnergies1,
+    getEnergiesFlags,
+    setEnergiesFlags,
+    getDate,
+    setDate
+} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 import {getHalfHourEnergies as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -154,9 +164,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
-    const energiesFlags = buffer.getEnergiesFlags();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const energiesFlags = getEnergiesFlags(buffer);
     const firstHalfhour = buffer.getUint8();
     const halfhoursNumber = buffer.getUint8();
 
@@ -164,7 +174,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesResponsePa
         date,
         firstHalfhour,
         halfhoursNumber,
-        energies: buffer.getHalfHourEnergies1(energiesFlags, halfhoursNumber)
+        energies: getHalfHourEnergies1(buffer, energiesFlags, halfhoursNumber)
     };
 };
 
@@ -176,14 +186,14 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesResponsePa
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetHalfHourEnergiesResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
     const {date, firstHalfhour, halfhoursNumber, energies} = parameters;
 
-    buffer.setDate(date);
-    buffer.setEnergiesFlags(energies);
+    setDate(buffer, date);
+    setEnergiesFlags(buffer, energies);
     buffer.setUint8(firstHalfhour);
     buffer.setUint8(halfhoursNumber);
-    buffer.setHalfHourEnergies1(energies);
+    setHalfHourEnergies1(buffer, energies);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

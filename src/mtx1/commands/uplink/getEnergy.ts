@@ -27,14 +27,17 @@
  */
 
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer,
+import {
     IPackedEnergiesWithType,
     PACKED_ENERGY_TYPE_SIZE,
     ENERGY_SIZE,
-    TARIFF_NUMBER
+    TARIFF_NUMBER,
+    getPackedEnergyWithType,
+    setPackedEnergyWithType,
+    getEnergies
 } from '../../utils/CommandBinaryBuffer.js';
 import getObisByEnergy from '../../utils/getObisByEnergy.js';
 import {getEnergy as commandId} from '../../constants/uplinkIds.js';
@@ -93,15 +96,15 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IPackedEnergiesWithType => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     let parameters: IPackedEnergiesWithType;
 
     if ( bytes.length === COMMAND_SIZE ) {
         parameters = {
-            energies: buffer.getEnergies()
+            energies: getEnergies(buffer)
         };
     } else {
-        parameters = buffer.getPackedEnergyWithType();
+        parameters = getPackedEnergyWithType(buffer);
     }
 
     return parameters;
@@ -122,10 +125,10 @@ export const toBytes = ( parameters: IPackedEnergiesWithType ): types.TBytes => 
         size = PACKED_ENERGY_TYPE_SIZE + (energiesNumber * ENERGY_SIZE);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
 
     // body
-    buffer.setPackedEnergyWithType(parameters);
+    setPackedEnergyWithType(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };
@@ -137,7 +140,7 @@ export const toJson = ( parameters: IPackedEnergiesWithType, {dlms}: command.IDl
     }
 
     const {energyType, energies} = parameters;
-    const result: Record<string, types.TUint32> = {};
+    const result: Record<string, types.TInt32> = {};
 
     for ( let i = 0; i < TARIFF_NUMBER; i += 1 ) {
         if ( energies[i] || energies[i] === 0 ) {

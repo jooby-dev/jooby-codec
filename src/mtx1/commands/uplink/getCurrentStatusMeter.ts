@@ -73,8 +73,8 @@
  */
 
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer,
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
     IExtendedCurrentValues2RelayStatus,
     IEventStatus,
     extendedCurrentValues2RelayStatusMask,
@@ -241,7 +241,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     const operatingSeconds = buffer.getUint32();
     const tbadVAVB = buffer.getUint32();
@@ -287,7 +287,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponse
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetCurrentStatusMeterResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
     const statusEventValue = bitSet.fromObject(eventStatusMask, (parameters.statusEvent as unknown) as bitSet.TBooleanObject);
 
     // body

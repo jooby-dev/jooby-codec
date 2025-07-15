@@ -31,7 +31,11 @@
 
 import * as types from '../../../types.js';
 import {TTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getTime,
+    setTime
+} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getArchiveEvents as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -125,8 +129,8 @@ export const examples: command.TCommandExamples = {
 };
 
 
-const getEvent = ( buffer: ICommandBinaryBuffer ): IArchiveEvent => {
-    const time2000 = buffer.getTime();
+const getEvent = ( buffer: IBinaryBuffer ): IArchiveEvent => {
+    const time2000 = getTime(buffer);
     const eventId = buffer.getUint8();
     const sequenceNumber = buffer.getUint8();
 
@@ -138,8 +142,8 @@ const getEvent = ( buffer: ICommandBinaryBuffer ): IArchiveEvent => {
     };
 };
 
-const setEvent = ( buffer: ICommandBinaryBuffer, event: IArchiveEvent ): void => {
-    buffer.setTime(event.time2000);
+const setEvent = ( buffer: IBinaryBuffer, event: IArchiveEvent ): void => {
+    setTime(buffer, event.time2000);
     buffer.setUint8(event.id);
     buffer.setUint8(event.sequenceNumber);
 };
@@ -152,7 +156,7 @@ const setEvent = ( buffer: ICommandBinaryBuffer, event: IArchiveEvent ): void =>
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetArchiveEventsResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const eventList: Array<IArchiveEvent> = [];
 
     while ( buffer.bytesLeft > 0 ) {
@@ -171,7 +175,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveEventsResponseParam
  */
 export function toBytes ( parameters: IGetArchiveEventsResponseParameters ): types.TBytes {
     const {eventList} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(eventList.length * COMMAND_BODY_MIN_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(eventList.length * COMMAND_BODY_MIN_SIZE, false);
 
     eventList.forEach(event => setEvent(buffer, event));
 

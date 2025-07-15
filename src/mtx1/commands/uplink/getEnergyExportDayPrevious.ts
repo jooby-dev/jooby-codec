@@ -32,11 +32,20 @@
  */
 
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, IPackedEnergiesWithType, TEnergies,
-    TARIFF_NUMBER, PACKED_ENERGY_TYPE_SIZE, getPackedEnergiesWithDateSize
+import {
+    IPackedEnergiesWithType,
+    TEnergies,
+    TARIFF_NUMBER,
+    PACKED_ENERGY_TYPE_SIZE,
+    getPackedEnergiesWithDateSize,
+    getPackedEnergyWithType,
+    setPackedEnergyWithType,
+    getDate,
+    setDate,
+    getEnergies
 } from '../../utils/CommandBinaryBuffer.js';
 import {getEnergyExportDayPrevious as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -124,19 +133,19 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetEnergyExportDayPreviousResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     let parameters: IGetEnergyExportDayPreviousResponseParameters;
 
     if ( bytes.length === COMMAND_SIZE ) {
         parameters = {
-            date: buffer.getDate(),
-            energies: buffer.getEnergies()
+            date: getDate(buffer),
+            energies: getEnergies(buffer)
         };
     } else {
         // new implementation
         parameters = {
-            date: buffer.getDate(),
-            ...buffer.getPackedEnergyWithType()
+            date: getDate(buffer),
+            ...getPackedEnergyWithType(buffer)
         };
     }
 
@@ -151,11 +160,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetEnergyExportDayPreviousRes
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetEnergyExportDayPreviousResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getPackedEnergiesWithDateSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getPackedEnergiesWithDateSize(parameters), false);
 
     // body
-    buffer.setDate(parameters.date);
-    buffer.setPackedEnergyWithType(parameters);
+    setDate(buffer, parameters.date);
+    setPackedEnergyWithType(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

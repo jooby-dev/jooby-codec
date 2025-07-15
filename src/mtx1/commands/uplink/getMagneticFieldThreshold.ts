@@ -33,7 +33,7 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {getMagneticFieldThreshold as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -96,7 +96,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMagneticFieldThresholdParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         induction: buffer.getUint16(),
@@ -114,7 +114,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMagneticFieldThresholdPara
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetMagneticFieldThresholdParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     buffer.setUint16(parameters.induction);
     buffer.setUint16(parameters.threshold);

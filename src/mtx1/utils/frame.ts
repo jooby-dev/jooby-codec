@@ -1,6 +1,13 @@
 import {TBytes} from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as frame from '../../utils/frame.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IFrameHeader, defaultFrameHeader, frameHeaderSize} from './CommandBinaryBuffer.js';
+import {
+    IFrameHeader,
+    defaultFrameHeader,
+    frameHeaderSize,
+    getFrameHeader,
+    setFrameHeader
+} from './CommandBinaryBuffer.js';
 
 
 export interface IMtxFrame extends frame.IFrame {
@@ -16,9 +23,9 @@ export type TMtxFrame = IMtxFrame | IInvalidMtxFrame;
 
 
 export const toBytes = ( message: TBytes, frameHeader: IFrameHeader = defaultFrameHeader ): TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(frameHeaderSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(frameHeaderSize, false);
 
-    buffer.setFrameHeader(frameHeader);
+    setFrameHeader(buffer, frameHeader);
 
     return frame.toBytes(buffer.data.concat(message));
 };
@@ -28,8 +35,8 @@ export const fromBytes = ( bytes: TBytes ): TMtxFrame => {
     let header: IFrameHeader;
 
     if ( 'payload' in parsedFrame ) {
-        const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(parsedFrame.payload);
-        header = buffer.getFrameHeader();
+        const buffer: IBinaryBuffer = new BinaryBuffer(parsedFrame.payload, false);
+        header = getFrameHeader(buffer);
 
         // payload is all except header
         parsedFrame.payload = parsedFrame.payload.slice(frameHeaderSize);

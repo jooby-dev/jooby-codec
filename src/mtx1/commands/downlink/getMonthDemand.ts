@@ -26,7 +26,7 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getMonthDemand as commandId} from '../../constants/downlinkIds.js';
@@ -72,7 +72,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMonthDemandParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         year: buffer.getUint8() as unknown as types.TYear2000,
@@ -88,7 +88,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMonthDemandParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetMonthDemandParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     // body
     buffer.setUint8(parameters.year as unknown as types.TUint8);

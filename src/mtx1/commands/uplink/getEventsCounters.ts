@@ -36,7 +36,7 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {getEventsCounters as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -97,7 +97,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetEventsCountersResponsePara
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const restart = buffer.getUint16();
     const powerOff = buffer.getUint16();
     const localParametersChange = buffer.getUint16();
@@ -119,7 +119,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetEventsCountersResponsePara
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetEventsCountersResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
     // body
     buffer.setUint16(parameters.restart);

@@ -30,9 +30,13 @@
  */
 
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import {
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
 import {getEvents as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -84,8 +88,8 @@ export const fromBytes = ( bytes: types.TBytes ): IGetEventsParameters => {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
     const offset = buffer.getUint8();
 
     return {date, offset};
@@ -99,9 +103,9 @@ export const fromBytes = ( bytes: types.TBytes ): IGetEventsParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetEventsParameters ) : types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setDate(parameters.date);
+    setDate(buffer, parameters.date);
     buffer.setUint8(parameters.offset);
 
     return command.toBytes(id, buffer.data);

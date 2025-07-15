@@ -23,7 +23,7 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {usWaterMeterCommand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -65,7 +65,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IUSWaterMeterCommandResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const length = buffer.getUint8();
 
     return {length, data: bytes.slice(1)};
@@ -80,7 +80,7 @@ export const fromBytes = ( bytes: types.TBytes ): IUSWaterMeterCommandResponsePa
  */
 export const toBytes = ( parameters: IUSWaterMeterCommandResponseParameters ): types.TBytes => {
     const {data, length} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(length);
+    const buffer: IBinaryBuffer = new BinaryBuffer(length, false);
 
     buffer.setUint8(length);
     buffer.setBytes(data);

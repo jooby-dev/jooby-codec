@@ -30,7 +30,17 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getMagneticInfluenceBit,
+    setMagneticInfluenceBit,
+    getLegacyCounterValue,
+    setLegacyCounterValue,
+    getHours,
+    setHours,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000, getDateFromTime2000, getTime2000FromDate} from '../../utils/time.js';
 import {day as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -85,12 +95,12 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IDayResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
     const byte = buffer.getUint8();
-    const {hour} = buffer.getHours(byte);
-    const isMagneticInfluence = CommandBinaryBuffer.getMagneticInfluenceBit(byte);
-    const value = buffer.getLegacyCounterValue();
+    const {hour} = getHours(buffer, byte);
+    const isMagneticInfluence = getMagneticInfluenceBit(byte);
+    const value = getLegacyCounterValue(buffer);
 
     date.setUTCHours(hour);
 
@@ -105,21 +115,21 @@ export const fromBytes = ( bytes: types.TBytes ): IDayResponseParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IDayResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
     const {value, isMagneticInfluence, startTime2000} = parameters;
     const date = getDateFromTime2000(startTime2000);
     const hour = date.getUTCHours();
 
-    buffer.setDate(date);
+    setDate(buffer, date);
     // force hours to 0
-    buffer.setHours(hour, 1);
+    setHours(buffer, hour, 1);
 
     // reset byte with isMagneticInfluence bit
     buffer.seek(buffer.offset - 1);
     const byte = buffer.getUint8();
     buffer.seek(buffer.offset - 1);
-    buffer.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, isMagneticInfluence));
-    buffer.setLegacyCounterValue(value);
+    buffer.setUint8(setMagneticInfluenceBit(byte, isMagneticInfluence));
+    setLegacyCounterValue(buffer, value);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

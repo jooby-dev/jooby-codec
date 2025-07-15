@@ -36,10 +36,15 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetOperatorParametersExtended3.md#response)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IOperatorParametersExtended3} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IOperatorParametersExtended3,
+    getOperatorParametersExtended3,
+    setOperatorParametersExtended3
+} from '../../utils/CommandBinaryBuffer.js';
 import {getOperatorParametersExtended3 as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -89,9 +94,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParametersExtended3 => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getOperatorParametersExtended3();
+    return getOperatorParametersExtended3(buffer);
 };
 
 
@@ -102,9 +107,9 @@ export const fromBytes = ( bytes: types.TBytes ): IOperatorParametersExtended3 =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IOperatorParametersExtended3 ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setOperatorParametersExtended3(parameters);
+    setOperatorParametersExtended3(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

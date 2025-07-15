@@ -23,7 +23,15 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getDateFromTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getChannels,
+    setChannels,
+    getHours,
+    setHours,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
 import {getArchiveHoursMc as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -74,10 +82,10 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveHoursMcParameters =
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
-    const {hour, hours} = buffer.getHours();
-    const channelList = buffer.getChannels();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const {hour, hours} = getHours(buffer);
+    const channelList = getChannels(buffer);
 
     date.setUTCHours(hour);
 
@@ -96,14 +104,14 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveHoursMcParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveHoursMcParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
     const {hours, startTime2000, channelList} = parameters;
     const date = getDateFromTime2000(startTime2000);
     const hour = date.getUTCHours();
 
-    buffer.setDate(date);
-    buffer.setHours(hour, hours);
-    buffer.setChannels(channelList.map(index => ({index})));
+    setDate(buffer, date);
+    setHours(buffer, hour, hours);
+    setChannels(buffer, channelList.map(index => ({index})));
 
     return command.toBytes(id, buffer.data);
 };

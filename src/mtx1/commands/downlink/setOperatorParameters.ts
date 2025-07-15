@@ -6,9 +6,9 @@
  * @example
  * ```js
  * import * as setOperatorParameters from 'jooby-codec/mtx1/commands/downlink/setOperatorParameters.js';
- * import CommandBinaryBuffer from 'jooby-codec/mtx1/utils/CommandBinaryBuffer.js';
+ * import CommandBinaryBuffer, {getDefaultOperatorParameters} from 'jooby-codec/mtx1/utils/CommandBinaryBuffer.js';
  *
- * const parameters = CommandBinaryBuffer.getDefaultOperatorParameters();
+ * const parameters = getDefaultOperatorParameters();
  * const bytes = setOperatorParameters.toBytes(parameters);
  *
  * // command binary representation
@@ -27,7 +27,13 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IOperatorParameters, OPERATOR_PARAMETERS_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IOperatorParameters,
+    OPERATOR_PARAMETERS_SIZE,
+    getOperatorParameters,
+    setOperatorParameters
+} from '../../utils/CommandBinaryBuffer.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {setOperatorParameters as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -215,9 +221,9 @@ export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
         throw new Error('Invalid SetOpParams data size.');
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getOperatorParameters();
+    return getOperatorParameters(buffer);
 };
 
 
@@ -228,9 +234,9 @@ export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IOperatorParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setOperatorParameters(parameters);
+    setOperatorParameters(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

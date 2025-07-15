@@ -35,7 +35,13 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ITariffPlan, ICommandBinaryBuffer, TARIFF_PLAN_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ITariffPlan,
+    TARIFF_PLAN_SIZE,
+    getTariffPlan,
+    setTariffPlan
+} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {activateRatePlan as commandId} from '../../constants/downlinkIds.js';
@@ -97,11 +103,11 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IActivateRatePlanParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         tariffTable: buffer.getUint8(),
-        tariffPlan: buffer.getTariffPlan()
+        tariffPlan: getTariffPlan(buffer)
     };
 };
 
@@ -113,11 +119,11 @@ export const fromBytes = ( bytes: types.TBytes ): IActivateRatePlanParameters =>
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IActivateRatePlanParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     // body
     buffer.setUint8(parameters.tariffTable);
-    buffer.setTariffPlan(parameters.tariffPlan);
+    setTariffPlan(buffer, parameters.tariffPlan);
 
     return command.toBytes(id, buffer.data);
 };

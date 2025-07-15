@@ -31,7 +31,14 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, ILegacyCounter} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ILegacyCounter,
+    getLegacyCounter,
+    setLegacyCounter,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
 import {getArchiveDays as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -80,12 +87,12 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
     const dayList = [];
 
     while ( buffer.offset < buffer.data.length ) {
-        dayList.push(buffer.getLegacyCounter(undefined, true));
+        dayList.push(getLegacyCounter(buffer, undefined, true));
     }
 
     return {startTime2000: getTime2000FromDate(date), dayList};
@@ -100,12 +107,12 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysResponseParamet
  */
 export const toBytes = ( parameters: IGetArchiveDaysResponseParameters ): types.TBytes => {
     const {startTime2000, dayList} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MIN_SIZE + (dayList.length * DAY_COUNTER_SIZE));
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MIN_SIZE + (dayList.length * DAY_COUNTER_SIZE), false);
 
-    buffer.setDate(startTime2000);
+    setDate(buffer, startTime2000);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    dayList.forEach(dayCounter => buffer.setLegacyCounter(dayCounter, undefined, true));
+    dayList.forEach(dayCounter => setLegacyCounter(buffer, dayCounter, undefined, true));
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

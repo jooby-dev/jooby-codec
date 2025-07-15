@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-multi-spaces */
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../src/mtx1/utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../src/utils/BinaryBuffer.js';
+import {
+    getDeviceType,
+    setDeviceType
+} from '../../src/mtx1/utils/CommandBinaryBuffer.js';
 import {IMtxDeviceTypeDescriptor} from '../../src/mtx1/utils/deviceType.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
@@ -477,15 +481,15 @@ const deviceTypes = [
 describe(`MTX device types (${deviceTypes.length})`, () => {
     deviceTypes.forEach(({type, revision, descriptor, hex}) => {
         test(type, () => {
-            let buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getBytesFromHex(hex));
-            const deviceType = buffer.getDeviceType();
+            let buffer: IBinaryBuffer = new BinaryBuffer(getBytesFromHex(hex), false);
+            const deviceType = getDeviceType(buffer);
 
             expect(deviceType.type).toBe(type);
             expect(deviceType?.revision).toBe(revision);
 
             // reverse
-            buffer = new CommandBinaryBuffer(9);
-            buffer.setDeviceType({type, revision, descriptor});
+            buffer = new BinaryBuffer(9, false);
+            setDeviceType(buffer, {type, revision, descriptor});
 
             expect(getHexFromBytes(buffer.data)).toBe(hex);
         });

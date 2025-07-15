@@ -35,9 +35,14 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetDemandParameters} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IGetDemandParameters,
+    getDemand,
+    setDemand
+} from '../../utils/CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import * as getDemand from '../downlink/getDemand.js';
+import * as getDemandCommand from '../downlink/getDemand.js';
 import * as demandTypes from '../../constants/demandTypes.js';
 import * as demands from '../../utils/demands.js';
 import {getDemand as commandId} from '../../constants/uplinkIds.js';
@@ -62,7 +67,7 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const maxSize = getDemand.maxSize + 48;
+export const maxSize = getDemandCommand.maxSize + 48;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
@@ -384,14 +389,14 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters => {
-    if ( !bytes || bytes.length < getDemand.maxSize ) {
+    if ( !bytes || bytes.length < getDemandCommand.maxSize ) {
         throw new Error('Invalid uplink GetDemand byte length.');
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const parameters: IGetDemandResponseParameters = buffer.getDemand();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const parameters: IGetDemandResponseParameters = getDemand(buffer);
 
-    if ( bytes.length !== getDemand.maxSize + (2 * parameters.count) ) {
+    if ( bytes.length !== getDemandCommand.maxSize + (2 * parameters.count) ) {
         throw new Error('Invalid uplink GetDemand demands byte length.');
     }
 
@@ -413,9 +418,9 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDemandResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getDemand.maxSize + parameters.count * 2);
+    const buffer: IBinaryBuffer = new BinaryBuffer(getDemandCommand.maxSize + parameters.count * 2, false);
 
-    buffer.setDemand(parameters);
+    setDemand(buffer, parameters);
 
     if ( parameters.energyType === demandTypes.A_PLUS || parameters.energyType === demandTypes.A_MINUS ) {
         demands.energyToBinary(parameters.demands).forEach((value: number) => buffer.setUint16(value));

@@ -37,7 +37,12 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {IChannelHours, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelHours,
+    getChannelsValuesWithHourDiff,
+    setChannelsValuesWithHourDiff
+} from '../../utils/CommandBinaryBuffer.js';
 import {hourMc as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -100,9 +105,9 @@ export const fromBytes = ( bytes: types.TBytes ): IHourMcResponseParameters => {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getChannelsValuesWithHourDiff();
+    return getChannelsValuesWithHourDiff(buffer);
 };
 
 
@@ -113,10 +118,10 @@ export const fromBytes = ( bytes: types.TBytes ): IHourMcResponseParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IHourMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {startTime2000, hours, channelList} = parameters;
 
-    buffer.setChannelsValuesWithHourDiff(hours, startTime2000, channelList);
+    setChannelsValuesWithHourDiff(buffer, hours, startTime2000, channelList);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

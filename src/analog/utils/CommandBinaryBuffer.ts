@@ -3,9 +3,10 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-use-before-define */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
+import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import invertObject from '../../utils/invertObject.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
@@ -653,7 +654,7 @@ interface IParameterBinarySensor {
 interface IParameterTemperatureSensor {
     measurementPeriod: types.TUint16;
     hysteresisSec: types.TUint8;
-    highTemperatureThreshold: types.TUint8;
+    highTemperatureThreshold: types.TInt8;
     lowTemperatureThreshold: types.TInt8;
 }
 
@@ -755,6 +756,7 @@ export interface IRequestParameter {
 export interface IResponseParameter {
     /** One of the {@link deviceParameters | parameter types}. */
     id: types.TUint8,
+    name?: string,
 
     data: TResponseParameterData | null
 }
@@ -1082,9 +1084,9 @@ export const setChannelsMaskToNumber = ( channelsMask: IChannelsMask ): types.TU
     return bitSet.fromObject(fourChannelsBitMask, {channel1, channel2, channel3, channel4});
 };
 
-const getChannelsMask = ( buffer: ICommandBinaryBuffer ): IChannelsMask => getChannelsMaskFromNumber(buffer.getUint8());
+const getChannelsMask = ( buffer: IBinaryBuffer ): IChannelsMask => getChannelsMaskFromNumber(buffer.getUint8());
 
-const setChannelsMask = ( buffer: ICommandBinaryBuffer, channelsMask: IChannelsMask ) => (
+const setChannelsMask = ( buffer: IBinaryBuffer, channelsMask: IChannelsMask ) => (
     buffer.setUint8(setChannelsMaskToNumber(channelsMask))
 );
 
@@ -1104,13 +1106,13 @@ const pulseCoefficientToByteMap = invertObject(byteToPulseCoefficientMap);
 
 const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
 
-const getNbiotSslWrite = ( buffer: ICommandBinaryBuffer ) => ({
+const getNbiotSslWrite = ( buffer: IBinaryBuffer ) => ({
     size: buffer.getUint16(),
     position: buffer.getUint16(),
     chunk: buffer.getBytesLeft()
 });
 
-const setNbiotSslWrite = ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotSslWrite ) => {
+const setNbiotSslWrite = ( buffer: IBinaryBuffer, parameter: IParameterNbiotSslWrite ) => {
     if ( parameter.size !== parameter.chunk.length ) {
         throw new Error('ssl chunk size parameter doesn\'t match actual ssl chunk size');
     }
@@ -1121,22 +1123,22 @@ const setNbiotSslWrite = ( buffer: ICommandBinaryBuffer, parameter: IParameterNb
 };
 
 
-const getNbiotSslSet = ( buffer: ICommandBinaryBuffer ) => ({crc32: buffer.getUint32()});
+const getNbiotSslSet = ( buffer: IBinaryBuffer ) => ({crc32: buffer.getUint32()});
 
-const setNbiotSslSet = ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotSslSet ) => {
+const setNbiotSslSet = ( buffer: IBinaryBuffer, parameter: IParameterNbiotSslSet ) => {
     buffer.setUint32(parameter.crc32);
 };
 
 
 const deviceParameterConvertersMap = {
     [deviceParameters.REPORTING_DATA_INTERVAL]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataInterval => ({
+        get: ( buffer: IBinaryBuffer ): IParameterReportingDataInterval => ({
             specialSchedulePeriod: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT,
             firstDaysSpecialSchedule: buffer.getUint8(),
             lastDaysSpecialSchedule: buffer.getUint8(),
             period: buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataInterval ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterReportingDataInterval ) => {
             buffer.setUint8(parameter.specialSchedulePeriod / DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT);
             buffer.setUint8(parameter.firstDaysSpecialSchedule);
             buffer.setUint8(parameter.lastDaysSpecialSchedule);
@@ -1144,58 +1146,58 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.DAY_CHECKOUT_HOUR]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterDayCheckoutHour => ({
+        get: ( buffer: IBinaryBuffer ): IParameterDayCheckoutHour => ({
             value: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterDayCheckoutHour ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterDayCheckoutHour ) => {
             buffer.setUint8(parameter.value);
         }
     },
     [deviceParameters.REPORTING_DATA_TYPE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataType => ({
+        get: ( buffer: IBinaryBuffer ): IParameterReportingDataType => ({
             type: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataType ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterReportingDataType ) => {
             buffer.setUint8(parameter.type);
         }
     },
     [deviceParameters.PRIORITY_DATA_DELIVERY_TYPE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterDeliveryTypeOfPriorityData => ({value: buffer.getUint8()}),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterDeliveryTypeOfPriorityData ) => {
+        get: ( buffer: IBinaryBuffer ): IParameterDeliveryTypeOfPriorityData => ({value: buffer.getUint8()}),
+        set: ( buffer: IBinaryBuffer, parameter: IParameterDeliveryTypeOfPriorityData ) => {
             buffer.setUint8(parameter.value);
         }
     },
     [deviceParameters.ACTIVATION_METHOD]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterActivationMethod => ({
+        get: ( buffer: IBinaryBuffer ): IParameterActivationMethod => ({
             type: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterActivationMethod ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterActivationMethod ) => {
             buffer.setUint8(parameter.type);
         }
     },
     [deviceParameters.BATTERY_DEPASSIVATION_INFO]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryDepassivationInfo => ({
+        get: ( buffer: IBinaryBuffer ): IParameterBatteryDepassivationInfo => ({
             loadTime: buffer.getUint16(),
             internalResistance: buffer.getUint16(),
             lowVoltage: buffer.getUint16()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterBatteryDepassivationInfo ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterBatteryDepassivationInfo ) => {
             buffer.setUint16(parameter.loadTime);
             buffer.setUint16(parameter.internalResistance);
             buffer.setUint16(parameter.lowVoltage);
         }
     },
     [deviceParameters.BATTERY_MINIMAL_LOAD_TIME]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryMinimalLoadTime => ({
+        get: ( buffer: IBinaryBuffer ): IParameterBatteryMinimalLoadTime => ({
             value: buffer.getUint32()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterBatteryMinimalLoadTime ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterBatteryMinimalLoadTime ) => {
             buffer.setUint32(parameter.value);
         }
     },
     [deviceParameters.CHANNELS_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterChannelsConfig => ({value: buffer.getUint8()}),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterChannelsConfig ) => {
+        get: ( buffer: IBinaryBuffer ): IParameterChannelsConfig => ({value: buffer.getUint8()}),
+        set: ( buffer: IBinaryBuffer, parameter: IParameterChannelsConfig ) => {
             if ( parameter.value < 0 || parameter.value > 18 ) {
                 throw new Error('channels config must be between 0-18');
             }
@@ -1204,93 +1206,93 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.RX2_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterRx2Config => {
+        get: ( buffer: IBinaryBuffer ): IParameterRx2Config => {
             const spreadFactor = buffer.getUint8();
             const spreadFactorName = spreadFactorNames[spreadFactor];
             const frequency = buffer.getUint24() * PARAMETER_RX2_FREQUENCY_COEFFICIENT;
 
             return {spreadFactor, spreadFactorName, frequency};
         },
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterRx2Config ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterRx2Config ) => {
             buffer.setUint8(parameter.spreadFactor);
             buffer.setUint24(parameter.frequency / PARAMETER_RX2_FREQUENCY_COEFFICIENT);
         }
     },
     [deviceParameters.ABSOLUTE_DATA]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteData => ({
+        get: ( buffer: IBinaryBuffer ): IParameterAbsoluteData => ({
             meterValue: buffer.getUint32(),
-            pulseCoefficient: buffer.getPulseCoefficient(),
+            pulseCoefficient: getPulseCoefficient(buffer),
             value: buffer.getUint32()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteData ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterAbsoluteData ) => {
             buffer.setUint32(parameter.meterValue);
-            buffer.setPulseCoefficient(parameter.pulseCoefficient);
+            setPulseCoefficient(buffer, parameter.pulseCoefficient);
             buffer.setUint32(parameter.value);
         }
     },
     [deviceParameters.ABSOLUTE_DATA_ENABLE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataEnable => ({state: buffer.getUint8()}),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteDataEnable ) => {
+        get: ( buffer: IBinaryBuffer ): IParameterAbsoluteDataEnable => ({state: buffer.getUint8()}),
+        set: ( buffer: IBinaryBuffer, parameter: IParameterAbsoluteDataEnable ) => {
             buffer.setUint8(parameter.state);
         }
     },
     [deviceParameters.SERIAL_NUMBER]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterSerialNumber => ({
+        get: ( buffer: IBinaryBuffer ): IParameterSerialNumber => ({
             value: getHexFromBytes(buffer.getBytes(SERIAL_NUMBER_SIZE))
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterSerialNumber ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterSerialNumber ) => {
             getBytesFromHex(parameter.value).forEach(byte => buffer.setUint8(byte));
         }
     },
     [deviceParameters.GEOLOCATION]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterGeolocation => ({
+        get: ( buffer: IBinaryBuffer ): IParameterGeolocation => ({
             latitude: roundNumber(buffer.getFloat32()),
             longitude: roundNumber(buffer.getFloat32()),
             altitude: roundNumber(buffer.getUint16())
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterGeolocation ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterGeolocation ) => {
             buffer.setFloat32(roundNumber(parameter.latitude));
             buffer.setFloat32(roundNumber(parameter.longitude));
             buffer.setUint16(roundNumber(parameter.altitude));
         }
     },
     [deviceParameters.EXTRA_FRAME_INTERVAL]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterExtraFrameInterval => ({value: buffer.getUint16()}),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterExtraFrameInterval ) => {
+        get: ( buffer: IBinaryBuffer ): IParameterExtraFrameInterval => ({value: buffer.getUint16()}),
+        set: ( buffer: IBinaryBuffer, parameter: IParameterExtraFrameInterval ) => {
             buffer.setUint16(parameter.value);
         }
     },
     [deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataMC => ({
-            channel: buffer.getChannelValue(),
+        get: ( buffer: IBinaryBuffer ): IParameterAbsoluteDataMC => ({
+            channel: getChannelValue(buffer),
             meterValue: buffer.getUint32(),
-            pulseCoefficient: buffer.getPulseCoefficient(),
+            pulseCoefficient: getPulseCoefficient(buffer),
             value: buffer.getUint32()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteDataMC ) => {
-            buffer.setChannelValue(parameter.channel);
+        set: ( buffer: IBinaryBuffer, parameter: IParameterAbsoluteDataMC ) => {
+            setChannelValue(buffer, parameter.channel);
             buffer.setUint32(parameter.meterValue);
-            buffer.setPulseCoefficient(parameter.pulseCoefficient);
+            setPulseCoefficient(buffer, parameter.pulseCoefficient);
             buffer.setUint32(parameter.value);
         }
     },
     [deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterAbsoluteDataEnableMC => ({
-            channel: buffer.getChannelValue(),
+        get: ( buffer: IBinaryBuffer ): IParameterAbsoluteDataEnableMC => ({
+            channel: getChannelValue(buffer),
             state: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterAbsoluteDataEnableMC ) => {
-            buffer.setChannelValue(parameter.channel);
+        set: ( buffer: IBinaryBuffer, parameter: IParameterAbsoluteDataEnableMC ) => {
+            setChannelValue(buffer, parameter.channel);
             buffer.setUint8(parameter.state);
         }
     },
     [deviceParameters.PULSE_CHANNELS_SCAN_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterPulseChannelsScanConfig => ({
-            channelList: buffer.getChannels(),
+        get: ( buffer: IBinaryBuffer ): IParameterPulseChannelsScanConfig => ({
+            channelList: getChannels(buffer),
             pullUpTime: buffer.getUint8(),
             scanTime: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterPulseChannelsScanConfig ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterPulseChannelsScanConfig ) => {
             if ( parameter.pullUpTime < 17 ) {
                 throw new Error('minimal value for pullUpTime - 17');
             }
@@ -1299,7 +1301,7 @@ const deviceParameterConvertersMap = {
                 throw new Error('minimal value for scanTime - 15');
             }
 
-            buffer.setChannels(parameter.channelList.map(index => ({index} as IChannel)));
+            setChannels(buffer, parameter.channelList.map(index => ({index} as IChannel)));
             buffer.setUint8(parameter.pullUpTime);
             buffer.setUint8(parameter.scanTime);
         }
@@ -1309,23 +1311,23 @@ const deviceParameterConvertersMap = {
         set: setChannelsMask
     },
     [deviceParameters.BATTERY_DEPASSIVATION_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterBatteryDepassivationConfig => ({
+        get: ( buffer: IBinaryBuffer ): IParameterBatteryDepassivationConfig => ({
             resistanceStartThreshold: buffer.getUint16(),
             resistanceStopThreshold: buffer.getUint16()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterBatteryDepassivationConfig ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterBatteryDepassivationConfig ) => {
             buffer.setUint16(parameter.resistanceStartThreshold);
             buffer.setUint16(parameter.resistanceStopThreshold);
         }
     },
     [deviceParameters.MQTT_SESSION_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttSessionConfig => ({
+        get: ( buffer: IBinaryBuffer ): IParameterMqttSessionConfig => ({
             clientId: buffer.getString(),
             username: buffer.getString(),
             password: buffer.getString(),
             cleanSession: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttSessionConfig ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterMqttSessionConfig ) => {
             buffer.setString(parameter.clientId);
             buffer.setString(parameter.username);
             buffer.setString(parameter.password);
@@ -1333,61 +1335,61 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.MQTT_BROKER_ADDRESS]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttBrokerAddress => ({
+        get: ( buffer: IBinaryBuffer ): IParameterMqttBrokerAddress => ({
             hostName: buffer.getString(),
             port: buffer.getUint16()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttBrokerAddress ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterMqttBrokerAddress ) => {
             buffer.setString(parameter.hostName);
             buffer.setUint16(parameter.port);
         }
     },
     [deviceParameters.MQTT_SSL_ENABLE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttSslEnable => ({
+        get: ( buffer: IBinaryBuffer ): IParameterMqttSslEnable => ({
             enable: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttSslEnable ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterMqttSslEnable ) => {
             buffer.setUint8(parameter.enable);
         }
     },
     [deviceParameters.MQTT_TOPIC_PREFIX]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttTopicPrefix => ({
+        get: ( buffer: IBinaryBuffer ): IParameterMqttTopicPrefix => ({
             topicPrefix: buffer.getString()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttTopicPrefix ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterMqttTopicPrefix ) => {
             buffer.setString(parameter.topicPrefix);
         }
     },
     [deviceParameters.MQTT_DATA_RECEIVE_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttDataReceiveConfig => ({
+        get: ( buffer: IBinaryBuffer ): IParameterMqttDataReceiveConfig => ({
             qos: buffer.getUint8(),
             count: buffer.getUint8(),
             timeout: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttDataReceiveConfig ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterMqttDataReceiveConfig ) => {
             buffer.setUint8(parameter.qos);
             buffer.setUint8(parameter.count);
             buffer.setUint8(parameter.timeout);
         }
     },
     [deviceParameters.MQTT_DATA_SEND_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterMqttDataSendConfig => ({
+        get: ( buffer: IBinaryBuffer ): IParameterMqttDataSendConfig => ({
             qos: buffer.getUint8(),
             retain: buffer.getUint8(),
             newestSendFirst: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterMqttDataSendConfig ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterMqttDataSendConfig ) => {
             buffer.setUint8(parameter.qos);
             buffer.setUint8(parameter.retain);
             buffer.setUint8(parameter.newestSendFirst);
         }
     },
     [deviceParameters.NBIOT_SSL_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotSslConfig => ({
+        get: ( buffer: IBinaryBuffer ): IParameterNbiotSslConfig => ({
             securityLevel: buffer.getUint8(),
             version: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotSslConfig ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterNbiotSslConfig ) => {
             buffer.setUint8(parameter.securityLevel);
             buffer.setUint8(parameter.version);
         }
@@ -1417,29 +1419,29 @@ const deviceParameterConvertersMap = {
         set: setNbiotSslSet
     },
     [deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotDeviceSoftwareUpdate => ({
+        get: ( buffer: IBinaryBuffer ): IParameterNbiotDeviceSoftwareUpdate => ({
             softwareImageUrl: buffer.getString()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotDeviceSoftwareUpdate ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterNbiotDeviceSoftwareUpdate ) => {
             buffer.setString(parameter.softwareImageUrl);
         }
     },
     [deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotModuleFirmwareUpdate => ({
+        get: ( buffer: IBinaryBuffer ): IParameterNbiotModuleFirmwareUpdate => ({
             moduleFirmwareImageUrl: buffer.getString()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotModuleFirmwareUpdate ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterNbiotModuleFirmwareUpdate ) => {
             buffer.setString(parameter.moduleFirmwareImageUrl);
         }
     },
     [deviceParameters.REPORTING_DATA_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterReportingDataConfig => ({
+        get: ( buffer: IBinaryBuffer ): IParameterReportingDataConfig => ({
             dataType: buffer.getUint8(),
             hour: buffer.getUint8(),
             minutes: buffer.getUint8(),
             countToSend: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterReportingDataConfig ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterReportingDataConfig ) => {
             buffer.setUint8(parameter.dataType);
             buffer.setUint8(parameter.hour);
             buffer.setUint8(parameter.minutes);
@@ -1447,27 +1449,27 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.EVENTS_CONFIG]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterEventsConfig => ({
+        get: ( buffer: IBinaryBuffer ): IParameterEventsConfig => ({
             eventId: buffer.getUint8(),
             sendEvent: buffer.getUint8(),
             saveEvent: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterEventsConfig ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterEventsConfig ) => {
             buffer.setUint8(parameter.eventId);
             buffer.setUint8(parameter.sendEvent);
             buffer.setUint8(parameter.saveEvent);
         }
     },
     [deviceParameters.NBIOT_MODULE_INFO]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotModuleInfo => ({
+        get: ( buffer: IBinaryBuffer ): IParameterNbiotModuleInfo => ({
             moduleInfo: buffer.getString()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotModuleInfo ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterNbiotModuleInfo ) => {
             buffer.setString(parameter.moduleInfo);
         }
     },
     [deviceParameters.NBIOT_BANDS]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotBands => {
+        get: ( buffer: IBinaryBuffer ): IParameterNbiotBands => {
             const count = buffer.getUint8();
             const bands: Array<number> = [];
 
@@ -1477,7 +1479,7 @@ const deviceParameterConvertersMap = {
 
             return {bands};
         },
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotBands ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterNbiotBands ) => {
             buffer.setUint8(parameter.bands.length);
 
             for ( const band of parameter.bands ) {
@@ -1486,78 +1488,78 @@ const deviceParameterConvertersMap = {
         }
     },
     [deviceParameters.NBIOT_APN]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotApn => ({
+        get: ( buffer: IBinaryBuffer ): IParameterNbiotApn => ({
             apn: buffer.getString()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotApn ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterNbiotApn ) => {
             buffer.setString(parameter.apn);
         }
     },
     [deviceParameters.NBIOT_LED_INDICATION]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotLedIndication => ({
+        get: ( buffer: IBinaryBuffer ): IParameterNbiotLedIndication => ({
             enableLed: buffer.getUint8(),
             enableNbiotNetworkLed: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotLedIndication ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterNbiotLedIndication ) => {
             buffer.setUint8(parameter.enableLed);
             buffer.setUint8(parameter.enableNbiotNetworkLed);
         }
     },
     [deviceParameters.NBIOT_SIM]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotSim => ({
+        get: ( buffer: IBinaryBuffer ): IParameterNbiotSim => ({
             enable: buffer.getUint8(),
             pin: buffer.getUint16()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotSim ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterNbiotSim ) => {
             buffer.setUint8(parameter.enable);
             buffer.setUint16(parameter.pin);
         }
     },
     [deviceParameters.CHANNEL_TYPE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterChannelType => (buffer.getChannelType()),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterChannelType ) => (
-            buffer.setChannelType(parameter)
+        get: ( buffer: IBinaryBuffer ): IParameterChannelType => (getChannelType(buffer)),
+        set: ( buffer: IBinaryBuffer, parameter: IParameterChannelType ) => (
+            setChannelType(buffer, parameter)
         )
     },
     [deviceParameters.EXTRA_PAYLOAD_ENABLE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterExtraPayloadEnable => ({
+        get: ( buffer: IBinaryBuffer ): IParameterExtraPayloadEnable => ({
             enable: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterExtraPayloadEnable ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterExtraPayloadEnable ) => {
             buffer.setUint8(parameter.enable);
         }
     },
     [deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterTimeSynchronizationPeriodMac => ({
+        get: ( buffer: IBinaryBuffer ): IParameterTimeSynchronizationPeriodMac => ({
             period: buffer.getUint32()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterTimeSynchronizationPeriodMac ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterTimeSynchronizationPeriodMac ) => {
             buffer.setUint32(parameter.period);
         }
     },
     [deviceParameters.KEEP_LORA_CONNECTION_ON_REMOVAL]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterKeepLoraConnectionOnRemoval => ({
+        get: ( buffer: IBinaryBuffer ): IParameterKeepLoraConnectionOnRemoval => ({
             value: buffer.getUint8() !== 0
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterKeepLoraConnectionOnRemoval ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterKeepLoraConnectionOnRemoval ) => {
             buffer.setUint8(parameter.value ? 1 : 0);
         }
     },
     [deviceParameters.NBIOT_NTP_SERVER]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterNbiotNtpServer => ({
+        get: ( buffer: IBinaryBuffer ): IParameterNbiotNtpServer => ({
             server: buffer.getString(),
             port: buffer.getUint16()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterNbiotNtpServer ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterNbiotNtpServer ) => {
             buffer.setString(parameter.server);
             buffer.setUint16(parameter.port);
         }
     },
     [deviceParameters.ACTIVATE_MODULE]: {
-        get: ( buffer: ICommandBinaryBuffer ): IParameterActivateModule => ({
+        get: ( buffer: IBinaryBuffer ): IParameterActivateModule => ({
             enable: buffer.getUint8()
         }),
-        set: ( buffer: ICommandBinaryBuffer, parameter: IParameterActivateModule ) => {
+        set: ( buffer: IBinaryBuffer, parameter: IParameterActivateModule ) => {
             buffer.setUint8(parameter.enable);
         }
     }
@@ -1736,117 +1738,117 @@ export const getResponseParameterSize = ( parameter: IParameter ): number => {
 };
 
 
-export interface ICommandBinaryBuffer extends IBinaryBuffer {
+/* export interface ICommandBinaryBuffer extends IBinaryBuffer {
     // static methods
-    getMagneticInfluenceBit ( byte: number ): boolean,
-    setMagneticInfluenceBit ( byte: number, value: boolean ): number,
-    getLegacyHourCounterSize ( hourCounter: ILegacyHourCounterWithDiff ): number,
+    // getMagneticInfluenceBit ( byte: number ): boolean,
+    // setMagneticInfluenceBit ( byte: number, value: boolean ): number,
+    // getLegacyHourCounterSize ( hourCounter: ILegacyHourCounterWithDiff ): number,
 
     // instance methods
-    getExtendedValue (): number,
-    setExtendedValue ( value: number ),
-    getExtendedValueSize (bits: number): number,
+    // getExtendedValue (): number,
+    // setExtendedValue ( value: number ),
+    // getExtendedValueSize (bits: number): number,
 
-    getTime (): number,
-    setTime (value: TTime2000): void,
+    // getTime (): number,
+    // setTime (value: TTime2000): void,
 
-    getBatteryVoltage (): IBatteryVoltage,
-    setBatteryVoltage ( batteryVoltage: IBatteryVoltage ),
+    // getBatteryVoltage (): IBatteryVoltage,
+    // setBatteryVoltage ( batteryVoltage: IBatteryVoltage ),
 
-    getLegacyCounterValue (): types.TUint24,
-    setLegacyCounterValue ( value: types.TUint24 ),
+    // getLegacyCounterValue (): types.TUint24,
+    // setLegacyCounterValue ( value: types.TUint24 ),
 
-    getLegacyCounter ( byte?: types.TUint8, isArchiveValue?: boolean ): ILegacyCounter,
-    setLegacyCounter ( counter: ILegacyCounter, byte?: types.TUint8, isArchiveValue?: boolean ),
+    // getLegacyCounter ( byte?: types.TUint8, isArchiveValue?: boolean ): ILegacyCounter,
+    // setLegacyCounter ( counter: ILegacyCounter, byte?: types.TUint8, isArchiveValue?: boolean ),
 
-    getChannels (): Array<number>,
-    setChannels ( channelList: Array<IChannel> );
+    // getChannels (): Array<number>,
+    // setChannels ( channelList: Array<IChannel> );
 
-    getChannelValue (): number;
-    setChannelValue( value: number );
+    // getChannelValue (): number;
+    // setChannelValue( value: number );
 
-    getChannelsValuesWithHourDiff ( isArchiveValue?: boolean ): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>},
-    setChannelsValuesWithHourDiff ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>, isArchiveValue?: boolean ),
+    // getChannelsValuesWithHourDiff ( isArchiveValue?: boolean ): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>},
+    // setChannelsValuesWithHourDiff ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>, isArchiveValue?: boolean ),
 
-    getHours ( byte?: types.TUint8 ): {hour: number, hours: number},
-    setHours ( hour: number, hours: number ),
+    // getHours ( byte?: types.TUint8 ): {hour: number, hours: number},
+    // setHours ( hour: number, hours: number ),
 
-    getDate (): Date,
-    setDate ( dateOrTime: Date | TTime2000 ),
+    // getDate (): Date,
+    // setDate ( dateOrTime: Date | TTime2000 ),
 
-    getPulseCoefficient (): TPulseCoefficient,
-    setPulseCoefficient ( value: TPulseCoefficient ),
+    // getPulseCoefficient (): TPulseCoefficient,
+    // setPulseCoefficient ( value: TPulseCoefficient ),
 
-    getChannelsWithAbsoluteValues (): Array<IChannelAbsoluteValue>,
-    setChannelsWithAbsoluteValues ( channelList: Array<IChannelAbsoluteValue> ),
+    // getChannelsWithAbsoluteValues (): Array<IChannelAbsoluteValue>,
+    // setChannelsWithAbsoluteValues ( channelList: Array<IChannelAbsoluteValue> ),
 
-    getChannelsAbsoluteValuesWithHourDiff ( hours: number ): Array<IChannelHourAbsoluteValue>,
-    setChannelsAbsoluteValuesWithHourDiff ( channelList: Array<IChannelHourAbsoluteValue> ),
+    // getChannelsAbsoluteValuesWithHourDiff ( hours: number ): Array<IChannelHourAbsoluteValue>,
+    // setChannelsAbsoluteValuesWithHourDiff ( channelList: Array<IChannelHourAbsoluteValue> ),
 
-    getEventStatus ( hardwareType: number ): TEventStatus,
-    setEventStatus ( hardwareType: number, status: TEventStatus ),
+    // getEventStatus ( hardwareType: number ): TEventStatus,
+    // setEventStatus ( hardwareType: number, status: TEventStatus ),
 
-    getParameter (): IParameter,
-    setParameter ( parameter: IParameter ),
+    // getParameter (): IParameter,
+    // setParameter ( parameter: IParameter ),
 
-    getRequestParameter (): IRequestParameter,
-    setRequestParameter ( parameter: IRequestParameter ),
+    // getRequestParameter (): IRequestParameter,
+    // setRequestParameter ( parameter: IRequestParameter ),
 
-    getResponseParameter (): IResponseParameter,
-    setResponseParameter ( parameter: IResponseParameter ),
+    // getResponseParameter (): IResponseParameter,
+    // setResponseParameter ( parameter: IResponseParameter ),
 
-    getLegacyHourDiff (): ILegacyCounter,
-    setLegacyHourDiff ( diff: ILegacyCounter ),
+    // getLegacyHourDiff (): ILegacyCounter,
+    // setLegacyHourDiff ( diff: ILegacyCounter ),
 
-    getLegacyHourCounterWithDiff ( isArchiveValue?: boolean ): ILegacyHourCounterWithDiff,
-    setLegacyHourCounterWithDiff ( hourCounter: ILegacyHourCounterWithDiff, isArchiveValue?: boolean ),
+    // getLegacyHourCounterWithDiff ( isArchiveValue?: boolean ): ILegacyHourCounterWithDiff,
+    // setLegacyHourCounterWithDiff ( hourCounter: ILegacyHourCounterWithDiff, isArchiveValue?: boolean ),
 
-    getChannelsValuesWithHourDiffExtended ( isArchiveValue?: boolean ): IChannelValuesWithHourDiffExtended,
-    setChannelsValuesWithHourDiffExtended ( parameters: IChannelValuesWithHourDiffExtended, isArchiveValue?: boolean ),
+    // getChannelsValuesWithHourDiffExtended ( isArchiveValue?: boolean ): IChannelValuesWithHourDiffExtended,
+    // setChannelsValuesWithHourDiffExtended ( parameters: IChannelValuesWithHourDiffExtended, isArchiveValue?: boolean ),
 
-    getDataSegment (): IDataSegment,
-    setDataSegment ( parameters: IDataSegment )
+    // getDataSegment (): IDataSegment,
+    // setDataSegment ( parameters: IDataSegment )
 
-    getBinarySensor(): IParameterBinarySensor,
-    setBinarySensor( parameters: IParameterBinarySensor ),
+    // getBinarySensor(): IParameterBinarySensor,
+    // setBinarySensor( parameters: IParameterBinarySensor ),
 
-    getTemperatureSensor(): IParameterTemperatureSensor,
-    setTemperatureSensor( parameters: IParameterTemperatureSensor ),
+    // getTemperatureSensor(): IParameterTemperatureSensor,
+    // setTemperatureSensor( parameters: IParameterTemperatureSensor ),
 
-    getChannelType(): IParameterChannelType,
-    setChannelType( parameters: IParameterChannelType)
-}
+    // getChannelType(): IParameterChannelType,
+    // setChannelType( parameters: IParameterChannelType)
+} */
 
-function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
-    BinaryBuffer.call(this, dataOrLength, isLittleEndian);
-}
+// function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
+//     BinaryBuffer.call(this, dataOrLength, isLittleEndian);
+// }
 
 // extending
-CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
-CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
+// CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
+// CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
 
 
-CommandBinaryBuffer.getMagneticInfluenceBit = ( byte: number ): boolean => (
+export const getMagneticInfluenceBit = ( byte: number ): boolean => (
     !!extractBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX)
 );
 
-CommandBinaryBuffer.setMagneticInfluenceBit = ( byte: number, value: boolean ): number => (
+export const setMagneticInfluenceBit = ( byte: number, value: boolean ): number => (
     fillBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX, +value)
 );
 
-CommandBinaryBuffer.getLegacyHourCounterSize = ( hourCounter: ILegacyHourCounterWithDiff ): number => (
+export const getLegacyHourCounterSize = ( hourCounter: ILegacyHourCounterWithDiff ): number => (
     LEGACY_HOUR_COUNTER_SIZE + (hourCounter.diff.length * LEGACY_HOUR_DIFF_SIZE)
 );
 
 
-CommandBinaryBuffer.prototype.getExtendedValue = function (): number {
+export const getExtendedValue = function ( buffer: IBinaryBuffer ): number {
     let value = 0;
     let isByteExtended = true;
     // byte offset
     let position = 0;
 
-    while ( isByteExtended && this.offset <= this.data.length ) {
-        const byte = this.getUint8();
+    while ( isByteExtended && buffer.offset <= buffer.data.length ) {
+        const byte = buffer.getUint8();
 
         isByteExtended = !!(byte & EXTEND_BIT_MASK);
         // https://stackoverflow.com/a/30089815/7119054
@@ -1858,9 +1860,9 @@ CommandBinaryBuffer.prototype.getExtendedValue = function (): number {
 };
 
 
-CommandBinaryBuffer.prototype.setExtendedValue = function ( value: number ) {
+export const setExtendedValue = function ( buffer: IBinaryBuffer, value: number ) {
     if ( value === 0 ) {
-        this.setUint8(0);
+        buffer.setUint8(0);
 
         return;
     }
@@ -1880,7 +1882,7 @@ CommandBinaryBuffer.prototype.setExtendedValue = function ( value: number ) {
         data.push(lastByte & 0x7f);
     }
 
-    data.forEach(extendedValue => this.setUint8(extendedValue));
+    data.forEach(extendedValue => buffer.setUint8(extendedValue));
 };
 
 
@@ -1892,11 +1894,11 @@ CommandBinaryBuffer.prototype.setExtendedValue = function ( value: number ) {
  * @example
  * ```js
  * const bits = (16384).toString(2).length;
- * const bytes = CommandBinaryBuffer.getExtendedValueSize(bits);
+ * const bytes = getExtendedValueSize(bits);
  * // 16384 normally is stored in 2 bytes but for extended value 3 bytes are required
  * ```
  */
-CommandBinaryBuffer.prototype.getExtendedValueSize = function ( bits: number ): number {
+export const getExtendedValueSize = function ( bits: number ): number {
     const extBits = Math.ceil(bits / 7);
     const totalBits = bits + extBits;
     const extBytes = Math.ceil(totalBits / 8);
@@ -1905,20 +1907,20 @@ CommandBinaryBuffer.prototype.getExtendedValueSize = function ( bits: number ): 
 };
 
 
-CommandBinaryBuffer.prototype.getTime = function (): number {
-    return this.getUint32();
+export const getTime = function ( buffer: IBinaryBuffer ): number {
+    return buffer.getUint32();
 };
 
 
-CommandBinaryBuffer.prototype.setTime = function ( value: TTime2000 ): void {
-    this.setUint32(value);
+export const setTime = function ( buffer: IBinaryBuffer, value: TTime2000 ): void {
+    buffer.setUint32(value);
 };
 
 
-CommandBinaryBuffer.prototype.getBatteryVoltage = function (): IBatteryVoltage {
-    const lowVoltageByte = this.getUint8();
-    const lowAndHightVoltageByte = this.getUint8();
-    const highVoltageByte = this.getUint8();
+export const getBatteryVoltage = function ( buffer: IBinaryBuffer ): IBatteryVoltage {
+    const lowVoltageByte = buffer.getUint8();
+    const lowAndHightVoltageByte = buffer.getUint8();
+    const highVoltageByte = buffer.getUint8();
 
     let underLowLoad = lowVoltageByte << 4;
     underLowLoad |= (lowAndHightVoltageByte & 0xf0) >> 4;
@@ -1936,7 +1938,7 @@ CommandBinaryBuffer.prototype.getBatteryVoltage = function (): IBatteryVoltage {
 };
 
 
-CommandBinaryBuffer.prototype.setBatteryVoltage = function ( batteryVoltage: IBatteryVoltage ) {
+export const setBatteryVoltage = function ( buffer: IBinaryBuffer, batteryVoltage: IBatteryVoltage ) {
     let {underLowLoad, underHighLoad} = batteryVoltage;
 
     if ( underLowLoad === undefined ) {
@@ -1951,36 +1953,36 @@ CommandBinaryBuffer.prototype.setBatteryVoltage = function ( batteryVoltage: IBa
     const lowAndHighVoltageByte = ((underLowLoad & 0x0f) << 4) | ((underHighLoad >> 8) & 0x0f);
     const highVoltageByte = underHighLoad & 0xff;
 
-    [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => this.setUint8(byte));
+    [lowVoltageByte, lowAndHighVoltageByte, highVoltageByte].forEach(byte => buffer.setUint8(byte));
 };
 
-CommandBinaryBuffer.prototype.getLegacyCounterValue = function (): types.TUint24 {
-    return this.getUint24();
+export const getLegacyCounterValue = function ( buffer: IBinaryBuffer ): types.TUint24 {
+    return buffer.getUint24();
 };
 
-CommandBinaryBuffer.prototype.setLegacyCounterValue = function ( value: types.TUint24 ) {
-    this.setUint24(value);
+export const setLegacyCounterValue = function ( buffer: IBinaryBuffer, value: types.TUint24 ) {
+    buffer.setUint24(value);
 };
 
-CommandBinaryBuffer.prototype.getLegacyCounter = function ( byte = this.getUint8(), isArchiveValue = false ): ILegacyCounter {
-    const value = this.getLegacyCounterValue();
+export const getLegacyCounter = function ( buffer: IBinaryBuffer, byte = buffer.getUint8(), isArchiveValue = false ): ILegacyCounter {
+    const value = getLegacyCounterValue(buffer);
 
     return {
-        isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(byte),
+        isMagneticInfluence: getMagneticInfluenceBit(byte),
         value: isArchiveValue && value === archive.EMPTY_VALUE ? 0 : value
     };
 };
 
-CommandBinaryBuffer.prototype.setLegacyCounter = function ( counter: ILegacyCounter, byte = 0, isArchiveValue = false ) {
-    this.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, counter.isMagneticInfluence));
-    this.setLegacyCounterValue(isArchiveValue && counter.value === 0 ? archive.EMPTY_VALUE : counter.value);
+export const setLegacyCounter = function ( buffer: IBinaryBuffer, counter: ILegacyCounter, byte = 0, isArchiveValue = false ) {
+    buffer.setUint8(setMagneticInfluenceBit(byte, counter.isMagneticInfluence));
+    setLegacyCounterValue(buffer, isArchiveValue && counter.value === 0 ? archive.EMPTY_VALUE : counter.value);
 };
 
 
 /**
  * Get array of channel indexes.
  */
-CommandBinaryBuffer.prototype.getChannels = function (): Array<number> {
+export const getChannels = function ( buffer: IBinaryBuffer ): Array<number> {
     const channelList: Array<number> = [];
 
     let extended = true;
@@ -1988,7 +1990,7 @@ CommandBinaryBuffer.prototype.getChannels = function (): Array<number> {
 
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     while ( extended ) {
-        const byte = this.getUint8();
+        const byte = buffer.getUint8();
 
         // original 0b00000001, reverse it to get first - `1`
         const bits = byte.toString(2).padStart(LAST_BIT_INDEX + 1, '0').split('').reverse();
@@ -2017,9 +2019,9 @@ CommandBinaryBuffer.prototype.getChannels = function (): Array<number> {
 /**
  * Set array of channel indexes.
  */
-CommandBinaryBuffer.prototype.setChannels = function ( channelList: Array<IChannel> ) {
+export const setChannels = function ( buffer: IBinaryBuffer, channelList: Array<IChannel> ) {
     if ( channelList.length === 0 ) {
-        this.setUint8(0);
+        buffer.setUint8(0);
 
         return;
     }
@@ -2061,29 +2063,30 @@ CommandBinaryBuffer.prototype.setChannels = function ( channelList: Array<IChann
         byte = 0;
     });
 
-    data.forEach((value: number) => this.setUint8(value));
+    data.forEach((value: number) => buffer.setUint8(value));
 };
 
 
-CommandBinaryBuffer.prototype.getChannelValue = function (): number {
-    return this.getUint8() + 1;
+export const getChannelValue = function ( buffer: IBinaryBuffer ): number {
+    return buffer.getUint8() + 1;
 };
 
-CommandBinaryBuffer.prototype.setChannelValue = function ( value: number ) {
+export const setChannelValue = function ( buffer: IBinaryBuffer, value: number ) {
     if ( value < 1 ) {
         throw new Error('channel must be 1 or greater');
     }
 
-    this.setUint8(value - 1);
+    buffer.setUint8(value - 1);
 };
 
 
-CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiff = function (
+export const getChannelsValuesWithHourDiff = function (
+    buffer: IBinaryBuffer,
     isArchiveValue = false
 ): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>} {
-    const date = this.getDate();
-    const {hour, hours} = this.getHours();
-    const channels = this.getChannels();
+    const date = getDate(buffer);
+    const {hour, hours} = getHours(buffer);
+    const channels = getChannels(buffer);
     const channelList: Array<IChannelHours> = [];
 
     date.setUTCHours(hour);
@@ -2092,15 +2095,15 @@ CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiff = function (
         const diff: Array<number> = [];
 
         // decode hour value for channel
-        const value = this.getExtendedValue();
+        const value = getExtendedValue(buffer);
 
         // start from first diff hour
         for ( let diffHour = 1; diffHour < hours; ++diffHour ) {
-            diff.push(this.getExtendedValue());
+            diff.push(getExtendedValue(buffer));
         }
 
         channelList.push({
-            value: value === isArchiveValue && archive.EMPTY_VALUE ? 0 : value,
+            value: isArchiveValue && value === archive.EMPTY_VALUE ? 0 : value,
             diff,
             index: channelIndex
         });
@@ -2110,17 +2113,23 @@ CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiff = function (
 };
 
 
-CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiff = function ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>, isArchiveValue = false ) {
+export const setChannelsValuesWithHourDiff = function (
+    buffer: IBinaryBuffer,
+    hours: number,
+    startTime2000: TTime2000,
+    channelList: Array<IChannelHours>,
+    isArchiveValue = false
+) {
     const date = getDateFromTime2000(startTime2000);
     const hour = date.getUTCHours();
 
-    this.setDate(date);
-    this.setHours(hour, hours);
-    this.setChannels(channelList);
+    setDate(buffer, date);
+    setHours(buffer, hour, hours);
+    setChannels(buffer, channelList);
 
     channelList.forEach(({value, diff}) => {
-        this.setExtendedValue(isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
-        diff.forEach(diffValue => this.setExtendedValue(diffValue));
+        setExtendedValue(buffer, isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
+        diff.forEach(diffValue => setExtendedValue(buffer, diffValue));
     });
 };
 
@@ -2131,7 +2140,7 @@ CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiff = function ( hours: 
  * @example
  * 0xb8 = 0b10111000 will be {hours: 0b101, hour: 0b11000} i.e. {hours: 6, hour: 24}
  */
-CommandBinaryBuffer.prototype.getHours = function ( byte = this.getUint8() ): {hour: number, hours: number} {
+export const getHours = function ( buffer: IBinaryBuffer, byte = buffer.getUint8() ): {hour: number, hours: number} {
     if ( byte === 0 ) {
         return {hours: 0, hour: 0};
     }
@@ -2144,15 +2153,15 @@ CommandBinaryBuffer.prototype.getHours = function ( byte = this.getUint8() ): {h
 };
 
 
-CommandBinaryBuffer.prototype.setHours = function ( hour: number, hours: number ) {
+export const setHours = function ( buffer: IBinaryBuffer, hour: number, hours: number ) {
     if ( hour === 0 && hours === 0 ) {
-        this.setUint8(0);
+        buffer.setUint8(0);
 
         return;
     }
 
     // convert real/human to binary - only number of diff hours
-    this.setUint8((((hours - 1) & 0x07) << 5) | (hour & 0x1f));
+    buffer.setUint8((((hours - 1) & 0x07) << 5) | (hour & 0x1f));
 };
 
 
@@ -2164,9 +2173,9 @@ CommandBinaryBuffer.prototype.setHours = function ( hour: number, hours: number 
  *
  * @returns Date object instance
  */
-CommandBinaryBuffer.prototype.getDate = function (): Date {
-    const yearMonthByte = this.getUint8();
-    const monthDateByte = this.getUint8();
+export const getDate = function (buffer: IBinaryBuffer): Date {
+    const yearMonthByte = buffer.getUint8();
+    const monthDateByte = buffer.getUint8();
 
     const year = yearMonthByte >> YEAR_START_INDEX;
     const month = ((yearMonthByte & 0x01) << MONTH_BIT_SIZE - YEAR_START_INDEX) | (monthDateByte >> DATE_BIT_SIZE);
@@ -2180,7 +2189,7 @@ CommandBinaryBuffer.prototype.getDate = function (): Date {
  * Convert date or seconds to bytes.
  * '2023-12-23' will be 0010111-1100-10111, so bytes: ['00101111', '10010111'] -> [47, 151]
  */
-CommandBinaryBuffer.prototype.setDate = function ( dateOrTime: Date | TTime2000 ) {
+export const setDate = function ( buffer: IBinaryBuffer, dateOrTime: Date | TTime2000 ) {
     let date;
 
     if ( dateOrTime instanceof Date ) {
@@ -2197,12 +2206,12 @@ CommandBinaryBuffer.prototype.setDate = function ( dateOrTime: Date | TTime2000 
     const yearMonthByte = (year << YEAR_START_INDEX) | (month >> MONTH_BIT_SIZE - YEAR_START_INDEX);
     const monthDateByte = ((month & 0x07) << DATE_BIT_SIZE) | day;
 
-    [yearMonthByte, monthDateByte].forEach(byte => this.setUint8(byte));
+    [yearMonthByte, monthDateByte].forEach(byte => buffer.setUint8(byte));
 };
 
 
-CommandBinaryBuffer.prototype.getPulseCoefficient = function (): TPulseCoefficient {
-    const pulseCoefficient = this.getUint8();
+export const getPulseCoefficient = function ( buffer: IBinaryBuffer ): TPulseCoefficient {
+    const pulseCoefficient = buffer.getUint8();
 
     if ( isMSBSet(pulseCoefficient) ) {
         const value = byteToPulseCoefficientMap[pulseCoefficient];
@@ -2218,30 +2227,30 @@ CommandBinaryBuffer.prototype.getPulseCoefficient = function (): TPulseCoefficie
 };
 
 
-CommandBinaryBuffer.prototype.setPulseCoefficient = function ( value: TPulseCoefficient ) {
+export const setPulseCoefficient = function ( buffer: IBinaryBuffer, value: TPulseCoefficient ) {
     if ( value in pulseCoefficientToByteMap ) {
-        const byte = pulseCoefficientToByteMap[value];
+        const byte = pulseCoefficientToByteMap[value] as types.TUint8;
 
         if ( byte ) {
-            this.setUint8(byte);
+            buffer.setUint8(byte);
         } else {
             throw new Error('pulseCoefficient MSB is set, but value unknown');
         }
     } else {
-        this.setUint8(value);
+        buffer.setUint8(value);
     }
 };
 
 
-CommandBinaryBuffer.prototype.getChannelsWithAbsoluteValues = function (): Array<IChannelAbsoluteValue> {
-    const channels = this.getChannels();
+export const getChannelsWithAbsoluteValues = function ( buffer: IBinaryBuffer ): Array<IChannelAbsoluteValue> {
+    const channels = getChannels(buffer);
     const channelList: Array<IChannelAbsoluteValue> = [];
 
     channels.forEach(channelIndex => {
         channelList.push({
-            pulseCoefficient: this.getPulseCoefficient(),
+            pulseCoefficient: getPulseCoefficient(buffer),
             // day value
-            value: this.getExtendedValue(),
+            value: getExtendedValue(buffer),
             index: channelIndex
         });
     });
@@ -2250,27 +2259,27 @@ CommandBinaryBuffer.prototype.getChannelsWithAbsoluteValues = function (): Array
 };
 
 
-CommandBinaryBuffer.prototype.setChannelsWithAbsoluteValues = function ( channelList: Array<IChannelAbsoluteValue> ) {
-    this.setChannels(channelList);
+export const setChannelsWithAbsoluteValues = function ( buffer: IBinaryBuffer, channelList: Array<IChannelAbsoluteValue> ) {
+    setChannels(buffer, channelList);
 
     channelList.forEach(({value, pulseCoefficient}) => {
-        this.setPulseCoefficient(pulseCoefficient);
-        this.setExtendedValue(value);
+        setPulseCoefficient(buffer, pulseCoefficient);
+        setExtendedValue(buffer, value);
     });
 };
 
 
-CommandBinaryBuffer.prototype.getChannelsAbsoluteValuesWithHourDiff = function ( hours: number ): Array<IChannelHourAbsoluteValue> {
-    const channels = this.getChannels();
+export const getChannelsAbsoluteValuesWithHourDiff = function ( buffer: IBinaryBuffer, hours: number ): Array<IChannelHourAbsoluteValue> {
+    const channels = getChannels(buffer);
     const channelList: Array<IChannelHourAbsoluteValue> = [];
 
     channels.forEach(channelIndex => {
-        const pulseCoefficient = this.getPulseCoefficient();
-        const value = this.getExtendedValue();
+        const pulseCoefficient = getPulseCoefficient(buffer);
+        const value = getExtendedValue(buffer);
         const diff: Array<number> = [];
 
         for ( let hourIndex = 1; hourIndex < hours; ++hourIndex ) {
-            diff.push(this.getExtendedValue());
+            diff.push(getExtendedValue(buffer));
         }
 
         channelList.push({
@@ -2285,36 +2294,36 @@ CommandBinaryBuffer.prototype.getChannelsAbsoluteValuesWithHourDiff = function (
 };
 
 
-CommandBinaryBuffer.prototype.setChannelsAbsoluteValuesWithHourDiff = function ( channelList: Array<IChannelHourAbsoluteValue> ) {
-    this.setChannels(channelList);
+export const setChannelsAbsoluteValuesWithHourDiff = function ( buffer: IBinaryBuffer, channelList: Array<IChannelHourAbsoluteValue> ) {
+    setChannels(buffer, channelList);
 
     channelList.forEach(({value, diff, pulseCoefficient}) => {
-        this.setPulseCoefficient(pulseCoefficient);
-        this.setExtendedValue(value);
-        diff.forEach(diffValue => this.setExtendedValue(diffValue));
+        setPulseCoefficient(buffer, pulseCoefficient);
+        setExtendedValue(buffer, value);
+        diff.forEach(diffValue => setExtendedValue(buffer, diffValue));
     });
 };
 
 
-CommandBinaryBuffer.prototype.getEventStatus = function ( hardwareType: number ): TEventStatus {
+export const getEventStatus = function ( buffer: IBinaryBuffer, hardwareType: number ): TEventStatus {
     let status: TEventStatus;
 
     if ( GAS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        status = bitSet.toObject(gasBitMask, this.getUint8());
+        status = bitSet.toObject(gasBitMask, buffer.getUint8());
     } else if ( TWO_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        status = bitSet.toObject(twoChannelBitMask, this.getUint8());
+        status = bitSet.toObject(twoChannelBitMask, buffer.getUint8());
     } else if ( ELIMP_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        status = bitSet.toObject(elimpBitMask, this.getUint8());
+        status = bitSet.toObject(elimpBitMask, buffer.getUint8());
     // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
-    //     status = bitSet.toObject(waterBitMask, this.getUint8());
+    //     status = bitSet.toObject(waterBitMask, buffer.getUint8());
     } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        status = bitSet.toObject(fourChannelBitMask, this.getUint16(true));
+        status = bitSet.toObject(fourChannelBitMask, buffer.getUint16(true));
     } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        status = bitSet.toObject(mtxBitMask, this.getUint16(true));
+        status = bitSet.toObject(mtxBitMask, buffer.getUint16(true));
     } else if ( hardwareType === hardwareTypes.US_WATER ) {
         // ultrasound water meter
-        const event = bitSet.toObject(usWaterMeterEventBitMask, this.getUint8()) as unknown as IUSWaterMeterEvent;
-        status = {event, error: this.getUint8()};
+        const event = bitSet.toObject(usWaterMeterEventBitMask, buffer.getUint8()) as unknown as IUSWaterMeterEvent;
+        status = {event, error: buffer.getUint8()};
     } else {
         throw new Error('wrong hardwareType');
     }
@@ -2323,62 +2332,62 @@ CommandBinaryBuffer.prototype.getEventStatus = function ( hardwareType: number )
 };
 
 
-CommandBinaryBuffer.prototype.setEventStatus = function ( hardwareType: number, status: TEventStatus ) {
+export const setEventStatus = function ( buffer: IBinaryBuffer, hardwareType: number, status: TEventStatus ) {
     if ( GAS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        this.setUint8(bitSet.fromObject(gasBitMask, status as bitSet.TBooleanObject));
+        buffer.setUint8(bitSet.fromObject(gasBitMask, status as bitSet.TBooleanObject));
     } else if ( TWO_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        this.setUint8(bitSet.fromObject(twoChannelBitMask, status as bitSet.TBooleanObject));
+        buffer.setUint8(bitSet.fromObject(twoChannelBitMask, status as bitSet.TBooleanObject));
     } else if ( ELIMP_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        this.setUint8(bitSet.fromObject(elimpBitMask, status as bitSet.TBooleanObject));
+        buffer.setUint8(bitSet.fromObject(elimpBitMask, status as bitSet.TBooleanObject));
     // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
-    //     this.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
+    //     buffer.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
     } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        this.setUint16(
+        buffer.setUint16(
             bitSet.fromObject(fourChannelBitMask, status as bitSet.TBooleanObject) | (1 << 7),
             true
         );
     } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
-        this.setUint16(
+        buffer.setUint16(
             bitSet.fromObject(mtxBitMask, status as bitSet.TBooleanObject),
             true
         );
     } else if ( hardwareType === hardwareTypes.US_WATER ) {
         const data = status as IEventUSWaterMeterStatus;
-        this.setUint8(bitSet.fromObject(usWaterMeterEventBitMask, data.event as unknown as bitSet.TBooleanObject));
-        this.setUint8(data.error);
+        buffer.setUint8(bitSet.fromObject(usWaterMeterEventBitMask, data.event as unknown as bitSet.TBooleanObject));
+        buffer.setUint8(data.error);
     } else {
         throw new Error('wrong hardwareType');
     }
 };
 
 
-CommandBinaryBuffer.prototype.getParameter = function (): IParameter {
-    const id = this.getUint8();
+export const getParameter = function ( buffer: IBinaryBuffer ): IParameter {
+    const id = buffer.getUint8();
     const name = deviceParameterNames[id];
 
     if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].get ) {
         throw new Error(`parameter ${id} is not supported`);
     }
 
-    const data = deviceParameterConvertersMap[id].get(this);
+    const data = deviceParameterConvertersMap[id].get(buffer);
 
     return {id, name, data};
 };
 
-CommandBinaryBuffer.prototype.setParameter = function ( parameter: IParameter ): void {
+export const setParameter = function ( buffer: IBinaryBuffer, parameter: IParameter ): void {
     const {id, data} = parameter;
 
     if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].set ) {
         throw new Error(`parameter ${id} is not supported`);
     }
 
-    this.setUint8(id);
-    deviceParameterConvertersMap[id].set(this, data);
+    buffer.setUint8(id);
+    deviceParameterConvertersMap[id].set(buffer, data);
 };
 
 
-CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParameter {
-    const id = this.getUint8();
+export const getRequestParameter = function ( buffer: IBinaryBuffer ): IRequestParameter {
+    const id = buffer.getUint8();
     const name = deviceParameterNames[id];
     let data = null;
 
@@ -2386,15 +2395,15 @@ CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParamet
         case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
         case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
         case deviceParameters.CHANNEL_TYPE:
-            data = {channel: this.getChannelValue()};
+            data = {channel: getChannelValue(buffer)};
             break;
 
         case deviceParameters.REPORTING_DATA_CONFIG:
-            data = {dataType: this.getUint8()};
+            data = {dataType: buffer.getUint8()};
             break;
 
         case deviceParameters.EVENTS_CONFIG:
-            data = {eventId: this.getUint8()};
+            data = {eventId: buffer.getUint8()};
             break;
 
         default:
@@ -2405,28 +2414,28 @@ CommandBinaryBuffer.prototype.getRequestParameter = function (): IRequestParamet
 };
 
 
-CommandBinaryBuffer.prototype.setRequestParameter = function ( parameter: IRequestParameter ): void {
+export const setRequestParameter = function ( buffer: IBinaryBuffer, parameter: IRequestParameter ): void {
     const {id, data: parameterData} = parameter;
     let data;
 
-    this.setUint8(id);
+    buffer.setUint8(id);
 
     switch ( id ) {
         case deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL:
         case deviceParameters.ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL:
         case deviceParameters.CHANNEL_TYPE:
             data = parameterData as IRequestChannelParameter;
-            this.setChannelValue(data.channel);
+            setChannelValue(buffer, data.channel);
             break;
 
         case deviceParameters.REPORTING_DATA_CONFIG:
             data = parameterData as IRequestDataTypeParameter;
-            this.setUint8(data.dataType);
+            buffer.setUint8(data.dataType);
             break;
 
         case deviceParameters.EVENTS_CONFIG:
             data = parameterData as IRequestEventIdParameter;
-            this.setUint8(data.eventId);
+            buffer.setUint8(data.eventId);
             break;
 
         default:
@@ -2435,8 +2444,8 @@ CommandBinaryBuffer.prototype.setRequestParameter = function ( parameter: IReque
 };
 
 
-CommandBinaryBuffer.prototype.getResponseParameter = function (): IParameter {
-    const id = this.getUint8();
+export const getResponseParameter = function ( buffer: IBinaryBuffer ): IResponseParameter {
+    const id = buffer.getUint8();
     const name = deviceParameterNames[id];
     let data;
 
@@ -2458,21 +2467,21 @@ CommandBinaryBuffer.prototype.getResponseParameter = function (): IParameter {
             break;
 
         default:
-            data = deviceParameterConvertersMap[id].get(this);
+            data = deviceParameterConvertersMap[id].get(buffer);
     }
 
     return {id, name, data};
 };
 
 
-CommandBinaryBuffer.prototype.setResponseParameter = function ( parameter: IParameter ) {
+export const setResponseParameter = function ( buffer: IBinaryBuffer, parameter: IParameter ) {
     const {id, data} = parameter;
 
     if ( !deviceParameterConvertersMap[id] || !deviceParameterConvertersMap[id].set ) {
         throw new Error(`parameter ${id} is not supported`);
     }
 
-    this.setUint8(id);
+    buffer.setUint8(id);
 
     switch ( id ) {
         case deviceParameters.MQTT_SESSION_CONFIG:
@@ -2487,44 +2496,44 @@ CommandBinaryBuffer.prototype.setResponseParameter = function ( parameter: IPara
             break;
 
         default:
-            deviceParameterConvertersMap[id].set(this, data);
+            deviceParameterConvertersMap[id].set(buffer, data);
     }
 };
 
 
-CommandBinaryBuffer.prototype.getLegacyHourDiff = function (): ILegacyCounter {
-    const stateWithValueByte = this.getUint8();
-    const valueLowerByte = this.getUint8();
+export const getLegacyHourDiff = function ( buffer: IBinaryBuffer ): ILegacyCounter {
+    const stateWithValueByte = buffer.getUint8();
+    const valueLowerByte = buffer.getUint8();
 
     return {
-        isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(stateWithValueByte),
+        isMagneticInfluence: getMagneticInfluenceBit(stateWithValueByte),
         value: ((stateWithValueByte & 0x1f) << 8) | valueLowerByte
     };
 };
 
 
-CommandBinaryBuffer.prototype.setLegacyHourDiff = function ( diff: ILegacyCounter ): void {
+export const setLegacyHourDiff = function ( buffer: IBinaryBuffer, diff: ILegacyCounter ): void {
     const bytes = [diff.value >> 8, diff.value & 0xff];
 
-    bytes[0] = CommandBinaryBuffer.setMagneticInfluenceBit(bytes[0], diff.isMagneticInfluence);
+    bytes[0] = setMagneticInfluenceBit(bytes[0], diff.isMagneticInfluence);
 
-    bytes.forEach(byte => this.setUint8(byte));
+    bytes.forEach(byte => buffer.setUint8(byte));
 };
 
 
-CommandBinaryBuffer.prototype.getLegacyHourCounterWithDiff = function ( isArchiveValue = false ): ILegacyHourCounterWithDiff {
-    const date = this.getDate();
-    const byte = this.getUint8();
-    const {hour} = this.getHours(byte);
-    const value = this.getLegacyCounterValue();
+export const getLegacyHourCounterWithDiff = function ( buffer: IBinaryBuffer, isArchiveValue = false ): ILegacyHourCounterWithDiff {
+    const date = getDate(buffer);
+    const byte = buffer.getUint8();
+    const {hour} = getHours(buffer, byte);
+    const value = getLegacyCounterValue(buffer);
     const counter = {
-        isMagneticInfluence: CommandBinaryBuffer.getMagneticInfluenceBit(byte),
+        isMagneticInfluence: getMagneticInfluenceBit(byte),
         value: isArchiveValue && value === archive.EMPTY_VALUE ? 0 : value
     };
     const diff = [];
 
-    while ( this.offset < this.data.length ) {
-        diff.push(this.getLegacyHourDiff());
+    while ( buffer.offset < buffer.data.length ) {
+        diff.push(getLegacyHourDiff(buffer));
     }
 
     date.setUTCHours(hour);
@@ -2533,31 +2542,31 @@ CommandBinaryBuffer.prototype.getLegacyHourCounterWithDiff = function ( isArchiv
 };
 
 
-CommandBinaryBuffer.prototype.setLegacyHourCounterWithDiff = function ( hourCounter: ILegacyHourCounterWithDiff, isArchiveValue = false ): void {
+export const setLegacyHourCounterWithDiff = function ( buffer: IBinaryBuffer, hourCounter: ILegacyHourCounterWithDiff, isArchiveValue = false ): void {
     const date = getDateFromTime2000(hourCounter.startTime2000);
     const hour = date.getUTCHours();
     const {value} = hourCounter.counter;
 
-    this.setDate(date);
+    setDate(buffer, date);
     // force hours to 0
-    this.setHours(hour, 1);
+    setHours(buffer, hour, 1);
 
     // reset byte with isMagneticInfluence bit
-    this.seek(this.offset - 1);
-    const byte = this.getUint8();
-    this.seek(this.offset - 1);
-    this.setUint8(CommandBinaryBuffer.setMagneticInfluenceBit(byte, hourCounter.counter.isMagneticInfluence));
+    buffer.seek(buffer.offset - 1);
+    const byte = buffer.getUint8();
+    buffer.seek(buffer.offset - 1);
+    buffer.setUint8(setMagneticInfluenceBit(byte, hourCounter.counter.isMagneticInfluence));
 
-    this.setLegacyCounterValue(isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
-    hourCounter.diff.forEach(diffItem => this.setLegacyHourDiff(diffItem));
+    setLegacyCounterValue(buffer, isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
+    hourCounter.diff.forEach(diffItem => setLegacyHourDiff(buffer, diffItem));
 };
 
 
-CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiffExtended = function ( isArchiveValue = false ): IChannelValuesWithHourDiffExtended {
-    const date = this.getDate();
-    const hour = this.getUint8();
-    const hours = this.getUint8();
-    const channels = this.getChannels();
+export const getChannelsValuesWithHourDiffExtended = function ( buffer: IBinaryBuffer, isArchiveValue = false ): IChannelValuesWithHourDiffExtended {
+    const date = getDate(buffer);
+    const hour = buffer.getUint8();
+    const hours = buffer.getUint8();
+    const channels = getChannels(buffer);
     const channelList: Array<IChannelHours> = [];
 
     date.setUTCHours(hour);
@@ -2566,15 +2575,15 @@ CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiffExtended = function (
         const diff: Array<number> = [];
 
         // decode hour value for channel
-        const value = this.getExtendedValue();
+        const value = getExtendedValue(buffer);
 
         // start from first diff hour
         for ( let diffHour = 0; diffHour < hours; ++diffHour ) {
-            diff.push(this.getExtendedValue());
+            diff.push(getExtendedValue(buffer));
         }
 
         channelList.push({
-            value: value === isArchiveValue && archive.EMPTY_VALUE ? 0 : value,
+            value: isArchiveValue && value === archive.EMPTY_VALUE ? 0 : value,
             diff,
             index: channelIndex
         });
@@ -2584,63 +2593,63 @@ CommandBinaryBuffer.prototype.getChannelsValuesWithHourDiffExtended = function (
 };
 
 
-CommandBinaryBuffer.prototype.setChannelsValuesWithHourDiffExtended = function ( parameters: IChannelValuesWithHourDiffExtended, isArchiveValue = false ): void {
+export const setChannelsValuesWithHourDiffExtended = function ( buffer: IBinaryBuffer, parameters: IChannelValuesWithHourDiffExtended, isArchiveValue = false ): void {
     const date = getDateFromTime2000(parameters.startTime2000);
 
-    this.setDate(date);
-    this.setUint8(parameters.hour);
-    this.setUint8(parameters.hours);
-    this.setChannels(parameters.channelList);
+    setDate(buffer, date);
+    buffer.setUint8(parameters.hour);
+    buffer.setUint8(parameters.hours);
+    setChannels(buffer, parameters.channelList);
 
     parameters.channelList.forEach(({value, diff}) => {
-        this.setExtendedValue(isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
-        diff.forEach(diffValue => this.setExtendedValue(diffValue));
+        setExtendedValue(buffer, isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
+        diff.forEach(diffValue => setExtendedValue(buffer, diffValue));
     });
 };
 
 
-CommandBinaryBuffer.prototype.getDataSegment = function (): IDataSegment {
-    const segmentationSessionId = this.getUint8();
-    const flag = this.getUint8();
+export const getDataSegment = function ( buffer: IBinaryBuffer ): IDataSegment {
+    const segmentationSessionId = buffer.getUint8();
+    const flag = buffer.getUint8();
 
     return {
         segmentationSessionId,
         segmentIndex: extractBits(flag, 3, 1),
         segmentsNumber: extractBits(flag, 3, 5),
         isLast: Boolean(extractBits(flag, 1, 8)),
-        data: this.getBytesLeft()
+        data: buffer.getBytesLeft()
     };
 };
 
 
-CommandBinaryBuffer.prototype.setDataSegment = function ( parameters: IDataSegment ) {
+export const setDataSegment = function ( buffer: IBinaryBuffer, parameters: IDataSegment ) {
     let flag = fillBits(0, 3, 1, parameters.segmentIndex);
     flag = fillBits(flag, 3, 5, parameters.segmentsNumber);
     flag = fillBits(flag, 1, 8, +parameters.isLast);
 
-    this.setUint8(parameters.segmentationSessionId);
-    this.setUint8(flag);
-    this.setBytes(parameters.data);
+    buffer.setUint8(parameters.segmentationSessionId);
+    buffer.setUint8(flag);
+    buffer.setBytes(parameters.data);
 };
 
 
-CommandBinaryBuffer.prototype.getBinarySensor = function (): IParameterBinarySensor {
-    const activeStateTimeMs = this.getUint16();
+export const getBinarySensor = function ( buffer: IBinaryBuffer ): IParameterBinarySensor {
+    const activeStateTimeMs = buffer.getUint16();
 
     return {activeStateTimeMs};
 };
 
 
-CommandBinaryBuffer.prototype.setBinarySensor = function ( parameters: IParameterBinarySensor ) {
-    this.setUint16(parameters.activeStateTimeMs);
+export const setBinarySensor = function ( buffer: IBinaryBuffer, parameters: IParameterBinarySensor ) {
+    buffer.setUint16(parameters.activeStateTimeMs);
 };
 
 
-CommandBinaryBuffer.prototype.getTemperatureSensor = function (): IParameterTemperatureSensor {
-    const measurementPeriod = this.getUint16();
-    const hysteresisSec = this.getUint8();
-    const highTemperatureThreshold = this.getInt8();
-    const lowTemperatureThreshold = this.getInt8();
+export const getTemperatureSensor = function ( buffer: IBinaryBuffer ): IParameterTemperatureSensor {
+    const measurementPeriod = buffer.getUint16();
+    const hysteresisSec = buffer.getUint8();
+    const highTemperatureThreshold = buffer.getInt8();
+    const lowTemperatureThreshold = buffer.getInt8();
 
     return {
         measurementPeriod,
@@ -2650,26 +2659,26 @@ CommandBinaryBuffer.prototype.getTemperatureSensor = function (): IParameterTemp
     };
 };
 
-CommandBinaryBuffer.prototype.setTemperatureSensor = function ( parameters: IParameterTemperatureSensor ) {
-    this.setInt16(parameters.measurementPeriod);
-    this.setInt8(parameters.hysteresisSec);
-    this.setInt8(parameters.highTemperatureThreshold);
-    this.setInt8(parameters.lowTemperatureThreshold);
+export const setTemperatureSensor = function ( buffer: IBinaryBuffer, parameters: IParameterTemperatureSensor ) {
+    buffer.setUint16(parameters.measurementPeriod);
+    buffer.setUint8(parameters.hysteresisSec);
+    buffer.setInt8(parameters.highTemperatureThreshold);
+    buffer.setInt8(parameters.lowTemperatureThreshold);
 };
 
 
-CommandBinaryBuffer.prototype.getChannelType = function (): IParameterChannelType {
-    const channel = this.getChannelValue();
-    const type = this.getUint8();
+export const getChannelType = function ( buffer: IBinaryBuffer ): IParameterChannelType {
+    const channel = getChannelValue(buffer);
+    const type = buffer.getUint8();
     let parameters = {};
 
     switch ( type ) {
         case channelTypes.BINARY_SENSOR:
-            parameters = this.getBinarySensor();
+            parameters = getBinarySensor(buffer);
             break;
 
         case channelTypes.TEMPERATURE_SENSOR:
-            parameters = this.getTemperatureSensor();
+            parameters = getTemperatureSensor(buffer);
             break;
 
         default:
@@ -2684,17 +2693,17 @@ CommandBinaryBuffer.prototype.getChannelType = function (): IParameterChannelTyp
 };
 
 
-CommandBinaryBuffer.prototype.setChannelType = function ( {type, channel, parameters}: IParameterChannelType ) {
-    this.setChannelValue(channel);
-    this.setUint8(type);
+export const setChannelType = function ( buffer: IBinaryBuffer, {type, channel, parameters}: IParameterChannelType ) {
+    setChannelValue(buffer, channel);
+    buffer.setUint8(type);
 
     switch ( type ) {
         case channelTypes.BINARY_SENSOR:
-            this.setBinarySensor(parameters as IParameterBinarySensor);
+            setBinarySensor(buffer, parameters as IParameterBinarySensor);
             break;
 
         case channelTypes.TEMPERATURE_SENSOR:
-            this.setTemperatureSensor(parameters as IParameterTemperatureSensor);
+            setTemperatureSensor(buffer, parameters as IParameterTemperatureSensor);
             break;
 
         default:
@@ -2703,4 +2712,4 @@ CommandBinaryBuffer.prototype.setChannelType = function ( {type, channel, parame
 };
 
 
-export default CommandBinaryBuffer;
+// export default CommandBinaryBuffer;

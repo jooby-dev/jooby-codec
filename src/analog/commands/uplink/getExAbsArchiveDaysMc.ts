@@ -34,7 +34,18 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelArchiveDaysAbsolute} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelArchiveDaysAbsolute,
+    getExtendedValue,
+    setExtendedValue,
+    getChannels,
+    setChannels,
+    getDate,
+    setDate,
+    getPulseCoefficient,
+    setPulseCoefficient
+} from '../../utils/CommandBinaryBuffer.js';
 import * as archive from '../../constants/archive.js';
 import {getExAbsArchiveDaysMc as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -94,15 +105,15 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetExAbsArchiveDaysMcResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
-    const channels = buffer.getChannels();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const channels = getChannels(buffer);
     const days = buffer.getUint8();
     const channelList: Array<IChannelArchiveDaysAbsolute> = [];
 
     channels.forEach(channelIndex => {
         const dayList: Array<number> = [];
-        const pulseCoefficient = buffer.getPulseCoefficient();
+        const pulseCoefficient = getPulseCoefficient(buffer);
 
         channelList.push({
             pulseCoefficient,
@@ -111,7 +122,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetExAbsArchiveDaysMcResponse
         });
 
         for ( let day = 0; day < days; ++day ) {
-            const value = buffer.getExtendedValue();
+            const value = getExtendedValue(buffer);
 
             dayList.push(value === archive.EMPTY_VALUE ? 0 : value);
         }
@@ -128,17 +139,18 @@ export const fromBytes = ( bytes: types.TBytes ): IGetExAbsArchiveDaysMcResponse
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetExAbsArchiveDaysMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {channelList, startTime2000, days} = parameters;
 
-    buffer.setDate(startTime2000);
-    buffer.setChannels(channelList);
+    setDate(buffer, startTime2000);
+    setChannels(buffer, channelList);
     buffer.setUint8(days);
 
     channelList.forEach(({pulseCoefficient, dayList}) => {
-        buffer.setPulseCoefficient(pulseCoefficient);
+        setPulseCoefficient(buffer, pulseCoefficient);
+
         dayList.forEach(value => {
-            buffer.setExtendedValue(value === 0 ? archive.EMPTY_VALUE : value);
+            setExtendedValue(buffer, value === 0 ? archive.EMPTY_VALUE : value);
         });
     });
 

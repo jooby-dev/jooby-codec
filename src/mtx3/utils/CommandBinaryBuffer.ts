@@ -6,16 +6,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import * as types from '../types.js';
-import MtxBinaryBuffer, {
-    ICommandBinaryBuffer as IMtxCommandBinaryBuffer,
+import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
+import {
+    // ICommandBinaryBuffer as IMtxCommandBinaryBuffer,
     IEvent,
     TARIFF_NUMBER,
     DATE_SIZE,
-    ENERGY_SIZE
+    ENERGY_SIZE,
+    getDateTime,
+    setDateTime,
+    getDate,
+    setDate
 } from '../../mtx1/utils/CommandBinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import {TEnergyType} from '../types.js';
-import {displayModes, baudRates, events, eventNames} from '../constants/index.js';
+import {baudRates, events, eventNames} from '../constants/index.js';
 
 
 export interface IDisplaySet1OperatorParameter {
@@ -1201,7 +1206,7 @@ export interface IPackedEnergiesWithType {
  *
  * In previous versions, this field also included tariff information.
  */
-type TEnergyPeriods = Array<types.TUint32 | undefined>;
+type TEnergyPeriods = Array<types.TUint16 | undefined>;
 
 export interface IGetHalfHourDemandResponseParameters {
     date: types.IDate,
@@ -1859,7 +1864,7 @@ const setSpeedOptoPort = ( speedOptoPort: ISpeedOptoPortOperatorParameter ): num
     return result;
 };
 
-function getPackedEnergies ( buffer: ICommandBinaryBuffer, energyType: TEnergyType, tariffMapByte: number ): IEnergies {
+function getPackedEnergies ( buffer: IBinaryBuffer, energyType: TEnergyType, tariffMapByte: number ): IEnergies {
     const byte = tariffMapByte >> ENERGY_TYPE_BITS;
     const wh = [];
     const vari = [];
@@ -1902,64 +1907,64 @@ function getPackedEnergyType ( energyType: TEnergyType, energies: IEnergies ) {
 }
 
 
-export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
-    // static methods
-    getDefaultOperatorParameters (): IOperatorParameters,
-    getDefaultOperatorParametersExtended (): IOperatorParametersExtended,
-    getDefaultOperatorParametersExtended2 (): IOperatorParametersExtended2,
+// export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
+// static methods
+// getDefaultOperatorParameters (): IOperatorParameters,
+// getDefaultOperatorParametersExtended (): IOperatorParametersExtended,
+// getDefaultOperatorParametersExtended2 (): IOperatorParametersExtended2,
 
-    // instance methods
-    // getFrameHeader (): IFrameHeader,
-    // setFrameHeader ( frameHeader: IFrameHeader ),
+// instance methods
+// getFrameHeader (): IFrameHeader,
+// setFrameHeader ( frameHeader: IFrameHeader ),
 
-    getOperatorParameters(): IOperatorParameters,
-    setOperatorParameters ( operatorParameters: IOperatorParameters),
+// getOperatorParameters(): IOperatorParameters,
+// setOperatorParameters ( operatorParameters: IOperatorParameters),
 
-    getOperatorParametersExtended(): IOperatorParametersExtended,
-    setOperatorParametersExtended ( operatorParametersExtended: IOperatorParametersExtended),
+// getOperatorParametersExtended(): IOperatorParametersExtended,
+// setOperatorParametersExtended ( operatorParametersExtended: IOperatorParametersExtended),
 
-    getEnergies(): IEnergies,
-    setEnergies ( energies: IEnergies ),
+// getEnergies(): IEnergies,
+// setEnergies ( energies: IEnergies ),
 
-    getPackedEnergyWithType (): IPackedEnergiesWithType,
-    setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ),
+// getPackedEnergyWithType (): IPackedEnergiesWithType,
+// setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ),
 
-    getEnergyPeriods ( energiesNumber: number ): TEnergyPeriods,
-    setEnergyPeriods ( energies: TEnergyPeriods ),
+// getEnergyPeriods ( energiesNumber: number ): TEnergyPeriods,
+// setEnergyPeriods ( energies: TEnergyPeriods ),
 
-    getMaxDemand (): IMaxDemand,
-    setMaxDemand ( maxDemand: IMaxDemand ),
+// getMaxDemand (): IMaxDemand,
+// setMaxDemand ( maxDemand: IMaxDemand ),
 
-    getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
-    setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
+// getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
+// setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
 
-    getMonthMaxDemandResponse (): IGetMonthMaxDemandResponseParameters,
-    setMonthMaxDemandResponse ( event: IGetMonthMaxDemandResponseParameters ),
+// getMonthMaxDemandResponse (): IGetMonthMaxDemandResponseParameters,
+// setMonthMaxDemandResponse ( event: IGetMonthMaxDemandResponseParameters ),
 
-    getEvent (): IEvent,
-    setEvent ( event: IEvent ),
+// getEvent (): IEvent,
+// setEvent ( event: IEvent ),
 
-    getDemand (): IGetDemandParameters,
-    setDemand ( parameters: IGetDemandParameters ),
+// getDemand (): IGetDemandParameters,
+// setDemand ( parameters: IGetDemandParameters ),
 
-    getOperatorParametersExtended2(): IOperatorParametersExtended2,
-    setOperatorParametersExtended2 ( operatorParametersExtended: IOperatorParametersExtended2 )
+// getOperatorParametersExtended2(): IOperatorParametersExtended2,
+// setOperatorParametersExtended2 ( operatorParametersExtended: IOperatorParametersExtended2 )
 
-    getOperatorParametersExtended4(): IOperatorParametersExtended4,
-    setOperatorParametersExtended4 ( operatorParametersExtended: IOperatorParametersExtended4 )
-}>;
+// getOperatorParametersExtended4(): IOperatorParametersExtended4,
+// setOperatorParametersExtended4 ( operatorParametersExtended: IOperatorParametersExtended4 )
+// }>;
 
 
-function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
-    MtxBinaryBuffer.call(this, dataOrLength, isLittleEndian);
-}
+// function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
+//     MtxBinaryBuffer.call(this, dataOrLength, isLittleEndian);
+// }
 
 // extending
-CommandBinaryBuffer.prototype = Object.create(MtxBinaryBuffer.prototype);
-CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
+// CommandBinaryBuffer.prototype = Object.create(MtxBinaryBuffer.prototype);
+// CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
 
 
-CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => ({
+export const getDefaultOperatorParameters = (): IOperatorParameters => ({
     vpThreshold: 265000,
     vThreshold: 156000,
     ipThreshold: 120000,
@@ -2004,14 +2009,14 @@ CommandBinaryBuffer.getDefaultOperatorParameters = (): IOperatorParameters => ({
     displaySet4: (bitSet.toObject(displaySet4Mask, 2147876864) as unknown) as IDisplaySet4OperatorParameter
 });
 
-CommandBinaryBuffer.getDefaultOperatorParametersExtended = (): IOperatorParametersExtended => ({
+export const getDefaultOperatorParametersExtended = (): IOperatorParametersExtended => ({
     timeoutRelayOn: 1,
     define1: (bitSet.toObject(define1Mask, 0) as unknown) as IDefine1OperatorParameterExtended,
     timeoutRelayKey: 0,
     timeoutRelayAuto: 5
 });
 
-CommandBinaryBuffer.getDefaultOperatorParametersExtended2 = (): IOperatorParametersExtended2 => ({
+export const getDefaultOperatorParametersExtended2 = (): IOperatorParametersExtended2 => ({
     deltaCorMin: 0,
     timeoutMagnetOff: 5,
     relaySetExt: (bitSet.toObject(relaySetExtMask, 0) as unknown) as IRelaySetExtOperatorParameter2,
@@ -2031,7 +2036,7 @@ CommandBinaryBuffer.getDefaultOperatorParametersExtended2 = (): IOperatorParamet
     timeCorrectPassHalfhour: false
 });
 
-CommandBinaryBuffer.getDefaultOperatorParametersExtended3 = MtxBinaryBuffer.getDefaultOperatorParametersExtended3;
+export {getDefaultOperatorParametersExtended3} from '../../mtx1/utils/CommandBinaryBuffer.js';
 
 
 // CommandBinaryBuffer.prototype.getFrameHeader = function (): IFrameHeader {
@@ -2052,144 +2057,144 @@ CommandBinaryBuffer.getDefaultOperatorParametersExtended3 = MtxBinaryBuffer.getD
 //     this.setUint16(source);
 // };
 
-CommandBinaryBuffer.prototype.getOperatorParameters = function (): IOperatorParameters {
+export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperatorParameters {
     return {
-        vpThreshold: this.getUint32(),
-        vThreshold: this.getUint32(),
-        ipThreshold: this.getUint32(),
-        pmaxThreshold0: this.getUint32(),
-        pmaxThreshold1: this.getUint32(),
-        pmaxThreshold2: this.getUint32(),
-        pmaxThreshold3: this.getUint32(),
-        rmaxThreshold0: this.getUint32(),
-        rmaxThreshold1: this.getUint32(),
-        rmaxThreshold2: this.getUint32(),
-        rmaxThreshold3: this.getUint32(),
-        tint: this.getUint8(),
-        calcPeriodDate: this.getUint8(),
-        timeoutDisplay: this.getUint8(),
-        timeoutScreen: this.getUint8(),
-        displaySet1: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
-        displaySet2: (bitSet.toObject(displaySet2Mask, this.getUint32()) as unknown) as IDisplaySet2OperatorParameter,
-        displaySet3: (bitSet.toObject(displaySet3Mask, this.getUint32()) as unknown) as IDisplaySet3OperatorParameter,
-        relaySet: (bitSet.toObject(relaySetMask, this.getUint32()) as unknown) as IRelaySetOperatorParameter,
-        speedOptoPort: getSpeedOptoPort(this.getUint8()),
-        ten: this.getUint8(),
-        tu: this.getUint8(),
-        timeIntervalPowerOff: this.getUint8(),
-        reserved: this.getUint8(),
-        timeoutBadVAVB: this.getUint8(),
-        freqMax: this.getUint8(),
-        freqMin: this.getUint8(),
-        year: this.getUint8(),
-        month: this.getUint8(),
-        date: this.getUint8(),
-        energyDecimalPoint: this.getUint8(),
-        voltageTransformationRatioNumerator: this.getUint16(),
-        voltageTransformationRatioDenominator: this.getUint16(),
-        currentTransformationRatioNumerator: this.getUint16(),
-        currentTransformationRatioDenominator: this.getUint16(),
-        typeMeter: (bitSet.toObject(typeMeterMask, this.getUint8()) as unknown) as ITypeMeterOperatorParameter,
-        phMin: this.getUint16(),
-        timeoutIMax: this.getUint8(),
-        timeoutPMax: this.getUint8(),
-        timeoutCos: this.getUint8(),
-        pMaxDef: this.getUint8(),
-        displaySet4: (bitSet.toObject(displaySet4Mask, this.getUint32()) as unknown) as IDisplaySet4OperatorParameter
+        vpThreshold: buffer.getUint32(),
+        vThreshold: buffer.getUint32(),
+        ipThreshold: buffer.getUint32(),
+        pmaxThreshold0: buffer.getUint32(),
+        pmaxThreshold1: buffer.getUint32(),
+        pmaxThreshold2: buffer.getUint32(),
+        pmaxThreshold3: buffer.getUint32(),
+        rmaxThreshold0: buffer.getUint32(),
+        rmaxThreshold1: buffer.getUint32(),
+        rmaxThreshold2: buffer.getUint32(),
+        rmaxThreshold3: buffer.getUint32(),
+        tint: buffer.getUint8(),
+        calcPeriodDate: buffer.getUint8(),
+        timeoutDisplay: buffer.getUint8(),
+        timeoutScreen: buffer.getUint8(),
+        displaySet1: (bitSet.toObject(displaySet1Mask, buffer.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet2: (bitSet.toObject(displaySet2Mask, buffer.getUint32()) as unknown) as IDisplaySet2OperatorParameter,
+        displaySet3: (bitSet.toObject(displaySet3Mask, buffer.getUint32()) as unknown) as IDisplaySet3OperatorParameter,
+        relaySet: (bitSet.toObject(relaySetMask, buffer.getUint32()) as unknown) as IRelaySetOperatorParameter,
+        speedOptoPort: getSpeedOptoPort(buffer.getUint8()),
+        ten: buffer.getUint8(),
+        tu: buffer.getUint8(),
+        timeIntervalPowerOff: buffer.getUint8(),
+        reserved: buffer.getUint8(),
+        timeoutBadVAVB: buffer.getUint8(),
+        freqMax: buffer.getUint8(),
+        freqMin: buffer.getUint8(),
+        year: buffer.getUint8(),
+        month: buffer.getUint8(),
+        date: buffer.getUint8(),
+        energyDecimalPoint: buffer.getUint8(),
+        voltageTransformationRatioNumerator: buffer.getUint16(),
+        voltageTransformationRatioDenominator: buffer.getUint16(),
+        currentTransformationRatioNumerator: buffer.getUint16(),
+        currentTransformationRatioDenominator: buffer.getUint16(),
+        typeMeter: (bitSet.toObject(typeMeterMask, buffer.getUint8()) as unknown) as ITypeMeterOperatorParameter,
+        phMin: buffer.getUint16(),
+        timeoutIMax: buffer.getUint8(),
+        timeoutPMax: buffer.getUint8(),
+        timeoutCos: buffer.getUint8(),
+        pMaxDef: buffer.getUint8(),
+        displaySet4: (bitSet.toObject(displaySet4Mask, buffer.getUint32()) as unknown) as IDisplaySet4OperatorParameter
     };
 };
 
-CommandBinaryBuffer.prototype.setOperatorParameters = function ( operatorParameters: IOperatorParameters ) {
-    this.setUint32(operatorParameters.vpThreshold);
-    this.setUint32(operatorParameters.vThreshold);
-    this.setUint32(operatorParameters.ipThreshold);
-    this.setUint32(operatorParameters.pmaxThreshold0);
-    this.setUint32(operatorParameters.pmaxThreshold1);
-    this.setUint32(operatorParameters.pmaxThreshold2);
-    this.setUint32(operatorParameters.pmaxThreshold3);
-    this.setUint32(operatorParameters.rmaxThreshold0);
-    this.setUint32(operatorParameters.rmaxThreshold1);
-    this.setUint32(operatorParameters.rmaxThreshold2);
-    this.setUint32(operatorParameters.rmaxThreshold3);
-    this.setUint8(operatorParameters.tint);
-    this.setUint8(operatorParameters.calcPeriodDate);
-    this.setUint8(operatorParameters.timeoutDisplay);
-    this.setUint8(operatorParameters.timeoutScreen);
-    this.setUint32(bitSet.fromObject(displaySet1Mask, (operatorParameters.displaySet1 as unknown) as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet2Mask, (operatorParameters.displaySet2 as unknown) as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet3Mask, (operatorParameters.displaySet3 as unknown) as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(relaySetMask, (operatorParameters.relaySet as unknown) as bitSet.TBooleanObject));
-    this.setUint8(setSpeedOptoPort(operatorParameters.speedOptoPort));
-    this.setUint8(operatorParameters.ten);
-    this.setUint8(operatorParameters.tu);
-    this.setUint8(operatorParameters.timeIntervalPowerOff);
-    this.setUint8(operatorParameters.reserved);
-    this.setUint8(operatorParameters.timeoutBadVAVB);
-    this.setUint8(operatorParameters.freqMax);
-    this.setUint8(operatorParameters.freqMin);
-    this.setUint8(operatorParameters.year);
-    this.setUint8(operatorParameters.month);
-    this.setUint8(operatorParameters.date);
-    this.setUint8(operatorParameters.energyDecimalPoint);
-    this.setUint16(operatorParameters.voltageTransformationRatioNumerator);
-    this.setUint16(operatorParameters.voltageTransformationRatioDenominator);
-    this.setUint16(operatorParameters.currentTransformationRatioNumerator);
-    this.setUint16(operatorParameters.currentTransformationRatioDenominator);
-    this.setUint8(bitSet.fromObject(typeMeterMask, (operatorParameters.typeMeter as unknown) as bitSet.TBooleanObject));
-    this.setUint16(operatorParameters.phMin);
-    this.setUint8(operatorParameters.timeoutIMax);
-    this.setUint8(operatorParameters.timeoutPMax);
-    this.setUint8(operatorParameters.timeoutCos);
-    this.setUint8(operatorParameters.pMaxDef);
-    this.setUint32(bitSet.fromObject(displaySet4Mask, (operatorParameters.displaySet4 as unknown) as bitSet.TBooleanObject));
+export const setOperatorParameters = function ( buffer: IBinaryBuffer, operatorParameters: IOperatorParameters ) {
+    buffer.setUint32(operatorParameters.vpThreshold);
+    buffer.setUint32(operatorParameters.vThreshold);
+    buffer.setUint32(operatorParameters.ipThreshold);
+    buffer.setUint32(operatorParameters.pmaxThreshold0);
+    buffer.setUint32(operatorParameters.pmaxThreshold1);
+    buffer.setUint32(operatorParameters.pmaxThreshold2);
+    buffer.setUint32(operatorParameters.pmaxThreshold3);
+    buffer.setUint32(operatorParameters.rmaxThreshold0);
+    buffer.setUint32(operatorParameters.rmaxThreshold1);
+    buffer.setUint32(operatorParameters.rmaxThreshold2);
+    buffer.setUint32(operatorParameters.rmaxThreshold3);
+    buffer.setUint8(operatorParameters.tint);
+    buffer.setUint8(operatorParameters.calcPeriodDate);
+    buffer.setUint8(operatorParameters.timeoutDisplay);
+    buffer.setUint8(operatorParameters.timeoutScreen);
+    buffer.setUint32(bitSet.fromObject(displaySet1Mask, (operatorParameters.displaySet1 as unknown) as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet2Mask, (operatorParameters.displaySet2 as unknown) as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet3Mask, (operatorParameters.displaySet3 as unknown) as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(relaySetMask, (operatorParameters.relaySet as unknown) as bitSet.TBooleanObject));
+    buffer.setUint8(setSpeedOptoPort(operatorParameters.speedOptoPort));
+    buffer.setUint8(operatorParameters.ten);
+    buffer.setUint8(operatorParameters.tu);
+    buffer.setUint8(operatorParameters.timeIntervalPowerOff);
+    buffer.setUint8(operatorParameters.reserved);
+    buffer.setUint8(operatorParameters.timeoutBadVAVB);
+    buffer.setUint8(operatorParameters.freqMax);
+    buffer.setUint8(operatorParameters.freqMin);
+    buffer.setUint8(operatorParameters.year);
+    buffer.setUint8(operatorParameters.month);
+    buffer.setUint8(operatorParameters.date);
+    buffer.setUint8(operatorParameters.energyDecimalPoint);
+    buffer.setUint16(operatorParameters.voltageTransformationRatioNumerator);
+    buffer.setUint16(operatorParameters.voltageTransformationRatioDenominator);
+    buffer.setUint16(operatorParameters.currentTransformationRatioNumerator);
+    buffer.setUint16(operatorParameters.currentTransformationRatioDenominator);
+    buffer.setUint8(bitSet.fromObject(typeMeterMask, (operatorParameters.typeMeter as unknown) as bitSet.TBooleanObject));
+    buffer.setUint16(operatorParameters.phMin);
+    buffer.setUint8(operatorParameters.timeoutIMax);
+    buffer.setUint8(operatorParameters.timeoutPMax);
+    buffer.setUint8(operatorParameters.timeoutCos);
+    buffer.setUint8(operatorParameters.pMaxDef);
+    buffer.setUint32(bitSet.fromObject(displaySet4Mask, (operatorParameters.displaySet4 as unknown) as bitSet.TBooleanObject));
 };
 
-CommandBinaryBuffer.prototype.getOperatorParametersExtended = function (): IOperatorParametersExtended {
+export const getOperatorParametersExtended = function ( buffer: IBinaryBuffer ): IOperatorParametersExtended {
     return {
-        timeoutRelayOn: this.getUint8(),
-        define1: (bitSet.toObject(define1Mask, this.getUint8()) as unknown) as IDefine1OperatorParameterExtended,
-        timeoutRelayKey: this.getUint8(),
-        timeoutRelayAuto: this.getUint8()
+        timeoutRelayOn: buffer.getUint8(),
+        define1: (bitSet.toObject(define1Mask, buffer.getUint8()) as unknown) as IDefine1OperatorParameterExtended,
+        timeoutRelayKey: buffer.getUint8(),
+        timeoutRelayAuto: buffer.getUint8()
     };
 };
 
-CommandBinaryBuffer.prototype.setOperatorParametersExtended = function ( operatorParametersExtended: IOperatorParametersExtended ) {
-    this.setUint8(operatorParametersExtended.timeoutRelayOn);
-    this.setUint8(bitSet.fromObject(define1Mask, (operatorParametersExtended.define1 as unknown) as bitSet.TBooleanObject));
-    this.setUint8(operatorParametersExtended.timeoutRelayKey);
-    this.setUint8(operatorParametersExtended.timeoutRelayAuto);
+export const setOperatorParametersExtended = function ( buffer: IBinaryBuffer, operatorParametersExtended: IOperatorParametersExtended ) {
+    buffer.setUint8(operatorParametersExtended.timeoutRelayOn);
+    buffer.setUint8(bitSet.fromObject(define1Mask, (operatorParametersExtended.define1 as unknown) as bitSet.TBooleanObject));
+    buffer.setUint8(operatorParametersExtended.timeoutRelayKey);
+    buffer.setUint8(operatorParametersExtended.timeoutRelayAuto);
     // reserved1
-    this.setUint32(0);
+    buffer.setUint32(0);
     // reserved2
-    this.setUint8(0);
+    buffer.setUint8(0);
 };
 
-CommandBinaryBuffer.prototype.getEnergies = function (): IEnergies {
+export const getEnergies = function ( buffer: IBinaryBuffer ): IEnergies {
     const wh = [];
     const vari = [];
     const vare = [];
 
     for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
-        wh.push(this.getInt32());
-        vari.push(this.getInt32());
-        vare.push(this.getInt32());
+        wh.push(buffer.getInt32());
+        vari.push(buffer.getInt32());
+        vare.push(buffer.getInt32());
     }
 
     return {wh, vari, vare};
 };
 
-CommandBinaryBuffer.prototype.setEnergies = function ( parameters: IEnergies ) {
+export const setEnergies = function ( buffer: IBinaryBuffer, parameters: IEnergies ) {
     for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
-        this.setInt32(parameters.wh[index]);
-        this.setInt32(parameters.vari[index]);
-        this.setInt32(parameters.vare[index]);
+        buffer.setInt32(parameters.wh[index]);
+        buffer.setInt32(parameters.vari[index]);
+        buffer.setInt32(parameters.vare[index]);
     }
 };
 
-CommandBinaryBuffer.prototype.getPackedEnergyWithType = function (): IPackedEnergiesWithType {
-    const byte = this.getUint8();
+export const getPackedEnergyWithType = function ( buffer: IBinaryBuffer ): IPackedEnergiesWithType {
+    const byte = buffer.getUint8();
     const energyType = bitSet.extractBits(byte, ENERGY_TYPE_BITS, 1);
-    const energies = getPackedEnergies(this, energyType, byte);
+    const energies = getPackedEnergies(buffer, energyType, byte);
 
     return {
         energyType,
@@ -2197,19 +2202,19 @@ CommandBinaryBuffer.prototype.getPackedEnergyWithType = function (): IPackedEner
     };
 };
 
-CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, energies}: IPackedEnergiesWithType ) {
+export const setPackedEnergyWithType = function ( buffer: IBinaryBuffer, {energyType, energies}: IPackedEnergiesWithType ) {
     if ( energyType ) {
         const energyTypeByte = getPackedEnergyType(energyType, energies);
         const tariffsByte = energyTypeByte >> ENERGY_TYPE_BITS;
-        this.setUint8(energyTypeByte);
+        buffer.setUint8(energyTypeByte);
 
         for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
             const isTariffExists = !!bitSet.extractBits(tariffsByte, 1, index + 1);
 
             if ( isTariffExists ) {
-                this.setInt32(energies.wh[index]);
-                this.setInt32(energies.vari[index]);
-                this.setInt32(energies.vare[index]);
+                buffer.setInt32(energies.wh[index]);
+                buffer.setInt32(energies.vari[index]);
+                buffer.setInt32(energies.vare[index]);
             }
         }
 
@@ -2217,95 +2222,95 @@ CommandBinaryBuffer.prototype.setPackedEnergyWithType = function ( {energyType, 
     }
 
     for ( let index = 0; index < TARIFF_NUMBER; index++ ) {
-        this.setInt32(energies.wh[index]);
-        this.setInt32(energies.vari[index]);
-        this.setInt32(energies.vare[index]);
+        buffer.setInt32(energies.wh[index]);
+        buffer.setInt32(energies.vari[index]);
+        buffer.setInt32(energies.vare[index]);
     }
 };
 
-CommandBinaryBuffer.prototype.getEnergyPeriods = function ( energiesNumber: number ): TEnergyPeriods {
+export const getEnergyPeriods = function ( buffer: IBinaryBuffer, energiesNumber: number ): TEnergyPeriods {
     return new Array(energiesNumber).fill(0).map(() => {
-        const energy = this.getUint16();
+        const energy = buffer.getUint16();
 
         return energy === 0xffff ? undefined : energy;
     });
 };
 
-CommandBinaryBuffer.prototype.setEnergyPeriods = function ( energies: TEnergyPeriods ) {
-    energies.forEach(energy => this.setUint16(energy === undefined ? 0xffff : energy));
+export const setEnergyPeriods = function ( buffer: IBinaryBuffer, energies: TEnergyPeriods ) {
+    energies.forEach(energy => buffer.setUint16(energy === undefined ? 0xffff : energy));
 };
 
-CommandBinaryBuffer.prototype.getMaxDemand = function (): IMaxDemand {
+export const getMaxDemand = function ( buffer: IBinaryBuffer ): IMaxDemand {
     return {
-        hourPmax: this.getUint8(),
-        minPmax: this.getUint8(),
-        pmax: this.getInt32(),
-        hourVariMax: this.getUint8(),
-        minVariMax: this.getUint8(),
-        variMax: this.getInt32(),
-        hourVareMax: this.getUint8(),
-        minVareMax: this.getUint8(),
-        vareMax: this.getInt32()
+        hourPmax: buffer.getUint8(),
+        minPmax: buffer.getUint8(),
+        pmax: buffer.getInt32(),
+        hourVariMax: buffer.getUint8(),
+        minVariMax: buffer.getUint8(),
+        variMax: buffer.getInt32(),
+        hourVareMax: buffer.getUint8(),
+        minVareMax: buffer.getUint8(),
+        vareMax: buffer.getInt32()
     };
 };
 
-CommandBinaryBuffer.prototype.setMaxDemand = function ( maxDemand: IMaxDemand ) {
-    this.setUint8(maxDemand.hourPmax);
-    this.setUint8(maxDemand.minPmax);
-    this.setInt32(maxDemand.pmax);
-    this.setUint8(maxDemand.hourVariMax);
-    this.setUint8(maxDemand.minVariMax);
-    this.setInt32(maxDemand.variMax);
-    this.setUint8(maxDemand.hourVareMax);
-    this.setUint8(maxDemand.minVareMax);
-    this.setInt32(maxDemand.vareMax);
+export const setMaxDemand = function ( buffer: IBinaryBuffer, maxDemand: IMaxDemand ) {
+    buffer.setUint8(maxDemand.hourPmax);
+    buffer.setUint8(maxDemand.minPmax);
+    buffer.setInt32(maxDemand.pmax);
+    buffer.setUint8(maxDemand.hourVariMax);
+    buffer.setUint8(maxDemand.minVariMax);
+    buffer.setInt32(maxDemand.variMax);
+    buffer.setUint8(maxDemand.hourVareMax);
+    buffer.setUint8(maxDemand.minVareMax);
+    buffer.setInt32(maxDemand.vareMax);
 };
 
-CommandBinaryBuffer.prototype.getDayMaxDemandResponse = function (): IGetDayMaxDemandResponseParameters {
-    const date = this.getDate();
+export const getDayMaxDemandResponse = function ( buffer: IBinaryBuffer ): IGetDayMaxDemandResponseParameters {
+    const date = getDate(buffer);
 
     // 4 tariffs
-    const maxDemands = new Array(TARIFF_NUMBER).fill(0).map(() => this.getMaxDemand());
+    const maxDemands = new Array(TARIFF_NUMBER).fill(0).map(() => getMaxDemand(buffer));
 
     return {date, maxDemands};
 };
 
-CommandBinaryBuffer.prototype.setDayMaxDemandResponse = function ( parameters: IGetDayMaxDemandResponseParameters ) {
-    this.setDate(parameters.date);
+export const setDayMaxDemandResponse = function ( buffer: IBinaryBuffer, parameters: IGetDayMaxDemandResponseParameters ) {
+    setDate(buffer, parameters.date);
 
     // 4 tariffs
-    parameters.maxDemands.forEach(value => this.setMaxDemand(value));
+    parameters.maxDemands.forEach(value => setMaxDemand(buffer, value));
 };
 
-CommandBinaryBuffer.prototype.getMonthMaxDemandResponse = function (): IGetMonthMaxDemandResponseParameters {
+export const getMonthMaxDemandResponse = function ( buffer: IBinaryBuffer ): IGetMonthMaxDemandResponseParameters {
     const date = {
-        year: this.getUint8(),
-        month: this.getUint8()
+        year: buffer.getUint8() as unknown as types.TYear2000,
+        month: buffer.getUint8() as unknown as types.TMonth
     };
 
     // 4 tariffs
-    const maxDemands = new Array(TARIFF_NUMBER).fill(0).map(() => this.getMaxDemand());
+    const maxDemands = new Array(TARIFF_NUMBER).fill(0).map(() => getMaxDemand(buffer));
 
     return {date, maxDemands};
 };
 
-CommandBinaryBuffer.prototype.setMonthMaxDemandResponse = function ( parameters: IGetMonthMaxDemandResponseParameters ) {
-    this.setUint8(parameters.date.year);
-    this.setUint8(parameters.date.month);
+export const setMonthMaxDemandResponse = function ( buffer: IBinaryBuffer, parameters: IGetMonthMaxDemandResponseParameters ) {
+    buffer.setUint8(parameters.date.year as unknown as types.TUint8);
+    buffer.setUint8(parameters.date.month as unknown as types.TUint8);
 
     // 4 tariffs
-    parameters.maxDemands.forEach(value => this.setMaxDemand(value));
+    parameters.maxDemands.forEach(value => setMaxDemand(buffer, value));
 };
 
-CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
+export const getEvent = function ( buffer: IBinaryBuffer ): IEvent {
     const data: IEvent = {
-        hours: this.getUint8(),
-        minutes: this.getUint8(),
-        seconds: this.getUint8(),
-        event: this.getUint8()
+        hours: buffer.getUint8(),
+        minutes: buffer.getUint8(),
+        seconds: buffer.getUint8(),
+        event: buffer.getUint8()
     };
     const {event} = data;
-    const {bytesLeft} = this;
+    const {bytesLeft} = buffer;
 
     data.eventName = eventNames[event];
 
@@ -2315,7 +2320,7 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
                 return data;
             }
 
-            data.power = [this.getUint8(), this.getUint8(), this.getUint8(), this.getUint8()];
+            data.power = [buffer.getUint8(), buffer.getUint8(), buffer.getUint8(), buffer.getUint8()];
             break;
 
         case events.CMD_CHANGE_TIME:
@@ -2324,7 +2329,7 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
                 return data;
             }
 
-            data.newDate = this.getDateTime();
+            data.newDate = getDateTime(buffer);
             break;
 
         default:
@@ -2334,31 +2339,31 @@ CommandBinaryBuffer.prototype.getEvent = function (): IEvent {
     return data;
 };
 
-CommandBinaryBuffer.prototype.setEvent = function ( event: IEvent ) {
-    this.setUint8(event.hours);
-    this.setUint8(event.minutes);
-    this.setUint8(event.seconds);
-    this.setUint8(event.event);
+export const setEvent = function ( buffer: IBinaryBuffer, event: IEvent ) {
+    buffer.setUint8(event.hours);
+    buffer.setUint8(event.minutes);
+    buffer.setUint8(event.seconds);
+    buffer.setUint8(event.event);
 
     switch ( event.event ) {
         case events.POWER_OVER_RELAY_OFF:
             for ( const item of event.power ) {
-                this.setUint8(item);
+                buffer.setUint8(item);
             }
             break;
 
         case events.CMD_CHANGE_TIME:
         case events.TIME_CORRECT:
-            this.setDateTime(event.newDate);
+            setDateTime(buffer, event.newDate);
             break;
 
         default: break;
     }
 };
 
-CommandBinaryBuffer.prototype.getDemand = function (): IGetDemandParameters {
-    const date0 = this.getUint8();
-    const date1 = this.getUint8();
+export const getDemand = function ( buffer: IBinaryBuffer ): IGetDemandParameters {
+    const date0 = buffer.getUint8();
+    const date1 = buffer.getUint8();
 
     return {
         date: {
@@ -2366,47 +2371,47 @@ CommandBinaryBuffer.prototype.getDemand = function (): IGetDemandParameters {
             month: ((date0 << 3) & 0x0f) | (date1 >> 5),
             date: date1 & 0x1f
         },
-        demandParam: this.getUint8(),
-        firstIndex: this.getUint16(),
-        count: this.getUint8(),
-        period: this.getUint8()
+        demandParam: buffer.getUint8(),
+        firstIndex: buffer.getUint16(),
+        count: buffer.getUint8(),
+        period: buffer.getUint8()
     };
 };
 
-CommandBinaryBuffer.prototype.setDemand = function ( parameters: IGetDemandParameters ) {
+export const setDemand = function ( buffer: IBinaryBuffer, parameters: IGetDemandParameters ) {
     const date0 = (parameters.date.year << 1) | ((parameters.date.month >> 3) & 0x01);
     const date1 = ((parameters.date.month << 5) & 0xe0) | (parameters.date.date & 0x1f);
 
-    this.setUint8(date0);
-    this.setUint8(date1);
-    this.setUint8(parameters.demandParam);
-    this.setUint16(parameters.firstIndex);
-    this.setUint8(parameters.count);
-    this.setUint8(parameters.period);
+    buffer.setUint8(date0);
+    buffer.setUint8(date1);
+    buffer.setUint8(parameters.demandParam);
+    buffer.setUint16(parameters.firstIndex);
+    buffer.setUint8(parameters.count);
+    buffer.setUint8(parameters.period);
 };
 
-CommandBinaryBuffer.prototype.getOperatorParametersExtended2 = function (): IOperatorParametersExtended2 {
+export const getOperatorParametersExtended2 = function ( buffer: IBinaryBuffer ): IOperatorParametersExtended2 {
     const operatorParametersExtended2 = {
-        deltaCorMin: this.getUint8(),
-        timeoutMagnetOff: this.getUint8(),
-        relaySetExt: (bitSet.toObject(relaySetExtMask, this.getUint8()) as unknown) as IRelaySetExtOperatorParameter2,
-        timeoutMagnetOn: this.getUint8(),
-        defaultPlcPhase: this.getUint8(),
-        displaySet21: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
-        displaySet22: (bitSet.toObject(displaySet2Mask, this.getUint32()) as unknown) as IDisplaySet2OperatorParameter,
-        displaySet23: (bitSet.toObject(displaySet3Mask, this.getUint32()) as unknown) as IDisplaySet3OperatorParameter,
-        displaySet24: (bitSet.toObject(displaySet24Mask, this.getUint32()) as unknown) as IDisplaySet24OperatorParameter2,
-        channel1: this.getUint8(),
-        channel2: this.getUint8(),
-        channel3: this.getUint8(),
-        channel4: this.getUint8(),
-        channel5: this.getUint8(),
-        channel6: this.getUint8(),
+        deltaCorMin: buffer.getUint8(),
+        timeoutMagnetOff: buffer.getUint8(),
+        relaySetExt: (bitSet.toObject(relaySetExtMask, buffer.getUint8()) as unknown) as IRelaySetExtOperatorParameter2,
+        timeoutMagnetOn: buffer.getUint8(),
+        defaultPlcPhase: buffer.getUint8(),
+        displaySet21: (bitSet.toObject(displaySet1Mask, buffer.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet22: (bitSet.toObject(displaySet2Mask, buffer.getUint32()) as unknown) as IDisplaySet2OperatorParameter,
+        displaySet23: (bitSet.toObject(displaySet3Mask, buffer.getUint32()) as unknown) as IDisplaySet3OperatorParameter,
+        displaySet24: (bitSet.toObject(displaySet24Mask, buffer.getUint32()) as unknown) as IDisplaySet24OperatorParameter2,
+        channel1: buffer.getUint8(),
+        channel2: buffer.getUint8(),
+        channel3: buffer.getUint8(),
+        channel4: buffer.getUint8(),
+        channel5: buffer.getUint8(),
+        channel6: buffer.getUint8(),
         timeCorrectPeriod: 0,
         timeCorrectPassHalfhour: false
     };
 
-    const timeCorrectPeriod = this.getUint8();
+    const timeCorrectPeriod = buffer.getUint8();
 
     operatorParametersExtended2.timeCorrectPeriod = timeCorrectPeriod & 0x7f;
     operatorParametersExtended2.timeCorrectPassHalfhour = !!(timeCorrectPeriod & 0x80);
@@ -2414,48 +2419,48 @@ CommandBinaryBuffer.prototype.getOperatorParametersExtended2 = function (): IOpe
     return operatorParametersExtended2;
 };
 
-CommandBinaryBuffer.prototype.setOperatorParametersExtended2 = function ( operatorParametersExtended2: IOperatorParametersExtended2 ) {
+export const setOperatorParametersExtended2 = function ( buffer: IBinaryBuffer, operatorParametersExtended2: IOperatorParametersExtended2 ) {
     const timeCorrectPeriod = operatorParametersExtended2.timeCorrectPeriod
         | (operatorParametersExtended2.timeCorrectPassHalfhour ? 0x80 : 0);
 
-    this.setUint8(operatorParametersExtended2.deltaCorMin);
-    this.setUint8(operatorParametersExtended2.timeoutMagnetOff);
-    this.setUint8(bitSet.fromObject(relaySetExtMask, operatorParametersExtended2.relaySetExt as unknown as bitSet.TBooleanObject));
-    this.setUint8(operatorParametersExtended2.timeoutMagnetOn);
-    this.setUint8(operatorParametersExtended2.defaultPlcPhase);
-    this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended2.displaySet21 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet2Mask, operatorParametersExtended2.displaySet22 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet3Mask, operatorParametersExtended2.displaySet23 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet24Mask, operatorParametersExtended2.displaySet24 as unknown as bitSet.TBooleanObject));
-    this.setUint8(operatorParametersExtended2.channel1);
-    this.setUint8(operatorParametersExtended2.channel2);
-    this.setUint8(operatorParametersExtended2.channel3);
-    this.setUint8(operatorParametersExtended2.channel4);
-    this.setUint8(operatorParametersExtended2.channel5);
-    this.setUint8(operatorParametersExtended2.channel6);
-    this.setUint8(timeCorrectPeriod);
+    buffer.setUint8(operatorParametersExtended2.deltaCorMin);
+    buffer.setUint8(operatorParametersExtended2.timeoutMagnetOff);
+    buffer.setUint8(bitSet.fromObject(relaySetExtMask, operatorParametersExtended2.relaySetExt as unknown as bitSet.TBooleanObject));
+    buffer.setUint8(operatorParametersExtended2.timeoutMagnetOn);
+    buffer.setUint8(operatorParametersExtended2.defaultPlcPhase);
+    buffer.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended2.displaySet21 as unknown as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet2Mask, operatorParametersExtended2.displaySet22 as unknown as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet3Mask, operatorParametersExtended2.displaySet23 as unknown as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet24Mask, operatorParametersExtended2.displaySet24 as unknown as bitSet.TBooleanObject));
+    buffer.setUint8(operatorParametersExtended2.channel1);
+    buffer.setUint8(operatorParametersExtended2.channel2);
+    buffer.setUint8(operatorParametersExtended2.channel3);
+    buffer.setUint8(operatorParametersExtended2.channel4);
+    buffer.setUint8(operatorParametersExtended2.channel5);
+    buffer.setUint8(operatorParametersExtended2.channel6);
+    buffer.setUint8(timeCorrectPeriod);
 };
 
-CommandBinaryBuffer.prototype.getOperatorParametersExtended4 = function (): IOperatorParametersExtended4 {
+export const getOperatorParametersExtended4 = function ( buffer: IBinaryBuffer ): IOperatorParametersExtended4 {
     return {
-        displaySet5: (bitSet.toObject(displaySet5Mask, this.getUint32()) as unknown) as IDisplaySet5OperatorParameter,
-        displaySet25: (bitSet.toObject(displaySet5Mask, this.getUint32()) as unknown) as IDisplaySet5OperatorParameter,
-        displaySet31: (bitSet.toObject(displaySet1Mask, this.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
-        displaySet32: (bitSet.toObject(displaySet2Mask, this.getUint32()) as unknown) as IDisplaySet2OperatorParameter,
-        displaySet33: (bitSet.toObject(displaySet3Mask, this.getUint32()) as unknown) as IDisplaySet3OperatorParameter,
-        displaySet34: (bitSet.toObject(displaySet4Mask, this.getUint32()) as unknown) as IDisplaySet4OperatorParameter,
-        displaySet35: (bitSet.toObject(displaySet5Mask, this.getUint32()) as unknown) as IDisplaySet5OperatorParameter
+        displaySet5: (bitSet.toObject(displaySet5Mask, buffer.getUint32()) as unknown) as IDisplaySet5OperatorParameter,
+        displaySet25: (bitSet.toObject(displaySet5Mask, buffer.getUint32()) as unknown) as IDisplaySet5OperatorParameter,
+        displaySet31: (bitSet.toObject(displaySet1Mask, buffer.getUint32()) as unknown) as IDisplaySet1OperatorParameter,
+        displaySet32: (bitSet.toObject(displaySet2Mask, buffer.getUint32()) as unknown) as IDisplaySet2OperatorParameter,
+        displaySet33: (bitSet.toObject(displaySet3Mask, buffer.getUint32()) as unknown) as IDisplaySet3OperatorParameter,
+        displaySet34: (bitSet.toObject(displaySet4Mask, buffer.getUint32()) as unknown) as IDisplaySet4OperatorParameter,
+        displaySet35: (bitSet.toObject(displaySet5Mask, buffer.getUint32()) as unknown) as IDisplaySet5OperatorParameter
     };
 };
 
-CommandBinaryBuffer.prototype.setOperatorParametersExtended4 = function ( operatorParametersExtended: IOperatorParametersExtended4 ) {
-    this.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet5 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet25 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended.displaySet31 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet2Mask, operatorParametersExtended.displaySet32 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet3Mask, operatorParametersExtended.displaySet33 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet4Mask, operatorParametersExtended.displaySet34 as unknown as bitSet.TBooleanObject));
-    this.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet35 as unknown as bitSet.TBooleanObject));
+export const setOperatorParametersExtended4 = function ( buffer: IBinaryBuffer, operatorParametersExtended: IOperatorParametersExtended4 ) {
+    buffer.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet5 as unknown as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet25 as unknown as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet1Mask, operatorParametersExtended.displaySet31 as unknown as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet2Mask, operatorParametersExtended.displaySet32 as unknown as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet3Mask, operatorParametersExtended.displaySet33 as unknown as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet4Mask, operatorParametersExtended.displaySet34 as unknown as bitSet.TBooleanObject));
+    buffer.setUint32(bitSet.fromObject(displaySet5Mask, operatorParametersExtended.displaySet35 as unknown as bitSet.TBooleanObject));
 };
 
 export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithType ): number => {
@@ -2471,4 +2476,4 @@ export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithTy
 };
 
 
-export default CommandBinaryBuffer;
+// export default CommandBinaryBuffer;

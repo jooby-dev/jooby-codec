@@ -21,7 +21,11 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getTime,
+    setTime
+} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
 import {getArchiveEvents as commandId} from '../../constants/downlinkIds.js';
@@ -75,8 +79,8 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveEventsParameters =>
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const startTime2000 = buffer.getTime();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const startTime2000 = getTime(buffer);
     const events = buffer.getUint8();
 
     if ( !buffer.isEmpty ) {
@@ -95,9 +99,9 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveEventsParameters =>
  */
 export const toBytes = ( parameters: IGetArchiveEventsParameters ): types.TBytes => {
     const {startTime2000, events} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
-    buffer.setTime(startTime2000);
+    setTime(buffer, startTime2000);
     buffer.setUint8(events);
 
     return command.toBytes(id, buffer.data);

@@ -31,7 +31,19 @@ import * as events from '../../constants/events.js';
 import eventNames from '../../constants/eventNames.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 import {TTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IEventMtxStatus, IEventUSWaterMeterStatus} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IEventMtxStatus,
+    IEventUSWaterMeterStatus,
+    getExtendedValue,
+    setExtendedValue,
+    getTime,
+    setTime,
+    getChannelValue,
+    setChannelValue,
+    getEventStatus,
+    setEventStatus
+} from '../../utils/CommandBinaryBuffer.js';
 import getHexFromBytes from '../../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../../utils/getBytesFromHex.js';
 import {newEvent as commandId} from '../../constants/uplinkIds.js';
@@ -253,14 +265,14 @@ export const examples: command.TCommandExamples = {
 };
 
 
-const getVoltage = ( buffer: ICommandBinaryBuffer ): number => buffer.getUint16();
-const setVoltage = ( buffer: ICommandBinaryBuffer, value: number ): void => buffer.setUint16(value);
+const getVoltage = ( buffer: IBinaryBuffer ): number => buffer.getUint16();
+const setVoltage = ( buffer: IBinaryBuffer, value: number ): void => buffer.setUint16(value);
 
-const getDeviceId = ( buffer: ICommandBinaryBuffer ): string => (
+const getDeviceId = ( buffer: IBinaryBuffer ): string => (
     getHexFromBytes(buffer.getBytes(MTX_ADDRESS_SIZE))
 );
 
-const setDeviceId = ( buffer: ICommandBinaryBuffer, value: string ): void => {
+const setDeviceId = ( buffer: IBinaryBuffer, value: string ): void => {
     getBytesFromHex(value).forEach(byte => buffer.setUint8(byte));
 };
 
@@ -276,7 +288,7 @@ export const fromBytes = ( bytes: types.TBytes ): INewEventParameters => {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const eventId = buffer.getUint8();
     const eventName = eventNames[eventId];
     const sequenceNumber = buffer.getUint8();
@@ -297,7 +309,7 @@ export const fromBytes = ( bytes: types.TBytes ): INewEventParameters => {
         case events.DEPASS_DONE:
         case events.WATER_NO_RESPONSE:
         case events.OPTOSENSOR_ERROR:
-            eventData = {time2000: buffer.getTime()};
+            eventData = {time2000: getTime(buffer)};
             break;
 
         case events.BATTERY_ALARM:
@@ -305,31 +317,31 @@ export const fromBytes = ( bytes: types.TBytes ): INewEventParameters => {
             break;
 
         case events.ACTIVATE_MTX:
-            eventData = {time2000: buffer.getTime(), deviceId: getDeviceId(buffer)};
+            eventData = {time2000: getTime(buffer), deviceId: getDeviceId(buffer)};
             break;
 
         case events.CONNECT:
         case events.DISCONNECT:
-            eventData = {channel: buffer.getUint8() + 1, value: buffer.getExtendedValue()};
+            eventData = {channel: buffer.getUint8() + 1, value: getExtendedValue(buffer)};
             break;
 
         case events.MTX:
-            eventData = {status: buffer.getEventStatus(hardwareTypes.MTXLORA)};
+            eventData = {status: getEventStatus(buffer, hardwareTypes.MTXLORA)};
             break;
 
         case events.BINARY_SENSOR_ON:
         case events.BINARY_SENSOR_OFF:
-            eventData = {time2000: buffer.getTime(), channel: buffer.getChannelValue()};
+            eventData = {time2000: getTime(buffer), channel: getChannelValue(buffer)};
             break;
 
         case events.TEMPERATURE_SENSOR_HYSTERESIS:
         case events.TEMPERATURE_SENSOR_LOW_TEMPERATURE:
         case events.TEMPERATURE_SENSOR_HIGH_TEMPERATURE:
-            eventData = {time2000: buffer.getTime(), channel: buffer.getChannelValue(), temperature: buffer.getInt8()};
+            eventData = {time2000: getTime(buffer), channel: getChannelValue(buffer), temperature: buffer.getInt8()};
             break;
 
         case events.WATER_EVENT:
-            eventData = {time2000: buffer.getTime(), status: buffer.getEventStatus(hardwareTypes.US_WATER)};
+            eventData = {time2000: getTime(buffer), status: getEventStatus(buffer, hardwareTypes.US_WATER)};
             break;
 
         default:
@@ -347,7 +359,7 @@ export const fromBytes = ( bytes: types.TBytes ): INewEventParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {id: eventId, sequenceNumber, data} = parameters;
 
     buffer.setUint8(eventId);
@@ -368,7 +380,7 @@ export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
         case events.DEPASS_DONE:
         case events.WATER_NO_RESPONSE:
         case events.OPTOSENSOR_ERROR:
-            buffer.setTime((data as IEventTime).time2000);
+            setTime(buffer, (data as IEventTime).time2000);
             break;
 
         case events.BATTERY_ALARM:
@@ -376,37 +388,37 @@ export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
             break;
 
         case events.ACTIVATE_MTX:
-            buffer.setTime((data as IEventActivateMtx).time2000);
+            setTime(buffer, (data as IEventActivateMtx).time2000);
             setDeviceId(buffer, (data as IEventActivateMtx).deviceId);
             break;
 
         case events.CONNECT:
         case events.DISCONNECT:
             buffer.setUint8((data as IEventConnection).channel - 1);
-            buffer.setExtendedValue((data as IEventConnection).value);
+            setExtendedValue(buffer, (data as IEventConnection).value);
             break;
 
         case events.MTX:
-            buffer.setEventStatus(hardwareTypes.MTXLORA, (data as IEventMtx).status);
+            setEventStatus(buffer, hardwareTypes.MTXLORA, (data as IEventMtx).status);
             break;
 
         case events.BINARY_SENSOR_ON:
         case events.BINARY_SENSOR_OFF:
-            buffer.setTime((data as IEventBinarySensor).time2000);
-            buffer.setChannelValue((data as IEventBinarySensor).channel);
+            setTime(buffer, (data as IEventBinarySensor).time2000);
+            setChannelValue(buffer, (data as IEventBinarySensor).channel);
             break;
 
         case events.TEMPERATURE_SENSOR_HYSTERESIS:
         case events.TEMPERATURE_SENSOR_LOW_TEMPERATURE:
         case events.TEMPERATURE_SENSOR_HIGH_TEMPERATURE:
-            buffer.setTime((data as IEventTemperatureSensor).time2000);
-            buffer.setChannelValue((data as IEventTemperatureSensor).channel);
+            setTime(buffer, (data as IEventTemperatureSensor).time2000);
+            setChannelValue(buffer, (data as IEventTemperatureSensor).channel);
             buffer.setInt8((data as IEventTemperatureSensor).temperature);
             break;
 
         case events.WATER_EVENT:
-            buffer.setTime((data as IEventUSWater).time2000);
-            buffer.setEventStatus(hardwareTypes.US_WATER, (data as IEventUSWater).status);
+            setTime(buffer, (data as IEventUSWater).time2000);
+            setEventStatus(buffer, hardwareTypes.US_WATER, (data as IEventUSWater).status);
             break;
 
         default:

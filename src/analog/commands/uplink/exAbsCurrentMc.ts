@@ -31,7 +31,12 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {IChannelAbsoluteValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelAbsoluteValue,
+    getChannelsWithAbsoluteValues,
+    setChannelsWithAbsoluteValues
+} from '../../utils/CommandBinaryBuffer.js';
 import {exAbsCurrentMc as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -74,9 +79,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IExAbsCurrentMcResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return {channelList: buffer.getChannelsWithAbsoluteValues()};
+    return {channelList: getChannelsWithAbsoluteValues(buffer)};
 };
 
 
@@ -87,9 +92,9 @@ export const fromBytes = ( bytes: types.TBytes ): IExAbsCurrentMcResponseParamet
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IExAbsCurrentMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
 
-    buffer.setChannelsWithAbsoluteValues(parameters.channelList);
+    setChannelsWithAbsoluteValues(buffer, parameters.channelList);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

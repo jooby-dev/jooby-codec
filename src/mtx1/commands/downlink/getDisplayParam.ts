@@ -25,8 +25,8 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
 import {getDisplayParam as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 import {displayModes} from '../../constants/index.js';
@@ -81,7 +81,7 @@ export const fromBytes = ( [displayMode]: types.TBytes ): IGetDisplayParamParame
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDisplayParamParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     buffer.setUint8(parameters.displayMode);
 

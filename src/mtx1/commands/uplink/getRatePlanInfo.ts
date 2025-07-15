@@ -52,8 +52,14 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, ITariffPlan, TARIFF_PLAN_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import {
+    ITariffPlan,
+    TARIFF_PLAN_SIZE,
+    getTariffPlan,
+    setTariffPlan
+} from '../../utils/CommandBinaryBuffer.js';
 import {getRatePlanInfo as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -130,12 +136,12 @@ export const fromBytes = ( bytes: types.TBytes ): IGetRatePlanInfoResponseParame
         throw new Error('Invalid getRatePlanInfo data size.');
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         tariffTable: buffer.getUint8(),
-        activePlan: buffer.getTariffPlan(),
-        passivePlan: buffer.getTariffPlan()
+        activePlan: getTariffPlan(buffer),
+        passivePlan: getTariffPlan(buffer)
     };
 };
 
@@ -147,11 +153,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetRatePlanInfoResponseParame
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetRatePlanInfoResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     buffer.setUint8(parameters.tariffTable);
-    buffer.setTariffPlan(parameters.activePlan);
-    buffer.setTariffPlan(parameters.passivePlan);
+    setTariffPlan(buffer, parameters.activePlan);
+    setTariffPlan(buffer, parameters.passivePlan);
 
     return command.toBytes(id, buffer.data);
 };

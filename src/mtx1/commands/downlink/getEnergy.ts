@@ -24,7 +24,7 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as energyTypes from '../../constants/energyTypes.js';
@@ -100,7 +100,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetEnergyCurrentParameters =>
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetEnergyCurrentParameters = {} ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(parameters?.energyType ? MAX_COMMAND_SIZE : MIN_COMMAND_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(parameters?.energyType ? MAX_COMMAND_SIZE : MIN_COMMAND_SIZE, false);
 
     if ( parameters?.energyType ) {
         // body
