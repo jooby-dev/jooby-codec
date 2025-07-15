@@ -30,7 +30,12 @@
  */
 
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IDeviceType} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IDeviceType,
+    getDeviceType,
+    setDeviceType
+} from '../../utils/CommandBinaryBuffer.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getDeviceType as commandId} from '../../constants/uplinkIds.js';
@@ -97,9 +102,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IDeviceType => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getDeviceType();
+    return getDeviceType(buffer);
 };
 
 
@@ -110,10 +115,10 @@ export const fromBytes = ( bytes: types.TBytes ): IDeviceType => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IDeviceType ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     // body
-    buffer.setDeviceType(parameters);
+    setDeviceType(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

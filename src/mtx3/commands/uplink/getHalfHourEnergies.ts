@@ -39,7 +39,16 @@
 
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, THalfHourEnergies3} from '../../../mtx1/utils/LoraCommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    THalfHourEnergies3,
+    getHalfHourEnergies3,
+    setHalfHourEnergies3,
+    getEnergiesFlags,
+    setEnergiesFlags,
+    getDate,
+    setDate
+} from '../../../mtx1/utils/LoraCommandBinaryBuffer.js';
 import {
     id,
     name,
@@ -99,9 +108,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
-    const energiesFlags = buffer.getEnergiesFlags();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const energiesFlags = getEnergiesFlags(buffer);
     const firstHalfhour = buffer.getUint8();
     const halfhoursNumber = buffer.getUint8();
 
@@ -109,7 +118,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesResponsePa
         date,
         firstHalfhour,
         halfhoursNumber,
-        energies: buffer.getHalfHourEnergies3(energiesFlags, halfhoursNumber)
+        energies: getHalfHourEnergies3(buffer, energiesFlags, halfhoursNumber)
     };
 };
 
@@ -121,14 +130,14 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourEnergiesResponsePa
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetHalfHourEnergiesResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
     const {date, firstHalfhour, halfhoursNumber, energies} = parameters;
 
-    buffer.setDate(date);
-    buffer.setEnergiesFlags(energies);
+    setDate(buffer, date);
+    setEnergiesFlags(buffer, energies);
     buffer.setUint8(firstHalfhour);
     buffer.setUint8(halfhoursNumber);
-    buffer.setHalfHourEnergies3(energies);
+    setHalfHourEnergies3(buffer, energies);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

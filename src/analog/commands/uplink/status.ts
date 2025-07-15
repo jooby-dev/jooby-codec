@@ -31,7 +31,12 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetStatus.md#response)
  */
 
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IBatteryVoltage} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IBatteryVoltage,
+    getBatteryVoltage,
+    setBatteryVoltage
+} from '../../utils/CommandBinaryBuffer.js';
 import roundNumber from '../../../utils/roundNumber.js';
 import * as types from '../../../types.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
@@ -177,7 +182,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const software = {type: buffer.getUint8(), version: buffer.getUint8()};
     const hardware = {type: buffer.getUint8(), version: buffer.getUint8()};
     let data;
@@ -197,7 +202,7 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
         case hardwareTypes.US_WATER:
             {
                 const statusData: IGasStatus = {
-                    batteryVoltage: buffer.getBatteryVoltage(),
+                    batteryVoltage: getBatteryVoltage(buffer),
                     batteryInternalResistance: buffer.getUint16(),
                     temperature: buffer.getUint8(),
                     remainingBatteryCapacity: buffer.getUint8(),
@@ -263,7 +268,7 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
  */
 export const toBytes = ( parameters: IStatusParameters ): types.TBytes => {
     const {software, hardware, data} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
 
     buffer.setUint8(software.type);
     buffer.setUint8(software.version);
@@ -283,7 +288,8 @@ export const toBytes = ( parameters: IStatusParameters ): types.TBytes => {
         case hardwareTypes.GASIC:
             {
                 const statusData = data as IGasStatus;
-                buffer.setBatteryVoltage(statusData.batteryVoltage);
+
+                setBatteryVoltage(buffer, statusData.batteryVoltage);
 
                 if ( statusData.batteryInternalResistance === undefined ) {
                     buffer.setUint16(UNKNOWN_BATTERY_RESISTANCE);

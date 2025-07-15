@@ -27,7 +27,7 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as resultCodes from '../../constants/resultCodes.js';
@@ -86,7 +86,7 @@ export const examples: command.TCommandExamples = {
 
 export const getFromBytes = ( commandNamesParameter: Record<number, string> ) => (
     (bytes: types.TBytes): IErrorResponseParameters => {
-        const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+        const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
         const errorCommandId = buffer.getUint8();
         const errorCode = buffer.getUint8();
 
@@ -116,7 +116,7 @@ export const fromBytes = getFromBytes(commandNames);
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IErrorResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     // body
     buffer.setUint8(parameters.commandId);

@@ -81,9 +81,14 @@
  */
 
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../../mtx1/utils/command.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetMonthMaxDemandResponseParameters} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IGetMonthMaxDemandResponseParameters,
+    getMonthMaxDemandResponse,
+    setMonthMaxDemandResponse
+} from '../../utils/CommandBinaryBuffer.js';
 import {getMonthMaxDemandExport as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -173,9 +178,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMonthMaxDemandResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getMonthMaxDemandResponse();
+    return getMonthMaxDemandResponse(buffer);
 };
 
 
@@ -186,9 +191,9 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMonthMaxDemandResponsePara
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetMonthMaxDemandResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setMonthMaxDemandResponse(parameters);
+    setMonthMaxDemandResponse(buffer, parameters);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

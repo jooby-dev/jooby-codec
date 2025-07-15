@@ -32,7 +32,11 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getHalfHourDemandExport as commandId} from '../../constants/downlinkIds.js';
@@ -80,9 +84,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandExportParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return {date: buffer.getDate()};
+    return {date: getDate(buffer)};
 };
 
 
@@ -93,10 +97,10 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandExportParame
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetHalfHourDemandExportParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     // body
-    buffer.setDate(parameters.date);
+    setDate(buffer, parameters.date);
 
     return command.toBytes(id, buffer.data);
 };

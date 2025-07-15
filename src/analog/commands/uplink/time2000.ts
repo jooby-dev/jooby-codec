@@ -26,7 +26,11 @@
  */
 
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getTime,
+    setTime
+} from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000} from '../../utils/time.js';
 import * as types from '../../../types.js';
 import {time2000 as commandId} from '../../constants/uplinkIds.js';
@@ -76,10 +80,10 @@ export const fromBytes = ( bytes: types.TBytes ): ITime2000Parameters => {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters = {
         sequenceNumber: buffer.getUint8(),
-        time2000: buffer.getTime()
+        time2000: getTime(buffer)
     };
 
     if ( !buffer.isEmpty ) {
@@ -98,10 +102,10 @@ export const fromBytes = ( bytes: types.TBytes ): ITime2000Parameters => {
  */
 export function toBytes ( parameters: ITime2000Parameters ): types.TBytes {
     const {sequenceNumber, time2000} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
     buffer.setUint8(sequenceNumber);
-    buffer.setTime(time2000);
+    setTime(buffer, time2000);
 
     return command.toBytes(id, buffer.data);
 }

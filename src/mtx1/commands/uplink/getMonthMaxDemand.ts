@@ -59,9 +59,15 @@
  */
 
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IMonthMaxPower, TARIFF_NUMBER} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IMonthMaxPower,
+    TARIFF_NUMBER,
+    getMonthMaxPowerByTariffs,
+    setMonthMaxPowerByTariffs
+} from '../../utils/CommandBinaryBuffer.js';
 import {getMonthMaxDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -136,12 +142,12 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMonthDemandResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         year: buffer.getUint8() as unknown as types.TYear2000,
         month: buffer.getUint8() as unknown as types.TMonth,
-        tariffs: buffer.getMonthMaxPowerByTariffs()
+        tariffs: getMonthMaxPowerByTariffs(buffer)
     };
 };
 
@@ -153,12 +159,12 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMonthDemandResponseParamet
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetMonthDemandResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     // body
     buffer.setUint8(parameters.year as unknown as types.TUint8);
     buffer.setUint8(parameters.month as unknown as types.TUint8);
-    buffer.setMonthMaxPowerByTariffs(parameters.tariffs);
+    setMonthMaxPowerByTariffs(buffer, parameters.tariffs);
 
     return command.toBytes(id, buffer.data);
 };

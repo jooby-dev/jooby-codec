@@ -41,15 +41,19 @@
 
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as dlms from '../../constants/dlms.js';
 import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
-import CommandBinaryBuffer, {
+import {
     getPackedEnergiesWithDateSize,
-    ICommandBinaryBuffer,
     IPackedEnergiesWithType,
-    PACKED_ENERGY_TYPE_SIZE
+    PACKED_ENERGY_TYPE_SIZE,
+    getPackedEnergyWithType,
+    setPackedEnergyWithType,
+    getEnergies
 } from '../../utils/CommandBinaryBuffer.js';
+import {getDate, setDate} from '../../../mtx1/utils/CommandBinaryBuffer.js';
 import {A_PLUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
 import {getDayDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -137,18 +141,18 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     let parameters: IGetDayDemandResponseParameters;
 
     if ( bytes.length === COMMAND_SIZE ) {
         parameters = {
-            date: buffer.getDate(),
-            energies: buffer.getEnergies()
+            date: getDate(buffer),
+            energies: getEnergies(buffer)
         };
     } else {
         parameters = {
-            date: buffer.getDate(),
-            ...buffer.getPackedEnergyWithType()
+            date: getDate(buffer),
+            ...getPackedEnergyWithType(buffer)
         };
     }
 
@@ -163,11 +167,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandResponseParameter
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDayDemandResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getPackedEnergiesWithDateSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getPackedEnergiesWithDateSize(parameters), false);
 
     // body
-    buffer.setDate(parameters.date);
-    buffer.setPackedEnergyWithType(parameters);
+    setDate(buffer, parameters.date);
+    setPackedEnergyWithType(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

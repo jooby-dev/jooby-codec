@@ -48,7 +48,15 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, TTariffsPowerMax, TARIFF_NUMBER} from '../../utils/LoraCommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    TTariffsPowerMax,
+    TARIFF_NUMBER,
+    getTariffsPowerMax,
+    setTariffsPowerMax,
+    getDate,
+    setDate
+} from '../../utils/LoraCommandBinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 import {getDayMaxPower as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -153,11 +161,11 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetDayMaxPowerResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
-        date: buffer.getDate(),
-        tariffs: buffer.getTariffsPowerMax()
+        date: getDate(buffer),
+        tariffs: getTariffsPowerMax(buffer)
     };
 };
 
@@ -169,11 +177,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDayMaxPowerResponseParamet
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDayMaxPowerResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     // body
-    buffer.setDate(parameters.date);
-    buffer.setTariffsPowerMax(parameters.tariffs);
+    setDate(buffer, parameters.date);
+    setTariffsPowerMax(buffer, parameters.tariffs);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

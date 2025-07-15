@@ -47,10 +47,24 @@
  */
 
 import * as command from '../../../mtx1/utils/command.js';
-import {MIN_HALF_HOUR_PERIODS, MAX_HALF_HOUR_PERIODS, MIN_HALF_HOUR_COMMAND_SIZE, MAX_HALF_HOUR_COMMAND_SIZE} from '../../../mtx1/utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    MIN_HALF_HOUR_PERIODS,
+    MAX_HALF_HOUR_PERIODS,
+    MIN_HALF_HOUR_COMMAND_SIZE,
+    MAX_HALF_HOUR_COMMAND_SIZE,
+    getDate,
+    setDate
+} from '../../../mtx1/utils/CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetHalfHourDemandResponseParameters, THalfHourLoadProfile, TChannel} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IGetHalfHourDemandResponseParameters,
+    THalfHourLoadProfile,
+    TChannel,
+    getEnergyPeriods,
+    setEnergyPeriods
+} from '../../utils/CommandBinaryBuffer.js';
 import {getHalfHourDemandChannel as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -156,12 +170,12 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandChannelResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const hasDst = bytes.length > MIN_COMMAND_SIZE;
     const channel = buffer.getUint8();
     const loadProfile = buffer.getUint8();
-    const date = buffer.getDate();
-    const energies = buffer.getEnergyPeriods(hasDst ? MAX_HALF_HOUR_PERIODS : MIN_HALF_HOUR_PERIODS);
+    const date = getDate(buffer);
+    const energies = getEnergyPeriods(buffer, hasDst ? MAX_HALF_HOUR_PERIODS : MIN_HALF_HOUR_PERIODS);
 
     if ( hasDst ) {
         return {
@@ -190,13 +204,13 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandChannelRespo
  */
 export const toBytes = ( parameters: IGetHalfHourDemandChannelResponseParameters ): types.TBytes => {
     const size = parameters.energies.length > MIN_HALF_HOUR_PERIODS ? MAX_COMMAND_SIZE : MIN_COMMAND_SIZE;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
 
     // body
     buffer.setUint8(parameters.channel);
     buffer.setUint8(parameters.loadProfile);
-    buffer.setDate(parameters.date);
-    buffer.setEnergyPeriods(parameters.energies);
+    setDate(buffer, parameters.date);
+    setEnergyPeriods(buffer, parameters.energies);
 
     if ( parameters.dstHour ) {
         buffer.setUint8(parameters.dstHour);

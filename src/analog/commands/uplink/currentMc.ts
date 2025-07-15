@@ -30,7 +30,14 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {IChannelValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelValue,
+    getExtendedValue,
+    setExtendedValue,
+    getChannels,
+    setChannels
+} from '../../utils/CommandBinaryBuffer.js';
 import {currentMc as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -126,11 +133,11 @@ export const fromBytes = ( bytes: types.TBytes ): ICurrentMcResponseParameters =
     }
 
     const parameters: ICurrentMcResponseParameters = {channelList: []};
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const channelList = buffer.getChannels();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const channelList = getChannels(buffer);
 
     parameters.channelList = channelList.map(channelIndex => ({
-        value: buffer.getExtendedValue(),
+        value: getExtendedValue(buffer),
         index: channelIndex
     }) as IChannelValue);
 
@@ -145,12 +152,12 @@ export const fromBytes = ( bytes: types.TBytes ): ICurrentMcResponseParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ICurrentMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {channelList} = parameters;
 
-    buffer.setChannels(channelList);
+    setChannels(buffer, channelList);
     channelList.forEach(({value}) => {
-        buffer.setExtendedValue(value);
+        setExtendedValue(buffer, value);
     });
 
     return command.toBytes(id, buffer.getBytesToOffset());

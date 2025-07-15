@@ -28,7 +28,7 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {setSpecialOperation as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -105,7 +105,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetSpecialOperationResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     const flags = buffer.getUint8();
 
@@ -126,7 +126,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetSpecialOperationResponsePa
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISetSpecialOperationResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
     let flags = 0;
 
     if ( parameters.electroMagneticIndication ) {

@@ -38,10 +38,15 @@
 
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as dlms from '../../constants/dlms.js';
 import mapEnergiesToObisCodes from '../../utils/mapEnergiesToObisCodes.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IEnergies} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IEnergies,
+    getEnergies,
+    setEnergies
+} from '../../utils/CommandBinaryBuffer.js';
 import {A_PLUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
 import {getMonthDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -96,12 +101,12 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMonthDemandResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         year: buffer.getUint8() as unknown as types.TYear2000,
         month: buffer.getUint8() as unknown as types.TMonth,
-        energies: buffer.getEnergies()
+        energies: getEnergies(buffer)
     };
 };
 
@@ -113,12 +118,12 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMonthDemandResponseParamet
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetMonthDemandResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     // body
     buffer.setUint8(parameters.year as unknown as types.TUint8);
     buffer.setUint8(parameters.month as unknown as types.TUint8);
-    buffer.setEnergies(parameters.energies);
+    setEnergies(buffer, parameters.energies);
 
     return command.toBytes(id, buffer.data);
 };

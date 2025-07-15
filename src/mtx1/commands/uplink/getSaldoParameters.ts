@@ -41,8 +41,13 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, ISaldoParameters} from '../../utils/CommandBinaryBuffer.js';
+import {
+    ISaldoParameters,
+    getSaldoParameters,
+    setSaldoParameters
+} from '../../utils/CommandBinaryBuffer.js';
 import {getSaldoParameters as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -119,9 +124,9 @@ export const fromBytes = ( bytes: types.TBytes ): ISaldoParameters => {
         throw new Error('Invalid getSaldoParameters data size.');
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getSaldoParameters();
+    return getSaldoParameters(buffer);
 };
 
 
@@ -132,9 +137,9 @@ export const fromBytes = ( bytes: types.TBytes ): ISaldoParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISaldoParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setSaldoParameters(parameters);
+    setSaldoParameters(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

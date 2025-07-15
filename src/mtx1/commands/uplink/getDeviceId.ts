@@ -31,9 +31,14 @@
  */
 
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IDeviceId} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IDeviceId,
+    getDeviceId,
+    setDeviceId
+} from '../../utils/CommandBinaryBuffer.js';
 import {getDeviceId as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -73,9 +78,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IDeviceId => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getDeviceId();
+    return getDeviceId(buffer);
 };
 
 
@@ -86,10 +91,10 @@ export const fromBytes = ( bytes: types.TBytes ): IDeviceId => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IDeviceId ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     // body
-    buffer.setDeviceId(parameters);
+    setDeviceId(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

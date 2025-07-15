@@ -25,7 +25,7 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {verifyImage as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -70,7 +70,7 @@ export const fromBytes = ( bytes: types.TBytes ): IVerifyImageResponseParameters
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {status: buffer.getUint8()};
 };
@@ -83,7 +83,7 @@ export const fromBytes = ( bytes: types.TBytes ): IVerifyImageResponseParameters
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IVerifyImageResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
     buffer.setUint8(parameters.status);
 

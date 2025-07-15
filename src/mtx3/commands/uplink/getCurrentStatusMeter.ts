@@ -64,7 +64,7 @@
 import * as command from '../../../mtx1/utils/command.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {IEventStatus, eventStatusMask} from '../../../mtx1/utils/CommandBinaryBuffer.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
 import * as types from '../../types.js';
 import {getCurrentStatusMeter as commandId} from '../../constants/uplinkIds.js';
@@ -241,7 +241,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     const operatingSeconds = buffer.getUint32();
     const tbadVAAll = buffer.getUint32();
@@ -294,7 +294,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponse
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetCurrentStatusMeterResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
     const statusEventValue = bitSet.fromObject(eventStatusMask, (parameters.statusEvent as unknown) as bitSet.TBooleanObject);
 
     // body

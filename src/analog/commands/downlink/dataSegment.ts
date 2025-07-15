@@ -32,7 +32,12 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IDataSegment} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IDataSegment,
+    getDataSegment,
+    setDataSegment
+} from '../../utils/CommandBinaryBuffer.js';
 import {getStringFromBytes, IBytesConversionFormatOptions} from '../../../utils/bytesConversion.js';
 import {dataSegment as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -71,9 +76,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IDataSegment => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getDataSegment();
+    return getDataSegment(buffer);
 };
 
 
@@ -84,9 +89,9 @@ export const fromBytes = ( bytes: types.TBytes ): IDataSegment => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IDataSegment ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MIN_SIZE + parameters.data.length);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MIN_SIZE + parameters.data.length, false);
 
-    buffer.setDataSegment(parameters);
+    setDataSegment(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

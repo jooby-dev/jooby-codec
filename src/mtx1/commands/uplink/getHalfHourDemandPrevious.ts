@@ -88,13 +88,17 @@
  */
 
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer,
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
     IGetHalfHourDemandResponseParameters,
     MIN_HALF_HOUR_PERIODS,
     MAX_HALF_HOUR_PERIODS,
     MIN_HALF_HOUR_COMMAND_SIZE,
-    MAX_HALF_HOUR_COMMAND_SIZE
+    MAX_HALF_HOUR_COMMAND_SIZE,
+    getEnergyPeriods,
+    setEnergyPeriods,
+    getDate,
+    setDate
 } from '../../utils/CommandBinaryBuffer.js';
 import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
@@ -345,10 +349,10 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const hasDst = bytes.length > MIN_HALF_HOUR_COMMAND_SIZE;
-    const date = buffer.getDate();
-    const periods = buffer.getEnergyPeriods(hasDst ? MAX_HALF_HOUR_PERIODS : MIN_HALF_HOUR_PERIODS);
+    const date = getDate(buffer);
+    const periods = getEnergyPeriods(buffer, hasDst ? MAX_HALF_HOUR_PERIODS : MIN_HALF_HOUR_PERIODS);
 
     if ( hasDst ) {
         return {
@@ -369,11 +373,14 @@ export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandResponsePara
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetHalfHourDemandResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(parameters.periods.length > MIN_HALF_HOUR_PERIODS ? MAX_HALF_HOUR_COMMAND_SIZE : MIN_HALF_HOUR_COMMAND_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(
+        parameters.periods.length > MIN_HALF_HOUR_PERIODS ? MAX_HALF_HOUR_COMMAND_SIZE : MIN_HALF_HOUR_COMMAND_SIZE,
+        false
+    );
 
     // body
-    buffer.setDate(parameters.date);
-    buffer.setEnergyPeriods(parameters.periods);
+    setDate(buffer, parameters.date);
+    setEnergyPeriods(buffer, parameters.periods);
 
     if ( parameters.dstHour ) {
         buffer.setUint8(parameters.dstHour);

@@ -8,7 +8,7 @@
  * @example create command instance from command body hex dump
  * ```js
  * import * as getOperatorParameters from 'jooby-codec/mtx3/commands/uplink/getOperatorParameters.js';
- * import CommandBinaryBuffer from 'jooby-codec/mtx3/utils/CommandBinaryBuffer.js';
+ * import CommandBinaryBuffer, {getDefaultOperatorParameters} from 'jooby-codec/mtx3/utils/CommandBinaryBuffer.js';
  *
  * // get default operator parameters response
  * const bytes = [
@@ -26,7 +26,7 @@
  *
  * console.log(parameters);
  * // output:
- * // same as CommandBinaryBuffer.getDefaultOperatorParameters()
+ * // same as getDefaultOperatorParameters()
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetOpParams.md#response)
@@ -34,8 +34,14 @@
 
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IOperatorParameters, OPERATOR_PARAMETERS_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IOperatorParameters,
+    OPERATOR_PARAMETERS_SIZE,
+    getOperatorParameters,
+    setOperatorParameters
+} from '../../utils/CommandBinaryBuffer.js';
 import {getOperatorParameters as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -282,9 +288,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getOperatorParameters();
+    return getOperatorParameters(buffer);
 };
 
 
@@ -295,9 +301,9 @@ export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IOperatorParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setOperatorParameters(parameters);
+    setOperatorParameters(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

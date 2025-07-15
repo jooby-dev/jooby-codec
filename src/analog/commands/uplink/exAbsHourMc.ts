@@ -35,7 +35,16 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate, getDateFromTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {IChannelHourAbsoluteValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelHourAbsoluteValue,
+    getHours,
+    setHours,
+    getDate,
+    setDate,
+    getChannelsAbsoluteValuesWithHourDiff,
+    setChannelsAbsoluteValuesWithHourDiff
+} from '../../utils/CommandBinaryBuffer.js';
 import {exAbsHourMc as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -98,10 +107,10 @@ export const fromBytes = ( bytes: types.TBytes ): IUplinkExAbsHourMcResponsePara
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
-    const {hour, hours} = buffer.getHours();
-    const channelList = buffer.getChannelsAbsoluteValuesWithHourDiff(hours);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const {hour, hours} = getHours(buffer);
+    const channelList = getChannelsAbsoluteValuesWithHourDiff(buffer, hours);
 
     date.setUTCHours(hour);
 
@@ -116,15 +125,15 @@ export const fromBytes = ( bytes: types.TBytes ): IUplinkExAbsHourMcResponsePara
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IUplinkExAbsHourMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {startTime2000, hours, channelList} = parameters;
 
     const date = getDateFromTime2000(startTime2000);
     const hour = date.getUTCHours();
 
-    buffer.setDate(startTime2000);
-    buffer.setHours(hour, hours);
-    buffer.setChannelsAbsoluteValuesWithHourDiff(channelList);
+    setDate(buffer, startTime2000);
+    setHours(buffer, hour, hours);
+    setChannelsAbsoluteValuesWithHourDiff(buffer, channelList);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

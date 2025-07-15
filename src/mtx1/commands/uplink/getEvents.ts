@@ -63,9 +63,16 @@
  */
 
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IEvent} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IEvent,
+    getEvent,
+    setEvent,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
 import {getEvents as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -144,13 +151,13 @@ export const getFromBytes = BinaryBufferConstructor => (
         }
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        const buffer: ICommandBinaryBuffer = new BinaryBufferConstructor(bytes);
-        const date = buffer.getDate();
+        const buffer: IBinaryBuffer = new BinaryBufferConstructor(bytes, false);
+        const date = getDate(buffer);
         const eventsNumber = buffer.getUint8();
         const events = [];
 
         while ( !buffer.isEmpty ) {
-            events.push(buffer.getEvent());
+            events.push(getEvent(buffer));
         }
 
         return {date, eventsNumber, events};
@@ -160,13 +167,13 @@ export const getFromBytes = BinaryBufferConstructor => (
 export const getToBytes = BinaryBufferConstructor => (
     (parameters: IGetCriticalEventResponseParameters): types.TBytes => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        const buffer: ICommandBinaryBuffer = new BinaryBufferConstructor(maxSize);
+        const buffer: IBinaryBuffer = new BinaryBufferConstructor(maxSize, false);
 
-        buffer.setDate(parameters.date);
+        setDate(buffer, parameters.date);
         buffer.setUint8(parameters.eventsNumber);
 
         for ( const event of parameters.events ) {
-            buffer.setEvent(event);
+            setEvent(buffer, event);
         }
 
         return command.toBytes(id, buffer.getBytesToOffset());
@@ -180,7 +187,7 @@ export const getToBytes = BinaryBufferConstructor => (
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = getFromBytes(CommandBinaryBuffer);
+export const fromBytes = getFromBytes(BinaryBuffer);
 
 
 /**
@@ -189,4 +196,4 @@ export const fromBytes = getFromBytes(CommandBinaryBuffer);
  * @param parameters - command parameters
  * @returns full message (header with body)
  */
-export const toBytes = getToBytes(CommandBinaryBuffer);
+export const toBytes = getToBytes(BinaryBuffer);

@@ -36,7 +36,11 @@
  */
 
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getTimeCorrectionParameters,
+    setTimeCorrectionParameters
+} from '../../utils/CommandBinaryBuffer.js';
 import {ITimeCorrectionParameters} from '../../utils/dateTime.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
@@ -84,9 +88,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ITimeCorrectionParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getTimeCorrectionParameters();
+    return getTimeCorrectionParameters(buffer);
 };
 
 
@@ -97,10 +101,10 @@ export const fromBytes = ( bytes: types.TBytes ): ITimeCorrectionParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ITimeCorrectionParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     // body
-    buffer.setTimeCorrectionParameters(parameters);
+    setTimeCorrectionParameters(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

@@ -36,8 +36,14 @@
 
 import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IOperatorParametersExtended, OPERATOR_PARAMETERS_EXTENDED_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IOperatorParametersExtended,
+    OPERATOR_PARAMETERS_EXTENDED_SIZE,
+    getOperatorParametersExtended,
+    setOperatorParametersExtended
+} from '../../utils/CommandBinaryBuffer.js';
 import {getOperatorParametersExtended as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -88,9 +94,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParametersExtended => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getOperatorParametersExtended();
+    return getOperatorParametersExtended(buffer);
 };
 
 
@@ -101,9 +107,9 @@ export const fromBytes = ( bytes: types.TBytes ): IOperatorParametersExtended =>
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IOperatorParametersExtended ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setOperatorParametersExtended(parameters);
+    setOperatorParametersExtended(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

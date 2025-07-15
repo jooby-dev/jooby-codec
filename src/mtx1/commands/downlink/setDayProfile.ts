@@ -33,8 +33,13 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IDayProfile} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IDayProfile,
+    getDayProfileFromByte,
+    setDayProfile
+} from '../../utils/CommandBinaryBuffer.js';
 import {setDayProfile as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -145,13 +150,13 @@ export const fromBytes = ( bytes: types.TBytes ): ISetDayProfileParameters => {
     const finalByteIndex = bytes.indexOf(PERIODS_FINAL_BYTE);
     // ignore final byte if present
     const cleanBytes = finalByteIndex === -1 ? bytes : bytes.slice(0, finalByteIndex);
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(cleanBytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(cleanBytes, false);
 
     return {
         tariffTable: buffer.getUint8(),
         index: buffer.getUint8(),
         // eslint-disable-next-line @typescript-eslint/unbound-method
-        periods: [...cleanBytes.slice(buffer.offset)].map(CommandBinaryBuffer.getDayProfileFromByte)
+        periods: [...cleanBytes.slice(buffer.offset)].map(getDayProfileFromByte)
     };
 };
 
@@ -165,14 +170,14 @@ export const fromBytes = ( bytes: types.TBytes ): ISetDayProfileParameters => {
 export const toBytes = ( parameters: ISetDayProfileParameters ): types.TBytes => {
     const hasPeriodsFinalByte = parameters.periods.length < MAX_PERIODS_NUMBER;
     const size = 2 + parameters.periods.length + +hasPeriodsFinalByte;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
 
     buffer.setUint8(parameters.tariffTable);
     buffer.setUint8(parameters.index);
 
     // periods
     parameters.periods.forEach(period => {
-        buffer.setDayProfile(period);
+        setDayProfile(buffer, period);
     });
 
     // add final byte if not full period set

@@ -26,7 +26,7 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {writeImage as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -80,7 +80,7 @@ export const fromBytes = ( bytes: types.TBytes ): IWriteImageParameters => {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const offset = buffer.getUint32();
 
     return {offset, data: bytes.slice(COMMAND_BODY_MIN_SIZE)};
@@ -94,7 +94,7 @@ export const fromBytes = ( bytes: types.TBytes ): IWriteImageParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IWriteImageParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MIN_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MIN_SIZE, false);
 
     buffer.setUint32(parameters.offset);
     buffer.setBytes(parameters.data);

@@ -34,8 +34,13 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IDayProfile} from '../../utils/CommandBinaryBuffer.js';
+import {
+    IDayProfile,
+    getDayProfileFromByte,
+    setDayProfile
+} from '../../utils/CommandBinaryBuffer.js';
 import {getDayProfile as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -113,7 +118,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDayProfileResponseParamete
     const cleanData = finalByteIndex === -1 ? bytes : bytes.slice(0, finalByteIndex);
 
     return {
-        periods: [...cleanData].map(CommandBinaryBuffer.getDayProfileFromByte)
+        periods: [...cleanData].map(getDayProfileFromByte)
     };
 };
 
@@ -127,11 +132,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDayProfileResponseParamete
 export const toBytes = ( parameters: IGetDayProfileResponseParameters ): types.TBytes => {
     const hasPeriodsFinalByte = parameters.periods.length < MAX_PERIODS_NUMBER;
     const size = parameters.periods.length + +hasPeriodsFinalByte;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
 
     // periods
     parameters.periods.forEach(period => {
-        buffer.setDayProfile(period);
+        setDayProfile(buffer, period);
     });
     // add final byte if not full period set
     if ( hasPeriodsFinalByte ) {

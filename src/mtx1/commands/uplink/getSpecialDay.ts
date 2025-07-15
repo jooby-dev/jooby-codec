@@ -32,8 +32,13 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, ISpecialDay} from '../../utils/CommandBinaryBuffer.js';
+import {
+    ISpecialDay,
+    getSpecialDay,
+    setSpecialDay
+} from '../../utils/CommandBinaryBuffer.js';
 import {getSpecialDay as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -73,9 +78,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISpecialDay => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getSpecialDay();
+    return getSpecialDay(buffer);
 };
 
 
@@ -86,9 +91,9 @@ export const fromBytes = ( bytes: types.TBytes ): ISpecialDay => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISpecialDay ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setSpecialDay(parameters);
+    setSpecialDay(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

@@ -29,7 +29,13 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {IResponseParameter, getResponseParameterSize, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IResponseParameter,
+    getResponseParameterSize,
+    getResponseParameter,
+    setResponseParameter
+} from '../../utils/CommandBinaryBuffer.js';
 import {getParameter as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -204,9 +210,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IResponseParameter => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getResponseParameter();
+    return getResponseParameter(buffer);
 };
 
 
@@ -217,9 +223,9 @@ export const fromBytes = ( bytes: types.TBytes ): IResponseParameter => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IResponseParameter ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getResponseParameterSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getResponseParameterSize(parameters), false);
 
-    buffer.setResponseParameter(parameters);
+    setResponseParameter(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

@@ -32,7 +32,12 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IGetDemandParameters} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IGetDemandParameters,
+    getDemand,
+    setDemand
+} from '../../utils/CommandBinaryBuffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as demandTypes from '../../constants/demandTypes.js';
 import {getDemand as commandId} from '../../constants/downlinkIds.js';
@@ -78,9 +83,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetDemandParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getDemand();
+    return getDemand(buffer);
 };
 
 
@@ -91,9 +96,9 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDemandParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    buffer.setDemand(parameters);
+    setDemand(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

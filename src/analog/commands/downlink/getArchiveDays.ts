@@ -25,7 +25,11 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getDateFromTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
 import {getArchiveDays as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -71,8 +75,8 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysParameters => {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
-    const date = buffer.getDate();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
     const days = buffer.getUint8();
 
     if ( !buffer.isEmpty ) {
@@ -90,11 +94,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveDaysParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
     const {startTime2000, days} = parameters;
     const date = getDateFromTime2000(startTime2000);
 
-    buffer.setDate(date);
+    setDate(buffer, date);
     buffer.setUint8(days);
 
     return command.toBytes(id, buffer.data);

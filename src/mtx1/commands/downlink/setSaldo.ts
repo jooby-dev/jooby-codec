@@ -34,7 +34,7 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as getSaldoDownlink from './getSaldo.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -105,7 +105,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetSaldoParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         date: {
@@ -127,7 +127,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetSaldoParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISetSaldoParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(maxSize);
+    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     buffer.setUint8(parameters.date.month as unknown as types.TUint8);
     buffer.setUint8(parameters.date.date as unknown as types.TUint8);

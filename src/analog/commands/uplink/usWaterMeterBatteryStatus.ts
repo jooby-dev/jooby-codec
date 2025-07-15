@@ -32,7 +32,12 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IBatteryVoltage} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IBatteryVoltage,
+    getBatteryVoltage,
+    setBatteryVoltage
+} from '../../utils/CommandBinaryBuffer.js';
 import {usWaterMeterBatteryStatus as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -88,10 +93,10 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IUSWaterMeterBatteryStatusParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
-        voltage: buffer.getBatteryVoltage(),
+        voltage: getBatteryVoltage(buffer),
         internalResistance: buffer.getUint16(),
         lastDepassivationTime: buffer.getUint16()
     };
@@ -105,9 +110,9 @@ export const fromBytes = ( bytes: types.TBytes ): IUSWaterMeterBatteryStatusPara
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IUSWaterMeterBatteryStatusParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
-    buffer.setBatteryVoltage(parameters.voltage);
+    setBatteryVoltage(buffer, parameters.voltage);
     buffer.setUint16(parameters.internalResistance);
     buffer.setUint16(parameters.lastDepassivationTime);
 

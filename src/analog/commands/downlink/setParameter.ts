@@ -28,7 +28,13 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import * as channelTypes from '../../constants/channelTypes.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IParameter, getParameterSize} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IParameter,
+    getParameterSize,
+    getParameter,
+    setParameter
+} from '../../utils/CommandBinaryBuffer.js';
 import {setParameter as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 import * as deviceParameters from '../../constants/deviceParameters.js';
@@ -765,9 +771,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IParameter => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getParameter();
+    return getParameter(buffer);
 };
 
 
@@ -778,9 +784,9 @@ export const fromBytes = ( bytes: types.TBytes ): IParameter => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IParameter ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getParameterSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getParameterSize(parameters), false);
 
-    buffer.setParameter(parameters);
+    setParameter(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };
