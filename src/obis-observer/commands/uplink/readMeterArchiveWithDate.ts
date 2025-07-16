@@ -27,8 +27,14 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE, IObisValueFloat
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ICommandParameters,
+    REQUEST_ID_SIZE,
+    IObisValueFloat,
+    getObisContentSize,
+    getObisValueFloat,
+    setObisValueFloat
 } from '../../utils/CommandBinaryBuffer.js';
 import {readMeterArchiveWithDate as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -81,7 +87,7 @@ const getCommandSize = ( parameters: IReadMeterArchiveWithDateResponseParameters
 
     // + obis values list list of code 1 byte with float content 4 bytes
     parameters.obisValueList.forEach(obisId => {
-        size += CommandBinaryBuffer.getObisContentSize(obisId);
+        size += getObisContentSize(obisId);
     });
 
     return size;
@@ -95,13 +101,13 @@ const getCommandSize = ( parameters: IReadMeterArchiveWithDateResponseParameters
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IReadMeterArchiveWithDateResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
     const isCompleted = buffer.isEmpty ? true : buffer.getUint8() !== 0;
     const obisValueList: Array<IObisValueFloat> = [];
 
     while ( !buffer.isEmpty ) {
-        obisValueList.push(buffer.getObisValueFloat());
+        obisValueList.push(getObisValueFloat(buffer));
     }
 
     return {requestId, isCompleted, obisValueList};
@@ -115,13 +121,13 @@ export const fromBytes = ( bytes: types.TBytes ): IReadMeterArchiveWithDateRespo
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IReadMeterArchiveWithDateResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getCommandSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getCommandSize(parameters), false);
 
     buffer.setUint8(parameters.requestId);
     buffer.setUint8(parameters.isCompleted ? 1 : 0);
 
     parameters.obisValueList.forEach(obisValue => {
-        buffer.setObisValueFloat(obisValue);
+        setObisValueFloat(buffer, obisValue);
     });
 
     return command.toBytes(id, buffer.data);

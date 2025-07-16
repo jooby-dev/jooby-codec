@@ -26,7 +26,8 @@
 
 import * as types from '../../../types.js';
 import {TTime2000} from '../../../analog/utils/time.js';
-import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, DATE_TIME_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {ICommandParameters, DATE_TIME_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getMeterDate as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -68,7 +69,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMeterDateResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         requestId: buffer.getUint8(),
@@ -85,7 +86,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMeterDateResponseParameter
  */
 export const toBytes = ( parameters: IGetMeterDateResponseParameters ): types.TBytes => {
     const size = REQUEST_ID_SIZE + (parameters.time2000 ? DATE_TIME_SIZE : 0);
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
 
     buffer.setUint8(parameters.requestId);
     buffer.setUint32(parameters.time2000);

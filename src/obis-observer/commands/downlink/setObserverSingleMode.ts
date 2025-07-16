@@ -25,9 +25,8 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE
-} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import {setObserverSingleMode as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -71,7 +70,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetObserverSingleModeParamete
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
     const singleMode = buffer.getUint8() !== 0;
 
@@ -86,7 +85,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetObserverSingleModeParamete
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISetObserverSingleModeParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
     const {requestId, singleMode} = parameters;
 
     buffer.setUint8(requestId);

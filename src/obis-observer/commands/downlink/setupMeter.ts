@@ -27,8 +27,9 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, METER_ID_SIZE, REQUEST_ID_SIZE
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ICommandParameters, METER_ID_SIZE, REQUEST_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
 import {setupMeter as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -119,7 +120,7 @@ const getCommandSize = ( parameters: ISetupMeterParameters ): number => {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetupMeterParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
     const meterId = buffer.getUint32();
 
@@ -155,7 +156,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetupMeterParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISetupMeterParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getCommandSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getCommandSize(parameters), false);
     const {requestId, meterId, meterProfileId, address} = parameters;
     const isMeterProfileIdExist = meterProfileId || meterProfileId === 0;
 

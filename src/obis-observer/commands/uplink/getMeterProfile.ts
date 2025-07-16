@@ -26,7 +26,8 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getMeterProfile as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -70,7 +71,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMeterProfileResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         requestId: buffer.getUint8(),
@@ -87,7 +88,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMeterProfileResponseParame
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetMeterProfileResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(REQUEST_ID_SIZE + 4);
+    const buffer: IBinaryBuffer = new BinaryBuffer(REQUEST_ID_SIZE + 4, false);
 
     buffer.setUint8(parameters.requestId);
     buffer.setUint16(parameters.archive1Period);

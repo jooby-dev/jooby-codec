@@ -24,7 +24,8 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getMeterId as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -66,7 +67,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMeterIdParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         requestId: buffer.getUint8(),
@@ -83,7 +84,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMeterIdParameters => {
  */
 export const toBytes = ( parameters: IGetMeterIdParameters ): types.TBytes => {
     const size = REQUEST_ID_SIZE + 1 + parameters.address.length;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
 
     buffer.setUint8(parameters.requestId);
     buffer.setString(parameters.address);

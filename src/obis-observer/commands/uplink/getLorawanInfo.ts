@@ -31,7 +31,14 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, ICommandParameters, EUI_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ICommandParameters,
+    EUI_SIZE,
+    REQUEST_ID_SIZE,
+    getEUI,
+    setEUI
+} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import * as deviceClasses from '../../constants/deviceClasses.js';
 import {getLorawanInfo as commandId} from '../../constants/uplinkIds.js';
@@ -87,12 +94,12 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetLorawanInfoResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         requestId: buffer.getUint8(),
-        deviceEUI: buffer.getEUI(),
-        applicationEUI: buffer.getEUI(),
+        deviceEUI: getEUI(buffer),
+        applicationEUI: getEUI(buffer),
         deviceClass: buffer.getUint8(),
         activationMethod: buffer.getUint8()
     };
@@ -108,12 +115,12 @@ export const fromBytes = ( bytes: types.TBytes ): IGetLorawanInfoResponseParamet
 export const toBytes = ( parameters: IGetLorawanInfoResponseParameters ): types.TBytes => {
     // real size - request id byte + device EUI 8 bytes + application EUI 8 bytes + deviceClass byte + activation method byte
     const size = REQUEST_ID_SIZE + (EUI_SIZE * 2) + 1 + 1;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
 
     // body
     buffer.setUint8(parameters.requestId);
-    buffer.setEUI(parameters.deviceEUI);
-    buffer.setEUI(parameters.applicationEUI);
+    setEUI(buffer, parameters.deviceEUI);
+    setEUI(buffer, parameters.applicationEUI);
     buffer.setUint8(parameters.deviceClass);
     buffer.setUint8(parameters.activationMethod);
 

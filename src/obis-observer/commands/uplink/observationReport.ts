@@ -31,8 +31,14 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, METER_ID_SIZE, DATE_TIME_SIZE, IObisValueFloat
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    METER_ID_SIZE,
+    DATE_TIME_SIZE,
+    IObisValueFloat,
+    getObisContentSize,
+    getObisValueFloat,
+    setObisValueFloat
 } from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000} from '../../../analog/utils/time.js';
 import {observationReport as commandId} from '../../constants/uplinkIds.js';
@@ -78,7 +84,7 @@ const getCommandSize = ( parameters: IObservationReportParameters ): number => {
     let size = METER_ID_SIZE + DATE_TIME_SIZE;
 
     parameters.obisValueList.forEach(obisValue => {
-        size += CommandBinaryBuffer.getObisContentSize(obisValue);
+        size += getObisContentSize(obisValue);
     });
 
     return size;
@@ -92,13 +98,13 @@ const getCommandSize = ( parameters: IObservationReportParameters ): number => {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IObservationReportParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const meterId = buffer.getUint32();
     const time2000 = buffer.getUint32() as TTime2000;
     const obisValueList = [];
 
     while ( !buffer.isEmpty ) {
-        obisValueList.push(buffer.getObisValueFloat());
+        obisValueList.push(getObisValueFloat(buffer));
     }
 
     return {meterId, time2000, obisValueList};
@@ -112,12 +118,12 @@ export const fromBytes = ( bytes: types.TBytes ): IObservationReportParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IObservationReportParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getCommandSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getCommandSize(parameters), false);
 
     buffer.setUint32(parameters.meterId);
     buffer.setUint32(parameters.time2000);
     parameters.obisValueList.forEach(obisValue => {
-        buffer.setObisValueFloat(obisValue);
+        setObisValueFloat(buffer, obisValue);
     });
 
     return command.toBytes(id, buffer.data);

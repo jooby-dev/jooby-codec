@@ -28,8 +28,9 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ICommandParameters, REQUEST_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
 import {updateImageWrite as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -74,7 +75,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IUpdateImageWriteParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
     const offset = buffer.getUint32();
     const data = bytes.slice(COMMAND_BODY_WITHOUT_DATA_SIZE);
@@ -90,7 +91,7 @@ export const fromBytes = ( bytes: types.TBytes ): IUpdateImageWriteParameters =>
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IUpdateImageWriteParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_WITHOUT_DATA_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_WITHOUT_DATA_SIZE, false);
     const {requestId, offset, data} = parameters;
 
     buffer.setUint8(requestId);

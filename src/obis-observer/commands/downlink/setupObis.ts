@@ -43,8 +43,18 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, IObisProfile, OBIS_PROFILE_SIZE, IObis, REQUEST_ID_SIZE
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ICommandParameters,
+    IObisProfile,
+    OBIS_PROFILE_SIZE,
+    IObis,
+    REQUEST_ID_SIZE,
+    getObisSize,
+    getObisProfile,
+    setObisProfile,
+    getObis,
+    setObis
 } from '../../utils/CommandBinaryBuffer.js';
 import {contentTypes} from '../../constants/index.js';
 import {setupObis as commandId} from '../../constants/downlinkIds.js';
@@ -102,7 +112,7 @@ const getCommandSize = ( parameters: ISetupObisParameters ): number => {
     let size = REQUEST_ID_SIZE + 1 + 1 + OBIS_PROFILE_SIZE;
 
     if ( parameters.obis ) {
-        size += CommandBinaryBuffer.getObisSize(parameters.obis);
+        size += getObisSize(parameters.obis);
     }
 
     return size;
@@ -116,11 +126,11 @@ const getCommandSize = ( parameters: ISetupObisParameters ): number => {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetupObisParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
     const meterProfileId = buffer.getUint8();
     const obisId = buffer.getUint8();
-    const obisProfile = buffer.getObisProfile();
+    const obisProfile = getObisProfile(buffer);
 
     return buffer.isEmpty
         ? {
@@ -134,7 +144,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetupObisParameters => {
             meterProfileId,
             obisId,
             obisProfile,
-            obis: buffer.getObis()
+            obis: getObis(buffer)
         };
 };
 
@@ -146,16 +156,16 @@ export const fromBytes = ( bytes: types.TBytes ): ISetupObisParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISetupObisParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getCommandSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getCommandSize(parameters), false);
     const {requestId, meterProfileId, obisId, obisProfile, obis} = parameters;
 
     buffer.setUint8(requestId);
     buffer.setUint8(meterProfileId);
     buffer.setUint8(obisId);
-    buffer.setObisProfile(obisProfile);
+    setObisProfile(buffer, obisProfile);
 
     if ( obis ) {
-        buffer.setObis(obis);
+        setObis(buffer, obis);
     }
 
     return command.toBytes(id, buffer.data);

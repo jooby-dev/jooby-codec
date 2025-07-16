@@ -26,7 +26,8 @@
 
 import * as types from '../../../types.js';
 import roundNumber from '../../../utils/roundNumber.js';
-import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getObisContentById as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -81,7 +82,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetObisContentByIdResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
 
     return buffer.isEmpty
@@ -99,7 +100,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetObisContentByIdResponsePar
 export const toBytes = ( parameters: IGetObisContentByIdResponseParameters ): types.TBytes => {
     // request id byte + obis float32 content 4 bytes
     const size = REQUEST_ID_SIZE + (parameters.content ? 4 : 0);
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
     const {requestId, content} = parameters;
 
     buffer.setUint8(requestId);

@@ -28,8 +28,13 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, ISerialPortParameters, REQUEST_ID_SIZE
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ICommandParameters,
+    ISerialPortParameters,
+    REQUEST_ID_SIZE,
+    getSerialPortParameters,
+    setSerialPortParameters
 } from '../../utils/CommandBinaryBuffer.js';
 import {getSerialPort as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -67,11 +72,11 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISerialPortParameters & ICommandParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         requestId: buffer.getUint8(),
-        ...buffer.getSerialPortParameters()
+        ...getSerialPortParameters(buffer)
     };
 };
 
@@ -83,10 +88,10 @@ export const fromBytes = ( bytes: types.TBytes ): ISerialPortParameters & IComma
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISerialPortParameters & ICommandParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
     buffer.setUint8(parameters.requestId);
-    buffer.setSerialPortParameters(parameters);
+    setSerialPortParameters(buffer, parameters);
 
     return command.toBytes(id, buffer.toUint8Array());
 };

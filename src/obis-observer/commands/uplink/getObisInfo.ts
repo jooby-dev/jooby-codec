@@ -40,13 +40,18 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
     ICommandParameters,
-    ICommandBinaryBuffer,
     REQUEST_ID_SIZE,
     OBIS_PROFILE_SIZE,
     IObis,
-    IObisProfile
+    IObisProfile,
+    getObisSize,
+    getObisProfile,
+    setObisProfile,
+    getObis,
+    setObis
 } from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {contentTypes} from '../../constants/index.js';
@@ -135,18 +140,18 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetObisInfoResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
 
     if ( buffer.isEmpty ) {
         return {requestId};
     }
 
-    const obis = buffer.getObis();
+    const obis = getObis(buffer);
 
     return buffer.isEmpty
         ? {requestId, obis}
-        : {requestId, obis, obisProfile: buffer.getObisProfile()};
+        : {requestId, obis, obisProfile: getObisProfile(buffer)};
 };
 
 
@@ -160,23 +165,23 @@ export const toBytes = ( parameters: IGetObisInfoResponseParameters ): types.TBy
     let size = REQUEST_ID_SIZE;
 
     if ( parameters.obis ) {
-        size += CommandBinaryBuffer.getObisSize(parameters.obis);
+        size += getObisSize(parameters.obis);
 
         if ( parameters.obisProfile ) {
             size += OBIS_PROFILE_SIZE;
         }
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
     const {requestId, obis, obisProfile} = parameters;
 
     buffer.setUint8(requestId);
 
     if ( obis ) {
-        buffer.setObis(obis);
+        setObis(buffer, obis);
 
         if ( obisProfile ) {
-            buffer.setObisProfile(obisProfile);
+            setObisProfile(buffer, obisProfile);
         }
     }
 
