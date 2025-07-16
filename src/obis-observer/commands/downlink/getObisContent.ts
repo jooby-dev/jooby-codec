@@ -28,12 +28,15 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
     ICommandParameters,
-    ICommandBinaryBuffer,
     IObis,
     REQUEST_ID_SIZE,
-    METER_ID_SIZE
+    METER_ID_SIZE,
+    getObisSize,
+    getObis,
+    setObis
 } from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getObisContent as commandId} from '../../constants/downlinkIds.js';
@@ -82,12 +85,12 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetObisContentParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         requestId: buffer.getUint8(),
         meterId: buffer.getUint32(),
-        obis: buffer.getObis()
+        obis: getObis(buffer)
     };
 };
 
@@ -100,12 +103,12 @@ export const fromBytes = ( bytes: types.TBytes ): IGetObisContentParameters => {
  */
 export const toBytes = ( parameters: IGetObisContentParameters ): types.TBytes => {
     const {requestId, meterId, obis} = parameters;
-    const size = REQUEST_ID_SIZE + METER_ID_SIZE + CommandBinaryBuffer.getObisSize(obis);
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const size = REQUEST_ID_SIZE + METER_ID_SIZE + getObisSize(obis);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
 
     buffer.setUint8(requestId);
     buffer.setUint32(meterId);
-    buffer.setObis(obis);
+    setObis(buffer, obis);
 
     return command.toBytes(id, buffer.data);
 };

@@ -28,7 +28,8 @@
 
 import * as types from '../../../types.js';
 import {TTime2000} from '../../../analog/utils/time.js';
-import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, DATE_TIME_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {ICommandParameters, DATE_TIME_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getArchiveState as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -114,7 +115,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetArchiveStateResponseParameters | ICommandParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
 
     return buffer.isEmpty
@@ -140,7 +141,7 @@ export const toBytes = ( parameters: IGetArchiveStateResponseParameters ): types
     }
 
     const size = isValidParameterSet(parameters) ? COMMAND_BODY_SIZE : REQUEST_ID_SIZE;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
     const {requestId, archiveRecordsNumber, eldestTime2000, newestTime2000} = parameters;
 
     buffer.setUint8(requestId);

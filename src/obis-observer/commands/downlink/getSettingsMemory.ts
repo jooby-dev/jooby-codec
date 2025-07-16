@@ -26,9 +26,8 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE
-} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import {getSettingsMemory as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -68,7 +67,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetSettingsMemoryParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
     const offset = buffer.getUint32();
 
@@ -87,8 +86,9 @@ export const fromBytes = ( bytes: types.TBytes ): IGetSettingsMemoryParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetSettingsMemoryParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(
-        REQUEST_ID_SIZE + 4 + ((parameters.size && parameters.size !== 0) ? 4 : 0)
+    const buffer: IBinaryBuffer = new BinaryBuffer(
+        REQUEST_ID_SIZE + 4 + ((parameters.size && parameters.size !== 0) ? 4 : 0),
+        false
     );
 
     buffer.setUint8(parameters.requestId);

@@ -27,7 +27,8 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getObserverUptime as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -69,7 +70,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetObserverUptimeResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         requestId: buffer.getUint8(),
@@ -85,7 +86,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetObserverUptimeResponsePara
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetObserverUptimeResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(REQUEST_ID_SIZE + 4);
+    const buffer: IBinaryBuffer = new BinaryBuffer(REQUEST_ID_SIZE + 4, false);
     const {requestId, uptime} = parameters;
     buffer.setUint8(requestId);
     buffer.setUint32(uptime);

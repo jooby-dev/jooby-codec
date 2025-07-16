@@ -41,8 +41,14 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE, METER_ID_SIZE, IObisValueFloat, DATE_TIME_SIZE
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ICommandParameters,
+    REQUEST_ID_SIZE,
+    METER_ID_SIZE,
+    IObisValueFloat,
+    DATE_TIME_SIZE,
+    setObisValueFloat
 } from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000} from '../../../analog/utils/time.js';
 import roundNumber from '../../../utils/roundNumber.js';
@@ -142,7 +148,7 @@ const getCommandSize = ( parameters: IReadArchiveResponseParameters ): number =>
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IReadArchiveResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
     const isCompleted = buffer.getUint8() !== 0;
     const content: Array<IArchiveRecord> = [];
@@ -178,7 +184,7 @@ export const fromBytes = ( bytes: types.TBytes ): IReadArchiveResponseParameters
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IReadArchiveResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getCommandSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getCommandSize(parameters), false);
     const {content} = parameters;
 
     buffer.setUint8(parameters.requestId);
@@ -195,7 +201,7 @@ export const toBytes = ( parameters: IReadArchiveResponseParameters ): types.TBy
         buffer.setUint32(meterId);
         buffer.setUint32(time2000);
         obisValueList.forEach(obisValue => {
-            buffer.setObisValueFloat(obisValue);
+            setObisValueFloat(buffer, obisValue);
         });
     }
 

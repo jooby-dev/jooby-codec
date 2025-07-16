@@ -27,8 +27,9 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ICommandParameters, REQUEST_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
 import {setupMeterProfile as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -77,7 +78,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetupMeterProfileParameters =
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
     const meterProfileId = buffer.getUint8();
     const archive1Period = buffer.getUint16();
@@ -99,7 +100,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetupMeterProfileParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISetupMeterProfileParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
     const {requestId, meterProfileId, archive1Period, archive2Period} = parameters;
 
     buffer.setUint8(requestId);

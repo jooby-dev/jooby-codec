@@ -44,7 +44,14 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, IVersion, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ICommandParameters,
+    IVersion,
+    REQUEST_ID_SIZE,
+    getVersion,
+    setVersion
+} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getObserverInfo as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -103,11 +110,11 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetObserverInfoResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
-    const softwareVersion = buffer.getVersion();
-    const protocolVersion = buffer.getVersion();
-    const hardwareVersion = buffer.getVersion();
+    const softwareVersion = getVersion(buffer);
+    const protocolVersion = getVersion(buffer);
+    const hardwareVersion = getVersion(buffer);
 
     const deviceName = buffer.getString();
 
@@ -125,13 +132,13 @@ export const toBytes = ( parameters: IGetObserverInfoResponseParameters ): types
     // real size - request id byte + software version 2 bytes + protocol version 2 bytes + hardware version 2 bytes +
     // device name string size byte + string bytes
     const size = REQUEST_ID_SIZE + 2 + 2 + 2 + 1 + parameters.deviceName.length;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
     const {requestId, softwareVersion, protocolVersion, hardwareVersion, deviceName} = parameters;
 
     buffer.setUint8(requestId);
-    buffer.setVersion(softwareVersion);
-    buffer.setVersion(protocolVersion);
-    buffer.setVersion(hardwareVersion);
+    setVersion(buffer, softwareVersion);
+    setVersion(buffer, protocolVersion);
+    setVersion(buffer, hardwareVersion);
     buffer.setString(deviceName);
 
     return command.toBytes(id, buffer.data);

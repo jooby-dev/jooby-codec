@@ -25,8 +25,9 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {
-    ICommandBinaryBuffer, ICommandParameters, REQUEST_ID_SIZE, METER_ID_SIZE
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ICommandParameters, REQUEST_ID_SIZE, METER_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
 import {removeMeter as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -71,7 +72,7 @@ export const fromBytes = ( bytes: types.TBytes ): IRemoveMeterParameters => {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
     const meterId = buffer.getUint32();
 
@@ -86,7 +87,7 @@ export const fromBytes = ( bytes: types.TBytes ): IRemoveMeterParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IRemoveMeterParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
     buffer.setUint8(parameters.requestId);
     buffer.setUint32(parameters.meterId);

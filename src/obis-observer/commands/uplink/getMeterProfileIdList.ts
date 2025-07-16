@@ -26,7 +26,8 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandParameters, ICommandBinaryBuffer, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getMeterProfileIdList as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -70,7 +71,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMeterProfileIdListResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
     const isCompleted = buffer.isEmpty ? 1 : buffer.getUint8();
     const meterProfileIdList = buffer.isEmpty
@@ -90,7 +91,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetMeterProfileIdListResponse
 export const toBytes = ( parameters: IGetMeterProfileIdListResponseParameters ): types.TBytes => {
     // body size = request id byte + isCompleted byte + meterProfileIdList 0-n bytes
     const size = REQUEST_ID_SIZE + 1 + parameters.meterProfileIdList.length;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
     const {requestId, isCompleted, meterProfileIdList} = parameters;
 
     buffer.setUint8(requestId);

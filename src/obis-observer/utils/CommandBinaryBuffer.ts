@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
+import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
@@ -113,50 +113,50 @@ const sendingOnlyIfChangeBitStartIndex = 3;
 const contentTypeBitStartIndex = 4;
 
 
-export interface ICommandBinaryBuffer extends IBinaryBuffer {
+/* export interface ICommandBinaryBuffer extends IBinaryBuffer {
     // static methods
-    getObisSize ( obis: IObis ): number,
-    getObisContentSize ( obis: IObis ): number,
+    // getObisSize ( obis: IObis ): number,
+    // getObisContentSize ( obis: IObis ): number,
 
     // instance methods
-    getObisProfile (): IObisProfile,
-    setObisProfile ( obisProfile: IObisProfile ),
+    // getObisProfile (): IObisProfile,
+    // setObisProfile ( obisProfile: IObisProfile ),
 
-    getObis (): IObis,
-    setObis ( obisProfile: IObis ),
+    // getObis (): IObis,
+    // setObis ( obisProfile: IObis ),
 
-    getEUI (): string,
-    setEUI ( eui: string ),
+    // getEUI (): string,
+    // setEUI ( eui: string ),
 
-    getObisValueString (): IObisValueString,
-    setObisValueString ( obisValue: IObisValueString),
+    // getObisValueString (): IObisValueString,
+    // setObisValueString ( obisValue: IObisValueString),
 
-    getObisValueFloat (): IObisValueFloat,
-    setObisValueFloat ( obisValue: IObisValueFloat),
+    // getObisValueFloat (): IObisValueFloat,
+    // setObisValueFloat ( obisValue: IObisValueFloat),
 
-    getVersion (): IVersion,
-    setVersion ( version: IVersion ),
+    // getVersion (): IVersion,
+    // setVersion ( version: IVersion ),
 
-    getSerialPortParameters (): ISerialPortParameters,
-    setSerialPortParameters ( parameters: ISerialPortParameters )
-}
+    // getSerialPortParameters (): ISerialPortParameters,
+    // setSerialPortParameters ( parameters: ISerialPortParameters )
+} */
 
-function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
-    // force BE for all numbers
-    BinaryBuffer.call(this, dataOrLength, isLittleEndian);
-}
+// function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
+//     // force BE for all numbers
+//     BinaryBuffer.call(this, dataOrLength, isLittleEndian);
+// }
 
 // extending
-CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
-CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
+// CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
+// CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
 
-CommandBinaryBuffer.getObisSize = ( obis: IObis ): number => {
+export const getObisSize = ( obis: IObis ): number => {
     const keys = Object.keys(obis) as Array<keyof IObis>;
 
     return keys.filter(key => obis[key] !== undefined).length + 1;
 };
 
-CommandBinaryBuffer.getObisContentSize = ( obisValue: IObisValueFloat | IObisValueString ) => {
+export const getObisContentSize = ( obisValue: IObisValueFloat | IObisValueString ) => {
     if ( typeof obisValue.content === 'number' ) {
         // IObisValueFloat, 1 byte obis id code + 4 byte float value
         return 5;
@@ -167,37 +167,37 @@ CommandBinaryBuffer.getObisContentSize = ( obisValue: IObisValueFloat | IObisVal
 };
 
 
-CommandBinaryBuffer.prototype.getObis = function (): IObis {
+export const getObis = function ( buffer: IBinaryBuffer ): IObis {
     const obis = {
         c: 0,
         d: 0
     } as IObis;
 
-    const flags = bitSet.toObject(obisBitMask, this.getUint8());
+    const flags = bitSet.toObject(obisBitMask, buffer.getUint8());
 
     if ( flags.a ) {
-        obis.a = this.getUint8();
+        obis.a = buffer.getUint8();
     }
 
     if ( flags.b ) {
-        obis.b = this.getUint8();
+        obis.b = buffer.getUint8();
     }
 
-    obis.c = this.getUint8();
-    obis.d = this.getUint8();
+    obis.c = buffer.getUint8();
+    obis.d = buffer.getUint8();
 
     if ( flags.e ) {
-        obis.e = this.getUint8();
+        obis.e = buffer.getUint8();
     }
 
     if ( flags.f ) {
-        obis.f = this.getUint8();
+        obis.f = buffer.getUint8();
     }
 
     return obis;
 };
 
-CommandBinaryBuffer.prototype.setObis = function ( obis: IObis ) {
+export const setObis = function ( buffer: IBinaryBuffer, obis: IObis ) {
     const flags = {
         a: obis.a !== undefined,
         b: obis.b !== undefined,
@@ -205,33 +205,33 @@ CommandBinaryBuffer.prototype.setObis = function ( obis: IObis ) {
         f: obis.f !== undefined
     };
 
-    this.setUint8(bitSet.fromObject(obisBitMask, flags));
+    buffer.setUint8(bitSet.fromObject(obisBitMask, flags));
 
     if ( obis.a !== undefined ) {
-        this.setUint8(obis.a);
+        buffer.setUint8(obis.a);
     }
 
     if ( obis.b !== undefined ) {
-        this.setUint8(obis.b);
+        buffer.setUint8(obis.b);
     }
 
-    this.setUint8(obis.c);
-    this.setUint8(obis.d);
+    buffer.setUint8(obis.c);
+    buffer.setUint8(obis.d);
 
     if ( obis.e !== undefined ) {
-        this.setUint8(obis.e);
+        buffer.setUint8(obis.e);
     }
 
     if ( obis.f !== undefined ) {
-        this.setUint8(obis.f);
+        buffer.setUint8(obis.f);
     }
 };
 
-CommandBinaryBuffer.prototype.getObisProfile = function (): IObisProfile {
+export const getObisProfile = function ( buffer: IBinaryBuffer ): IObisProfile {
     const profile = {
-        capturePeriod: this.getUint16(),
-        sendingPeriod: this.getUint16(),
-        sendingCounter: this.getUint8(),
+        capturePeriod: buffer.getUint16(),
+        sendingPeriod: buffer.getUint16(),
+        sendingCounter: buffer.getUint8(),
         flags: {
             contentType: 0,
             sendOnChange: false,
@@ -240,7 +240,7 @@ CommandBinaryBuffer.prototype.getObisProfile = function (): IObisProfile {
         }
     } as IObisProfile;
 
-    const flags = this.getUint8();
+    const flags = buffer.getUint8();
 
     profile.flags.contentType = bitSet.extractBits(flags, contentTypeBitsNumber, contentTypeBitStartIndex);
     profile.flags.sendOnChange = !!bitSet.extractBits(flags, sendingOnlyIfChangeBitsNumber, sendingOnlyIfChangeBitStartIndex);
@@ -250,10 +250,10 @@ CommandBinaryBuffer.prototype.getObisProfile = function (): IObisProfile {
     return profile;
 };
 
-CommandBinaryBuffer.prototype.setObisProfile = function ( profile: IObisProfile ) {
-    this.setUint16(profile.capturePeriod);
-    this.setUint16(profile.sendingPeriod);
-    this.setUint8(profile.sendingCounter);
+export const setObisProfile = function ( buffer: IBinaryBuffer, profile: IObisProfile ) {
+    buffer.setUint16(profile.capturePeriod);
+    buffer.setUint16(profile.sendingPeriod);
+    buffer.setUint8(profile.sendingCounter);
 
     let flags = 0;
 
@@ -262,65 +262,65 @@ CommandBinaryBuffer.prototype.setObisProfile = function ( profile: IObisProfile 
     flags = bitSet.fillBits(flags, archiveBitsNumber, archive1BitStartIndex, +profile.flags.archive1);
     flags = bitSet.fillBits(flags, archiveBitsNumber, archive2BitStartIndex, +profile.flags.archive2);
 
-    this.setUint8(flags);
+    buffer.setUint8(flags);
 };
 
-CommandBinaryBuffer.prototype.getEUI = function (): string {
+export const getEUI = function ( buffer: IBinaryBuffer ): string {
     const bytes = [];
 
     for ( let i = 0; i < EUI_SIZE; ++i ) {
-        bytes.push(this.getUint8());
+        bytes.push(buffer.getUint8());
     }
 
     return getHexFromBytes(bytes);
 };
 
-CommandBinaryBuffer.prototype.setEUI = function ( eui: string ) {
+export const setEUI = function ( buffer: IBinaryBuffer, eui: string ) {
     const bytes = getBytesFromHex(eui);
 
-    bytes.forEach(byte => this.setUint8(byte));
+    bytes.forEach(byte => buffer.setUint8(byte));
 };
 
 
-CommandBinaryBuffer.prototype.getObisValueString = function (): IObisValueString {
-    return {code: this.getUint8(), content: this.getString()};
+export const getObisValueString = function ( buffer: IBinaryBuffer ): IObisValueString {
+    return {code: buffer.getUint8(), content: buffer.getString()};
 };
 
-CommandBinaryBuffer.prototype.setObisValueString = function ( obisValue: IObisValueString ) {
-    this.setUint8(obisValue.code);
-    this.setString(obisValue.content);
+export const setObisValueString = function ( buffer: IBinaryBuffer, obisValue: IObisValueString ) {
+    buffer.setUint8(obisValue.code);
+    buffer.setString(obisValue.content);
 };
 
-CommandBinaryBuffer.prototype.getObisValueFloat = function (): IObisValueFloat {
-    return {code: this.getUint8(), content: roundNumber(this.getFloat32())};
+export const getObisValueFloat = function ( buffer: IBinaryBuffer ): IObisValueFloat {
+    return {code: buffer.getUint8(), content: roundNumber(buffer.getFloat32())};
 };
 
-CommandBinaryBuffer.prototype.setObisValueFloat = function ( obisValue: IObisValueFloat ) {
-    this.setUint8(obisValue.code);
-    this.setFloat32(roundNumber(obisValue.content));
+export const setObisValueFloat = function ( buffer: IBinaryBuffer, obisValue: IObisValueFloat ) {
+    buffer.setUint8(obisValue.code);
+    buffer.setFloat32(roundNumber(obisValue.content));
 };
 
-CommandBinaryBuffer.prototype.getVersion = function (): IVersion {
+export const getVersion = function ( buffer: IBinaryBuffer ): IVersion {
     return {
-        major: this.getUint8(),
-        minor: this.getUint8()
+        major: buffer.getUint8(),
+        minor: buffer.getUint8()
     };
 };
 
-CommandBinaryBuffer.prototype.setVersion = function ( version: IVersion ) {
-    this.setUint8(version.major);
-    this.setUint8(version.minor);
+export const setVersion = function ( buffer: IBinaryBuffer, version: IVersion ) {
+    buffer.setUint8(version.major);
+    buffer.setUint8(version.minor);
 };
 
-CommandBinaryBuffer.prototype.getSerialPortParameters = function (): ISerialPortParameters {
+export const getSerialPortParameters = function ( buffer: IBinaryBuffer ): ISerialPortParameters {
     return {
-        baudRate: this.getUint8(),
-        dataBits: this.getUint8(),
-        parity: bitSet.extractBits(this.getUint8(), 2, 1)
+        baudRate: buffer.getUint8(),
+        dataBits: buffer.getUint8(),
+        parity: bitSet.extractBits(buffer.getUint8(), 2, 1)
     };
 };
 
-CommandBinaryBuffer.prototype.setSerialPortParameters = function ( parameters: ISerialPortParameters ) {
+export const setSerialPortParameters = function ( buffer: IBinaryBuffer, parameters: ISerialPortParameters ) {
     const {
         baudRate,
         dataBits,
@@ -328,10 +328,10 @@ CommandBinaryBuffer.prototype.setSerialPortParameters = function ( parameters: I
     } = parameters;
     const flags = bitSet.fillBits(0, 2, 1, parity);
 
-    this.setUint8(baudRate);
-    this.setUint8(dataBits);
-    this.setUint8(flags);
+    buffer.setUint8(baudRate);
+    buffer.setUint8(dataBits);
+    buffer.setUint8(flags);
 };
 
 
-export default CommandBinaryBuffer;
+// export default CommandBinaryBuffer;

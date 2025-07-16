@@ -25,7 +25,8 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, ICommandParameters, METER_ID_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {ICommandParameters, METER_ID_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {getArchiveState as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -82,7 +83,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetArchiveStateParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     const requestId = buffer.getUint8();
     const archiveType = buffer.getUint8();
@@ -102,7 +103,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveStateParameters => 
 export const toBytes = ( parameters: IGetArchiveStateParameters ): types.TBytes => {
     const {requestId, archiveType, meterId} = parameters;
     const size = REQUEST_ID_SIZE + 1 + (parameters.meterId ? METER_ID_SIZE : 0);
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(size);
+    const buffer: IBinaryBuffer = new BinaryBuffer(size, false);
 
     buffer.setUint8(requestId);
     buffer.setUint8(archiveType);
