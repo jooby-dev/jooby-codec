@@ -838,7 +838,11 @@ export interface IExtendedCurrentValues2RelayStatus2 {
     /** Relay turned off due to exceeding allowable power in net balance limit mode. */
     RELAY_SALDO_OFF_ON_MAX_POWER: boolean,
     /** Relay switched on manually by hardware. */
-    RELAY_HARD_ST1: boolean
+    RELAY_HARD_ST1: boolean,
+    /** Relay turned off due to magnet interference. */
+    RELAY_MAGNET_OFF: boolean,
+    /** Relay turned off due to maximum negative power exceeded. */
+    RELAY_P_MINUS_MAX_OFF: boolean
 }
 
 export interface IExtendedCurrentValues2Status1 {
@@ -1162,7 +1166,10 @@ const extendedCurrentValues2RelayStatus2Mask = {
     RELAY_UNEQUIL_CURRENT_OFF: 2 ** 2,
     RELAY_BIPOLAR_POWER_OFF: 2 ** 3,
     RELAY_SALDO_OFF_ON_MAX_POWER: 2 ** 4,
-    RELAY_HARD_ST1: 2 ** 5
+    RELAY_HARD_ST1: 2 ** 5,
+    RELAY_MAGNET_OFF: 2 ** 6,
+    RELAY_P_MINUS_MAX_OFF: 2 ** 7
+
 };
 
 const extendedCurrentValues2Status1Mask = {

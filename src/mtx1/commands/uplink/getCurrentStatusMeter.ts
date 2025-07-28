@@ -1,5 +1,5 @@
 /**
- * Uplink command to get current parameters.
+ * Uplink command to get current status.
  *
  * @packageDocumentation
  *

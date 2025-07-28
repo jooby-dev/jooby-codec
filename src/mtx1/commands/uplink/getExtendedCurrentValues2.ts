@@ -99,7 +99,9 @@ export const examples: command.TCommandExamples = {
                 RELAY_UNEQUIL_CURRENT_OFF: false,
                 RELAY_BIPOLAR_POWER_OFF: false,
                 RELAY_SALDO_OFF_ON_MAX_POWER: false,
-                RELAY_HARD_ST1: true
+                RELAY_HARD_ST1: true,
+                RELAY_MAGNET_OFF: false,
+                RELAY_P_MINUS_MAX_OFF: false
             },
             status1: {
                 MAXVA: true,
