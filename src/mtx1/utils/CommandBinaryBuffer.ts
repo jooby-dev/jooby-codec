@@ -1169,7 +1169,6 @@ const extendedCurrentValues2RelayStatus2Mask = {
     RELAY_HARD_ST1: 2 ** 5,
     RELAY_MAGNET_OFF: 2 ** 6,
     RELAY_P_MINUS_MAX_OFF: 2 ** 7
-
 };
 
 const extendedCurrentValues2Status1Mask = {
