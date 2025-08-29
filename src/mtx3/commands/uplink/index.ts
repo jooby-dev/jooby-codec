@@ -13,8 +13,8 @@ export * as getDayEnergies from '../../../mtx1/commands/uplink/getDayEnergies.js
 export * as getDayProfile from '../../../mtx1/commands/uplink/getDayProfile.js';
 export * as getDeviceId from '../../../mtx1/commands/uplink/getDeviceId.js';
 export * as getDeviceType from '../../../mtx1/commands/uplink/getDeviceType.js';
-export * as getEventsCounters from '../../../mtx1/commands/uplink/getEventsCounters.js';
 export * as getEvents from '../../../mtx1/commands/uplink/getEvents.js';
+export * as getEventsCounters from '../../../mtx1/commands/uplink/getEventsCounters.js';
 export * as getEventStatus from '../../../mtx1/commands/uplink/getEventStatus.js';
 export * as getMagneticFieldThreshold from '../../../mtx1/commands/uplink/getMagneticFieldThreshold.js';
 export * as getMeterInfo from '../../../mtx1/commands/uplink/getMeterInfo.js';

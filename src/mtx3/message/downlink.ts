@@ -142,7 +142,6 @@ toBytesMap[mtx1Commands.getCorrectTime.id] = mtx1Commands.getCorrectTime.toBytes
 toBytesMap[mtx1Commands.getCurrentStatusMeter.id] = mtx1Commands.getCurrentStatusMeter.toBytes;
 toBytesMap[mtx1Commands.getCurrentValues.id] = mtx1Commands.getCurrentValues.toBytes;
 toBytesMap[mtx1Commands.getDateTime.id] = mtx1Commands.getDateTime.toBytes;
-toBytesMap[mtx1Commands.getDateTime.id] = mtx1Commands.getDateTime.toBytes;
 toBytesMap[mtx1Commands.getDayMaxDemand.id] = mtx1Commands.getDayMaxDemand.toBytes;
 toBytesMap[mtx1Commands.getDayMaxDemandExport.id] = mtx1Commands.getDayMaxDemandExport.toBytes;
 toBytesMap[mtx1Commands.getDayProfile.id] = mtx1Commands.getDayProfile.toBytes;
