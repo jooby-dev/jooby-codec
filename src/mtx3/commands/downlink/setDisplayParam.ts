@@ -30,6 +30,8 @@ import {READ_WRITE} from '../../../mtx1/constants/accessLevels.js';
 import {setDisplayParam as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 import {displayModes} from '../../constants/index.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as screenIds from '../../constants/screenIds.js';
 
 
 interface ISetDisplayParamParameters {

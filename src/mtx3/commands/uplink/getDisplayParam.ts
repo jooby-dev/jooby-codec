@@ -32,6 +32,8 @@ import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getDisplayParam as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 import {displayModes} from '../../constants/index.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as screenIds from '../../constants/screenIds.js';
 
 
 interface IGetDisplayParamResponseParameters {
