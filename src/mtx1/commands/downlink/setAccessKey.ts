@@ -32,6 +32,8 @@ import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY, READ_WRITE} from '../../constants/accessLevels.js';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import * as accessLevels from '../../constants/accessLevels.js';
 import {setAccessKey as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 

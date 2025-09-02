@@ -224,7 +224,7 @@ export const fromBytes = ( bytes: types.TBytes ): Array<IChannelStatus> => {
 /**
  * Encode command parameters.
  *
- * @param parameters - command payload
+ * @param channelsStatus - command payload
  * @returns full message (header with body)
  */
 export const toBytes = ( channelsStatus: Array<IChannelStatus> ): types.TBytes => {

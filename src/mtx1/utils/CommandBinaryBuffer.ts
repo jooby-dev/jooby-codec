@@ -18,8 +18,6 @@ import * as frameTypes from '../constants/frameTypes.js';
 import frameNames from '../constants/frameNames.js';
 import * as events from '../constants/events.js';
 import eventNames from '../constants/eventNames.js';
-//import * as energyTypes from '../constants/energyTypes.js';
-
 import * as demandTypes from '../constants/demandTypes.js';
 
 
