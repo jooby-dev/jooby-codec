@@ -139,7 +139,6 @@ export const ARCHIVE_CHANNEL_3 = 0xb2;
  */
 export const ARCHIVE_CHANNEL_4 = 0xb3;
 
-
 /**
  * Archive channel 5
  * https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetOperatorParametersExtended2.md#archive-channel
