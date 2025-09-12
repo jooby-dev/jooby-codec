@@ -1301,36 +1301,36 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
 /**
  * Demand parameter type: energy, current, voltage or other.
  *
- * | Value | Description                                                                     |
- * | ----- | ------------------------------------------------------------------------------- |
- * | `1`   | get `ten` = `1/3/5/10/15/30/60`-minute active energy `A+` phase `A`             |
- * | `2`   | get `1/3/5/10/15/30/60`-minute active energy `A+` phase `B`                     |
- * | `3`   | get `1/3/5/10/15/30/60`-minute active energy `A+` phase `C`                     |
- * | `4`   | get `1/3/5/10/15/30/60`-minute active energy `A-` phase `A`                     |
- * | `5`   | get `1/3/5/10/15/30/60`-minute active energy `A-` phase `B`                     |
- * | `6`   | get `1/3/5/10/15/30/60`-minute active energy `A-` phase `C`                     |
- * | `7`   | get `1/3/5/10/15/30/60`-minute active energy `A+R+` phase `A`                   |
- * | `8`   | get `1/3/5/10/15/30/60`-minute active energy `A+R+` phase `B`                   |
- * | `9`   | get `1/3/5/10/15/30/60`-minute active energy `A+R+` phase `C`                   |
- * | `10`  | get `1/3/5/10/15/30/60`-minute active energy `A+R-` phase `A`                   |
- * | `11`  | get `1/3/5/10/15/30/60`-minute active energy `A+R-` phase `B`                   |
- * | `12`  | get `1/3/5/10/15/30/60`-minute active energy `A+R-` phase `C`                   |
- * | `13`  | get `1/3/5/10/15/30/60`-minute active energy `A-R+` phase `A`                   |
- * | `14`  | get `1/3/5/10/15/30/60`-minute active energy `A-R+` phase `B`                   |
- * | `15`  | get `1/3/5/10/15/30/60`-minute active energy `A-R+` phase `C`                   |
- * | `16`  | get `1/3/5/10/15/30/60`-minute active energy `A-R-` phase `A`                   |
- * | `17`  | get `1/3/5/10/15/30/60`-minute active energy `A-R-` phase `B`                   |
- * | `18`  | get `1/3/5/10/15/30/60`-minute active energy `A-R-` phase `C`                   |
- * | `19`  | get `1/3/5/10/15/30/60`-minute active energy `R+` phase `A`                     |
- * | `20`  | get `1/3/5/10/15/30/60`-minute active energy `R+` phase `B`                     |
- * | `21`  | get `1/3/5/10/15/30/60`-minute active energy `R+` phase `C`                     |
- * | `22`  | get `1/3/5/10/15/30/60`-minute active energy `R-` phase `A`                     |
- * | `23`  | get `1/3/5/10/15/30/60`-minute active energy `R-` phase `B`                     |
- * | `24`  | get `1/3/5/10/15/30/60`-minute active energy `R-` phase `C`                     |
+ * | Value | Description                                                                 |
+ * | ----- | --------------------------------------------------------------------------- |
+ * | `1`   | get `ten` = `1/3/5/10/15/30/60`-minute active energy `A+` phase `A`         |
+ * | `2`   | get `1/3/5/10/15/30/60`-minute active energy `A+` phase `B`                 |
+ * | `3`   | get `1/3/5/10/15/30/60`-minute active energy `A+` phase `C`                 |
+ * | `4`   | get `1/3/5/10/15/30/60`-minute active energy `A-` phase `A`                 |
+ * | `5`   | get `1/3/5/10/15/30/60`-minute active energy `A-` phase `B`                 |
+ * | `6`   | get `1/3/5/10/15/30/60`-minute active energy `A-` phase `C`                 |
+ * | `7`   | get `1/3/5/10/15/30/60`-minute active energy `A+R+` phase `A`               |
+ * | `8`   | get `1/3/5/10/15/30/60`-minute active energy `A+R+` phase `B`               |
+ * | `9`   | get `1/3/5/10/15/30/60`-minute active energy `A+R+` phase `C`               |
+ * | `10`  | get `1/3/5/10/15/30/60`-minute active energy `A+R-` phase `A`               |
+ * | `11`  | get `1/3/5/10/15/30/60`-minute active energy `A+R-` phase `B`               |
+ * | `12`  | get `1/3/5/10/15/30/60`-minute active energy `A+R-` phase `C`               |
+ * | `13`  | get `1/3/5/10/15/30/60`-minute active energy `A-R+` phase `A`               |
+ * | `14`  | get `1/3/5/10/15/30/60`-minute active energy `A-R+` phase `B`               |
+ * | `15`  | get `1/3/5/10/15/30/60`-minute active energy `A-R+` phase `C`               |
+ * | `16`  | get `1/3/5/10/15/30/60`-minute active energy `A-R-` phase `A`               |
+ * | `17`  | get `1/3/5/10/15/30/60`-minute active energy `A-R-` phase `B`               |
+ * | `18`  | get `1/3/5/10/15/30/60`-minute active energy `A-R-` phase `C`               |
+ * | `19`  | get `1/3/5/10/15/30/60`-minute active energy `R+` phase `A`                 |
+ * | `20`  | get `1/3/5/10/15/30/60`-minute active energy `R+` phase `B`                 |
+ * | `21`  | get `1/3/5/10/15/30/60`-minute active energy `R+` phase `C`                 |
+ * | `22`  | get `1/3/5/10/15/30/60`-minute active energy `R-` phase `A`                 |
+ * | `23`  | get `1/3/5/10/15/30/60`-minute active energy `R-` phase `B`                 |
+ * | `24`  | get `1/3/5/10/15/30/60`-minute active energy `R-` phase `C`                 |
  * | `25`  | get `1/3/5/10/15/30/60`-minute voltage for phase `A`                        |
  * | `26`  | get `1/3/5/10/15/30/60`-minute voltage for phase `B`                        |
  * | `27`  | get `1/3/5/10/15/30/60`-minute voltage for phase `C`                        |
- * | `28`  | get `10`-minute voltage for phase `A`                                           |
+ * | `28`  | get `10`-minute voltage for phase `A`                                       |
  * | `29`  | get `10`-minute voltage for phase `B`                                       |
  * | `30`  | get `10`-minute voltage for phase `C`                                       |
  * | `31`  | get `1/3/5/10/15/30/60`-minute current for phase `A`                        |
@@ -1342,12 +1342,12 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
  * | `136` | get `1/3/5/10/15/30/60`-minute reactive energy for `A+R-` (`4.4.0`/`8.4.0`) |
  * | `144` | get `1/3/5/10/15/30/60`-minute reactive energy for `A-R+` (`5.4.0`)         |
  * | `160` | get `1/3/5/10/15/30/60`-minute reactive energy for `A-R-` (`6.4.0`)         |
- * | `176` | get archive recorded in `Channel 1`                                             |
- * | `177` | get archive recorded in `Channel 2`                                             |
- * | `178` | get archive recorded in `Channel 3`                                             |
- * | `179` | get archive recorded in `Channel 4`                                             |
- * | `180` | get archive recorded in `Channel 5`                                             |
- * | `181` | get archive recorded in `Channel 6`                                             |
+ * | `176` | get archive recorded in `Channel 1`                                         |
+ * | `177` | get archive recorded in `Channel 2`                                         |
+ * | `178` | get archive recorded in `Channel 3`                                         |
+ * | `179` | get archive recorded in `Channel 4`                                         |
+ * | `180` | get archive recorded in `Channel 5`                                         |
+ * | `181` | get archive recorded in `Channel 6`                                         |
  */
 export type TDemandParam = types.TUint8;
 
