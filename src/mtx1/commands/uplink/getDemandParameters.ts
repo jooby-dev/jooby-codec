@@ -3,6 +3,8 @@
  *
  * The corresponding downlink command: `getDemandParameters`.
  *
+ * since `21.06.23.0.0.15`
+ *
  * @packageDocumentation
  *
  * @example create command instance from command body hex dump

@@ -1,6 +1,8 @@
 /**
  * Downlink command to read load and voltage graphs.
  *
+ * since `21.06.23.0.0.15`
+ *
  * @packageDocumentation
  *
  * @example
