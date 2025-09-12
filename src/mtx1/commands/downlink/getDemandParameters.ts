@@ -1,6 +1,8 @@
 /**
  * Downlink command to get the parameters for voltage graphs and SAIDI.
  *
+ * since `21.06.23.0.0.15`
+ *
  * @packageDocumentation
  *
  * @example
