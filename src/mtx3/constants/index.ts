@@ -12,6 +12,7 @@ export {default as eventNames} from './eventNames.js';
 export {default as screenNames} from './screenNames.js';
 export {default as uplinkNames} from './uplinkNames.js';
 export * as baudRates from './baudRates.js';
+export * as demandTypes from './demandTypes.js';
 export * as displayModes from './displayModes.js';
 export * as downlinkIds from './downlinkIds.js';
 export * as energyTypes from './energyTypes.js';
