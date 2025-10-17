@@ -8,6 +8,7 @@
  * @example
  * ```js
  * import * as getDemand from 'jooby-codec/mtx1/commands/downlink/getDemand.js';
+ * import * as demandTypes from 'jooby-codec/mtx1/constants/demandTypes.js';
  *
  * const parameters = {
  *     date: {
@@ -15,7 +16,7 @@
  *         month: 6,
  *         date: 18
  *     },
- *     energyType: 1,
+ *     demandType: demandTypes.A_PLUS,
  *     firstIndex: 0,
  *     count: 2,
  *     period: 30
@@ -65,7 +66,7 @@ export const examples: command.TCommandExamples = {
                 month: 6,
                 date: 18
             },
-            energyType: demandTypes.A_PLUS,
+            demandType: demandTypes.A_PLUS,
             firstIndex: 0,
             count: 2,
             period: 30

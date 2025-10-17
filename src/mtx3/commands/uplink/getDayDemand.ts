@@ -54,7 +54,7 @@ import {
     getEnergies
 } from '../../utils/CommandBinaryBuffer.js';
 import {getDate, setDate} from '../../../mtx1/utils/CommandBinaryBuffer.js';
-import {A_PLUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
+import {A_PLUS_R_PLUS_R_MINUS, A_MINUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
 import {getDayDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -116,7 +116,7 @@ export const examples: command.TCommandExamples = {
                 month: 3,
                 date: 22
             },
-            energyType: 2,
+            energyType: A_MINUS_R_PLUS_R_MINUS,
             energies: {
                 wh: [40301230, null, null, 2145623],
                 vari: [25000, null, null, 9876543],

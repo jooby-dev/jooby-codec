@@ -13,6 +13,8 @@ export interface IMtx3DeviceTypeDescriptor extends bitSet.TBooleanObject {
     typeMeterTransformer: boolean,
     typeMeterG: boolean,
     downgradedToR: boolean,
+
+    /** shows if additional command `getMeterInfo` is supported */
     supportMeterInfo: boolean,
     reactiveByQuadrants: boolean
 }

@@ -8,6 +8,7 @@
  * @example create command instance from command body hex dump
  * ```js
  * import * as getDemand from 'jooby-codec/mtx3/commands/uplink/getDemand.js';
+ * import * as demandTypes from 'jooby-codec/mtx3/constants/demandTypes.js';
  *
  * // response to getDemand downlink command
  * const bytes = [0x2a, 0xd2, 0x81, 0x00, 0x00, 0x02, 0x1e, 0x07, 0xd0, 0xab, 0xcd];
@@ -23,7 +24,7 @@
  *         month: 6,
  *         date: 18
  *     },
- *     demandParam: 0x81,
+ *     demandType: demandTypes.ACTIVE_ENERGY_A_PLUS,
  *     firstIndex: 0,
  *     count: 2,
  *     period: 30,
@@ -47,6 +48,7 @@ import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as getDemandCommand from '../downlink/getDemand.js';
 import {getDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import * as demandTypes from '../../constants/demandTypes.js';
 
 
 export const id: types.TCommandId = commandId;
@@ -68,7 +70,7 @@ export const examples: command.TCommandExamples = {
                 month: 6,
                 date: 18
             },
-            demandParam: 0x81,
+            demandType: demandTypes.ACTIVE_ENERGY_A_PLUS,
             firstIndex: 0,
             count: 2,
             period: 30,

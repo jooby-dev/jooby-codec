@@ -1,7 +1,7 @@
-/** active energy (`A+`) `1.5.x` */
+/** active energy (`A+`) `1.5.x` (`x=1..4`) for period */
 export const A_PLUS = 0x01;
 
-/** active energy (`A-`) `2.5.x` */
+/** active energy (`A-`) `2.5.x` (`x=1..4`) for period */
 export const A_MINUS = 0x02;
 
 /** `10`-minute average voltage graph */

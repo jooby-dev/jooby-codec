@@ -6,6 +6,7 @@
  * @example
  * ```js
  * import * as getDemand from 'jooby-codec/mtx3/commands/downlink/getDemand.js';
+ * import * as demandTypes from 'jooby-codec/mtx3/constants/demandTypes.js';
  *
  * const parameters = {
  *     date: {
@@ -13,7 +14,7 @@
  *         month: 6,
  *         date: 18
  *     },
- *     demandParam: 0x81,
+ *     demandType: demandTypes.ACTIVE_ENERGY_A_PLUS,
  *     firstIndex: 0,
  *     count: 2,
  *     period: 30
@@ -41,6 +42,7 @@ import {
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getDemand as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import * as demandTypes from '../../constants/demandTypes.js';
 
 
 export const id: types.TCommandId = commandId;
@@ -62,7 +64,7 @@ export const examples: command.TCommandExamples = {
                 month: 6,
                 date: 18
             },
-            demandParam: 0x81,
+            demandType: demandTypes.ACTIVE_ENERGY_A_PLUS,
             firstIndex: 0,
             count: 2,
             period: 30
