@@ -13,6 +13,7 @@
  * @example create command instance from command body hex dump
  * ```js
  * import * as getDemand from 'jooby-codec/mtx1/commands/uplink/getDemand.js';
+ * import * as demandTypes from 'jooby-codec/mtx1/constants/demandTypes.js';
  *
  * // response to getDemand downlink command
  * const bytes = [0x31, 0x42, 0xa0, 0x00, 0x19, 0x01, 0x3c, 0x04, 0xff];
@@ -24,7 +25,7 @@
  * // output:
  * {
  *     date: { year: 24, month: 10, date: 2 },
- *     energyType: 160,
+ *     demandType: demandTypes.VOLTAGE,
  *     firstIndex: 25,
  *     count: 1,
  *     period: 60,
@@ -85,7 +86,7 @@ export const examples: command.TCommandExamples = {
                 month: 10,
                 date: 2
             },
-            energyType: demandTypes.A_PLUS,
+            demandType: demandTypes.A_PLUS,
             firstIndex: 0,
             count: 48,
             period: 5,
@@ -205,7 +206,7 @@ export const examples: command.TCommandExamples = {
                 month: 10,
                 date: 2
             },
-            energyType: demandTypes.A_PLUS,
+            demandType: demandTypes.A_PLUS,
             firstIndex: 0,
             count: 24,
             period: 60,
@@ -277,7 +278,7 @@ export const examples: command.TCommandExamples = {
                 month: 10,
                 date: 2
             },
-            energyType: demandTypes.A_PLUS,
+            demandType: demandTypes.A_PLUS,
             firstIndex: 25,
             count: 1,
             period: 60,
@@ -303,7 +304,7 @@ export const examples: command.TCommandExamples = {
                 month: 10,
                 date: 2
             },
-            energyType: demandTypes.VOLTAGE,
+            demandType: demandTypes.VOLTAGE,
             firstIndex: 0,
             count: 1,
             period: 60,
@@ -329,7 +330,7 @@ export const examples: command.TCommandExamples = {
                 month: 10,
                 date: 2
             },
-            energyType: demandTypes.VOLTAGE,
+            demandType: demandTypes.VOLTAGE,
             firstIndex: 25,
             count: 1,
             period: 60,
@@ -355,7 +356,7 @@ export const examples: command.TCommandExamples = {
                 month: 10,
                 date: 27
             },
-            energyType: demandTypes.VOLTAGE_10,
+            demandType: demandTypes.VOLTAGE_10,
             firstIndex: 144,
             count: 7,
             period: 10,
@@ -403,7 +404,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
     }
 
     const demandsBytes = new Array(parameters.count).fill(0).map(() => buffer.getUint16());
-    const isEnergiesDemand = parameters.energyType === demandTypes.A_PLUS || parameters.energyType === demandTypes.A_MINUS;
+    const isEnergiesDemand = parameters.demandType === demandTypes.A_PLUS || parameters.demandType === demandTypes.A_MINUS;
 
     parameters.demands = isEnergiesDemand
         ? demands.energyFromBinary(demandsBytes, parameters.firstIndex, parameters.period)
@@ -424,7 +425,7 @@ export const toBytes = ( parameters: IGetDemandResponseParameters ): types.TByte
 
     setDemand(buffer, parameters);
 
-    if ( parameters.energyType === demandTypes.A_PLUS || parameters.energyType === demandTypes.A_MINUS ) {
+    if ( parameters.demandType === demandTypes.A_PLUS || parameters.demandType === demandTypes.A_MINUS ) {
         demands.energyToBinary(parameters.demands).forEach((value: number) => buffer.setUint16(value));
     } else {
         demands.voltageToBinary(parameters.demands).forEach((value: number) => buffer.setUint16(value));

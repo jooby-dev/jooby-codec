@@ -1260,7 +1260,7 @@ export interface IGetDemandParameters {
      */
     date: types.IDate,
 
-    demandParam: TDemandParam,
+    demandType: TDemandType,
 
     /**
      * Starting block number of requested data.
@@ -1299,7 +1299,7 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
 }
 
 /**
- * Demand parameter type: energy, current, voltage or other.
+ * Demand type: energy, current, voltage or other.
  *
  * | Value | Description                                                                 |
  * | ----- | --------------------------------------------------------------------------- |
@@ -1349,7 +1349,7 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
  * | `180` | get archive recorded in `Channel 5`                                         |
  * | `181` | get archive recorded in `Channel 6`                                         |
  */
-export type TDemandParam = types.TUint8;
+export type TDemandType = types.TUint8;
 
 /**
  * Half hour load profile, current, voltage or other.
@@ -2371,7 +2371,7 @@ export const getDemand = function ( buffer: IBinaryBuffer ): IGetDemandParameter
             month: ((date0 << 3) & 0x0f) | (date1 >> 5),
             date: date1 & 0x1f
         },
-        demandParam: buffer.getUint8(),
+        demandType: buffer.getUint8(),
         firstIndex: buffer.getUint16(),
         count: buffer.getUint8(),
         period: buffer.getUint8()
@@ -2384,7 +2384,7 @@ export const setDemand = function ( buffer: IBinaryBuffer, parameters: IGetDeman
 
     buffer.setUint8(date0);
     buffer.setUint8(date1);
-    buffer.setUint8(parameters.demandParam);
+    buffer.setUint8(parameters.demandType);
     buffer.setUint16(parameters.firstIndex);
     buffer.setUint8(parameters.count);
     buffer.setUint8(parameters.period);

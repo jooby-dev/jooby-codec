@@ -35,6 +35,7 @@ import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
+import * as energyTypes from '../../constants/energyTypes.js';
 import {
     IPackedEnergiesWithType,
     PACKED_ENERGY_TYPE_SIZE,
@@ -101,7 +102,7 @@ export const examples: command.TCommandExamples = {
                 month: 3,
                 date: 22
             },
-            energyType: 2,
+            energyType: energyTypes.A_MINUS,
             energies: [40301230, null, 2333, 2145623]
         },
         bytes: [
