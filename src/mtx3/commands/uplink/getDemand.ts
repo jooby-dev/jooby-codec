@@ -86,8 +86,40 @@ export const examples: command.TCommandExamples = {
             0x07, 0xd0,
             0xab, 0xcd
         ]
+    },
+    'response for A+ with nulls': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 21,
+                month: 6,
+                date: 18
+            },
+            demandType: demandTypes.ACTIVE_ENERGY_A_PLUS,
+            firstIndex: 0,
+            count: 4,
+            period: 30,
+            demands: [2000, 43981, null, null]
+        },
+        bytes: [
+            0x76, 0x0f,
+            0x2a, 0xd2,
+            0x81,
+            0x00, 0x00,
+            0x04,
+            0x1e,
+            0x07, 0xd0,
+            0xab, 0xcd,
+            0xff, 0xff,
+            0xff, 0xff
+        ]
     }
 };
+
+const NO_VALUE = 0xffff;
 
 
 /**
@@ -108,7 +140,13 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
         throw new Error('Invalid uplink GetDemand demands byte length.');
     }
 
-    const demands = new Array(parameters.count).fill(0).map(() => buffer.getUint16());
+    const demands = new Array(parameters.count)
+        .fill(0)
+        .map(() => {
+            const value = buffer.getUint16();
+
+            return value === NO_VALUE ? null : value;
+        });
 
     return {
         ...parameters,
@@ -128,7 +166,7 @@ export const toBytes = ( parameters: IGetDemandResponseParameters ): types.TByte
 
     setDemand(buffer, parameters);
 
-    parameters.demands.forEach(value => buffer.setUint16(value));
+    parameters.demands.forEach(value => buffer.setUint16(value === null ? NO_VALUE : value));
 
     return command.toBytes(id, buffer.data);
 };
