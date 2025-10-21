@@ -54,7 +54,7 @@ import * as demandTypes from '../../constants/demandTypes.js';
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const maxSize = getDemandCommand.maxSize + 48 * 2;
+export const maxSize = getDemandCommand.maxSize + 48;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
