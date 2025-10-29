@@ -27,6 +27,8 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {setTime2000 as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -44,8 +46,8 @@ interface ISetTime2000ResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x02;
-export const name: types.TCommandName = 'setTime2000';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 1;
@@ -63,18 +65,19 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): ISetTime2000ResponseParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): ISetTime2000ResponseParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: IBinaryBuffer = new BinaryBuffer(data, false);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters = {
         status: buffer.getUint8()
     };
@@ -85,6 +88,7 @@ export const fromBytes = ( data: types.TBytes ): ISetTime2000ResponseParameters 
 
     return parameters;
 };
+
 
 /**
  * Encode command parameters.

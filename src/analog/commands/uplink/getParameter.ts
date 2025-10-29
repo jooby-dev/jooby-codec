@@ -10,6 +10,7 @@
  * ```typescript
  * import * as getParameter from 'jooby-codec/analog/commands/uplink/getParameter.js';
  *
+ * // response to getParameter downlink command
  * const bytes = [0x01, 0x00, 0x00, 0x00, 0x04];
  *
  * // decoded payload
@@ -28,11 +29,19 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {IResponseParameter, getResponseParameterSize, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IResponseParameter,
+    getResponseParameterSize,
+    getResponseParameter,
+    setResponseParameter
+} from '../../utils/CommandBinaryBuffer.js';
+import {getParameter as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x04;
-export const name: types.TCommandName = 'getParameter';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {
@@ -42,11 +51,35 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 1,
-            data: {value: 2400}
+            name: 'REPORTING_DATA_INTERVAL',
+            data: {
+                specialSchedulePeriod: 0,
+                firstDaysSpecialSchedule: 0,
+                lastDaysSpecialSchedule: 0,
+                period: 2400
+            }
         },
         bytes: [
             0x04, 0x05,
             0x01, 0x00, 0x00, 0x00, 0x04
+        ]
+    },
+    'get spread factor and frequency for RX2 window': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 18,
+            name: 'RX2_CONFIG',
+            data: {
+                spreadFactor: 5,
+                spreadFactorName: 'SF7B125',
+                frequency: 20000
+            }
+        },
+        bytes: [
+            0x04, 0x05,
+            0x12, 0x05, 0x00, 0x00, 0xc8
         ]
     },
     'absolute data (not multichannel device)': {
@@ -55,6 +88,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 23,
+            name: 'ABSOLUTE_DATA',
             data: {meterValue: 204, pulseCoefficient: 100, value: 2023}
         },
         bytes: [
@@ -68,6 +102,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 24,
+            name: 'ABSOLUTE_DATA_ENABLE',
             data: {state: 1}
         },
         bytes: [
@@ -81,6 +116,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 29,
+            name: 'ABSOLUTE_DATA_MULTI_CHANNEL',
             data: {channel: 1, meterValue: 402, pulseCoefficient: 1000, value: 2032}
         },
         bytes: [
@@ -94,6 +130,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 30,
+            name: 'ABSOLUTE_DATA_ENABLE_MULTI_CHANNEL',
             data: {channel: 2, state: 1}
         },
         bytes: [
@@ -107,6 +144,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 51,
+            name: 'NBIOT_MODULE_INFO',
             data: {
                 moduleInfo: 'BC660KGLAAR01A05'
             }
@@ -122,11 +160,44 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: {
             id: 52,
+            name: 'NBIOT_BANDS',
             data: {bands: [3, 20]}
         },
         bytes: [
             0x04, 0x04,
             0x34, 0x02, 0x03, 0x14
+        ]
+    },
+    'time synchronization period in seconds via MAC commands': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 58,
+            name: 'TIME_SYNCHRONIZATION_PERIOD_VIA_MAC',
+            data: {
+                period: 1440
+            }
+        },
+        bytes: [
+            0x04, 0x05,
+            0x3a, 0x00, 0x00, 0x05, 0xa0
+        ]
+    },
+    'keep lora connection even after being removed': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 59,
+            name: 'KEEP_LORA_CONNECTION_ON_REMOVAL',
+            data: {
+                value: true
+            }
+        },
+        bytes: [
+            0x04, 0x02,
+            0x3b, 0x01
         ]
     }
 };
@@ -135,13 +206,13 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - binary data containing command parameters
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IResponseParameter => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IResponseParameter => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getResponseParameter();
+    return getResponseParameter(buffer);
 };
 
 
@@ -152,9 +223,9 @@ export const fromBytes = ( data: types.TBytes ): IResponseParameter => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IResponseParameter ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(getResponseParameterSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getResponseParameterSize(parameters), false);
 
-    buffer.setResponseParameter(parameters);
+    setResponseParameter(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

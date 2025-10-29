@@ -130,8 +130,44 @@ export const REPORTING_DATA_CONFIG = 49;
 /** Set configuration for events */
 export const EVENTS_CONFIG = 50;
 
-/** Get NBIOT module info */
+/** Get NB-IoT module info */
 export const NBIOT_MODULE_INFO = 51;
 
 /** Set preferred NB-IoT bands to be searched for */
 export const NBIOT_BANDS = 52;
+
+/** Set NB-IoT APN */
+export const NBIOT_APN = 53;
+
+/** Set NB-IoT LED indication */
+export const NBIOT_LED_INDICATION = 54;
+
+/** Set NB-IoT SIM PIN code */
+export const NBIOT_SIM = 55;
+
+/** Set channel type */
+export const CHANNEL_TYPE = 56;
+
+/** Enable extra payload with signal quality on every uplink command */
+export const EXTRA_PAYLOAD_ENABLE = 57;
+
+/** Time synchronization period in seconds via MAC commands */
+export const TIME_SYNCHRONIZATION_PERIOD_VIA_MAC = 58;
+
+/** Keep its lora connection even after being removed */
+export const KEEP_LORA_CONNECTION_ON_REMOVAL = 59;
+
+/**
+ * Set the NTP server.
+ * Module will synchronizes the local time with the Universal Time Coordinated (UTC) via the NTP server if synchronization period is set
+ */
+export const NBIOT_NTP_SERVER = 60;
+
+/**
+ * Activate/deactivate module
+ *
+ * Parameter available for 4PU IP68:
+ * HARDWARE_TYPE - 6
+ * HARDWARE_VERSION - 15
+ */
+export const ACTIVATE_MODULE = 61;

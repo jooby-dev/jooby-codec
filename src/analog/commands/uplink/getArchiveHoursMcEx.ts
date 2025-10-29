@@ -7,6 +7,7 @@
  * ```js
  * import * as getArchiveHoursMcEx from 'jooby-codec/analog/commands/uplink/getArchiveHoursMcEx.js';
  *
+ * // response to getArchiveHoursMcEx downlink command
  * const bytes = [0x2f, 0x97, 0x0c, 0x02, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a];
  *
  * // decoded payload
@@ -31,17 +32,21 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelValuesWithHourDiffExtended} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelValuesWithHourDiffExtended,
+    getChannelsValuesWithHourDiffExtended,
+    setChannelsValuesWithHourDiffExtended
+} from '../../utils/CommandBinaryBuffer.js';
+import {getArchiveHoursMcEx as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x301f;
-export const name: types.TCommandName = 'getArchiveHoursMcEx';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
-// date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
-// max hours diff - 7 (3 bit value)
-// 4 + (4 channelList * 5 bytes of hour values) + (4 * 5 bytes of diff * 7 max hours diff)
-const COMMAND_BODY_MAX_SIZE = 164;
+const COMMAND_BODY_MAX_SIZE = 255;
 
 export const examples: command.TCommandExamples = {
     '4 channels at 2023.12.23 12:00:00 GMT': {
@@ -85,17 +90,17 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IChannelValuesWithHourDiffExtended => {
-    if ( data.length > COMMAND_BODY_MAX_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IChannelValuesWithHourDiffExtended => {
+    if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getChannelsValuesWithHourDiffExtended();
+    return getChannelsValuesWithHourDiffExtended(buffer, true);
 };
 
 
@@ -103,12 +108,12 @@ export const fromBytes = ( data: types.TBytes ): IChannelValuesWithHourDiffExten
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IChannelValuesWithHourDiffExtended ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
 
-    buffer.setChannelsValuesWithHourDiffExtended(parameters);
+    setChannelsValuesWithHourDiffExtended(buffer, parameters, true);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

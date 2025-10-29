@@ -31,7 +31,14 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {IChannelAbsoluteValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelAbsoluteValue,
+    getChannelsWithAbsoluteValues,
+    setChannelsWithAbsoluteValues
+} from '../../utils/CommandBinaryBuffer.js';
+import {exAbsCurrentMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IExAbsCurrentMcResponseParameters {
@@ -39,8 +46,8 @@ interface IExAbsCurrentMcResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x0f1f;
-export const name: types.TCommandName = 'exAbsCurrentMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 // channelList 3 byte (max channelList: 14)
@@ -68,13 +75,13 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - binary data containing command parameters
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IExAbsCurrentMcResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IExAbsCurrentMcResponseParameters => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return {channelList: buffer.getChannelsWithAbsoluteValues()};
+    return {channelList: getChannelsWithAbsoluteValues(buffer)};
 };
 
 
@@ -85,9 +92,9 @@ export const fromBytes = ( data: types.TBytes ): IExAbsCurrentMcResponseParamete
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IExAbsCurrentMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
 
-    buffer.setChannelsWithAbsoluteValues(parameters.channelList);
+    setChannelsWithAbsoluteValues(buffer, parameters.channelList);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

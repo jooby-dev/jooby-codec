@@ -26,7 +26,15 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getDateFromTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getHours,
+    setHours,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
+import {getArchiveHours as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetArchiveHoursParameters {
@@ -42,8 +50,8 @@ interface IGetArchiveHoursParameters {
 }
 
 
-export const id: types.TCommandId = 0x05;
-export const name: types.TCommandName = 'getArchiveHours';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 4;
@@ -65,17 +73,17 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveHoursParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const date = buffer.getDate();
-    const {hour} = buffer.getHours();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const {hour} = getHours(buffer);
     const hours = buffer.getUint8();
 
     date.setUTCHours(hour);
@@ -92,17 +100,17 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursParameters => {
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveHoursParameters ): types.TBytes => {
     const {startTime2000, hours} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
     const date = getDateFromTime2000(startTime2000);
     const hour = date.getUTCHours();
 
-    buffer.setDate(date);
+    setDate(buffer, date);
     // force hours to 0
-    buffer.setHours(hour, 1);
+    setHours(buffer, hour, 1);
     buffer.setUint8(hours);
 
     return command.toBytes(id, buffer.data);

@@ -1,5 +1,5 @@
 /**
- * The command for requesting the archive of daily data from the pulse counter sensor.
+ * Downlink command for requesting the archive of daily data from the pulse counter sensor.
  * If there is no data available in the archive, `0xffffffff` will be returned.
  * Due to the limited length of transmitted data from the sensor, not all requested data will be transferred.
  *
@@ -25,7 +25,14 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getDateFromTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
+import {getArchiveDays as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
+
 
 interface IGetArchiveDaysParameters {
     /** the number of days to retrieve from archive */
@@ -37,8 +44,8 @@ interface IGetArchiveDaysParameters {
     startTime2000: TTime2000
 }
 
-export const id: types.TCommandId = 0x06;
-export const name: types.TCommandName = 'getArchiveDays';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 3;
@@ -60,16 +67,16 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const date = buffer.getDate();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
     const days = buffer.getUint8();
 
     if ( !buffer.isEmpty ) {
@@ -84,14 +91,14 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysParameters => {
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveDaysParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
     const {startTime2000, days} = parameters;
     const date = getDateFromTime2000(startTime2000);
 
-    buffer.setDate(date);
+    setDate(buffer, date);
     buffer.setUint8(days);
 
     return command.toBytes(id, buffer.data);

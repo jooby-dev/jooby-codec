@@ -5,7 +5,7 @@ import {hexFormatOptions, IHexFormatOptions} from '../config.js';
 /**
  * Convert byte array to hex string.
  *
- * @param buffer - input data to convert
+ * @param bytes - input data to convert
  * @param options - formatting parameters
  *
  * @example

@@ -9,6 +9,8 @@
  * import * as hardwareTypes from 'jooby-codec/analog/constants/hardwareTypes.js';
  *
  * const bytes = [0x10, 0xe1, 0x01];
+ *
+ * // decoded payload
  * const parameters = lastEvent.fromBytes(bytes, {hardwareType: hardwareTypes.IMP4EU});
  *
  * console.log(parameters);
@@ -31,8 +33,16 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {TEventStatus, ICommandBinaryBuffer, getEventStatusSize} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    TEventStatus,
+    getEventStatusSize,
+    getEventStatus,
+    setEventStatus
+} from '../../utils/CommandBinaryBuffer.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
+import {lastEvent as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface ILastEventParameters {
@@ -44,8 +54,8 @@ interface ILastEventConfig {
     hardwareType?: number;
 }
 
-export const id: types.TCommandId = 0x60;
-export const name: types.TCommandName = 'lastEvent';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 1;
 
 export const examples: command.TCommandExamples = {
@@ -93,6 +103,29 @@ export const examples: command.TCommandExamples = {
             0x10, 0xe1, 0x01
         ]
     },
+    'status for IMP4EU (all false)': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            sequenceNumber: 16,
+            status: {
+                isBatteryLow: false,
+                isConnectionLost: false,
+                isFirstChannelInactive: false,
+                isSecondChannelInactive: false,
+                isThirdChannelInactive: false,
+                isForthChannelInactive: false
+            }
+        },
+        config: {
+            hardwareType: hardwareTypes.IMP4EU
+        },
+        bytes: [
+            0x63,
+            0x10, 0x80, 0x00
+        ]
+    },
     'status for MTXLORA': {
         id,
         name,
@@ -122,48 +155,79 @@ export const examples: command.TCommandExamples = {
             0x63,
             0x30, 0x83, 0x0a
         ]
+    },
+    'status for Ultrasound water meter': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            sequenceNumber: 48,
+            status: {
+                event: {
+                    transportMode: false,
+                    frequencyOutput: false,
+                    reverseFlow: true,
+                    tamperBreak: false,
+                    leakage: true,
+                    pipeBreak: true,
+                    pipeEmpty: false,
+                    batteryDischarge: false
+                },
+                error: 0
+            }
+        },
+        config: {
+            hardwareType: hardwareTypes.US_WATER
+        },
+        bytes: [
+            0x63,
+            0x30, 0x34, 0x00
+        ]
     }
 };
+
 
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @param config - command configuration
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes, config: ILastEventConfig ): ILastEventParameters => {
+export const fromBytes = ( bytes: types.TBytes, config: ILastEventConfig ): ILastEventParameters => {
     if ( !config.hardwareType ) {
         throw new Error('hardwareType in config is mandatory');
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const sequenceNumber = buffer.getUint8();
-    const status = buffer.getEventStatus(config.hardwareType);
+    const status = getEventStatus(buffer, config.hardwareType);
 
     return {sequenceNumber, status};
 };
+
 
 /**
  * Encode command parameters.
  *
  * @param parameters - command payload
  * @param config - command configuration
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ILastEventParameters, config: ILastEventConfig ): types.TBytes => {
     if ( !config.hardwareType ) {
         throw new Error('hardwareType in config is mandatory');
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(
+    const buffer: IBinaryBuffer = new BinaryBuffer(
         // sequenceNumber size + status size
-        1 + getEventStatusSize(config.hardwareType)
+        1 + getEventStatusSize(config.hardwareType),
+        false
     );
     const {sequenceNumber, status} = parameters;
 
     buffer.setUint8(sequenceNumber);
-    buffer.setEventStatus(config.hardwareType, status);
+    setEventStatus(buffer, config.hardwareType, status);
 
     return command.toBytes(id, buffer.data);
 };

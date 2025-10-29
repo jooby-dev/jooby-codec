@@ -1,8 +1,10 @@
 /**
- * The command to request status information from the sensor battery.
+ * Downlink command to request status information from the sensor battery.
  *
  * By default, the battery status is measured once per 24 hours. The state of the battery physically cannot change dramatically.
  * Response to the request contains the latest measurement results. This is enough to monitor the battery condition.
+ *
+ * @packageDocumentation
  *
  * @example
  * ```js
@@ -20,10 +22,12 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
+import {getBatteryStatus as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
-export const id: types.TCommandId = 0x051f;
-export const name: types.TCommandName = 'getBatteryStatus';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 0;
@@ -44,12 +48,12 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): command.IEmptyCommandParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
     // no parameters to decode
@@ -60,7 +64,6 @@ export const fromBytes = ( data: types.TBytes ): command.IEmptyCommandParameters
 /**
  * Encode command parameters.
  *
- * @param parameters - command payload
  * @returns full message (header with body)
  */
 export const toBytes = (): types.TBytes => command.toBytes(id);

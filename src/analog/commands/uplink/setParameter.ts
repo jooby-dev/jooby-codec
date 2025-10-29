@@ -26,7 +26,9 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {setParameter as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as deviceParameters from '../../constants/deviceParameters.js';
@@ -44,8 +46,8 @@ interface ISetParameterResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x03;
-export const name: types.TCommandName = 'setParameter';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 2;
@@ -77,15 +79,15 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - binary data containing command parameters
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): ISetParameterResponseParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): ISetParameterResponseParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters: ISetParameterResponseParameters = {
         id: buffer.getUint8(),
         status: buffer.getUint8()
@@ -98,6 +100,7 @@ export const fromBytes = ( data: types.TBytes ): ISetParameterResponseParameters
     return parameters;
 };
 
+
 /**
  * Encode command parameters.
  *
@@ -105,7 +108,7 @@ export const fromBytes = ( data: types.TBytes ): ISetParameterResponseParameters
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISetParameterResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
     buffer.setUint8(parameters.id);
     buffer.setUint8(parameters.status);

@@ -26,11 +26,18 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, ILegacyCounter} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ILegacyCounter,
+    getLegacyCounter,
+    setLegacyCounter
+} from '../../utils/CommandBinaryBuffer.js';
+import {current as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x07;
-export const name: types.TCommandName = 'current';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_MAX_SIZE = 4;
@@ -52,17 +59,17 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): ILegacyCounter => {
-    if ( data.length > COMMAND_BODY_MAX_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): ILegacyCounter => {
+    if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getLegacyCounter();
+    return getLegacyCounter(buffer);
 };
 
 
@@ -73,9 +80,9 @@ export const fromBytes = ( data: types.TBytes ): ILegacyCounter => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ILegacyCounter ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
 
-    buffer.setLegacyCounter(parameters);
+    setLegacyCounter(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };

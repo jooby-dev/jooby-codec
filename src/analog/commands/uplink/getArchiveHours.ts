@@ -10,6 +10,7 @@
  * ```js
  * import * as getArchiveHours from 'jooby-codec/analog/commands/uplink/getArchiveHours.js';
  *
+ * // response to getArchiveHours downlink command
  * const bytes = [0x2f, 0x97, 0x8c, 0x00, 0x00, 0xa3, 0x80, 0x0a];
  *
  * // decoded payload
@@ -31,11 +32,19 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, ILegacyHourCounterWithDiff} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ILegacyHourCounterWithDiff,
+    getLegacyHourCounterSize,
+    getLegacyHourCounterWithDiff,
+    setLegacyHourCounterWithDiff
+} from '../../utils/CommandBinaryBuffer.js';
+import {getArchiveHours as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
-export const id: types.TCommandId = 0x05;
-export const name: types.TCommandName = 'getArchiveHours';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {
@@ -57,28 +66,30 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): ILegacyHourCounterWithDiff => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): ILegacyHourCounterWithDiff => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getLegacyHourCounterWithDiff();
+    return getLegacyHourCounterWithDiff(buffer, true);
 };
+
 
 /**
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ILegacyHourCounterWithDiff ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(CommandBinaryBuffer.getLegacyHourCounterSize(parameters));
+    const buffer: IBinaryBuffer = new BinaryBuffer(getLegacyHourCounterSize(parameters), false);
 
-    buffer.setLegacyHourCounterWithDiff(parameters);
+    setLegacyHourCounterWithDiff(buffer, parameters, true);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

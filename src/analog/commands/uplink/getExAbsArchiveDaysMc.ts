@@ -7,6 +7,7 @@
  * ```js
  * import * as getExAbsArchiveDaysMc from 'jooby-codec/analog/commands/uplink/getExAbsArchiveDaysMc.js';
  *
+ * // response to getExAbsArchiveDaysMc downlink command
  * const bytes = [0x2e, 0x6a, 0x08, 0x02, 0x83, 0x94, 0x2b, 0xaa, 0x2c];
  *
  * // decoded payload
@@ -33,7 +34,21 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelArchiveDaysAbsolute} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelArchiveDaysAbsolute,
+    getExtendedValue,
+    setExtendedValue,
+    getChannels,
+    setChannels,
+    getDate,
+    setDate,
+    getPulseCoefficient,
+    setPulseCoefficient
+} from '../../utils/CommandBinaryBuffer.js';
+import * as archive from '../../constants/archive.js';
+import {getExAbsArchiveDaysMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetExAbsArchiveDaysMcResponseParameters {
@@ -53,13 +68,11 @@ interface IGetExAbsArchiveDaysMcResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x0d1f;
-export const name: types.TCommandName = 'getExAbsArchiveDaysMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
-// date 2 bytes, channelList 1 byte (max channelList: 4), days 1 byte (max days - 255)
-// 4 + (4 channelList * (1 byte pulse coefficient + 5 bytes of day values) * 255 max days)
-const COMMAND_BODY_MAX_SIZE = 6124;
+const COMMAND_BODY_MAX_SIZE = 255;
 
 export const examples: command.TCommandExamples = {
     'archive days values at 4 channel from 2023.03.10 00:00:00 GMT': {
@@ -88,19 +101,19 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveDaysMcResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const date = buffer.getDate();
-    const channels = buffer.getChannels();
+export const fromBytes = ( bytes: types.TBytes ): IGetExAbsArchiveDaysMcResponseParameters => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const channels = getChannels(buffer);
     const days = buffer.getUint8();
     const channelList: Array<IChannelArchiveDaysAbsolute> = [];
 
     channels.forEach(channelIndex => {
         const dayList: Array<number> = [];
-        const pulseCoefficient = buffer.getPulseCoefficient();
+        const pulseCoefficient = getPulseCoefficient(buffer);
 
         channelList.push({
             pulseCoefficient,
@@ -109,7 +122,9 @@ export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveDaysMcResponseP
         });
 
         for ( let day = 0; day < days; ++day ) {
-            dayList.push(buffer.getExtendedValue());
+            const value = getExtendedValue(buffer);
+
+            dayList.push(value === archive.EMPTY_VALUE ? 0 : value);
         }
     });
 
@@ -121,20 +136,21 @@ export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveDaysMcResponseP
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetExAbsArchiveDaysMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {channelList, startTime2000, days} = parameters;
 
-    buffer.setDate(startTime2000);
-    buffer.setChannels(channelList);
+    setDate(buffer, startTime2000);
+    setChannels(buffer, channelList);
     buffer.setUint8(days);
 
     channelList.forEach(({pulseCoefficient, dayList}) => {
-        buffer.setPulseCoefficient(pulseCoefficient);
+        setPulseCoefficient(buffer, pulseCoefficient);
+
         dayList.forEach(value => {
-            buffer.setExtendedValue(value);
+            setExtendedValue(buffer, value === 0 ? archive.EMPTY_VALUE : value);
         });
     });
 

@@ -16,13 +16,22 @@
  * [31, 48, 5, 47, 151, 12, 2, 1]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMcEx.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMCEx.md#request)
  */
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate, getDateFromTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannel} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannel,
+    getChannels,
+    setChannels,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
+import {getArchiveHoursMcEx as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetExAbsArchiveHoursMcExParameters {
@@ -46,8 +55,8 @@ interface IGetExAbsArchiveHoursMcExParameters {
 }
 
 
-export const id: types.TCommandId = 0x301f;
-export const name: types.TCommandName = 'getArchiveHoursMcEx';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 5;
@@ -69,15 +78,15 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveHoursMcExParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const date = buffer.getDate();
+export const fromBytes = ( bytes: types.TBytes ): IGetExAbsArchiveHoursMcExParameters => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
     const hour = buffer.getUint8();
     const hours = buffer.getUint8();
-    const channelList = buffer.getChannels();
+    const channelList = getChannels(buffer);
 
     date.setUTCHours(hour);
 
@@ -93,17 +102,17 @@ export const fromBytes = ( data: types.TBytes ): IGetExAbsArchiveHoursMcExParame
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetExAbsArchiveHoursMcExParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
     const {channelList, hour, hours, startTime2000} = parameters;
     const date = getDateFromTime2000(startTime2000);
 
-    buffer.setDate(date);
+    setDate(buffer, date);
     buffer.setUint8(hour);
     buffer.setUint8(hours);
-    buffer.setChannels(channelList.map(index => ({index} as IChannel)));
+    setChannels(buffer, channelList.map(index => ({index} as IChannel)));
 
     return command.toBytes(id, buffer.data);
 };

@@ -2,23 +2,56 @@ import {START_BYTE, STOP_BYTE} from '../constants/frameAttributes.js';
 import {TBytes} from '../types.js';
 import invertObject from './invertObject.js';
 import calculateCrc16 from './calculateCrc16.js';
-import getBytesFromHex from './getBytesFromHex.js';
-import getBytesFromBase64 from './getBytesFromBase64.js';
 import BinaryBuffer, {IBinaryBuffer} from './BinaryBuffer.js';
 
 
+export interface IFrame {
+    /** original data before any processing */
+    bytes: TBytes,
+    /** payload after processing (unstuffing, crc check ...) */
+    payload: TBytes,
+    crc: {
+        received: number,
+        calculated: number
+    }
+}
+
+export interface IInvalidFrame {
+    frame: IFrame,
+    error: string
+}
+
+export type TFrame = IFrame | IInvalidFrame;
 export type TDataBits = 7 | 8;
 
 const STUFFING_8BIT_BYTE = 0x7c;
 const STUFFING_BYTE = 0x7d;
+
 const byteStuffMap: Record<number, number> = {0x13: 0x33, 0x11: 0x31, 0x7d: 0x5d, 0x7e: 0x5e};
 const byteUnstuffMap: Record<number, number> = invertObject(byteStuffMap) as Record<number, number>;
 
 const byteStuffMap7thBitSize: Record<number, number> = {...byteStuffMap, 0x7c: 0x5c, 0xfe: 0x5f};
 const byteUnstuffMap7thBitSize: Record<number, number> = invertObject(byteStuffMap7thBitSize) as Record<number, number>;
 
-const byteStuff = ( stuffingMap: Record<number, number>, byte: number ): number => stuffingMap[byte] || byte;
+const byteStuff = ( stuffingMap: Record<number, number>, byte: number ): number => +stuffingMap[byte] || byte;
 
+const convertCrcToBytes = ( crc: number ) : TBytes => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(2);
+
+    buffer.setUint16(crc);
+
+    return buffer.toUint8Array();
+};
+
+const getFrameCrc = ( frame: TBytes ): number | undefined => {
+    if ( frame.length >= 2 ) {
+        const crcBuffer: IBinaryBuffer = new BinaryBuffer(frame.slice(-2));
+
+        return crcBuffer.getUint16();
+    }
+
+    return undefined;
+};
 
 export const arrayStuff = ( data: TBytes, dataBits: TDataBits = 8 ): TBytes => {
     const stuffingMap = dataBits === 7 ? byteStuffMap7thBitSize : byteStuffMap;
@@ -70,86 +103,50 @@ export const arrayUnstuff = ( data: TBytes, dataBits: TDataBits = 8 ): TBytes =>
     return result;
 };
 
-const convertCrcToBytes = ( crc: number ) : TBytes => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(2);
-
-    buffer.setUint16(crc);
-
-    return buffer.toUint8Array();
-};
-
-const getFrameCrc = ( frame: TBytes ): number | undefined => {
-    if ( frame.length >= 2 ) {
-        const crcBuffer: IBinaryBuffer = new BinaryBuffer(frame.slice(-2));
-
-        return crcBuffer.getUint16();
-    }
-
-    return undefined;
-};
-
-
-export interface IFrame {
-    content: TBytes,
-    bytes: TBytes,
-    crc: {
-        expected: number | undefined,
-        actual: number
-    },
-    isValid: boolean
-}
-
-
-export const toFrame = ( content: TBytes, dataBits: TDataBits = 8 ): IFrame => {
+export const toBytes = ( content: TBytes, dataBits: TDataBits = 8 ): TBytes => {
     const crc = calculateCrc16(content);
     const crcBytes = convertCrcToBytes(crc);
     const stuffed = content.length === 0 ? [] : arrayStuff([...content, ...crcBytes], dataBits);
     const bytes = content.length === 0 ? [] : [0x7e, ...stuffed, 0x7e];
 
-    return {
-        content,
-        bytes,
-        crc: {
-            actual: crc,
-            expected: content.length === 0 ? undefined : crc
-        },
-        isValid: true
-    };
+    return bytes;
 };
 
-export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): IFrame => {
+export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
+    // input doesn't look like frame
     if ( bytes[0] !== START_BYTE || bytes[bytes.length - 1] !== STOP_BYTE ) {
         return {
-            content: [],
-            bytes: [],
-            crc: {
-                actual: 0,
-                expected: undefined
+            frame: {
+                bytes,
+                payload: [],
+                crc: {
+                    calculated: 0,
+                    received: undefined
+                }
             },
-            isValid: false
+            error: 'Not a frame.'
         };
     }
 
     const unstuffed = arrayUnstuff(bytes.slice(1, bytes.length - 1), dataBits);
-    const expectedCrc = getFrameCrc(unstuffed);
-    const content = unstuffed.slice(0, unstuffed.length - 2);
-    const actualCrc = calculateCrc16(content);
-
-    return {
-        content,
+    const receivedCrc = getFrameCrc(unstuffed);
+    const payload = unstuffed.slice(0, unstuffed.length - 2);
+    const calculatedCrc = calculateCrc16(payload);
+    const frame = {
         bytes,
+        payload,
         crc: {
-            actual: actualCrc,
-            expected: expectedCrc
-        },
-        isValid: actualCrc === expectedCrc
+            calculated: calculatedCrc,
+            received: receivedCrc
+        }
     };
+
+    if ( calculatedCrc !== receivedCrc ) {
+        return {
+            frame,
+            error: 'Mismatch CRC.'
+        };
+    }
+
+    return frame;
 };
-
-export const fromHex = ( data: string, dataBits: TDataBits = 8 ) => (
-    fromBytes(getBytesFromHex(data), dataBits)
-);
-
-export const fromBase64 = ( data: string, dataBits: TDataBits = 8 ) => (
-    fromBytes(getBytesFromBase64(data), dataBits)
-);

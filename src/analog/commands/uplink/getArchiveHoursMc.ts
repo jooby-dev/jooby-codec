@@ -7,6 +7,7 @@
  * ```js
  * import * as getArchiveHoursMc from 'jooby-codec/analog/commands/uplink/getArchiveHoursMc.js';
  *
+ * // response to getArchiveHoursMc downlink command
  * const bytes = [0x2f, 0x97, 0x2c, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a];
  *
  * // decoded payload
@@ -32,7 +33,14 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelHours} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelHours,
+    getChannelsValuesWithHourDiff,
+    setChannelsValuesWithHourDiff
+} from '../../utils/CommandBinaryBuffer.js';
+import {getArchiveHoursMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetArchiveHoursMcResponseParameters {
@@ -50,8 +58,8 @@ interface IGetArchiveHoursMcResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x1a;
-export const name: types.TCommandName = 'getArchiveHoursMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
@@ -95,33 +103,35 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcResponseParameters => {
-    if ( data.length > COMMAND_BODY_MAX_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveHoursMcResponseParameters => {
+    if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getChannelsValuesWithHourDiff();
+    return getChannelsValuesWithHourDiff(buffer, true);
 };
+
 
 /**
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveHoursMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {hours, startTime2000, channelList} = parameters;
 
-    buffer.setChannelsValuesWithHourDiff(hours, startTime2000, channelList);
+    setChannelsValuesWithHourDiff(buffer, hours, startTime2000, channelList, true);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

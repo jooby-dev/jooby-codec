@@ -7,13 +7,13 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as dayMC from 'jooby-codec/analog/commands/uplink/dayMC.js';
+ * import * as dayMc from 'jooby-codec/analog/commands/uplink/dayMc.js';
  *
  * // 4 channels at 2023.12.23 00:00:00 GMT
  * const bytes = [0x2f, 0x97, 0x55, 0x0c, 0x83, 0x01, 0x08, 0x0a];
  *
  * // decoded payload
- * const parameters = dayMC.fromBytes(bytes);
+ * const parameters = dayMc.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -33,9 +33,20 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelValue} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelValue,
+    getExtendedValue,
+    setExtendedValue,
+    getChannels,
+    setChannels,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import {ICurrentMcResponseParameters} from './currentMc.js';
+import {dayMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IDayMcResponseParameters extends ICurrentMcResponseParameters {
@@ -45,8 +56,8 @@ export interface IDayMcResponseParameters extends ICurrentMcResponseParameters {
     startTime2000: TTime2000;
 }
 
-export const id: types.TCommandId = 0x16;
-export const name: types.TCommandName = 'dayMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 // 2 byte for date + 2 for channels (max channels: 7)
@@ -78,19 +89,19 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IDayMcResponseParameters => {
-    if ( data.length > COMMAND_BODY_MAX_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IDayMcResponseParameters => {
+    if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const date = buffer.getDate();
-    const channels = buffer.getChannels();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const channels = getChannels(buffer);
     const channelList = channels.map(channelIndex => ({
-        value: buffer.getExtendedValue(),
+        value: getExtendedValue(buffer),
         index: channelIndex
     }) as IChannelValue);
 
@@ -105,13 +116,13 @@ export const fromBytes = ( data: types.TBytes ): IDayMcResponseParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IDayMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {channelList, startTime2000} = parameters;
 
-    buffer.setDate(startTime2000);
-    buffer.setChannels(channelList);
+    setDate(buffer, startTime2000);
+    setChannels(buffer, channelList);
     channelList.forEach(({value}) => {
-        buffer.setExtendedValue(value);
+        setExtendedValue(buffer, value);
     });
 
     return command.toBytes(id, buffer.getBytesToOffset());

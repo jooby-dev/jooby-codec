@@ -5,13 +5,13 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as currentMC from 'jooby-codec/analog/commands/uplink/currentMC.js';
+ * import * as currentMc from 'jooby-codec/analog/commands/uplink/currentMc.js';
  *
- * // 4 first channels
+ * // 4 channels for IMP4EU
  * const bytes = [0x0f, 0x83, 0x01, 0x08, 0x0a, 0x0c];
  *
  * // decoded payload
- * const parameters = currentMC.fromBytes(bytes);
+ * const parameters = currentMc.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -30,7 +30,16 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {IChannelValue, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelValue,
+    getExtendedValue,
+    setExtendedValue,
+    getChannels,
+    setChannels
+} from '../../utils/CommandBinaryBuffer.js';
+import {currentMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface ICurrentMcResponseParameters {
@@ -40,15 +49,15 @@ export interface ICurrentMcResponseParameters {
     channelList: Array<IChannelValue>;
 }
 
-export const id: types.TCommandId = 0x18;
-export const name: types.TCommandName = 'currentMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 // 2 bytes for 7 channelList + (7 channelList * 5 byte for current value of channel)
 const COMMAND_BODY_MAX_SIZE = 37;
 
 export const examples: command.TCommandExamples = {
-    '4 first channels': {
+    '4 channels for IMP4EU': {
         id,
         name,
         headerSize,
@@ -65,7 +74,7 @@ export const examples: command.TCommandExamples = {
             0x0f, 0x83, 0x01, 0x08, 0x0a, 0x0c
         ]
     },
-    'single channel 2': {
+    'single channel for IMP2EU': {
         id,
         name,
         headerSize,
@@ -79,20 +88,34 @@ export const examples: command.TCommandExamples = {
             0x02, 0x32
         ]
     },
-    'channels 5, 6, 12': {
+    '3 channels for IMP4EU': {
         id,
         name,
         headerSize,
         parameters: {
             channelList: [
-                {value: 8146, index: 5},
-                {value: 164, index: 6},
-                {value: 75, index: 12}
+                {value: 8146, index: 1},
+                {value: 164, index: 3},
+                {value: 75, index: 4}
             ]
         },
         bytes: [
-            0x18, 0x07,
-            0xb0, 0x10, 0xd2, 0x3f, 0xa4, 0x01, 0x4b
+            0x18, 0x06,
+            0x0d, 0xd2, 0x3f, 0xa4, 0x01, 0x4b
+        ]
+    },
+    'single channel for ELIMP - max module value': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            channelList: [
+                {value: 4294967295, index: 1}
+            ]
+        },
+        bytes: [
+            0x18, 0x06,
+            0x01, 0xff, 0xff, 0xff, 0xff, 0x0f
         ]
     }
 };
@@ -101,20 +124,20 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): ICurrentMcResponseParameters => {
-    if ( data.length > COMMAND_BODY_MAX_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): ICurrentMcResponseParameters => {
+    if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
     const parameters: ICurrentMcResponseParameters = {channelList: []};
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const channelList = buffer.getChannels();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const channelList = getChannels(buffer);
 
     parameters.channelList = channelList.map(channelIndex => ({
-        value: buffer.getExtendedValue(),
+        value: getExtendedValue(buffer),
         index: channelIndex
     }) as IChannelValue);
 
@@ -129,12 +152,12 @@ export const fromBytes = ( data: types.TBytes ): ICurrentMcResponseParameters =>
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ICurrentMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {channelList} = parameters;
 
-    buffer.setChannels(channelList);
+    setChannels(buffer, channelList);
     channelList.forEach(({value}) => {
-        buffer.setExtendedValue(value);
+        setExtendedValue(buffer, value);
     });
 
     return command.toBytes(id, buffer.getBytesToOffset());

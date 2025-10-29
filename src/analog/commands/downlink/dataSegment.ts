@@ -18,6 +18,7 @@
  *     isLast: false,
  *     data: [0x00, 0x01, 0x02, 0x03, 0x04]
  * };
+ *
  * const bytes = dataSegment.toBytes(parameters);
  *
  * // command binary representation
@@ -31,11 +32,19 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IDataSegment} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IDataSegment,
+    getDataSegment,
+    setDataSegment
+} from '../../utils/CommandBinaryBuffer.js';
+import {getStringFromBytes, IBytesConversionFormatOptions} from '../../../utils/bytesConversion.js';
+import {dataSegment as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
-export const id: types.TCommandId = 0x1e;
-export const name: types.TCommandName = 'dataSegment';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_MIN_SIZE = 2;
@@ -63,13 +72,13 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IDataSegment => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IDataSegment => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getDataSegment();
+    return getDataSegment(buffer);
 };
 
 
@@ -80,20 +89,17 @@ export const fromBytes = ( data: types.TBytes ): IDataSegment => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IDataSegment ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MIN_SIZE + parameters.data.length);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MIN_SIZE + parameters.data.length, false);
 
-    buffer.setDataSegment(parameters);
+    setDataSegment(buffer, parameters);
 
     return command.toBytes(id, buffer.data);
 };
 
 
-// TODO: add implementation
-// export const toJson = ( options: TJsonOptions = defaultJsonOptions ) {
-//     const {parameters} = this;
-
-//     return JSON.stringify({
-//         ...parameters,
-//         data: getStringFromBytes(parameters.data, options)
-//     });
-// }
+export const toJson = ( parameters: IDataSegment, options: IBytesConversionFormatOptions ) => (
+    JSON.stringify({
+        ...parameters,
+        data: getStringFromBytes(parameters.data, options)
+    })
+);

@@ -31,6 +31,8 @@ import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
+import {getLmicInfo as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface ILmicCapabilities extends bitSet.TBooleanObject {
@@ -55,8 +57,8 @@ interface IGetLmicInfoResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x021f;
-export const name: types.TCommandName = 'getLmicInfo';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 2;
@@ -105,15 +107,15 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetLmicInfoResponseParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IGetLmicInfoResponseParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: IBinaryBuffer = new BinaryBuffer(data);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes);
 
     const capabilities = bitSet.toObject(lmicCapabilitiesBitMask, buffer.getUint8()) as ILmicCapabilities;
     const version = buffer.getUint8();

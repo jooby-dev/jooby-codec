@@ -7,6 +7,7 @@
  * ```js
  * import * as getExAbsArchiveHoursMc from 'jooby-codec/analog/commands/uplink/getExAbsArchiveHoursMc.js';
  *
+ * // response to getExAbsArchiveHoursMc downlink command
  * const bytes = [0x2f, 0x97, 0x2c, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a];
  *
  * // decoded payload
@@ -32,7 +33,14 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelHours} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelHours,
+    getChannelsValuesWithHourDiff,
+    setChannelsValuesWithHourDiff
+} from '../../utils/CommandBinaryBuffer.js';
+import {getExAbsArchiveHoursMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetArchiveHoursMcResponseParameters {
@@ -50,9 +58,9 @@ interface IGetArchiveHoursMcResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x1a;
-export const name: types.TCommandName = 'getExAbsArchiveHoursMc';
-export const headerSize = 2;
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
+export const headerSize = 3;
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
 // max hours diff - 7 (3 bit value)
@@ -75,7 +83,7 @@ export const examples: command.TCommandExamples = {
             ]
         },
         bytes: [
-            0x1a, 0x0d,
+            0x1f, 0x0c, 0x0d,
             0x2f, 0x97, 0x2c, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a
         ]
     },
@@ -89,7 +97,7 @@ export const examples: command.TCommandExamples = {
             channelList: []
         },
         bytes: [
-            0x1a, 0x04,
+            0x1f, 0x0c, 0x04,
             0x2f, 0x6a, 0x00, 0x00
         ]
     }
@@ -99,13 +107,13 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveHoursMcResponseParameters => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getChannelsValuesWithHourDiff();
+    return getChannelsValuesWithHourDiff(buffer, true);
 };
 
 
@@ -113,12 +121,12 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveHoursMcResponseParam
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveHoursMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
 
-    buffer.setChannelsValuesWithHourDiff(parameters.hours, parameters.startTime2000, parameters.channelList);
+    setChannelsValuesWithHourDiff(buffer, parameters.hours, parameters.startTime2000, parameters.channelList, true);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

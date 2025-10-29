@@ -28,7 +28,19 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelDays} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelDays,
+    getExtendedValue,
+    setExtendedValue,
+    getChannels,
+    setChannels,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
+import * as archive from '../../constants/archive.js';
+import {getArchiveDaysMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetArchiveDaysMcResponseParameters {
@@ -48,13 +60,11 @@ interface IGetArchiveDaysMcResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x1b;
-export const name: types.TCommandName = 'getArchiveDaysMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
-// date 2 bytes, channelList 1 byte (max channelList: 4), days 1 byte (max days - 255)
-// 4 + (4 channelList * 5 bytes of day values * 255 max days)
-const COMMAND_BODY_MAX_SIZE = 5104;
+const COMMAND_BODY_MAX_SIZE = 255;
 
 export const examples: command.TCommandExamples = {
     'get day values from 2001.03.10 12:00:00 GMT for channel 1': {
@@ -81,22 +91,23 @@ export const examples: command.TCommandExamples = {
             channelList: [{dayList: [0], index: 1}]
         },
         bytes: [
-            0x1b, 0x05,
-            0x15, 0x49, 0x01, 0x01, 0x00
+            0x1b, 0x09,
+            0x15, 0x49, 0x01, 0x01, 0xff, 0xff, 0xff, 0xff, 0x0f
         ]
     }
 };
 
+
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysMcResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const date = buffer.getDate();
-    const channels = buffer.getChannels();
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysMcResponseParameters => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const channels = getChannels(buffer);
     const days = buffer.getUint8();
     const channelList: Array<IChannelDays> = [];
 
@@ -106,7 +117,9 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysMcResponseParame
         channelList.push({dayList, index: channelIndex});
 
         for ( let day = 0; day < days; ++day ) {
-            dayList.push(buffer.getExtendedValue());
+            const value = getExtendedValue(buffer);
+
+            dayList.push(value === archive.EMPTY_VALUE ? 0 : value);
         }
     });
 
@@ -118,19 +131,19 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysMcResponseParame
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveDaysMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {startTime2000, days, channelList} = parameters;
 
-    buffer.setDate(startTime2000);
-    buffer.setChannels(channelList);
+    setDate(buffer, startTime2000);
+    setChannels(buffer, channelList);
     buffer.setUint8(days);
 
     channelList.forEach(({dayList}) => {
         dayList.forEach(value => {
-            buffer.setExtendedValue(value);
+            setExtendedValue(buffer, value === 0 ? archive.EMPTY_VALUE : value);
         });
     });
 

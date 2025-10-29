@@ -5,11 +5,11 @@
  *
  * @example
  * ```js
- * import * as getArchiveDaysMC from 'jooby-codec/analog/commands/downlink/getArchiveDaysMC.js';
+ * import * as getArchiveDaysMc from 'jooby-codec/analog/commands/downlink/getArchiveDaysMc.js';
  *
  * // 1 day pulse counter for 1 channel from 2023.03.10 00:00:00 GMT
  * const parameters = {startTime2000: 731721600, days: 1, channelList: [1]};
- * const bytes = getArchiveDaysMC.toBytes(parameters);
+ * const bytes = getArchiveDaysMc.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);
@@ -23,7 +23,16 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getDateFromTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getChannels,
+    setChannels,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
+import {getArchiveDaysMc as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
+
 
 interface IGetArchiveDaysMcParameters {
     /**
@@ -41,8 +50,8 @@ interface IGetArchiveDaysMcParameters {
     channelList: Array<types.TUint8>;
 }
 
-export const id: types.TCommandId = 0x1b;
-export const name: types.TCommandName = 'getArchiveDaysMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 4;
@@ -64,17 +73,17 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysMcParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysMcParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const date = buffer.getDate();
-    const channelList = buffer.getChannels();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const channelList = getChannels(buffer);
     const days = buffer.getUint8();
 
     if ( !buffer.isEmpty ) {
@@ -89,15 +98,15 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysMcParameters => 
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveDaysMcParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
     const {startTime2000, days, channelList} = parameters;
     const date = getDateFromTime2000(startTime2000);
 
-    buffer.setDate(date);
-    buffer.setChannels(channelList.map(index => ({index})));
+    setDate(buffer, date);
+    setChannels(buffer, channelList.map(index => ({index})));
     buffer.setUint8(days);
 
     return command.toBytes(id, buffer.data);

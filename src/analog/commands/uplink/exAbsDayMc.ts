@@ -5,13 +5,13 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as exAbsDayMC from 'jooby-codec/analog/commands/uplink/exAbsDayMC.js';
+ * import * as exAbsDayMc from 'jooby-codec/analog/commands/uplink/exAbsDayMc.js';
  *
  * // absolute day value for 2023.03.10 00:00:00 GMT
  * const bytes = [0x2e, 0x6a, 0x01, 0x83, 0xd6, 0x02];
  *
  * // decoded payload
- * const parameters = exAbsDayMC.fromBytes(bytes);
+ * const parameters = exAbsDayMc.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -33,7 +33,16 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IChannelAbsoluteValue} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelAbsoluteValue,
+    getDate,
+    setDate,
+    getChannelsWithAbsoluteValues,
+    setChannelsWithAbsoluteValues
+} from '../../utils/CommandBinaryBuffer.js';
+import {exAbsDayMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IExAbsDayMcResponseParameters {
@@ -45,8 +54,8 @@ interface IExAbsDayMcResponseParameters {
     startTime2000: TTime2000;
 }
 
-export const id: types.TCommandId = 0x0b1f;
-export const name: types.TCommandName = 'exAbsDayMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 // date 2 bytes, channelList 3 bytes (max channelList: 14)
@@ -75,17 +84,17 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IExAbsDayMcResponseParameters => {
-    if ( data.length > COMMAND_BODY_MAX_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IExAbsDayMcResponseParameters => {
+    if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const date = buffer.getDate();
-    const channelList = buffer.getChannelsWithAbsoluteValues();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
+    const channelList = getChannelsWithAbsoluteValues(buffer);
 
     return {startTime2000: getTime2000FromDate(date), channelList};
 };
@@ -98,11 +107,11 @@ export const fromBytes = ( data: types.TBytes ): IExAbsDayMcResponseParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IExAbsDayMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {startTime2000, channelList} = parameters;
 
-    buffer.setDate(startTime2000);
-    buffer.setChannelsWithAbsoluteValues(channelList);
+    setDate(buffer, startTime2000);
+    setChannelsWithAbsoluteValues(buffer, channelList);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

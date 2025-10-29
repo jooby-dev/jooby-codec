@@ -8,22 +8,25 @@
  * ```js
  * import * as writeImage from 'jooby-codec/analog/commands/downlink/writeImage.js';
  *
+ * // response to writeImage downlink command
  * const bytes = [0x00, 0x00, 0x00, 0x40, 0x01];
  *
  * // decoded payload
- * const parameters = time2000.fromBytes(bytes);
+ * const parameters = writeImage.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
  * {offset: 64, status: 1}
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/WriteImage.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/WriteImage.md#response)
  */
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {writeImage as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IWriteImageResponseParameters {
@@ -40,8 +43,8 @@ export interface IWriteImageResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x2a1f;
-export const name: types.TCommandName = 'writeImage';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 5;
@@ -63,14 +66,14 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IWriteImageResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IWriteImageResponseParameters => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
-        offset: buffer.getUint32(false),
+        offset: buffer.getUint32(),
         status: buffer.getUint8()
     };
 };
@@ -83,19 +86,10 @@ export const fromBytes = ( data: types.TBytes ): IWriteImageResponseParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IWriteImageResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
-    buffer.setUint32(parameters.offset, false);
+    buffer.setUint32(parameters.offset);
     buffer.setUint8(parameters.status);
 
     return command.toBytes(id, buffer.data);
 };
-
-
-/**
- * Convert command parameters to JSON.
- *
- * @param parameters - command payload
- * @returns JSON representation of command parameters
- */
-export const toJson = ( parameters: IWriteImageResponseParameters ): string => JSON.stringify(parameters);

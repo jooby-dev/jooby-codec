@@ -31,11 +31,18 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetStatus.md#response)
  */
 
-import CommandBinaryBuffer, {ICommandBinaryBuffer, IBatteryVoltage} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IBatteryVoltage,
+    getBatteryVoltage,
+    setBatteryVoltage
+} from '../../utils/CommandBinaryBuffer.js';
 import roundNumber from '../../../utils/roundNumber.js';
 import * as types from '../../../types.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 import * as command from '../../utils/command.js';
+import {status as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IStatusBase {}
@@ -51,6 +58,8 @@ interface IGasStatus extends IStatusBase {
     temperature: types.TUint8;
     remainingBatteryCapacity?: types.TUint8;
     lastEventSequenceNumber: types.TUint8;
+    /** Displays the error rate coefficient when communicating with the base station (downlink frames), percents. */
+    downlinkQuality?: types.TUint8;
 }
 
 interface IMtxStatus extends IStatusBase {
@@ -83,8 +92,8 @@ interface IStatusParameters {
 }
 
 
-export const id: types.TCommandId = 0x14;
-export const name: types.TCommandName = 'status';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_MAX_SIZE = 20;
@@ -92,7 +101,7 @@ const UNKNOWN_BATTERY_RESISTANCE = 65535;
 const UNKNOWN_BATTERY_CAPACITY = 255;
 
 export const examples: command.TCommandExamples = {
-    'status for GASI3': {
+    'status for GASI3 (old)': {
         id,
         name,
         headerSize,
@@ -103,13 +112,34 @@ export const examples: command.TCommandExamples = {
                 batteryVoltage: {underLowLoad: 3158, underHighLoad: 3522},
                 batteryInternalResistance: 10034,
                 temperature: 14,
-                remainingBatteryCapacity: 41,
+                remainingBatteryCapacity: 40.9,
                 lastEventSequenceNumber: 34
             }
         },
         bytes: [
             0x14, 0x0c,
             0x02, 0x0a, 0x03, 0x01, 0xc5, 0x6d, 0xc2, 0x27, 0x32, 0x0e, 0x68, 0x22
+        ]
+    },
+    'status for GASI3 (new)': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            software: {type: 2, version: 10},
+            hardware: {type: hardwareTypes.GASI3, version: 1},
+            data: {
+                batteryVoltage: {underLowLoad: 3158, underHighLoad: 3522},
+                batteryInternalResistance: 10034,
+                temperature: 14,
+                remainingBatteryCapacity: 40.9,
+                lastEventSequenceNumber: 34,
+                downlinkQuality: 42
+            }
+        },
+        bytes: [
+            0x14, 0x0d,
+            0x02, 0x0a, 0x03, 0x01, 0xc5, 0x6d, 0xc2, 0x27, 0x32, 0x0e, 0x68, 0x22, 0x2a
         ]
     },
     'status for MTX': {
@@ -137,7 +167,7 @@ export const examples: command.TCommandExamples = {
         },
         bytes: [
             0x14, 0x14,
-            0x02, 0x0a, 0x07, 0x01, 0x5c, 0x11, 0x00, 0x00,
+            0x02, 0x0a, 0x07, 0x01, 0x00, 0x00, 0x11, 0x5c,
             0x01, 0x02, 0x06, 0x2a, 0x53, 0x8f, 0x02, 0x05,
             0x0c, 0x0a, 0x02, 0x21
         ]
@@ -148,11 +178,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(bytes);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const software = {type: buffer.getUint8(), version: buffer.getUint8()};
     const hardware = {type: buffer.getUint8(), version: buffer.getUint8()};
     let data;
@@ -169,10 +199,11 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
         case hardwareTypes.IMP4IN:
         case hardwareTypes.GASIC:
         case hardwareTypes.NBIOT:
+        case hardwareTypes.US_WATER:
             {
                 const statusData: IGasStatus = {
-                    batteryVoltage: buffer.getBatteryVoltage(),
-                    batteryInternalResistance: buffer.getUint16(false),
+                    batteryVoltage: getBatteryVoltage(buffer),
+                    batteryInternalResistance: buffer.getUint16(),
                     temperature: buffer.getUint8(),
                     remainingBatteryCapacity: buffer.getUint8(),
                     lastEventSequenceNumber: buffer.getUint8()
@@ -187,8 +218,13 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
                 } else if ( statusData.remainingBatteryCapacity !== undefined ) {
                     statusData.remainingBatteryCapacity = roundNumber(
                         (statusData.remainingBatteryCapacity * 100) / (UNKNOWN_BATTERY_CAPACITY - 1),
-                        0
+                        1
                     );
+                }
+
+                // only in the new version buffer is still not empty
+                if ( !buffer.isEmpty ) {
+                    statusData.downlinkQuality = buffer.getUint8();
                 }
 
                 data = statusData;
@@ -196,6 +232,8 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
             break;
 
         case hardwareTypes.MTXLORA:
+        case hardwareTypes.PLC2LORA:
+        case hardwareTypes.LORA:
             data = {
                 time2000: buffer.getUint32(),
                 resetReason: buffer.getUint8(),
@@ -230,7 +268,7 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
  */
 export const toBytes = ( parameters: IStatusParameters ): types.TBytes => {
     const {software, hardware, data} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
 
     buffer.setUint8(software.type);
     buffer.setUint8(software.version);
@@ -250,12 +288,13 @@ export const toBytes = ( parameters: IStatusParameters ): types.TBytes => {
         case hardwareTypes.GASIC:
             {
                 const statusData = data as IGasStatus;
-                buffer.setBatteryVoltage(statusData.batteryVoltage);
+
+                setBatteryVoltage(buffer, statusData.batteryVoltage);
 
                 if ( statusData.batteryInternalResistance === undefined ) {
-                    buffer.setUint16(UNKNOWN_BATTERY_RESISTANCE, false);
+                    buffer.setUint16(UNKNOWN_BATTERY_RESISTANCE);
                 } else {
-                    buffer.setUint16(statusData.batteryInternalResistance, false);
+                    buffer.setUint16(statusData.batteryInternalResistance);
                 }
 
                 buffer.setUint8(statusData.temperature);
@@ -263,10 +302,18 @@ export const toBytes = ( parameters: IStatusParameters ): types.TBytes => {
                 if ( statusData.remainingBatteryCapacity === undefined ) {
                     buffer.setUint8(UNKNOWN_BATTERY_CAPACITY);
                 } else {
-                    buffer.setUint8((UNKNOWN_BATTERY_CAPACITY - 1) * (statusData.remainingBatteryCapacity / 100));
+                    buffer.setUint8(roundNumber(
+                        (UNKNOWN_BATTERY_CAPACITY - 1) * (statusData.remainingBatteryCapacity / 100),
+                        0
+                    ));
                 }
 
                 buffer.setUint8(statusData.lastEventSequenceNumber);
+
+                // new version
+                if ( 'downlinkQuality' in statusData ) {
+                    buffer.setUint8(statusData.downlinkQuality);
+                }
             }
             break;
 

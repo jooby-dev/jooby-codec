@@ -6,7 +6,7 @@
  *
  * @example create command instance from command body hex dump
  * ```js
- * import * as hourMC from 'jooby-codec/analog/commands/uplink/hourMC.js';
+ * import * as hourMc from 'jooby-codec/analog/commands/uplink/hourMc.js';
  *
  * // 4 first channels at 2023.12.23 12:00:00 GMT
  * const bytes = [
@@ -15,7 +15,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = hourMC.fromBytes(bytes);
+ * const parameters = hourMc.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -37,7 +37,14 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {IChannelHours, ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    IChannelHours,
+    getChannelsValuesWithHourDiff,
+    setChannelsValuesWithHourDiff
+} from '../../utils/CommandBinaryBuffer.js';
+import {hourMc as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 export interface IHourMcResponseParameters {
@@ -54,8 +61,8 @@ export interface IHourMcResponseParameters {
     hours: types.TUint8;
 }
 
-export const id: types.TCommandId = 0x17;
-export const name: types.TCommandName = 'hourMc';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 // date 2 bytes, hour 1 byte, channelList - 1 byte, so max channelList = 4
@@ -90,17 +97,17 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IHourMcResponseParameters => {
-    if ( data.length > COMMAND_BODY_MAX_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IHourMcResponseParameters => {
+    if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return buffer.getChannelsValuesWithHourDiff();
+    return getChannelsValuesWithHourDiff(buffer);
 };
 
 
@@ -111,10 +118,10 @@ export const fromBytes = ( data: types.TBytes ): IHourMcResponseParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IHourMcResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MAX_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
     const {startTime2000, hours, channelList} = parameters;
 
-    buffer.setChannelsValuesWithHourDiff(hours, startTime2000, channelList);
+    setChannelsValuesWithHourDiff(buffer, hours, startTime2000, channelList);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

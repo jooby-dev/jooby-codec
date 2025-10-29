@@ -60,3 +60,18 @@ export const WATER_NO_RESPONSE = 20;
 
 /** Optical sensor error. */
 export const OPTOSENSOR_ERROR = 21;
+
+/** Binary sensor on */
+export const BINARY_SENSOR_ON = 22;
+
+/** Binary sensor off */
+export const BINARY_SENSOR_OFF = 23;
+
+/** Temperature sensor hysteresis */
+export const TEMPERATURE_SENSOR_HYSTERESIS = 24;
+
+/** Temperature sensor low temperature */
+export const TEMPERATURE_SENSOR_LOW_TEMPERATURE = 25;
+
+/** Temperature sensor high temperature */
+export const TEMPERATURE_SENSOR_HIGH_TEMPERATURE = 26;

@@ -10,7 +10,6 @@ import {TBytes} from '../types.js';
  * input: 'yc2LYup'
  * output: [0xc9, 0xcd, 0x8b, 0x62, 0xea]
  */
-export default ( base64: string ): TBytes => Array.from(
-    atob(base64),
-    char => char.charCodeAt(0)
-);
+export default ( base64: string ): TBytes => atob(base64)
+    .split('')
+    .map(char => char.charCodeAt(0));

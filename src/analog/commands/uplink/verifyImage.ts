@@ -10,6 +10,8 @@
  *
  * // empty response
  * const bytes = [0x01];
+ *
+ * // decoded payload
  * const parameters = verifyImage.fromBytes(bytes);
  *
  * // this command doesn't have any parameters
@@ -23,7 +25,9 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {verifyImage as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IVerifyImageResponseParameters {
@@ -35,8 +39,8 @@ interface IVerifyImageResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x2b1f;
-export const name: types.TCommandName = 'verifyImage';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE = 1;
@@ -58,14 +62,15 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IVerifyImageResponseParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IVerifyImageResponseParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {status: buffer.getUint8()};
 };
@@ -78,7 +83,7 @@ export const fromBytes = ( data: types.TBytes ): IVerifyImageResponseParameters 
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IVerifyImageResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
     buffer.setUint8(parameters.status);
 

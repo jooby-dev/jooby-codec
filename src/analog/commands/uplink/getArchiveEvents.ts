@@ -31,11 +31,18 @@
 
 import * as types from '../../../types.js';
 import {TTime2000} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getTime,
+    setTime
+} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import {getArchiveEvents as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as events from '../../constants/events.js';
+import eventNames from '../../constants/eventNames.js';
 
 
 interface IArchiveEvent {
@@ -43,6 +50,7 @@ interface IArchiveEvent {
 
     /** One of the {@link events | device events}. */
     id: types.TUint8;
+    name?: string,
 
     /** It's a unique number for each event. */
     sequenceNumber: types.TUint8;
@@ -53,8 +61,8 @@ interface IGetArchiveEventsResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x0b;
-export const name: types.TCommandName = 'getArchiveEvents';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_MIN_SIZE = 4 + 1 + 1;
@@ -69,6 +77,7 @@ export const examples: command.TCommandExamples = {
                 {
                     time2000: 734015840,
                     id: 1,
+                    name: 'MAGNET_ON',
                     sequenceNumber: 1
                 }
             ]
@@ -87,21 +96,25 @@ export const examples: command.TCommandExamples = {
                 {
                     time2000: 734015840,
                     id: 2,
+                    name: 'MAGNET_OFF',
                     sequenceNumber: 1
                 },
                 {
                     time2000: 734025840,
                     id: 1,
+                    name: 'MAGNET_ON',
                     sequenceNumber: 2
                 },
                 {
                     time2000: 734035840,
                     id: 3,
+                    name: 'ACTIVATE',
                     sequenceNumber: 3
                 },
                 {
                     time2000: 734045840,
                     id: 4,
+                    name: 'DEACTIVATE',
                     sequenceNumber: 4
                 }
             ]
@@ -116,14 +129,21 @@ export const examples: command.TCommandExamples = {
 };
 
 
-const getEvent = ( buffer: ICommandBinaryBuffer ): IArchiveEvent => ({
-    time2000: buffer.getTime(),
-    id: buffer.getUint8(),
-    sequenceNumber: buffer.getUint8()
-});
+const getEvent = ( buffer: IBinaryBuffer ): IArchiveEvent => {
+    const time2000 = getTime(buffer);
+    const eventId = buffer.getUint8();
+    const sequenceNumber = buffer.getUint8();
 
-const setEvent = ( buffer: ICommandBinaryBuffer, event: IArchiveEvent ): void => {
-    buffer.setTime(event.time2000);
+    return {
+        time2000,
+        id: eventId,
+        name: eventNames[eventId],
+        sequenceNumber
+    };
+};
+
+const setEvent = ( buffer: IBinaryBuffer, event: IArchiveEvent ): void => {
+    setTime(buffer, event.time2000);
     buffer.setUint8(event.id);
     buffer.setUint8(event.sequenceNumber);
 };
@@ -132,11 +152,11 @@ const setEvent = ( buffer: ICommandBinaryBuffer, event: IArchiveEvent ): void =>
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data, false);
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveEventsResponseParameters => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const eventList: Array<IArchiveEvent> = [];
 
     while ( buffer.bytesLeft > 0 ) {
@@ -146,6 +166,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsResponseParame
     return {eventList};
 };
 
+
 /**
  * Encode command parameters.
  *
@@ -154,7 +175,7 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsResponseParame
  */
 export function toBytes ( parameters: IGetArchiveEventsResponseParameters ): types.TBytes {
     const {eventList} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(eventList.length * COMMAND_BODY_MIN_SIZE, false);
+    const buffer: IBinaryBuffer = new BinaryBuffer(eventList.length * COMMAND_BODY_MIN_SIZE, false);
 
     eventList.forEach(event => setEvent(buffer, event));
 

@@ -1,8 +1,10 @@
 /**
- * The command for receiving status information from the sensor battery.
+ * Uplink command for receiving status information from the sensor battery.
  *
  * By default, the battery status is measured once per 24 hours. The state of the battery physically cannot change dramatically.
  * Response to the request contains the latest measurement results. This is enough to monitor the battery condition.
+ *
+ * @packageDocumentation
  *
  * @example create command instance from command body hex dump
  * ```js
@@ -31,7 +33,9 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {getBatteryStatus as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
@@ -82,8 +86,8 @@ export interface IGetBatteryStatusResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x051f;
-export const name: types.TCommandName = 'getBatteryStatus';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_SIZE: number = 11;
@@ -104,7 +108,7 @@ export const examples: command.TCommandExamples = {
         },
         bytes: [
             0x1f, 0x05, 0x0b,
-            0x10, 0x0e, 0x10, 0x0e, 0x0a, 0x04, 0x0f, 0x29, 0x00, 0x22, 0x00
+            0x0e, 0x10, 0x0e, 0x10, 0x04, 0x0a, 0x0f, 0x29, 0x00, 0x00, 0x22
         ]
     }
 };
@@ -113,11 +117,11 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetBatteryStatusResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
+export const fromBytes = ( bytes: types.TBytes ): IGetBatteryStatusResponseParameters => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
         voltageUnderLowLoad: buffer.getUint16(),
@@ -138,7 +142,7 @@ export const fromBytes = ( data: types.TBytes ): IGetBatteryStatusResponseParame
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetBatteryStatusResponseParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
     buffer.setUint16(parameters.voltageUnderLowLoad);
     buffer.setUint16(parameters.voltageUnderHighLoad);

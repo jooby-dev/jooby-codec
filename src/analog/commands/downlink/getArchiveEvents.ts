@@ -21,9 +21,15 @@
  */
 
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    getTime,
+    setTime
+} from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
+import {getArchiveEvents as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 /**
@@ -42,8 +48,8 @@ interface IGetArchiveEventsParameters {
 }
 
 
-export const id: types.TCommandId = 0x0b;
-export const name: types.TCommandName = 'getArchiveEvents';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 const COMMAND_BODY_SIZE = 5;
@@ -62,14 +68,19 @@ export const examples: command.TCommandExamples = {
 };
 
 
-// data - only body (without header)
-export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsParameters => {
-    if ( data.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+/**
+ * Decode command parameters.
+ *
+ * @param bytes - only body (without header)
+ * @returns command payload
+ */
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveEventsParameters => {
+    if ( bytes.length !== COMMAND_BODY_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const startTime2000 = buffer.getTime();
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const startTime2000 = getTime(buffer);
     const events = buffer.getUint8();
 
     if ( !buffer.isEmpty ) {
@@ -79,12 +90,18 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveEventsParameters => 
     return {startTime2000, events};
 };
 
-// returns full message - header with body
+
+/**
+ * Encode command parameters.
+ *
+ * @param parameters - command payload
+ * @returns full message (header with body)
+ */
 export const toBytes = ( parameters: IGetArchiveEventsParameters ): types.TBytes => {
     const {startTime2000, events} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_SIZE, false);
 
-    buffer.setTime(startTime2000);
+    setTime(buffer, startTime2000);
     buffer.setUint8(events);
 
     return command.toBytes(id, buffer.data);

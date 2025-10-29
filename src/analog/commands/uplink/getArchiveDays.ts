@@ -1,5 +1,5 @@
 /**
- * The command for requesting the archive of daily data from the pulse counter sensor.
+ * Uplink command for requesting the archive of daily data from the pulse counter sensor.
  * If there is no data available in the archive, `0xffffffff` will be returned.
  * Due to the limited length of transmitted data from the sensor, not all requested data will be transferred.
  *
@@ -31,7 +31,16 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer, ILegacyCounter} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {
+    ILegacyCounter,
+    getLegacyCounter,
+    setLegacyCounter,
+    getDate,
+    setDate
+} from '../../utils/CommandBinaryBuffer.js';
+import {getArchiveDays as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
 
 
 interface IGetArchiveDaysResponseParameters {
@@ -44,8 +53,8 @@ interface IGetArchiveDaysResponseParameters {
 }
 
 
-export const id: types.TCommandId = 0x06;
-export const name: types.TCommandName = 'getArchiveDays';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 // date 2 bytes
@@ -70,19 +79,20 @@ export const examples: command.TCommandExamples = {
     }
 };
 
+
 /**
  * Decode command parameters.
  *
- * @param data - only body (without header)
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysResponseParameters => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const date = buffer.getDate();
+export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysResponseParameters => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const date = getDate(buffer);
     const dayList = [];
 
     while ( buffer.offset < buffer.data.length ) {
-        dayList.push(buffer.getLegacyCounter());
+        dayList.push(getLegacyCounter(buffer, undefined, true));
     }
 
     return {startTime2000: getTime2000FromDate(date), dayList};
@@ -93,16 +103,16 @@ export const fromBytes = ( data: types.TBytes ): IGetArchiveDaysResponseParamete
  * Encode command parameters.
  *
  * @param parameters - command payload
- * @returns encoded bytes
+ * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetArchiveDaysResponseParameters ): types.TBytes => {
     const {startTime2000, dayList} = parameters;
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MIN_SIZE + (dayList.length * DAY_COUNTER_SIZE));
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MIN_SIZE + (dayList.length * DAY_COUNTER_SIZE), false);
 
-    buffer.setDate(startTime2000);
+    setDate(buffer, startTime2000);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    dayList.forEach(dayCounter => buffer.setLegacyCounter(dayCounter));
+    dayList.forEach(dayCounter => setLegacyCounter(buffer, dayCounter, undefined, true));
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

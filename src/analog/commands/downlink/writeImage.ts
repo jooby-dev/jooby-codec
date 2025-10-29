@@ -12,6 +12,7 @@
  *     offset: 64,
  *     data: [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f]
  * };
+ *
  * const bytes = writeImage.toBytes(parameters);
  *
  * // command binary representation
@@ -25,7 +26,9 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import CommandBinaryBuffer, {ICommandBinaryBuffer} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {writeImage as commandId} from '../../constants/downlinkIds.js';
+import commandNames from '../../constants/downlinkNames.js';
 
 
 export interface IWriteImageParameters {
@@ -43,8 +46,8 @@ export interface IWriteImageParameters {
 }
 
 
-export const id: types.TCommandId = 0x2a1f;
-export const name: types.TCommandName = 'writeImage';
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 const COMMAND_BODY_MIN_SIZE: number = 4;
@@ -69,18 +72,18 @@ export const examples: command.TCommandExamples = {
 /**
  * Decode command parameters.
  *
- * @param data - command body bytes
+ * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( data: types.TBytes ): IWriteImageParameters => {
-    if ( data.length < COMMAND_BODY_MIN_SIZE ) {
-        throw new Error(`Wrong buffer size: ${data.length}.`);
+export const fromBytes = ( bytes: types.TBytes ): IWriteImageParameters => {
+    if ( bytes.length < COMMAND_BODY_MIN_SIZE ) {
+        throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(data);
-    const offset = buffer.getUint32(false);
+    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const offset = buffer.getUint32();
 
-    return {offset, data: data.slice(COMMAND_BODY_MIN_SIZE)};
+    return {offset, data: bytes.slice(COMMAND_BODY_MIN_SIZE)};
 };
 
 
@@ -91,9 +94,9 @@ export const fromBytes = ( data: types.TBytes ): IWriteImageParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IWriteImageParameters ): types.TBytes => {
-    const buffer: ICommandBinaryBuffer = new CommandBinaryBuffer(COMMAND_BODY_MIN_SIZE);
+    const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MIN_SIZE, false);
 
-    buffer.setUint32(parameters.offset, false);
+    buffer.setUint32(parameters.offset);
     buffer.setBytes(parameters.data);
 
     return command.toBytes(id, buffer.data);
