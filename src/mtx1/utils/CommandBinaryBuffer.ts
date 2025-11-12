@@ -16,8 +16,7 @@ import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
 import * as screenIds from '../constants/screenIds.js';
 import * as frameTypes from '../constants/frameTypes.js';
 import frameNames from '../constants/frameNames.js';
-import * as events from '../constants/events.js';
-import eventNames from '../constants/eventNames.js';
+import {baudRates, events, eventNames} from '../constants/index.js';
 import * as demandTypes from '../constants/demandTypes.js';
 
 
@@ -360,9 +359,9 @@ export interface IOperatorParameters {
     pmaxThreshold3: types.TUint32,
 
     /**
-     * Reserved byte.
+     * Controls the data transmission speed for UART interfaces.
      */
-    speedOptoPort: types.TUint8,
+    serialPortsSpeed: ISerialPortsSpeedOperatorParameter,
 
     /**
      * Power averaging interval, in minutes.
@@ -1224,6 +1223,19 @@ const operatorParametersExtended3RelaySetMask = {
     RELAY_OFF_LIMIT_P_MINUS_T4: 0x40
 };
 
+const getSerialPortsSpeed = ( value: number ): ISerialPortsSpeedOperatorParameter => ({
+    rs485orTwi: baudRates.valueToRate.rs485orTwi[bitSet.extractBits(value, 4, 1)],
+    optoport: baudRates.valueToRate.optoport[bitSet.extractBits(value, 4, 5)]
+});
+
+const setSerialPortsSpeed = ( serialPortsSpeed: ISerialPortsSpeedOperatorParameter ): number => {
+    let result = 0;
+
+    result = bitSet.fillBits(result, 4, 1, Number(baudRates.rateToValue.rs485orTwi[serialPortsSpeed.rs485orTwi]));
+    result = bitSet.fillBits(result, 4, 5, Number(baudRates.rateToValue.optoport[serialPortsSpeed.optoport]));
+
+    return result;
+};
 
 function getPackedEnergies ( buffer: IBinaryBuffer, energyType: types.TEnergyType, tariffMapByte: number ): TEnergies {
     const byte = tariffMapByte >> TARIFF_NUMBER;
@@ -1397,7 +1409,7 @@ export const getDefaultOperatorParameters = (): IOperatorParameters => ({
     pmaxThreshold1: 31800,
     pmaxThreshold2: 31800,
     pmaxThreshold3: 31800,
-    speedOptoPort: 0,
+    serialPortsSpeed: getSerialPortsSpeed(0),
     tint: 30,
     calcPeriodDate: 1,
     timeoutDisplay: 127,
@@ -1611,6 +1623,30 @@ export const setDeviceType = function ( buffer: IBinaryBuffer, deviceType: IDevi
     buffer.setBytes(DeviceType.toBytes(deviceType));
 };
 
+export interface ISerialPortsSpeedOperatorParameter {
+    /**
+     * Baud rate of the RS485/TWI: `2400` or `9600`.
+     *
+     * | Value | Baud Rate |
+     * | ----- | --------- |
+     * | `0`   | `9600`    |
+     * | `2`   | `2400`    |
+     * | `4`   | `9600`    |
+     */
+    rs485orTwi: typeof baudRates.RATE_2400 | typeof baudRates.RATE_9600,
+
+    /**
+     * Baud rate of the optoport: `2400` or `9600`.
+     *
+     * | Value | Baud Rate |
+     * | ----- | --------- |
+     * | `0`   | `2400`    |
+     * | `2`   | `2400`    |
+     * | `4`   | `9600`    |
+     */
+    optoport: typeof baudRates.RATE_2400 | typeof baudRates.RATE_9600
+}
+
 export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperatorParameters {
     const operatorParameters = {
         vpThreshold: buffer.getUint32(),
@@ -1620,7 +1656,7 @@ export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperat
         pmaxThreshold1: buffer.getUint32(),
         pmaxThreshold2: buffer.getUint32(),
         pmaxThreshold3: buffer.getUint32(),
-        speedOptoPort: buffer.getUint8(),
+        serialPortsSpeed: getSerialPortsSpeed(buffer.getUint8()),
         tint: buffer.getUint8(),
         calcPeriodDate: buffer.getUint8(),
         timeoutDisplay: buffer.getUint8(),
@@ -1680,7 +1716,7 @@ export const setOperatorParameters = function ( buffer: IBinaryBuffer, operatorP
     buffer.setUint32(operatorParameters.pmaxThreshold1);
     buffer.setUint32(operatorParameters.pmaxThreshold2);
     buffer.setUint32(operatorParameters.pmaxThreshold3);
-    buffer.setUint8(operatorParameters.speedOptoPort);
+    buffer.setUint8(setSerialPortsSpeed(operatorParameters.serialPortsSpeed));
     buffer.setUint8(operatorParameters.tint);
     buffer.setUint8(operatorParameters.calcPeriodDate);
     buffer.setUint8(operatorParameters.timeoutDisplay);
