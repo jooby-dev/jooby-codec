@@ -11,7 +11,7 @@ export const valueToRate = {
         4: RATE_9600
     },
     optoport: {
-        0: RATE_9600,
+        0: RATE_2400,
         2: RATE_2400,
         4: RATE_9600
     }

@@ -818,9 +818,9 @@ export interface IRelaySetOperatorParameter {
     RELAY_OFF_SALDO_SOFT: boolean;
 }
 
-export interface ISpeedOptoPortOperatorParameter {
+export interface ISerialPortsSpeedOperatorParameter {
     /**
-     * Baud rate of the PLC (UART_0): `2400` or `9600`.
+     * Baud rate of the RS485/TWI: `2400` or `9600`.
      *
      * | Value | Baud Rate |
      * | ----- | --------- |
@@ -828,14 +828,14 @@ export interface ISpeedOptoPortOperatorParameter {
      * | `2`   | `2400`    |
      * | `4`   | `9600`    |
      */
-    plc: typeof baudRates.RATE_2400 | typeof baudRates.RATE_9600,
+    rs485orTwi: typeof baudRates.RATE_2400 | typeof baudRates.RATE_9600,
 
     /**
-     * Baud rate of the optoport (UART_1): `2400` or `9600`.
+     * Baud rate of the optoport: `2400` or `9600`.
      *
      * | Value | Baud Rate |
      * | ----- | --------- |
-     * | `0`   | `2400`    |
+     * | `0`   | `9600`    |
      * | `2`   | `2400`    |
      * | `4`   | `9600`    |
      */
@@ -969,7 +969,7 @@ export interface IOperatorParameters {
     /**
      * Controls the data transmission speed for UART interfaces.
      */
-    speedOptoPort: ISpeedOptoPortOperatorParameter,
+    serialPortsSpeed: ISerialPortsSpeedOperatorParameter,
 
     /**
      * Integration period for energy profiles.
@@ -1850,16 +1850,16 @@ export const relaySetExtMask = {
 };
 
 
-const getSpeedOptoPort = ( value: number ): ISpeedOptoPortOperatorParameter => ({
-    plc: baudRates.valueToRate.plc[bitSet.extractBits(value, 4, 1)],
+const getSerialPortsSpeed = ( value: number ): ISerialPortsSpeedOperatorParameter => ({
+    rs485orTwi: baudRates.valueToRate.rs485orTwi[bitSet.extractBits(value, 4, 1)],
     optoport: baudRates.valueToRate.optoport[bitSet.extractBits(value, 4, 5)]
 });
 
-const setSpeedOptoPort = ( speedOptoPort: ISpeedOptoPortOperatorParameter ): number => {
+const setSerialPortsSpeed = ( serialPortsSpeed: ISerialPortsSpeedOperatorParameter ): number => {
     let result = 0;
 
-    result = bitSet.fillBits(result, 4, 1, Number(baudRates.rateToValue.plc[speedOptoPort.plc]));
-    result = bitSet.fillBits(result, 4, 5, Number(baudRates.rateToValue.optoport[speedOptoPort.optoport]));
+    result = bitSet.fillBits(result, 4, 1, Number(baudRates.rateToValue.rs485orTwi[serialPortsSpeed.rs485orTwi]));
+    result = bitSet.fillBits(result, 4, 5, Number(baudRates.rateToValue.optoport[serialPortsSpeed.optoport]));
 
     return result;
 };
@@ -1984,7 +1984,7 @@ export const getDefaultOperatorParameters = (): IOperatorParameters => ({
     displaySet2: (bitSet.toObject(displaySet2Mask, 139776) as unknown) as IDisplaySet2OperatorParameter,
     displaySet3: (bitSet.toObject(displaySet3Mask, 0) as unknown) as IDisplaySet3OperatorParameter,
     relaySet: (bitSet.toObject(relaySetMask, 771) as unknown) as IRelaySetOperatorParameter,
-    speedOptoPort: getSpeedOptoPort(64),
+    serialPortsSpeed: getSerialPortsSpeed(0),
     ten: 30,
     tu: 30,
     timeIntervalPowerOff: 3,
@@ -2078,7 +2078,7 @@ export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperat
         displaySet2: (bitSet.toObject(displaySet2Mask, buffer.getUint32()) as unknown) as IDisplaySet2OperatorParameter,
         displaySet3: (bitSet.toObject(displaySet3Mask, buffer.getUint32()) as unknown) as IDisplaySet3OperatorParameter,
         relaySet: (bitSet.toObject(relaySetMask, buffer.getUint32()) as unknown) as IRelaySetOperatorParameter,
-        speedOptoPort: getSpeedOptoPort(buffer.getUint8()),
+        serialPortsSpeed: getSerialPortsSpeed(buffer.getUint8()),
         ten: buffer.getUint8(),
         tu: buffer.getUint8(),
         timeIntervalPowerOff: buffer.getUint8(),
@@ -2124,7 +2124,7 @@ export const setOperatorParameters = function ( buffer: IBinaryBuffer, operatorP
     buffer.setUint32(bitSet.fromObject(displaySet2Mask, (operatorParameters.displaySet2 as unknown) as bitSet.TBooleanObject));
     buffer.setUint32(bitSet.fromObject(displaySet3Mask, (operatorParameters.displaySet3 as unknown) as bitSet.TBooleanObject));
     buffer.setUint32(bitSet.fromObject(relaySetMask, (operatorParameters.relaySet as unknown) as bitSet.TBooleanObject));
-    buffer.setUint8(setSpeedOptoPort(operatorParameters.speedOptoPort));
+    buffer.setUint8(setSerialPortsSpeed(operatorParameters.serialPortsSpeed));
     buffer.setUint8(operatorParameters.ten);
     buffer.setUint8(operatorParameters.tu);
     buffer.setUint8(operatorParameters.timeIntervalPowerOff);

@@ -206,7 +206,7 @@ export const examples: command.TCommandExamples = {
                 RELAY_OFF_SALDO: false,
                 RELAY_OFF_SALDO_SOFT: false
             },
-            speedOptoPort: {plc: 9600, optoport: 9600},
+            serialPortsSpeed: {rs485orTwi: 9600, optoport: 9600},
             ten: 30,
             tu: 30,
             timeIntervalPowerOff: 3,
