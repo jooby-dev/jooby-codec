@@ -5,6 +5,7 @@
  */
 
 
+export {default as accessLevelNames} from './accessLevelNames.js';
 export {default as criticalEventNames} from './criticalEventNames.js';
 export {default as downlinkNames} from './downlinkNames.js';
 export {default as eventNames} from './eventNames.js';
