@@ -5,3 +5,4 @@
  */
 
 export * as crypto from './crypto.js';
+export * as message from './message.js';
