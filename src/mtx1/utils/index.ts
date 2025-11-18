@@ -6,3 +6,4 @@
 
 export * as crypto from './crypto.js';
 export * as message from './message.js';
+export * as frame from './frame.js';
