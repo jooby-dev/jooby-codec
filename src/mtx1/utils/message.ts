@@ -15,7 +15,9 @@ export const findCommand = ( commands: Array<TCommand>, commandId: TCommandId ) 
     return null;
 });
 
-export const findCommandError = ( commands: Array<TCommand>, commandId: TCommandId ) => commands.find(command => 'id' in command
+export const findCommandError = ( commands: Array<TCommand>, commandId: TCommandId ) => commands.find(command => (
+    'id' in command
     && command.id === errorResponse
     && 'commandId' in command.parameters
-    && command.parameters?.commandId === commandId);
+    && command.parameters?.commandId === commandId
+));
