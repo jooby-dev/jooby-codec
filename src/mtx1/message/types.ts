@@ -27,7 +27,7 @@ export interface IMessage {
     messageId: number,
     accessLevel: TAccessLevel,
     bytes: TBytes,
-    lrc: {
+    lrc?: {
         received: number,
         calculated: number
     }

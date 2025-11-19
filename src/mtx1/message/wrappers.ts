@@ -6,9 +6,11 @@
 import {TBytes} from '../../types.js';
 import {IMessage, IInvalidMessage} from './types.js';
 import {TCommand} from '../utils/command.js';
+import * as errorDataFrameResponse from '../commands/uplink/errorDataFrameResponse.js';
 import {aes} from '../utils/crypto.js';
 import * as accessLevels from '../constants/accessLevels.js';
 import calculateLrc from '../../utils/calculateLrc.js';
+import readErrorDataFrameResponse from './readErrorDataFrameResponse.js';
 
 
 // to serialize IMessage to bytes
@@ -40,6 +42,7 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
     const commands: Array<TCommand> = [];
     const [messageId, maskedAccessLevel] = bytes;
     const accessLevel = maskedAccessLevel & ACCESS_LEVEL_MASK;
+    const errorDataFrameMessage = readErrorDataFrameResponse(accessLevel, bytes);
     const message: IMessage = {
         messageId,
         accessLevel,
@@ -49,6 +52,10 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
     };
     let messageBody = bytes.slice(MESSAGE_HEADER_SIZE);
     let error;
+
+    if ( errorDataFrameMessage ) {
+        return errorDataFrameMessage;
+    }
 
     if ( aesKey && accessLevel !== accessLevels.UNENCRYPTED ) {
         messageBody = [...aes.decrypt(aesKey, messageBody)];
@@ -126,9 +133,8 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
     return message;
 };
 
-
 export const getToBytes = toBytesMap => ( commands: Array<TCommand>, {messageId = 1, accessLevel = accessLevels.READ_ONLY, aesKey}: IToBytesOptions ): TBytes => {
-    const commandBytes = commands.map(command => {
+    const commandBytes = commands.flatMap(command => {
         // valid command
         if ( 'id' in command ) {
             return toBytesMap[command.id](command.parameters || {});
@@ -147,8 +153,17 @@ export const getToBytes = toBytesMap => ( commands: Array<TCommand>, {messageId 
 
     // always unencrypted header
     const header = [messageId, maskedAccessLevel];
+    const isItErrorDataFrameOnly = (
+        commands.length === 1
+        && 'id' in commands[0]
+        && commands[0].id === errorDataFrameResponse.id
+    );
+
+    if ( isItErrorDataFrameOnly ) {
+        return header.concat(commandBytes);
+    }
     // accessLevel + all commands (can be encrypted) + 0 as commands end mark
-    let body = [].concat(maskedAccessLevel, ...commandBytes, COMMANDS_END_MARK);
+    let body = [].concat(maskedAccessLevel, commandBytes, COMMANDS_END_MARK);
 
     if ( accessLevel !== accessLevels.UNENCRYPTED ) {
         const padding = (body.length + 1) % BLOCK_SIZE;

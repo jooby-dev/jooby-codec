@@ -22,7 +22,7 @@ export interface IMessage {
     messageId: number,
     accessLevel: number,
     commands: any,
-    lrc: number,
+    lrc?: number,
     frameType: number,
     source: number,
     destination: number,
@@ -1117,6 +1117,20 @@ const uplinkMessages: TMessageList = [
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
+    },
+    {
+        name: 'errorDataFrameResponse',
+        hex: '07 10 ff 01 82',
+        frameHex: '7e 51 ff fe 02 03 07 10 ff 01 82 5b b3 7e',
+        messageId: 7,
+        accessLevel: uplinkCommands.errorDataFrameResponse.accessLevel,
+        commands: [
+            uplinkCommands.errorDataFrameResponse.examples['simple response']
+        ],
+        crc: 0xb35b,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0x0203,
+        destination: 0xfffe
     },
     {
         name: 'errorResponse',
@@ -2255,7 +2269,9 @@ export const checkMessage = ( messageLink, messageParams: IMessage ) => {
 
     if ( 'bytes' in messageData ) {
         // valid message
-        expect(getHexFromBytes([messageData.lrc.calculated])).toEqual(getHexFromBytes([lrc]));
+        if ( lrc !== undefined ) {
+            expect(getHexFromBytes([messageData.lrc.calculated])).toEqual(getHexFromBytes([lrc]));
+        }
         expect(messageData.messageId).toEqual(messageId);
         expect(messageData.accessLevel).toEqual(accessLevel);
         expect(messageData.commands).toStrictEqual(commands);
