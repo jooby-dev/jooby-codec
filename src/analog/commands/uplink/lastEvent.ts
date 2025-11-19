@@ -145,7 +145,9 @@ export const examples: command.TCommandExamples = {
                 isMeterTerminalBoxOpen: true,
                 isModuleCompartmentOpen: false,
                 isTariffPlanChanged: true,
-                isNewTariffPlanReceived: false
+                isNewTariffPlanReceived: false,
+                isElectromagneticInfluenceReset: false,
+                isMagneticInfluenceReset: false
             }
         },
         config: {

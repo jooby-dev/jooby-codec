@@ -165,7 +165,11 @@ export interface IEventMtxStatus {
     /** tariff plan changed */
     isTariffPlanChanged?: boolean,
     /** new tariff plan received */
-    isNewTariffPlanReceived?: boolean
+    isNewTariffPlanReceived?: boolean,
+    /** electromagnetic influence reset */
+    isElectromagneticInfluenceReset?: boolean,
+    /** magnetic influence reset */
+    isMagneticInfluenceReset?: boolean
 }
 
 export interface IUSWaterMeterEvent {
@@ -985,7 +989,9 @@ const mtxBitMask = {
     isMeterTerminalBoxOpen: Math.pow(2, 9),
     isModuleCompartmentOpen: Math.pow(2, 10),
     isTariffPlanChanged: Math.pow(2, 11),
-    isNewTariffPlanReceived: Math.pow(2, 12)
+    isNewTariffPlanReceived: Math.pow(2, 12),
+    isElectromagneticInfluenceReset: Math.pow(2, 13),
+    isMagneticInfluenceReset: Math.pow(2, 14)
 };
 const usWaterMeterEventBitMask = {
     transportMode: 0x01,

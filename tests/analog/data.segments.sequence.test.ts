@@ -39,7 +39,9 @@ const expectedCommands = {
             isParametersSetRemotely: false,
             isTariffPlanChanged: false,
             isTimeCorrected: true,
-            isTimeSet: false
+            isTimeSet: false,
+            isElectromagneticInfluenceReset: true,
+            isMagneticInfluenceReset: true
         }
     }
 };
