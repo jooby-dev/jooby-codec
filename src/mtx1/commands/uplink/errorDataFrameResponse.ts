@@ -32,7 +32,7 @@ import {UNENCRYPTED} from '../../constants/accessLevels.js';
 
 
 interface IErrorDataFrameParameters {
-    error: types.TUint8,
+    errorCode: types.TUint8,
 
     errorName?: string,
 }
@@ -52,7 +52,7 @@ export const examples: command.TCommandExamples = {
         headerSize,
         maxSize,
         parameters: {
-            error: 130,
+            errorCode: 130,
             errorName: 'DECRYPTION_FAILURE'
         },
         bytes: [
@@ -74,11 +74,11 @@ export const fromBytes = ( bytes: types.TBytes ): IErrorDataFrameParameters => {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
 
-    const [error] = bytes;
+    const [errorCode] = bytes;
 
     return {
-        error,
-        errorName: resultNames[error]
+        errorCode,
+        errorName: resultNames[errorCode]
     };
 };
 
@@ -90,7 +90,7 @@ export const fromBytes = ( bytes: types.TBytes ): IErrorDataFrameParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IErrorDataFrameParameters ): types.TBytes => {
-    const {error} = parameters;
+    const {errorCode} = parameters;
 
-    return command.toBytes(id, [error]);
+    return command.toBytes(id, [errorCode]);
 };
