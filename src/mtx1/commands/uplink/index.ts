@@ -5,6 +5,7 @@
  */
 
 export * as activateRatePlan from './activateRatePlan.js';
+export * as errorDataFrameResponse from './errorDataFrameResponse.js';
 export * as errorResponse from './errorResponse.js';
 export * as getBv from './getBv.js';
 export * as getCorrectTime from './getCorrectTime.js';

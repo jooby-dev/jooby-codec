@@ -94,6 +94,7 @@ export const toBytes = wrappers.getToBytes(toBytesMap);
 // fill maps
 // iteration should not be used
 toBytesMap[commands.activateRatePlan.id] = commands.activateRatePlan.toBytes;
+toBytesMap[commands.errorDataFrameResponse.id] = commands.errorDataFrameResponse.toBytes;
 toBytesMap[commands.errorResponse.id] = commands.errorResponse.toBytes;
 toBytesMap[commands.getBv.id] = commands.getBv.toBytes;
 toBytesMap[commands.getCorrectTime.id] = commands.getCorrectTime.toBytes;
@@ -164,6 +165,7 @@ toBytesMap[commands.turnRelayOn.id] = commands.turnRelayOn.toBytes;
 
 // because of webpack/rollup processing!
 fromBytesMap[commands.activateRatePlan.id] = commands.activateRatePlan.fromBytes;
+fromBytesMap[commands.errorDataFrameResponse.id] = commands.errorDataFrameResponse.fromBytes;
 fromBytesMap[commands.errorResponse.id] = commands.errorResponse.fromBytes;
 fromBytesMap[commands.getBv.id] = commands.getBv.fromBytes;
 fromBytesMap[commands.getCorrectTime.id] = commands.getCorrectTime.fromBytes;
