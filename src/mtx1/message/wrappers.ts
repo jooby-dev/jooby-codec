@@ -162,6 +162,7 @@ export const getToBytes = toBytesMap => ( commands: Array<TCommand>, {messageId 
     if ( isItErrorDataFrameOnly ) {
         return header.concat(commandBytes);
     }
+
     // accessLevel + all commands (can be encrypted) + 0 as commands end mark
     let body = [].concat(maskedAccessLevel, commandBytes, COMMANDS_END_MARK);
 
