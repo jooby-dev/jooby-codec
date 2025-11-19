@@ -21,7 +21,6 @@
  *      errorName: 'BLOCKED_METER',
  * }
  * ```
- *
  */
 
 import * as types from '../../types.js';
