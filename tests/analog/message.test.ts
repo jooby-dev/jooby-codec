@@ -900,7 +900,9 @@ const mtxUplinkMessages: TMessageExamples = {
                         isParametersSetRemotely: false,
                         isTariffPlanChanged: false,
                         isTimeCorrected: true,
-                        isTimeSet: false
+                        isTimeSet: false,
+                        isElectromagneticInfluenceReset: false,
+                        isMagneticInfluenceReset: false
                     }
                 },
                 bytes: getBytesFromHex('63d0b905')
