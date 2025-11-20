@@ -6,6 +6,7 @@
 
 // commands identical to MTX1
 export * as activateRatePlan from '../../../mtx1/commands/uplink/activateRatePlan.js';
+export * as errorDataFrameResponse from '../../../mtx1/commands/uplink/errorDataFrameResponse.js';
 export * as getBv from '../../../mtx1/commands/uplink/getBv.js';
 export * as getCorrectTime from '../../../mtx1/commands/uplink/getCorrectTime.js';
 export * as getDateTime from '../../../mtx1/commands/uplink/getDateTime.js';
