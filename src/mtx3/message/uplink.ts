@@ -94,6 +94,7 @@ export const toBytes = wrappers.getToBytes(toBytesMap);
 
 // commands identical to MTX1
 toBytesMap[mtx1Commands.activateRatePlan.id] = mtx1Commands.activateRatePlan.toBytes;
+toBytesMap[mtx1Commands.errorDataFrameResponse.id] = mtx1Commands.errorDataFrameResponse.toBytes;
 toBytesMap[mtx1Commands.getBv.id] = mtx1Commands.getBv.toBytes;
 toBytesMap[mtx1Commands.getCorrectTime.id] = mtx1Commands.getCorrectTime.toBytes;
 toBytesMap[mtx1Commands.getDateTime.id] = mtx1Commands.getDateTime.toBytes;
@@ -172,6 +173,7 @@ toBytesMap[commands.setOperatorParametersExtended4.id] = commands.setOperatorPar
 
 // commands identical to MTX1
 fromBytesMap[mtx1Commands.activateRatePlan.id] = mtx1Commands.activateRatePlan.fromBytes;
+fromBytesMap[mtx1Commands.errorDataFrameResponse.id] = mtx1Commands.errorDataFrameResponse.fromBytes;
 fromBytesMap[mtx1Commands.getBv.id] = mtx1Commands.getBv.fromBytes;
 fromBytesMap[mtx1Commands.getCorrectTime.id] = mtx1Commands.getCorrectTime.fromBytes;
 fromBytesMap[mtx1Commands.getDateTime.id] = mtx1Commands.getDateTime.fromBytes;
