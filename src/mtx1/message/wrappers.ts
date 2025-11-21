@@ -28,6 +28,37 @@ export interface IFromBytesOptions {
 // bitmask to extract/apply access level
 const ACCESS_LEVEL_MASK = 0x03;
 
+const accessLevelWeight = {
+    [accessLevels.UNENCRYPTED]: 0,
+    [accessLevels.READ_ONLY]: 1,
+    [accessLevels.READ_WRITE]: 2,
+    [accessLevels.ROOT]: 3
+};
+
+const getCommandsAccessLevel = ( commands: Array<TCommand> ) => {
+    let maxAccessLevel = accessLevels.READ_ONLY;
+
+    for ( let index = 0; index < commands.length; index++ ) {
+        const command = commands[index];
+        let accessLevel;
+
+        if ( 'accessLevel' in command ) {
+            accessLevel = command.accessLevel;
+        }
+
+        if ( 'command' in command ) {
+            accessLevel = command.command.accessLevel;
+        }
+
+        if (accessLevelWeight[accessLevel] > accessLevelWeight[maxAccessLevel]) {
+            maxAccessLevel = accessLevel;
+        }
+    }
+
+    return maxAccessLevel;
+};
+
+
 const MESSAGE_HEADER_SIZE = 2;
 const BLOCK_SIZE = 16;
 
@@ -133,7 +164,14 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
     return message;
 };
 
-export const getToBytes = toBytesMap => ( commands: Array<TCommand>, {messageId = 1, accessLevel = accessLevels.READ_ONLY, aesKey}: IToBytesOptions ): TBytes => {
+export const getToBytes = toBytesMap => (
+    commands: Array<TCommand>,
+    {
+        messageId = 1,
+        accessLevel = getCommandsAccessLevel(commands),
+        aesKey
+    }: IToBytesOptions
+): TBytes => {
     const commandBytes = commands.flatMap(command => {
         // valid command
         if ( 'id' in command ) {
