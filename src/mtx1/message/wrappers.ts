@@ -38,9 +38,8 @@ const accessLevelWeight = {
 const getCommandsAccessLevel = ( commands: Array<TCommand> ) => {
     let maxAccessLevel = accessLevels.READ_ONLY;
 
-    for ( let index = 0; index < commands.length; index++ ) {
-        const command = commands[index];
-        let accessLevel;
+    commands.forEach(command => {
+        let accessLevel: number;
 
         if ( 'accessLevel' in command ) {
             accessLevel = command.accessLevel;
@@ -50,10 +49,10 @@ const getCommandsAccessLevel = ( commands: Array<TCommand> ) => {
             accessLevel = command.command.accessLevel;
         }
 
-        if (accessLevelWeight[accessLevel] > accessLevelWeight[maxAccessLevel]) {
+        if ( accessLevelWeight[accessLevel] > accessLevelWeight[maxAccessLevel] ) {
             maxAccessLevel = accessLevel;
         }
-    }
+    });
 
     return maxAccessLevel;
 };
