@@ -356,7 +356,7 @@ export interface IDisplaySet3OperatorParameter {
     /**
      * Maximum daily active power for tariff `T1` (`|P|`, `15.26.1` for `R`-type meters), (`P+`, `1.26.1` for `G`-type meters).
      */
-    MAX_DAY_ACTIVE_POWER_DAY_T1: boolean;
+    MAX_ACTIVE_POWER_DAY_T1: boolean;
 
     /**
      * Maximum daily active power for tariff `T2` (`|P|`, `15.26.2` for `R`-type meters), (`P+`, `1.26.2` for `G`-type meters).
@@ -750,42 +750,42 @@ export interface IRelaySetOperatorParameter {
     /**
      * Turn off on exceeding the power consumption limit for tariff `T1`.
      */
-    RELAY_OFF_ACTIVE_POWER_TARIFF_1: boolean;
+    RELAY_OFF_LIM_TARIFF_1: boolean;
 
     /**
      * Turn off on exceeding the power consumption limit for tariff `T2`.
      */
-    RELAY_OFF_ACTIVE_POWER_TARIFF_2: boolean;
+    RELAY_OFF_LIM_TARIFF_2: boolean;
 
     /**
      * Turn off on exceeding the power consumption limit for tariff `T3`.
      */
-    RELAY_OFF_ACTIVE_POWER_TARIFF_3: boolean;
+    RELAY_OFF_LIM_TARIFF_3: boolean;
 
     /**
      * Turn off on exceeding the power consumption limit for tariff `T4`.
      */
-    RELAY_OFF_ACTIVE_POWER_TARIFF_4: boolean;
+    RELAY_OFF_LIM_TARIFF_4: boolean;
 
     /**
      * Turn off on exceeding the reactive power consumption limit for tariff `T1`.
      */
-    RELAY_OFF_REACTIVE_POWER_TARIFF_1: boolean;
+    RELAY_OFF_LIM_VAR_TARIFF_1: boolean;
 
     /**
      * Turn off on exceeding the reactive power consumption limit for tariff `T2`.
      */
-    RELAY_OFF_REACTIVE_POWER_TARIFF_2: boolean;
+    RELAY_OFF_LIM_VAR_TARIFF_2: boolean;
 
     /**
      * Turn off on exceeding the reactive power consumption limit for tariff `T3`.
      */
-    RELAY_OFF_REACTIVE_POWER_TARIFF_3: boolean;
+    RELAY_OFF_LIM_VAR_TARIFF_3: boolean;
 
     /**
      * Turn off on exceeding the reactive power consumption limit for tariff `T4`.
      */
-    RELAY_OFF_REACTIVE_POWER_TARIFF_4: boolean;
+    RELAY_OFF_LIM_VAR_TARIFF_4: boolean;
 
     /**
      * Turn on when `cos φ` is normalized.
@@ -1780,7 +1780,7 @@ export const displaySet4Mask = {
 };
 
 const displaySet5Mask = {
-    EVENT: 1 << 0,
+    EVENT_P98: 1 << 0,
     PROFILE_P01: 1 << 1,
     PROFILE_P02: 1 << 2,
     PROFILE_P03: 1 << 3,

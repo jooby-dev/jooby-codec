@@ -22,7 +22,7 @@
  * // output:
  * {
  *     displaySet5: {
- *         EVENT: true,
+ *         EVENT_P98: true,
  *         PROFILE_P01: true,
  *         PROFILE_P02: false,
  *         PROFILE_P03: true,
@@ -31,7 +31,7 @@
  *         PROFILE_P06: true
  *     },
  *     displaySet25: {
- *         EVENT: true,
+ *         EVENT_P98: true,
  *         PROFILE_P01: false,
  *         PROFILE_P02: true,
  *         PROFILE_P03: false,
@@ -172,7 +172,7 @@
  *         VOLTAGE_TRANSFORMATION_RATIO: true
  *     },
  *     displaySet35: {
- *         EVENT: false,
+ *         EVENT_P98: false,
  *         PROFILE_P01: false,
  *         PROFILE_P02: true,
  *         PROFILE_P03: true,
@@ -216,7 +216,7 @@ export const examples: command.TCommandExamples = {
         accessLevel,
         parameters: {
             displaySet5: {
-                EVENT: true,
+                EVENT_P98: true,
                 PROFILE_P01: true,
                 PROFILE_P02: false,
                 PROFILE_P03: true,
@@ -225,7 +225,7 @@ export const examples: command.TCommandExamples = {
                 PROFILE_P06: true
             },
             displaySet25: {
-                EVENT: true,
+                EVENT_P98: true,
                 PROFILE_P01: false,
                 PROFILE_P02: true,
                 PROFILE_P03: false,
@@ -366,7 +366,7 @@ export const examples: command.TCommandExamples = {
                 AUTO_SCREEN_SCROLLING: true
             },
             displaySet35: {
-                EVENT: false,
+                EVENT_P98: false,
                 PROFILE_P01: false,
                 PROFILE_P02: true,
                 PROFILE_P03: true,
