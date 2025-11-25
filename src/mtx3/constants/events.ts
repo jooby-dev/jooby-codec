@@ -45,35 +45,35 @@ export const ACCESS_UNLOCKED = 0x12;
  *
  * Indication code: `C.019`.
  */
-export const ERR_ACCESS = 0x13;
+export const ACCESS_ERROR = 0x13;
 
 /**
  * Meter case opened.
  *
  * Indication code: `C.020`.
  */
-export const CASE_OPEN = 0x14;
+export const CASE_OPENED = 0x14;
 
 /**
  * Meter case closed.
  *
  * Indication code: `C.021`.
  */
-export const CASE_CLOSE = 0x15;
+export const CASE_CLOSED = 0x15;
 
 /**
- * Constant magnetic field influence detected.
+ * Magnetic influence detected.
  *
  * Indication code: `C.022`.
  */
-export const MAGNETIC_ON = 0x16;
+export const MAGNETIC_INFLUENCE_ON = 0x16;
 
 /**
- * Constant magnetic field influence ceased.
+ * Magnetic influence ceased.
  *
  * Indication code: `C.023`.
  */
-export const MAGNETIC_OFF = 0x17;
+export const MAGNETIC_INFLUENCE_OFF = 0x17;
 
 /**
  * Access key level `0` changed.
@@ -139,7 +139,7 @@ export const CMD_RELAY_ON = 0x27;
 export const CMD_RELAY_OFF = 0x28;
 
 /**
- * Energy cumulative register overflow.
+ * Energy accumulation register overflow.
  *
  * Indication code: `C.049`.
  */
@@ -195,7 +195,7 @@ export const RELAY_OFF = 0x37;
 export const RESTART = 0x38;
 
 /**
- * Watchdog restart event.
+ * Watchdog restart.
  *
  * Indication code: `C.057`.
  */
@@ -482,14 +482,14 @@ export const POWER_A_ON = 0x66;
 export const POWER_A_OFF = 0x67;
 
 /**
- * Battery voltage returned to normal.
+ * Normal battery voltage restored.
  *
  * Indication code: `C.104`.
  */
 export const BATTERY_OK = 0x68;
 
 /**
- * Battery voltage low.
+ * Low battery voltage.
  *
  * Indication code: `C.105`.
  */
@@ -563,84 +563,84 @@ export const CMD_RELAY_2_OFF = 0x72;
  *
  * Indication code: `C.115`.
  */
-export const CROSS_ZERO_ENT1 = 0x73;
+export const CROSS_ZERO_EN_T1 = 0x73;
 
 /**
  * Active energy counter tariff `2` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.116`.
  */
-export const CROSS_ZERO_ENT2 = 0x74;
+export const CROSS_ZERO_EN_T2 = 0x74;
 
 /**
  * Active energy counter tariff `3` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.117`.
  */
-export const CROSS_ZERO_ENT3 = 0x75;
+export const CROSS_ZERO_EN_T3 = 0x75;
 
 /**
  * Active energy counter tariff `4` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.118`.
  */
-export const CROSS_ZERO_ENT4 = 0x76;
+export const CROSS_ZERO_EN_T4 = 0x76;
 
 /**
  * Reactive positive energy counter tariff `1` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.119`.
  */
-export const CROSS_ZERO_VARI1 = 0x77;
+export const CROSS_ZERO_VARI_T1 = 0x77;
 
 /**
  * Reactive positive energy counter tariff `2` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.120`.
  */
-export const CROSS_ZERO_VARI2 = 0x78;
+export const CROSS_ZERO_VARI_T2 = 0x78;
 
 /**
  * Reactive positive energy counter tariff `3` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.121`.
  */
-export const CROSS_ZERO_VARI3 = 0x79;
+export const CROSS_ZERO_VARI_T3 = 0x79;
 
 /**
  * Reactive positive energy counter tariff `4` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.122`.
  */
-export const CROSS_ZERO_VARI4 = 0x7A;
+export const CROSS_ZERO_VARI_T4 = 0x7A;
 
 /**
  * Reactive negative energy counter tariff `1` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.123`.
  */
-export const CROSS_ZERO_VARE1 = 0x7B;
+export const CROSS_ZERO_VARE_T1 = 0x7B;
 
 /**
  * Reactive negative energy counter tariff `2` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.124`.
  */
-export const CROSS_ZERO_VARE2 = 0x7C;
+export const CROSS_ZERO_VARE_T2 = 0x7C;
 
 /**
  * Reactive negative energy counter tariff `3` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.125`.
  */
-export const CROSS_ZERO_VARE3 = 0x7D;
+export const CROSS_ZERO_VARE_T3 = 0x7D;
 
 /**
  * Reactive negative energy counter tariff `4` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.126`.
  */
-export const CROSS_ZERO_VARE4 = 0x7E;
+export const CROSS_ZERO_VARE_T4 = 0x7E;
 
 /**
  * Calibration flag set.
@@ -682,70 +682,70 @@ export const SET_NEW_SALDO = 0x83;
  *
  * Indication code: `C.132`.
  */
-export const SALDO_PARAM_BAD = 0x84;
+export const SALDO_PARAMETERS_FAULT = 0x84;
 
 /**
  * Accumulation parameters lost.
  *
  * Indication code: `C.133`.
  */
-export const ACCUMULATION_PARAM_BAD = 0x85;
+export const ACCUMULATION_PARAMETERS_FAULT = 0x85;
 
 /**
  * Additional accumulation parameters lost.
  *
  * Indication code: `C.134`.
  */
-export const ACCUMULATION_PARAM_EXT_BAD = 0x86;
+export const ACCUMULATION_PARAMETERS_EXT_FAULT = 0x86;
 
 /**
  * Calculation period data lost.
  *
  * Indication code: `C.135`.
  */
-export const CALCULATION_PERIOD_BAD = 0x87;
+export const CALCULATION_PERIOD_FAULT = 0x87;
 
 /**
  * Block tariff parameters lost.
  *
  * Indication code: `C.136`.
  */
-export const BLOCK_TARIFF_BAD = 0x88;
+export const BLOCK_TARIFF_FAULT = 0x88;
 
 /**
  * Calibration parameters lost.
  *
  * Indication code: `C.137`.
  */
-export const CALIBRATION_PARAM_BAD = 0x89;
+export const CALIBRATION_PARAMETERS_FAULT = 0x89;
 
 /**
  * Winter/summer transition parameters lost.
  *
  * Indication code: `C.138`.
  */
-export const WINTER_SUMMER_BAD = 0x8A;
+export const WINTER_SUMMER_FAULT = 0x8A;
 
 /**
  * Operator parameters lost.
  *
  * Indication code: `C.139`.
  */
-export const OP_PARAM_BAD = 0x8B;
+export const OP_PARAMETERS_VALUES_FAULT = 0x8B;
 
 /**
  * Additional operator parameters lost.
  *
  * Indication code: `C.140`.
  */
-export const OP_PARAM_EXT_BAD = 0x8C;
+export const OP_PARAMETERS_EXT_VALUES_FAULT = 0x8C;
 
 /**
  * Saldo energy values lost.
  *
  * Indication code: `C.141`.
  */
-export const SALDO_ENERGY_BAD = 0x8D;
+export const SALDO_ENERGY_FAULT = 0x8D;
 
 /**
  * Time correction.
@@ -797,18 +797,18 @@ export const RELAY_HARD_OFF = 0x94;
 export const METER_TROUBLE = 0x95;
 
 /**
- * Terminal box open.
+ * Terminal box opened.
  *
  * Indication code: `C.149`.
  */
-export const CASE_KLEMA_OPEN = 0x96;
+export const CASE_TERMINAL_BOX_OPENED = 0x96;
 
 /**
  * Terminal box closed.
  *
  * Indication code: `C.150`.
  */
-export const CASE_KLEMA_CLOSE = 0x97;
+export const CASE_TERMINAL_BOX_CLOSED = 0x97;
 
 /**
  * Tariff plan `2` changed.
@@ -829,14 +829,14 @@ export const CHANGE_TARIFF_TABLE_3 = 0x99;
  *
  * Indication code: `C.153`.
  */
-export const CASE_MODULE_OPEN = 0x9A;
+export const CASE_MODULE_OPENED = 0x9A;
 
 /**
  * Meter module compartment closed.
  *
  * Indication code: `C.154`.
  */
-export const CASE_MODULE_CLOSE = 0x9B;
+export const CASE_MODULE_CLOSED = 0x9B;
 
 /**
  * Saldo parameters set.
@@ -857,70 +857,70 @@ export const POWER_OVER_RELAY_OFF = 0x9D;
  *
  * Indication code: `C.157`.
  */
-export const CHANGE_PARAM_CHANNEL1 = 0x9E;
+export const CHANGE_PARAMETERS_CHANNEL1 = 0x9E;
 
 /**
  * Load profile parameter `2` changed.
  *
  * Indication code: `C.158`.
  */
-export const CHANGE_PARAM_CHANNEL2 = 0x9F;
+export const CHANGE_PARAMETERS_CHANNEL2 = 0x9F;
 
 /**
  * Load profile parameter `3` changed.
  *
  * Indication code: `C.159`.
  */
-export const CHANGE_PARAM_CHANNEL3 = 0xA0;
+export const CHANGE_PARAMETERS_CHANNEL3 = 0xA0;
 
 /**
  * Load profile parameter `4` changed.
  *
  * Indication code: `C.160`.
  */
-export const CHANGE_PARAM_CHANNEL4 = 0xA1;
+export const CHANGE_PARAMETERS_CHANNEL4 = 0xA1;
 
 /**
  * Load profile parameter `5` changed.
  *
  * Indication code: `C.161`.
  */
-export const CHANGE_PARAM_CHANNEL5 = 0xA2;
+export const CHANGE_PARAMETERS_CHANNEL5 = 0xA2;
 
 /**
  * Load profile parameter `6` changed.
  *
  * Indication code: `C.162`.
  */
-export const CHANGE_PARAM_CHANNEL6 = 0xA3;
+export const CHANGE_PARAMETERS_CHANNEL6 = 0xA3;
 
 /**
  * Active export energy counter tariff `1` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.163`.
  */
-export const CROSS_ZERO_EXPORT_ENT1 = 0xA4;
+export const CROSS_ZERO_EXPORT_EN_T1 = 0xA4;
 
 /**
  * Active export energy counter tariff `2` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.164`.
  */
-export const CROSS_ZERO_EXPORT_ENT2 = 0xA5;
+export const CROSS_ZERO_EXPORT_EN_T2 = 0xA5;
 
 /**
  * Active export energy counter tariff `3` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.165`.
  */
-export const CROSS_ZERO_EXPORT_ENT3 = 0xA6;
+export const CROSS_ZERO_EXPORT_EN_T3 = 0xA6;
 
 /**
  * Active export energy counter tariff `4` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.166`.
  */
-export const CROSS_ZERO_EXPORT_ENT4 = 0xA7;
+export const CROSS_ZERO_EXPORT_EN_T4 = 0xA7;
 
 /**
  * Reactive positive energy counter (`Q3`) tariff `1` crossed zero at `1000000.00` `kVar`.
@@ -983,14 +983,14 @@ export const CROSS_ZERO_EXPORT_VARE4 = 0xAF;
  *
  * Indication code: `C.175`.
  */
-export const EM_MAGNETIC_ON = 0xB0;
+export const EM_MAGNETIC_INFLUENCE_ON = 0xB0;
 
 /**
  * Alternating magnetic field influence ended.
  *
  * Indication code: `C.176`.
  */
-export const EM_MAGNETIC_OFF = 0xB1;
+export const EM_MAGNETIC_INFLUENCE_OFF = 0xB1;
 
 /**
  * Electromagnetic impact screen reset.
