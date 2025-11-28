@@ -1878,15 +1878,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getSpecialDay',
-        hex: '0a 13 8e b0 81 8d 53 40 b4 1d 24 56 8e 0e 86 8c 89 8f',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 8e b0 81 8d 53 40 b4 1d 24 56 8e 0e 86 8c 89 8f 01 74 7e',
+        hex: '0a 13 05 49 16 34 c5 b9 51 78 5f 60 e9 be 18 2b d0 fe',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 05 49 16 34 c5 b9 51 78 5f 60 e9 be 18 2b d0 fe fc 7d 31 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getSpecialDay.accessLevel,
         commands: [
             uplinkCommands.getSpecialDay.examples['special day response']
         ],
-        lrc: 0x74,
-        crc: 0x7401,
+        lrc: 0x7e,
+        crc: 0x11fc,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

@@ -596,9 +596,9 @@ export interface ISpecialDay {
     dayIndex: types.TUint8,
 
     /**
-     * Is it periodic or not.
+     * If year === 0, the date is treated as periodic (month and day are fixed)
      */
-    isPeriodic: boolean
+    year: types.TYear2000
 }
 
 export interface IDeviceId {
@@ -1603,7 +1603,7 @@ export const getSpecialDay = function ( buffer: IBinaryBuffer ): ISpecialDay {
         month: buffer.getUint8() as unknown as types.TMonth,
         date: buffer.getUint8() as unknown as types.TMonthDay,
         dayIndex: buffer.getUint8(),
-        isPeriodic: buffer.getUint8() === 0
+        year: buffer.getUint8() as unknown as types.TYear2000
     };
 };
 
@@ -1611,7 +1611,7 @@ export const setSpecialDay = function ( buffer: IBinaryBuffer, specialDay: ISpec
     buffer.setUint8(specialDay.month as unknown as types.TUint8);
     buffer.setUint8(specialDay.date as unknown as types.TUint8);
     buffer.setUint8(specialDay.dayIndex);
-    buffer.setUint8(+!specialDay.isPeriodic);
+    buffer.setUint8(specialDay.year as unknown as types.TUint8);
 };
 
 // https://gitlab.infomir.dev/electric_meters/emdoc/-/blob/master/src/deviceInfo/deviceType.md
