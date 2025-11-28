@@ -61,11 +61,11 @@ export const examples: command.TCommandExamples = {
             month: 1,
             date: 9,
             dayIndex: 3,
-            isPeriodic: true
+            year: 10
         },
         bytes: [
             0x3d, 0x04,
-            0x01, 0x09, 0x03, 0x00
+            0x01, 0x09, 0x03, 0x0a
         ]
     }
 };

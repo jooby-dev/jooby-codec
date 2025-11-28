@@ -78,7 +78,7 @@ export const examples: command.TCommandExamples = {
             month: 1,
             date: 9,
             dayIndex: 3,
-            isPeriodic: true
+            year: 0
         },
         bytes: [
             0x12, 0x06,
