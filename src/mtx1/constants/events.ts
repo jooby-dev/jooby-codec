@@ -74,9 +74,9 @@ export const CHANGE_PARAMETERS_LOCAL = 0x24;
 export const CHANGE_PARAMETERS_REMOTE = 0x25;
 
 /**
- * Time changed (Correction: TIME SET).
+ * Time set command received. Time set.
  */
-export const CMD_CHANGE_TIME = 0x26;
+export const CMD_SET_DATETIME = 0x26;
 
 /**
  * `Relay on` command received.
@@ -141,12 +141,12 @@ export const WD_RESTART = 0x39;
 /**
  * Phase `B` voltage turned on.
  */
-export const POWER_B_ON = 0x3C;
+export const POWER_B_ON = 0x3c;
 
 /**
  * Phase `B` voltage turned off.
  */
-export const POWER_B_OFF = 0x3D;
+export const POWER_B_OFF = 0x3d;
 
 /**
  * Phase `C` voltage turned on.
@@ -211,22 +211,22 @@ export const F_MAX_OVER = 0x49;
 /**
  * Normal frequency restored after under-frequency.
  */
-export const F_MIN_OK = 0x4A;
+export const F_MIN_OK = 0x4a;
 
 /**
  * Frequency below minimum grid frequency threshold.
  */
-export const F_MIN_OVER = 0x4B;
+export const F_MIN_OVER = 0x4b;
 
 /**
  * Permissible current restored after over-current.
  */
-export const I_MAX_OK = 0x4C;
+export const I_MAX_OK = 0x4c;
 
 /**
  * Current above maximum current threshold.
  */
-export const I_MAX_OVER = 0x4D;
+export const I_MAX_OVER = 0x4d;
 
 /**
  * Permissible power consumption restored after over-power.
@@ -391,22 +391,22 @@ export const TIME_CORRECT = 0x79;
 /**
  * Terminal box opened.
  */
-export const CASE_TERMINAL_BOX_OPENED = 0x7A;
+export const CASE_TERMINAL_BOX_OPENED = 0x7a;
 
 /**
  * Terminal box closed.
  */
-export const CASE_TERMINAL_BOX_CLOSED = 0x7B;
+export const CASE_TERMINAL_BOX_CLOSED = 0x7b;
 
 /**
  * Meter module compartment opened.
  */
-export const CASE_MODULE_OPENED = 0x7C;
+export const CASE_MODULE_OPENED = 0x7c;
 
 /**
  * Meter module compartment closed.
  */
-export const CASE_MODULE_CLOSED = 0x7D;
+export const CASE_MODULE_CLOSED = 0x7d;
 
 /**
  * POWER_GOOD signal missing.
@@ -441,12 +441,12 @@ export const CHANGE_TARIFF_TABLE_2 = 0x98;
 /**
  * Balance parameters set.
  */
-export const SET_SALDO_PARAM = 0x9C;
+export const SET_SALDO_PARAM = 0x9c;
 
 /**
  * Relay switched OFF due to active power exceeding.
  */
-export const POWER_OVER_RELAY_OFF = 0x9D;
+export const POWER_OVER_RELAY_OFF = 0x9d;
 
 /**
  * Active energy `A-` meter transition through `0` for tariff `1` upon reaching `1000000.00` kW.
@@ -461,109 +461,109 @@ export const CROSS_ZERO_EXPORT_EN_T2 = 0x9F;
 /**
  * Active energy `A-` meter transition through `0` for tariff `3` upon reaching `1000000.00` kW.
  */
-export const CROSS_ZERO_EXPORT_EN_T3 = 0xA0;
+export const CROSS_ZERO_EXPORT_EN_T3 = 0xa0;
 
 /**
  * Active energy `A-` meter transition through `0` for tariff `4` upon reaching `1000000.00` kW.
  */
-export const CROSS_ZERO_EXPORT_EN_T4 = 0xA1;
+export const CROSS_ZERO_EXPORT_EN_T4 = 0xa1;
 
 /**
  * Time correction. Reserved event - do not use.
  */
-export const TIME_CORRECT_NEW = 0xA2;
+export const TIME_CORRECT_NEW = 0xa2;
 
 /**
  * Electromagnetic influence detected.
  */
-export const EM_MAGNETIC_INFLUENCE_ON = 0xB0;
+export const EM_MAGNETIC_INFLUENCE_ON = 0xb0;
 
 /**
  * Electromagnetic influence ceased.
  */
-export const EM_MAGNETIC_INFLUENCE_OFF = 0xB1;
+export const EM_MAGNETIC_INFLUENCE_OFF = 0xb1;
 
 /**
  * Current inequality detected.
  */
-export const CURRENT_UNEQUAL_FAULT = 0xB2;
+export const CURRENT_UNEQUAL_FAULT = 0xb2;
 
 /**
  * Current inequality absent.
  */
-export const CURRENT_UNEQUAL_OK = 0xB3;
+export const CURRENT_UNEQUAL_OK = 0xb3;
 
 /**
  * Bipolar power detected in phase and neutral.
  */
-export const BIPOLAR_POWER_FAULT = 0xB4;
+export const BIPOLAR_POWER_FAULT = 0xb4;
 
 /**
  * Bipolar power in phase and neutral not detected.
  */
-export const BIPOLAR_POWER_OK = 0xB5;
+export const BIPOLAR_POWER_OK = 0xb5;
 
 /**
  * Electromagnetic influence flag reset.
  */
-export const RESET_EM_FLAG = 0xB6;
+export const RESET_EM_FLAG = 0xb6;
 
 /**
  * Magnetic influence flag reset.
  */
-export const RESET_MAGNET_FLAG = 0xB7;
+export const RESET_MAGNET_FLAG = 0xb7;
 
 /**
  * Load profile parameter changed.
  */
-export const CHANGE_PARAMETERS_CHANNEL = 0xB9;
+export const CHANGE_PARAMETERS_CHANNEL = 0xb9;
 
 /**
  * Relay switched OFF due to consumption limit in credit mode.
  */
-export const RELAY_OFF_BAD_SALDO = 0xBA;
+export const RELAY_OFF_BAD_SALDO = 0xba;
 
 /**
  * `1`-minute energy (voltage) load profiles recording mode set.
  */
-export const SET_DEMAND_EN_1MIN = 0xE0;
+export const SET_DEMAND_EN_1MIN = 0xe0;
 
 /**
  * `3`-minute energy (voltage) load profiles recording mode set.
  */
-export const SET_DEMAND_EN_3MIN = 0xE1;
+export const SET_DEMAND_EN_3MIN = 0xe1;
 
 /**
  * `5`-minute energy (voltage) load profiles recording mode set.
  */
-export const SET_DEMAND_EN_5MIN = 0xE2;
+export const SET_DEMAND_EN_5MIN = 0xe2;
 
 /**
  * `10`-minute energy (voltage) load profiles recording mode set.
  */
-export const SET_DEMAND_EN_10MIN = 0xE3;
+export const SET_DEMAND_EN_10MIN = 0xe3;
 
 /**
  * `15`-minute energy (voltage) load profiles recording mode set.
  */
-export const SET_DEMAND_EN_15MIN = 0xE4;
+export const SET_DEMAND_EN_15MIN = 0xe4;
 
 /**
  * `30`-minute energy (voltage) load profiles recording mode set.
  */
-export const SET_DEMAND_EN_30MIN = 0xE5;
+export const SET_DEMAND_EN_30MIN = 0xe5;
 
 /**
  * `60`-minute energy (voltage) load profiles recording mode set.
  */
-export const SET_DEMAND_EN_60MIN = 0xE6;
+export const SET_DEMAND_EN_60MIN = 0xe6;
 
 /**
  * Recovery of permissible generated power `P-` after being too high.
  */
-export const P_MAX_A_MINUS_OK = 0xE7;
+export const P_MAX_A_MINUS_OK = 0xe7;
 
 /**
  * Generated power `P-` exceeds the maximum power threshold.
  */
-export const P_MAX_A_MINUS_OVER = 0xE8;
+export const P_MAX_A_MINUS_OVER = 0xe8;

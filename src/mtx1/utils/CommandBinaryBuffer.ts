@@ -1906,7 +1906,7 @@ export const getEvent = function ( buffer: IBinaryBuffer ): IEvent {
             data.power = [buffer.getUint8(), buffer.getUint8(), buffer.getUint8(), buffer.getUint8()];
             break;
 
-        case events.CMD_CHANGE_TIME:
+        case events.CMD_SET_DATETIME:
         case events.TIME_CORRECT:
             if ( bytesLeft < 8 ) {
                 return data;
@@ -1935,7 +1935,7 @@ export const setEvent = function ( buffer: IBinaryBuffer, event: IEvent ) {
             }
             break;
 
-        case events.CMD_CHANGE_TIME:
+        case events.CMD_SET_DATETIME:
         case events.TIME_CORRECT:
             setDateTime(buffer, event.newDate);
             break;

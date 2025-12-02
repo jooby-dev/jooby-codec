@@ -122,7 +122,7 @@ export const CHANGE_PARAMETERS_REMOTE = 0x25;
  *
  * Indication code: `C.030`.
  */
-export const CMD_CHANGE_TIME = 0x26;
+export const CMD_SET_DATETIME = 0x26;
 
 /**
  * `Relay on` command received.
@@ -276,7 +276,7 @@ export const VC_MAX_OVER = 0x49;
  *
  * Indication code: `C.074`.
  */
-export const VC_MIN_OK = 0x4A;
+export const VC_MIN_OK = 0x4a;
 
 /**
  * Voltage phase `C` below minimum threshold.
@@ -388,7 +388,7 @@ export const IC_MAX_OVER = 0x59;
  *
  * Indication code: `C.090`.
  */
-export const PA_MAX_OK = 0x5A;
+export const PA_MAX_OK = 0x5a;
 
 /**
  * Active power above maximum threshold.
@@ -500,7 +500,7 @@ export const BATTERY_FAULT = 0x69;
  *
  * Indication code: `C.106`.
  */
-export const CALIBRATION_OK = 0x6A;
+export const CALIBRATION_OK = 0x6a;
 
 /**
  * Calibration parameters lost.
@@ -612,7 +612,7 @@ export const CROSS_ZERO_VARI_T3 = 0x79;
  *
  * Indication code: `C.122`.
  */
-export const CROSS_ZERO_VARI_T4 = 0x7A;
+export const CROSS_ZERO_VARI_T4 = 0x7a;
 
 /**
  * Reactive negative energy counter tariff `1` crossed zero at `1000000.00` `kVar`.
@@ -724,7 +724,7 @@ export const CALIBRATION_PARAMETERS_FAULT = 0x89;
  *
  * Indication code: `C.138`.
  */
-export const WINTER_SUMMER_FAULT = 0x8A;
+export const WINTER_SUMMER_FAULT = 0x8a;
 
 /**
  * Operator parameters lost.
@@ -829,7 +829,7 @@ export const CHANGE_TARIFF_TABLE_3 = 0x99;
  *
  * Indication code: `C.153`.
  */
-export const CASE_MODULE_OPENED = 0x9A;
+export const CASE_MODULE_OPENED = 0x9a;
 
 /**
  * Meter module compartment closed.
@@ -871,200 +871,200 @@ export const CHANGE_PARAMETERS_CHANNEL2 = 0x9F;
  *
  * Indication code: `C.159`.
  */
-export const CHANGE_PARAMETERS_CHANNEL3 = 0xA0;
+export const CHANGE_PARAMETERS_CHANNEL3 = 0xa0;
 
 /**
  * Load profile parameter `4` changed.
  *
  * Indication code: `C.160`.
  */
-export const CHANGE_PARAMETERS_CHANNEL4 = 0xA1;
+export const CHANGE_PARAMETERS_CHANNEL4 = 0xa1;
 
 /**
  * Load profile parameter `5` changed.
  *
  * Indication code: `C.161`.
  */
-export const CHANGE_PARAMETERS_CHANNEL5 = 0xA2;
+export const CHANGE_PARAMETERS_CHANNEL5 = 0xa2;
 
 /**
  * Load profile parameter `6` changed.
  *
  * Indication code: `C.162`.
  */
-export const CHANGE_PARAMETERS_CHANNEL6 = 0xA3;
+export const CHANGE_PARAMETERS_CHANNEL6 = 0xa3;
 
 /**
  * Active export energy counter tariff `1` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.163`.
  */
-export const CROSS_ZERO_EXPORT_EN_T1 = 0xA4;
+export const CROSS_ZERO_EXPORT_EN_T1 = 0xa4;
 
 /**
  * Active export energy counter tariff `2` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.164`.
  */
-export const CROSS_ZERO_EXPORT_EN_T2 = 0xA5;
+export const CROSS_ZERO_EXPORT_EN_T2 = 0xa5;
 
 /**
  * Active export energy counter tariff `3` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.165`.
  */
-export const CROSS_ZERO_EXPORT_EN_T3 = 0xA6;
+export const CROSS_ZERO_EXPORT_EN_T3 = 0xa6;
 
 /**
  * Active export energy counter tariff `4` crossed zero at `1000000.00` `kW`.
  *
  * Indication code: `C.166`.
  */
-export const CROSS_ZERO_EXPORT_EN_T4 = 0xA7;
+export const CROSS_ZERO_EXPORT_EN_T4 = 0xa7;
 
 /**
  * Reactive positive energy counter (`Q3`) tariff `1` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.167`.
  */
-export const CROSS_ZERO_EXPORT_VARI1 = 0xA8;
+export const CROSS_ZERO_EXPORT_VARI1 = 0xa8;
 
 /**
  * Reactive positive energy counter (`Q3`) tariff `2` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.168`.
  */
-export const CROSS_ZERO_EXPORT_VARI2 = 0xA9;
+export const CROSS_ZERO_EXPORT_VARI2 = 0xa9;
 
 /**
  * Reactive positive energy counter (`Q3`) tariff `3` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.169`.
  */
-export const CROSS_ZERO_EXPORT_VARI3 = 0xAA;
+export const CROSS_ZERO_EXPORT_VARI3 = 0xaa;
 
 /**
  * Reactive positive energy counter (`Q3`) tariff `4` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.170`.
  */
-export const CROSS_ZERO_EXPORT_VARI4 = 0xAB;
+export const CROSS_ZERO_EXPORT_VARI4 = 0xaB;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `1` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.171`.
  */
-export const CROSS_ZERO_EXPORT_VARE1 = 0xAC;
+export const CROSS_ZERO_EXPORT_VARE1 = 0xaC;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `2` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.172`.
  */
-export const CROSS_ZERO_EXPORT_VARE2 = 0xAD;
+export const CROSS_ZERO_EXPORT_VARE2 = 0xaD;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `3` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.173`.
  */
-export const CROSS_ZERO_EXPORT_VARE3 = 0xAE;
+export const CROSS_ZERO_EXPORT_VARE3 = 0xaE;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `4` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.174`.
  */
-export const CROSS_ZERO_EXPORT_VARE4 = 0xAF;
+export const CROSS_ZERO_EXPORT_VARE4 = 0xaF;
 
 /**
  * Presence of alternating magnetic field detected.
  *
  * Indication code: `C.175`.
  */
-export const EM_MAGNETIC_INFLUENCE_ON = 0xB0;
+export const EM_MAGNETIC_INFLUENCE_ON = 0xb0;
 
 /**
  * Alternating magnetic field influence ended.
  *
  * Indication code: `C.176`.
  */
-export const EM_MAGNETIC_INFLUENCE_OFF = 0xB1;
+export const EM_MAGNETIC_INFLUENCE_OFF = 0xb1;
 
 /**
  * Electromagnetic impact screen reset.
  *
  * Indication code: `C.177`.
  */
-export const RESET_EM_FLAG = 0xB2;
+export const RESET_EM_FLAG = 0xb2;
 
 /**
  * Magnetic impact screen reset.
  *
  * Indication code: `C.178`.
  */
-export const RESET_MAGNETIC_FLAG = 0xB3;
+export const RESET_MAGNETIC_FLAG = 0xb3;
 
 /**
  * `1`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.224`.
  */
-export const SET_DEMAND_EN_1_MIN = 0xE0;
+export const SET_DEMAND_EN_1_MIN = 0xe0;
 
 /**
  * `3`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.225`.
  */
-export const SET_DEMAND_EN_3_MIN = 0xE1;
+export const SET_DEMAND_EN_3_MIN = 0xe1;
 
 /**
  * `5`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.226`.
  */
-export const SET_DEMAND_EN_5_MIN = 0xE2;
+export const SET_DEMAND_EN_5_MIN = 0xe2;
 
 /**
  * `10`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.227`.
  */
-export const SET_DEMAND_EN_10_MIN = 0xE3;
+export const SET_DEMAND_EN_10_MIN = 0xe3;
 
 /**
  * `15`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.228`.
  */
-export const SET_DEMAND_EN_15_MIN = 0xE4;
+export const SET_DEMAND_EN_15_MIN = 0xe4;
 
 /**
  * `30`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.229`.
  */
-export const SET_DEMAND_EN_30_MIN = 0xE5;
+export const SET_DEMAND_EN_30_MIN = 0xe5;
 
 /**
  * `60`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.230`.
  */
-export const SET_DEMAND_EN_60_MIN = 0xE6;
+export const SET_DEMAND_EN_60_MIN = 0xe6;
 
 /**
  * Recovery of permissible generated power `P-` after being too high.
  *
  * Indication code: `C.231`.
  */
-export const P_MAX_A_MINUS_OK = 0xE7;
+export const P_MAX_A_MINUS_OK = 0xe7;
 
 /**
  * Generated power `P-` exceeds the maximum power threshold.
  *
  * Indication code: `C.232`.
  */
-export const P_MAX_A_MINUS_OVER = 0xE8;
+export const P_MAX_A_MINUS_OVER = 0xe8;
