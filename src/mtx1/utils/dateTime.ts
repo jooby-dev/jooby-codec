@@ -152,3 +152,14 @@ export const getDateFromDateTime = ( dateTime: IDateTime ) => new Date(
     dateTime.minutes,
     dateTime.seconds
 );
+
+export const getUTCDateFromDateTime = ( dateTime: IDateTime ) => new Date(
+    Date.UTC(
+        dateTime.year + 2000,
+        dateTime.month - 1,
+        dateTime.date,
+        dateTime.hours,
+        dateTime.minutes,
+        dateTime.seconds
+    )
+);
