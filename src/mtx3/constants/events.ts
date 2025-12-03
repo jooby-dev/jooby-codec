@@ -199,7 +199,7 @@ export const RESTART = 0x38;
  *
  * Indication code: `C.057`.
  */
-export const WD_RESTART = 0x39;
+export const WATCHDOG_RESTART = 0x39;
 
 /**
  * Voltage phase `A` returned to normal after high.
@@ -731,14 +731,14 @@ export const WINTER_SUMMER_FAULT = 0x8a;
  *
  * Indication code: `C.139`.
  */
-export const OP_PARAMETERS_VALUES_FAULT = 0x8B;
+export const OPERATOR_PARAMETERS_VALUES_FAULT = 0x8B;
 
 /**
  * Additional operator parameters lost.
  *
  * Indication code: `C.140`.
  */
-export const OP_PARAMETERS_EXT_VALUES_FAULT = 0x8C;
+export const OPERATOR_PARAMETERS_EXT_VALUES_FAULT = 0x8C;
 
 /**
  * Saldo energy values lost.
@@ -857,42 +857,42 @@ export const POWER_OVER_RELAY_OFF = 0x9D;
  *
  * Indication code: `C.157`.
  */
-export const CHANGE_PARAMETERS_CHANNEL1 = 0x9E;
+export const CHANGE_PARAMETER_CHANNEL1 = 0x9E;
 
 /**
  * Load profile parameter `2` changed.
  *
  * Indication code: `C.158`.
  */
-export const CHANGE_PARAMETERS_CHANNEL2 = 0x9F;
+export const CHANGE_PARAMETER_CHANNEL2 = 0x9F;
 
 /**
  * Load profile parameter `3` changed.
  *
  * Indication code: `C.159`.
  */
-export const CHANGE_PARAMETERS_CHANNEL3 = 0xa0;
+export const CHANGE_PARAMETER_CHANNEL3 = 0xa0;
 
 /**
  * Load profile parameter `4` changed.
  *
  * Indication code: `C.160`.
  */
-export const CHANGE_PARAMETERS_CHANNEL4 = 0xa1;
+export const CHANGE_PARAMETER_CHANNEL4 = 0xa1;
 
 /**
  * Load profile parameter `5` changed.
  *
  * Indication code: `C.161`.
  */
-export const CHANGE_PARAMETERS_CHANNEL5 = 0xa2;
+export const CHANGE_PARAMETER_CHANNEL5 = 0xa2;
 
 /**
  * Load profile parameter `6` changed.
  *
  * Indication code: `C.162`.
  */
-export const CHANGE_PARAMETERS_CHANNEL6 = 0xa3;
+export const CHANGE_PARAMETER_CHANNEL6 = 0xa3;
 
 /**
  * Active export energy counter tariff `1` crossed zero at `1000000.00` `kW`.
