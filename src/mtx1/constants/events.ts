@@ -11,7 +11,7 @@ export const VENDOR_PAR_FAULT = 0x02;
 /**
  * Operator parameter values lost.
  */
-export const OP_PARAMETERS_VALUES_FAULT = 0x03;
+export const OPERATOR_PARAMETERS_VALUES_FAULT = 0x03;
 
 /**
  * Access locked until end of day due to key access errors.
@@ -136,7 +136,7 @@ export const RESTART = 0x38;
 /**
  * WATCHDOG restart.
  */
-export const WD_RESTART = 0x39;
+export const WATCHDOG_RESTART = 0x39;
 
 /**
  * Phase `B` voltage turned on.
