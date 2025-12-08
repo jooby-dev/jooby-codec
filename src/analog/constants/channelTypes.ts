@@ -8,8 +8,8 @@ export const PULSE_SENSOR = 1;
 export const POWER_CHANNEL = 2;
 
 /**
- * Binary sensor, detecting on/off or open/closed states
- * Deprecated
+ * Binary sensor, detecting on/off or open/closed states.
+ * Deprecated.
  */
 export const BINARY_SENSOR = 3;
 
@@ -17,7 +17,7 @@ export const BINARY_SENSOR = 3;
 export const TEMPERATURE_SENSOR = 4;
 
 /**
- * Binary sensor, detecting on/off or open/closed states
- * Can be configurable
+ * Binary sensor, detecting on/off or open/closed states.
+ * Can be configurable.
  */
 export const BINARY_SENSOR_CONFIGURABLE = 5;

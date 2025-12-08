@@ -945,9 +945,6 @@ const TWO_CHANNELS_HARDWARE_TYPES = [
 const ELIMP_HARDWARE_TYPES = [
     hardwareTypes.ELIMP
 ];
-// const WATER_HARDWARE_TYPES = [
-//     hardwareTypes.WATER
-// ];
 const FOUR_CHANNELS_HARDWARE_TYPES = [
     hardwareTypes.IMP4EU,
     hardwareTypes.IMP4IN
@@ -973,10 +970,6 @@ const twoChannelBitMask = {
 const elimpBitMask = {
     isConnectionLost: Math.pow(2, 3)
 };
-// const waterBitMask = {
-//     isBatteryLow: Math.pow(2, 0),
-//     isConnectionLost: Math.pow(2, 3)
-// };
 const fourChannelBitMask = {
     isBatteryLow: Math.pow(2, 0),
     isConnectionLost: Math.pow(2, 3),
@@ -2334,8 +2327,6 @@ export const getEventStatus = function ( buffer: IBinaryBuffer, hardwareType: nu
         status = bitSet.toObject(twoChannelBitMask, buffer.getUint8());
     } else if ( ELIMP_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         status = bitSet.toObject(elimpBitMask, buffer.getUint8());
-    // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
-    //     status = bitSet.toObject(waterBitMask, buffer.getUint8());
     } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         status = bitSet.toObject(fourChannelBitMask, buffer.getUint16(true));
     } else if ( MTX_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
@@ -2359,8 +2350,6 @@ export const setEventStatus = function ( buffer: IBinaryBuffer, hardwareType: nu
         buffer.setUint8(bitSet.fromObject(twoChannelBitMask, status as bitSet.TBooleanObject));
     } else if ( ELIMP_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         buffer.setUint8(bitSet.fromObject(elimpBitMask, status as bitSet.TBooleanObject));
-        // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
-        //     buffer.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
     } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         buffer.setUint16(
             bitSet.fromObject(fourChannelBitMask, status as bitSet.TBooleanObject) | (1 << 7),
