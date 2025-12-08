@@ -201,7 +201,7 @@ export const fromBytes = ( bytes: types.TBytes ): Array<IChannelStatus> => {
             channel: getChannelValue(buffer)
         };
 
-        switch (channelStatus.type) {
+        switch ( channelStatus.type ) {
             case channelTypes.POWER_CHANNEL:
             case channelTypes.PULSE_SENSOR:
             case channelTypes.IDLE:
