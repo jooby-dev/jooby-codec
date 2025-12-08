@@ -50,13 +50,13 @@ export const examples: command.TCommandExamples = {
         parameters: {
             channels: [
                 {type: 2, typeName: 'POWER_CHANNEL'},
-                {type: 3, typeName: 'BINARY_SENSOR'},
+                {type: 5, typeName: 'BINARY_SENSOR_CONFIGURABLE'},
                 {type: 4, typeName: 'TEMPERATURE_SENSOR'},
                 {type: 0, typeName: 'IDLE'}
             ]
         },
         bytes: [
-            0x1f, 0x33, 0x04, 0x02, 0x03, 0x04, 0x00
+            0x1f, 0x33, 0x04, 0x02, 0x05, 0x04, 0x00
         ]
     }
 };

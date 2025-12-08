@@ -72,8 +72,8 @@ export const examples: command.TCommandExamples = {
         headerSize,
         parameters: [
             {
-                type: channelTypes.BINARY_SENSOR,
-                typeName: 'BINARY_SENSOR',
+                type: channelTypes.BINARY_SENSOR_CONFIGURABLE,
+                typeName: 'BINARY_SENSOR_CONFIGURABLE',
                 channel: 1,
                 status: {
                     state: true
@@ -81,7 +81,7 @@ export const examples: command.TCommandExamples = {
             }
         ],
         bytes: [
-            0x1f, 0x32, 0x03, 0x03, 0x00, 0x01
+            0x1f, 0x32, 0x03, 0x05, 0x00, 0x01
         ]
     },
     'temperature sensor, channel: 3, temperature: 24': {
@@ -103,7 +103,7 @@ export const examples: command.TCommandExamples = {
             0x1f, 0x32, 0x07, 0x04, 0x02, 0x18, 0x00, 0x00, 0x58, 0xc0
         ]
     },
-    'power channel and pulse, binary and temperature sensors': {
+    'power channel and pulse, binary configurable and temperature sensors': {
         id,
         name,
         headerSize,
@@ -114,8 +114,8 @@ export const examples: command.TCommandExamples = {
                 channel: 1
             },
             {
-                type: channelTypes.BINARY_SENSOR,
-                typeName: 'BINARY_SENSOR',
+                type: channelTypes.BINARY_SENSOR_CONFIGURABLE,
+                typeName: 'BINARY_SENSOR_CONFIGURABLE',
                 channel: 2,
                 status: {
                     state: true
@@ -137,10 +137,9 @@ export const examples: command.TCommandExamples = {
             }
         ],
         bytes: [
-            0x1f, 0x32, 0x0e, 0x02, 0x00, 0x03, 0x01, 0x01, 0x04, 0x02, 0x14, 0x00, 0x00, 0x58, 0xc0, 0x01, 0x03
+            0x1f, 0x32, 0x0e, 0x02, 0x00, 0x05, 0x01, 0x01, 0x04, 0x02, 0x14, 0x00, 0x00, 0x58, 0xc0, 0x01, 0x03
         ]
     }
-
 };
 
 
@@ -152,6 +151,7 @@ const getBufferSize = ( channelsStatus: Array<IChannelStatus> ) => {
 
         switch ( channelsStatus[index].type ) {
             case channelTypes.BINARY_SENSOR:
+            case channelTypes.BINARY_SENSOR_CONFIGURABLE:
             case channelTypes.TEMPERATURE_SENSOR:
                 size += 1;
                 break;
@@ -202,7 +202,13 @@ export const fromBytes = ( bytes: types.TBytes ): Array<IChannelStatus> => {
         };
 
         switch (channelStatus.type) {
+            case channelTypes.POWER_CHANNEL:
+            case channelTypes.PULSE_SENSOR:
+            case channelTypes.IDLE:
+                break;
+
             case channelTypes.BINARY_SENSOR:
+            case channelTypes.BINARY_SENSOR_CONFIGURABLE:
                 channelStatus.status = getBinarySensorStatus(buffer);
                 break;
 
@@ -211,7 +217,8 @@ export const fromBytes = ( bytes: types.TBytes ): Array<IChannelStatus> => {
                 break;
 
             default:
-                break;
+                // prevent infinite loop
+                return result;
         }
 
         result.push(channelStatus);
@@ -224,20 +231,26 @@ export const fromBytes = ( bytes: types.TBytes ): Array<IChannelStatus> => {
 /**
  * Encode command parameters.
  *
- * @param channelsStatus - command payload
+ * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( channelsStatus: Array<IChannelStatus> ): types.TBytes => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(getBufferSize(channelsStatus), false);
+export const toBytes = ( parameters: Array<IChannelStatus> ): types.TBytes => {
+    const buffer: IBinaryBuffer = new BinaryBuffer(getBufferSize(parameters), false);
 
-    for ( let index = 0; index < channelsStatus.length; index++ ) {
-        const {type, channel, status} = channelsStatus[index];
+    for ( let index = 0; index < parameters.length; index++ ) {
+        const {type, channel, status} = parameters[index];
 
         buffer.setUint8(type);
         setChannelValue(buffer, channel);
 
         switch ( type ) {
+            case channelTypes.POWER_CHANNEL:
+            case channelTypes.PULSE_SENSOR:
+            case channelTypes.IDLE:
+                break;
+
             case channelTypes.BINARY_SENSOR:
+            case channelTypes.BINARY_SENSOR_CONFIGURABLE:
                 setBinarySensorStatus(status as IBinarySensorStatus, buffer);
                 break;
 

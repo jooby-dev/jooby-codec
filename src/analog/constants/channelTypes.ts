@@ -7,8 +7,17 @@ export const PULSE_SENSOR = 1;
 /** Channel is configured to supply power to connected components */
 export const POWER_CHANNEL = 2;
 
-/** Binary sensor, detecting on/off or open/closed states */
+/**
+ * Binary sensor, detecting on/off or open/closed states
+ * Deprecated
+ */
 export const BINARY_SENSOR = 3;
 
 /** Temperature sensor, measuring temperature readings */
 export const TEMPERATURE_SENSOR = 4;
+
+/**
+ * Binary sensor, detecting on/off or open/closed states
+ * Can be configurable
+ */
+export const BINARY_SENSOR_CONFIGURABLE = 5;

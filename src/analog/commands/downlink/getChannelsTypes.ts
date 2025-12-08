@@ -1,6 +1,6 @@
 /**
  * Command to get the types of channels on the device,
- * like IDLE, TEMPERATURE_SENSOR, or BINARY_SENSOR.
+ * like IDLE, TEMPERATURE_SENSOR or BINARY_SENSOR_CONFIGURABLE.
  *
  * @packageDocumentation
  *

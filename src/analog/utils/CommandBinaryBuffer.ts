@@ -653,6 +653,15 @@ interface IParameterBinarySensor {
 }
 
 /**
+ * Binary sensor configurable settings
+ */
+interface IParameterBinarySensorConfigurable {
+    type: types.TUint8;
+    activeStateTimeMs: types.TUint16;
+    halState: types.TUint8;
+}
+
+/**
  * Temperature sensor settings
  */
 interface IParameterTemperatureSensor {
@@ -669,7 +678,7 @@ interface IParameterTemperatureSensor {
 interface IParameterChannelType {
     channel: types.TUint8,
     type: types.TUint8
-    parameters: IParameterEmpty | IParameterBinarySensor | IParameterTemperatureSensor
+    parameters: IParameterEmpty | IParameterBinarySensor | IParameterBinarySensorConfigurable | IParameterTemperatureSensor
 }
 
 /**
@@ -1020,6 +1029,11 @@ const getChannelTypeSize = ( {type}: IParameterChannelType ) => {
 
         case channelTypes.TEMPERATURE_SENSOR:
             size += 5;
+
+            break;
+
+        case channelTypes.BINARY_SENSOR_CONFIGURABLE:
+            size += 4;
 
             break;
 
@@ -2345,8 +2359,8 @@ export const setEventStatus = function ( buffer: IBinaryBuffer, hardwareType: nu
         buffer.setUint8(bitSet.fromObject(twoChannelBitMask, status as bitSet.TBooleanObject));
     } else if ( ELIMP_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         buffer.setUint8(bitSet.fromObject(elimpBitMask, status as bitSet.TBooleanObject));
-    // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
-    //     buffer.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
+        // } else if ( WATER_HARDWARE_TYPES.includes(hardwareType) ) {
+        //     buffer.setUint8(bitSet.fromObject(waterBitMask, status as bitSet.TBooleanObject));
     } else if ( FOUR_CHANNELS_HARDWARE_TYPES.indexOf(hardwareType) !== -1 ) {
         buffer.setUint16(
             bitSet.fromObject(fourChannelBitMask, status as bitSet.TBooleanObject) | (1 << 7),
@@ -2650,6 +2664,20 @@ export const setBinarySensor = function ( buffer: IBinaryBuffer, parameters: IPa
     buffer.setUint16(parameters.activeStateTimeMs);
 };
 
+export const getBinarySensorConfigurable = function ( buffer: IBinaryBuffer ): IParameterBinarySensorConfigurable {
+    const type = buffer.getUint8();
+    const activeStateTimeMs = buffer.getUint16();
+    const halState = buffer.getUint8();
+
+    return {type, activeStateTimeMs, halState};
+};
+
+export const setBinarySensorConfigurable = function ( buffer: IBinaryBuffer, parameters: IParameterBinarySensorConfigurable ) {
+    buffer.setUint8(parameters.type);
+    buffer.setUint16(parameters.activeStateTimeMs);
+    buffer.setUint8(parameters.halState);
+};
+
 
 export const getTemperatureSensor = function ( buffer: IBinaryBuffer ): IParameterTemperatureSensor {
     const measurementPeriod = buffer.getUint16();
@@ -2687,6 +2715,10 @@ export const getChannelType = function ( buffer: IBinaryBuffer ): IParameterChan
             parameters = getTemperatureSensor(buffer);
             break;
 
+        case channelTypes.BINARY_SENSOR_CONFIGURABLE:
+            parameters = getBinarySensorConfigurable(buffer);
+            break;
+
         default:
             break;
     }
@@ -2710,6 +2742,10 @@ export const setChannelType = function ( buffer: IBinaryBuffer, {type, channel, 
 
         case channelTypes.TEMPERATURE_SENSOR:
             setTemperatureSensor(buffer, parameters as IParameterTemperatureSensor);
+            break;
+
+        case channelTypes.BINARY_SENSOR_CONFIGURABLE:
+            setBinarySensorConfigurable(buffer, parameters as IParameterBinarySensorConfigurable);
             break;
 
         default:
