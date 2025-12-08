@@ -623,7 +623,7 @@ export const examples: command.TCommandExamples = {
             0x38, 0x00, 0x02
         ]
     },
-    '56_4PU: set channel type. Channel index: 2, type: binary sensor': {
+    '56_4PU: set channel type. Channel index: 2, type: binary sensor configurable': {
         id,
         name,
         headerSize,
@@ -632,15 +632,17 @@ export const examples: command.TCommandExamples = {
             name: deviceParameterNames[deviceParameters.CHANNEL_TYPE],
             data: {
                 channel: 2,
-                type: channelTypes.BINARY_SENSOR,
+                type: channelTypes.BINARY_SENSOR_CONFIGURABLE,
                 parameters: {
-                    activeStateTimeMs: 5000
+                    type: 0,
+                    activeStateTimeMs: 5000,
+                    halState: 0
                 }
             }
         },
         bytes: [
-            0x03, 0x05,
-            0x38, 0x01, 0x03, 0x13, 0x88
+            0x03, 0x07,
+            0x38, 0x01, 0x05, 0x00, 0x13, 0x88, 0x00
         ]
     },
     '56_4PU: set channel type. Channel index: 3, type: temperature sensor': {
