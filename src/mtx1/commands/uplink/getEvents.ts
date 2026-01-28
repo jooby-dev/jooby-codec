@@ -68,8 +68,8 @@ import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {
     IEvent,
-    getEvent,
-    setEvent,
+    getEvent as getMtx1Event,
+    setEvent as setMtx1Event,
     getDate,
     setDate
 } from '../../utils/CommandBinaryBuffer.js';
@@ -144,7 +144,7 @@ export const examples: command.TCommandExamples = {
     }
 };
 
-export const getFromBytes = BinaryBufferConstructor => (
+export const getFromBytes = ( BinaryBufferConstructor, getEvent = getMtx1Event ) => (
     (bytes: types.TBytes): IGetEventResponseParameters => {
         if ( bytes.length > maxSize ) {
             throw new Error(`Wrong buffer size: ${bytes.length}.`);
@@ -164,7 +164,7 @@ export const getFromBytes = BinaryBufferConstructor => (
     }
 );
 
-export const getToBytes = BinaryBufferConstructor => (
+export const getToBytes = ( BinaryBufferConstructor, setEvent = setMtx1Event ) => (
     (parameters: IGetEventResponseParameters): types.TBytes => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         const buffer: IBinaryBuffer = new BinaryBufferConstructor(maxSize, false);
