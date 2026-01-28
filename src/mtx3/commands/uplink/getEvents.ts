@@ -63,38 +63,24 @@
  */
 
 import * as command from '../../../mtx1/utils/command.js';
-import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
-import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
+import * as mtx1 from '../../../mtx1/commands/uplink/getEvents.js';
+import BinaryBuffer from '../../../utils/BinaryBuffer.js';
 import {
-    IEvent,
-    getDate,
-    setDate
-} from '../../../mtx1/utils/CommandBinaryBuffer.js';
-import {
-    getEvent,
-    setEvent
+    getEvent as getMtx3Event,
+    setEvent as setMtx3Event
 } from '../../utils/CommandBinaryBuffer.js';
-import {getEvents as commandId} from '../../constants/uplinkIds.js';
-import commandNames from '../../constants/uplinkNames.js';
 
 
-export interface IGetEventResponseParameters {
-    date: types.IDate,
-    eventsNumber: types.TUint8,
-    events: Array<IEvent>
-}
+export interface IGetEventResponseParameters extends mtx1.IGetEventResponseParameters {}
 
-// date + event number byte
-const BODY_WITHOUT_EVENTS_SIZE = 3 + 1;
-const EVENT_SIZE = 4;
-
-export const id: types.TCommandId = commandId;
-export const name: types.TCommandName = commandNames[commandId];
-export const headerSize = 2;
-export const accessLevel: types.TAccessLevel = READ_ONLY;
-export const maxSize = BODY_WITHOUT_EVENTS_SIZE + 255 * EVENT_SIZE;
-export const isLoraOnly = false;
+export const {
+    id,
+    name,
+    headerSize,
+    accessLevel,
+    maxSize,
+    isLoraOnly
+} = mtx1;
 
 export const examples: command.TCommandExamples = {
     'simple response': {
@@ -146,42 +132,6 @@ export const examples: command.TCommandExamples = {
     }
 };
 
-export const getFromBytes = BinaryBufferConstructor => (
-    (bytes: types.TBytes): IGetEventResponseParameters => {
-        if ( bytes.length > maxSize ) {
-            throw new Error(`Wrong buffer size: ${bytes.length}.`);
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        const buffer: IBinaryBuffer = new BinaryBufferConstructor(bytes, false);
-        const date = getDate(buffer);
-        const eventsNumber = buffer.getUint8();
-        const events = [];
-
-        while ( !buffer.isEmpty ) {
-            events.push(getEvent(buffer));
-        }
-
-        return {date, eventsNumber, events};
-    }
-);
-
-export const getToBytes = BinaryBufferConstructor => (
-    (parameters: IGetEventResponseParameters): types.TBytes => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        const buffer: IBinaryBuffer = new BinaryBufferConstructor(maxSize, false);
-
-        setDate(buffer, parameters.date);
-        buffer.setUint8(parameters.eventsNumber);
-
-        for ( const event of parameters.events ) {
-            setEvent(buffer, event);
-        }
-
-        return command.toBytes(id, buffer.getBytesToOffset());
-    }
-);
-
 
 /**
  * Decode command parameters.
@@ -189,7 +139,7 @@ export const getToBytes = BinaryBufferConstructor => (
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = getFromBytes(BinaryBuffer);
+export const fromBytes = mtx1.getFromBytes(BinaryBuffer, getMtx3Event);
 
 
 /**
@@ -198,4 +148,4 @@ export const fromBytes = getFromBytes(BinaryBuffer);
  * @param parameters - command parameters
  * @returns full message (header with body)
  */
-export const toBytes = getToBytes(BinaryBuffer);
+export const toBytes = mtx1.getToBytes(BinaryBuffer, setMtx3Event);
