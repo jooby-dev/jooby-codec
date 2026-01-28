@@ -27,6 +27,7 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {getStringFromBytes, IBytesConversionFormatOptions} from '../../../utils/bytesConversion.js';
 import {writeImage as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
@@ -109,4 +110,7 @@ export const toBytes = ( parameters: IWriteImageParameters ): types.TBytes => {
  * @param parameters - command payload
  * @returns JSON representation of command parameters
  */
-export const toJson = ( parameters: IWriteImageParameters ): string => JSON.stringify(parameters);
+export const toJson = ( parameters: IWriteImageParameters, options: IBytesConversionFormatOptions ): string => JSON.stringify({
+    ...parameters,
+    data: getStringFromBytes(parameters.data, options)
+});
