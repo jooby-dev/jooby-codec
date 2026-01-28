@@ -77,7 +77,7 @@ import {getEvents as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
 
-export interface IGetCriticalEventResponseParameters {
+export interface IGetEventResponseParameters {
     date: types.IDate,
     eventsNumber: types.TUint8,
     events: Array<IEvent>
@@ -145,7 +145,7 @@ export const examples: command.TCommandExamples = {
 };
 
 export const getFromBytes = BinaryBufferConstructor => (
-    (bytes: types.TBytes): IGetCriticalEventResponseParameters => {
+    (bytes: types.TBytes): IGetEventResponseParameters => {
         if ( bytes.length > maxSize ) {
             throw new Error(`Wrong buffer size: ${bytes.length}.`);
         }
@@ -165,7 +165,7 @@ export const getFromBytes = BinaryBufferConstructor => (
 );
 
 export const getToBytes = BinaryBufferConstructor => (
-    (parameters: IGetCriticalEventResponseParameters): types.TBytes => {
+    (parameters: IGetEventResponseParameters): types.TBytes => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         const buffer: IBinaryBuffer = new BinaryBufferConstructor(maxSize, false);
 
