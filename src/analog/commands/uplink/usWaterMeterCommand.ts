@@ -24,6 +24,7 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {getStringFromBytes, IBytesConversionFormatOptions} from '../../../utils/bytesConversion.js';
 import {usWaterMeterCommand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -87,3 +88,15 @@ export const toBytes = ( parameters: IUSWaterMeterCommandResponseParameters ): t
 
     return command.toBytes(id, buffer.data);
 };
+
+
+/**
+ * Convert command parameters to JSON.
+ *
+ * @param parameters - command payload
+ * @returns JSON representation of command parameters
+ */
+export const toJson = ( parameters: IUSWaterMeterCommandResponseParameters, options: IBytesConversionFormatOptions ): string => JSON.stringify({
+    ...parameters,
+    data: getStringFromBytes(parameters.data, options)
+});

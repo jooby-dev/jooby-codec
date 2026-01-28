@@ -29,6 +29,7 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {getStringFromBytes, IBytesConversionFormatOptions} from '../../../utils/bytesConversion.js';
 import {
     ICommandParameters, REQUEST_ID_SIZE
 } from '../../utils/CommandBinaryBuffer.js';
@@ -99,3 +100,15 @@ export const toBytes = ( parameters: IUpdateImageWriteParameters ): types.TBytes
 
     return command.toBytes(id, [...buffer.data, ...data]);
 };
+
+
+/**
+ * Convert command parameters to JSON.
+ *
+ * @param parameters - command payload
+ * @returns JSON representation of command parameters
+ */
+export const toJson = ( parameters: IUpdateImageWriteParameters, options: IBytesConversionFormatOptions ): string => JSON.stringify({
+    ...parameters,
+    data: getStringFromBytes(parameters.data, options)
+});
