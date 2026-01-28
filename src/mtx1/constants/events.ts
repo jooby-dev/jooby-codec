@@ -139,24 +139,14 @@ export const RESTART = 0x38;
 export const WATCHDOG_RESTART = 0x39;
 
 /**
- * Phase `B` voltage turned on.
+ * cos(φ) restored (power factor).
  */
-export const POWER_B_ON = 0x3c;
+export const COSF_OK = 0x3a;
 
 /**
- * Phase `B` voltage turned off.
+ * cos(φ) below minimum cos(φ) threshold.
  */
-export const POWER_B_OFF = 0x3d;
-
-/**
- * Phase `C` voltage turned on.
- */
-export const POWER_C_ON = 0x3E;
-
-/**
- * Phase `C` voltage turned off.
- */
-export const POWER_C_OFF = 0x3F;
+export const COSF_MIN_OVER = 0x3b;
 
 /**
  * Normal voltage restored after over-voltage.
@@ -231,12 +221,12 @@ export const I_MAX_OVER = 0x4d;
 /**
  * Permissible power consumption restored after over-power.
  */
-export const P_MAX_OK = 0x4E;
+export const P_MAX_OK = 0x4e;
 
 /**
  * Power consumption above maximum power threshold.
  */
-export const P_MAX_OVER = 0x4F;
+export const P_MAX_OVER = 0x4f;
 
 /**
  * No power excess in credit mode.
@@ -409,11 +399,6 @@ export const CASE_MODULE_OPENED = 0x7c;
 export const CASE_MODULE_CLOSED = 0x7d;
 
 /**
- * POWER_GOOD signal missing.
- */
-export const POWER_GOOD_DIO = 0x7E;
-
-/**
  * Relay mechanically switched OFF.
  */
 export const RELAY_HARD_BAD_OFF = 0x90;
@@ -451,12 +436,12 @@ export const POWER_OVER_RELAY_OFF = 0x9d;
 /**
  * Active energy `A-` meter transition through `0` for tariff `1` upon reaching `1000000.00` kW.
  */
-export const CROSS_ZERO_EXPORT_EN_T1 = 0x9E;
+export const CROSS_ZERO_EXPORT_EN_T1 = 0x9e;
 
 /**
  * Active energy `A-` meter transition through `0` for tariff `2` upon reaching `1000000.00` kW.
  */
-export const CROSS_ZERO_EXPORT_EN_T2 = 0x9F;
+export const CROSS_ZERO_EXPORT_EN_T2 = 0x9f;
 
 /**
  * Active energy `A-` meter transition through `0` for tariff `3` upon reaching `1000000.00` kW.

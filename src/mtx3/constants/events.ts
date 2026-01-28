@@ -283,35 +283,35 @@ export const VC_MIN_OK = 0x4a;
  *
  * Indication code: `C.075`.
  */
-export const VC_MIN_UNDER = 0x4B;
+export const VC_MIN_UNDER = 0x4b;
 
 /**
  * Frequency returned to normal after high.
  *
  * Indication code: `C.076`.
  */
-export const F_MAX_OK = 0x4C;
+export const F_MAX_OK = 0x4c;
 
 /**
  * Frequency above maximum threshold.
  *
  * Indication code: `C.077`.
  */
-export const F_MAX_OVER = 0x4D;
+export const F_MAX_OVER = 0x4d;
 
 /**
  * Frequency returned to normal after low.
  *
  * Indication code: `C.078`.
  */
-export const F_MIN_OK = 0x4E;
+export const F_MIN_OK = 0x4e;
 
 /**
  * Frequency below minimum threshold.
  *
  * Indication code: `C.079`.
  */
-export const F_MIN_UNDER = 0x4F;
+export const F_MIN_UNDER = 0x4f;
 
 /**
  * Temperature returned to normal after high.
@@ -395,35 +395,35 @@ export const PA_MAX_OK = 0x5a;
  *
  * Indication code: `C.091`.
  */
-export const PA_MAX_OVER = 0x5B;
+export const PA_MAX_OVER = 0x5b;
 
 /**
  * Reactive power returned to normal after high.
  *
  * Indication code: `C.092`.
  */
-export const PV_MAX_OK = 0x5C;
+export const PV_MAX_OK = 0x5c;
 
 /**
  * Reactive power above maximum threshold.
  *
  * Indication code: `C.093`.
  */
-export const PV_MAX_OVER = 0x5D;
+export const PV_MAX_OVER = 0x5d;
 
 /**
  * Differential current returned to normal after high.
  *
  * Indication code: `C.094`.
  */
-export const IDIFF_OK = 0x5E;
+export const IDIFF_OK = 0x5e;
 
 /**
  * Differential current above maximum threshold.
  *
  * Indication code: `C.095`.
  */
-export const IDIFF_OVER = 0x5F;
+export const IDIFF_OVER = 0x5f;
 
 /**
  * Real-time clock returned to normal.
@@ -507,35 +507,35 @@ export const CALIBRATION_OK = 0x6a;
  *
  * Indication code: `C.107`.
  */
-export const CALIBRATION_FAULT = 0x6B;
+export const CALIBRATION_FAULT = 0x6b;
 
 /**
  * Factory parameters set.
  *
  * Indication code: `C.108`.
  */
-export const V_PARAMETERS_OK = 0x6C;
+export const V_PARAMETERS_OK = 0x6c;
 
 /**
  * Factory parameters lost.
  *
  * Indication code: `C.109`.
  */
-export const V_PARAMETERS_FAULT = 0x6D;
+export const V_PARAMETERS_FAULT = 0x6d;
 
 /**
  * Parameters set.
  *
  * Indication code: `C.110`.
  */
-export const O_PARAMETERS_OK = 0x6E;
+export const O_PARAMETERS_OK = 0x6e;
 
 /**
  * Parameters lost.
  *
  * Indication code: `C.111`.
  */
-export const O_PARAMETERS_FAULT = 0x6F;
+export const O_PARAMETERS_FAULT = 0x6f;
 
 /**
  * Daylight saving time transition parameters changed.
@@ -619,35 +619,35 @@ export const CROSS_ZERO_VARI_T4 = 0x7a;
  *
  * Indication code: `C.123`.
  */
-export const CROSS_ZERO_VARE_T1 = 0x7B;
+export const CROSS_ZERO_VARE_T1 = 0x7b;
 
 /**
  * Reactive negative energy counter tariff `2` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.124`.
  */
-export const CROSS_ZERO_VARE_T2 = 0x7C;
+export const CROSS_ZERO_VARE_T2 = 0x7c;
 
 /**
  * Reactive negative energy counter tariff `3` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.125`.
  */
-export const CROSS_ZERO_VARE_T3 = 0x7D;
+export const CROSS_ZERO_VARE_T3 = 0x7d;
 
 /**
  * Reactive negative energy counter tariff `4` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.126`.
  */
-export const CROSS_ZERO_VARE_T4 = 0x7E;
+export const CROSS_ZERO_VARE_T4 = 0x7e;
 
 /**
  * Calibration flag set.
  *
  * Indication code: `C.127`.
  */
-export const CALIBRATION_FLAG_SET = 0x7F;
+export const CALIBRATION_FLAG_SET = 0x7f;
 
 /**
  * Calibration flag reset.
@@ -731,35 +731,35 @@ export const WINTER_SUMMER_FAULT = 0x8a;
  *
  * Indication code: `C.139`.
  */
-export const OPERATOR_PARAMETERS_VALUES_FAULT = 0x8B;
+export const OPERATOR_PARAMETERS_VALUES_FAULT = 0x8b;
 
 /**
  * Additional operator parameters lost.
  *
  * Indication code: `C.140`.
  */
-export const OPERATOR_PARAMETERS_EXT_VALUES_FAULT = 0x8C;
+export const OPERATOR_PARAMETERS_EXT_VALUES_FAULT = 0x8c;
 
 /**
  * Saldo energy values lost.
  *
  * Indication code: `C.141`.
  */
-export const SALDO_ENERGY_FAULT = 0x8D;
+export const SALDO_ENERGY_FAULT = 0x8d;
 
 /**
  * Time correction.
  *
  * Indication code: `C.142`.
  */
-export const TIME_CORRECT = 0x8E;
+export const TIME_CORRECT = 0x8e;
 
 /**
  * Transformation coefficients changed.
  *
  * Indication code: `C.143`.
  */
-export const COEFFICIENT_TRANSFORMATION_CHANGE = 0x8F;
+export const COEFFICIENT_TRANSFORMATION_CHANGE = 0x8f;
 
 /**
  * Relay mechanically turned off.
@@ -836,35 +836,35 @@ export const CASE_MODULE_OPENED = 0x9a;
  *
  * Indication code: `C.154`.
  */
-export const CASE_MODULE_CLOSED = 0x9B;
+export const CASE_MODULE_CLOSED = 0x9b;
 
 /**
  * Saldo parameters set.
  *
  * Indication code: `C.155`.
  */
-export const SET_SALDO_PARAM = 0x9C;
+export const SET_SALDO_PARAM = 0x9c;
 
 /**
  * Relay turned off after exceeding active power (since firmware version >= `302.15.001`).
  *
  * Indication code: `C.156`.
  */
-export const POWER_OVER_RELAY_OFF = 0x9D;
+export const POWER_OVER_RELAY_OFF = 0x9d;
 
 /**
  * Load profile parameter `1` changed (since firmware version >= `302.17.001`).
  *
  * Indication code: `C.157`.
  */
-export const CHANGE_PARAMETER_CHANNEL1 = 0x9E;
+export const CHANGE_PARAMETER_CHANNEL1 = 0x9e;
 
 /**
  * Load profile parameter `2` changed.
  *
  * Indication code: `C.158`.
  */
-export const CHANGE_PARAMETER_CHANNEL2 = 0x9F;
+export const CHANGE_PARAMETER_CHANNEL2 = 0x9f;
 
 /**
  * Load profile parameter `3` changed.
@@ -948,35 +948,35 @@ export const CROSS_ZERO_EXPORT_VARI3 = 0xaa;
  *
  * Indication code: `C.170`.
  */
-export const CROSS_ZERO_EXPORT_VARI4 = 0xaB;
+export const CROSS_ZERO_EXPORT_VARI4 = 0xab;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `1` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.171`.
  */
-export const CROSS_ZERO_EXPORT_VARE1 = 0xaC;
+export const CROSS_ZERO_EXPORT_VARE1 = 0xac;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `2` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.172`.
  */
-export const CROSS_ZERO_EXPORT_VARE2 = 0xaD;
+export const CROSS_ZERO_EXPORT_VARE2 = 0xad;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `3` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.173`.
  */
-export const CROSS_ZERO_EXPORT_VARE3 = 0xaE;
+export const CROSS_ZERO_EXPORT_VARE3 = 0xae;
 
 /**
  * Reactive negative energy counter (`Q2`) tariff `4` crossed zero at `1000000.00` `kVar`.
  *
  * Indication code: `C.174`.
  */
-export const CROSS_ZERO_EXPORT_VARE4 = 0xaF;
+export const CROSS_ZERO_EXPORT_VARE4 = 0xaf;
 
 /**
  * Presence of alternating magnetic field detected.
@@ -1005,6 +1005,11 @@ export const RESET_EM_FLAG = 0xb2;
  * Indication code: `C.178`.
  */
 export const RESET_MAGNETIC_FLAG = 0xb3;
+
+/**
+ * Relay switched OFF due to consumption limit in credit mode.
+ */
+export const RELAY_OFF_BAD_SALDO = 0xba;
 
 /**
  * `1`-minute energy, voltage load profiles recording mode set.
