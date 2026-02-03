@@ -34,6 +34,7 @@ import * as resultCodes from '../../constants/resultCodes.js';
 import resultNames from '../../constants/resultNames.js';
 import {errorResponse as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export interface IErrorResponseParameters {
@@ -86,6 +87,8 @@ export const examples: command.TCommandExamples = {
 
 export const getFromBytes = ( commandNamesParameter: Record<number, string> ) => (
     (bytes: types.TBytes): IErrorResponseParameters => {
+        validateCommandPayload(name, bytes, maxSize);
+
         const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
         const errorCommandId = buffer.getUint8();
         const errorCode = buffer.getUint8();

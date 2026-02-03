@@ -74,7 +74,7 @@ import {
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getExtendedCurrentValues2 as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
@@ -148,6 +148,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IExtendedCurrentValues2Parameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return getExtendedCurrentValues2(buffer);

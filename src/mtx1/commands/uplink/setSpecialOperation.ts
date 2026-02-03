@@ -28,9 +28,9 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {setSpecialOperation as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface ISetSpecialOperationResponseParameters {
@@ -105,9 +105,9 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetSpecialOperationResponseParameters => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    validateCommandPayload(name, bytes, maxSize);
 
-    const flags = buffer.getUint8();
+    const flags = bytes[0];
 
     const electroMagneticIndication = !!(flags & 1);
     const magneticIndication = !!(flags & 2);
@@ -126,7 +126,6 @@ export const fromBytes = ( bytes: types.TBytes ): ISetSpecialOperationResponsePa
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: ISetSpecialOperationResponseParameters ): types.TBytes => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
     let flags = 0;
 
     if ( parameters.electroMagneticIndication ) {
@@ -136,7 +135,5 @@ export const toBytes = ( parameters: ISetSpecialOperationResponseParameters ): t
         flags |= 2;
     }
 
-    buffer.setUint8(flags);
-
-    return command.toBytes(id, buffer.data);
+    return command.toBytes(id, [flags]);
 };

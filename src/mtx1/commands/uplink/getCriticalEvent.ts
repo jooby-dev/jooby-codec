@@ -44,6 +44,7 @@ import criticalEventNames from '../../constants/criticalEventNames.js';
 import * as criticalEvents from '../../constants/criticalEvents.js';
 import {getCriticalEvent as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetCriticalEventResponseParameters {
@@ -119,9 +120,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventResponseParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const [
         event,

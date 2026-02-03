@@ -32,6 +32,7 @@ import {READ_ONLY} from '../../constants/accessLevels.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {getSpecialDay as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetSpecialDayParameters {
@@ -88,9 +89,13 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( [tariffTable, index, isActive]: types.TBytes ): IGetSpecialDayParameters => (
-    {tariffTable, index, isActive: isActive === 0}
-);
+export const fromBytes = ( bytes: types.TBytes ): IGetSpecialDayParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
+    const [tariffTable, index, isActive] = bytes;
+
+    return {tariffTable, index, isActive: isActive === 0};
+};
 
 
 /**

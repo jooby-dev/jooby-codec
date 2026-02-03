@@ -62,6 +62,7 @@ import {
 } from '../../utils/CommandBinaryBuffer.js';
 import {getRatePlanInfo as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export interface IGetRatePlanInfoResponseParameters {
@@ -132,9 +133,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetRatePlanInfoResponseParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error('Invalid getRatePlanInfo data size.');
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 

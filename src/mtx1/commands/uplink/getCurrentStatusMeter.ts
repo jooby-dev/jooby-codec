@@ -85,6 +85,7 @@ import * as types from '../../types.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getCurrentStatusMeter as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetCurrentStatusMeterResponseParameters {
@@ -241,6 +242,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponseParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     const operatingSeconds = buffer.getUint32();

@@ -37,6 +37,7 @@ import {
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {setOperatorParameters as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export const id: types.TCommandId = commandId;
@@ -217,9 +218,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error('Invalid SetOpParams data size.');
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 

@@ -29,6 +29,7 @@ import * as command from '../../utils/command.js';
 import commandNames from '../../constants/uplinkNames.js';
 import resultNames from '../../constants/resultNames.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IErrorDataFrameParameters {
@@ -70,9 +71,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IErrorDataFrameParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const [errorCode] = bytes;
 

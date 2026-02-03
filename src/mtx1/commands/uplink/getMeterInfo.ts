@@ -33,6 +33,7 @@ import {READ_ONLY} from '../../constants/accessLevels.js';
 import {IOperatorParameters} from '../../utils/CommandBinaryBuffer.js';
 import {getMeterInfo as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetMeterInfoParameters {
@@ -70,7 +71,11 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( [ten]: types.TBytes ): IGetMeterInfoParameters => ({ten});
+export const fromBytes = ( [ten]: types.TBytes ): IGetMeterInfoParameters => {
+    validateCommandPayload(name, [ten], maxSize);
+
+    return {ten};
+};
 
 
 /**

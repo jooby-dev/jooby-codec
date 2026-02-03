@@ -41,6 +41,7 @@ import * as getSaldoDownlink from './getSaldo.js';
 import * as getSaldoUplink from '../uplink/getSaldo.js';
 import {setSaldo as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface ISetSaldoParameters {
@@ -105,6 +106,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetSaldoParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {

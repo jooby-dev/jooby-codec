@@ -50,6 +50,7 @@ import {
 } from '../../utils/CommandBinaryBuffer.js';
 import {getSaldoParameters as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export const id: types.TCommandId = commandId;
@@ -120,9 +121,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISaldoParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error('Invalid getSaldoParameters data size.');
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 

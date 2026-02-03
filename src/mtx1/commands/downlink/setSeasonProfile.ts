@@ -40,6 +40,7 @@ import {
 } from '../../utils/CommandBinaryBuffer.js';
 import {setSeasonProfile as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface ISetSeasonProfileParameters extends ISeasonProfile {
@@ -112,6 +113,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetSeasonProfileParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {

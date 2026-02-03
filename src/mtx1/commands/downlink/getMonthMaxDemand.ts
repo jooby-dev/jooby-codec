@@ -28,6 +28,7 @@ import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getMonthMaxDemand as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetMonthDemandParameters {
@@ -69,6 +70,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMonthDemandParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const [year, month] = bytes;
 
     return {year, month};
