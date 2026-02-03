@@ -35,7 +35,6 @@
 
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
-
 import * as command from '../../utils/command.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {
