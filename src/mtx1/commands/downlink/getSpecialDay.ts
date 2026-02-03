@@ -94,7 +94,11 @@ export const fromBytes = ( bytes: types.TBytes ): IGetSpecialDayParameters => {
 
     const [tariffTable, index, isActive] = bytes;
 
-    return {tariffTable, index, isActive: isActive === 0};
+    return {
+        tariffTable,
+        index,
+        isActive: isActive === 0
+    };
 };
 
 
