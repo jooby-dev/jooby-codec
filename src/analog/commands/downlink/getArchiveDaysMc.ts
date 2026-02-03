@@ -32,6 +32,7 @@ import {
 } from '../../utils/CommandBinaryBuffer.js';
 import {getArchiveDaysMc as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetArchiveDaysMcParameters {
@@ -77,9 +78,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysMcParameters => {
-    if ( bytes.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateCommandPayload(name, bytes, COMMAND_BODY_SIZE);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const date = getDate(buffer);

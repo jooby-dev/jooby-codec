@@ -28,6 +28,7 @@ import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {setTime2000 as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface ISetTime2000Parameters {
@@ -68,9 +69,7 @@ export const examples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetTime2000Parameters => {
-    if ( bytes.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateCommandPayload(name, bytes, COMMAND_BODY_SIZE);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters = {

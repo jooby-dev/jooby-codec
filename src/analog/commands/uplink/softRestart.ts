@@ -26,6 +26,7 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {softRestart as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export const id: types.TCommandId = commandId;
@@ -54,9 +55,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameters => {
-    if ( bytes.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateCommandPayload(name, bytes, COMMAND_BODY_SIZE);
 
     return {};
 };
