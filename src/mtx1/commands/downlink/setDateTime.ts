@@ -31,9 +31,10 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetDateTime.md#request)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
+import * as command from '../../utils/command.js';
 import {IDateTime} from '../../utils/dateTime.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {
@@ -42,7 +43,6 @@ import {
 } from '../../utils/CommandBinaryBuffer.js';
 import {setDateTime as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export const id: types.TCommandId = commandId;

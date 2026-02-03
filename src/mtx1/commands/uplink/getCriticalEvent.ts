@@ -38,13 +38,13 @@
 
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import criticalEventNames from '../../constants/criticalEventNames.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as criticalEvents from '../../constants/criticalEvents.js';
 import {getCriticalEvent as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetCriticalEventResponseParameters {

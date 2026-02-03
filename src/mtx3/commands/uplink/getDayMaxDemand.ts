@@ -84,12 +84,12 @@
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../../mtx1/utils/command.js';
-import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {
     IGetDayMaxDemandResponseParameters,
     getDayMaxDemandResponse,
     setDayMaxDemandResponse
 } from '../../utils/CommandBinaryBuffer.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getDayMaxDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';

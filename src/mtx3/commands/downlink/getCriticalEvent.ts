@@ -26,13 +26,13 @@
 
 import * as types from '../../types.js';
 import * as command from '../../../mtx1/utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as criticalEvents from '../../../mtx1/constants/criticalEvents.js';
 import criticalEventNames from '../../../mtx1/constants/criticalEventNames.js';
 import {getCriticalEvent as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetCriticalEventParameters {

@@ -31,17 +31,17 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetSaldo.md#request)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import * as command from '../../utils/command.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as getSaldoDownlink from './getSaldo.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as getSaldoUplink from '../uplink/getSaldo.js';
 import {setSaldo as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface ISetSaldoParameters {

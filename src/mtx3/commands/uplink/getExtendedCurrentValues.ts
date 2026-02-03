@@ -41,14 +41,14 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetExtendedCurrentValues.md#response)
  */
 
-import * as command from '../../../mtx1/utils/command.js';
-import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as types from '../../types.js';
-import * as dlms from '../../constants/dlms.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as command from '../../../mtx1/utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
+import * as dlms from '../../constants/dlms.js';
 import {getExtendedCurrentValues as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export interface IGetExtendedCurrentValuesResponseParameters {

@@ -28,9 +28,9 @@ import {
 } from '../../utils/CommandBinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {getArchiveEvents as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 /**

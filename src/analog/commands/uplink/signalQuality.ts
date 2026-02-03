@@ -31,11 +31,11 @@
  */
 
 import * as types from '../../../types.js';
-import * as command from '../../utils/command.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {signalQuality as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export interface IGetSignalQualityResponseParameters {

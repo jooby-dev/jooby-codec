@@ -31,9 +31,9 @@ import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {getLmicInfo as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface ILmicCapabilities extends bitSet.TBooleanObject {

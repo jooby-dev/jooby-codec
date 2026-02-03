@@ -24,12 +24,12 @@
  */
 
 import * as types from '../../types.js';
-import {errorDataFrameResponse as commandId} from '../../constants/uplinkIds.js';
 import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import commandNames from '../../constants/uplinkNames.js';
+import {errorDataFrameResponse as commandId} from '../../constants/uplinkIds.js';
 import resultNames from '../../constants/resultNames.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IErrorDataFrameParameters {

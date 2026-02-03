@@ -43,10 +43,10 @@ import {
 } from '../../utils/CommandBinaryBuffer.js';
 import {ITimeCorrectionParameters} from '../../utils/dateTime.js';
 import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getCorrectTime as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export const id: types.TCommandId = commandId;

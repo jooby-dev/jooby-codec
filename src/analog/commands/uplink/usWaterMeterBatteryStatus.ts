@@ -38,9 +38,9 @@ import {
     getBatteryVoltage,
     setBatteryVoltage
 } from '../../utils/CommandBinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {usWaterMeterBatteryStatus as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export interface IUSWaterMeterBatteryStatusParameters {

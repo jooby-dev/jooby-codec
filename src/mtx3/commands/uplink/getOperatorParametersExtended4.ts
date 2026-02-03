@@ -186,19 +186,19 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetOperatorParametersExtended4.md#response)
  */
 
-import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
-import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
+import * as command from '../../../mtx1/utils/command.js';
 import {
     IOperatorParametersExtended4,
     OPERATOR_PARAMETERS_EXTENDED4_SIZE,
     getOperatorParametersExtended4,
     setOperatorParametersExtended4
 } from '../../utils/CommandBinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getOperatorParametersExtended4 as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export const id: types.TCommandId = commandId;

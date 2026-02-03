@@ -29,7 +29,6 @@
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
 import {
     IPackedEnergiesWithType,
     PACKED_ENERGY_TYPE_SIZE,
@@ -39,6 +38,7 @@ import {
     setPackedEnergyWithType,
     getEnergies
 } from '../../utils/CommandBinaryBuffer.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 import getObisByEnergy from '../../utils/getObisByEnergy.js';
 import {getEnergyExport as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

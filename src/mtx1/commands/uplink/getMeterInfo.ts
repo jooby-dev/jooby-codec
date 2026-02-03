@@ -25,15 +25,15 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetMeterInfo.md#response)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {IOperatorParameters} from '../../utils/CommandBinaryBuffer.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getMeterInfo as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetMeterInfoParameters {
