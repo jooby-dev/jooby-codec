@@ -26,6 +26,7 @@
 
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as criticalEvents from '../../constants/criticalEvents.js';
@@ -103,9 +104,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCriticalEventParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const [event, index] = bytes;
 

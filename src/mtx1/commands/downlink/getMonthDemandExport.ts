@@ -28,6 +28,7 @@
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getMonthDemandExport as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -72,6 +73,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMonthDemandExportParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {

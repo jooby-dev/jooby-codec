@@ -28,8 +28,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetSpecialOperation.md#request)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import * as specialOperationTypes from '../../constants/specialOperationTypes.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
@@ -121,6 +122,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetSpecialOperationParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     const type = buffer.getUint8();

@@ -22,9 +22,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/WriteImage.md#response)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as command from '../../utils/command.js';
 import {writeImage as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 

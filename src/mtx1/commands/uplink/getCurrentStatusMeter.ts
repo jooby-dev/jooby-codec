@@ -72,16 +72,17 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetCurrentStatusMeter.md#response)
  */
 
-import * as command from '../../utils/command.js';
+import * as types from '../../types.js';
+import * as bitSet from '../../../utils/bitSet.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as command from '../../utils/command.js';
 import {
     IExtendedCurrentValues2RelayStatus,
     IEventStatus,
     extendedCurrentValues2RelayStatusMask,
     eventStatusMask
 } from '../../utils/CommandBinaryBuffer.js';
-import * as bitSet from '../../../utils/bitSet.js';
-import * as types from '../../types.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getCurrentStatusMeter as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -241,6 +242,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponseParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     const operatingSeconds = buffer.getUint32();

@@ -186,16 +186,17 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetOperatorParametersExtended4.md#response)
  */
 
-import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
-import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
+import * as command from '../../../mtx1/utils/command.js';
 import {
     IOperatorParametersExtended4,
     OPERATOR_PARAMETERS_EXTENDED4_SIZE,
     getOperatorParametersExtended4,
     setOperatorParametersExtended4
 } from '../../utils/CommandBinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
+import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getOperatorParametersExtended4 as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -396,6 +397,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParametersExtended4 => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return getOperatorParametersExtended4(buffer);

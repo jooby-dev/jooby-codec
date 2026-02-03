@@ -37,9 +37,10 @@
  */
 
 import * as types from '../../types.js';
-import * as command from '../../utils/command.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getCurrentValues as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -107,6 +108,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCurrentValuesResponseParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {

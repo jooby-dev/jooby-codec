@@ -24,9 +24,10 @@
  */
 
 import * as types from '../../types.js';
-import {errorDataFrameResponse as commandId} from '../../constants/uplinkIds.js';
 import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import commandNames from '../../constants/uplinkNames.js';
+import {errorDataFrameResponse as commandId} from '../../constants/uplinkIds.js';
 import resultNames from '../../constants/resultNames.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 
@@ -70,9 +71,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IErrorDataFrameParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const [errorCode] = bytes;
 

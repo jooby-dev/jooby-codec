@@ -31,10 +31,11 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetSaldo.md#request)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import * as command from '../../utils/command.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as getSaldoDownlink from './getSaldo.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -105,6 +106,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetSaldoParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {

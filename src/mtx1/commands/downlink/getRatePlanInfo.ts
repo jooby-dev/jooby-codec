@@ -21,8 +21,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetRatePlanInfo.md#request)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getRatePlanInfo as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -70,7 +71,11 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetRatePlanInfoParameters => ({tariffTable: bytes[0]});
+export const fromBytes = ( bytes: types.TBytes ): IGetRatePlanInfoParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
+    return {tariffTable: bytes[0]};
+};
 
 
 /**

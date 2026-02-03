@@ -31,14 +31,15 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetDemand.md#request)
  */
 
-import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as command from '../../../mtx1/utils/command.js';
 import {
     IGetDemandParameters,
     getDemand,
     setDemand
 } from '../../utils/CommandBinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getDemand as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -88,6 +89,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetDemandParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return getDemand(buffer);

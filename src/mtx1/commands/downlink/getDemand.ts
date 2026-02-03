@@ -31,7 +31,6 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetDemand.md#request)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {
@@ -39,6 +38,7 @@ import {
     getDemand,
     setDemand
 } from '../../utils/CommandBinaryBuffer.js';
+import * as command from '../../utils/command.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as demandTypes from '../../constants/demandTypes.js';
 import {getDemand as commandId} from '../../constants/downlinkIds.js';

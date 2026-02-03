@@ -38,6 +38,7 @@ import {
     getBatteryVoltage,
     setBatteryVoltage
 } from '../../utils/CommandBinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {usWaterMeterBatteryStatus as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -93,6 +94,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IUSWaterMeterBatteryStatusParameters => {
+    validateCommandPayload(name, bytes, COMMAND_BODY_SIZE);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {

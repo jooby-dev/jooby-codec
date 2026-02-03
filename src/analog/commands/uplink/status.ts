@@ -31,6 +31,7 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetStatus.md#response)
  */
 
+import * as types from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {
     IBatteryVoltage,
@@ -38,7 +39,6 @@ import {
     setBatteryVoltage
 } from '../../utils/CommandBinaryBuffer.js';
 import roundNumber from '../../../utils/roundNumber.js';
-import * as types from '../../../types.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 import * as command from '../../utils/command.js';
 import {status as commandId} from '../../constants/uplinkIds.js';

@@ -29,6 +29,7 @@
 
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getVersion as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
@@ -76,7 +77,11 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetVersionResponseParameters => ({version: String.fromCharCode.apply(null, [...bytes])});
+export const fromBytes = ( bytes: types.TBytes ): IGetVersionResponseParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
+    return {version: String.fromCharCode.apply(null, [...bytes])};
+};
 
 
 /**

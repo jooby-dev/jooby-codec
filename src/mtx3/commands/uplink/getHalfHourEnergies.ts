@@ -37,9 +37,9 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetHalfHourEnergies.md#response)
  */
 
-import * as command from '../../../mtx1/utils/command.js';
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as command from '../../../mtx1/utils/command.js';
 import {
     THalfHourEnergies3,
     getHalfHourEnergies3,

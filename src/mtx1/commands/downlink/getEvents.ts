@@ -32,6 +32,7 @@
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {
     getDate,
@@ -84,9 +85,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetEventsParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const date = getDate(buffer);

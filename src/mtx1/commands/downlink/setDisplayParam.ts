@@ -23,8 +23,8 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetDisplayParam.md#request)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import * as command from '../../utils/command.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {setDisplayParam as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';

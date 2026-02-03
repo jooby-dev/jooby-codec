@@ -39,15 +39,16 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetSaldoParameters.md#response)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
+import * as command from '../../utils/command.js';
 import {
     ISaldoParameters,
     getSaldoParameters,
     setSaldoParameters
 } from '../../utils/CommandBinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getSaldoParameters as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -120,9 +121,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISaldoParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error('Invalid getSaldoParameters data size.');
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 

@@ -62,6 +62,7 @@
  */
 
 import * as command from '../../../mtx1/utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {IEventStatus, eventStatusMask} from '../../../mtx1/utils/CommandBinaryBuffer.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
@@ -241,6 +242,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponseParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     const operatingSeconds = buffer.getUint32();

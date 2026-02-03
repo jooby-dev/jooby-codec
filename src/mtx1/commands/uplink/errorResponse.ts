@@ -29,6 +29,7 @@
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import * as resultCodes from '../../constants/resultCodes.js';
 import resultNames from '../../constants/resultNames.js';
@@ -86,6 +87,8 @@ export const examples: command.TCommandExamples = {
 
 export const getFromBytes = ( commandNamesParameter: Record<number, string> ) => (
     (bytes: types.TBytes): IErrorResponseParameters => {
+        validateCommandPayload(name, bytes, maxSize);
+
         const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
         const errorCommandId = buffer.getUint8();
         const errorCode = buffer.getUint8();

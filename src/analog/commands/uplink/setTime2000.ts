@@ -27,6 +27,7 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {setTime2000 as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -73,9 +74,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetTime2000ResponseParameters => {
-    if ( bytes.length !== COMMAND_BODY_SIZE ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateCommandPayload(name, bytes, COMMAND_BODY_SIZE);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters = {

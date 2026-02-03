@@ -29,16 +29,17 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetOpParams.md#response)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
+import * as command from '../../utils/command.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
-import {READ_ONLY} from '../../constants/accessLevels.js';
 import {
     IOperatorParameters,
     OPERATOR_PARAMETERS_SIZE,
     getOperatorParameters,
     setOperatorParameters
 } from '../../utils/CommandBinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
+import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getOperatorParameters as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
@@ -220,6 +221,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return getOperatorParameters(buffer);

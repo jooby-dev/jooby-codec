@@ -25,15 +25,16 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetOpParams.md#request)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as command from '../../utils/command.js';
 import {
     IOperatorParameters,
     OPERATOR_PARAMETERS_SIZE,
     getOperatorParameters,
     setOperatorParameters
 } from '../../utils/CommandBinaryBuffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {setOperatorParameters as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
@@ -217,9 +218,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParameters => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error('Invalid SetOpParams data size.');
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 

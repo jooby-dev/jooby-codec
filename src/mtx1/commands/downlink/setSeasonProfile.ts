@@ -28,9 +28,10 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetSeasonProfile.md#request)
  */
 
-import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {
     ISeasonProfile,
@@ -61,7 +62,7 @@ interface ISetSeasonProfileParameters extends ISeasonProfile {
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const maxSize = SEASON_PROFILE_SIZE;
+export const maxSize = 2 + SEASON_PROFILE_SIZE;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
 export const isLoraOnly = false;
 
@@ -112,6 +113,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetSeasonProfileParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
