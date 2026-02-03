@@ -27,6 +27,7 @@ import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
 import {getDisplayParam as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 import {displayModes} from '../../constants/index.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetDisplayParamParameters {
@@ -68,7 +69,11 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( [displayMode]: types.TBytes ): IGetDisplayParamParameters => ({displayMode});
+export const fromBytes = ( bytes: types.TBytes ): IGetDisplayParamParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
+    return {displayMode: bytes[0]};
+};
 
 
 /**

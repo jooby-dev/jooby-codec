@@ -33,6 +33,7 @@ import {getDate, setDate} from '../../../mtx1/utils/CommandBinaryBuffer.js';
 import * as types from '../../types.js';
 import {getHalfHourDemandVari as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetHalfHourDemandVariParameters {
@@ -76,6 +77,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetHalfHourDemandVariParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {date: getDate(buffer)};

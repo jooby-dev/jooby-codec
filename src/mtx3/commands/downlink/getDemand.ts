@@ -43,6 +43,7 @@ import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getDemand as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 import * as demandTypes from '../../constants/demandTypes.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export const id: types.TCommandId = commandId;
@@ -88,6 +89,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetDemandParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return getDemand(buffer);

@@ -50,6 +50,7 @@ import {
 import {A_PLUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
 import {getMonthDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 interface IGetMonthDemandResponseParameters {
@@ -101,6 +102,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetMonthDemandResponseParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {

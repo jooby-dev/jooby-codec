@@ -192,6 +192,7 @@ import {
 } from '../../utils/CommandBinaryBuffer.js';
 import {setOperatorParametersExtended4 as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 
 export const id: types.TCommandId = commandId;
@@ -390,9 +391,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IOperatorParametersExtended4 => {
-    if ( bytes.length !== maxSize ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateCommandPayload(name, bytes, maxSize);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
