@@ -61,7 +61,7 @@ interface ISetSeasonProfileParameters extends ISeasonProfile {
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const maxSize = SEASON_PROFILE_SIZE;
+export const maxSize = 2 + SEASON_PROFILE_SIZE;
 export const accessLevel: types.TAccessLevel = READ_WRITE;
 export const isLoraOnly = false;
 
