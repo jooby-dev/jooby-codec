@@ -229,6 +229,21 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getQuality',
+        hex: '01 13 2e fc 43 15 c6 ee eb c5 32 d8 20 0a 00 ac f2 74 de 5d ad 44 37 f6 d8 03 53 17 ee d2 ef 9f a0 f0',
+        frameHex: '7e 51 ff fe ff fe 01 7d 33 2e fc 43 15 c6 ee eb c5 32 d8 20 0a 00 ac f2 74 de 5d ad 44 37 f6 d8 03 53 17 ee d2 ef 9f a0 f0 96 77 7e',
+        messageId: 1,
+        accessLevel: uplinkCommands.getQuality.accessLevel,
+        commands: [
+            uplinkCommands.getQuality.examples['response for 2026.01']
+        ],
+        lrc: 0xf4,
+        crc: 0x7796,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xfffe,
+        destination: 0xfffe
+    },
+    {
         name: 'setOperatorParametersExtended',
         hex: '0a 12 07 c9 cc 32 94 4c 2a 43 61 2c 00 d1 a6 58 26 b4',
         frameHex: '7e 51 aa aa ff ff 0a 12 07 c9 cc 32 94 4c 2a 43 61 2c 00 d1 a6 58 26 b4 1e 07 7e',

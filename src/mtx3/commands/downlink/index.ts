@@ -31,6 +31,7 @@ export * as getMonthMaxDemand from '../../../mtx1/commands/downlink/getMonthMaxD
 export * as getMonthMaxDemandExport from '../../../mtx1/commands/downlink/getMonthMaxDemandExport.js';
 export * as getOperatorParameters from '../../../mtx1/commands/downlink/getOperatorParameters.js';
 export * as getOperatorParametersExtended3 from '../../../mtx1/commands/downlink/getOperatorParametersExtended3.js';
+export * as getQuality from '../../../mtx1/commands/downlink/getQuality.js';
 export * as getRatePlanInfo from '../../../mtx1/commands/downlink/getRatePlanInfo.js';
 export * as getSaldo from '../../../mtx1/commands/downlink/getSaldo.js';
 export * as getSaldoParameters from '../../../mtx1/commands/downlink/getSaldoParameters.js';
