@@ -65,6 +65,7 @@ export const getHalfHourEnergies = 0x6f; // 111
 export const getBv = 0x70; // 112
 export const getOperatorParametersExtended3 = 0x71; // 113
 export const setOperatorParametersExtended3 = 0x72; // 114
+export const getQuality = 0x73; // 115
 export const setOperatorParametersExtended4 = 0x74; // 116
 export const getOperatorParametersExtended4 = 0x75; // 117
 export const getDemand = 0x76; // 118

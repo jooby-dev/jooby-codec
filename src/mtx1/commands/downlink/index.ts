@@ -43,6 +43,7 @@ export * as getMonthMaxDemand from './getMonthMaxDemand.js';
 export * as getMonthMaxDemandExport from './getMonthMaxDemandExport.js';
 export * as getOperatorParameters from './getOperatorParameters.js';
 export * as getOperatorParametersExtended3 from './getOperatorParametersExtended3.js';
+export * as getQuality from './getQuality.js';
 export * as getRatePlanInfo from './getRatePlanInfo.js';
 export * as getSaldo from './getSaldo.js';
 export * as getSaldoParameters from './getSaldoParameters.js';

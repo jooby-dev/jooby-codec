@@ -598,6 +598,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getQuality',
+        hex: '0a 13 00 61 4a 90 57 c7 4b 4c cf ca 36 7b bd 14 09 5e',
+        frameHex: '7e 50 ff fe ff fe 0a 7d 33 00 61 4a 90 57 c7 4b 4c cf ca 36 7b bd 14 09 5e 9c 57 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getQuality.accessLevel,
+        commands: [
+            downlinkCommands.getQuality.examples['power-off information for 2026.01']
+        ],
+        lrc: 0x2c,
+        crc: 0x579c,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xfffe,
+        destination: 0xfffe
+    },
+    {
         name: 'getOperatorParameters',
         hex: '0a 13 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 d4 ec 1c a5 2c a6 46 26 f1 6f 4a 48 aa a1 83 22 a0 c6 7e',
@@ -1800,6 +1815,21 @@ const uplinkMessages: TMessageList = [
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
+    },
+    {
+        name: 'getQuality',
+        hex: '0a 13 e1 f1 44 1e ae 54 80 0b 90 ca 8b 31 f3 c1 30 45 de a9 a2 94 ac 5b ac c4 7c 20 6d 3b fe e4 b3 09',
+        frameHex: '7e 51 ff fe ff fe 0a 7d 33 e1 f1 44 1e ae 54 80 0b 90 ca 8b 31 f3 c1 30 45 de a9 a2 94 ac 5b ac c4 7c 20 6d 3b fe e4 b3 09 b5 da 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getQuality.accessLevel,
+        commands: [
+            uplinkCommands.getQuality.examples['response for 2026.01']
+        ],
+        lrc: 0xf0,
+        crc: 0xdab5,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xfffe,
+        destination: 0xfffe
     },
     {
         name: 'getOperatorParameters',
