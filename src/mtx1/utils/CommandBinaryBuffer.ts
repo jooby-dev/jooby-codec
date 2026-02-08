@@ -1033,7 +1033,7 @@ export interface IGetDemandParametersResponseParameters {
     /**
      * time interval for counting power-off events, minutes
      */
-    counterInterval: types.TUint8,
+    powerOffTrackingInterval: types.TUint8,
 
     /**
      * | Value | Hex    | Description                                                                                      |
@@ -1975,15 +1975,15 @@ export const setDemand = function ( buffer: IBinaryBuffer, parameters: IGetDeman
 
 export const getDemandParameters = function ( buffer: IBinaryBuffer ): IGetDemandParametersResponseParameters {
     const channelParam1 = buffer.getUint8();
-    const counterInterval = buffer.getUint8();
+    const powerOffTrackingInterval = buffer.getUint8();
     const channelParam2 = buffer.getUint8();
 
-    return {channelParam1, counterInterval, channelParam2};
+    return {channelParam1, powerOffTrackingInterval, channelParam2};
 };
 
 export const setDemandParameters = function ( buffer: IBinaryBuffer, parameters: IGetDemandParametersResponseParameters ) {
     buffer.setUint8(parameters.channelParam1);
-    buffer.setUint8(parameters.counterInterval);
+    buffer.setUint8(parameters.powerOffTrackingInterval);
     buffer.setUint8(parameters.channelParam2);
 
     // the last byte is reserved and not used for now

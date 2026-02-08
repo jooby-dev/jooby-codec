@@ -994,7 +994,7 @@ export interface IOperatorParameters {
      *
      * since version `0.0.17`
      */
-    timeIntervalPowerOff: types.TUint8,
+    powerOffTrackingInterval: types.TUint8,
 
     /**
      * Reserved byte.
@@ -1987,7 +1987,7 @@ export const getDefaultOperatorParameters = (): IOperatorParameters => ({
     serialPortsSpeed: getSerialPortsSpeed(0),
     ten: 30,
     tu: 30,
-    timeIntervalPowerOff: 3,
+    powerOffTrackingInterval: 3,
     reserved: 0,
     timeoutBadVAVB: 5,
     freqMax: 55,
@@ -2081,7 +2081,7 @@ export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperat
         serialPortsSpeed: getSerialPortsSpeed(buffer.getUint8()),
         ten: buffer.getUint8(),
         tu: buffer.getUint8(),
-        timeIntervalPowerOff: buffer.getUint8(),
+        powerOffTrackingInterval: buffer.getUint8(),
         reserved: buffer.getUint8(),
         timeoutBadVAVB: buffer.getUint8(),
         freqMax: buffer.getUint8(),
@@ -2127,7 +2127,7 @@ export const setOperatorParameters = function ( buffer: IBinaryBuffer, operatorP
     buffer.setUint8(setSerialPortsSpeed(operatorParameters.serialPortsSpeed));
     buffer.setUint8(operatorParameters.ten);
     buffer.setUint8(operatorParameters.tu);
-    buffer.setUint8(operatorParameters.timeIntervalPowerOff);
+    buffer.setUint8(operatorParameters.powerOffTrackingInterval);
     buffer.setUint8(operatorParameters.reserved);
     buffer.setUint8(operatorParameters.timeoutBadVAVB);
     buffer.setUint8(operatorParameters.freqMax);
