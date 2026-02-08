@@ -214,7 +214,7 @@ export const examples: command.TCommandExamples = {
             },
             serialPortsSpeed: {rs485orTwi: 9600, optoport: 9600},
             ten: 30,
-            tu: 30,
+            voltageAveragingInterval: 30,
             powerOffTrackingInterval: 3,
             reserved: 0,
             timeoutBadVAVB: 5,

@@ -135,7 +135,7 @@ export const examples: command.TCommandExamples = {
             },
             displayType: 0,
             ten: 0,
-            timeoutRefresh: 240,
+            voltageAveragingInterval: 240,
             deltaCorMin: 15,
             timeoutMagnetOff: 5,
             timeoutMagnetOn: 5,
