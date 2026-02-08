@@ -914,15 +914,15 @@ const downlinkMessages: TMessageList = [
     },
     {
         name: 'setOperatorParameters',
-        hex: '0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 d5 c7 f5 84 4c c5 3d 19 2d c5 cd 01 75 79 23 91 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 5a 66 28 9b 38 55 95 40 a7 a0 2b 83 f1 8e 6a 31',
-        frameHex: '7e 50 aa aa ff ff 0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 d5 c7 f5 84 4c c5 3d 19 2d c5 cd 01 75 79 23 91 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 5a 66 28 9b 38 55 95 40 a7 a0 2b 83 f1 8e 6a 31 6e 29 7e',
+        hex: '0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 d5 c7 f5 84 4c c5 3d 19 2d c5 cd 01 75 79 23 91 37 02 43 56 c9 2a 67 89 91 84 58 51 c5 6f c9 43 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 5a 66 28 9b 38 55 95 40 a7 a0 2b 83 f1 8e 6a 31',
+        frameHex: '7e 50 aa aa ff ff 0a 12 f7 fe 51 bb e6 91 41 38 dd 6d 37 e4 87 cc 4c b4 d5 c7 f5 84 4c c5 3d 19 2d c5 cd 01 75 79 23 91 37 02 43 56 c9 2a 67 89 91 84 58 51 c5 6f c9 43 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 5a 66 28 9b 38 55 95 40 a7 a0 2b 83 f1 8e 6a 31 5e a9 7e',
         messageId: 10,
         accessLevel: downlinkCommands.setOperatorParameters.accessLevel,
         commands: [
             downlinkCommands.setOperatorParameters.examples['set default operator parameters request']
         ],
         lrc: 0x5f,
-        crc: 0x296e,
+        crc: 0xa95e,
         frameType: frameTypes.DATA_REQUEST,
         source: 0xffff,
         destination: 0xaaaa
@@ -1833,15 +1833,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getOperatorParameters',
-        hex: '0a 13 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 87 e4 c5 8e d5 c7 f5 84 4c c5 3d 19 2d c5 cd 01 75 79 23 91 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 5a 66 28 9b 38 55 95 40 a7 a0 2b 83 f1 8e 6a 31',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 5d 87 e4 c5 8e d5 c7 f5 84 4c c5 3d 19 2d c5 cd 01 75 79 23 91 e3 b3 49 b4 57 6c fc 89 a4 30 2e cf d8 6c ff c1 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 5a 66 28 9b 38 55 95 40 a7 a0 2b 83 f1 8e 6a 31 c7 b7 7e',
+        hex: '0a 13 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 87 e4 c5 8e d5 c7 f5 84 4c c5 3d 19 2d c5 cd 01 75 79 23 91 37 02 43 56 c9 2a 67 89 91 84 58 51 c5 6f c9 43 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 5a 66 28 9b 38 55 95 40 a7 a0 2b 83 f1 8e 6a 31',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 a0 05 6f ba 5c 1c 6b 62 b9 37 db 7d 5d 87 e4 c5 8e d5 c7 f5 84 4c c5 3d 19 2d c5 cd 01 75 79 23 91 37 02 43 56 c9 2a 67 89 91 84 58 51 c5 6f c9 43 84 7b 8e a0 a9 65 a6 10 9f e9 31 2c 33 80 ad 22 5a 66 28 9b 38 55 95 40 a7 a0 2b 83 f1 8e 6a 31 f7 37 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getOperatorParameters.accessLevel,
         commands: [
             uplinkCommands.getOperatorParameters.examples['get default operator parameters response']
         ],
         lrc: 0x5f,
-        crc: 0xb7c7,
+        crc: 0x37f7,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

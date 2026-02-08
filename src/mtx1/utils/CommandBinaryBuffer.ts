@@ -421,7 +421,7 @@ export interface IOperatorParameters {
     /**
      * Value + reserved byte.
      */
-    timeoutRefresh: types.TUint16,
+    timeoutRefresh: types.TUint8,
 
     /**
      * Allowed correction interval (`15` minutes by default).
@@ -1668,7 +1668,12 @@ export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperat
         relaySet1: (bitSet.toObject(relaySet1Mask, buffer.getUint8()) as unknown) as IRelaySet1OperatorParameter,
         displayType: buffer.getUint8(),
         ten: buffer.getUint8(),
-        timeoutRefresh: buffer.getUint16(),
+        timeoutRefresh: (() => {
+            const value = buffer.getUint8();
+            buffer.getUint8();
+
+            return value;
+        })(),
         deltaCorMin: buffer.getUint8(),
         timeoutMagnetOff: buffer.getUint8(),
         timeoutMagnetOn: buffer.getUint8(),
@@ -1728,7 +1733,8 @@ export const setOperatorParameters = function ( buffer: IBinaryBuffer, operatorP
     buffer.setUint8(bitSet.fromObject(relaySet1Mask, (operatorParameters.relaySet1 as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(operatorParameters.displayType);
     buffer.setUint8(operatorParameters.ten);
-    buffer.setUint16(operatorParameters.timeoutRefresh);
+    buffer.setUint8(operatorParameters.timeoutRefresh);
+    buffer.setUint8(0); // reserve
     buffer.setUint8(operatorParameters.deltaCorMin);
     buffer.setUint8(operatorParameters.timeoutMagnetOff);
     buffer.setUint8(operatorParameters.timeoutMagnetOn);
