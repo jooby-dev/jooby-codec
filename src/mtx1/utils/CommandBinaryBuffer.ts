@@ -1652,6 +1652,7 @@ export interface ISerialPortsSpeedOperatorParameter {
 }
 
 export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperatorParameters {
+    let value;
     const operatorParameters = {
         vpThreshold: buffer.getUint32(),
         vThreshold: buffer.getUint32(),
@@ -1672,12 +1673,7 @@ export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperat
         relaySet1: (bitSet.toObject(relaySet1Mask, buffer.getUint8()) as unknown) as IRelaySet1OperatorParameter,
         displayType: buffer.getUint8(),
         ten: buffer.getUint8(),
-        voltageAveragingInterval: (() => {
-            const value = buffer.getUint8();
-            buffer.getUint8();
-
-            return value;
-        })(),
+        voltageAveragingInterval: (value = buffer.getUint8(), buffer.getUint8(), value),
         deltaCorMin: buffer.getUint8(),
         timeoutMagnetOff: buffer.getUint8(),
         timeoutMagnetOn: buffer.getUint8(),
