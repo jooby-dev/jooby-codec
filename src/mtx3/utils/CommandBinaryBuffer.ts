@@ -987,14 +987,14 @@ export interface IOperatorParameters {
      *
      * since version `0.0.17`
      */
-    tu: types.TUint8,
+    voltageAveragingInterval: types.TUint8,
 
     /**
      * Interval for tracking power off events, in minutes.
      *
      * since version `0.0.17`
      */
-    timeIntervalPowerOff: types.TUint8,
+    powerOffTrackingInterval: types.TUint8,
 
     /**
      * Reserved byte.
@@ -1986,8 +1986,8 @@ export const getDefaultOperatorParameters = (): IOperatorParameters => ({
     relaySet: (bitSet.toObject(relaySetMask, 771) as unknown) as IRelaySetOperatorParameter,
     serialPortsSpeed: getSerialPortsSpeed(0),
     ten: 30,
-    tu: 30,
-    timeIntervalPowerOff: 3,
+    voltageAveragingInterval: 30,
+    powerOffTrackingInterval: 3,
     reserved: 0,
     timeoutBadVAVB: 5,
     freqMax: 55,
@@ -2080,8 +2080,8 @@ export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperat
         relaySet: (bitSet.toObject(relaySetMask, buffer.getUint32()) as unknown) as IRelaySetOperatorParameter,
         serialPortsSpeed: getSerialPortsSpeed(buffer.getUint8()),
         ten: buffer.getUint8(),
-        tu: buffer.getUint8(),
-        timeIntervalPowerOff: buffer.getUint8(),
+        voltageAveragingInterval: buffer.getUint8(),
+        powerOffTrackingInterval: buffer.getUint8(),
         reserved: buffer.getUint8(),
         timeoutBadVAVB: buffer.getUint8(),
         freqMax: buffer.getUint8(),
@@ -2126,8 +2126,8 @@ export const setOperatorParameters = function ( buffer: IBinaryBuffer, operatorP
     buffer.setUint32(bitSet.fromObject(relaySetMask, (operatorParameters.relaySet as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(setSerialPortsSpeed(operatorParameters.serialPortsSpeed));
     buffer.setUint8(operatorParameters.ten);
-    buffer.setUint8(operatorParameters.tu);
-    buffer.setUint8(operatorParameters.timeIntervalPowerOff);
+    buffer.setUint8(operatorParameters.voltageAveragingInterval);
+    buffer.setUint8(operatorParameters.powerOffTrackingInterval);
     buffer.setUint8(operatorParameters.reserved);
     buffer.setUint8(operatorParameters.timeoutBadVAVB);
     buffer.setUint8(operatorParameters.freqMax);

@@ -19,7 +19,7 @@
  * // output:
  * {
  *     channelParam1: 0,
- *     counterInterval: 20,
+ *     powerOffTrackingInterval: 20,
  *     channelParam2: 160
  * }
  * ```
@@ -56,7 +56,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         parameters: {
             channelParam1: 0,
-            counterInterval: 20,
+            powerOffTrackingInterval: 20,
             channelParam2: 160
         },
         bytes: [

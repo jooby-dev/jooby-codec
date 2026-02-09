@@ -419,9 +419,13 @@ export interface IOperatorParameters {
     ten: types.TUint8,
 
     /**
-     * Value + reserved byte.
+     * Voltage averaging interval.
+     *
+     * `0`, `1`, `3`, `5`, `10`, `15`, `30` minutes.
+     *
+     * since version `0.0.17`
      */
-    timeoutRefresh: types.TUint16,
+    voltageAveragingInterval: types.TUint8,
 
     /**
      * Allowed correction interval (`15` minutes by default).
@@ -1033,7 +1037,7 @@ export interface IGetDemandParametersResponseParameters {
     /**
      * time interval for counting power-off events, minutes
      */
-    counterInterval: types.TUint8,
+    powerOffTrackingInterval: types.TUint8,
 
     /**
      * | Value | Hex    | Description                                                                                      |
@@ -1421,7 +1425,7 @@ export const getDefaultOperatorParameters = (): IOperatorParameters => ({
     relaySet1: (bitSet.toObject(relaySet1Mask, 3) as unknown) as IRelaySet1OperatorParameter,
     displayType: 0,
     ten: 0,
-    timeoutRefresh: 240,
+    voltageAveragingInterval: 240,
     deltaCorMin: 15,
     timeoutMagnetOff: 5,
     timeoutMagnetOn: 5,
@@ -1648,6 +1652,7 @@ export interface ISerialPortsSpeedOperatorParameter {
 }
 
 export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperatorParameters {
+    let value;
     const operatorParameters = {
         vpThreshold: buffer.getUint32(),
         vThreshold: buffer.getUint32(),
@@ -1668,7 +1673,7 @@ export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperat
         relaySet1: (bitSet.toObject(relaySet1Mask, buffer.getUint8()) as unknown) as IRelaySet1OperatorParameter,
         displayType: buffer.getUint8(),
         ten: buffer.getUint8(),
-        timeoutRefresh: buffer.getUint16(),
+        voltageAveragingInterval: (value = buffer.getUint8(), buffer.getUint8(), value),
         deltaCorMin: buffer.getUint8(),
         timeoutMagnetOff: buffer.getUint8(),
         timeoutMagnetOn: buffer.getUint8(),
@@ -1728,7 +1733,8 @@ export const setOperatorParameters = function ( buffer: IBinaryBuffer, operatorP
     buffer.setUint8(bitSet.fromObject(relaySet1Mask, (operatorParameters.relaySet1 as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(operatorParameters.displayType);
     buffer.setUint8(operatorParameters.ten);
-    buffer.setUint16(operatorParameters.timeoutRefresh);
+    buffer.setUint8(operatorParameters.voltageAveragingInterval);
+    buffer.setUint8(0); // reserve
     buffer.setUint8(operatorParameters.deltaCorMin);
     buffer.setUint8(operatorParameters.timeoutMagnetOff);
     buffer.setUint8(operatorParameters.timeoutMagnetOn);
@@ -1975,15 +1981,15 @@ export const setDemand = function ( buffer: IBinaryBuffer, parameters: IGetDeman
 
 export const getDemandParameters = function ( buffer: IBinaryBuffer ): IGetDemandParametersResponseParameters {
     const channelParam1 = buffer.getUint8();
-    const counterInterval = buffer.getUint8();
+    const powerOffTrackingInterval = buffer.getUint8();
     const channelParam2 = buffer.getUint8();
 
-    return {channelParam1, counterInterval, channelParam2};
+    return {channelParam1, powerOffTrackingInterval, channelParam2};
 };
 
 export const setDemandParameters = function ( buffer: IBinaryBuffer, parameters: IGetDemandParametersResponseParameters ) {
     buffer.setUint8(parameters.channelParam1);
-    buffer.setUint8(parameters.counterInterval);
+    buffer.setUint8(parameters.powerOffTrackingInterval);
     buffer.setUint8(parameters.channelParam2);
 
     // the last byte is reserved and not used for now
