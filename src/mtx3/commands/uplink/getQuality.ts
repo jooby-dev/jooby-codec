@@ -46,7 +46,7 @@ import {getQuality as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
 
-interface IGetQualityParameters {
+interface IGetQualityResponseParameters {
     year: types.TYear2000,
     month: types.TMonth,
     powerOffSaidiMinutes: types.TUint32,
@@ -105,7 +105,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IGetQualityParameters => {
+export const fromBytes = ( bytes: types.TBytes ): IGetQualityResponseParameters => {
     validateCommandPayload(name, bytes, maxSize);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
@@ -130,7 +130,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetQualityParameters => {
  * @param parameters - command parameters
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IGetQualityParameters ): types.TBytes => {
+export const toBytes = ( parameters: IGetQualityResponseParameters ): types.TBytes => {
     const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
     buffer.setUint8(parameters.year as unknown as types.TUint8);
