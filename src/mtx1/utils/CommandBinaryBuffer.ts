@@ -6,6 +6,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import * as types from '../types.js';
+import * as payloadCrc16 from '../../utils/payloadCrc16.js';
 import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import type {IDeviceType} from './deviceType.js';
@@ -45,6 +46,14 @@ export interface IFrameHeader {
      * 0xffff
      */
     destination: number
+}
+
+/**
+ * GSM module parameters
+ */
+export interface IGsmBlock {
+    index: types.TUint8,
+    data: types.TBytes
 }
 
 /**
@@ -1048,6 +1057,8 @@ export interface IGetDemandParametersResponseParameters {
     channelParam2: types.TUint8,
 }
 
+export const GSM_BLOCK_PREFIX = 0xda;
+export const GSM_BLOCK_SIZE = 60;
 export const TARIFF_PLAN_SIZE = 11;
 export const OPERATOR_PARAMETERS_SIZE = 74;
 export const SEASON_PROFILE_DAYS_NUMBER = 7;
@@ -1527,6 +1538,47 @@ export const setDateTime = function ( buffer: IBinaryBuffer, dateTime: IDateTime
     buffer.setUint8(dateTime.date as unknown as types.TUint8);
     buffer.setUint8(dateTime.month as unknown as types.TUint8);
     buffer.setUint8(dateTime.year as unknown as types.TUint8);
+};
+
+export const getGsmBlock = ( commandName: string, bytes: types.TBytes ): IGsmBlock => {
+    const [index] = bytes;
+    const block = payloadCrc16.parse(bytes.slice(1));
+
+    if ( index > 3 ) {
+        throw new Error(`Command ${commandName}. Invalid block index: ${index}.`);
+    }
+
+    if ( block.crc.calculated !== block.crc.received ) {
+        const crcToHex = value => (value.toString(16).padStart(4, '0'));
+        throw new Error(
+            `Command ${commandName}. Invalid block crc. Calculated: `
+            + `0x${crcToHex(block.crc.calculated)}, received: 0x${crcToHex(block.crc.received)}`
+        );
+    }
+
+    const [blockPrefix, ...data] = block.payload;
+
+    if ( blockPrefix !== GSM_BLOCK_PREFIX ) {
+        throw new Error(`Command ${commandName}. Invalid block prefix: ${blockPrefix}.`);
+    }
+
+    // data contains payload length and payload data
+    if ( data.length !== 1 + GSM_BLOCK_SIZE ) {
+        throw new Error(`Command ${commandName}. Invalid payload length: ${data.length}.`);
+    }
+
+    return {index, data};
+};
+
+export const setGsmBlock = ( block: IGsmBlock ): types.TBytes => {
+    const data = [GSM_BLOCK_PREFIX, ...block.data];
+
+    if ( block.data.length < GSM_BLOCK_SIZE ) {
+        // block data contains payload length and payload data
+        data.push(...new Array<types.TUint8>(GSM_BLOCK_SIZE + 1 - block.data.length).fill(0));
+    }
+
+    return [block.index, ...payloadCrc16.appendCrc(data)];
 };
 
 export const getTariffPlan = function ( buffer: IBinaryBuffer ): ITariffPlan {
