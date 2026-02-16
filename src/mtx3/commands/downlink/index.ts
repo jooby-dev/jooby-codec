@@ -20,6 +20,7 @@ export * as getEvents from '../../../mtx1/commands/downlink/getEvents.js';
 export * as getEventsCounters from '../../../mtx1/commands/downlink/getEventsCounters.js';
 export * as getEventStatus from '../../../mtx1/commands/downlink/getEventStatus.js';
 export * as getExtendedCurrentValues from '../../../mtx1/commands/downlink/getExtendedCurrentValues.js';
+export * as getGsmParameters from '../../../mtx1/commands/downlink/getGsmParameters.js';
 export * as getHalfHourDemand from '../../../mtx1/commands/downlink/getHalfHourDemand.js';
 export * as getHalfHourDemandExport from '../../../mtx1/commands/downlink/getHalfHourDemandExport.js';
 export * as getHalfHourEnergies from '../../../mtx1/commands/downlink/getHalfHourEnergies.js';
@@ -47,6 +48,7 @@ export * as setCorrectDateTime from '../../../mtx1/commands/downlink/setCorrectD
 export * as setCorrectTime from '../../../mtx1/commands/downlink/setCorrectTime.js';
 export * as setDateTime from '../../../mtx1/commands/downlink/setDateTime.js';
 export * as setDayProfile from '../../../mtx1/commands/downlink/setDayProfile.js';
+export * as setGsmParameters from '../../../mtx1/commands/downlink/setGsmParameters.js';
 export * as setOperatorParametersExtended3 from '../../../mtx1/commands/downlink/setOperatorParametersExtended3.js';
 export * as setSaldo from '../../../mtx1/commands/downlink/setSaldo.js';
 export * as setSaldoParameters from '../../../mtx1/commands/downlink/setSaldoParameters.js';

@@ -151,6 +151,7 @@ toBytesMap[mtx1Commands.getEvents.id] = mtx1Commands.getEvents.toBytes;
 toBytesMap[mtx1Commands.getEventsCounters.id] = mtx1Commands.getEventsCounters.toBytes;
 toBytesMap[mtx1Commands.getEventStatus.id] = mtx1Commands.getEventStatus.toBytes;
 toBytesMap[mtx1Commands.getExtendedCurrentValues.id] = mtx1Commands.getExtendedCurrentValues.toBytes;
+toBytesMap[mtx1Commands.getGsmParameters.id] = mtx1Commands.getGsmParameters.toBytes;
 toBytesMap[mtx1Commands.getHalfHourDemand.id] = mtx1Commands.getHalfHourDemand.toBytes;
 toBytesMap[mtx1Commands.getHalfHourDemandExport.id] = mtx1Commands.getHalfHourDemandExport.toBytes;
 toBytesMap[mtx1Commands.getHalfHourEnergies.id] = mtx1Commands.getHalfHourEnergies.toBytes;
@@ -178,6 +179,7 @@ toBytesMap[mtx1Commands.setCorrectDateTime.id] = mtx1Commands.setCorrectDateTime
 toBytesMap[mtx1Commands.setCorrectTime.id] = mtx1Commands.setCorrectTime.toBytes;
 toBytesMap[mtx1Commands.setDateTime.id] = mtx1Commands.setDateTime.toBytes;
 toBytesMap[mtx1Commands.setDayProfile.id] = mtx1Commands.setDayProfile.toBytes;
+toBytesMap[mtx1Commands.setGsmParameters.id] = mtx1Commands.setGsmParameters.toBytes;
 toBytesMap[mtx1Commands.setOperatorParametersExtended3.id] = mtx1Commands.setOperatorParametersExtended3.toBytes;
 toBytesMap[mtx1Commands.setSaldo.id] = mtx1Commands.setSaldo.toBytes;
 toBytesMap[mtx1Commands.setSaldoParameters.id] = mtx1Commands.setSaldoParameters.toBytes;
@@ -186,6 +188,7 @@ toBytesMap[mtx1Commands.setSpecialDay.id] = mtx1Commands.setSpecialDay.toBytes;
 toBytesMap[mtx1Commands.setSpecialOperation.id] = mtx1Commands.setSpecialOperation.toBytes;
 toBytesMap[mtx1Commands.turnRelayOff.id] = mtx1Commands.turnRelayOff.toBytes;
 toBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.toBytes;
+
 
 // commands different from MTX1
 toBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.toBytes;
@@ -228,6 +231,7 @@ fromBytesMap[mtx1Commands.getEvents.id] = mtx1Commands.getEvents.fromBytes;
 fromBytesMap[mtx1Commands.getEventsCounters.id] = mtx1Commands.getEventsCounters.fromBytes;
 fromBytesMap[mtx1Commands.getEventStatus.id] = mtx1Commands.getEventStatus.fromBytes;
 fromBytesMap[mtx1Commands.getExtendedCurrentValues.id] = mtx1Commands.getExtendedCurrentValues.fromBytes;
+fromBytesMap[mtx1Commands.getGsmParameters.id] = mtx1Commands.getGsmParameters.toBytes;
 fromBytesMap[mtx1Commands.getHalfHourDemand.id] = mtx1Commands.getHalfHourDemand.fromBytes;
 fromBytesMap[mtx1Commands.getHalfHourDemandExport.id] = mtx1Commands.getHalfHourDemandExport.fromBytes;
 fromBytesMap[mtx1Commands.getHalfHourEnergies.id] = mtx1Commands.getHalfHourEnergies.fromBytes;
@@ -255,6 +259,7 @@ fromBytesMap[mtx1Commands.setCorrectDateTime.id] = mtx1Commands.setCorrectDateTi
 fromBytesMap[mtx1Commands.setCorrectTime.id] = mtx1Commands.setCorrectTime.fromBytes;
 fromBytesMap[mtx1Commands.setDateTime.id] = mtx1Commands.setDateTime.fromBytes;
 fromBytesMap[mtx1Commands.setDayProfile.id] = mtx1Commands.setDayProfile.fromBytes;
+fromBytesMap[mtx1Commands.setGsmParameters.id] = mtx1Commands.setGsmParameters.toBytes;
 fromBytesMap[mtx1Commands.setOperatorParametersExtended3.id] = mtx1Commands.setOperatorParametersExtended3.fromBytes;
 fromBytesMap[mtx1Commands.setSaldo.id] = mtx1Commands.setSaldo.fromBytes;
 fromBytesMap[mtx1Commands.setSaldoParameters.id] = mtx1Commands.setSaldoParameters.fromBytes;
@@ -263,6 +268,7 @@ fromBytesMap[mtx1Commands.setSpecialDay.id] = mtx1Commands.setSpecialDay.fromByt
 fromBytesMap[mtx1Commands.setSpecialOperation.id] = mtx1Commands.setSpecialOperation.fromBytes;
 fromBytesMap[mtx1Commands.turnRelayOff.id] = mtx1Commands.turnRelayOff.fromBytes;
 fromBytesMap[mtx1Commands.turnRelayOn.id] = mtx1Commands.turnRelayOn.fromBytes;
+
 
 // commands different from MTX1
 fromBytesMap[commands.getCriticalEvent.id] = commands.getCriticalEvent.fromBytes;
