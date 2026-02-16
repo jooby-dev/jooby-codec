@@ -8,7 +8,7 @@
 import * as types from '../types.js';
 import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
-import {IDeviceType} from './deviceType.js';
+import type {IDeviceType} from './deviceType.js';
 import * as DeviceType from './deviceType.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../utils/getBytesFromHex.js';
