@@ -122,7 +122,12 @@ const getTariffEnergiesFlag = <T>( tariff: number, energies: IEnergies<T> ): num
     // getAMinusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax>,
     // setAMinusTariffPowerMax ( energies: IEnergies<IPowerMax> | undefined ),
     // getTariffsPowerMax (): TTariffsPowerMax,
-    // setTariffsPowerMax ( tariffs: TTariffsPowerMax )
+    // setTariffsPowerMax ( tariffs: TTariffsPowerMax ),
+
+    // getCurrentDemandParameters = (): IGetCurrentDemandParameters,
+    // getCurrentDemandValues = ( parameters: IGetCurrentDemandParameters ): Array<IGetCurrentDemandValues>,
+    // setCurrentDemandParameters = ( parameters: IGetCurrentDemandParameters ),
+    // setCurrentDemandValues = ( demands: Array<IGetCurrentDemandValues> )
 } */
 
 /**
