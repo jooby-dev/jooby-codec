@@ -32,6 +32,12 @@ export const BATTERY_MINIMAL_LOAD_TIME = 11;
  */
 export const CHANNELS_CONFIG = 13;
 
+/** set the schedule of the different data transmissions for mtx-lora devices */
+export const MTX_DATA_TRANSMISSION_SCHEDULE = 14;
+
+/** set the half hours data types for mtx-lora devices for parameter: MTX_DATA_TRANSMISSION_SCHEDULE */
+export const MTX_POWER_CONFIG = 15;
+
 /** setup parameters for RX2 window config */
 export const RX2_CONFIG = 18;
 
@@ -171,3 +177,12 @@ export const NBIOT_NTP_SERVER = 60;
  * HARDWARE_VERSION - 15
  */
 export const ACTIVATE_MODULE = 61;
+
+/**
+ * setup the schedule of the different demand types for uplink command - getCurrentDemand, for mtx-lora devices
+ *
+ * Parameter available only for:
+ * HARDWARE_VERSION - 3 (Silergy 1 phase)
+ * HARDWARE_VERSION - 5 (Silergy 3 phase)
+ */
+export const MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG = 64;
