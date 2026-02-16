@@ -143,7 +143,7 @@ export const examples: command.TCommandExamples = {
             deltaCorMin: 15,
             timeoutMagnetOff: 5,
             timeoutMagnetOn: 5,
-            define1: {BLOCK_KEY_OPTOPORT: false, MAGNET_SCREEN_CONST: false},
+            define1: {BLOCK_KEY_OPTOPORT: false, MAGNET_SCREEN_CONST: false, POWER_AVERAGING_TYPE: false},
             timeoutRelayOn: 1,
             timeoutRelayKey: 0,
             timeoutRelayAuto: 5,

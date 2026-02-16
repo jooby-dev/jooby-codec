@@ -101,6 +101,9 @@ interface IGetCurrentStatusMeterResponseParameters {
     /** Duration of maximum power during the accounting period, in seconds. */
     tbadPmaxAll: types.TUint32,
 
+    /** Total duration of current unbalance during the billing period, in seconds */
+    currentUnbalanceDurationSec: types.TUint32,
+
     /** Duration of frequency deviation from normal during the accounting period, in seconds. */
     tbadFREQ: types.TUint32,
 
@@ -184,6 +187,7 @@ export const examples: command.TCommandExamples = {
             tbadVAVB: 34567,
             tbadImaxAll: 956726,
             tbadPmaxAll: 340,
+            currentUnbalanceDurationSec: 0,
             tbadFREQ: 436,
             relayStatus: {
                 RELAY_STATE: true,
@@ -250,10 +254,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponse
     const tbadVAVB = buffer.getUint32();
     const tbadImaxAll = buffer.getUint32();
     const tbadPmaxAll = buffer.getUint32();
-
-    // reserved
-    buffer.getUint32();
-
+    const currentUnbalanceDurationSec = buffer.getUint32();
     const tbadFREQ = buffer.getUint32();
     const relayStatus = bitSet.toObject(extendedCurrentValues2RelayStatusMask, buffer.getUint8()) as unknown as IExtendedCurrentValues2RelayStatus;
     const statusEvent1 = buffer.getUint8();
@@ -273,6 +274,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponse
         tbadVAVB,
         tbadImaxAll,
         tbadPmaxAll,
+        currentUnbalanceDurationSec,
         tbadFREQ,
         relayStatus,
         statusEvent: (bitSet.toObject(eventStatusMask, statusEventValue) as unknown) as IEventStatus,
@@ -298,10 +300,7 @@ export const toBytes = ( parameters: IGetCurrentStatusMeterResponseParameters ):
     buffer.setUint32(parameters.tbadVAVB);
     buffer.setUint32(parameters.tbadImaxAll);
     buffer.setUint32(parameters.tbadPmaxAll);
-
-    // reserved
-    buffer.setUint32(0);
-
+    buffer.setUint32(parameters.currentUnbalanceDurationSec);
     buffer.setUint32(parameters.tbadFREQ);
     buffer.setUint8(bitSet.fromObject(extendedCurrentValues2RelayStatusMask, (parameters.relayStatus as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(statusEventValue & 0xff);
