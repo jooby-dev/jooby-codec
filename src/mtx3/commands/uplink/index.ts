@@ -16,6 +16,7 @@ export * as getDeviceId from '../../../mtx1/commands/uplink/getDeviceId.js';
 export * as getDeviceType from '../../../mtx1/commands/uplink/getDeviceType.js';
 export * as getEventsCounters from '../../../mtx1/commands/uplink/getEventsCounters.js';
 export * as getEventStatus from '../../../mtx1/commands/uplink/getEventStatus.js';
+export * as getGsmParameters from '../../../mtx1/commands/downlink/getGsmParameters.js';
 export * as getMagneticFieldThreshold from '../../../mtx1/commands/uplink/getMagneticFieldThreshold.js';
 export * as getMeterInfo from '../../../mtx1/commands/uplink/getMeterInfo.js';
 export * as getOperatorParametersExtended3 from '../../../mtx1/commands/uplink/getOperatorParametersExtended3.js';
@@ -35,6 +36,7 @@ export * as setCorrectTime from '../../../mtx1/commands/uplink/setCorrectTime.js
 export * as setDateTime from '../../../mtx1/commands/uplink/setDateTime.js';
 export * as setDayProfile from '../../../mtx1/commands/uplink/setDayProfile.js';
 export * as setDisplayParam from '../../../mtx1/commands/uplink/setDisplayParam.js';
+export * as setGsmParameters from '../../../mtx1/commands/downlink/setGsmParameters.js';
 export * as setOperatorParameters from '../../../mtx1/commands/uplink/setOperatorParameters.js';
 export * as setOperatorParametersExtended3 from '../../../mtx1/commands/uplink/setOperatorParametersExtended3.js';
 export * as setSaldo from '../../../mtx1/commands/uplink/setSaldo.js';
@@ -44,7 +46,6 @@ export * as setSpecialDay from '../../../mtx1/commands/uplink/setSpecialDay.js';
 export * as setSpecialOperation from '../../../mtx1/commands/uplink/setSpecialOperation.js';
 export * as turnRelayOff from '../../../mtx1/commands/uplink/turnRelayOff.js';
 export * as turnRelayOn from '../../../mtx1/commands/uplink/turnRelayOn.js';
-
 
 // commands different from MTX1
 export * as errorResponse from './errorResponse.js';
