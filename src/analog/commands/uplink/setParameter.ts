@@ -42,7 +42,7 @@ interface IScheduleStatus {
      * `1` - schedule setup was successful <br>
      * `0` - schedule setting failed, all schedules would not be changed
      */
-    status: types.TUint8;
+    isSuccessful: boolean;
 }
 
 interface ISetParameterResponseParameters {
@@ -55,7 +55,7 @@ interface ISetParameterResponseParameters {
      */
     status: types.TUint8;
 
-    /** Schedule statuses (only present when id === deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG) */
+    /** Schedule statuses (only present when `id === deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG`) */
     scheduleStatuses?: Array<IScheduleStatus>;
 }
 
@@ -95,19 +95,15 @@ export const examples: command.TCommandExamples = {
             id: 0x40,
             status: 1,
             scheduleStatuses: [
-                {id: 0, status: 1},
-                {id: 1, status: 0},
-                {id: 2, status: 1},
-                {id: 3, status: 1}
+                {id: 0, isSuccessful: true},
+                {id: 1, isSuccessful: false},
+                {id: 2, isSuccessful: true},
+                {id: 3, isSuccessful: true}
             ]
         },
         bytes: [
             0x03, 0x0a,
-            0x40, 0x01,
-            0x00, 0x01,
-            0x01, 0x00,
-            0x02, 0x01,
-            0x03, 0x01
+            0x40, 0x01, 0x00, 0x01, 0x01, 0x00, 0x02, 0x01, 0x03, 0x01
         ]
     }
 };
@@ -130,17 +126,17 @@ export const fromBytes = ( bytes: types.TBytes ): ISetParameterResponseParameter
         status: buffer.getUint8()
     };
 
-    if (parameters.id === deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG) {
+    if ( parameters.id === deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG ) {
         const scheduleStatuses: Array<IScheduleStatus> = [];
 
         while (buffer.bytesLeft) {
             scheduleStatuses.push({
                 id: buffer.getUint8(),
-                status: buffer.getUint8()
+                isSuccessful: buffer.getUint8() !== 0
             });
         }
 
-        if (scheduleStatuses.length > 0) {
+        if ( scheduleStatuses.length > 0 ) {
             parameters.scheduleStatuses = scheduleStatuses;
         }
     }
@@ -171,10 +167,10 @@ export const toBytes = ( parameters: ISetParameterResponseParameters ): types.TB
     buffer.setUint8(parameters.id);
     buffer.setUint8(parameters.status);
 
-    if (parameters.scheduleStatuses) {
+    if ( parameters.scheduleStatuses ) {
         for (const scheduleStatus of parameters.scheduleStatuses) {
             buffer.setUint8(scheduleStatus.id);
-            buffer.setUint8(scheduleStatus.status);
+            buffer.setUint8(scheduleStatus.isSuccessful ? 1 : 0);
         }
     }
 
