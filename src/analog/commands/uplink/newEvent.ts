@@ -97,6 +97,27 @@ interface IEventUSWater extends IEventBase {
     status: IEventUSWaterMeterStatus;
 }
 
+interface IEventDepass extends IEventBase {
+    /** depassivation duration (in seconds) */
+    duration: types.TUint32;
+
+    /**
+     * `1` - successful completion
+     * `2` - completed due to timeout
+     * `4` - internal battery resistance stopped decreasing
+     */
+    status: types.TUint8,
+
+    /** battery voltage without load */
+    noLoadBatteryVoltage: number,
+
+    /** battery voltage under load of the depassivation resistor */
+    loadBatteryVoltage: number,
+
+    /** internal battery resistance value */
+    internalResistance: types.TUint16
+}
+
 type TEventData =
     IEventTime |
     IEventBatteryAlarm |
@@ -231,6 +252,28 @@ export const examples: command.TCommandExamples = {
             0x0d, 0x02, 0x00, 0x83, 0x01
         ]
     },
+    'event for DEPASS_DONE': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: 14,
+            name: 'DEPASS_DONE',
+            sequenceNumber: 107,
+            data: {
+                duration: 83,
+                status: 4,
+                noLoadBatteryVoltage: 3564,
+                loadBatteryVoltage: 2748,
+                internalResistance: 44541
+            }
+        },
+        bytes: [
+            0x15, 0x0c,
+            0x0e, 0x6b,
+            0x00, 0x00, 0x00, 0x53, 0x04, 0xde, 0xca, 0xbc, 0xad, 0xfd
+        ]
+    },
     'event for EV_MTX': {
         id,
         name,
@@ -278,6 +321,37 @@ const setDeviceId = ( buffer: IBinaryBuffer, value: string ): void => {
     getBytesFromHex(value).forEach(byte => buffer.setUint8(byte));
 };
 
+const getBatteryVoltageValues = ( buffer: IBinaryBuffer ): {noLoadBatteryVoltage:number, loadBatteryVoltage:number} => {
+    const byte1 = buffer.getUint8();
+    const byte2 = buffer.getUint8();
+    const byte3 = buffer.getUint8();
+
+    // first 12-bit value
+    const noLoadBatteryVoltage = (byte1 << 4) | (byte2 >> 4);
+
+    // second 12-bit value
+    const loadBatteryVoltage = ((byte2 & 0x0f) << 8) | byte3;
+
+    return {noLoadBatteryVoltage, loadBatteryVoltage};
+};
+
+const setBatteryVoltageValues = ( buffer: IBinaryBuffer, noLoadBatteryVoltage: number, loadBatteryVoltage: number ): void => {
+    // ensure values fit in 12 bits
+    const value0 = noLoadBatteryVoltage & 0x0fff;
+    const value1 = loadBatteryVoltage & 0x0fff;
+
+    // byte 0: 8 most significant bits of noLoadBatteryVoltage
+    const byte0 = value0 >> 4;
+
+    // byte 1: 4 least significant bits of noLoadBatteryVoltage + 4 most significant bits of loadBatteryVoltage
+    const byte1 = ((value0 & 0x0f) << 4) | (value1 >> 8);
+
+    // byte 2: 8 least significant bits of loadBatteryVoltage
+    const byte2 = value1 & 0xff;
+
+    [byte0, byte1, byte2].forEach(byte => buffer.setUint8(byte));
+};
+
 
 /**
  * Decode command parameters.
@@ -308,10 +382,18 @@ export const fromBytes = ( bytes: types.TBytes ): INewEventParameters => {
         case events.OPTOLOW:
         case events.OPTOFLASH:
         case events.JOIN_ACCEPT:
-        case events.DEPASS_DONE:
         case events.WATER_NO_RESPONSE:
         case events.OPTOSENSOR_ERROR:
             eventData = {time2000: getTime(buffer)};
+            break;
+
+        case events.DEPASS_DONE:
+            eventData = {
+                duration: buffer.getUint32(),
+                status: buffer.getUint8(),
+                ...getBatteryVoltageValues(buffer),
+                internalResistance: buffer.getUint16()
+            };
             break;
 
         case events.BATTERY_ALARM:
@@ -379,10 +461,16 @@ export const toBytes = ( parameters: INewEventParameters ): types.TBytes => {
         case events.OPTOLOW:
         case events.OPTOFLASH:
         case events.JOIN_ACCEPT:
-        case events.DEPASS_DONE:
         case events.WATER_NO_RESPONSE:
         case events.OPTOSENSOR_ERROR:
             setTime(buffer, (data as IEventTime).time2000);
+            break;
+
+        case events.DEPASS_DONE:
+            buffer.setUint32((data as IEventDepass).duration);
+            buffer.setUint8((data as IEventDepass).status);
+            setBatteryVoltageValues(buffer, (data as IEventDepass).noLoadBatteryVoltage, (data as IEventDepass).loadBatteryVoltage);
+            buffer.setUint16((data as IEventDepass).internalResistance);
             break;
 
         case events.BATTERY_ALARM:
