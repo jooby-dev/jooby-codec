@@ -35,7 +35,7 @@ export const CHANNELS_CONFIG = 13;
 /** set the schedule of the different data transmissions for mtx-lora devices */
 export const MTX_DATA_TRANSMISSION_SCHEDULE = 14;
 
-/** set the half hours data types for mtx-lora devices for parameter: MTX_DATA_TRANSMISSION_SCHEDULE */
+/** set the half hours data types for mtx-lora devices for parameter: `MTX_DATA_TRANSMISSION_SCHEDULE` */
 export const MTX_POWER_CONFIG = 15;
 
 /** setup parameters for RX2 window config */

@@ -301,19 +301,14 @@ interface IParameterChannelsConfig {
 
 /**
  * MTX Data transmission schedule.
- * deviceParameters.MTX_DATA_TRANSMISSION_SCHEDULE = `14`.
- * Only for the MTX LoRaWAN module.
+ * `deviceParameters.MTX_DATA_TRANSMISSION_SCHEDULE = 14`.
+ * Applicable only for the MTX LoRaWAN module.
  *
- * Setup the schedule of the different data transmissions.
- * Contains 4 data transmission configurations, each with:
- * - Type data (1 byte): 0=half hour consumption, 1=daily consumption, 2=current data, 3=module status
- * - Transmission period (1 byte): 600 seconds + random value <1020 seconds
- * - Half hour schedule (3 bytes): 24-bit field where each bit represents a half-hour slot
- *   - Byte 1: hours 23-16, Byte 2: hours 15-8, Byte 3: hours 7-0
+ * Configures the schedule for different types of data transmissions.
  */
 interface IParameterMtxDataTransmissionSchedule {
     /**
-     * Array of 4 transmission schedule configurations
+     * Contains an array of four transmission schedule configurations.
      */
     schedules: Array<{
         /**
@@ -326,7 +321,7 @@ interface IParameterMtxDataTransmissionSchedule {
         transmissionPeriod: types.TUint8,
         /**
          * 24-bit half hour schedule as record mapping hour to enabled state
-         * Format: { 0: 1, 1: 1, 2: 0, ... } where key is hour (0-23) and value is enabled (1) or disabled (0)
+         * Format: `{0: 1, 1: 1, 2: 0, ...}` where key is hour (0-23) and value is enabled (1) or disabled (0)
          */
         allowedHoursSchedule: Record<number, number>
     }>
@@ -337,23 +332,14 @@ interface IParameterMtxDataTransmissionSchedule {
  * deviceParameters.MTX_POWER_CONFIG = `15`.
  * Applicable only for the MTX LoRaWAN module.
  *
- * Defines which half-hour energy data types are transmitted via command getHalfHourEnergies that can be enabled in parameter deviceParameters.MTX_DATA_TRANSMISSION_SCHEDULE.
- * This is a bitwise field, where:
- * - bit 0 – ACTIV: active energy import for half hour (A+)
- * - bit 1 – VARI: reactive (capacitive) energy import for half hour (A+R+) (only for MTX3)
- * - bit 2 – VARE: reactive (inductive) energy import for half hour (A+R−) (only for MTX3)
- * - bit 3 – ACTIVE_EXP: active energy export for half hour (A−)
- * - bit 4 – VARI_EXP: reactive (capacitive) energy export for half hour (A−R+) (only for MTX3)
- * - bit 5 – VARE_EXP: reactive (inductive) energy export for half hour (A−R−) (only for MTX3)
- *
- * If a bit is set to 1, the corresponding energy type will be included in data transmission.
- * By default, only bit 0 (ACTIV) is set, so only active energy (A+) is transmitted.
+ * Defines which half-hour energy data types are transmitted via command `getHalfHourEnergies`.
+ * By default, only active energy (A+) is transmitted.
  */
 interface IParameterMtxPowerConfig {
     /**
-     * ACTIV: active energy for half hour (А+) - bit 0
+     * ACTIVE: active energy for half hour (А+) - bit 0
      */
-    activ: boolean,
+    active: boolean,
 
     /**
      * VARI: positive (capacitive) reactive energy for half hour (A+R+) - bit 1
@@ -805,9 +791,9 @@ interface IParameterActivateModule {
 }
 
 /**
- * MTX Schedule of the different demand types for uplink command - getCurrentDemand
- * deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG = `64`.
- * Only for the MTX LoRaWAN module.
+ * MTX Schedule of the different demand types for uplink command - `getCurrentDemand`
+ * `deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG = 64`.
+ * Applicable only for the MTX LoRaWAN module.
  */
 interface IParameterMtxGetCurrentDemandScheduleConfig {
     schedules: Array<{
@@ -1380,7 +1366,7 @@ const deviceParameterConvertersMap = {
             const value = buffer.getUint8();
 
             return {
-                activ: !!(value & 0x01),
+                active: !!(value & 0x01),
                 vari: !!(value & 0x02),
                 vare: !!(value & 0x04),
                 activeExp: !!(value & 0x08),
@@ -1391,12 +1377,12 @@ const deviceParameterConvertersMap = {
         set: ( buffer: IBinaryBuffer, parameter: IParameterMtxPowerConfig ) => {
             let value = 0;
 
-            if ( parameter.activ ) value |= 0x01;
-            if ( parameter.vari ) value |= 0x02;
-            if ( parameter.vare ) value |= 0x04;
-            if ( parameter.activeExp ) value |= 0x08;
-            if ( parameter.variExp ) value |= 0x10;
-            if ( parameter.vareExp ) value |= 0x20;
+            value |= parameter.active ? 0x01 : 0;
+            value |= parameter.vari ? 0x02 : 0;
+            value |= parameter.vare ? 0x04 : 0;
+            value |= parameter.activeExp ? 0x08 : 0;
+            value |= parameter.variExp ? 0x10 : 0;
+            value |= parameter.vareExp ? 0x20 : 0;
 
             buffer.setUint8(value);
         }

@@ -67,7 +67,7 @@ export interface IGetBatteryStatusResponseParameters {
     /**
      * It's a signed number in degrees Celsius.
      */
-    temperature: types.TUint8;
+    temperature: types.TInt8;
 
     /**
      * It's the remaining battery capacity, where `254` is `100%`.
@@ -130,7 +130,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetBatteryStatusResponseParam
         voltageUnderLowLoad: buffer.getUint16(),
         voltageUnderHighLoad: buffer.getUint16(),
         internalResistance: buffer.getUint16(),
-        temperature: buffer.getUint8(),
+        temperature: buffer.getInt8(),
         remainingCapacity: buffer.getUint8(),
         isLastDayOverconsumption: buffer.getUint8() === 1,
         averageDailyOverconsumptionCounter: buffer.getUint16()
@@ -150,7 +150,7 @@ export const toBytes = ( parameters: IGetBatteryStatusResponseParameters ): type
     buffer.setUint16(parameters.voltageUnderLowLoad);
     buffer.setUint16(parameters.voltageUnderHighLoad);
     buffer.setUint16(parameters.internalResistance);
-    buffer.setUint8(parameters.temperature);
+    buffer.setInt8(parameters.temperature);
     buffer.setUint8(parameters.remainingCapacity);
     buffer.setUint8(parameters.isLastDayOverconsumption ? 1 : 0);
     buffer.setUint16(parameters.averageDailyOverconsumptionCounter);

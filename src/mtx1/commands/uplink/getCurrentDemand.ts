@@ -70,12 +70,12 @@ export interface IGetCurrentDemandValues {
      * Load or voltage data.
      */
     values: Array<{
-        tariff?: number,
-        energy?: number,
-        voltage?: number,
+        tariff?: types.TUint8,
+        energy?: types.TUint8,
+        voltage?: types.TUint8,
 
         /** The number of the additional hour that occurs during the transition to winter time. */
-        lastSummerHour?: number
+        lastSummerHour?: types.TUint8
     }>
 }
 
@@ -145,38 +145,22 @@ export const examples: command.TCommandExamples = {
                 {
                     demandType: demandTypes.A_PLUS,
                     values: [
-                        {
-                            tariff: 2,
-                            energy: 64
-                        },
-                        {
-                            tariff: 2,
-                            energy: 32
-                        }
+                        {tariff: 2, energy: 64},
+                        {tariff: 2, energy: 32}
                     ]
                 },
                 {
                     demandType: demandTypes.A_MINUS,
                     values: [
-                        {
-                            tariff: 1,
-                            energy: 0
-                        },
-                        {
-                            tariff: 2,
-                            energy: 100
-                        }
+                        {tariff: 1, energy: 0},
+                        {tariff: 2, energy: 100}
                     ]
                 },
                 {
                     demandType: demandTypes.VOLTAGE,
                     values: [
-                        {
-                            voltage: 2201
-                        },
-                        {
-                            voltage: 2159
-                        }
+                        {voltage: 2201},
+                        {voltage: 2159}
                     ]
                 }
             ]
@@ -196,20 +180,20 @@ export const examples: command.TCommandExamples = {
     }
 };
 
-export const getCurrentDemandParameters = (buffer: IBinaryBuffer): IGetCurrentDemandParameters => ({
+export const getCurrentDemandParameters = ( buffer: IBinaryBuffer ): IGetCurrentDemandParameters => ({
     date: getDate(buffer),
     firstIndex: buffer.getUint16(),
     count: buffer.getUint8(),
     period: buffer.getUint8()
 });
 
-export const getCurrentDemandValues = (buffer: IBinaryBuffer, parameters: IGetCurrentDemandParameters): Array<IGetCurrentDemandValues> => {
+export const getCurrentDemandValues = ( buffer: IBinaryBuffer, parameters: IGetCurrentDemandParameters ): Array<IGetCurrentDemandValues> => {
     // demandTypeByteSize + parameters.count + demandSingleValueSize
     const demandChunkSize = 1 + parameters.count * 2;
     const demandParametersSize = Math.floor(buffer.bytesLeft / demandChunkSize);
     const demands: Array<IGetCurrentDemandValues> = [];
 
-    for (let demandParameterIndex = 0; demandParameterIndex < demandParametersSize; demandParameterIndex++) {
+    for ( let demandParameterIndex = 0; demandParameterIndex < demandParametersSize; demandParameterIndex++ ) {
         const demandType = buffer.getUint8();
         const isEnergiesDemand = demandType === demandTypes.A_PLUS || demandType === demandTypes.A_MINUS;
         const demandsBytes = new Array(parameters.count).fill(0).map(() => buffer.getUint16());
@@ -224,7 +208,7 @@ export const getCurrentDemandValues = (buffer: IBinaryBuffer, parameters: IGetCu
     return demands;
 };
 
-export const setCurrentDemandParameters = (buffer: IBinaryBuffer, parameters: IGetCurrentDemandParameters): void => {
+export const setCurrentDemandParameters = ( buffer: IBinaryBuffer, parameters: IGetCurrentDemandParameters ): void => {
     const {firstIndex, count, period} = parameters;
 
     buffer.setUint16(firstIndex);
@@ -232,7 +216,7 @@ export const setCurrentDemandParameters = (buffer: IBinaryBuffer, parameters: IG
     buffer.setUint8(period);
 };
 
-export const setCurrentDemandValues = (buffer: IBinaryBuffer, demands: Array<IGetCurrentDemandValues>): void => {
+export const setCurrentDemandValues = ( buffer: IBinaryBuffer, demands: Array<IGetCurrentDemandValues> ): void => {
     demands.forEach(demand => {
         const {demandType, values} = demand;
         const isEnergiesDemand = demandType === demandTypes.A_PLUS || demandType === demandTypes.A_MINUS;
