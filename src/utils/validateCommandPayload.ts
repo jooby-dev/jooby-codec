@@ -2,15 +2,7 @@ import * as types from '../types.js';
 import getHexFromBytes from './getHexFromBytes.js';
 
 
-/**
- * @todo: support flexible expectedLength formats for commands with variable lengths
- *
- * Some commands do not have a fixed length.
- * This change allows expectedLength to accept complex arguments:
- * {fixedLength: number}
- * {minimalLength: number, maximalLength: number}
- */
-export default ( commandName: string, bytes: types.TBytes, expectedLength: number ) => {
+export const validateRangeCommandPayload = ( commandName: string, bytes: types.TBytes, range: {min?: number; max?: number} ) => {
     if ( !commandName ) {
         throw new Error('Command name is required.');
     }
@@ -19,9 +11,19 @@ export default ( commandName: string, bytes: types.TBytes, expectedLength: numbe
         throw new Error(`Invalid payload for ${commandName}. Expected array, got: ${typeof bytes}.`);
     }
 
-    if ( bytes.length !== expectedLength ) {
+    if ( (range.min > 0 && bytes.length < range.min ) || (range.max > 0 && bytes.length > range.max ) ) {
         const hex = getHexFromBytes(bytes, {separator: ''});
+        const expectedLengthReport = range.min === range.max
+            ? `${range.max}`
+            : JSON.stringify(range);
 
-        throw new Error(`Wrong buffer size for ${commandName}: ${bytes.length}. Expected: ${expectedLength}. Payload: 0x${hex}.`);
+        throw new Error(`Wrong buffer size for ${commandName}: ${bytes.length}. Expected: ${expectedLengthReport}. Payload: 0x${hex}.`);
     }
 };
+
+export const validateFixedCommandPayload = ( commandName: string, bytes: types.TBytes, expectedLength: number ) => (
+    validateRangeCommandPayload(commandName, bytes, {min: expectedLength, max: expectedLength})
+);
+
+
+export default validateFixedCommandPayload;

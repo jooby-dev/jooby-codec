@@ -600,7 +600,7 @@ export interface ISpecialDay {
     dayIndex: types.TUint8,
 
     /**
-     * If year === 0, the date is treated as periodic (month and day are fixed)
+     * If year === 0, it affects all years, otherwise only the specified year.
      */
     year: types.TYear2000
 }

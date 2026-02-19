@@ -12,7 +12,7 @@
  * import * as getSpecialDay from 'jooby-codec/mtx1/commands/uplink/getSpecialDay.js';
  *
  * // special day response
- * const bytes = [0x01, 0x09, 0x03, 0x00];
+ * const bytes = [0x01, 0x09, 0x03, 0x0a];
  *
  * // decoded payload
  * const parameters = getSpecialDay.fromBytes(bytes);
@@ -23,7 +23,7 @@
  *     month: 1,
  *     date: 9,
  *     dayIndex: 3,
- *     isPeriodic: true
+ *     year: 10
  * }
  * ```
  *
