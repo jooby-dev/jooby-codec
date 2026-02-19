@@ -32,6 +32,7 @@ import commandNames from '../../constants/uplinkNames.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as deviceParameters from '../../constants/deviceParameters.js';
+import {validateRangeCommandPayload} from '../../../utils/validateCommandPayload.js';
 
 
 interface IScheduleStatus {
@@ -39,8 +40,8 @@ interface IScheduleStatus {
     id: types.TUint8;
 
     /**
-     * `1` - schedule setup was successful <br>
-     * `0` - schedule setting failed, all schedules would not be changed
+     * `true` - schedule configuration succeeded <br>
+     * `false` - schedule configuration failed; all schedules remain unchanged
      */
     isSuccessful: boolean;
 }
@@ -64,6 +65,7 @@ export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
+const MIN_COMMAND_SIZE = 2;
 const MAX_COMMAND_SIZE = 10;
 
 export const examples: command.TCommandExamples = {
@@ -116,9 +118,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): ISetParameterResponseParameters => {
-    if ( bytes.length > MAX_COMMAND_SIZE ) {
-        throw new Error(`Wrong buffer size: ${bytes.length}.`);
-    }
+    validateRangeCommandPayload(name, bytes, {min: MIN_COMMAND_SIZE, max: MAX_COMMAND_SIZE});
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters: ISetParameterResponseParameters = {
@@ -129,7 +129,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetParameterResponseParameter
     if ( parameters.id === deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG ) {
         const scheduleStatuses: Array<IScheduleStatus> = [];
 
-        while (buffer.bytesLeft) {
+        while ( buffer.bytesLeft ) {
             scheduleStatuses.push({
                 id: buffer.getUint8(),
                 isSuccessful: buffer.getUint8() !== 0
@@ -141,7 +141,7 @@ export const fromBytes = ( bytes: types.TBytes ): ISetParameterResponseParameter
         }
     }
 
-    if ( !buffer.isEmpty) {
+    if ( !buffer.isEmpty ) {
         throw new Error('BinaryBuffer is not empty.');
     }
 
@@ -168,7 +168,7 @@ export const toBytes = ( parameters: ISetParameterResponseParameters ): types.TB
     buffer.setUint8(parameters.status);
 
     if ( parameters.scheduleStatuses ) {
-        for (const scheduleStatus of parameters.scheduleStatuses) {
+        for ( const scheduleStatus of parameters.scheduleStatuses ) {
             buffer.setUint8(scheduleStatus.id);
             buffer.setUint8(scheduleStatus.isSuccessful ? 1 : 0);
         }

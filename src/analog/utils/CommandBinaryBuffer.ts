@@ -301,7 +301,7 @@ interface IParameterChannelsConfig {
 
 /**
  * MTX Data transmission schedule.
- * `deviceParameters.MTX_DATA_TRANSMISSION_SCHEDULE = 14`.
+ * `deviceParameters.MTX_DATA_TRANSMISSION_SCHEDULE = 14`
  * Applicable only for the MTX LoRaWAN module.
  *
  * Configures the schedule for different types of data transmissions.
@@ -337,32 +337,32 @@ interface IParameterMtxDataTransmissionSchedule {
  */
 interface IParameterMtxPowerConfig {
     /**
-     * ACTIVE: active energy for half hour (А+) - bit 0
+     * active energy for half hour (А+) - bit 0
      */
     active: boolean,
 
     /**
-     * VARI: positive (capacitive) reactive energy for half hour (A+R+) - bit 1
+     * positive (capacitive) reactive energy for half hour (A+R+) - bit 1
      */
     vari: boolean,
 
     /**
-     * VARE: negative (inductive) reactive energy for half hour (A+R-) - bit 2
+     * negative (inductive) reactive energy for half hour (A+R-) - bit 2
      */
     vare: boolean,
 
     /**
-     * ACTIVE_EXP: active energy for half hour (А-) - bit 3
+     * active energy for half hour (А-) - bit 3
      */
     activeExp: boolean,
 
     /**
-     * VARI_EXP: positive (capacitive) reactive energy for half hour (A-R+) - bit 4
+     * positive (capacitive) reactive energy for half hour (A-R+) - bit 4
      */
     variExp: boolean,
 
     /**
-     * VARE_EXP: negative (inductive) reactive energy for half hour (A-R-) - bit 5
+     * negative (inductive) reactive energy for half hour (A-R-) - bit 5
      */
     vareExp: boolean
 }
@@ -791,8 +791,8 @@ interface IParameterActivateModule {
 }
 
 /**
- * MTX Schedule of the different demand types for uplink command - `getCurrentDemand`
- * `deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG = 64`.
+ * MTX Schedule of the different demand types for uplink command - `getCurrentDemand`.
+ * `deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG = 64`
  * Applicable only for the MTX LoRaWAN module.
  */
 interface IParameterMtxGetCurrentDemandScheduleConfig {
@@ -1327,7 +1327,7 @@ const deviceParameterConvertersMap = {
             for ( let i = 0; i < 4; i++ ) {
                 const dataType = buffer.getUint8();
                 const transmissionPeriod = buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT;
-                const allowedHoursScheduleValue = buffer.getUint24();
+                const allowedHoursScheduleValue = buffer.getUint24(true);
 
                 // Convert 24-bit value to record mapping hour to enabled state
                 const allowedHoursSchedule: Record<number, number> = {};
@@ -1357,7 +1357,7 @@ const deviceParameterConvertersMap = {
                     }
                 }
 
-                buffer.setUint24(allowedHoursScheduleValue);
+                buffer.setUint24(allowedHoursScheduleValue, true);
             }
         }
     },
@@ -1749,7 +1749,7 @@ const deviceParameterConvertersMap = {
         get: ( buffer: IBinaryBuffer ): IParameterMtxGetCurrentDemandScheduleConfig => {
             const schedules = [];
 
-            while (buffer.bytesLeft > 0) {
+            while ( buffer.bytesLeft > 0 ) {
                 const id = buffer.getUint8();
                 const transmissionPeriod = buffer.getUint8() * DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT;
                 const demandType0 = buffer.getUint8();
