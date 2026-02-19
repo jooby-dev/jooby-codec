@@ -1,8 +1,7 @@
 import {START_BYTE, STOP_BYTE} from '../constants/frameAttributes.js';
 import {TBytes} from '../types.js';
 import invertObject from './invertObject.js';
-import calculateCrc16 from './calculateCrc16.js';
-import BinaryBuffer, {IBinaryBuffer} from './BinaryBuffer.js';
+import * as payloadCrc16 from './payloadCrc16.js';
 
 
 export interface IFrame {
@@ -35,23 +34,6 @@ const byteUnstuffMap7thBitSize: Record<number, number> = invertObject(byteStuffM
 
 const byteStuff = ( stuffingMap: Record<number, number>, byte: number ): number => +stuffingMap[byte] || byte;
 
-const convertCrcToBytes = ( crc: number ) : TBytes => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(2);
-
-    buffer.setUint16(crc);
-
-    return buffer.toUint8Array();
-};
-
-const getFrameCrc = ( frame: TBytes ): number | undefined => {
-    if ( frame.length >= 2 ) {
-        const crcBuffer: IBinaryBuffer = new BinaryBuffer(frame.slice(-2));
-
-        return crcBuffer.getUint16();
-    }
-
-    return undefined;
-};
 
 export const arrayStuff = ( data: TBytes, dataBits: TDataBits = 8 ): TBytes => {
     const stuffingMap = dataBits === 7 ? byteStuffMap7thBitSize : byteStuffMap;
@@ -104,9 +86,7 @@ export const arrayUnstuff = ( data: TBytes, dataBits: TDataBits = 8 ): TBytes =>
 };
 
 export const toBytes = ( content: TBytes, dataBits: TDataBits = 8 ): TBytes => {
-    const crc = calculateCrc16(content);
-    const crcBytes = convertCrcToBytes(crc);
-    const stuffed = content.length === 0 ? [] : arrayStuff([...content, ...crcBytes], dataBits);
+    const stuffed = content.length === 0 ? [] : arrayStuff(payloadCrc16.appendCrc(content), dataBits);
     const bytes = content.length === 0 ? [] : [0x7e, ...stuffed, 0x7e];
 
     return bytes;
@@ -129,19 +109,13 @@ export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
     }
 
     const unstuffed = arrayUnstuff(bytes.slice(1, bytes.length - 1), dataBits);
-    const receivedCrc = getFrameCrc(unstuffed);
-    const payload = unstuffed.slice(0, unstuffed.length - 2);
-    const calculatedCrc = calculateCrc16(payload);
+    const payload = payloadCrc16.parse(unstuffed);
     const frame = {
         bytes,
-        payload,
-        crc: {
-            calculated: calculatedCrc,
-            received: receivedCrc
-        }
+        ...payload
     };
 
-    if ( calculatedCrc !== receivedCrc ) {
+    if ( frame.crc.calculated !== frame.crc.received ) {
         return {
             frame,
             error: 'Mismatch CRC.'
