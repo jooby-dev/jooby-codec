@@ -55,7 +55,7 @@ interface IProduct {
 interface IGasStatus extends IStatusBase {
     batteryVoltage: IBatteryVoltage;
     batteryInternalResistance?: types.TUint16;
-    temperature: types.TInt8;
+    temperature: types.TUint8;
     remainingBatteryCapacity?: types.TUint8;
     lastEventSequenceNumber: types.TUint8;
     /** Displays the error rate coefficient when communicating with the base station (downlink frames), percents. */
@@ -63,10 +63,10 @@ interface IGasStatus extends IStatusBase {
 }
 
 interface IMtxStatus extends IStatusBase {
-    uptime: types.TUint32;
+    time2000: types.TUint32;
     resetReason: types.TUint8;
-    rssiLastDownlinkFrame: types.TInt8;
-    snrLastDownlinkFrame: types.TInt8;
+    rssiLastDownlinkFrame: types.TUint8;
+    snrLastDownlinkFrame: types.TUint8;
     downlinkRequestsNumber: types.TUint8;
     downlinkFragmentsNumber: types.TUint8;
     uplinkResponsesNumber: types.TUint8;
@@ -150,7 +150,7 @@ export const examples: command.TCommandExamples = {
             software: {type: 2, version: 10},
             hardware: {type: hardwareTypes.MTXLORA, version: 1},
             data: {
-                uptime: 4444,
+                time2000: 4444,
                 resetReason: 1,
                 rssiLastDownlinkFrame: 2,
                 snrLastDownlinkFrame: 6,
@@ -204,7 +204,7 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
                 const statusData: IGasStatus = {
                     batteryVoltage: getBatteryVoltage(buffer),
                     batteryInternalResistance: buffer.getUint16(),
-                    temperature: buffer.getInt8(),
+                    temperature: buffer.getUint8(),
                     remainingBatteryCapacity: buffer.getUint8(),
                     lastEventSequenceNumber: buffer.getUint8()
                 };
@@ -235,10 +235,10 @@ export const fromBytes = ( bytes: types.TBytes ): IStatusParameters => {
         case hardwareTypes.PLC2LORA:
         case hardwareTypes.LORA:
             data = {
-                uptime: buffer.getUint32(),
+                time2000: buffer.getUint32(),
                 resetReason: buffer.getUint8(),
-                rssiLastDownlinkFrame: buffer.getInt8(),
-                snrLastDownlinkFrame: buffer.getInt8(),
+                rssiLastDownlinkFrame: buffer.getUint8(),
+                snrLastDownlinkFrame: buffer.getUint8(),
                 downlinkRequestsNumber: buffer.getUint8(),
                 downlinkFragmentsNumber: buffer.getUint8(),
                 uplinkResponsesNumber: buffer.getUint8(),
@@ -297,7 +297,7 @@ export const toBytes = ( parameters: IStatusParameters ): types.TBytes => {
                     buffer.setUint16(statusData.batteryInternalResistance);
                 }
 
-                buffer.setInt8(statusData.temperature);
+                buffer.setUint8(statusData.temperature);
 
                 if ( statusData.remainingBatteryCapacity === undefined ) {
                     buffer.setUint8(UNKNOWN_BATTERY_CAPACITY);
@@ -318,14 +318,12 @@ export const toBytes = ( parameters: IStatusParameters ): types.TBytes => {
             break;
 
         case hardwareTypes.MTXLORA:
-        case hardwareTypes.PLC2LORA:
-        case hardwareTypes.LORA:
             {
                 const statusData = data as IMtxStatus;
-                buffer.setUint32(statusData.uptime);
+                buffer.setUint32(statusData.time2000);
                 buffer.setUint8(statusData.resetReason);
-                buffer.setInt8(statusData.rssiLastDownlinkFrame);
-                buffer.setInt8(statusData.snrLastDownlinkFrame);
+                buffer.setUint8(statusData.rssiLastDownlinkFrame);
+                buffer.setUint8(statusData.snrLastDownlinkFrame);
                 buffer.setUint8(statusData.downlinkRequestsNumber);
                 buffer.setUint8(statusData.downlinkFragmentsNumber);
                 buffer.setUint8(statusData.uplinkResponsesNumber);
