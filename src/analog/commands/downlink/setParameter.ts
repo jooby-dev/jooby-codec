@@ -167,6 +167,164 @@ export const examples: command.TCommandExamples = {
             0x0d, 0x00
         ]
     },
+    '14_MTX: set data transmission schedule': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: deviceParameters.MTX_DATA_TRANSMISSION_SCHEDULE,
+            name: deviceParameterNames[deviceParameters.MTX_DATA_TRANSMISSION_SCHEDULE],
+            data: {
+                schedules: [
+                    {
+                        dataType: 0,
+                        transmissionPeriod: 8400,
+                        allowedHoursSchedule: {
+                            0: 1,
+                            1: 1,
+                            2: 1,
+                            3: 1,
+                            4: 1,
+                            5: 1,
+                            6: 1,
+                            7: 1,
+                            8: 1,
+                            9: 0,
+                            10: 0,
+                            11: 0,
+                            12: 0,
+                            13: 0,
+                            14: 0,
+                            15: 0,
+                            16: 0,
+                            17: 0,
+                            18: 0,
+                            19: 0,
+                            20: 1,
+                            21: 1,
+                            22: 1,
+                            23: 1
+                        }
+                    },
+                    {
+                        dataType: 1,
+                        transmissionPeriod: 600,
+                        allowedHoursSchedule: {
+                            0: 0,
+                            1: 0,
+                            2: 0,
+                            3: 0,
+                            4: 0,
+                            5: 0,
+                            6: 1,
+                            7: 0,
+                            8: 0,
+                            9: 0,
+                            10: 0,
+                            11: 0,
+                            12: 0,
+                            13: 1,
+                            14: 0,
+                            15: 0,
+                            16: 0,
+                            17: 0,
+                            18: 0,
+                            19: 0,
+                            20: 1,
+                            21: 0,
+                            22: 0,
+                            23: 0
+                        }
+                    },
+                    {
+                        dataType: 2,
+                        transmissionPeriod: 600,
+                        allowedHoursSchedule: {
+                            0: 0,
+                            1: 0,
+                            2: 0,
+                            3: 0,
+                            4: 0,
+                            5: 0,
+                            6: 0,
+                            7: 0,
+                            8: 0,
+                            9: 0,
+                            10: 0,
+                            11: 0,
+                            12: 0,
+                            13: 0,
+                            14: 0,
+                            15: 0,
+                            16: 0,
+                            17: 0,
+                            18: 0,
+                            19: 0,
+                            20: 0,
+                            21: 0,
+                            22: 0,
+                            23: 0
+                        }
+                    },
+                    {
+                        dataType: 3,
+                        transmissionPeriod: 10800,
+                        allowedHoursSchedule: {
+                            0: 0,
+                            1: 0,
+                            2: 0,
+                            3: 0,
+                            4: 0,
+                            5: 0,
+                            6: 0,
+                            7: 0,
+                            8: 0,
+                            9: 0,
+                            10: 0,
+                            11: 0,
+                            12: 0,
+                            13: 1,
+                            14: 1,
+                            15: 1,
+                            16: 1,
+                            17: 1,
+                            18: 1,
+                            19: 1,
+                            20: 0,
+                            21: 0,
+                            22: 0,
+                            23: 0
+                        }
+                    }
+                ]
+            }
+        },
+        bytes: [
+            0x03, 0x15,
+            0x0e, 0x00, 0x0e, 0xff, 0x01, 0xf0, 0x01, 0x01, 0x40, 0x20, 0x10, 0x02, 0x01, 0x00, 0x00, 0x00, 0x03, 0x12, 0x00, 0xe0, 0x0f
+        ]
+    },
+    '15_MTX: set power config': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: deviceParameters.MTX_POWER_CONFIG,
+            name: deviceParameterNames[deviceParameters.MTX_POWER_CONFIG],
+            data: {
+                active: true,
+                vari: false,
+                vare: false,
+                activeExp: true,
+                variExp: false,
+                vareExp: false
+            }
+        },
+        bytes: [
+            0x03, 0x02,
+            0x0f, 0x09
+        ]
+    },
     '18_LoRa: set spread factor and frequency for RX2 window': {
         id,
         name,
@@ -761,6 +919,27 @@ export const examples: command.TCommandExamples = {
         bytes: [
             0x03, 0x02,
             0x3d, 0x01
+        ]
+    },
+    '64_MTX: set current demand schedule config': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG,
+            name: deviceParameterNames[deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG],
+            data: {
+                schedules: [
+                    {id: 0, transmissionPeriod: 3600, demandType0: 0x01, demandType1: 0, demandType2: 0},
+                    {id: 1, transmissionPeriod: 14400, demandType0: 0x02, demandType1: 0, demandType2: 0},
+                    {id: 2, transmissionPeriod: 14400, demandType0: 0xa0, demandType1: 0, demandType2: 0},
+                    {id: 3, transmissionPeriod: 14400, demandType0: 0x40, demandType1: 0, demandType2: 0}
+                ]
+            }
+        },
+        bytes: [
+            0x03, 0x15,
+            0x40, 0x00, 0x06, 0x01, 0x00, 0x00, 0x01, 0x18, 0x02, 0x00, 0x00, 0x02, 0x18, 0xa0, 0x00, 0x00, 0x03, 0x18, 0x40, 0x00, 0x00
         ]
     }
 };

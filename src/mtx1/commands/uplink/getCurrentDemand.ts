@@ -53,8 +53,8 @@ import {getCurrentDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 import * as demandTypes from '../../constants/demandTypes.js';
 import * as demandsUtils from '../../utils/demands.js';
-import * as getDemandCommand from '../downlink/getDemand.js';
 import {getDate, setDate} from '../../utils/LoraCommandBinaryBuffer.js';
+import {validateRangeCommandPayload} from '../../../utils/validateCommandPayload.js';
 
 
 export interface IGetCurrentDemandResponseParameters extends IGetCurrentDemandParameters {
@@ -118,11 +118,14 @@ export interface IGetCurrentDemandParameters {
     period: types.TUint8
 }
 
+// command id + command size + demandParameters + demandValues
+const MIN_COMMAND_SIZE = 1 + 1 + 6 + 3;
+const MAX_COMMAND_SIZE = 0xfc;
 
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const maxSize = 0xff;
+export const maxSize = MAX_COMMAND_SIZE;
 export const accessLevel: types.TAccessLevel = UNENCRYPTED;
 export const isLoraOnly = true;
 
@@ -180,14 +183,14 @@ export const examples: command.TCommandExamples = {
     }
 };
 
-export const getCurrentDemandParameters = ( buffer: IBinaryBuffer ): IGetCurrentDemandParameters => ({
+const getCurrentDemandParameters = ( buffer: IBinaryBuffer ): IGetCurrentDemandParameters => ({
     date: getDate(buffer),
     firstIndex: buffer.getUint16(),
     count: buffer.getUint8(),
     period: buffer.getUint8()
 });
 
-export const getCurrentDemandValues = ( buffer: IBinaryBuffer, parameters: IGetCurrentDemandParameters ): Array<IGetCurrentDemandValues> => {
+const getCurrentDemandValues = ( buffer: IBinaryBuffer, parameters: IGetCurrentDemandParameters ): Array<IGetCurrentDemandValues> => {
     // demandTypeByteSize + parameters.count + demandSingleValueSize
     const demandChunkSize = 1 + parameters.count * 2;
     const demandParametersSize = Math.floor(buffer.bytesLeft / demandChunkSize);
@@ -208,7 +211,7 @@ export const getCurrentDemandValues = ( buffer: IBinaryBuffer, parameters: IGetC
     return demands;
 };
 
-export const setCurrentDemandParameters = ( buffer: IBinaryBuffer, parameters: IGetCurrentDemandParameters ): void => {
+const setCurrentDemandParameters = ( buffer: IBinaryBuffer, parameters: IGetCurrentDemandParameters ): void => {
     const {firstIndex, count, period} = parameters;
 
     buffer.setUint16(firstIndex);
@@ -216,7 +219,7 @@ export const setCurrentDemandParameters = ( buffer: IBinaryBuffer, parameters: I
     buffer.setUint8(period);
 };
 
-export const setCurrentDemandValues = ( buffer: IBinaryBuffer, demands: Array<IGetCurrentDemandValues> ): void => {
+const setCurrentDemandValues = ( buffer: IBinaryBuffer, demands: Array<IGetCurrentDemandValues> ): void => {
     demands.forEach(demand => {
         const {demandType, values} = demand;
         const isEnergiesDemand = demandType === demandTypes.A_PLUS || demandType === demandTypes.A_MINUS;
@@ -239,9 +242,7 @@ export const setCurrentDemandValues = ( buffer: IBinaryBuffer, demands: Array<IG
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCurrentDemandResponseParameters => {
-    if ( !bytes || bytes.length < getDemandCommand.maxSize ) {
-        throw new Error('Invalid uplink GetCurrentDemand byte length.');
-    }
+    validateRangeCommandPayload(name, bytes, {min: MIN_COMMAND_SIZE, max: MAX_COMMAND_SIZE});
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters: IGetCurrentDemandParameters = getCurrentDemandParameters(buffer);
