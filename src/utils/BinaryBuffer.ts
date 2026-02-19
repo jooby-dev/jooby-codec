@@ -243,12 +243,20 @@ export interface IBinaryBuffer {
     setFloat32 ( value: types.TFloat32, isLittleEndian?: boolean ): void,
     getFloat32 ( isLittleEndian?: boolean ): types.TFloat32,
 
+    setIpV4( value: types.TIpV4 ): void,
+    getIpV4 (): types.TIpV4,
+
     getBytes ( length: number, offset?: number ): types.TBytes,
     setBytes ( data: types.TBytes, offset?: number ): void,
 
-    getBytesToOffset ( offset?: number ): types.TBytes
+    setFixedString ( value: string ): void,
+    getFixedString ( length: number ): string,
+
     setString ( value: string ): void,
     getString (): string,
+
+    setVersion ( value: types.IVersion ): void,
+    getVersion (): types.IVersion,
 
     getBytesToOffset ( offset?: number ): types.TBytes,
     getBytesLeft (): types.TBytes
@@ -406,17 +414,22 @@ BinaryBuffer.prototype = {
         return result;
     },
 
-    setString ( value: string ) {
-        this.setUint8(value.length);
+    setIpV4 ( value: types.TIpV4 ) {
+        this.setBytes(value);
+    },
 
+    getIpV4 (): types.TIpV4 {
+        return this.getBytes(4);
+    },
+
+    setFixedString ( value: string ) {
         for ( let index = 0; index < value.length; ++index ) {
             this.setUint8(value.charCodeAt(index));
         }
     },
 
-    getString (): string {
-        const size: types.TUint8 = this.getUint8();
-        const endIndex = this.offset + size;
+    getFixedString ( length: number ): string {
+        const endIndex = this.offset + length;
         const chars = [];
 
         while ( this.offset < endIndex ) {
@@ -424,6 +437,26 @@ BinaryBuffer.prototype = {
         }
 
         return chars.join('');
+    },
+
+    setString ( value: string ) {
+        this.setUint8(value.length);
+        this.setFixedString(value);
+    },
+
+    getString (): string {
+        const length: types.TUint8 = this.getUint8();
+
+        return this.getFixedString(length);
+    },
+
+    setVersion ( {major, minor}: types.IVersion ) {
+        this.setUint8(major);
+        this.setUint8(minor);
+    },
+
+    getVersion (): types.IVersion {
+        return {major: this.getUint8(), minor: this.getUint8()};
     },
 
     /**
