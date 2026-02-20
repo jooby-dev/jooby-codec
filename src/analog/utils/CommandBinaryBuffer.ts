@@ -266,7 +266,6 @@ interface IParameterReportingDataType {
 
 /**
  * Delivery type of priority data, with or without acknowledgment.
- *
  * Priority data - frames from uplink/NewEvent command.
  *
  * `deviceParameters.PRIORITY_DATA_DELIVERY_TYPE = 8`
@@ -856,7 +855,6 @@ interface IParameterMtxGetCurrentDemandScheduleConfig {
          * - for MTX3: src/mtx3/constants/demandTypes.ts
          *
          * The applied parameters must also have the same integration period.
-         *
          * For example, phase voltages with a 10-minute integration period and a load profile with a 30-minute integration period are not compatible.
          */
         demandType0: types.TUint8;
