@@ -210,7 +210,8 @@ export interface IChannelsMask {
 interface IParameterEmpty {}
 
 /**
- * Device send data periodically using this interval.<p>
+ * Device send data periodically using this interval.
+ *
  * `deviceParameters.REPORTING_DATA_INTERVAL = 1`
  */
 interface IParameterReportingDataInterval {
@@ -237,7 +238,8 @@ interface IParameterReportingDataInterval {
 }
 
 /**
- * The parameter defines the hour of the day by which the daily consumption is calculated.<p>
+ * The parameter defines the hour of the day by which the daily consumption is calculated.
+ *
  * `deviceParameters.DAY_CHECKOUT_HOUR = 4`
  */
 interface IParameterDayCheckoutHour {
@@ -248,7 +250,8 @@ interface IParameterDayCheckoutHour {
 }
 
 /**
- * Type of data from device.<p>
+ * Type of data from device.
+ *
  * `deviceParameters.REPORTING_DATA_TYPE = 5`
  */
 interface IParameterReportingDataType {
@@ -262,8 +265,10 @@ interface IParameterReportingDataType {
 }
 
 /**
- * Delivery type of priority data, with or without acknowledgment.<p>
- * Priority data - frames from uplink/NewEvent command.<p>
+ * Delivery type of priority data, with or without acknowledgment.
+ *
+ * Priority data - frames from uplink/NewEvent command.
+ *
  * `deviceParameters.PRIORITY_DATA_DELIVERY_TYPE = 8`
  */
 interface IParameterDeliveryTypeOfPriorityData {
@@ -275,7 +280,8 @@ interface IParameterDeliveryTypeOfPriorityData {
 }
 
 /**
- * Device activation method in LoRaWAN network.<p>
+ * Device activation method in LoRaWAN network.
+ *
  * `deviceParameters.ACTIVATION_METHOD = 9`
  */
 interface IParameterActivationMethod {
@@ -289,7 +295,8 @@ interface IParameterActivationMethod {
 }
 
 /**
- * Channels config, only for universal 4-channels devices<p>
+ * Channels config, only for universal 4-channels devices.
+ *
  * `deviceParameters.CHANNELS_CONFIG = 13`
  */
 interface IParameterChannelsConfig {
@@ -300,9 +307,12 @@ interface IParameterChannelsConfig {
 }
 
 /**
- * MTX Data transmission schedule.<p>
- * `deviceParameters.MTX_DATA_TRANSMISSION_SCHEDULE = 14`<p>
- * Applicable only for the MTX LoRaWAN module.<p>
+ * MTX Data transmission schedule.
+ *
+ * `deviceParameters.MTX_DATA_TRANSMISSION_SCHEDULE = 14`
+ *
+ * Applicable only for the MTX LoRaWAN module.
+ *
  * Configures the schedule for different types of data transmissions.
  */
 interface IParameterMtxDataTransmissionSchedule {
@@ -327,8 +337,10 @@ interface IParameterMtxDataTransmissionSchedule {
 }
 
 /**
- * MTX Power configuration.<p>
- * `deviceParameters.MTX_POWER_CONFIG = 15`<p>
+ * MTX Power configuration.
+ *
+ * `deviceParameters.MTX_POWER_CONFIG = 15`
+ *
  * Applicable only for the MTX LoRaWAN module.
  *
  * Defines which half-hour energy data types are transmitted via command `getHalfHourEnergies`.
@@ -367,7 +379,8 @@ interface IParameterMtxPowerConfig {
 }
 
 /**
- * RX2 configuration.<p>
+ * RX2 configuration.
+ *
  * `deviceParameters.RX2_CONFIG = 18`
  *
  * @see https://www.thethingsindustries.com/docs/reference/glossary/
@@ -394,7 +407,8 @@ interface IParameterRx2Config {
 }
 
 /**
- * Device battery depassivation information.<p>
+ * Device battery depassivation information.
+ *
  * `deviceParameters.BATTERY_DEPASSIVATION_INFO = 10`
  */
 interface IParameterBatteryDepassivationInfo {
@@ -407,7 +421,8 @@ interface IParameterBatteryDepassivationInfo {
 }
 
 /**
- * Device battery minimum required battery load time per day to prevent passivation.<p>
+ * Device battery minimum required battery load time per day to prevent passivation.
+ *
  * `deviceParameters.BATTERY_MINIMAL_LOAD_TIME = 11`
  */
 interface IParameterBatteryMinimalLoadTime {
@@ -415,7 +430,8 @@ interface IParameterBatteryMinimalLoadTime {
 }
 
 /**
- * Absolute data for pulse devices.<p>
+ * Absolute data for pulse devices.
+ *
  * `deviceParameters.ABSOLUTE_DATA = 23`
  */
 interface IParameterAbsoluteData {
@@ -429,7 +445,8 @@ interface IParameterAbsoluteData {
 }
 
 /**
- * Data type sending from device - absolute or not.<p>
+ * Data type sending from device - absolute or not.
+ *
  * `deviceParameters.ABSOLUTE_DATA_ENABLE = 24`
  */
 interface IParameterAbsoluteDataEnable {
@@ -441,7 +458,8 @@ interface IParameterAbsoluteDataEnable {
 }
 
 /**
- * Device serial number.<p>
+ * Device serial number.
+ *
  * `deviceParameters.SERIAL_NUMBER = 25`
  */
 interface IParameterSerialNumber {
@@ -452,7 +470,8 @@ interface IParameterSerialNumber {
 }
 
 /**
- * Device geolocation.<p>
+ * Device geolocation.
+ *
  * `deviceParameters.GEOLOCATION = 26`
  */
 interface IParameterGeolocation {
@@ -462,7 +481,8 @@ interface IParameterGeolocation {
 }
 
 /**
- * Interval in seconds when device send EXTRA FRAME.<p>
+ * Interval in seconds when device send EXTRA FRAME.
+ *
  * `deviceParameters.EXTRA_FRAME_INTERVAL = 28`
  */
 interface IParameterExtraFrameInterval {
@@ -481,7 +501,8 @@ interface IParameterExtraFrameInterval {
 }
 
 /**
- * Absolute data for multi-channel devices.<p>
+ * Absolute data for multi-channel devices.
+ *
  * `deviceParameters.ABSOLUTE_DATA_MULTI_CHANNEL = 29`
  */
 interface IParameterAbsoluteDataMC extends IParameterAbsoluteData {
@@ -490,7 +511,8 @@ interface IParameterAbsoluteDataMC extends IParameterAbsoluteData {
 }
 
 /**
- * Data type sending from device - absolute or not, multi-channel devices.<p>
+ * Data type sending from device - absolute or not, multi-channel devices.
+ *
  * `deviceParameters.ABSOLUTE_DATA_STATUS_MULTI_CHANNEL = 30`
  */
 interface IParameterAbsoluteDataEnableMC extends IParameterAbsoluteDataEnable {
@@ -499,7 +521,8 @@ interface IParameterAbsoluteDataEnableMC extends IParameterAbsoluteDataEnable {
 }
 
 /**
- * Channels scan config for pulse devices.<p>
+ * Channels scan config for pulse devices.
+ *
  * `deviceParameters.PULSE_CHANNELS_SCAN_CONFIG = 31`
  */
 interface IParameterPulseChannelsScanConfig {
@@ -525,14 +548,16 @@ interface IParameterPulseChannelsScanConfig {
 }
 
 /**
- * Set channels for pulse devices.<p>
+ * Set channels for pulse devices.
+ *
  * `deviceParameters.PULSE_CHANNELS_SET_CONFIG = 32`
  */
 interface IParameterPulseChannelsSetConfig extends IChannelsMask {
 }
 
 /**
- * Set configuration for battery depassivation.<p>
+ * Set configuration for battery depassivation.
+ *
  * `deviceParameters.BATTERY_DEPASSIVATION_CONFIG = 33`
  */
 interface IParameterBatteryDepassivationConfig {
@@ -551,7 +576,8 @@ interface IParameterBatteryDepassivationConfig {
 }
 
 /**
- * Set configuration for session.<p>
+ * Set configuration for session.
+ *
  * `deviceParameters.MQTT_SESSION_CONFIG = 34`
  */
 interface IParameterMqttSessionConfig {
@@ -562,7 +588,8 @@ interface IParameterMqttSessionConfig {
 }
 
 /**
- * Set broker address.<p>
+ * Set broker address.
+ *
  * `deviceParameters.MQTT_BROKER_ADDRESS = 35`
  */
 interface IParameterMqttBrokerAddress {
@@ -571,7 +598,8 @@ interface IParameterMqttBrokerAddress {
 }
 
 /**
- * Enable ssl.<p>
+ * Enable ssl.
+ *
  * `deviceParameters.MQTT_SSL_ENABLE = 36`
  */
 interface IParameterMqttSslEnable {
@@ -579,7 +607,8 @@ interface IParameterMqttSslEnable {
 }
 
 /**
- * Set topic prefix.<p>
+ * Set topic prefix.
+ *
  * `deviceParameters.MQTT_TOPIC_PREFIX = 37`
  */
 interface IParameterMqttTopicPrefix {
@@ -587,7 +616,8 @@ interface IParameterMqttTopicPrefix {
 }
 
 /**
- * Set configuration for data receive.<p>
+ * Set configuration for data receive.
+ *
  * `deviceParameters.MQTT_DATA_RECEIVE_CONFIG = 38`
  */
 interface IParameterMqttDataReceiveConfig {
@@ -597,7 +627,8 @@ interface IParameterMqttDataReceiveConfig {
 }
 
 /**
- * Set configuration for data send.<p>
+ * Set configuration for data send.
+ *
  * `deviceParameters.MQTT_DATA_SEND_CONFIG = 39`
  */
 interface IParameterMqttDataSendConfig {
@@ -607,7 +638,8 @@ interface IParameterMqttDataSendConfig {
 }
 
 /**
- * Set configuration for ssl.<p>
+ * Set configuration for ssl.
+ *
  * `deviceParameters.NBIOT_SSL_CONFIG = 40`
  */
 interface IParameterNbiotSslConfig {
@@ -616,7 +648,8 @@ interface IParameterNbiotSslConfig {
 }
 
 /**
- * Write ssl.<p>
+ * Write ssl.
+ *
  * `deviceParameters.NBIOT_SSL_CACERT_WRITE = 41`
  */
 interface IParameterNbiotSslWrite {
@@ -626,7 +659,8 @@ interface IParameterNbiotSslWrite {
 }
 
 /**
- * Set ssl crc32.<p>
+ * Set ssl crc32.
+ *
  * `deviceParameters.NBIOT_SSL_CACERT_SET = 42`
  */
 interface IParameterNbiotSslSet {
@@ -634,7 +668,8 @@ interface IParameterNbiotSslSet {
 }
 
 /**
- * Update device software.<p>
+ * Update device software.
+ *
  * `deviceParameters.NBIOT_DEVICE_SOFTWARE_UPDATE = 47`
  */
 interface IParameterNbiotDeviceSoftwareUpdate {
@@ -642,7 +677,8 @@ interface IParameterNbiotDeviceSoftwareUpdate {
 }
 
 /**
- * Update module firmware.<p>
+ * Update module firmware.
+ *
  * `deviceParameters.NBIOT_MODULE_FIRMWARE_UPDATE = 48`
  */
 interface IParameterNbiotModuleFirmwareUpdate {
@@ -650,7 +686,8 @@ interface IParameterNbiotModuleFirmwareUpdate {
 }
 
 /**
- * Set configuration for reporting data.<p>
+ * Set configuration for reporting data.
+ *
  * `deviceParameters.REPORTING_DATA_CONFIG = 49`
  */
 interface IParameterReportingDataConfig {
@@ -661,7 +698,8 @@ interface IParameterReportingDataConfig {
 }
 
 /**
- * Set configuration for events.<p>
+ * Set configuration for events.
+ *
  * `deviceParameters.EVENTS_CONFIG = 50`
  */
 interface IParameterEventsConfig {
@@ -671,7 +709,8 @@ interface IParameterEventsConfig {
 }
 
 /**
- * Get nbiot module info.<p>
+ * Get nbiot module info.
+ *
  * `deviceParameters.NBIOT_MODULE_INFO = 51`
  */
 interface IParameterNbiotModuleInfo {
@@ -679,7 +718,8 @@ interface IParameterNbiotModuleInfo {
 }
 
 /**
- * Set preferred nbiot bands to be searched for.<p>
+ * Set preferred nbiot bands to be searched for.
+ *
  * `deviceParameters.NBIOT_BANDS = 52`
  */
 interface IParameterNbiotBands {
@@ -687,7 +727,8 @@ interface IParameterNbiotBands {
 }
 
 /**
- * Set preferred nbiot bands to be searched for.<p>
+ * Set preferred nbiot bands to be searched for.
+ *
  * `deviceParameters.NBIOT_APN = 53`
  */
 interface IParameterNbiotApn {
@@ -695,7 +736,8 @@ interface IParameterNbiotApn {
 }
 
 /**
- * Enable LED indication.<p>
+ * Enable LED indication.
+ *
  * `deviceParameters.NBIOT_LED_INDICATION = 54`
  */
 interface IParameterNbiotLedIndication {
@@ -704,7 +746,8 @@ interface IParameterNbiotLedIndication {
 }
 
 /**
- * Set NB-IoT SIM PIN code.<p>
+ * Set NB-IoT SIM PIN code.
+ *
  * `deviceParameters.NBIOT_SIM = 55`
  */
 interface IParameterNbiotSim {
@@ -749,7 +792,8 @@ interface IParameterChannelType {
 }
 
 /**
- * Enable extra signal quality payload<p>
+ * Enable extra signal quality payload.
+ *
  * `deviceParameters.EXTRA_PAYLOAD_ENABLE = 57`
  */
 interface IParameterExtraPayloadEnable {
@@ -757,7 +801,8 @@ interface IParameterExtraPayloadEnable {
 }
 
 /**
- * Time synchronization period in seconds via MAC commands<p>
+ * Time synchronization period in seconds via MAC commands.
+ *
  * `deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC = 58`
  */
 interface IParameterTimeSynchronizationPeriodMac {
@@ -765,7 +810,8 @@ interface IParameterTimeSynchronizationPeriodMac {
 }
 
 /**
- * Keep its lora connection even after being removed<p>
+ * Keep its lora connection even after being removed.
+ *
  * `deviceParameters.KEEP_LORA_CONNECTION_ON_REMOVAL = 59`
  */
 interface IParameterKeepLoraConnectionOnRemoval {
@@ -773,7 +819,8 @@ interface IParameterKeepLoraConnectionOnRemoval {
 }
 
 /**
- * Set the NTP server. Module will synchronize the local time with Coordinated Universal Time (UTC) via the NTP server if a synchronization period is set<p>
+ * Set the NTP server. Module will synchronize the local time with Coordinated Universal Time (UTC) via the NTP server if a synchronization period is set.
+ *
  * `deviceParameters.NBIOT_NTP_SERVER = 60`
  */
 interface IParameterNbiotNtpServer {
@@ -782,7 +829,8 @@ interface IParameterNbiotNtpServer {
 }
 
 /**
- * Activate/deactivate module<p>
+ * Activate/deactivate module.
+ *
  * `deviceParameters.ACTIVATE_MODULE = 61`
  */
 interface IParameterActivateModule {
@@ -790,8 +838,10 @@ interface IParameterActivateModule {
 }
 
 /**
- * MTX Schedule of the different demand types for uplink command - `getCurrentDemand`.<p>
- * `deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG = 64`<p>
+ * MTX Schedule of the different demand types for uplink command - `getCurrentDemand`.
+ *
+ * `deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG = 64`
+ *
  * Applicable only for the MTX LoRaWAN module.
  */
 interface IParameterMtxGetCurrentDemandScheduleConfig {
@@ -803,8 +853,10 @@ interface IParameterMtxGetCurrentDemandScheduleConfig {
         /**
          * Demand type should be one of the following:
          * - for MTX1: src/mtx1/constants/demandTypes.ts
-         * - for MTX3: src/mtx3/constants/demandTypes.ts <p>
-         * The applied parameters must also have the same integration period. <p>
+         * - for MTX3: src/mtx3/constants/demandTypes.ts
+         *
+         * The applied parameters must also have the same integration period.
+         *
          * For example, phase voltages with a 10-minute integration period and a load profile with a 30-minute integration period are not compatible.
          */
         demandType0: types.TUint8;
