@@ -249,7 +249,9 @@ export interface IBinaryBuffer {
     getBytes ( length: number, offset?: number ): types.TBytes,
     setBytes ( data: types.TBytes, offset?: number ): void,
 
-    getBytesToOffset ( offset?: number ): types.TBytes
+    setFixedString ( value: string, length: number ): void,
+    getFixedString ( length: number ): string,
+
     setString ( value: string ): void,
     getString (): string,
 
@@ -420,21 +422,51 @@ BinaryBuffer.prototype = {
         return this.getBytes(4);
     },
 
-        for ( let index = 0; index < value.length; ++index ) {
+    setFixedString ( value: string, length: number ) {
+        const lengthToCopy = value.length > length ? length : value.length;
+        let index: number = 0;
+
+        for ( index = 0; index < lengthToCopy; ++index ) {
             this.setUint8(value.charCodeAt(index));
+        }
+
+        for ( index = lengthToCopy; index < length; ++index ) {
+            this.setUint8(0);
         }
     },
 
-    getString (): string {
-        const size: types.TUint8 = this.getUint8();
-        const endIndex = this.offset + size;
+    getFixedStringBase ( length: number, {stopOnZero}: {stopOnZero?: boolean} ): string {
+        const endIndex = this.offset + length;
         const chars = [];
+        let char;
 
         while ( this.offset < endIndex ) {
-            chars.push(String.fromCharCode(this.getUint8()));
+            char = this.getUint8();
+
+            if ( stopOnZero && char === 0 ) {
+                this.seek(endIndex);
+                break;
+            }
+
+            chars.push(String.fromCharCode(char));
         }
 
         return chars.join('');
+    },
+
+    getFixedString ( length: number ): string {
+        return this.getFixedStringBase(length, {stopOnZero: true});
+    },
+
+    setString ( value: string ) {
+        this.setUint8(value.length);
+        this.setFixedString(value);
+    },
+
+    getString (): string {
+        const length: types.TUint8 = this.getUint8();
+
+        return this.getFixedStringBase(length, {stopOnZero: false});
     },
 
     setVersion ( {major, minor}: types.IVersion ) {
