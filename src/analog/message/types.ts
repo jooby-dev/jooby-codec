@@ -59,5 +59,8 @@ export interface IInvalidMessage {
     error: string
 }
 
+export type TMessage = IMessage | IInvalidMessage;
+
 type TExampleName = string;
-export type TMessageExamples = Record<TExampleName, IMessage | IInvalidMessage>;
+
+export type TMessageExamples = Record<TExampleName, TMessage>;

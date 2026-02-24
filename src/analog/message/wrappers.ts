@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 
 import {TBytes} from '../../types.js';
-import {IMessage, IInvalidMessage} from './types.js';
+import {TMessage, IMessage} from './types.js';
 import {TCommand, ICommandConfig} from '../utils/command.js';
 import * as header from '../utils/header.js';
 import calculateLrc from '../../utils/calculateLrc.js';
@@ -12,7 +12,7 @@ import calculateLrc from '../../utils/calculateLrc.js';
 const HEADER_MAX_SIZE = 3;
 
 
-export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], config?: ICommandConfig ): IMessage | IInvalidMessage => {
+export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], config?: ICommandConfig ): TMessage => {
     const commands: Array<TCommand> = [];
     const message: IMessage = {
         commands,
