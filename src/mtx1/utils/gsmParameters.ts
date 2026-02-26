@@ -12,7 +12,7 @@ import {
     IGsmBlock,
     IGsmConfiguration,
     TGsmStatus
-} from './CommandBinaryBuffer.js';
+} from './binary/gsm.js';
 import * as gsmBlockTypes from '../constants/gsmBlockTypes.js';
 import getHexFromBytes from '../../utils/getHexFromBytes.js';
 

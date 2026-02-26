@@ -3,7 +3,7 @@ import * as frameTypes from '../../../src/mtx1/constants/frameTypes.js';
 import * as frame from '../../../src/mtx1/utils/frame.js';
 import getBytesFromHex from '../../../src/utils/getBytesFromHex.js';
 import * as mtx1 from '../../../src/mtx1/index.js';
-import {IGsmBlock} from '../../../src/mtx1/utils/CommandBinaryBuffer.js';
+import {IGsmBlock} from '../../../src/mtx1/utils/binary/gsm.js';
 import {Collector, Parameters} from '../../../src/mtx1/utils/gsmParameters.js';
 import {isValidFrame, isValidMessage, isValidCommand} from './frameValidation.js';
 

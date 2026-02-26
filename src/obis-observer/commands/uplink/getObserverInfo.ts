@@ -45,6 +45,7 @@
 
 import * as types from '../../../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import * as binary from '../../../utils/binary/types.js';
 import {
     ICommandParameters,
     REQUEST_ID_SIZE
@@ -109,9 +110,9 @@ export const examples: command.TCommandExamples = {
 export const fromBytes = ( bytes: types.TBytes ): IGetObserverInfoResponseParameters => {
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const requestId = buffer.getUint8();
-    const softwareVersion = buffer.getVersion();
-    const protocolVersion = buffer.getVersion();
-    const hardwareVersion = buffer.getVersion();
+    const softwareVersion = binary.getVersion(buffer);
+    const protocolVersion = binary.getVersion(buffer);
+    const hardwareVersion = binary.getVersion(buffer);
 
     const deviceName = buffer.getString();
 
@@ -133,9 +134,9 @@ export const toBytes = ( parameters: IGetObserverInfoResponseParameters ): types
     const {requestId, softwareVersion, protocolVersion, hardwareVersion, deviceName} = parameters;
 
     buffer.setUint8(requestId);
-    buffer.setVersion(softwareVersion);
-    buffer.setVersion(protocolVersion);
-    buffer.setVersion(hardwareVersion);
+    binary.setVersion(buffer, softwareVersion);
+    binary.setVersion(buffer, protocolVersion);
+    binary.setVersion(buffer, hardwareVersion);
     buffer.setString(deviceName);
 
     return command.toBytes(id, buffer.data);

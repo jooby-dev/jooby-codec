@@ -243,9 +243,6 @@ export interface IBinaryBuffer {
     setFloat32 ( value: types.TFloat32, isLittleEndian?: boolean ): void,
     getFloat32 ( isLittleEndian?: boolean ): types.TFloat32,
 
-    setIPv4( value: types.TIPv4 ): void,
-    getIPv4 (): types.TIPv4,
-
     getBytes ( length: number, offset?: number ): types.TBytes,
     setBytes ( data: types.TBytes, offset?: number ): void,
 
@@ -254,9 +251,6 @@ export interface IBinaryBuffer {
 
     setString ( value: string ): void,
     getString (): string,
-
-    setVersion ( value: types.IVersion ): void,
-    getVersion (): types.IVersion,
 
     getBytesToOffset ( offset?: number ): types.TBytes,
     getBytesLeft (): types.TBytes
@@ -414,14 +408,6 @@ BinaryBuffer.prototype = {
         return result;
     },
 
-    setIPv4 ( value: types.TIPv4 ) {
-        this.setBytes(value);
-    },
-
-    getIPv4 (): types.TIPv4 {
-        return this.getBytes(4);
-    },
-
     setFixedString ( value: string, length: number ) {
         const lengthToCopy = value.length > length ? length : value.length;
         let index: number = 0;
@@ -467,15 +453,6 @@ BinaryBuffer.prototype = {
         const length: types.TUint8 = this.getUint8();
 
         return this.getFixedStringBase(length, {stopOnZero: false});
-    },
-
-    setVersion ( {major, minor}: types.IVersion ) {
-        this.setUint8(major);
-        this.setUint8(minor);
-    },
-
-    getVersion (): types.IVersion {
-        return {major: this.getUint8(), minor: this.getUint8()};
     },
 
     /**

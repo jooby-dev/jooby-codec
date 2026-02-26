@@ -49,7 +49,7 @@ import {
     getGsmBlock,
     setGsmBlock,
     IGsmBlock
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/gsm.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getGsmParameters as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
