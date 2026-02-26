@@ -1,7 +1,7 @@
 import {START_BYTE, STOP_BYTE} from '../constants/frameAttributes.js';
 import {TBytes} from '../types.js';
 import invertObject from './invertObject.js';
-import * as payloadCrc16 from './payloadCrc16.js';
+import * as hashCrc16 from './hashCrc16.js';
 
 
 export interface IFrame {
@@ -86,7 +86,7 @@ export const arrayUnstuff = ( data: TBytes, dataBits: TDataBits = 8 ): TBytes =>
 };
 
 export const toBytes = ( content: TBytes, dataBits: TDataBits = 8 ): TBytes => {
-    const stuffed = content.length === 0 ? [] : arrayStuff(payloadCrc16.appendCrc(content), dataBits);
+    const stuffed = content.length === 0 ? [] : arrayStuff(hashCrc16.appendCrc(content), dataBits);
     const bytes = content.length === 0 ? [] : [0x7e, ...stuffed, 0x7e];
 
     return bytes;
@@ -109,7 +109,7 @@ export const fromBytes = ( bytes: TBytes, dataBits: TDataBits = 8 ): TFrame => {
     }
 
     const unstuffed = arrayUnstuff(bytes.slice(1, bytes.length - 1), dataBits);
-    const payload = payloadCrc16.parse(unstuffed);
+    const payload = hashCrc16.parse(unstuffed);
     const frame = {
         bytes,
         ...payload

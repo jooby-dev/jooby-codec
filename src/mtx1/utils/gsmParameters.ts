@@ -1,6 +1,6 @@
 import * as types from '../types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
-import {convertCrcToBytes} from '../../utils/payloadCrc16.js';
+import {convertCrcToBytes} from '../../utils/hashCrc16.js';
 import calculateCrc16 from '../../utils/calculateCrc16.js';
 import {
     GSM_BLOCK_SIZE,

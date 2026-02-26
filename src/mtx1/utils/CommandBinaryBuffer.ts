@@ -6,7 +6,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 import * as types from '../types.js';
-import * as payloadCrc16 from '../../utils/payloadCrc16.js';
+import * as hashCrc16 from '../../utils/hashCrc16.js';
 import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
 import * as bitSet from '../../utils/bitSet.js';
 import type {IDeviceType} from './deviceType.js';
@@ -1977,7 +1977,7 @@ export const setGsmStatus = ( buffer: IBinaryBuffer, {version, data}: TGsmStatus
 
 export const getGsmBlock = ( commandName: string, bytes: types.TBytes ): IGsmBlock => {
     const [index] = bytes;
-    const block = payloadCrc16.parse(bytes.slice(1));
+    const block = hashCrc16.parse(bytes.slice(1));
 
     if ( index > 3 ) {
         throw new Error(`Command ${commandName}. Invalid block index: ${index}.`);
@@ -2013,7 +2013,7 @@ export const setGsmBlock = ( block: IGsmBlock ): types.TBytes => {
         data.push(...new Array<types.TUint8>(GSM_BLOCK_SIZE + 1 - block.data.length).fill(0));
     }
 
-    return [block.index, ...payloadCrc16.appendCrc(data)];
+    return [block.index, ...hashCrc16.appendCrc(data)];
 };
 
 export const getTariffPlan = function ( buffer: IBinaryBuffer ): ITariffPlan {
