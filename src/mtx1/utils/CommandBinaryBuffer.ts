@@ -133,7 +133,6 @@ export interface IGsmStatusV11 {
     softwareVersion: types.IVersion,
     uptime: types.TUint32,
     lastErrorStatus: types.TUint8,
-    INTCON1: types.TUint16,
     attributes: IGsmStatusAttributesV11,
 
     /**
@@ -234,12 +233,6 @@ export interface IGsmStatus12 {
     ber: types.TUint8;
 
     lastErrorStatus: types.TUint8,
-
-    INTCON1: types.TUint16,
-    INTCON2: types.TUint16,
-
-    lastErrorRCON: types.TUint16,
-    lastErrorINTTREG: types.TUint16,
 
     /**
      * MTX module operational state
@@ -1833,8 +1826,14 @@ export const getGsmStatus11 = ( buffer: IBinaryBuffer ): IGsmStatusV11 => ({
     hardwareVersion: buffer.getVersion(),
     softwareVersion: buffer.getVersion(),
     uptime: buffer.getUint32(),
-    lastErrorStatus: buffer.getUint8(),
-    INTCON1: buffer.getUint16(),
+    lastErrorStatus: (() => {
+        const value = buffer.getUint8();
+
+        // skip reserved bytes
+        buffer.getUint16();
+
+        return value;
+    })(),
     attributes: (bitSet.toObject(gsmAttributeV11Mask, buffer.getUint32()) as unknown) as IGsmStatusAttributesV11,
     allocatedDataBlockCount: buffer.getUint8(),
     allocatedMessageCount: buffer.getUint8(),
@@ -1853,7 +1852,7 @@ export const setGsmStatus11 = ( buffer: IBinaryBuffer, value: IGsmStatusV11 ) =>
     buffer.setVersion(value.softwareVersion);
     buffer.setUint32(value.uptime);
     buffer.setUint8(value.lastErrorStatus);
-    buffer.setUint16(value.INTCON1);
+    buffer.setUint16(0);
     buffer.setUint32(bitSet.fromObject(gsmAttributeV11Mask, (value.attributes as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(value.allocatedDataBlockCount);
     buffer.setUint8(value.allocatedMessageCount);
@@ -1877,11 +1876,15 @@ export const getGsmStatus12 = ( buffer: IBinaryBuffer ): IGsmStatus12 => ({
     ip: buffer.getIPv4(),
     rssi: buffer.getUint8(),
     ber: buffer.getUint8(),
-    lastErrorStatus: buffer.getUint8(),
-    INTCON1: buffer.getUint16(),
-    INTCON2: buffer.getUint16(),
-    lastErrorRCON: buffer.getUint16(),
-    lastErrorINTTREG: buffer.getUint16(),
+    lastErrorStatus: (() => {
+        const value = buffer.getUint8();
+
+        // skip reserved bytes
+        buffer.getUint32();
+        buffer.getUint32();
+
+        return value;
+    })(),
     mtxState: buffer.getUint8(),
     gsmState: buffer.getUint8(),
     tcpState: buffer.getUint8(),
@@ -1902,10 +1905,8 @@ export const setGsmStatus12 = ( buffer: IBinaryBuffer, value: IGsmStatus12 ) => 
     buffer.setUint8(value.rssi);
     buffer.setUint8(value.ber);
     buffer.setUint8(value.lastErrorStatus);
-    buffer.setUint16(value.INTCON1);
-    buffer.setUint16(value.INTCON2);
-    buffer.setUint16(value.lastErrorRCON);
-    buffer.setUint16(value.lastErrorINTTREG);
+    buffer.setUint32(0);
+    buffer.setUint32(0);
     buffer.setUint8(value.mtxState);
     buffer.setUint8(value.gsmState);
     buffer.setUint8(value.tcpState);
