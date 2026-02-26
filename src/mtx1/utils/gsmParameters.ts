@@ -21,6 +21,7 @@ export type Parameters =
     {type: 'configuration', data: IGsmConfiguration} |
     {type: 'status', data: TGsmStatus} |
     {type: 'incomplete'} |
+    {type: 'reserved', bytes: types.TBytes} |
     {type: 'unsupported', block: IGsmBlock};
 
 export class Collector {
@@ -41,6 +42,9 @@ export class Collector {
             case gsmBlockTypes.CONFIGURATION_1:
                 this.payload1 = payload;
                 break;
+
+            case gsmBlockTypes.RESERVED:
+                return {type: 'reserved', bytes: block.data};
 
             case gsmBlockTypes.STATUS: {
                 buffer = new BinaryBuffer(payload);
@@ -95,10 +99,15 @@ export const split = ( parameters: Parameters ): Array<IGsmBlock> => {
             const crcBytes = convertCrcToBytes(calculateCrc16(bytes));
 
             return [
-                {index: 0, data: [payload0.length, ...payload0]},
-                {index: 1, data: [payload1.length, ...payload1, ...crcBytes]}
+                {index: gsmBlockTypes.CONFIGURATION_0, data: [payload0.length, ...payload0]},
+                {index: gsmBlockTypes.CONFIGURATION_1, data: [payload1.length, ...payload1, ...crcBytes]}
             ];
         }
+
+        case 'reserved':
+            return [
+                {index: gsmBlockTypes.RESERVED, data: parameters.bytes.slice(0, GSM_BLOCK_SIZE)}
+            ];
 
         case 'status': {
             setGsmStatus(buffer, parameters.data);
@@ -106,7 +115,7 @@ export const split = ( parameters: Parameters ): Array<IGsmBlock> => {
             const payload = buffer.getBytesToOffset();
             console.log(`write GsmStatus: ${getHexFromBytes(payload)}`);
 
-            return [{index: 3, data: [payload.length, ...payload]}];
+            return [{index: gsmBlockTypes.STATUS, data: [payload.length, ...payload]}];
         }
 
         default:
