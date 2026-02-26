@@ -53,7 +53,7 @@ export class Collector {
                 return {type: 'unsupported', block};
         }
 
-        if (!this.payload0 || !this.payload1) {
+        if ( !this.payload0 || !this.payload1 ) {
             return {type: 'incomplete'};
         }
 

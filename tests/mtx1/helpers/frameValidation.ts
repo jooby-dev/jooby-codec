@@ -6,29 +6,17 @@ import {TCommand, ICommand} from '../../../src/mtx1/utils/command.js';
 export const isValidFrame = ( value: TMtxFrame ): IMtxFrame => {
     expect(value).toHaveProperty('header');
 
-    if ( !('header' in value) ) {
-        fail();
-    }
-
-    return value;
+    return value as IMtxFrame;
 };
 
 export const isValidMessage = ( value: TMessage ): IMessage => {
     expect(value).toHaveProperty('messageId');
 
-    if ( !('messageId' in value) ) {
-        fail();
-    }
-
-    return value;
+    return value as IMessage;
 };
 
 export const isValidCommand = ( value: TCommand ): ICommand => {
     expect(value).toHaveProperty('id');
 
-    if ( !('id' in value) ) {
-        fail();
-    }
-
-    return value;
+    return value as ICommand;
 };

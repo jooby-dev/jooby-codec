@@ -69,17 +69,17 @@ export interface IGsmConfiguration {
     gsmAccessTypes: types.TUint8,
 
     /**
-     * GPRS access point.
+     * GPRS access point
      */
     gprsAccessPoint: string,
 
     /**
-     * GPRS user name.
+     * GPRS user name
      */
     gprsUserName: string,
 
     /**
-     * GPRS password.
+     * GPRS password
      */
     gprsPassword: string,
 
@@ -97,9 +97,8 @@ export interface IGsmConfiguration {
      */
     activityServerPort: types.TUint16;
 
-
     /**
-     * Period between activity pings in seconds.
+     * period between activity pings in seconds
      */
     activityPingIntervalSec: types.TUint16;
 
@@ -111,7 +110,7 @@ export interface IGsmConfiguration {
     activityPingIp: types.TIPv4;
 
     /**
-     * Remote server TCP port for activity pings.
+     * Remote server TCP port for activity pings
      * Used together with {@link activityPingIp}.
      */
     activityPingPort: types.TUint16;
@@ -138,52 +137,52 @@ export interface IGsmStatusV11 {
     attributes: IGsmStatusAttributesV11,
 
     /**
-     * Number of allocated data blocks.
+     * number of allocated data blocks
      */
     allocatedDataBlockCount: types.TUint8;
 
     /**
-     * Number of allocated messages.
+     * number of allocated messages
      */
     allocatedMessageCount: types.TUint8;
 
     /**
-     * IP address assigned to the modem by the GPRS network.
+     * IP address assigned to the modem by the GPRS network
      */
     ip: types.TIPv4;
 
     /**
-     * GSM signal strength (RSSI).
+     * GSM signal strength (RSSI)
      */
     rssi: types.TUint8;
 
     /**
-     * GSM bit error rate (BER).
+     * GSM bit error rate (BER)
      */
     ber: types.TUint8;
 
     /**
-     * Maximum number of TCP requests.
+     * maximum number of TCP requests
      */
     maxTcpRequestCount: types.TUint8;
 
     /**
-     * Maximum number of requests to the mtx device.
+     * maximum number of requests to the mtx device
      */
     maxMtxRequestCount: types.TUint8;
 
     /**
-     * GSM module operational state.
+     * GSM module operational state
      */
     gsmState: types.TUint8;
 
     /**
-     * TCP stack operational state.
+     * TCP stack operational state
      */
     tcpState: types.TUint8;
 
     /**
-     * MTX module operational state.
+     * MTX module operational state
      */
     mtxState: types.TUint8;
 }
@@ -208,29 +207,29 @@ export interface IGsmStatus12 {
     uptime: types.TUint32,
 
     /**
-     * Number of allocated messages.
+     * number of allocated messages
      */
     allocatedMessageCount: types.TUint8;
 
     /**
-     * Number of allocated data blocks.
+     * number of allocated data blocks
      */
     allocatedDataBlockCount: types.TUint8;
 
     attributes: IGsmStatusAttributesV12,
 
     /**
-     * IP address assigned to the modem by the GPRS network.
+     * IP address assigned to the modem by the GPRS network
      */
     ip: types.TIPv4;
 
     /**
-     * GSM signal strength (RSSI).
+     * GSM signal strength (RSSI)
      */
     rssi: types.TUint8;
 
     /**
-     * GSM bit error rate (BER).
+     * GSM bit error rate (BER)
      */
     ber: types.TUint8;
 
@@ -243,29 +242,29 @@ export interface IGsmStatus12 {
     lastErrorINTTREG: types.TUint16,
 
     /**
-     * MTX module operational state.
+     * MTX module operational state
      */
     mtxState: types.TUint8;
 
     /**
-     * GSM module operational state.
+     * GSM module operational state
      */
     gsmState: types.TUint8;
 
     /**
-     * TCP stack operational state.
+     * TCP stack operational state
      */
     tcpState: types.TUint8;
 
     /**
-     * Maximum number of requests to the mtx device.
+     * maximum number of requests to the mtx device
      */
     maxMtxRequestCount: types.TUint8;
 
     mtxErrorCount: types.TUint8;
 
     /**
-     * Maximum number of TCP requests.
+     * maximum number of TCP requests
      */
     maxTcpRequestCount: types.TUint16;
 
@@ -1925,7 +1924,7 @@ export const getGsmStatus = ( buffer: IBinaryBuffer ): TGsmStatus => {
 
     const version = buffer.getUint8();
 
-    switch (version) {
+    switch ( version ) {
         case 0x11: {
             if ( payloadLength < 29 ) {
                 throw new Error(`GsmStatus. Invalid payload length: ${payloadLength}.`);
