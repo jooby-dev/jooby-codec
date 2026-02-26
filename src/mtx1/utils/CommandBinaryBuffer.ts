@@ -108,7 +108,7 @@ export interface IGsmConfiguration {
      * The device acts as a TCP client and periodically
      * connects to the specified host.
      */
-    activityPingIp: types.TIpV4;
+    activityPingIp: types.TIPv4;
 
     /**
      * Remote server TCP port for activity pings.
@@ -150,7 +150,7 @@ export interface IGsmStatusV11 {
     /**
      * IP address assigned to the modem by the GPRS network.
      */
-    ip: types.TIpV4;
+    ip: types.TIPv4;
 
     /**
      * GSM signal strength (RSSI).
@@ -222,7 +222,7 @@ export interface IGsmStatus12 {
     /**
      * IP address assigned to the modem by the GPRS network.
      */
-    ip: types.TIpV4;
+    ip: types.TIPv4;
 
     /**
      * GSM signal strength (RSSI).
@@ -1810,7 +1810,7 @@ export const getGsmConfiguration = ( buffer: IBinaryBuffer ): IGsmConfiguration 
         commandServerPort: buffer.getUint16(),
         activityServerPort: buffer.getUint16(),
         activityPingIntervalSec: buffer.getUint16(),
-        activityPingIp: buffer.getIpV4(),
+        activityPingIp: buffer.getIPv4(),
         activityPingPort: buffer.getUint16()
     };
 };
@@ -1826,7 +1826,7 @@ export const setGsmConfiguration = ( buffer: IBinaryBuffer, value: IGsmConfigura
     buffer.setUint16(value.commandServerPort);
     buffer.setUint16(value.activityServerPort);
     buffer.setUint16(value.activityPingIntervalSec);
-    buffer.setIpV4(value.activityPingIp);
+    buffer.setIPv4(value.activityPingIp);
     buffer.setUint16(value.activityPingPort);
 };
 
@@ -1839,7 +1839,7 @@ export const getGsmStatus11 = ( buffer: IBinaryBuffer ): IGsmStatusV11 => ({
     attributes: (bitSet.toObject(gsmAttributeV11Mask, buffer.getUint32()) as unknown) as IGsmStatusAttributesV11,
     allocatedDataBlockCount: buffer.getUint8(),
     allocatedMessageCount: buffer.getUint8(),
-    ip: buffer.getIpV4(),
+    ip: buffer.getIPv4(),
     rssi: buffer.getUint8(),
     ber: buffer.getUint8(),
     maxTcpRequestCount: buffer.getUint8(),
@@ -1858,7 +1858,7 @@ export const setGsmStatus11 = ( buffer: IBinaryBuffer, value: IGsmStatusV11 ) =>
     buffer.setUint32(bitSet.fromObject(gsmAttributeV11Mask, (value.attributes as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(value.allocatedDataBlockCount);
     buffer.setUint8(value.allocatedMessageCount);
-    buffer.setIpV4(value.ip);
+    buffer.setIPv4(value.ip);
     buffer.setUint8(value.rssi);
     buffer.setUint8(value.ber);
     buffer.setUint8(value.maxTcpRequestCount);
@@ -1875,7 +1875,7 @@ export const getGsmStatus12 = ( buffer: IBinaryBuffer ): IGsmStatus12 => ({
     allocatedMessageCount: buffer.getUint8(),
     allocatedDataBlockCount: buffer.getUint8(),
     attributes: (bitSet.toObject(gsmAttributeV12Mask, buffer.getUint32()) as unknown) as IGsmStatusAttributesV12,
-    ip: buffer.getIpV4(),
+    ip: buffer.getIPv4(),
     rssi: buffer.getUint8(),
     ber: buffer.getUint8(),
     lastErrorStatus: buffer.getUint8(),
@@ -1899,7 +1899,7 @@ export const setGsmStatus12 = ( buffer: IBinaryBuffer, value: IGsmStatus12 ) => 
     buffer.setUint8(value.allocatedMessageCount);
     buffer.setUint8(value.allocatedDataBlockCount);
     buffer.setUint32(bitSet.fromObject(gsmAttributeV12Mask, (value.attributes as unknown) as bitSet.TBooleanObject));
-    buffer.setIpV4(value.ip);
+    buffer.setIPv4(value.ip);
     buffer.setUint8(value.rssi);
     buffer.setUint8(value.ber);
     buffer.setUint8(value.lastErrorStatus);

@@ -243,8 +243,8 @@ export interface IBinaryBuffer {
     setFloat32 ( value: types.TFloat32, isLittleEndian?: boolean ): void,
     getFloat32 ( isLittleEndian?: boolean ): types.TFloat32,
 
-    setIpV4( value: types.TIpV4 ): void,
-    getIpV4 (): types.TIpV4,
+    setIPv4( value: types.TIPv4 ): void,
+    getIPv4 (): types.TIPv4,
 
     getBytes ( length: number, offset?: number ): types.TBytes,
     setBytes ( data: types.TBytes, offset?: number ): void,
@@ -414,11 +414,11 @@ BinaryBuffer.prototype = {
         return result;
     },
 
-    setIpV4 ( value: types.TIpV4 ) {
+    setIPv4 ( value: types.TIPv4 ) {
         this.setBytes(value);
     },
 
-    getIpV4 (): types.TIpV4 {
+    getIPv4 (): types.TIPv4 {
         return this.getBytes(4);
     },
 

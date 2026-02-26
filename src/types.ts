@@ -156,7 +156,7 @@ export interface IDate {
     date: TMonthDay
 }
 
-export type TIpV4 = [TUint8, TUint8, TUint8, TUint8];
+export type TIPv4 = [TUint8, TUint8, TUint8, TUint8];
 
 export interface IVersion {
     major: TUint8,
