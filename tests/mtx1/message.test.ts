@@ -1195,15 +1195,15 @@ const uplinkMessages: TMessageList = [
     {
         // does not match empro
         name: 'getCurrentStatusMeter',
-        hex: '0a 13 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 8a db 48 03 11 77 14 eb 80 ad 69 4d d9 a3 b1 07 53 d3 30 df 79 0b d4 38 fc 0a 1c 54 ae 16 d2 c6',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 8a db 48 03 7d 31 77 14 eb 80 ad 69 4d d9 a3 b1 07 53 d3 30 df 79 0b d4 38 fc 0a 1c 54 ae 16 d2 c6 fb 10 7e',
+        hex: '0a 13 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 26 7a 30 92 b2 66 5b b6 07 57 63 1b 60 aa 7a fe 4b 36 40 bb 25 2d 27 0b 9b 9d 7e e1 41 52 c4 4a',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 40 e0 9b 9f 16 0d 09 5a ea 26 7f 6e 04 76 45 8d 26 7a 30 92 b2 66 5b b6 07 57 63 1b 60 aa 7a fe 4b 36 40 bb 25 2d 27 0b 9b 9d 7d 5e e1 41 52 c4 4a e7 ce 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getCurrentStatusMeter.accessLevel,
         commands: [
             uplinkCommands.getCurrentStatusMeter.examples['simple response']
         ],
-        lrc: 0x24,
-        crc: 0x10fb,
+        lrc: 0xf2,
+        crc: 0xcee7,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
