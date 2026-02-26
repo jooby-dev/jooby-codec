@@ -1,6 +1,5 @@
 /* eslint-disable max-len */
 import * as types from '../../src/mtx1/types.js';
-import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 import {Collector, split, Parameters} from '../../src/mtx1/utils/gsmParameters.js';
 import * as gsmBlocks from './helpers/gsmBlocks.js';
 
@@ -16,11 +15,6 @@ describe('gsm parameters', () => {
         expect(originalBlocks.length).toBe(expectedBlockNumber);
 
         const frames = gsmBlocks.toFrames(isDownlink, originalBlocks);
-
-        frames.forEach( value => (
-            console.log(`[${value.length}] ${getHexFromBytes(value, {separator: ''})}`)
-        ));
-
         const restoredBlocks = frames.map(gsmBlocks.fromFrame);
         const collector = new Collector();
         const restoredParameters = gsmBlocks.collect(collector, restoredBlocks);
