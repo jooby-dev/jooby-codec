@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import * as message from '../../src/analog/message/index.js';
-import {IMessage, IInvalidMessage, TMessageExamples} from '../../src/analog/message/types.js';
+import {TMessage, TMessageExamples} from '../../src/analog/message/types.js';
 import {ICommandConfig} from '../../src/analog/utils/command.js';
 import * as downlinkCommands from '../../src/analog/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/analog/commands/uplink/index.js';
@@ -916,8 +916,8 @@ const mtxUplinkMessages: TMessageExamples = {
 };
 
 
-const checkDownlinkMessage = ( implementation, exampleMessage: IMessage | IInvalidMessage, config?: ICommandConfig ) => {
-    let messageFromBytes: IMessage | IInvalidMessage;
+const checkDownlinkMessage = ( implementation, exampleMessage: TMessage, config?: ICommandConfig ) => {
+    let messageFromBytes: TMessage;
     let bytesFromMessage: TBytes;
 
     if ( 'bytes' in exampleMessage ) {

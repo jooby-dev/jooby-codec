@@ -4,14 +4,14 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 
 import {TBytes} from '../../types.js';
-import {IMessage, IInvalidMessage} from './types.js';
+import {TMessage, IMessage} from './types.js';
 import {TCommand} from '../utils/command.js';
 
 
 const COMMAND_HEADER_SIZE = 2;
 
 
-export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [] ): IMessage | IInvalidMessage => {
+export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [] ): TMessage => {
     const commands: Array<TCommand> = [];
     const result: IMessage = {
         commands,

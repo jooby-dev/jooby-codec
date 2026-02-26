@@ -75,11 +75,6 @@ export interface IObisValueString {
     content: string
 }
 
-export interface IVersion {
-    major: types.TUint8,
-    minor: types.TUint8
-}
-
 export interface ISerialPortParameters {
     baudRate: types.TUint8,
     dataBits: types.TUint8,
@@ -133,9 +128,6 @@ const contentTypeBitStartIndex = 4;
 
     // getObisValueFloat (): IObisValueFloat,
     // setObisValueFloat ( obisValue: IObisValueFloat),
-
-    // getVersion (): IVersion,
-    // setVersion ( version: IVersion ),
 
     // getSerialPortParameters (): ISerialPortParameters,
     // setSerialPortParameters ( parameters: ISerialPortParameters )
@@ -298,18 +290,6 @@ export const getObisValueFloat = function ( buffer: IBinaryBuffer ): IObisValueF
 export const setObisValueFloat = function ( buffer: IBinaryBuffer, obisValue: IObisValueFloat ) {
     buffer.setUint8(obisValue.code);
     buffer.setFloat32(roundNumber(obisValue.content));
-};
-
-export const getVersion = function ( buffer: IBinaryBuffer ): IVersion {
-    return {
-        major: buffer.getUint8(),
-        minor: buffer.getUint8()
-    };
-};
-
-export const setVersion = function ( buffer: IBinaryBuffer, version: IVersion ) {
-    buffer.setUint8(version.major);
-    buffer.setUint8(version.minor);
 };
 
 export const getSerialPortParameters = function ( buffer: IBinaryBuffer ): ISerialPortParameters {

@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
 import {TBytes} from '../../types.js';
-import {IMessage, IInvalidMessage} from './types.js';
+import {TMessage, IMessage} from './types.js';
 import {TCommand} from '../utils/command.js';
 import * as errorDataFrameResponse from '../commands/uplink/errorDataFrameResponse.js';
 import {aes} from '../utils/crypto.js';
@@ -67,7 +67,7 @@ const COMMANDS_END_MARK = [0];
 const COMMAND_HEADER_SIZE = 2;
 
 
-export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], config: IFromBytesOptions = {} ): IMessage | IInvalidMessage => {
+export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], config: IFromBytesOptions = {} ): TMessage => {
     const aesKey = config?.aesKey;
     const commands: Array<TCommand> = [];
     const [messageId, maskedAccessLevel] = bytes;

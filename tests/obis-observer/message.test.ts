@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
 import * as message from '../../src/obis-observer/message/index.js';
-import {IMessage, IInvalidMessage, TMessageExamples} from '../../src/obis-observer/message/types.js';
+import {TMessage, TMessageExamples} from '../../src/obis-observer/message/types.js';
 import * as downlinkCommands from '../../src/obis-observer/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/obis-observer/commands/uplink/index.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
@@ -71,8 +71,8 @@ const uplinkMessages: TMessageExamples = {
 };
 
 
-const checkMessage = ( implementation, exampleMessage: IMessage | IInvalidMessage ) => {
-    let messageFromBytes: IMessage | IInvalidMessage;
+const checkMessage = ( implementation, exampleMessage: TMessage ) => {
+    let messageFromBytes: TMessage;
     let bytesFromMessage: TBytes;
 
     if ( 'bytes' in exampleMessage ) {
