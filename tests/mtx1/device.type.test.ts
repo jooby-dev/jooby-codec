@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-multi-spaces */
-import BinaryBuffer, {IBinaryBuffer} from '../../src/utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../src/utils/binary/BinaryBuffer.js';
 import {
     getDeviceType,
     setDeviceType
-} from '../../src/mtx1/utils/CommandBinaryBuffer.js';
+} from '../../src/mtx1/utils/binary/buffer.js';
 import {IMtxDeviceTypeDescriptor} from '../../src/mtx1/utils/deviceType.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';

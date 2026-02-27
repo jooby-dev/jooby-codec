@@ -28,14 +28,14 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
     ICommandParameters,
     ISerialPortParameters,
     REQUEST_ID_SIZE,
     getSerialPortParameters,
     setSerialPortParameters
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import {setSerialPort as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 

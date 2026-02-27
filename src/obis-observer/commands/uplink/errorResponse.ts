@@ -25,7 +25,7 @@
  */
 
 import * as types from '../../../types.js';
-import {ICommandParameters} from '../../utils/CommandBinaryBuffer.js';
+import {ICommandParameters} from '../../utils/binary/buffer.js';
 import * as command from '../../utils/command.js';
 import {resultCodes} from '../../constants/index.js';
 import {errorResponse as commandId} from '../../constants/uplinkIds.js';

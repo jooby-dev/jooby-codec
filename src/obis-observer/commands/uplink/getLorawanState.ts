@@ -31,7 +31,7 @@
  */
 
 import * as types from '../../../types.js';
-import {ICommandParameters} from '../../utils/CommandBinaryBuffer.js';
+import {ICommandParameters} from '../../utils/binary/buffer.js';
 import * as command from '../../utils/command.js';
 import {getLorawanState as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

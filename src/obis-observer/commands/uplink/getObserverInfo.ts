@@ -44,12 +44,12 @@
  */
 
 import * as types from '../../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as binary from '../../../utils/binary/types.js';
 import {
     ICommandParameters,
     REQUEST_ID_SIZE
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import * as command from '../../utils/command.js';
 import {getObserverInfo as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

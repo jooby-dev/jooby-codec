@@ -177,14 +177,14 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../../mtx1/utils/command.js';
 import {
     IOperatorParametersExtended2,
     OPERATOR_PARAMETERS_EXTENDED2_SIZE,
     getOperatorParametersExtended2,
     setOperatorParametersExtended2
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getOperatorParametersExtended2 as commandId} from '../../constants/uplinkIds.js';

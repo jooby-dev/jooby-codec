@@ -21,11 +21,11 @@
  */
 
 import * as types from '../../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
     getTime,
     setTime
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import * as command from '../../utils/command.js';
 import {TTime2000} from '../../utils/time.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';

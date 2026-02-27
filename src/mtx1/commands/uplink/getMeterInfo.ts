@@ -30,7 +30,7 @@ import * as command from '../../utils/command.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {IOperatorParameters} from '../../utils/CommandBinaryBuffer.js';
+import {IOperatorParameters} from '../../utils/binary/buffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getMeterInfo as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

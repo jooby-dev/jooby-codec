@@ -29,12 +29,12 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../../mtx1/utils/command.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
-import {THalfHourLoadProfile, TChannel} from '../../utils/CommandBinaryBuffer.js';
-import {getDate, setDate} from '../../../mtx1/utils/CommandBinaryBuffer.js';
+import {THalfHourLoadProfile, TChannel} from '../../utils/binary/buffer.js';
+import {getDate, setDate} from '../../../mtx1/utils/binary/buffer.js';
 import {getHalfHourDemandChannel as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 

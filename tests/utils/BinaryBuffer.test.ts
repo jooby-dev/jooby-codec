@@ -1,5 +1,5 @@
 import {TBytes} from '../../src/types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../src/utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../src/utils/binary/BinaryBuffer.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 

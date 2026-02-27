@@ -41,7 +41,7 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
     ICommandParameters,
     REQUEST_ID_SIZE,
@@ -49,7 +49,7 @@ import {
     IObisValueFloat,
     DATE_TIME_SIZE,
     setObisValueFloat
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import {TTime2000} from '../../../analog/utils/time.js';
 import roundNumber from '../../../utils/roundNumber.js';
 import {readArchive as commandId} from '../../constants/uplinkIds.js';

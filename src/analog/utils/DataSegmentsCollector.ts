@@ -1,5 +1,5 @@
 import * as types from '../../types.js';
-import {IDataSegment} from './CommandBinaryBuffer.js';
+import {IDataSegment} from './binary/buffer.js';
 
 
 const isSegmentCorrect = ( segment: IDataSegment ) => {

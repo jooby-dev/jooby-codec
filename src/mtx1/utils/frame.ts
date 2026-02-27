@@ -1,5 +1,5 @@
 import {TBytes} from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../utils/binary/BinaryBuffer.js';
 import * as frame from '../../utils/frame.js';
 import {
     IFrameHeader,
@@ -7,7 +7,7 @@ import {
     frameHeaderSize,
     getFrameHeader,
     setFrameHeader
-} from './CommandBinaryBuffer.js';
+} from './binary/buffer.js';
 
 
 export interface IMtxFrame extends frame.IFrame {

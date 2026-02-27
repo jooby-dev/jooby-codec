@@ -36,14 +36,14 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../../mtx1/utils/command.js';
 import {
     IGetDemandParameters,
     IGetDemandResponseParameters,
     getDemand,
     setDemand
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import * as getDemandCommand from '../downlink/getDemand.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getDemand as commandId} from '../../constants/uplinkIds.js';

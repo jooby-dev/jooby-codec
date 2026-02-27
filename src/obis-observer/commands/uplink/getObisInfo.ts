@@ -40,7 +40,7 @@
  */
 
 import * as types from '../../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
     ICommandParameters,
     REQUEST_ID_SIZE,
@@ -52,7 +52,7 @@ import {
     setObisProfile,
     getObis,
     setObis
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import * as command from '../../utils/command.js';
 import {contentTypes} from '../../constants/index.js';
 import {getObisInfo as commandId} from '../../constants/uplinkIds.js';

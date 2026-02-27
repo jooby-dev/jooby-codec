@@ -1,7 +1,7 @@
 import * as types from '../../types.js';
 import * as hashCrc16 from '../../../utils/hashCrc16.js';
 import * as binary from '../../../utils/binary/types.js';
-import {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as gsmAccessTypes from '../../constants/gsmAccessTypes.js';

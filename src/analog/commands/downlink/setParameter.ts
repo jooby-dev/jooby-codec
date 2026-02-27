@@ -28,13 +28,13 @@
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
 import * as channelTypes from '../../constants/channelTypes.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
     IParameter,
     getParameterSize,
     getParameter,
     setParameter
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import {setParameter as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 import * as deviceParameters from '../../constants/deviceParameters.js';

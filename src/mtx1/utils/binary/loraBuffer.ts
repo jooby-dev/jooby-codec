@@ -5,9 +5,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
 // import * as types from '../../types.js';
-import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
-import * as bitSet from '../../utils/bitSet.js';
-import {IDate} from '../../types.js';
+import {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
+import * as bitSet from '../../../utils/bitSet.js';
+import {IDate} from '../../../types.js';
 
 
 export interface IEnergies<T = number> {
@@ -83,59 +83,6 @@ const getTariffEnergiesFlag = <T>( tariff: number, energies: IEnergies<T> ): num
 
     return flag;
 };
-
-
-/* export interface ICommandBinaryBuffer extends IBinaryBuffer {
-    // instance methods
-    // getDate (): IDate,
-    // setDate ( {year, month, date}: IDate ),
-
-    // getEnergiesFlags (): TEnergiesFlags,
-    // setEnergiesFlags <T>( energies: IEnergies<T> ),
-
-    // getHalfHourEnergy1 ( halfhoursNumber: number ): THalfHourEnergy1,
-    // setHalfHourEnergy1 ( halfhours: THalfHourEnergy1 | undefined ),
-
-    // getHalfHourEnergy3 ( halfhoursNumber: number ): THalfHourEnergy3,
-    // setHalfHourEnergy3 ( halfhours: THalfHourEnergy3 | undefined ),
-
-    // getHalfHourEnergies1 ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies1,
-    // setHalfHourEnergies1 ( energies: THalfHourEnergies1 ),
-
-    // getHalfHourEnergies3 ( energiesFlags: TEnergiesFlags, halfhoursNumber: number ): THalfHourEnergies3,
-    // setHalfHourEnergies3 ( energies: THalfHourEnergies3 ),
-
-    // getAPlusTariffEnergies ( energyFlags: number ): IEnergies,
-    // setAPlusTariffEnergies ( energies: IEnergies | undefined ),
-
-    // getAMinusTariffEnergies ( energyFlags: number ): IEnergies,
-    // setAMinusTariffEnergies ( energies: IEnergies | undefined ),
-
-    // getTariffsEnergies (): TTariffsEnergies,
-    // setTariffsEnergies ( tariffs: TTariffsEnergies ),
-
-    // getPowerMax (): IPowerMax,
-    // setPowerMax ( value: IPowerMax | undefined ),
-    // getAPlusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax>,
-    // setAPlusTariffPowerMax ( energies: IEnergies<IPowerMax> | undefined ),
-
-    // getAMinusTariffPowerMax ( energyFlags: number ): IEnergies<IPowerMax>,
-    // setAMinusTariffPowerMax ( energies: IEnergies<IPowerMax> | undefined ),
-    // getTariffsPowerMax (): TTariffsPowerMax,
-    // setTariffsPowerMax ( tariffs: TTariffsPowerMax )
-} */
-
-/**
- * Command specific byte array manipulation.
- */
-// function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
-//     BinaryBuffer.call(this, dataOrLength, isLittleEndian);
-// }
-
-// extending
-// CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
-// CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
-
 
 export const getDate = function ( buffer: IBinaryBuffer ): IDate {
     const date0 = buffer.getUint8();
@@ -472,6 +419,3 @@ export const setTariffsPowerMax = function ( buffer: IBinaryBuffer, tariffs: TTa
     tariffs.forEach(tariff => setAPlusTariffPowerMax(buffer, tariff));
     tariffs.forEach(tariff => setAMinusTariffPowerMax(buffer, tariff));
 };
-
-
-// export default CommandBinaryBuffer;

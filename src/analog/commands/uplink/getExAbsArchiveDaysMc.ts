@@ -34,7 +34,7 @@
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
     IChannelArchiveDaysAbsolute,
     getExtendedValue,
@@ -45,7 +45,7 @@ import {
     setDate,
     getPulseCoefficient,
     setPulseCoefficient
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import * as archive from '../../constants/archive.js';
 import {getExAbsArchiveDaysMc as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

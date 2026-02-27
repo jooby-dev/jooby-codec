@@ -32,7 +32,7 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../../mtx1/utils/command.js';
 import {READ_WRITE} from '../../../mtx1/constants/accessLevels.js';
 import {
@@ -40,7 +40,7 @@ import {
     OPERATOR_PARAMETERS_EXTENDED_SIZE,
     getOperatorParametersExtended,
     setOperatorParametersExtended
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {setOperatorParametersExtended as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';

@@ -1,5 +1,5 @@
 import {TBytes} from '../types.js';
-import BinaryBuffer, {IBinaryBuffer} from './BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from './binary/BinaryBuffer.js';
 import calculateCrc16 from './calculateCrc16.js';
 
 

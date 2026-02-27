@@ -88,7 +88,7 @@ import {dataSegment} from 'jooby-codec/analog/commands/downlink';
 import getBytesFromHex from 'jooby-codec/utils/getBytesFromHex.js';
 import {hardwareTypes} from 'jooby-codec/analog/constants/index.js';
 import DataSegmentsCollector from 'jooby-codec/analog/utils/DataSegmentsCollector.js';
-import {IDataSegment} from 'jooby-codec/analog/utils/CommandBinaryBuffer.js';
+import {IDataSegment} from 'jooby-codec/analog/utils/binary/buffer.js';
 
 
 const segmentsBytes = [

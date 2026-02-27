@@ -1,5 +1,5 @@
 import {TEnergyType} from '../types.js';
-import {IEnergies} from './CommandBinaryBuffer.js';
+import {IEnergies} from './binary/buffer.js';
 import {A_MINUS_R_PLUS_R_MINUS, A_PLUS_R_PLUS_R_MINUS} from '../constants/energyTypes.js';
 
 

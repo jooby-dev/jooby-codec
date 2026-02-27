@@ -1,5 +1,6 @@
 import {TBytes} from '../types.js';
 
+
 export const updateX25 = ( startValue: number, data: TBytes ) => {
     let crc = 0xFFFF;
 

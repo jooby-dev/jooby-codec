@@ -1,5 +1,5 @@
 import {TIPv4, IVersion} from '../../types.js';
-import {IBinaryBuffer} from '../BinaryBuffer.js';
+import {IBinaryBuffer} from './BinaryBuffer.js';
 
 
 export const setIPv4 = ( buffer: IBinaryBuffer, value: TIPv4 ) => {

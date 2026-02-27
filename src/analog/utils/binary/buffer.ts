@@ -5,21 +5,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
-import * as types from '../../types.js';
-import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
-import * as bitSet from '../../utils/bitSet.js';
-import invertObject from '../../utils/invertObject.js';
-import getHexFromBytes from '../../utils/getHexFromBytes.js';
-import getBytesFromHex from '../../utils/getBytesFromHex.js';
-import roundNumber from '../../utils/roundNumber.js';
-import {extractBits, fillBits} from '../../utils/bitSet.js';
-import {getDateFromTime2000, getTime2000FromDate, TTime2000} from './time.js';
-import * as hardwareTypes from '../constants/hardwareTypes.js';
-import * as deviceParameters from '../constants/deviceParameters.js';
-import deviceParameterNames from '../constants/deviceParameterNames.js';
-import * as archive from '../constants/archive.js';
-import * as channelTypes from '../constants/channelTypes.js';
-import spreadFactorNames from '../constants/rx2SpreadFactorNames.js';
+import * as types from '../../../types.js';
+import {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
+import * as bitSet from '../../../utils/bitSet.js';
+import invertObject from '../../../utils/invertObject.js';
+import getHexFromBytes from '../../../utils/getHexFromBytes.js';
+import getBytesFromHex from '../../../utils/getBytesFromHex.js';
+import roundNumber from '../../../utils/roundNumber.js';
+import {extractBits, fillBits} from '../../../utils/bitSet.js';
+import {getDateFromTime2000, getTime2000FromDate, TTime2000} from '../time.js';
+import * as hardwareTypes from '../../constants/hardwareTypes.js';
+import * as deviceParameters from '../../constants/deviceParameters.js';
+import deviceParameterNames from '../../constants/deviceParameterNames.js';
+import * as archive from '../../constants/archive.js';
+import * as channelTypes from '../../constants/channelTypes.js';
+import spreadFactorNames from '../../constants/rx2SpreadFactorNames.js';
 
 
 export interface IBatteryVoltage {
@@ -2009,96 +2009,6 @@ export const getResponseParameterSize = ( parameter: IParameter ): number => {
 };
 
 
-/* export interface ICommandBinaryBuffer extends IBinaryBuffer {
-    // static methods
-    // getMagneticInfluenceBit ( byte: number ): boolean,
-    // setMagneticInfluenceBit ( byte: number, value: boolean ): number,
-    // getLegacyHourCounterSize ( hourCounter: ILegacyHourCounterWithDiff ): number,
-
-    // instance methods
-    // getExtendedValue (): number,
-    // setExtendedValue ( value: number ),
-    // getExtendedValueSize (bits: number): number,
-
-    // getTime (): number,
-    // setTime (value: TTime2000): void,
-
-    // getBatteryVoltage (): IBatteryVoltage,
-    // setBatteryVoltage ( batteryVoltage: IBatteryVoltage ),
-
-    // getLegacyCounterValue (): types.TUint24,
-    // setLegacyCounterValue ( value: types.TUint24 ),
-
-    // getLegacyCounter ( byte?: types.TUint8, isArchiveValue?: boolean ): ILegacyCounter,
-    // setLegacyCounter ( counter: ILegacyCounter, byte?: types.TUint8, isArchiveValue?: boolean ),
-
-    // getChannels (): Array<number>,
-    // setChannels ( channelList: Array<IChannel> );
-
-    // getChannelValue (): number;
-    // setChannelValue( value: number );
-
-    // getChannelsValuesWithHourDiff ( isArchiveValue?: boolean ): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>},
-    // setChannelsValuesWithHourDiff ( hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>, isArchiveValue?: boolean ),
-
-    // getHours ( byte?: types.TUint8 ): {hour: number, hours: number},
-    // setHours ( hour: number, hours: number ),
-
-    // getDate (): Date,
-    // setDate ( dateOrTime: Date | TTime2000 ),
-
-    // getPulseCoefficient (): TPulseCoefficient,
-    // setPulseCoefficient ( value: TPulseCoefficient ),
-
-    // getChannelsWithAbsoluteValues (): Array<IChannelAbsoluteValue>,
-    // setChannelsWithAbsoluteValues ( channelList: Array<IChannelAbsoluteValue> ),
-
-    // getChannelsAbsoluteValuesWithHourDiff ( hours: number ): Array<IChannelHourAbsoluteValue>,
-    // setChannelsAbsoluteValuesWithHourDiff ( channelList: Array<IChannelHourAbsoluteValue> ),
-
-    // getEventStatus ( hardwareType: number ): TEventStatus,
-    // setEventStatus ( hardwareType: number, status: TEventStatus ),
-
-    // getParameter (): IParameter,
-    // setParameter ( parameter: IParameter ),
-
-    // getRequestParameter (): IRequestParameter,
-    // setRequestParameter ( parameter: IRequestParameter ),
-
-    // getResponseParameter (): IResponseParameter,
-    // setResponseParameter ( parameter: IResponseParameter ),
-
-    // getLegacyHourDiff (): ILegacyCounter,
-    // setLegacyHourDiff ( diff: ILegacyCounter ),
-
-    // getLegacyHourCounterWithDiff ( isArchiveValue?: boolean ): ILegacyHourCounterWithDiff,
-    // setLegacyHourCounterWithDiff ( hourCounter: ILegacyHourCounterWithDiff, isArchiveValue?: boolean ),
-
-    // getChannelsValuesWithHourDiffExtended ( isArchiveValue?: boolean ): IChannelValuesWithHourDiffExtended,
-    // setChannelsValuesWithHourDiffExtended ( parameters: IChannelValuesWithHourDiffExtended, isArchiveValue?: boolean ),
-
-    // getDataSegment (): IDataSegment,
-    // setDataSegment ( parameters: IDataSegment )
-
-    // getBinarySensor(): IParameterBinarySensor,
-    // setBinarySensor( parameters: IParameterBinarySensor ),
-
-    // getTemperatureSensor(): IParameterTemperatureSensor,
-    // setTemperatureSensor( parameters: IParameterTemperatureSensor ),
-
-    // getChannelType(): IParameterChannelType,
-    // setChannelType( parameters: IParameterChannelType)
-} */
-
-// function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
-//     BinaryBuffer.call(this, dataOrLength, isLittleEndian);
-// }
-
-// extending
-// CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
-// CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
-
-
 export const getMagneticInfluenceBit = ( byte: number ): boolean => (
     !!extractBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX)
 );
@@ -2999,6 +2909,3 @@ export const setChannelType = function ( buffer: IBinaryBuffer, {type, channel, 
             break;
     }
 };
-
-
-// export default CommandBinaryBuffer;

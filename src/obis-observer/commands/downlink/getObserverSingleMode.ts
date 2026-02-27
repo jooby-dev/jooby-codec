@@ -22,7 +22,7 @@
  */
 
 import * as types from '../../../types.js';
-import {ICommandParameters} from '../../utils/CommandBinaryBuffer.js';
+import {ICommandParameters} from '../../utils/binary/buffer.js';
 import * as command from '../../utils/command.js';
 import {getObserverSingleMode as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
