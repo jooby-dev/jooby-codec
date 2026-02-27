@@ -181,7 +181,7 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../../mtx1/utils/command.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_WRITE} from '../../../mtx1/constants/accessLevels.js';
@@ -190,7 +190,7 @@ import {
     OPERATOR_PARAMETERS_EXTENDED4_SIZE,
     getOperatorParametersExtended4,
     setOperatorParametersExtended4
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import {setOperatorParametersExtended4 as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 

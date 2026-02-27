@@ -5,10 +5,9 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import * as types from '../types.js';
-import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
+import * as types from '../../types.js';
+import {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
-    // ICommandBinaryBuffer as IMtxCommandBinaryBuffer,
     IEvent,
     TARIFF_NUMBER,
     DATE_SIZE,
@@ -17,10 +16,10 @@ import {
     setDateTime,
     getDate,
     setDate
-} from '../../mtx1/utils/CommandBinaryBuffer.js';
-import * as bitSet from '../../utils/bitSet.js';
-import {TEnergyType} from '../types.js';
-import {baudRates, events, eventNames} from '../constants/index.js';
+} from '../../../mtx1/utils/binary/buffer.js';
+import * as bitSet from '../../../utils/bitSet.js';
+import {TEnergyType} from '../../types.js';
+import {baudRates, events, eventNames} from '../../constants/index.js';
 
 
 export interface IDisplaySet1OperatorParameter {
@@ -1907,63 +1906,6 @@ function getPackedEnergyType ( energyType: TEnergyType, energies: IEnergies ) {
 }
 
 
-// export type ICommandBinaryBuffer = types.Modify<IMtxCommandBinaryBuffer, {
-// static methods
-// getDefaultOperatorParameters (): IOperatorParameters,
-// getDefaultOperatorParametersExtended (): IOperatorParametersExtended,
-// getDefaultOperatorParametersExtended2 (): IOperatorParametersExtended2,
-
-// instance methods
-// getFrameHeader (): IFrameHeader,
-// setFrameHeader ( frameHeader: IFrameHeader ),
-
-// getOperatorParameters(): IOperatorParameters,
-// setOperatorParameters ( operatorParameters: IOperatorParameters),
-
-// getOperatorParametersExtended(): IOperatorParametersExtended,
-// setOperatorParametersExtended ( operatorParametersExtended: IOperatorParametersExtended),
-
-// getEnergies(): IEnergies,
-// setEnergies ( energies: IEnergies ),
-
-// getPackedEnergyWithType (): IPackedEnergiesWithType,
-// setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ),
-
-// getEnergyPeriods ( energiesNumber: number ): TEnergyPeriods,
-// setEnergyPeriods ( energies: TEnergyPeriods ),
-
-// getMaxDemand (): IMaxDemand,
-// setMaxDemand ( maxDemand: IMaxDemand ),
-
-// getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
-// setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
-
-// getMonthMaxDemandResponse (): IGetMonthMaxDemandResponseParameters,
-// setMonthMaxDemandResponse ( event: IGetMonthMaxDemandResponseParameters ),
-
-// getEvent (): IEvent,
-// setEvent ( event: IEvent ),
-
-// getDemand (): IGetDemandParameters,
-// setDemand ( parameters: IGetDemandParameters ),
-
-// getOperatorParametersExtended2(): IOperatorParametersExtended2,
-// setOperatorParametersExtended2 ( operatorParametersExtended: IOperatorParametersExtended2 )
-
-// getOperatorParametersExtended4(): IOperatorParametersExtended4,
-// setOperatorParametersExtended4 ( operatorParametersExtended: IOperatorParametersExtended4 )
-// }>;
-
-
-// function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
-//     MtxBinaryBuffer.call(this, dataOrLength, isLittleEndian);
-// }
-
-// extending
-// CommandBinaryBuffer.prototype = Object.create(MtxBinaryBuffer.prototype);
-// CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
-
-
 export const getDefaultOperatorParameters = (): IOperatorParameters => ({
     vpThreshold: 265000,
     vThreshold: 156000,
@@ -2036,26 +1978,7 @@ export const getDefaultOperatorParametersExtended2 = (): IOperatorParametersExte
     timeCorrectPassHalfhour: false
 });
 
-export {getDefaultOperatorParametersExtended3} from '../../mtx1/utils/CommandBinaryBuffer.js';
-
-
-// CommandBinaryBuffer.prototype.getFrameHeader = function (): IFrameHeader {
-//     return {
-//         type: this.getUint8(),
-//         destination: this.getUint16(),
-//         source: this.getUint16()
-//     };
-// };
-
-// CommandBinaryBuffer.prototype.setFrameHeader = function ( {
-//     type = defaultFrameHeader.type,
-//     destination = defaultFrameHeader.destination,
-//     source = defaultFrameHeader.source
-// }: IFrameHeader ) {
-//     this.setUint8(type);
-//     this.setUint16(destination);
-//     this.setUint16(source);
-// };
+export {getDefaultOperatorParametersExtended3} from '../../../mtx1/utils/binary/buffer.js';
 
 export const getOperatorParameters = function ( buffer: IBinaryBuffer ): IOperatorParameters {
     return {
@@ -2474,6 +2397,3 @@ export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithTy
 
     return DATE_SIZE + ENERGY_SIZE * TARIFF_NUMBER;
 };
-
-
-// export default CommandBinaryBuffer;

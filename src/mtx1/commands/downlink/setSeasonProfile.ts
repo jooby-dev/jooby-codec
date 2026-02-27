@@ -29,7 +29,7 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
@@ -38,7 +38,7 @@ import {
     SEASON_PROFILE_SIZE,
     getSeasonProfile,
     setSeasonProfile
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import {setSeasonProfile as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 

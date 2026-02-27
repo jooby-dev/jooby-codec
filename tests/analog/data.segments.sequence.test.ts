@@ -1,7 +1,7 @@
 import * as uplinkMessage from '../../src/analog/message/uplink.js';
 import {IMessage} from '../../src/analog/message/types.js';
 import {ICommand} from '../../src/analog/utils/command.js';
-import {IDataSegment} from '../../src/analog/utils/CommandBinaryBuffer.js';
+import {IDataSegment} from '../../src/analog/utils/binary/buffer.js';
 import * as uplinkCommands from '../../src/analog/commands/uplink/index.js';
 import DataSegmentsCollector from '../../src/analog/utils/DataSegmentsCollector.js';
 import {MTXLORA} from '../../src/analog/constants/hardwareTypes.js';

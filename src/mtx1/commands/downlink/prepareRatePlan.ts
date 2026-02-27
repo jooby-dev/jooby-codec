@@ -26,7 +26,7 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';

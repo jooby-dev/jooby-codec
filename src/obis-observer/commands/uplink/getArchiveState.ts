@@ -28,8 +28,8 @@
 
 import * as types from '../../../types.js';
 import {TTime2000} from '../../../analog/utils/time.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
-import {ICommandParameters, DATE_TIME_SIZE, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
+import {ICommandParameters, DATE_TIME_SIZE, REQUEST_ID_SIZE} from '../../utils/binary/buffer.js';
 import * as command from '../../utils/command.js';
 import {getArchiveState as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

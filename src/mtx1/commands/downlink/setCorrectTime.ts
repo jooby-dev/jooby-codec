@@ -33,12 +33,12 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {
     getTimeCorrectionParameters,
     setTimeCorrectionParameters
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
 import {ITimeCorrectionParameters} from '../../utils/dateTime.js';

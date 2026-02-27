@@ -5,12 +5,12 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import * as types from '../../types.js';
-import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
-import * as bitSet from '../../utils/bitSet.js';
-import getHexFromBytes from '../../utils/getHexFromBytes.js';
-import getBytesFromHex from '../../utils/getBytesFromHex.js';
-import roundNumber from '../../utils/roundNumber.js';
+import * as types from '../../../types.js';
+import {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
+import * as bitSet from '../../../utils/bitSet.js';
+import getHexFromBytes from '../../../utils/getHexFromBytes.js';
+import getBytesFromHex from '../../../utils/getBytesFromHex.js';
+import roundNumber from '../../../utils/roundNumber.js';
 
 export interface ICommandParameters {
     requestId: types.TUint8
@@ -107,40 +107,6 @@ const archive2BitStartIndex = 2;
 const sendingOnlyIfChangeBitStartIndex = 3;
 const contentTypeBitStartIndex = 4;
 
-
-/* export interface ICommandBinaryBuffer extends IBinaryBuffer {
-    // static methods
-    // getObisSize ( obis: IObis ): number,
-    // getObisContentSize ( obis: IObis ): number,
-
-    // instance methods
-    // getObisProfile (): IObisProfile,
-    // setObisProfile ( obisProfile: IObisProfile ),
-
-    // getObis (): IObis,
-    // setObis ( obisProfile: IObis ),
-
-    // getEUI (): string,
-    // setEUI ( eui: string ),
-
-    // getObisValueString (): IObisValueString,
-    // setObisValueString ( obisValue: IObisValueString),
-
-    // getObisValueFloat (): IObisValueFloat,
-    // setObisValueFloat ( obisValue: IObisValueFloat),
-
-    // getSerialPortParameters (): ISerialPortParameters,
-    // setSerialPortParameters ( parameters: ISerialPortParameters )
-} */
-
-// function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
-//     // force BE for all numbers
-//     BinaryBuffer.call(this, dataOrLength, isLittleEndian);
-// }
-
-// extending
-// CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
-// CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
 
 export const getObisSize = ( obis: IObis ): number => {
     const keys = Object.keys(obis) as Array<keyof IObis>;
@@ -312,6 +278,3 @@ export const setSerialPortParameters = function ( buffer: IBinaryBuffer, paramet
     buffer.setUint8(dataBits);
     buffer.setUint8(flags);
 };
-
-
-// export default CommandBinaryBuffer;

@@ -26,8 +26,8 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
-import {ICommandParameters} from '../../utils/CommandBinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
+import {ICommandParameters} from '../../utils/binary/buffer.js';
 import {removeObis as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 

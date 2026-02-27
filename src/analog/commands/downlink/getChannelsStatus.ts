@@ -21,7 +21,7 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import {IChannelsMask, getChannelsMaskFromNumber, setChannelsMaskToNumber} from '../../utils/CommandBinaryBuffer.js';
+import {IChannelsMask, getChannelsMaskFromNumber, setChannelsMaskToNumber} from '../../utils/binary/buffer.js';
 import {getChannelsStatus as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 

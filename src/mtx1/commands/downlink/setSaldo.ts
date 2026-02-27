@@ -34,7 +34,7 @@
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import {READ_WRITE} from '../../constants/accessLevels.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import * as getSaldoDownlink from './getSaldo.js';

@@ -21,7 +21,7 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/SetCorrectDateTime.md#request)
  */
 
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';

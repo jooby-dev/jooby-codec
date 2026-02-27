@@ -8,7 +8,7 @@
  * @example create command instance from command body hex dump
  * ```js
  * import * as getOperatorParameters from 'jooby-codec/mtx3/commands/uplink/getOperatorParameters.js';
- * import CommandBinaryBuffer, {getDefaultOperatorParameters} from 'jooby-codec/mtx3/utils/CommandBinaryBuffer.js';
+ * import {getDefaultOperatorParameters} from 'jooby-codec/mtx3/utils/binary/buffer.js';
  *
  * // get default operator parameters response
  * const bytes = [
@@ -33,14 +33,14 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../../mtx1/utils/command.js';
 import {
     IOperatorParameters,
     OPERATOR_PARAMETERS_SIZE,
     getOperatorParameters,
     setOperatorParameters
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getOperatorParameters as commandId} from '../../constants/uplinkIds.js';

@@ -14,8 +14,8 @@
 /* eslint-disable one-var-declaration-per-line */
 /* eslint-disable prefer-exponentiation-operator */
 
-import * as types from '../types.js';
-import {host} from '../config.js';
+import * as types from '../../types.js';
+import {host} from '../../config.js';
 
 
 // number of bytes

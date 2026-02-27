@@ -45,13 +45,13 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../../mtx1/utils/command.js';
 import {
     IGetHalfHourDemandResponseParameters,
     getEnergyPeriods,
     setEnergyPeriods
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import {
     MIN_HALF_HOUR_PERIODS,
     MAX_HALF_HOUR_PERIODS,
@@ -59,7 +59,7 @@ import {
     MAX_HALF_HOUR_COMMAND_SIZE,
     getDate,
     setDate
-} from '../../../mtx1/utils/CommandBinaryBuffer.js';
+} from '../../../mtx1/utils/binary/buffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import {getHalfHourDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

@@ -39,7 +39,7 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {
     TTariffsEnergies,
@@ -48,7 +48,7 @@ import {
     setTariffsEnergies,
     getDate,
     setDate
-} from '../../utils/LoraCommandBinaryBuffer.js';
+} from '../../utils/binary/loraBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 import {getDayEnergies as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

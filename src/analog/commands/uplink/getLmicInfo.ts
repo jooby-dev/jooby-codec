@@ -27,7 +27,7 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetLmicInfo.md#response)
  */
 
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';

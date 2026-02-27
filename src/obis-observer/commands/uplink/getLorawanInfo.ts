@@ -31,14 +31,14 @@
  */
 
 import * as types from '../../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
     ICommandParameters,
     EUI_SIZE,
     REQUEST_ID_SIZE,
     getEUI,
     setEUI
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import * as command from '../../utils/command.js';
 import * as deviceClasses from '../../constants/deviceClasses.js';
 import {getLorawanInfo as commandId} from '../../constants/uplinkIds.js';

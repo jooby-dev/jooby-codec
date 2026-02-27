@@ -47,13 +47,13 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {UNENCRYPTED} from '../../constants/accessLevels.js';
 import {getCurrentDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 import * as demandTypes from '../../constants/demandTypes.js';
 import * as demandsUtils from '../../utils/demands.js';
-import {getDate, setDate} from '../../utils/LoraCommandBinaryBuffer.js';
+import {getDate, setDate} from '../../utils/binary/loraBuffer.js';
 import {validateRangeCommandPayload} from '../../../utils/validateCommandPayload.js';
 
 

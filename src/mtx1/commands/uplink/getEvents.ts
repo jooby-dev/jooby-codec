@@ -63,7 +63,7 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {
     IEvent,
@@ -71,7 +71,7 @@ import {
     setEvent as setMtx1Event,
     getDate,
     setDate
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getEvents as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

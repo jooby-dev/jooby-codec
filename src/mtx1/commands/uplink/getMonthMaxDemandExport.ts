@@ -59,14 +59,14 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {
     IMonthMaxPower,
     TARIFF_NUMBER,
     getMonthMaxPowerByTariffs,
     setMonthMaxPowerByTariffs
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getMonthMaxDemandExport as commandId} from '../../constants/uplinkIds.js';

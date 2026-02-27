@@ -1,4 +1,4 @@
-import {IDataSegment} from '../../src/analog/utils/CommandBinaryBuffer.js';
+import {IDataSegment} from '../../src/analog/utils/binary/buffer.js';
 import DataSegmentsCollector from '../../src/analog/utils/DataSegmentsCollector.js';
 import permutations from '../../src/utils/permutations.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';

@@ -5,7 +5,7 @@
  */
 
 import invertObject, {THashTable} from '../../utils/invertObject.js';
-import {IObis} from './CommandBinaryBuffer.js';
+import {IObis} from './binary/buffer.js';
 
 
 // replacement table for only C and D groups

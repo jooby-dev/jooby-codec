@@ -31,7 +31,7 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../utils/command.js';
 import {
     IPackedEnergiesWithType,
@@ -44,7 +44,7 @@ import {
     getDate,
     setDate,
     getEnergies
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getEnergyDayPrevious as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

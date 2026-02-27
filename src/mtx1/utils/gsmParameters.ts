@@ -1,5 +1,5 @@
 import * as types from '../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../utils/binary/BinaryBuffer.js';
 import {convertCrcToBytes} from '../../utils/hashCrc16.js';
 import calculateCrc16 from '../../utils/calculateCrc16.js';
 import {
@@ -48,7 +48,6 @@ export class Collector {
 
             case gsmBlockTypes.STATUS: {
                 buffer = new BinaryBuffer(payload);
-                console.log(`read gsmStatus: ${getHexFromBytes(payload)}`);
 
                 return {type: 'status', data: getGsmStatus(buffer)};
             }

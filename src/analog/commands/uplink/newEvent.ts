@@ -31,7 +31,7 @@ import * as events from '../../constants/events.js';
 import eventNames from '../../constants/eventNames.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 import {TTime2000} from '../../utils/time.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
     IEventMtxStatus,
     IEventUSWaterMeterStatus,
@@ -43,7 +43,7 @@ import {
     setChannelValue,
     getEventStatus,
     setEventStatus
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import getHexFromBytes from '../../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../../utils/getBytesFromHex.js';
 import {newEvent as commandId} from '../../constants/uplinkIds.js';

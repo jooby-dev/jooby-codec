@@ -5,19 +5,19 @@
 /* eslint-disable func-names */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 
-import * as types from '../types.js';
-import {IBinaryBuffer} from '../../utils/BinaryBuffer.js';
-import * as bitSet from '../../utils/bitSet.js';
-import type {IDeviceType} from './deviceType.js';
-import * as DeviceType from './deviceType.js';
-import getHexFromBytes from '../../utils/getHexFromBytes.js';
-import getBytesFromHex from '../../utils/getBytesFromHex.js';
-import {IDateTime, ITimeCorrectionParameters} from './dateTime.js';
-import * as screenIds from '../constants/screenIds.js';
-import * as frameTypes from '../constants/frameTypes.js';
-import frameNames from '../constants/frameNames.js';
-import {baudRates, events, eventNames} from '../constants/index.js';
-import * as demandTypes from '../constants/demandTypes.js';
+import * as types from '../../types.js';
+import {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
+import * as bitSet from '../../../utils/bitSet.js';
+import type {IDeviceType} from '../deviceType.js';
+import * as DeviceType from '../deviceType.js';
+import getHexFromBytes from '../../../utils/getHexFromBytes.js';
+import getBytesFromHex from '../../../utils/getBytesFromHex.js';
+import {IDateTime, ITimeCorrectionParameters} from '../dateTime.js';
+import * as screenIds from '../../constants/screenIds.js';
+import * as frameTypes from '../../constants/frameTypes.js';
+import frameNames from '../../constants/frameNames.js';
+import {baudRates, events, eventNames} from '../../constants/index.js';
+import * as demandTypes from '../../constants/demandTypes.js';
 
 
 export const frameHeaderSize = 5;
@@ -1293,96 +1293,6 @@ function setEnergyPeriod ( buffer: IBinaryBuffer, {tariff, energy}: IEnergyPerio
     }
 }
 
-/* export interface ICommandBinaryBuffer extends IBinaryBuffer {
-    // static methods
-    // getDayProfileFromByte ( value: number ): IDayProfile,
-    // getByteFromDayProfile ( dayProfile: IDayProfile ): number,
-
-    // getDefaultSeasonProfile (): ISeasonProfile,
-
-    // getDefaultOperatorParameters (): IOperatorParameters,
-
-    // getDefaultOperatorParametersExtended3 (): IOperatorParametersExtended3,
-
-    // instance methods
-    // getFrameHeader (): IFrameHeader,
-    // setFrameHeader ( frameHeader: IFrameHeader ),
-
-    // getDeviceId (): IDeviceId,
-    // setDeviceId ( {manufacturer, type, year, serial}: IDeviceId ),
-
-    // getDateTime (): IDateTime,
-    // setDateTime ( dateTime: IDateTime ),
-
-    // getTariffPlan(): ITariffPlan,
-    // setTariffPlan ( tariffPlan: ITariffPlan ),
-
-    // getTimeCorrectionParameters (): ITimeCorrectionParameters,
-    // setTimeCorrectionParameters ( parameters: ITimeCorrectionParameters ),
-
-    // getDayProfile (): IDayProfile,
-    // setDayProfile ( dayProfile: IDayProfile ),
-
-    // getSeasonProfile (): ISeasonProfile,
-    // setSeasonProfile ( seasonProfile: ISeasonProfile ),
-
-    // getSpecialDay (): ISpecialDay,
-    // setSpecialDay ( specialDay: ISpecialDay ),
-
-    // getDeviceType (): IDeviceType,
-    // setDeviceType ( deviceType: IDeviceType ),
-
-    // getPackedEnergyWithType (): IPackedEnergiesWithType,
-    // setPackedEnergyWithType ( {energyType, energies}: IPackedEnergiesWithType ),
-
-    // getEnergies(): TEnergies,
-    // setEnergies ( energies: TEnergies ),
-
-    // getDate (): types.IDate,
-    // setDate ( date: types.IDate ),
-
-    // getOperatorParameters (): IOperatorParameters,
-    // setOperatorParameters ( operatorParameters: IOperatorParameters),
-
-    // getSaldoParameters (): ISaldoParameters,
-    // setSaldoParameters ( saldoParameters: ISaldoParameters ),
-
-    // getEnergyPeriods ( periodsNumber: number ): Array<IEnergyPeriod>,
-    // setEnergyPeriods ( periods: Array<IEnergyPeriod> ),
-
-    // getExtendedCurrentValues2 (): IExtendedCurrentValues2Parameters,
-    // setExtendedCurrentValues2 ( parameters: IExtendedCurrentValues2Parameters ),
-
-    // getEventStatus (): IEventStatus,
-    // setEventStatus ( parameters: IEventStatus ),
-
-    // getEvent (): IEvent,
-    // setEvent ( event: IEvent ),
-
-    // getDemand (): IGetDemandParameters,
-    // setDemand ( parameters: IGetDemandParameters ),
-
-    // getDemandParameters (): IGetDemandParametersResponseParameters,
-    // setDemandParameters ( parameters: IGetDemandParametersResponseParameters ),
-
-    // getDayMaxDemandResponse (): IGetDayMaxDemandResponseParameters,
-    // setDayMaxDemandResponse ( event: IGetDayMaxDemandResponseParameters ),
-
-    // getOperatorParametersExtended3 (): IOperatorParametersExtended3,
-    // setOperatorParametersExtended3 ( operatorParameters: IOperatorParametersExtended3 ),
-
-    // getMonthMaxPowerByTariffs (): Array<IMonthMaxPower>,
-    // setMonthMaxPowerByTariffs ( tariffs: Array<IMonthMaxPower> )
-} */
-
-// function CommandBinaryBuffer ( this: ICommandBinaryBuffer, dataOrLength: types.TBytes | number, isLittleEndian = false ) {
-//     BinaryBuffer.call(this, dataOrLength, isLittleEndian);
-// }
-
-// extending
-// CommandBinaryBuffer.prototype = Object.create(BinaryBuffer.prototype);
-// CommandBinaryBuffer.prototype.constructor = CommandBinaryBuffer;
-
 export const getDayProfileFromByte = ( value: number ): IDayProfile => ({
     tariff: bitSet.extractBits(value, 2, 1),
     isFirstHalfHour: !bitSet.extractBits(value, 1, 3),
@@ -2079,5 +1989,3 @@ export const getPackedEnergiesWithDateSize = ( parameters: IPackedEnergiesWithTy
 
     return DATE_SIZE + ENERGY_SIZE * TARIFF_NUMBER;
 };
-
-// export default CommandBinaryBuffer;

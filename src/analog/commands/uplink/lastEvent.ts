@@ -33,13 +33,13 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
     TEventStatus,
     getEventStatusSize,
     getEventStatus,
     setEventStatus
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import * as hardwareTypes from '../../constants/hardwareTypes.js';
 import {lastEvent as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';

@@ -25,7 +25,7 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/CommandBinaryBuffer.js';
+import {ICommandParameters, REQUEST_ID_SIZE} from '../../utils/binary/buffer.js';
 import {removeMeter as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 

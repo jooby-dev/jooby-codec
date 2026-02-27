@@ -38,7 +38,7 @@
  */
 
 import * as types from '../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as command from '../../../mtx1/utils/command.js';
 import {
     THalfHourEnergies3,
@@ -48,7 +48,7 @@ import {
     setEnergiesFlags,
     getDate,
     setDate
-} from '../../../mtx1/utils/LoraCommandBinaryBuffer.js';
+} from '../../../mtx1/utils/binary/loraBuffer.js';
 import {
     id,
     name,

@@ -64,11 +64,11 @@
 
 import * as command from '../../../mtx1/utils/command.js';
 import * as mtx1 from '../../../mtx1/commands/uplink/getEvents.js';
-import BinaryBuffer from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer from '../../../utils/binary/BinaryBuffer.js';
 import {
     getEvent as getMtx3Event,
     setEvent as setMtx3Event
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 
 
 export interface IGetEventResponseParameters extends mtx1.IGetEventResponseParameters {}

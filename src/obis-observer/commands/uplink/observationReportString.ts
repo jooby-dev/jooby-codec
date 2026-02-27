@@ -39,7 +39,7 @@
 
 import * as command from '../../utils/command.js';
 import * as types from '../../../types.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/BinaryBuffer.js';
+import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
     METER_ID_SIZE,
     DATE_TIME_SIZE,
@@ -47,7 +47,7 @@ import {
     getObisContentSize,
     getObisValueString,
     setObisValueString
-} from '../../utils/CommandBinaryBuffer.js';
+} from '../../utils/binary/buffer.js';
 import {TTime2000} from '../../../analog/utils/time.js';
 import {observationReportString as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
