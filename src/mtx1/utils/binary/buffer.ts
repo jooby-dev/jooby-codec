@@ -320,6 +320,14 @@ export interface IDefine1OperatorParameter {
      * `true` - constant magnetic field screen (`104.21.017`)
      */
     MAGNET_SCREEN_CONST: boolean
+
+    /**
+     * Power average type (18.09.23.0.0.15):
+     * `false` – fixed window averaging (Tint = Ten when a load profile is present for this interval,
+     *  otherwise falls back to floating window)
+     * `true` – floating 1-minute window with averaging period Tint
+     */
+    POWER_AVERAGE_TYPE: boolean
 }
 
 export interface IOperatorParameters {
@@ -1153,7 +1161,8 @@ const relaySet5Mask = {
 
 const define1Mask = {
     BLOCK_KEY_OPTOPORT: 0x02,
-    MAGNET_SCREEN_CONST: 0x20
+    MAGNET_SCREEN_CONST: 0x20,
+    POWER_AVERAGING_TYPE: 0x80
 };
 
 export const eventStatusMask = {
