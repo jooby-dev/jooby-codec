@@ -2,10 +2,10 @@
 /* eslint-disable no-multi-spaces */
 import BinaryBuffer, {IBinaryBuffer} from '../../src/utils/binary/BinaryBuffer.js';
 import {
-    getDeviceType,
-    setDeviceType
-} from '../../src/mtx1/utils/binary/buffer.js';
-import {IMtxDeviceTypeDescriptor} from '../../src/mtx1/utils/deviceType.js';
+    IMtxDeviceTypeDescriptor,
+    fromBytes,
+    toBytes
+} from '../../src/mtx1/utils/deviceType.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 
@@ -481,17 +481,11 @@ const deviceTypes = [
 describe(`MTX device types (${deviceTypes.length})`, () => {
     deviceTypes.forEach(({type, revision, descriptor, hex}) => {
         test(type, () => {
-            let buffer: IBinaryBuffer = new BinaryBuffer(getBytesFromHex(hex), false);
-            const deviceType = getDeviceType(buffer);
+            const deviceType = fromBytes(getBytesFromHex(hex));
 
             expect(deviceType.type).toBe(type);
             expect(deviceType?.revision).toBe(revision);
-
-            // reverse
-            buffer = new BinaryBuffer(9, false);
-            setDeviceType(buffer, {type, revision, descriptor});
-
-            expect(getHexFromBytes(buffer.data)).toBe(hex);
+            expect(getHexFromBytes(toBytes({type, revision, descriptor}))).toBe(hex);
         });
     });
 });
