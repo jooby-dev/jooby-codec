@@ -8,8 +8,6 @@
 import * as types from '../../types.js';
 import {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import * as bitSet from '../../../utils/bitSet.js';
-import type {IDeviceType} from '../deviceType.js';
-import * as DeviceType from '../deviceType.js';
 import getHexFromBytes from '../../../utils/getHexFromBytes.js';
 import getBytesFromHex from '../../../utils/getBytesFromHex.js';
 import {IDateTime, ITimeCorrectionParameters} from '../dateTime.js';
@@ -658,8 +656,6 @@ export interface IDeviceId {
      */
     serial: string
 }
-
-export {IDeviceType};
 
 export interface ISaldoParameters {
     /**
@@ -1535,15 +1531,6 @@ export const setSpecialDay = function ( buffer: IBinaryBuffer, specialDay: ISpec
     buffer.setUint8(specialDay.date as unknown as types.TUint8);
     buffer.setUint8(specialDay.dayIndex);
     buffer.setUint8(specialDay.year as unknown as types.TUint8);
-};
-
-// https://gitlab.infomir.dev/electric_meters/emdoc/-/blob/master/src/deviceInfo/deviceType.md
-export const getDeviceType = function ( buffer: IBinaryBuffer ): IDeviceType {
-    return DeviceType.fromBytes(buffer.getBytes(9));
-};
-
-export const setDeviceType = function ( buffer: IBinaryBuffer, deviceType: IDeviceType ) {
-    buffer.setBytes(DeviceType.toBytes(deviceType));
 };
 
 export interface ISerialPortsSpeedOperatorParameter {
