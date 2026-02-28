@@ -359,7 +359,7 @@ const toBytesM = ( type: string ): TBytes => {
 };
 
 export const fromBytes = ( bytes: TBytes ): IDeviceType => {
-    if ( bytes.length < 8 ) {
+    if ( bytes.length < DEVICE_TYPE_SIZE ) {
         throw new Error('The buffer is too small');
     }
 

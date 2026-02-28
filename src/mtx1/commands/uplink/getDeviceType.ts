@@ -31,11 +31,7 @@
 
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
-import {
-    IDeviceType,
-    fromBytes as deviceTypeFromBytes,
-    toBytes as deviceTypeToBytes
-} from '../../utils/deviceType.js';
+import * as deviceType from '../../utils/deviceType.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../constants/accessLevels.js';
 import {getDeviceType as commandId} from '../../constants/uplinkIds.js';
@@ -101,10 +97,10 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IDeviceType => {
+export const fromBytes = ( bytes: types.TBytes ): deviceType.IDeviceType => {
     validateCommandPayload(name, bytes, maxSize);
 
-    return deviceTypeFromBytes(bytes);
+    return deviceType.fromBytes(bytes);
 };
 
 
@@ -114,6 +110,6 @@ export const fromBytes = ( bytes: types.TBytes ): IDeviceType => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IDeviceType ): types.TBytes => (
-    command.toBytes(id, deviceTypeToBytes(parameters))
+export const toBytes = ( parameters: deviceType.IDeviceType ): types.TBytes => (
+    command.toBytes(id, deviceType.toBytes(parameters))
 );
