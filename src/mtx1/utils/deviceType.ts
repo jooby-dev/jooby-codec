@@ -41,7 +41,7 @@ export interface IDeviceType {
     descriptor?: IMtxDeviceTypeDescriptor
 }
 
-
+const DEVICE_TYPE_SIZE = 8;
 const DEVICE_TYPE_INVALID_CHAR = 'x';
 const nibbles1 = ['.', '1', '3', 'R', 'M'];
 const nibbles2 = ['.', 'A', 'G', 'R', 'T', 'D'];
@@ -69,6 +69,15 @@ const mtx3DeviceTypeDescriptorMask = {
     supportMeterInfo: 1 << 6,
     reactiveByQuadrants: 1 << 7
 };
+
+const mtx1DeviceTypeDescriptorFromByte = ( byte: number ): IMtxDeviceTypeDescriptor => ({
+    meterType: 'mtx1',
+    ...bitSet.toObject(mtx1DeviceTypeDescriptorMask, byte)
+} as IMtxDeviceTypeDescriptor);
+
+const mtx1DeviceTypeDescriptorToByte = ( descriptor: IMtx1DeviceTypeDescriptor ): number => (
+    bitSet.fromObject(mtx1DeviceTypeDescriptorMask, descriptor)
+);
 
 // In the MTX1 protocol, the meter is of type G when the corresponding bit is set to 1.
 // In the MTX3 protocol, the meter is of type G when the corresponding bit is set to 0.
@@ -239,15 +248,18 @@ const toBytesMtx = ( type: string, prefix?: number, revision?: number ): TBytes 
     }
 
     const bytes = joinNibbles(nibbles);
-    const result: TBytes = new Array(9).fill(0);
 
-    result[0] = prefix ?? 0;
-
-    for ( let index = 0; index < bytes.length; index++ ) {
-        result[index + (bytes.length < 8 ? 1 : 0)] = bytes[index];
+    if ( bytes.length >= DEVICE_TYPE_SIZE ) {
+        return bytes;
     }
 
-    return result;
+    const padLength = DEVICE_TYPE_SIZE - bytes.length;
+
+    return [
+        prefix ?? 0,
+        ...bytes,
+        ...new Array(padLength).fill(0)
+    ] as TBytes;
 };
 
 const fromBytesMtx2 = ( nibbles: TBytes ): IDeviceType => {
@@ -347,7 +359,7 @@ const toBytesM = ( type: string ): TBytes => {
 };
 
 export const fromBytes = ( bytes: TBytes ): IDeviceType => {
-    if ( bytes.length !== 9 ) {
+    if ( bytes.length < 8 ) {
         throw new Error('The buffer is too small');
     }
 
@@ -359,14 +371,17 @@ export const fromBytes = ( bytes: TBytes ): IDeviceType => {
     const deviceType = nibbles1[deviceTypeNibble];
 
     if ( deviceType === '1' || deviceType === '3' ) {
+        let descriptor: IMtxDeviceTypeDescriptor | undefined;
+
+        if ( bytes.length > DEVICE_TYPE_SIZE ) {
+            descriptor = deviceType === '3'
+                ? mtx3DeviceTypeDescriptorFromByte(bytes[8])
+                : mtx1DeviceTypeDescriptorFromByte(bytes[8]);
+        }
+
         result = {
             ...fromBytesMtx(nibbles.slice(position)),
-            descriptor: deviceType === '3'
-                ? mtx3DeviceTypeDescriptorFromByte(bytes[8])
-                : {
-                    meterType: 'mtx1',
-                    ...bitSet.toObject(mtx1DeviceTypeDescriptorMask, bytes[8]) as IMtx1DeviceTypeDescriptor
-                } as IMtxDeviceTypeDescriptor
+            ...(descriptor != null && {descriptor})
         };
     } else {
         result = deviceType === 'M'
@@ -394,14 +409,17 @@ export const toBytes = ( {type, revision, descriptor}: IDeviceType, prefix?: num
             : toBytesMtx2(content);
     }
 
+    if ( descriptor == null ) {
+        return result.slice(0, 8);
+    }
+
     if ( descriptor?.meterType ) {
         result[8] = descriptor.meterType === 'mtx1'
-            ? bitSet.fromObject(mtx1DeviceTypeDescriptorMask, descriptor)
+            ? mtx1DeviceTypeDescriptorToByte(descriptor)
             : mtx3DeviceTypeDescriptorToByte(descriptor);
     } else {
         result[8] = 0;
     }
-
 
     return result;
 };
