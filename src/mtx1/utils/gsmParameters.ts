@@ -14,7 +14,6 @@ import {
     TGsmStatus
 } from './binary/gsm.js';
 import * as gsmBlockTypes from '../constants/gsmBlockTypes.js';
-import getHexFromBytes from '../../utils/getHexFromBytes.js';
 
 
 export type Parameters =
@@ -112,7 +111,6 @@ export const split = ( parameters: Parameters ): Array<IGsmBlock> => {
             setGsmStatus(buffer, parameters.data);
 
             const payload = buffer.getBytesToOffset();
-            console.log(`write GsmStatus: ${getHexFromBytes(payload)}`);
 
             return [{index: gsmBlockTypes.STATUS, data: [payload.length, ...payload]}];
         }
