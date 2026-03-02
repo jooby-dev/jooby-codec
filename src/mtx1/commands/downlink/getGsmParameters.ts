@@ -33,7 +33,7 @@ import commandNames from '../../constants/downlinkNames.js';
 
 
 interface IGetGsmParameters {
-    blockIndex: types.TUint8
+    index: types.TUint8
 }
 
 
@@ -52,7 +52,7 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            blockIndex: 1
+            index: 1
         },
         bytes: [
             0x61, 0x01,
@@ -71,9 +71,9 @@ export const examples: command.TCommandExamples = {
 export const fromBytes = ( bytes: types.TBytes ): IGetGsmParameters => {
     validateCommandPayload(name, bytes, maxSize);
 
-    const [blockIndex] = bytes;
+    const [index] = bytes;
 
-    return {blockIndex};
+    return {index};
 };
 
 
@@ -84,5 +84,5 @@ export const fromBytes = ( bytes: types.TBytes ): IGetGsmParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetGsmParameters ) : types.TBytes => (
-    command.toBytes(id, [parameters.blockIndex])
+    command.toBytes(id, [parameters.index])
 );
