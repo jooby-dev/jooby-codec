@@ -42,11 +42,8 @@ const mtx3DescriptorG = {
     reactiveByQuadrants: false
 } as IMtxDeviceTypeDescriptor;
 
-const deviceTypes1 = [
-    {type: 'MTX 3R30.DK.4Z1-YD4',  revision: 0x07, descriptor: mtx3DescriptorR, hex: '00 23 41 48 43 72 c1 c0 10'}
-];
-
 const deviceTypes = [
+    {type: 'MTX 1A10.DF.2L0-B4',   revision: 0x08, descriptor: mtx1DescriptorG, manufacturingFlag: 0xef, hex: 'ef 11 21 46 21 81 2c 00 01'},
     {type: 'MTX 1A10.DF.2L0-B4',   revision: 0x08, descriptor: mtx1DescriptorG, hex: '00 11 21 46 21 81 2c 00 01'},
     {type: 'MTX 1A10.DF.2L0-BD4',  revision: 0x0a, descriptor: mtx1DescriptorA, hex: '00 11 21 46 21 a1 21 c0 00'},
     {type: 'MTX 1A10.DF.2L0-BO4',  revision: 0x07, descriptor: mtx1DescriptorA, hex: '00 11 21 46 21 71 27 c0 00'},
@@ -479,13 +476,13 @@ const deviceTypes = [
 
 
 describe(`MTX device types (${deviceTypes.length})`, () => {
-    deviceTypes.forEach(({type, revision, descriptor, hex}) => {
+    deviceTypes.forEach(({type, revision, descriptor, manufacturingFlag, hex}) => {
         test(type, () => {
             const deviceType = fromBytes(getBytesFromHex(hex));
 
             expect(deviceType.type).toBe(type);
             expect(deviceType?.revision).toBe(revision);
-            expect(getHexFromBytes(toBytes({type, revision, descriptor}))).toBe(hex);
+            expect(getHexFromBytes(toBytes({type, revision, manufacturingFlag, descriptor}))).toBe(hex);
         });
     });
 });

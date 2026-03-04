@@ -22,6 +22,8 @@ export interface IMtx3DeviceTypeDescriptor extends bitSet.TBooleanObject {
 export type IMtxDeviceTypeDescriptor = ({meterType: 'mtx1'} & IMtx1DeviceTypeDescriptor) | ({meterType: 'mtx3'} & IMtx3DeviceTypeDescriptor);
 
 export interface IDeviceType {
+    manufacturingFlag?: TUint8,
+
     /**
      * Device type.
      *
@@ -365,7 +367,9 @@ export const fromBytes = ( bytes: TBytes ): IDeviceType => {
 
     let result: IDeviceType;
     const reserve = [0x00, 0x05, 0x06, 0x07, 0x09, 0x7f, 0xef];
-    const position = reserve.indexOf(bytes[0]) !== -1 ? 2 : 0;
+    const reserveIndex = reserve.indexOf(bytes[0]);
+    const manufacturingFlag = reserveIndex !== -1 ? bytes[0] : undefined;
+    const position = reserveIndex !== -1 ? 2 : 0;
     const nibbles = splitToNibbles(bytes.slice(0, 8));
     const deviceTypeNibble = nibbles[position];
     const deviceType = nibbles1[deviceTypeNibble];
@@ -389,10 +393,10 @@ export const fromBytes = ( bytes: TBytes ): IDeviceType => {
             : fromBytesMtx2(nibbles);
     }
 
-    return result;
+    return {...result, ...(manufacturingFlag > 0 && {manufacturingFlag})};
 };
 
-export const toBytes = ( {type, revision, descriptor}: IDeviceType, prefix?: number ): TBytes => {
+export const toBytes = ( {type, revision, descriptor, manufacturingFlag}: IDeviceType ): TBytes => {
     if ( !type.startsWith('MTX ') ) {
         throw new Error('Wrong format');
     }
@@ -402,7 +406,7 @@ export const toBytes = ( {type, revision, descriptor}: IDeviceType, prefix?: num
     const deviceTypeSymbol = type[4];
 
     if ( deviceTypeSymbol === '1' || deviceTypeSymbol === '3' ) {
-        result = toBytesMtx(content, prefix, revision);
+        result = toBytesMtx(content, manufacturingFlag, revision);
     } else {
         result = deviceTypeSymbol === 'M'
             ? toBytesM(content)
