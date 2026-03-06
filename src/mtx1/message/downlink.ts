@@ -130,7 +130,9 @@ export const toBytesMap = {};
 export const fromBytesMap = {};
 export const nameMap = downlinkNames;
 
-export const fromBytes = wrappers.getFromBytes(fromBytesMap, nameMap);
+export const messageFromBytes = wrappers.getMessageFromBytes(fromBytesMap, nameMap);
+export const fromBytes = wrappers.getFromBytes(messageFromBytes);
+
 export const toBytes = wrappers.getToBytes(toBytesMap);
 
 
