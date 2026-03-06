@@ -69,27 +69,16 @@ const COMMANDS_END_MARK = [0];
 
 const COMMAND_HEADER_SIZE = 2;
 
-const getAesKey = ( accessLevel: TAccessLevel, config: IFromBytesOptions = {} ): TBytes => {
-    let aesKey;
+const keyByAccessLevel = {
+    [accessLevels.READ_ONLY]: 'readOnlyKey',
+    [accessLevels.READ_WRITE]: 'readWriteKey',
+    [accessLevels.ROOT]: 'rootKey'
+};
 
-    switch ( accessLevel ) {
-        case accessLevels.READ_ONLY:
-            aesKey = config.readOnlyKey;
-            break;
+const getAesKey = (accessLevel: TAccessLevel, config: IFromBytesOptions = {}): TBytes => {
+    const key = keyByAccessLevel[accessLevel];
 
-        case accessLevels.READ_WRITE:
-            aesKey = config.readWriteKey;
-            break;
-
-        case accessLevels.ROOT:
-            aesKey = config.rootKey;
-            break;
-
-        default:
-            break;
-    }
-
-    return aesKey ?? config.aesKey;
+    return (key ? config[key] : undefined) ?? config.aesKey;
 };
 
 
