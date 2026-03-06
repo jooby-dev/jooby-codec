@@ -75,10 +75,10 @@ const keyByAccessLevel = {
     [accessLevels.ROOT]: 'rootKey'
 };
 
-const getAesKey = (accessLevel: TAccessLevel, config: IFromBytesOptions = {}): TBytes => {
+export const getAesKey = (accessLevel: TAccessLevel, config: IFromBytesOptions = {}): TBytes => {
     const key = keyByAccessLevel[accessLevel];
 
-    return (key ? config[key] : undefined) ?? config.aesKey;
+    return config[key] ?? config.aesKey;
 };
 
 
