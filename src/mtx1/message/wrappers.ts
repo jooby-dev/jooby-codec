@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import {TBytes} from '../../types.js';
+import {TAccessLevel, TBytes} from '../types.js';
 import {TMessage, IMessage} from './types.js';
 import {TCommand} from '../utils/command.js';
 import * as errorDataFrameResponse from '../commands/uplink/errorDataFrameResponse.js';
@@ -22,7 +22,10 @@ export interface IToBytesOptions {
 
 // to build IMessage from bytes
 export interface IFromBytesOptions {
-    aesKey?: TBytes
+    aesKey?: TBytes,
+    readOnlyKey?: TBytes
+    readWriteKey?: TBytes
+    rootKey?: TBytes
 }
 
 // bitmask to extract/apply access level
@@ -66,9 +69,31 @@ const COMMANDS_END_MARK = [0];
 
 const COMMAND_HEADER_SIZE = 2;
 
+const getAesKey = ( accessLevel: TAccessLevel, config: IFromBytesOptions = {} ): TBytes => {
+    let aesKey;
+
+    switch ( accessLevel ) {
+        case accessLevels.READ_ONLY:
+            aesKey = config.readOnlyKey;
+            break;
+
+        case accessLevels.READ_WRITE:
+            aesKey = config.readWriteKey;
+            break;
+
+        case accessLevels.ROOT:
+            aesKey = config.rootKey;
+            break;
+
+        default:
+            break;
+    }
+
+    return aesKey ?? config.aesKey;
+};
+
 
 export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], config: IFromBytesOptions = {} ): TMessage => {
-    const aesKey = config?.aesKey;
     const commands: Array<TCommand> = [];
     const [messageId, maskedAccessLevel] = bytes;
     const accessLevel = maskedAccessLevel & ACCESS_LEVEL_MASK;
@@ -80,6 +105,7 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
         bytes,
         lrc: {received: undefined, calculated: 0}
     };
+    const aesKey = getAesKey(accessLevel, config);
     let messageBody = bytes.slice(MESSAGE_HEADER_SIZE);
     let error;
 
