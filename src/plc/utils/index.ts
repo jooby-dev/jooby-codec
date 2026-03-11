@@ -4,4 +4,5 @@
  * @packageDocumentation
  */
 
-export * from './frame.js';
+export * as block from './block.js';
+export * as frame from './frame.js';

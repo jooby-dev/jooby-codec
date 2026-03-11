@@ -2,7 +2,7 @@ import * as types from '../types.js';
 import getHexFromBytes from './getHexFromBytes.js';
 
 
-export const validateSetCommandPayload = ( commandName: string, bytes: types.TBytes, set: Array<number> ) => {
+export const validateSetCommandPayload = ( commandName: string, bytes: types.TBytes, expectedLengths: Array<number> ) => {
     if ( !commandName ) {
         throw new Error('Command name is required.');
     }
@@ -11,7 +11,7 @@ export const validateSetCommandPayload = ( commandName: string, bytes: types.TBy
         throw new Error(`Invalid payload for ${commandName}. Expected array, got: ${typeof bytes}.`);
     }
 
-    if ( !set.includes(bytes.length) ) {
+    if ( !expectedLengths.includes(bytes.length) ) {
         const hex = getHexFromBytes(bytes, {separator: ''});
 
         throw new Error(`Wrong buffer size for ${commandName}: ${bytes.length}. Payload: 0x${hex}.`);

@@ -1,10 +1,5 @@
 /**
- * MTX3 protocol.
- *
- * @packageDocumentation
- *
- * There are some [basics](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/basics.md) available
- * in a separate [repository](https://github.com/jooby-dev/jooby-docs).
+ * PLC protocol.
  */
 
 export * as commands from './commands/index.js';

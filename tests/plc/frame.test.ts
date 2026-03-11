@@ -1,7 +1,6 @@
 import * as frame from '../../src/plc/utils/frame.js';
 import * as block from '../../src/plc/utils/block.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
-import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 
 
 const frames = [
@@ -32,9 +31,6 @@ describe('PLC frame', () => {
             const parsedBlock = block.fromBytes(parsedFrame.payload);
 
             bytes = block.toBytes(parsedBlock);
-
-            console.log(getHexFromBytes(parsedFrame.payload));
-            console.log(getHexFromBytes(bytes));
 
             expect(bytes).toEqual(parsedFrame.payload);
         });

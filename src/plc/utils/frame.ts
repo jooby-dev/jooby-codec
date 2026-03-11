@@ -33,8 +33,8 @@ export interface IInvalidFrame {
 
 export type TPlcFrame = IPlcFrame | IDownlinkControllerFrame | IUplinkControllerFrame | IInvalidFrame;
 
-
-const minimalFrameSize = 4; // start byte, phase byte, length, crc (2 bytes), stop byte
+// start byte, phase byte, length, crc (2 bytes), stop byte
+const minimalFrameSize = 4;
 
 
 const makeDownlinkControllerFrameContent = ( {pri, payload}: IDownlinkControllerFrame ) => [
