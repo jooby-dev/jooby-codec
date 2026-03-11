@@ -2,6 +2,22 @@ import * as types from '../types.js';
 import getHexFromBytes from './getHexFromBytes.js';
 
 
+export const validateSetCommandPayload = ( commandName: string, bytes: types.TBytes, set: Array<number> ) => {
+    if ( !commandName ) {
+        throw new Error('Command name is required.');
+    }
+
+    if ( bytes && !Array.isArray(bytes) ) {
+        throw new Error(`Invalid payload for ${commandName}. Expected array, got: ${typeof bytes}.`);
+    }
+
+    if ( !set.includes(bytes.length) ) {
+        const hex = getHexFromBytes(bytes, {separator: ''});
+
+        throw new Error(`Wrong buffer size for ${commandName}: ${bytes.length}. Payload: 0x${hex}.`);
+    }
+};
+
 export const validateRangeCommandPayload = ( commandName: string, bytes: types.TBytes, range: {min?: number; max?: number} ) => {
     if ( !commandName ) {
         throw new Error('Command name is required.');
