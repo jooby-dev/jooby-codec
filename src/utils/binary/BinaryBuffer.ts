@@ -275,7 +275,7 @@ BinaryBuffer.prototype = {
     },
 
     seek ( position: number ) {
-        if ( position < 0 || position >= this.data.length ) {
+        if ( position < 0 || position > this.data.length ) {
             throw new Error('Invalid position.');
         }
 
