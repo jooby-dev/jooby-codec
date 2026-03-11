@@ -1,0 +1,9 @@
+export const CONNECTION = 1;
+export const MTX = 2;
+export const MTX_REPORT = 3;
+export const MTX_EVENT = 4;
+export const BYCON = 5;
+export const MODEM = 6;
+export const PAN_CONFIRMATION = 7;
+export const EMPTY_UPLINK = 8;
+export const LONG_ADDRESS = 9;
