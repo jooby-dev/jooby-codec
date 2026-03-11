@@ -87,7 +87,7 @@ export const arrayUnstuff = ( data: TBytes, dataBits: TDataBits = 8 ): TBytes =>
 
 export const toBytes = ( content: TBytes, dataBits: TDataBits = 8 ): TBytes => {
     const stuffed = content.length === 0 ? [] : arrayStuff(hashCrc16.appendCrc(content), dataBits);
-    const bytes = content.length === 0 ? [] : [0x7e, ...stuffed, 0x7e];
+    const bytes = content.length === 0 ? [] : [START_BYTE, ...stuffed, STOP_BYTE];
 
     return bytes;
 };
