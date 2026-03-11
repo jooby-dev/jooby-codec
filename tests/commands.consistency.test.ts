@@ -11,10 +11,12 @@ import path from 'path';
 import {commands as analogCommands} from '../src/analog/index.js';
 import {commands as mtx1Commands} from '../src/mtx1/index.js';
 import {commands as mtx3Commands} from '../src/mtx3/index.js';
+import {commands as plcCommands} from '../src/plc/index.js';
 import {commands as obisObserverCommands} from '../src/obis-observer/index.js';
 import * as analogMessage from '../src/analog/message/index.js';
 import * as mtx1Message from '../src/mtx1/message/index.js';
 import * as mtx3Message from '../src/mtx3/message/index.js';
+import * as plcMessage from '../src/plc/message/index.js';
 import * as obisObserverMessage from '../src/obis-observer/message/index.js';
 
 
@@ -38,6 +40,13 @@ const MTX3_MESSAGE_DOWNLINK_PATH = path.resolve(__dirname, '../src/mtx3/message/
 const MTX3_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/mtx3/message/uplink.ts');
 const MTX3_DOWNLINK_INDEX_PATH = path.resolve(MTX3_DOWNLINK_PATH, 'index.ts');
 const MTX3_UPLINK_INDEX_PATH = path.resolve(MTX3_UPLINK_PATH, 'index.ts');
+
+const PLC_DOWNLINK_PATH = path.resolve(__dirname, '../src/plc/commands/downlink');
+const PLC_UPLINK_PATH = path.resolve(__dirname, '../src/plc/commands/uplink');
+const PLC_MESSAGE_DOWNLINK_PATH = path.resolve(__dirname, '../src/plc/message/downlink.ts');
+const PLC_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/plc/message/uplink.ts');
+const PLC_DOWNLINK_INDEX_PATH = path.resolve(PLC_DOWNLINK_PATH, 'index.ts');
+const PLC_UPLINK_INDEX_PATH = path.resolve(PLC_UPLINK_PATH, 'index.ts');
 
 const OBIS_OBSERVER_DOWNLINK_PATH = path.resolve(__dirname, '../src/obis-observer/commands/downlink');
 const OBIS_OBSERVER_UPLINK_PATH = path.resolve(__dirname, '../src/obis-observer/commands/uplink');
@@ -175,6 +184,22 @@ describe('commands consistency', () => {
         );
     });
 
+    test('plc downlink IDs should match', () => {
+        checkIdConsistency(
+            plcCommands.downlink,
+            getCommandIdsFromMessageImport(plcMessage.downlink),
+            PLC_MESSAGE_DOWNLINK_PATH
+        );
+    });
+
+    test('plc uplink IDs should match', () => {
+        checkIdConsistency(
+            plcCommands.uplink,
+            getCommandIdsFromMessageImport(plcMessage.uplink),
+            PLC_MESSAGE_UPLINK_PATH
+        );
+    });
+
     test('obis-observer downlink IDs should match', () => {
         checkIdConsistency(
             obisObserverCommands.downlink,
@@ -221,5 +246,10 @@ describe('commands consistency', () => {
     test('mtx3 command file names should match imported commands', () => {
         checkCommandNamesConsistency(MTX3_DOWNLINK_PATH, MTX3_DOWNLINK_INDEX_PATH, mtx3Commands.downlink);
         checkCommandNamesConsistency(MTX3_UPLINK_PATH, MTX3_UPLINK_INDEX_PATH, mtx3Commands.uplink);
+    });
+
+    test('plc command file names should match imported commands', () => {
+        checkCommandNamesConsistency(PLC_DOWNLINK_PATH, PLC_DOWNLINK_INDEX_PATH, plcCommands.downlink);
+        checkCommandNamesConsistency(PLC_UPLINK_PATH, PLC_UPLINK_INDEX_PATH, plcCommands.uplink);
     });
 });
