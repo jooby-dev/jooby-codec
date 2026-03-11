@@ -21,7 +21,7 @@
  * ```
  */
 
-import * as types from '../../../mtx1/types.js';
+import * as types from '../../types.js';
 import * as command from '../../../mtx1/utils/command.js';
 import {UNENCRYPTED} from '../../../mtx1/constants/accessLevels.js';
 import {getLoopback as commandId} from '../../constants/downlinkIds.js';
@@ -41,7 +41,7 @@ export const accessLevel: types.TAccessLevel = UNENCRYPTED;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    getLoopback: {
+    'simple request': {
         id,
         name,
         headerSize,

@@ -1,6 +1,6 @@
 import {BrandType} from '../types.js';
 
-export * from '../types.js';
+export * from '../mtx1/types.js';
 
 /**
  * Subsystem ids.

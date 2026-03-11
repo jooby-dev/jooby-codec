@@ -20,7 +20,7 @@
  * }
  */
 
-import * as types from '../../../mtx1/types.js';
+import * as types from '../../types.js';
 import * as command from '../../../mtx1/utils/command.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {UNENCRYPTED} from '../../../mtx1/constants/accessLevels.js';

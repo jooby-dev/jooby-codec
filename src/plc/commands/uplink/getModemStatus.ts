@@ -47,7 +47,7 @@
  * }
  */
 
-import * as types from '../../../mtx1/types.js';
+import * as types from '../../types.js';
 import {getVersion, setVersion} from '../../../utils/binary/types.js';
 import * as command from '../../../mtx1/utils/command.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
