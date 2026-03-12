@@ -1,4 +1,5 @@
-import * as types from '../../mtx1/types.js';
+import * as types from '../types.js';
+import {TMessage} from '../../mtx1/message/types.js';
 import {UNENCRYPTED} from '../../mtx1/constants/accessLevels.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../utils/binary/BinaryBuffer.js';
 import {validateRangeCommandPayload} from '../../utils/validateCommandPayload.js';
@@ -13,26 +14,22 @@ export interface IBlockHeaderBase {
     isDownlink: boolean,
     shortAddress: types.TUint16,
     hop: types.TUint8,
-    isEndDevice: boolean
+    isEndDevice: boolean,
 }
 
 export interface IPingBlockHeader extends IBlockHeaderBase {
+    kind: 'ping'
 }
 
 export interface ISubsystemBlock extends IBlockHeaderBase {
+    kind: 'subsystem',
     /** One of the {@link subsystemIds | subsystem IDs}. */
     subsystemId: types.TUint8,
     dataAttributes: types.TUint8,
     accessLevel: types.TAccessLevel,
     messageId: types.TUint8,
     payload: types.TBytes,
-}
-
-export interface ILongAddressBlock extends ISubsystemBlock {
-    subsystemId: typeof subsystemIds.LONG_ADDRESS,
-    longAddress: types.TBytes,
-    /** One of the {@link subsystemIds | subsystem IDs}. */
-    commandsSubsystemId: types.TUint8
+    message?: TMessage
 }
 
 export interface IShortAddressBlock extends ISubsystemBlock {
@@ -40,7 +37,15 @@ export interface IShortAddressBlock extends ISubsystemBlock {
 }
 
 export interface IMtxReportBlock extends IShortAddressBlock {
+    subsystemId: typeof subsystemIds.MTX_EVENT,
     panTimestamp: types.TUint32
+}
+
+export interface ILongAddressBlock extends ISubsystemBlock {
+    subsystemId: typeof subsystemIds.LONG_ADDRESS,
+    longAddress: types.TBytes,
+    /** One of the {@link subsystemIds | subsystem IDs}. */
+    commandsSubsystemId: types.TUint8
 }
 
 export type IBlock =
@@ -67,7 +72,7 @@ export const fromBytes = ( bytes: types.TBytes ): IBlock => {
     const isEndDevice = (sizeByte & 0x80) !== 0;
     let size = (sizeByte & 0x7f);
 
-    const pingBlockHeader = {
+    const blockHeader = {
         id,
         isDownlink,
         shortAddress,
@@ -75,8 +80,8 @@ export const fromBytes = ( bytes: types.TBytes ): IBlock => {
         isEndDevice
     };
 
-    if ( size === 0) {
-        return pingBlockHeader;
+    if ( size === 0 ) {
+        return {kind: 'ping', ...blockHeader};
     }
 
     if ( size < 2 ) {
@@ -90,7 +95,8 @@ export const fromBytes = ( bytes: types.TBytes ): IBlock => {
     size -= 2; // remove subsystem byte and messageId byte from size
 
     const result = {
-        ...pingBlockHeader,
+        kind: 'subsystem',
+        ...blockHeader,
         subsystemId: subsystemByte >> 4,
         dataAttributes: subsystemByte & 0x0f,
         accessLevel: (messageIdByte >> 6) & 0x03,
@@ -157,7 +163,7 @@ const baseBlockHeaderToBytes = ( parameters: IBlockHeaderBase, payloadSize: type
 
 
 export const toBytes = ( parameters: IBlock ): types.TBytes => {
-    if ( !('subsystemId' in parameters) ) {
+    if ( parameters.kind === 'ping' ) {
         return baseBlockHeaderToBytes(parameters);
     }
 
