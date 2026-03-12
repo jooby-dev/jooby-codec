@@ -58,6 +58,12 @@ export type IBlock =
 const minimalBlockHeaderSize = 6;
 
 
+export const getCommandsSystemId = ( value: ISubsystemBlock ) => (
+    value.subsystemId === subsystemIds.LONG_ADDRESS
+        ? (value as ILongAddressBlock).commandsSubsystemId
+        : value.subsystemId
+);
+
 export const fromBytes = ( bytes: types.TBytes ): IBlock => {
     validateRangeCommandPayload('plcBlock', bytes, {min: minimalBlockHeaderSize});
 
