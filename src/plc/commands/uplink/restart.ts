@@ -11,8 +11,7 @@
  *
  * // get feeders status response
  * const bytes = [
- *     0x0e, 0x01,
- *     0x01
+ *     0x0e, 0x01, 0x01
  * ];
  *
  * // decoded payload

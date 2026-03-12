@@ -17,7 +17,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = buildDate.fromBytes(bytes);
+ * const parameters = getBuildDate.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

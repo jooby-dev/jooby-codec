@@ -13,7 +13,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [36, 0]
+ * [37, 0]
  * ```
  */
 

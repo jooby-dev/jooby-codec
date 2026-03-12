@@ -17,7 +17,7 @@
  * ];
  *
  * // decoded payload
- * const parameters = modemStatus.fromBytes(bytes);
+ * const parameters = getModemStatus.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

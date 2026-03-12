@@ -1,21 +1,18 @@
 /**
- * Uplink command to reset PLC network data.
+ * Downlink command to start of destruction of the PLC network.
  *
  * @packageDocumentation
  *
- * @example create command instance from command body hex dump
+ * @example
  * ```js
  * import * as phyDisconnect from 'jooby-codec/plc/commands/downlink/phyDisconnect.js';
  *
- * // empty response
- * const bytes = [];
+ * const bytes = phyDisconnect.toBytes();
  *
- * // decoded payload
- * const parameters = phyDisconnect.fromBytes(bytes);
- *
- * console.log(parameters);
+ * // command binary representation
+ * console.log(bytes);
  * // output:
- * {}
+ * [5, 0]
  * ```
  */
 

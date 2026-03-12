@@ -7,18 +7,23 @@
  *
  * @example
  * ```js
- * import * as phyConnect from 'jooby-codec/plc/commands/downlink/phyConnect.js';
+ * import * as phyConnect from 'jooby-codec/plc/commands/uplink/phyConnect.js';
  *
- * const parameters = {
- *     longAddress: [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07]
- * };
+ * // get default operator parameters response
+ * const bytes = [
+ *     0x06, 0x0a, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05,
+ *     0x06, 0x07, 0x00, 0x01
+ * ];
  *
- * const bytes = phyConnect.toBytes(parameters);
+ * // decoded payload
+ * const parameters = phyConnect.fromBytes(bytes);
  *
- * // command binary representation
- * console.log(bytes);
+ * console.log(parameters);
  * // output:
- * [6, 10, 0, 1, 0, 1, 2, 3, 4, 5, 6, 7, 0, 1]
+ * {
+ *     longAddress: [0, 1, 2, 3, 4, 5, 6, 7],
+ *     shortAddress: 1
+ * }
  * ```
  */
 

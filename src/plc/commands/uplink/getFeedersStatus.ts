@@ -11,15 +11,15 @@
  *
  * // get feeders status response
  * const bytes = [
- *     0x03, 0x0d,
+ *     0x0d, 0x03,
+ *     0x00,
  *     0x01,
- *     0x02,
  *     0x01, 0x00, 0x01, 0x00, 0x02, 0x00,
  *     0x03, 0x00, 0x04, 0x00, 0x05, 0x00
  * ];
  *
  * // decoded payload
- * const parameters = feedersStatus.fromBytes(bytes);
+ * const parameters = getFeedersStatus.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:

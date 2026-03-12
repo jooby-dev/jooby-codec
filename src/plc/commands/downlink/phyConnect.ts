@@ -9,7 +9,7 @@
  * import * as phyConnect from 'jooby-codec/plc/commands/downlink/phyConnect.js';
  *
  * const parameters = {
- *     longAddress: [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07]
+ *     longAddress: [0, 1, 2, 3, 4, 5, 6, 7]
  * };
  *
  * const bytes = phyConnect.toBytes(parameters);
