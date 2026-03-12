@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
-import {TAccessLevel, TBytes} from '../types.js';
+import {TAccessLevel, TBytes, TUint8} from '../types.js';
 import {TMessage, IMessage} from './types.js';
 import {TCommand} from '../utils/command.js';
 import * as errorDataFrameResponse from '../commands/uplink/errorDataFrameResponse.js';
@@ -15,7 +15,7 @@ import readErrorDataFrameResponse from './readErrorDataFrameResponse.js';
 
 // to serialize IMessage to bytes
 export interface IToBytesOptions {
-    messageId: number,
+    messageId?: number,
     accessLevel?: number,
     aesKey?: TBytes
 }
@@ -81,12 +81,20 @@ export const getAesKey = (accessLevel: TAccessLevel, config: IFromBytesOptions =
     return config[key] ?? config.aesKey;
 };
 
+export type TMessageFromBytes = (
+    accessLevel: TAccessLevel,
+    messageId: TUint8,
+    bytes?: TBytes,
+    config?: IFromBytesOptions
+) => TMessage;
 
-export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], config: IFromBytesOptions = {} ): TMessage => {
+export const getMessageFromBytes = ( fromBytesMap, nameMap ): TMessageFromBytes => (
+    accessLevel: TAccessLevel,
+    messageId: TUint8,
+    bytes: TBytes = [],
+    config: IFromBytesOptions = {}
+): TMessage => {
     const commands: Array<TCommand> = [];
-    const [messageId, maskedAccessLevel] = bytes;
-    const accessLevel = maskedAccessLevel & ACCESS_LEVEL_MASK;
-    const errorDataFrameMessage = readErrorDataFrameResponse(accessLevel, bytes);
     const message: IMessage = {
         messageId,
         accessLevel,
@@ -95,12 +103,8 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
         lrc: {received: undefined, calculated: 0}
     };
     const aesKey = getAesKey(accessLevel, config);
-    let messageBody = bytes.slice(MESSAGE_HEADER_SIZE);
+    let messageBody = bytes;
     let error;
-
-    if ( errorDataFrameMessage ) {
-        return errorDataFrameMessage;
-    }
 
     if ( aesKey && accessLevel !== accessLevels.UNENCRYPTED ) {
         messageBody = [...aes.decrypt(aesKey, messageBody)];
@@ -178,10 +182,28 @@ export const getFromBytes = ( fromBytesMap, nameMap ) => ( bytes: TBytes = [], c
     return message;
 };
 
-export const getToBytes = toBytesMap => (
+export const getFromBytes = ( messageFromBytes: TMessageFromBytes ) => ( bytes: TBytes = [], config: IFromBytesOptions = {} ): TMessage => {
+    const [messageId, maskedAccessLevel] = bytes;
+    const accessLevel = maskedAccessLevel & ACCESS_LEVEL_MASK;
+    const errorDataFrameMessage = readErrorDataFrameResponse(accessLevel, bytes);
+
+    if ( errorDataFrameMessage ) {
+        return errorDataFrameMessage;
+    }
+
+    const messageBody = bytes.slice(MESSAGE_HEADER_SIZE);
+
+    return messageFromBytes(accessLevel, messageId, messageBody, config);
+};
+
+export type TBytesFromMessage = (
+    commands: Array<TCommand>,
+    options: IToBytesOptions
+) => TBytes;
+
+export const getBytesFromMessage = ( toBytesMap ): TBytesFromMessage => (
     commands: Array<TCommand>,
     {
-        messageId = 1,
         accessLevel = getCommandsAccessLevel(commands),
         aesKey
     }: IToBytesOptions
@@ -203,8 +225,6 @@ export const getToBytes = toBytesMap => (
 
     const maskedAccessLevel = accessLevel | 0x10;
 
-    // always unencrypted header
-    const header = [messageId, maskedAccessLevel];
     const isItErrorDataFrameOnly = (
         commands.length === 1
         && 'id' in commands[0]
@@ -212,7 +232,7 @@ export const getToBytes = toBytesMap => (
     );
 
     if ( isItErrorDataFrameOnly ) {
-        return header.concat(commandBytes);
+        return commandBytes;
     }
 
     // accessLevel + all commands (can be encrypted) + 0 as commands end mark
@@ -231,6 +251,23 @@ export const getToBytes = toBytesMap => (
     if ( aesKey && accessLevel !== accessLevels.UNENCRYPTED ) {
         body = [...aes.encrypt(aesKey, body)];
     }
+
+    return body;
+};
+
+export const getToBytes = ( bytesFromMessage: TBytesFromMessage ): TBytesFromMessage => (
+    commands: Array<TCommand>,
+    {
+        messageId = 1,
+        accessLevel = getCommandsAccessLevel(commands),
+        aesKey
+    }: IToBytesOptions
+): TBytes => {
+    const maskedAccessLevel = accessLevel | 0x10;
+
+    // always unencrypted header
+    const header = [messageId, maskedAccessLevel];
+    const body = bytesFromMessage(commands, {messageId, accessLevel, aesKey});
 
     return header.concat(body);
 };

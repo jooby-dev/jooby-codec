@@ -1,0 +1,11 @@
+export const phyStart = 0x02; // 2
+export const phyConnect = 0x06; // 6
+export const getModemStatus = 0x07; // 7
+export const getLoopback = 0x08; // 8
+export const getFeedersStatus = 0x0d; // 13
+export const restart = 0x0e; // 14
+export const getBuildDate = 0x14; // 20
+export const writeLinkTable = 0x24; // 36
+export const writeDownlinkTable = 0x25; // 37
+export const getPhaseStatus = 0x2a; // 42
+export const getFrequencyStatus = 0x2b; // 43
