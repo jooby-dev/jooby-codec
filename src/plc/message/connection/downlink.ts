@@ -8,9 +8,9 @@ export const toBytesMap = {};
 export const fromBytesMap = {};
 export const nameMap = downlinkNames;
 
-export const getMessageFromBytes = wrappers.getMessageFromBytes(fromBytesMap, nameMap);
+export const messageFromBytes = wrappers.getMessageFromBytes(fromBytesMap, nameMap);
 
-export const getBytesFromMessage = wrappers.getBytesFromMessage(toBytesMap);
+export const bytesFromMessage = wrappers.getBytesFromMessage(toBytesMap);
 
 
 // fill maps

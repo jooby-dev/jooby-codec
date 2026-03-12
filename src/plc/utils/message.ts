@@ -5,13 +5,13 @@ import {IToBytesOptions, IFromBytesOptions} from '../../mtx1/message/wrappers.js
 import {TCommand} from '../../mtx1/utils/command.js';
 
 
-export const getMessageFromBlock = ( value: block.ISubsystemBlock, config: IFromBytesOptions = {} ) => {
+export const messageFromBlock = ( value: block.ISubsystemBlock, config: IFromBytesOptions = {} ) => {
     const direction = value.isDownlink
         ? message.downlink
         : message.uplink;
     const subsystemId = block.getCommandsSystemId(value);
 
-    const fromBytes = direction.getMessageFromBytes('mtx1', subsystemId);
+    const fromBytes = direction.messageFromBytes('mtx1', subsystemId);
 
     return fromBytes != null
         ? fromBytes(
@@ -23,7 +23,7 @@ export const getMessageFromBlock = ( value: block.ISubsystemBlock, config: IFrom
         : undefined;
 };
 
-export const getBytesFromMessage = (
+export const bytesFromMessage = (
     commands: Array<TCommand>,
     isDownlink: boolean,
     subsystemId: types.TUint8,
@@ -32,7 +32,7 @@ export const getBytesFromMessage = (
     const direction = isDownlink
         ? message.downlink
         : message.uplink;
-    const toBytes = direction.getBytesFromMessage('mtx1', subsystemId);
+    const toBytes = direction.bytesFromMessage('mtx1', subsystemId);
 
     return toBytes != null
         ? toBytes(

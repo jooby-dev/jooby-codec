@@ -88,11 +88,11 @@ export const toBytesMap = {};
 export const fromBytesMap = {};
 export const nameMap = uplinkNames;
 
-export const getMessageFromBytes = wrappers.getMessageFromBytes(fromBytesMap, nameMap);
-export const fromBytes = wrappers.getFromBytes(getMessageFromBytes);
+export const messageFromBytes = wrappers.getMessageFromBytes(fromBytesMap, nameMap);
+export const fromBytes = wrappers.getFromBytes(messageFromBytes);
 
-export const getBytesFromMessage = wrappers.getBytesFromMessage(toBytesMap);
-export const toBytes = wrappers.getToBytes(getBytesFromMessage);
+export const bytesFromMessage = wrappers.getBytesFromMessage(toBytesMap);
+export const toBytes = wrappers.getToBytes(bytesFromMessage);
 
 
 // commands identical to MTX1

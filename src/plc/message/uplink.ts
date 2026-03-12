@@ -27,20 +27,20 @@ const subsystems = {
 };
 
 
-export const getMessageFromBytes = (
+export const messageFromBytes = (
     mtxType: 'mtx1' | 'mtx3',
     subsystemId: TUint8
 ): TMessageFromBytes | undefined => {
     const subsystem: ISubsystem = subsystems[mtxType][subsystemId];
 
-    return subsystem?.getMessageFromBytes;
+    return subsystem?.messageFromBytes;
 };
 
-export const getBytesFromMessage = (
+export const bytesFromMessage = (
     mtxType: 'mtx1' | 'mtx3',
     subsystemId: TUint8
 ): TBytesFromMessage | undefined => {
     const subsystem: ISubsystem = subsystems[mtxType][subsystemId];
 
-    return subsystem?.getBytesFromMessage;
+    return subsystem?.bytesFromMessage;
 };
