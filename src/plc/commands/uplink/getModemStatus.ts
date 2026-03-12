@@ -25,7 +25,7 @@
  *     hardwareVersion: {major: 4, minor: 3},
  *     softwareVersion: {major: 2, minor: 154},
  *     uptime: 799,
- *     freeFreeDataBufferCount: 15,
+ *     freeDataBufferCount: 15,
  *     freeFreeUartBufferCount: 8,
  *     busyRxLinkBufferCount: 0,
  *     freeTxLinkBufferCount: 16,
@@ -75,7 +75,7 @@ export const examples: command.TCommandExamples = {
             hardwareVersion: {major: 4, minor: 3},
             softwareVersion: {major: 2, minor: 154},
             uptime: 799,
-            freeFreeDataBufferCount: 15,
+            freeDataBufferCount: 15,
             freeFreeUartBufferCount: 8,
             busyRxLinkBufferCount: 0,
             freeTxLinkBufferCount: 16,
@@ -114,7 +114,7 @@ interface IGetModemStatusParameters {
     hardwareVersion: types.IVersion,
     softwareVersion: types.IVersion,
     uptime: types.TUint32,
-    freeFreeDataBufferCount: types.TUint8,
+    freeDataBufferCount: types.TUint8,
     freeFreeUartBufferCount: types.TUint8,
     busyRxLinkBufferCount: types.TUint8,
     freeTxLinkBufferCount: types.TUint8,
@@ -151,7 +151,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetModemStatusParameters => {
         hardwareVersion: getVersion(buffer),
         softwareVersion: getVersion(buffer),
         uptime: buffer.getUint32(),
-        freeFreeDataBufferCount: buffer.getUint8(),
+        freeDataBufferCount: buffer.getUint8(),
         freeFreeUartBufferCount: buffer.getUint8(),
         busyRxLinkBufferCount: buffer.getUint8(),
         freeTxLinkBufferCount: buffer.getUint8(),
@@ -186,7 +186,7 @@ export const toBytes = ( parameters: IGetModemStatusParameters ): types.TBytes =
     setVersion(buffer, parameters.hardwareVersion);
     setVersion(buffer, parameters.softwareVersion);
     buffer.setUint32(parameters.uptime);
-    buffer.setUint8(parameters.freeFreeDataBufferCount);
+    buffer.setUint8(parameters.freeDataBufferCount);
     buffer.setUint8(parameters.freeFreeUartBufferCount);
     buffer.setUint8(parameters.busyRxLinkBufferCount);
     buffer.setUint8(parameters.freeTxLinkBufferCount);

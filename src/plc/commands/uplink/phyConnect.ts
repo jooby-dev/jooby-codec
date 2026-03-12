@@ -1,7 +1,7 @@
 /**
  * Uplink command to connect to the PLC network.
  *
- * The corresponding downlink command: `phyConnectRequest`.
+ * The corresponding downlink command: `phyConnect`.
  *
  * @packageDocumentation
  *

@@ -10,7 +10,7 @@
  * const bytes = [2, 13, 0, 0, 1, 0, 1, 2, 3, 4, 5, 6, 7, 0, 0];
  *
  * // decoded payload
- * const parameters = buildDate.fromBytes(bytes);
+ * const parameters = phyStart.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -54,12 +54,12 @@ export const examples: command.TCommandExamples = {
         },
         bytes: [
             0x02, 0x0d,
-            0,
-            0,
-            1,
-            0, 1, 2, 3, 4, 5, 6, 7,
-            0,
-            0
+            0x00,
+            0x00,
+            0x01,
+            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+            0x00,
+            0x00
         ]
     }
 };
