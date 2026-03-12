@@ -20,11 +20,21 @@
  * console.log(parameters);
  * // output:
  * {
- *     reason: 1,
+ *     reason: {
+ *        FIREWALL: true
+ *        OPTION_BYTE_LOADER: false,
+ *        NRST: false,
+ *        POWER_ON: false,
+ *        SOFTWARE: false,
+ *        INDEPENDENT_WATCHDOG: false,
+ *        WINDOW_WATCHDOG: false,
+ *        LOW_POWER: false
+ *     }
  * }
  */
 
 import * as types from '../../types.js';
+import * as bitSet from '../../../utils/bitSet.js';
 import * as command from '../../../mtx1/utils/command.js';
 import {validateFixedCommandPayload} from '../../../utils/validateCommandPayload.js';
 import {UNENCRYPTED} from '../../../mtx1/constants/accessLevels.js';
@@ -47,7 +57,16 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            reason: 1
+            reason: {
+                FIREWALL: true,
+                OPTION_BYTE_LOADER: false,
+                NRST: false,
+                POWER_ON: false,
+                SOFTWARE: false,
+                INDEPENDENT_WATCHDOG: false,
+                WINDOW_WATCHDOG: false,
+                LOW_POWER: false
+            }
         },
         bytes: [
             0x0e, 0x1,
@@ -57,8 +76,30 @@ export const examples: command.TCommandExamples = {
 };
 
 
+const restartReasonMask = {
+    FIREWALL: 0x01,
+    OPTION_BYTE_LOADER: 0x02,
+    NRST: 0x04,
+    POWER_ON: 0x08,
+    SOFTWARE: 0x10,
+    INDEPENDENT_WATCHDOG: 0x20,
+    WINDOW_WATCHDOG: 0x40,
+    LOW_POWER: 0x80
+};
+
+export interface IRestartReason {
+    FIREWALL: boolean,
+    OPTION_BYTE_LOADER: boolean,
+    NRST: boolean,
+    POWER_ON: boolean,
+    SOFTWARE: boolean,
+    INDEPENDENT_WATCHDOG: boolean,
+    WINDOW_WATCHDOG: boolean,
+    LOW_POWER: boolean
+}
+
 export interface IRestartParameters {
-    reason: types.TUint8
+    reason: IRestartReason
 }
 
 
@@ -71,7 +112,7 @@ export interface IRestartParameters {
 export const fromBytes = ( bytes: types.TBytes ): IRestartParameters => {
     validateFixedCommandPayload(name, bytes, maxSize);
 
-    return {reason: bytes[0]};
+    return {reason: (bitSet.toObject(restartReasonMask, bytes[0]) as unknown) as IRestartReason};
 };
 
 
@@ -82,5 +123,8 @@ export const fromBytes = ( bytes: types.TBytes ): IRestartParameters => {
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IRestartParameters ): types.TBytes => (
-    command.toBytes(id, [parameters.reason])
+    command.toBytes(
+        id,
+        [bitSet.fromObject(restartReasonMask, (parameters.reason as unknown) as bitSet.TBooleanObject)]
+    )
 );
