@@ -1,3 +1,4 @@
+export const phyStart = 0x02; // 2
 export const phyConnect = 0x04; // 4
 export const phyDisconnect = 0x05; // 5
 export const getModemStatus = 0x07; // 7
