@@ -12,6 +12,7 @@ export * as getModemStatus from './getModemStatus.js';
 export * as getPhaseStatus from './getPhaseStatus.js';
 export * as phyConnect from './phyConnect.js';
 export * as phyDisconnect from './phyDisconnect.js';
+export * as phyStart from './phyStart.js';
 export * as restart from './restart.js';
 export * as writeDownlinkTable from './writeDownlinkTable.js';
 export * as writeLinkTable from './writeLinkTable.js';
