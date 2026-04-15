@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-multi-spaces */
-import BinaryBuffer, {IBinaryBuffer} from '../../src/utils/binary/BinaryBuffer.js';
+
+import {describe, expect, test} from '@jest/globals';
+
 import {
     IMtxDeviceTypeDescriptor,
     fromBytes,
@@ -43,7 +44,7 @@ const mtx3DescriptorG = {
 } as IMtxDeviceTypeDescriptor;
 
 const deviceTypes = [
-    {type: 'MTX 1A10.DF.2L0-B4',   revision: 0x08, descriptor: mtx1DescriptorG, manufacturingFlag: 0xef, hex: 'ef 11 21 46 21 81 2c 00 01'},
+    {type: 'MTX 1A10.DF.2L0-B4',   revision: 0x08, descriptor: mtx1DescriptorG, hex: 'ef 11 21 46 21 81 2c 00 01', manufacturingFlag: 0xef},
     {type: 'MTX 1A10.DF.2L0-B4',   revision: 0x08, descriptor: mtx1DescriptorG, hex: '00 11 21 46 21 81 2c 00 01'},
     {type: 'MTX 1A10.DF.2L0-BD4',  revision: 0x0a, descriptor: mtx1DescriptorA, hex: '00 11 21 46 21 a1 21 c0 00'},
     {type: 'MTX 1A10.DF.2L0-BO4',  revision: 0x07, descriptor: mtx1DescriptorA, hex: '00 11 21 46 21 71 27 c0 00'},

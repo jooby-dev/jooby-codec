@@ -1,3 +1,5 @@
+import {describe, expect, test} from '@jest/globals';
+
 import {IDataSegment} from '../../src/analog/utils/binary/buffer.js';
 import DataSegmentsCollector from '../../src/analog/utils/DataSegmentsCollector.js';
 import permutations from '../../src/utils/permutations.js';
@@ -153,6 +155,7 @@ describe('valid sequences', () => {
 
 describe('invalid sequences', () => {
     const emptyArray = [];
+
     invalidSequences.forEach((sequence, index) => {
         test(`test case #${index}`, () => {
             expect(collectCommands(sequence)).toStrictEqual(emptyArray);

@@ -1,4 +1,7 @@
 /* eslint-disable max-len */
+
+import {describe, expect, test} from '@jest/globals';
+
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 import {Collector, Parameters} from '../../src/mtx1/utils/gsmParameters.js';
 import * as gsmBlocks from './helpers/gsmBlocks.js';

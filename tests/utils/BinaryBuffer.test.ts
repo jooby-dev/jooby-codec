@@ -1,3 +1,5 @@
+import {describe, expect, test} from '@jest/globals';
+
 import {TBytes} from '../../src/types.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../src/utils/binary/BinaryBuffer.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';

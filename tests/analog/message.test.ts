@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
+import {describe, expect, test} from '@jest/globals';
+
 import * as message from '../../src/analog/message/index.js';
 import {TMessage, TMessageExamples} from '../../src/analog/message/types.js';
 import {ICommandConfig} from '../../src/analog/utils/command.js';

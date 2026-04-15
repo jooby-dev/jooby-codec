@@ -1,3 +1,5 @@
+import {describe, expect, test} from '@jest/globals';
+
 import {TCommand, ICommandImplementation} from '../../src/mtx1/utils/command.js';
 import {commands} from '../../src/mtx1/index.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';

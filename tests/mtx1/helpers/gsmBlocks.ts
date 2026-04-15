@@ -1,3 +1,5 @@
+import {expect} from '@jest/globals';
+
 import * as types from '../../../src/mtx1/types.js';
 import * as frameTypes from '../../../src/mtx1/constants/frameTypes.js';
 import * as frame from '../../../src/mtx1/utils/frame.js';

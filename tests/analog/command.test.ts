@@ -1,3 +1,5 @@
+import {describe, expect, test} from '@jest/globals';
+
 //import * as command from '../../src/analog/command.js';
 import {TCommand, ICommandImplementation} from '../../src/analog/utils/command.js';
 import {commands} from '../../src/analog/index.js';

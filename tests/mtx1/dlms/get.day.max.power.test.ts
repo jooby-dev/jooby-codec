@@ -1,3 +1,5 @@
+import {describe} from '@jest/globals';
+
 import {getDayEnergies} from '../../../src/mtx1/commands/uplink/index.js';
 import {runCommandDlmsTest} from './utils/runCommandDlmsTest.js';
 

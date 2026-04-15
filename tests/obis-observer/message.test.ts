@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
+import {describe, expect, test} from '@jest/globals';
+
 import * as message from '../../src/obis-observer/message/index.js';
 import {TMessage, TMessageExamples} from '../../src/obis-observer/message/types.js';
 import * as downlinkCommands from '../../src/obis-observer/commands/downlink/index.js';

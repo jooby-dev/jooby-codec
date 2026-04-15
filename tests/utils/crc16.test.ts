@@ -1,3 +1,5 @@
+import {describe, expect, test} from '@jest/globals';
+
 import calculateCrc16 from '../../src/utils/calculateCrc16.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';
 

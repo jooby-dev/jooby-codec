@@ -1,4 +1,7 @@
 /* eslint-disable max-len */
+
+import {describe, expect, test} from '@jest/globals';
+
 import * as types from '../../src/mtx1/types.js';
 import {Collector, split, Parameters} from '../../src/mtx1/utils/gsmParameters.js';
 import * as gsmBlocks from './helpers/gsmBlocks.js';

@@ -1,5 +1,7 @@
 /* eslint-disable object-curly-newline */
 
+import {describe, expect, test} from '@jest/globals';
+
 import * as bitSet from '../../src/utils/bitSet.js';
 
 

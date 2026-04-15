@@ -1,3 +1,5 @@
+import {describe, expect, test} from '@jest/globals';
+
 import * as frame from '../../src/analog/utils/frame.js';
 import * as downlinkMessage from '../../src/analog/message/downlink.js';
 import * as downlinkCommands from '../../src/analog/commands/downlink/index.js';
