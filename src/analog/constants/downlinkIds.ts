@@ -15,6 +15,7 @@ export const getArchiveDaysMc = 0x1b; // 27
 export const dataSegment = 0x1e; // 30
 export const getLmicInfo = 0x21f; // 543
 export const getBatteryStatus = 0x51f; // 1311
+export const depassivateBattery = 0x61f; // 1567
 export const usWaterMeterCommand = 0x71f; // 1823
 export const getExAbsArchiveHoursMc = 0xc1f; // 3103
 export const getExAbsArchiveDaysMc = 0xd1f; // 3359

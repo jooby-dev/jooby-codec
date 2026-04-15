@@ -45,6 +45,7 @@ export const toMessage = wrappers.getToMessage(toBytesMap);
 // iteration should not be used
 toBytesMap[commands.correctTime2000.id] = commands.correctTime2000.toBytes;
 toBytesMap[commands.dataSegment.id] = commands.dataSegment.toBytes;
+toBytesMap[commands.depassivateBattery.id] = commands.depassivateBattery.toBytes;
 toBytesMap[commands.getArchiveDays.id] = commands.getArchiveDays.toBytes;
 toBytesMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.toBytes;
 toBytesMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.toBytes;
@@ -75,6 +76,7 @@ toBytesMap[commands.writeImage.id] = commands.writeImage.toBytes;
 // because of webpack/rollup processing!
 fromBytesMap[commands.correctTime2000.id] = commands.correctTime2000.fromBytes;
 fromBytesMap[commands.dataSegment.id] = commands.dataSegment.fromBytes;
+fromBytesMap[commands.depassivateBattery.id] = commands.depassivateBattery.fromBytes;
 fromBytesMap[commands.getArchiveDays.id] = commands.getArchiveDays.fromBytes;
 fromBytesMap[commands.getArchiveDaysMc.id] = commands.getArchiveDaysMc.fromBytes;
 fromBytesMap[commands.getArchiveEvents.id] = commands.getArchiveEvents.fromBytes;

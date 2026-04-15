@@ -6,6 +6,7 @@
 
 export * as correctTime2000 from './correctTime2000.js';
 export * as dataSegment from './dataSegment.js';
+export * as depassivateBattery from './depassivateBattery.js';
 export * as getArchiveDays from './getArchiveDays.js';
 export * as getArchiveDaysMc from './getArchiveDaysMc.js';
 export * as getArchiveEvents from './getArchiveEvents.js';
