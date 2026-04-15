@@ -21,6 +21,7 @@ export const hour = 0x40; // 64
 export const lastEvent = 0x60; // 96
 export const getLmicInfo = 0x21f; // 543
 export const getBatteryStatus = 0x51f; // 1311
+export const depassivateBattery = 0x61f; // 1567
 export const usWaterMeterCommand = 0x71f; // 1823
 export const exAbsHourMc = 0xa1f; // 2591
 export const exAbsDayMc = 0xb1f; // 2847

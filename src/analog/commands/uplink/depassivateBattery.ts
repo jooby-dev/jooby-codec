@@ -1,0 +1,70 @@
+/**
+ * Command to manually depassivate device battery.
+ *
+ * @packageDocumentation
+ *
+ * @example
+ * ```js
+ * import * as depassivateBattery from 'jooby-codec/analog/commands/uplink/depassivateBattery.js';
+ *
+ * // confirmation response
+ * const bytes = [0x00];
+ *
+ * // decoded payload
+ * const parameters = depassivateBattery.fromBytes(bytes);
+ *
+ * // this command doesn't have any parameters
+ * console.log(parameters);
+ * // output:
+ * {}
+ * ```
+ *
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/DepassivateBattery.md#response)
+ */
+
+import * as types from '../../../types.js';
+import * as command from '../../utils/command.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
+import {depassivateBattery as commandId} from '../../constants/uplinkIds.js';
+import commandNames from '../../constants/uplinkNames.js';
+
+
+export const id: types.TCommandId = commandId;
+export const name: types.TCommandName = commandNames[commandId];
+export const headerSize = 3;
+
+// only data (without length byte)
+const COMMAND_BODY_SIZE = 0;
+
+export const examples: command.TCommandExamples = {
+    'simple response': {
+        id,
+        name,
+        headerSize,
+        parameters: {},
+        bytes: [
+            0x1f, 0x06, 0x00
+        ]
+    }
+};
+
+
+/**
+ * Decode command parameters.
+ *
+ * @param bytes - only body (without header)
+ * @returns command payload
+ */
+export const fromBytes = ( bytes: types.TBytes ): command.IEmptyCommandParameters => {
+    validateCommandPayload(name, bytes, COMMAND_BODY_SIZE);
+
+    return {};
+};
+
+
+/**
+ * Encode command parameters.
+ *
+ * @returns full message (header with body)
+ */
+export const toBytes = (): types.TBytes => command.toBytes(id);
