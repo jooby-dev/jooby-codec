@@ -1,3 +1,5 @@
+import {describe, expect, test} from '@jest/globals';
+
 import {TCommand, ICommandImplementation} from '../../src/obis-observer/utils/command.js';
 import {commands} from '../../src/obis-observer/index.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';

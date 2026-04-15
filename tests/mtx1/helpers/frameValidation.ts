@@ -1,3 +1,5 @@
+import {expect} from '@jest/globals';
+
 import {TMtxFrame, IMtxFrame} from '../../../src/mtx1/utils/frame.js';
 import {TMessage, IMessage} from '../../../src/mtx1/message/types.js';
 import {TCommand, ICommand} from '../../../src/mtx1/utils/command.js';

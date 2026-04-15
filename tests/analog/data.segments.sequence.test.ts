@@ -1,3 +1,5 @@
+import {describe, expect, test} from '@jest/globals';
+
 import * as uplinkMessage from '../../src/analog/message/uplink.js';
 import {IMessage} from '../../src/analog/message/types.js';
 import {ICommand} from '../../src/analog/utils/command.js';

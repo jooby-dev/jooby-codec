@@ -1,3 +1,5 @@
+import {describe, expect, test} from '@jest/globals';
+
 import * as frame from '../../src/plc/utils/frame.js';
 import * as block from '../../src/plc/utils/block.js';
 import getBytesFromHex from '../../src/utils/getBytesFromHex.js';

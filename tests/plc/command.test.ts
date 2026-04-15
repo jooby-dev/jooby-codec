@@ -1,3 +1,5 @@
+import {describe} from '@jest/globals';
+
 import {commands} from '../../src/plc/index.js';
 import {processExamples} from '../mtx1/command.test.js';
 

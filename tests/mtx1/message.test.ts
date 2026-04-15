@@ -4,6 +4,8 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 
+import {describe, expect, test} from '@jest/globals';
+
 import * as message from '../../src/mtx1/message/index.js';
 import * as downlinkCommands from '../../src/mtx1/commands/downlink/index.js';
 import * as uplinkCommands from '../../src/mtx1/commands/uplink/index.js';
