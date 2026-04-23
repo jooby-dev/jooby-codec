@@ -10,6 +10,7 @@
     "exports": {
         ".": "./dist/index.js",
         "./*": "./dist/*",
+
         "./analog": "./dist/analog/index.js",
         "./analog/commands": "./dist/analog/commands/index.js",
         "./analog/commands/downlink": "./dist/analog/commands/downlink/index.js",
@@ -18,6 +19,13 @@
         "./analog/message": "./dist/analog/message/index.js",
         "./analog/message/downlink": "./dist/analog/message/downlink.js",
         "./analog/message/uplink": "./dist/analog/message/uplink.js",
+
+        "./analog-ultrasound": "./dist/analog-ultrasound/index.js",
+        "./analog-ultrasound/commands": "./dist/analog-ultrasound/commands/index.js",
+        "./analog-ultrasound/commands/downlink": "./dist/analog-ultrasound/commands/downlink/index.js",
+        "./analog-ultrasound/commands/uplink": "./dist/analog-ultrasound/commands/uplink/index.js",
+        "./analog-ultrasound/constants": "./dist/analog-ultrasound/constants/index.js",
+
         "./mtx1": "./dist/mtx1/index.js",
         "./mtx1/commands": "./dist/mtx1/commands/index.js",
         "./mtx1/commands/downlink": "./dist/mtx1/commands/downlink/index.js",
@@ -26,6 +34,7 @@
         "./mtx1/message": "./dist/mtx1/message/index.js",
         "./mtx1/message/downlink": "./dist/mtx1/message/downlink.js",
         "./mtx1/message/uplink": "./dist/mtx1/message/uplink.js",
+
         "./mtx3": "./dist/mtx3/index.js",
         "./mtx3/commands": "./dist/mtx3/commands/index.js",
         "./mtx3/commands/downlink": "./dist/mtx3/commands/downlink/index.js",
@@ -34,6 +43,7 @@
         "./mtx3/message": "./dist/mtx3/message/index.js",
         "./mtx3/message/downlink": "./dist/mtx3/message/downlink.js",
         "./mtx3/message/uplink": "./dist/mtx3/message/uplink.js",
+
         "./obis-observer": "./dist/obis-observer/index.js",
         "./obis-observer/commands": "./dist/obis-observer/commands/index.js",
         "./obis-observer/commands/downlink": "./dist/obis-observer/commands/downlink/index.js",
@@ -42,6 +52,7 @@
         "./obis-observer/message": "./dist/obis-observer/message/index.js",
         "./obis-observer/message/downlink": "./dist/obis-observer/message/downlink.js",
         "./obis-observer/message/uplink": "./dist/obis-observer/message/uplink.js",
+
         "./utils": "./dist/utils/index.js"
     },
     "types": "./dist/index.d.ts",
