@@ -20,7 +20,6 @@
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/TurnRelayOff.md#request)
  */
 
-
 import * as types from '../../types.js';
 import * as command from '../../utils/command.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
