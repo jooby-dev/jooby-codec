@@ -55,6 +55,7 @@ export interface IUSWaterMeterBatteryStatusParameters {
 
     /**
      * Duration of the last depassivation (in seconds)
+     * For each day there is a 3 seconds test (not a depassivation).
      */
     lastDepassivationTime: types.TUint16
 }

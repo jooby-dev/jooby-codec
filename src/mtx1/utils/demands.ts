@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
-
 const ADDITIONAL_HOUR = 25;
 
 

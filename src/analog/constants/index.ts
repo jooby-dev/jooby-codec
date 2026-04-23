@@ -4,7 +4,6 @@
  * @packageDocumentation
  */
 
-
 export {default as channelNames} from './channelNames.js';
 export {default as deviceParameterNames} from './deviceParameterNames.js';
 export {default as downlinkNames} from './downlinkNames.js';

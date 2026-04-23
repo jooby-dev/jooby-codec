@@ -35,7 +35,7 @@ export const processExamples = ( scope: string, commandMap: Record<string, IComm
         expect(Object.keys(commandImplementation.examples).length).toBeGreaterThan(0);
 
         // eslint-disable-next-line @typescript-eslint/no-loop-func
-        describe(`${scope} ${commandName} ${getHexFromBytes([commandImplementation.id])}/${commandImplementation.id}`, () => {
+        describe(`${scope} ${commandName} 0x${getHexFromBytes([commandImplementation.id])}/${commandImplementation.id}`, () => {
             for ( const [exampleName, example] of Object.entries(commandImplementation.examples) ) {
                 test(exampleName, () => checkExample(commandImplementation, example));
             }
