@@ -1,4 +1,5 @@
 export * as analog from './analog/index.js';
+export * as analogUltrasound from './analog-ultrasound/index.js';
 export * as config from './config.js';
 export * as mtx1 from './mtx1/index.js';
 export * as mtx3 from './mtx3/index.js';
