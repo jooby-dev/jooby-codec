@@ -9,8 +9,7 @@
  *
  * // request current values
  * const parameters = {
- *     length: 3,
- *     data: [0x21, 0x02]
+ *     data: [0x03, 0x21, 0x01]
  * };
  *
  * const bytes = usWaterMeterCommand.toBytes(parameters);
@@ -18,7 +17,7 @@
  * // command binary representation
  * console.log(bytes);
  * // output:
- * [31, 7, 3, 3, 33, 2]
+ * [31, 7, 3, 3, 33, 1]
  * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/USWaterMeterCommand.md#request)
@@ -26,17 +25,13 @@
 
 import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
-import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {getStringFromBytes, IBytesConversionFormatOptions} from '../../../utils/bytesConversion.js';
 import {usWaterMeterCommand as commandId} from '../../constants/downlinkIds.js';
 import commandNames from '../../constants/downlinkNames.js';
 
 
-interface IUSWaterMeterCommandParameters {
-    /** frame data length including length byte */
-    length: types.TUint8,
-
-    /** frame for water meter */
+export interface IUSWaterMeterCommandParameters {
+    /** frame for water meter (analog-ultrasound command payload) */
     data: types.TBytes
 }
 
@@ -46,16 +41,15 @@ export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 3;
 
 export const examples = {
-    'request for current values': {
+    'request with getInfo command': {
         id,
         headerSize,
         parameters: {
-            length: 3,
-            data: [0x21, 0x02]
+            data: [0x03, 0x21, 0x01]
         },
         bytes: [
             0x1f, 0x07, 0x03,
-            0x03, 0x21, 0x02
+            0x03, 0x21, 0x01
         ]
     }
 };
@@ -67,12 +61,7 @@ export const examples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IUSWaterMeterCommandParameters => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
-    const length = buffer.getUint8();
-
-    return {length, data: bytes.slice(1)};
-};
+export const fromBytes = ( bytes: types.TBytes ): IUSWaterMeterCommandParameters => ({data: bytes});
 
 
 /**
@@ -81,15 +70,7 @@ export const fromBytes = ( bytes: types.TBytes ): IUSWaterMeterCommandParameters
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IUSWaterMeterCommandParameters ): types.TBytes => {
-    const {data, length} = parameters;
-    const buffer: IBinaryBuffer = new BinaryBuffer(length, false);
-
-    buffer.setUint8(length);
-    buffer.setBytes(data);
-
-    return command.toBytes(id, buffer.data);
-};
+export const toBytes = ( parameters: IUSWaterMeterCommandParameters ): types.TBytes => command.toBytes(id, parameters.data);
 
 
 /**
