@@ -25,6 +25,9 @@
         "./analog-ultrasound/commands/downlink": "./dist/analog-ultrasound/commands/downlink/index.js",
         "./analog-ultrasound/commands/uplink": "./dist/analog-ultrasound/commands/uplink/index.js",
         "./analog-ultrasound/constants": "./dist/analog-ultrasound/constants/index.js",
+        "./analog-ultrasound/message": "./dist/analog-ultrasound/message/index.js",
+        "./analog-ultrasound/message/downlink": "./dist/analog-ultrasound/message/downlink.js",
+        "./analog-ultrasound/message/uplink": "./dist/analog-ultrasound/message/uplink.js",
 
         "./mtx1": "./dist/mtx1/index.js",
         "./mtx1/commands": "./dist/mtx1/commands/index.js",

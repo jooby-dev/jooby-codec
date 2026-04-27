@@ -7,11 +7,27 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "debug test.ts",
+            "name": "debug test.js",
+            "runtimeExecutable": "node",
             "skipFiles": ["<node_internals>/**"],
-            "program": "${workspaceFolder}/src/test.ts",
-            "preLaunchTask": "tsc: build - tsconfig.json",
+            "program": "${workspaceFolder}/src/test.js",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+        },
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "debug jest (analog-ultrasound)",
+            "runtimeExecutable": "node",
+            "runtimeArgs": [
+                "./node_modules/.bin/jest",
+                "tests/analog-ultrasound",
+                "--runInBand"
+            ],
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "skipFiles": ["<node_internals>/**"]
         }
     ]
 }

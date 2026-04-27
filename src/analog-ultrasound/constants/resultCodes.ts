@@ -1,3 +1,8 @@
+// codec codes
+export const DECODE_ERROR = -2;
+export const UNKNOWN_COMMAND = -1;
+
+// device response result codes
 export const GENERAL_ERROR = 1;
 export const INFO_ELEMENT_ERROR = 2;
 export const FUNCTION_NOT_FOUND = 3;
