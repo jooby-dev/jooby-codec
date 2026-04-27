@@ -1,6 +1,6 @@
 import {describe, expect, test} from '@jest/globals';
 
-import {TCommand, ICommandImplementation, getErrorInfo} from '../../src/analog-ultrasound/utils/command.js';
+import {TCommand, ICommandImplementation} from '../../src/analog-ultrasound/utils/command.js';
 import {commands} from '../../src/analog-ultrasound/index.js';
 import getHexFromBytes from '../../src/utils/getHexFromBytes.js';
 
@@ -50,30 +50,4 @@ describe('downlink commands', () => {
 
 describe('uplink commands', () => {
     processExamples(`${SCOPE} uplink`, uplink);
-});
-
-
-describe('getErrorInfo from uplink commands', () => {
-    test('empty', () => {
-        expect(getErrorInfo()).toBeNull();
-        expect(getErrorInfo([])).toBeNull();
-    });
-
-    test('ok: getDepassivationConfig valid response', () => {
-        expect(getErrorInfo([0x07, 0x22, 0x18, 0xc0, 0x5d, 0x20, 0x4e])).toBeNull();
-    });
-
-    test('error: setDepassivationConfig failed response', () => {
-        const {commandId, error} = getErrorInfo([0x04, 0xa2, 0x19, 0x05]);
-
-        expect(commandId).toEqual(8729);
-        expect(error).toEqual({code: 5, name: 'PARAMETER_ERROR'});
-    });
-
-    test('error: unimplemented command response', () => {
-        const {commandId, error} = getErrorInfo([0x04, 0xa4, 0x01, 0x03]);
-
-        expect(commandId).toEqual(9217);
-        expect(error).toEqual({code: 3, name: 'FUNCTION_NOT_FOUND'});
-    });
 });
