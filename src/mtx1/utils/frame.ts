@@ -22,10 +22,11 @@ export interface IInvalidMtxFrame {
 export type TMtxFrame = IMtxFrame | IInvalidMtxFrame;
 
 
-export const toBytes = ( message: TBytes, frameHeader: IFrameHeader = defaultFrameHeader ): TBytes => {
+export const toBytes = ( message: TBytes, frameHeader?: Partial<IFrameHeader> ): TBytes => {
     const buffer: IBinaryBuffer = new BinaryBuffer(frameHeaderSize, false);
+    const resolvedFrameHeader: IFrameHeader = {...defaultFrameHeader, ...frameHeader};
 
-    setFrameHeader(buffer, frameHeader);
+    setFrameHeader(buffer, resolvedFrameHeader);
 
     return frame.toBytes(buffer.data.concat(message));
 };
