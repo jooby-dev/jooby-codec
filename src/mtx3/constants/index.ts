@@ -7,6 +7,7 @@
 
 export * from '../../mtx1/constants/index.js';
 
+export {default as demandTypeNames} from './demandTypeNames.js';
 export {default as downlinkNames} from './downlinkNames.js';
 export {default as eventNames} from './eventNames.js';
 export {default as screenNames} from './screenNames.js';
