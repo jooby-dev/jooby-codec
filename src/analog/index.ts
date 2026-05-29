@@ -7,11 +7,7 @@
  * in a separate [repository](https://github.com/jooby-dev/jooby-docs).
  */
 
-import {ANALOG} from '../constants/protocols.js';
-
-
-export const name = ANALOG;
-
+export {ANALOG as name} from '../constants/protocols.js';
 export * as commands from './commands/index.js';
 export * as message from './message/index.js';
 export * as constants from './constants/index.js';
