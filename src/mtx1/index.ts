@@ -7,6 +7,8 @@
  * in a separate [repository](https://github.com/jooby-dev/jooby-docs).
  */
 
+export const name = 'mtx1';
+
 export * as commands from './commands/index.js';
 export * as constants from './constants/index.js';
 export * as message from './message/index.js';
