@@ -7,7 +7,10 @@
  * in a separate [repository](https://github.com/jooby-dev/jooby-docs).
  */
 
-export const name = 'mtx1';
+import {MTX1} from '../constants/protocols.js';
+
+
+export const name = MTX1;
 
 export * as commands from './commands/index.js';
 export * as constants from './constants/index.js';

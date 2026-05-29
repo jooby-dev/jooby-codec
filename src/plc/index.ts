@@ -2,7 +2,10 @@
  * PLC protocol.
  */
 
-export const name = 'plc';
+import {PLC} from '../constants/protocols.js';
+
+
+export const name = PLC;
 
 export * as commands from './commands/index.js';
 export * as constants from './constants/index.js';

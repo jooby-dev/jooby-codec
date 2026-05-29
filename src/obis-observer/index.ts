@@ -4,7 +4,10 @@
  * @packageDocumentation
  */
 
-export const name = 'obisObserver';
+import {OBIS_OBSERVER} from '../constants/protocols.js';
+
+
+export const name = OBIS_OBSERVER;
 
 export * as commands from './commands/index.js';
 export * as constants from './constants/index.js';
