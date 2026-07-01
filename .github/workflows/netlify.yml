@@ -23,7 +23,7 @@ jobs:
           - run: npm run build:docs
 
           - name: deploy to Netlify
-            uses: nwtgck/actions-netlify@v3.0
+            uses: nwtgck/actions-netlify@v4.0
             with:
                 publish-dir: "./docs"
                 production-branch: v4
