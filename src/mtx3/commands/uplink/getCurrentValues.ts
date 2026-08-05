@@ -44,7 +44,7 @@
 
 import * as types from '../../types.js';
 import * as command from '../../../mtx1/utils/command.js';
-import validateCommandPayload from '../../../utils/validateCommandPayload.js';
+import {validateSetCommandPayload} from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as dlms from '../../constants/dlms.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
@@ -116,7 +116,7 @@ export interface IGetCurrentValuesResponseParameters {
     /**
      * Current in neutral (`91.7.0`).
      */
-    iNeutral: types.TInt32
+    iNeutral?: types.TInt32
 }
 
 
@@ -124,11 +124,12 @@ export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
+export const minSize = 48;
 export const maxSize = 52;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'simple response': {
+    'response with neutral': {
         id,
         name,
         maxSize,
@@ -165,6 +166,42 @@ export const examples: command.TCommandExamples = {
             0x00, 0x03, 0x20, 0xc8,
             0x00, 0x00, 0x05, 0xdc
         ]
+    },
+    'response without neutral': {
+        id,
+        name,
+        maxSize: minSize,
+        headerSize,
+        accessLevel,
+        parameters: {
+            vaRms: 230000,
+            vbRms: 231000,
+            vcRms: 229000,
+            iaRms: 5000,
+            ibRms: 4900,
+            icRms: 5050,
+            powerA: 1150000,
+            powerB: 1120000,
+            powerC: 1160000,
+            varA: 200000,
+            varB: 195000,
+            varC: 205000
+        },
+        bytes: [
+            0x0d, 0x30,
+            0x00, 0x03, 0x82, 0x70,
+            0x00, 0x03, 0x86, 0x58,
+            0x00, 0x03, 0x7e, 0x88,
+            0x00, 0x00, 0x13, 0x88,
+            0x00, 0x00, 0x13, 0x24,
+            0x00, 0x00, 0x13, 0xba,
+            0x00, 0x11, 0x8c, 0x30,
+            0x00, 0x11, 0x17, 0x00,
+            0x00, 0x11, 0xb3, 0x40,
+            0x00, 0x03, 0x0d, 0x40,
+            0x00, 0x02, 0xf9, 0xb8,
+            0x00, 0x03, 0x20, 0xc8
+        ]
     }
 };
 
@@ -176,11 +213,12 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCurrentValuesResponseParameters => {
-    validateCommandPayload(name, bytes, maxSize);
+    validateSetCommandPayload(name, bytes, [minSize, maxSize]);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
+    const hasNeutral = bytes.length === maxSize;
 
-    return {
+    const result: IGetCurrentValuesResponseParameters = {
         vaRms: buffer.getInt32(),
         vbRms: buffer.getInt32(),
         vcRms: buffer.getInt32(),
@@ -192,9 +230,14 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentValuesResponseParam
         powerC: buffer.getInt32(),
         varA: buffer.getInt32(),
         varB: buffer.getInt32(),
-        varC: buffer.getInt32(),
-        iNeutral: buffer.getInt32()
+        varC: buffer.getInt32()
     };
+
+    if ( hasNeutral ) {
+        result.iNeutral = buffer.getInt32();
+    }
+
+    return result;
 };
 
 
@@ -205,7 +248,10 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentValuesResponseParam
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetCurrentValuesResponseParameters ): types.TBytes => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
+    const buffer: IBinaryBuffer = new BinaryBuffer(
+        parameters.iNeutral != null ? maxSize : minSize,
+        false
+    );
 
     // body
     buffer.setInt32(parameters.vaRms);
@@ -220,7 +266,10 @@ export const toBytes = ( parameters: IGetCurrentValuesResponseParameters ): type
     buffer.setInt32(parameters.varA);
     buffer.setInt32(parameters.varB);
     buffer.setInt32(parameters.varC);
-    buffer.setInt32(parameters.iNeutral);
+
+    if ( parameters.iNeutral != null ) {
+        buffer.setInt32(parameters.iNeutral);
+    }
 
     return command.toBytes(id, buffer.data);
 };
@@ -240,9 +289,12 @@ export const toJson = ( parameters: IGetCurrentValuesResponseParameters, options
         '71.7.0': parameters.icRms,
         '1.21.7.0': parameters.powerA,
         '1.41.7.0': parameters.powerB,
-        '1.61.7.0': parameters.powerC,
-        '91.7.0': parameters.iNeutral
+        '1.61.7.0': parameters.powerC
     };
+
+    if ( parameters.iNeutral != null ) {
+        result['91.7.0'] = parameters.iNeutral;
+    }
 
     const varAKey = parameters.varA >= 0 ? '1.23.7.0' : '1.24.7.0';
     const varBKey = parameters.varB >= 0 ? '1.43.7.0' : '1.44.7.0';
