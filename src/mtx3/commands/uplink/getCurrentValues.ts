@@ -44,7 +44,7 @@
 
 import * as types from '../../types.js';
 import * as command from '../../../mtx1/utils/command.js';
-import {validateRangeCommandPayload} from '../../../utils/validateCommandPayload.js';
+import {validateSetCommandPayload} from '../../../utils/validateCommandPayload.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as dlms from '../../constants/dlms.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
@@ -213,7 +213,7 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetCurrentValuesResponseParameters => {
-    validateRangeCommandPayload(name, bytes, {min: minSize, max: maxSize});
+    validateSetCommandPayload(name, bytes, [minSize, maxSize]);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const hasNeutral = bytes.length === maxSize;
