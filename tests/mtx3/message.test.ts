@@ -93,16 +93,31 @@ const uplinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
-        name: 'getCurrentValues',
+        name: 'getCurrentValues with neutral',
         hex: '0a 13 ff 1a 78 5a c9 f1 27 a6 22 6a c8 2f 2d dd d8 dc d8 fa 47 ff df 8e d4 55 6a b4 84 aa 73 5a 04 13 52 ab cf e2 61 65 b0 7e 52 d3 7a 1b 73 34 6c f9 92 5f 1c cc f9 5a d9 98 88 e8 8b 2a 5a b7 17 b4',
         frameHex: '7e 51 aa aa ff ff 0a 7d 33 ff 1a 78 5a c9 f1 27 a6 22 6a c8 2f 2d dd d8 dc d8 fa 47 ff df 8e d4 55 6a b4 84 aa 73 5a 04 7d 33 52 ab cf e2 61 65 b0 7d 5e 52 d3 7a 1b 73 34 6c f9 92 5f 1c cc f9 5a d9 98 88 e8 8b 2a 5a b7 17 b4 ef a9 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getCurrentValues.accessLevel,
         commands: [
-            uplinkCommands.getCurrentValues.examples['simple response']
+            uplinkCommands.getCurrentValues.examples['response with neutral']
         ],
         lrc: 0xd5,
         crc: 0xa9ef,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getCurrentValues without neutral',
+        hex: '0a 13 6f 9d d0 d1 90 94 af 47 48 c5 a1 ca 05 e6 29 5a d8 fa 47 ff df 8e d4 55 6a b4 84 aa 73 5a 04 13 52 ab cf e2 61 65 b0 7e 52 d3 7a 1b 73 34 6c f9 5c e7 7d 89 9c 6b 52 b8 76 01 d2 73 60 e8 c4 e8',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 6f 9d d0 d1 90 94 af 47 48 c5 a1 ca 05 e6 29 5a d8 fa 47 ff df 8e d4 55 6a b4 84 aa 73 5a 04 7d 33 52 ab cf e2 61 65 b0 7d 5e 52 d3 7a 1b 73 34 6c f9 5c e7 7d 5d 89 9c 6b 52 b8 76 01 d2 73 60 e8 c4 e8 c9 27 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getCurrentValues.accessLevel,
+        commands: [
+            uplinkCommands.getCurrentValues.examples['response without neutral']
+        ],
+        lrc: 0x08,
+        crc: 0x27c9,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
