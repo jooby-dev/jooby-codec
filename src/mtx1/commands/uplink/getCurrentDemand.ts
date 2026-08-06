@@ -56,6 +56,9 @@ import * as demandsUtils from '../../utils/demands.js';
 import {getDate, setDate} from '../../utils/binary/loraBuffer.js';
 import {validateRangeCommandPayload} from '../../../utils/validateCommandPayload.js';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import {IOperatorParameters} from '../../utils/binary/buffer.js';
+
 
 export interface IGetCurrentDemandResponseParameters extends IGetCurrentDemandParameters {
     demands: Array<IGetCurrentDemandValues>
