@@ -11,7 +11,7 @@ export const validateSetCommandPayload = ( commandName: string, bytes: types.TBy
         throw new Error(`Invalid payload for ${commandName}. Expected array, got: ${typeof bytes}.`);
     }
 
-    if ( !expectedLengths.includes(bytes.length) ) {
+    if ( expectedLengths.indexOf(bytes.length) === -1 ) {
         const hex = getHexFromBytes(bytes, {separator: ''});
 
         throw new Error(`Wrong buffer size for ${commandName}: ${bytes.length}. Payload: 0x${hex}.`);
