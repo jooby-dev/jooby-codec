@@ -1290,13 +1290,6 @@ export interface IGetDemandParameters {
     period: types.TUint8
 }
 
-export interface IGetDemandResponseParameters extends IGetDemandParameters {
-    /**
-     * Load data.
-     */
-    demands: Array<types.TUint16>
-}
-
 /**
  * Demand type: energy, current, voltage or other.
  *
