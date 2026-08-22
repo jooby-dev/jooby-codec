@@ -65,4 +65,5 @@ export const getQuality = 0x73; // 115
 export const setDemandParameters = 0x74; // 116
 export const getDemandParameters = 0x75; // 117
 export const getDemand = 0x76; // 118
+export const getDemandCumulative = 0x77; // 119
 export const getMeterInfo = 0x7a; // 122

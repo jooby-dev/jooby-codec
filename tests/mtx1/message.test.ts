@@ -250,6 +250,21 @@ const downlinkMessages: TMessageList = [
         destination: 0xaaaa
     },
     {
+        name: 'getDemandCumulative',
+        hex: '0a 13 84 44 c4 c5 f7 0d 94 d7 e4 4f b6 a8 f6 0b af 28',
+        frameHex: '7e 50 aa aa ff ff 0a 7d 33 84 44 c4 c5 f7 0d 94 d7 e4 4f b6 a8 f6 0b af 28 ea db 7e',
+        messageId: 10,
+        accessLevel: downlinkCommands.getDemandCumulative.accessLevel,
+        commands: [
+            downlinkCommands.getDemandCumulative.examples['request for A+']
+        ],
+        lrc: 0xd3,
+        crc: 0xdbea,
+        frameType: frameTypes.DATA_REQUEST,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
         name: 'getDemandParameters',
         hex: '0a 13 7f 75 5e 03 80 f0 ef 5b d8 ed f5 5e b1 87 e3 7c',
         frameHex: '7e 50 aa aa ff ff 0a 7d 33 7f 75 5e 03 80 f0 ef 5b d8 ed f5 5e b1 87 e3 7c cd 8f 7e',
@@ -1464,6 +1479,51 @@ const uplinkMessages: TMessageList = [
         ],
         lrc: 0x1e,
         crc: 0x2e82,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDemandCumulative (for A+)',
+        hex: '0a 13 57 15 dd b1 c9 54 a5 94 ec 4a 60 e3 bd 65 b0 06 80 10 30 c8 16 5c d3 67 6c c3 99 33 1c ac d3 cb 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 13 32 ba da 9a 9b 6f fd 41 e0 2c 68 91 4a 56 c6 83 2d c5 68 43 47 9b c2 22 1d 09 df e3 60 ac 85 96 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 13 52 e2 ba 33 06 83 9b b5 37 19 fa 1d d5 49 7d 59',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 57 15 dd b1 c9 54 a5 94 ec 4a 60 e3 bd 65 b0 06 80 10 30 c8 16 5c d3 67 6c c3 99 33 1c ac d3 cb 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 7d 33 32 ba da 9a 9b 6f fd 41 e0 2c 68 91 4a 56 c6 83 2d c5 68 43 47 9b c2 22 1d 09 df e3 60 ac 85 96 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 7d 33 52 e2 ba 33 06 83 9b b5 37 19 fa 1d d5 49 7d 5d 59 fd 5d 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDemandCumulative.accessLevel,
+        commands: [
+            uplinkCommands.getDemandCumulative.examples['response for A+ (period: 5)']
+        ],
+        lrc: 0x25,
+        crc: 0x5dfd,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDemandCumulative (for A+, period: 60)',
+        hex: '0a 13 91 49 3b 28 53 72 fa 0f 4c ad af 3c 7d 61 61 cb 80 10 30 c8 16 5c d3 67 6c c3 99 33 1c ac d3 cb 35 59 7f 15 07 b5 02 ef c7 7e f5 aa 81 52 bb cb b4 be e1 ea a4 17 ca e6 96 1a 81 fa f9 35 f1 2e',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 91 49 3b 28 53 72 fa 0f 4c ad af 3c 7d 5d 61 61 cb 80 10 30 c8 16 5c d3 67 6c c3 99 33 1c ac d3 cb 35 59 7f 15 07 b5 02 ef c7 7d 5e f5 aa 81 52 bb cb b4 be e1 ea a4 17 ca e6 96 1a 81 fa f9 35 f1 2e 61 66 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDemandCumulative.accessLevel,
+        commands: [
+            uplinkCommands.getDemandCumulative.examples['response for A+ (period: 60)']
+        ],
+        lrc: 0x58,
+        crc: 0x6661,
+        frameType: frameTypes.DATA_RESPONSE,
+        source: 0xffff,
+        destination: 0xaaaa
+    },
+    {
+        name: 'getDemandCumulative (for A+, lastSummerHour)',
+        hex: '0a 13 51 df 00 5a 62 36 85 db 7c 7e 9d a3 bc d0 e0 06',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 51 df 00 5a 62 36 85 db 7c 7d 5e 9d a3 bc d0 e0 06 c7 42 7e',
+        messageId: 10,
+        accessLevel: uplinkCommands.getDemandCumulative.accessLevel,
+        commands: [
+            uplinkCommands.getDemandCumulative.examples['response for A+ (lastSummerHour)']
+        ],
+        lrc: 0x95,
+        crc: 0x42c7,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa

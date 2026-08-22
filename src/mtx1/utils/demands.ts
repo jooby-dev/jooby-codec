@@ -16,7 +16,7 @@ export const getRecordTime = ( index: number, periodMin ) => {
 
 export const getRecordIndex = ( hours, minutes, periodMin ) => Math.trunc(((hours * 60) + minutes) / periodMin);
 
-const getLastSummerHourIndex = periodMin => getRecordIndex(ADDITIONAL_HOUR, 0, periodMin);
+export const getLastSummerHourIndex = periodMin => getRecordIndex(ADDITIONAL_HOUR, 0, periodMin);
 
 const energyFromWord = ( word, index, periodMin ) => {
     if ( word === 0xffff) {

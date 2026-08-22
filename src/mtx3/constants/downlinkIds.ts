@@ -71,4 +71,5 @@ export const getQuality = 0x73; // 115
 export const setOperatorParametersExtended4 = 0x74; // 116
 export const getOperatorParametersExtended4 = 0x75; // 117
 export const getDemand = 0x76; // 118
+export const getDemandCumulative = 0x77; // 119
 export const getMeterInfo = 0x7a; // 122
