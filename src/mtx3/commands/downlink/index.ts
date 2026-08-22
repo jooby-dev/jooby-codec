@@ -14,6 +14,7 @@ export * as getDateTime from '../../../mtx1/commands/downlink/getDateTime.js';
 export * as getDayMaxDemand from '../../../mtx1/commands/downlink/getDayMaxDemand.js';
 export * as getDayMaxDemandExport from '../../../mtx1/commands/downlink/getDayMaxDemandExport.js';
 export * as getDayProfile from '../../../mtx1/commands/downlink/getDayProfile.js';
+export * as getDemandCumulative from '../../../mtx1/commands/downlink/getDemandCumulative.js';
 export * as getDeviceId from '../../../mtx1/commands/downlink/getDeviceId.js';
 export * as getDeviceType from '../../../mtx1/commands/downlink/getDeviceType.js';
 export * as getEvents from '../../../mtx1/commands/downlink/getEvents.js';

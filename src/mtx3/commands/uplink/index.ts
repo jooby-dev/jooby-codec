@@ -12,6 +12,7 @@ export * as getCorrectTime from '../../../mtx1/commands/uplink/getCorrectTime.js
 export * as getDateTime from '../../../mtx1/commands/uplink/getDateTime.js';
 export * as getDayEnergies from '../../../mtx1/commands/uplink/getDayEnergies.js';
 export * as getDayProfile from '../../../mtx1/commands/uplink/getDayProfile.js';
+export * as getDemandCumulative from '../../../mtx1/commands/uplink/getDemandCumulative.js';
 export * as getDeviceId from '../../../mtx1/commands/uplink/getDeviceId.js';
 export * as getDeviceType from '../../../mtx1/commands/uplink/getDeviceType.js';
 export * as getEventsCounters from '../../../mtx1/commands/uplink/getEventsCounters.js';
