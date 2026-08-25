@@ -142,6 +142,36 @@ export const examples: command.TCommandExamples = {
                 date: 2
             },
             demandType: demandTypes.ACTIVE_ENERGY_A_PLUS,
+            firstIndex: 23,
+            count: 3,
+            period: 60,
+            demands: [
+                2000,
+                43981,
+                {lastSummerHour: 4}
+            ]
+        },
+        bytes: [
+            0x76, 0x0d,
+            0x31, 0x42, 0x81, 0x00, 0x17, 0x03, 0x3c,
+            0x07, 0xd0,
+            0xab, 0xcd,
+            0x04, 0xff
+        ]
+    },
+
+    'response for A+ (lastSummerHour only)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 2
+            },
+            demandType: demandTypes.ACTIVE_ENERGY_A_PLUS,
             firstIndex: 25,
             count: 1,
             period: 60,

@@ -70,7 +70,7 @@ export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'response for A+ (period: 5)': {
+    'response for A+ (period: 15)': {
         id,
         name,
         headerSize,
@@ -84,7 +84,7 @@ export const examples: command.TCommandExamples = {
             demandType: demandTypes.A_PLUS,
             firstIndex: 0,
             count: 24,
-            period: 5,
+            period: 15,
             demands: [
                 177,
                 177,
@@ -114,7 +114,7 @@ export const examples: command.TCommandExamples = {
         },
         bytes: [
             0x77, 0x67,
-            0x31, 0x42, 0x01, 0x00, 0x00, 0x18, 0x05,
+            0x31, 0x42, 0x01, 0x00, 0x00, 0x18, 0x0f,
             0x00, 0x00, 0x00, 0xb1,
             0x00, 0x00, 0x00, 0xb1,
             0x00, 0x00, 0x00, 0xb0,
@@ -191,6 +191,36 @@ export const examples: command.TCommandExamples = {
     },
 
     'response for A+ (lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 2
+            },
+            demandType: demandTypes.A_PLUS,
+            firstIndex: 23,
+            count: 3,
+            period: 60,
+            demands: [
+                0x00000010,
+                0x00000020,
+                {lastSummerHour: 4}
+            ]
+        },
+        bytes: [
+            0x77, 0x11,
+            0x31, 0x42, 0x01, 0x00, 0x17, 0x03, 0x3c,
+            0x00, 0x00, 0x00, 0x10,
+            0x00, 0x00, 0x00, 0x20,
+            0x04, 0xff
+        ]
+    },
+
+    'response for A+ (lastSummerHour only)': {
         id,
         name,
         headerSize,
