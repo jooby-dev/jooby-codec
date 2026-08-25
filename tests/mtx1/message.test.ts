@@ -1485,15 +1485,15 @@ const uplinkMessages: TMessageList = [
     },
     {
         name: 'getDemandCumulative (for A+)',
-        hex: '0a 13 57 15 dd b1 c9 54 a5 94 ec 4a 60 e3 bd 65 b0 06 80 10 30 c8 16 5c d3 67 6c c3 99 33 1c ac d3 cb 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 13 32 ba da 9a 9b 6f fd 41 e0 2c 68 91 4a 56 c6 83 2d c5 68 43 47 9b c2 22 1d 09 df e3 60 ac 85 96 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 13 52 e2 ba 33 06 83 9b b5 37 19 fa 1d d5 49 7d 59',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 57 15 dd b1 c9 54 a5 94 ec 4a 60 e3 bd 65 b0 06 80 10 30 c8 16 5c d3 67 6c c3 99 33 1c ac d3 cb 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 7d 33 32 ba da 9a 9b 6f fd 41 e0 2c 68 91 4a 56 c6 83 2d c5 68 43 47 9b c2 22 1d 09 df e3 60 ac 85 96 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 7d 33 52 e2 ba 33 06 83 9b b5 37 19 fa 1d d5 49 7d 5d 59 fd 5d 7e',
+        hex: '0a 13 cd 8e 69 ae e6 3f 49 63 fb 51 88 7d 1f 69 fa cf 80 10 30 c8 16 5c d3 67 6c c3 99 33 1c ac d3 cb 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 13 32 ba da 9a 9b 6f fd 41 e0 2c 68 91 4a 56 c6 83 2d c5 68 43 47 9b c2 22 1d 09 df e3 60 ac 85 96 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 13 1e 6f bd bb 22 d5 a9 a8 a4 9b 20 07 8a 2b 35 61',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 cd 8e 69 ae e6 3f 49 63 fb 51 88 7d 5d 1f 69 fa cf 80 10 30 c8 16 5c d3 67 6c c3 99 33 1c ac d3 cb 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 7d 33 32 ba da 9a 9b 6f fd 41 e0 2c 68 91 4a 56 c6 83 2d c5 68 43 47 9b c2 22 1d 09 df e3 60 ac 85 96 3c 44 1f 32 ce 07 82 23 64 d7 a2 99 0e 50 bb 7d 33 1e 6f bd bb 22 d5 a9 a8 a4 9b 20 07 8a 2b 35 61 b0 29 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getDemandCumulative.accessLevel,
         commands: [
-            uplinkCommands.getDemandCumulative.examples['response for A+ (period: 5)']
+            uplinkCommands.getDemandCumulative.examples['response for A+ (period: 15)']
         ],
-        lrc: 0x25,
-        crc: 0x5dfd,
+        lrc: 0x2f,
+        crc: 0x29b0,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
@@ -1520,7 +1520,7 @@ const uplinkMessages: TMessageList = [
         messageId: 10,
         accessLevel: uplinkCommands.getDemandCumulative.accessLevel,
         commands: [
-            uplinkCommands.getDemandCumulative.examples['response for A+ (lastSummerHour)']
+            uplinkCommands.getDemandCumulative.examples['response for A+ (lastSummerHour only)']
         ],
         lrc: 0x95,
         crc: 0x42c7,
