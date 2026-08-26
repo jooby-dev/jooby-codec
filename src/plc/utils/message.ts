@@ -7,14 +7,24 @@ import * as subsystemIds from '../constants/subsystemIds.js';
 import * as block from './block.js';
 
 
-export const messageFromBlock = ( value: block.ISubsystemBlock, config: IFromBytesOptions = {} ) => {
+export interface IPlcFromBytesOptions extends IFromBytesOptions {
+    mtxType?: types.TMtxType
+}
+
+export interface IPlcToBytesOptions extends IToBytesOptions {
+    mtxType?: types.TMtxType
+}
+
+
+export const messageFromBlock = ( value: block.ISubsystemBlock, config: IPlcFromBytesOptions = {} ) => {
+    const {mtxType = 'mtx1', ...mtxConfig} = config;
     const subsystemsWithEncryption = [subsystemIds.MTX, subsystemIds.MTX_REPORT, subsystemIds.MTX_EVENT];
     const direction = value.isDownlink
         ? message.downlink
         : message.uplink;
     const subsystemId = block.getCommandsSystemId(value);
 
-    const fromBytes = direction.messageFromBytes('mtx1', subsystemId);
+    const fromBytes = direction.messageFromBytes(mtxType, subsystemId);
     const accessLevel = subsystemsWithEncryption.includes(value.subsystemId)
         ? value.accessLevel
         : accessLevelIds.UNENCRYPTED;
@@ -24,7 +34,7 @@ export const messageFromBlock = ( value: block.ISubsystemBlock, config: IFromByt
             accessLevel,
             value.messageId,
             value.payload,
-            config
+            mtxConfig
         )
         : undefined;
 };
@@ -33,17 +43,18 @@ export const bytesFromMessage = (
     commands: Array<TCommand>,
     isDownlink: boolean,
     subsystemId: types.TUint8,
-    config: IToBytesOptions = {}
+    config: IPlcToBytesOptions = {}
 ) => {
+    const {mtxType = 'mtx1', ...mtxConfig} = config;
     const direction = isDownlink
         ? message.downlink
         : message.uplink;
-    const toBytes = direction.bytesFromMessage('mtx1', subsystemId);
+    const toBytes = direction.bytesFromMessage(mtxType, subsystemId);
 
     return toBytes != null
         ? toBytes(
             commands,
-            config
+            mtxConfig
         )
         : undefined;
 };
