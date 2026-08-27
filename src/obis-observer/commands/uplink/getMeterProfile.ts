@@ -22,7 +22,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetArchiveProfile.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetMeterProfile.md#response)
  */
 
 import * as types from '../../../types.js';
@@ -34,7 +34,7 @@ import commandNames from '../../constants/uplinkNames.js';
 
 
 /**
- * IGetArchiveProfileResponseParameters command parameters
+ * IGetMeterProfileResponseParameters command parameters
  */
 interface IGetMeterProfileResponseParameters extends ICommandParameters {
     archive1Period: types.TUint16,

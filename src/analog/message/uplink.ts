@@ -48,24 +48,22 @@
  * } else {
  *     console.log('message decoded:', payload.commands[0]);
  *     // output:
- *     [
- *         {
- *             id: 96,
- *             name: 'lastEvent',
- *             headerSize: 1,
- *             bytes: [98, 32, 9],
- *             config: {hardwareType: 3},
- *             parameters: {
- *                 sequenceNumber: 32,
- *                 status: {
- *                     isBatteryLow: true,
- *                     isMagneticInfluence: false,
- *                     isButtonReleased: false,
- *                     isConnectionLost: true
- *                 }
+ *     {
+ *         id: 96,
+ *         name: 'lastEvent',
+ *         headerSize: 1,
+ *         bytes: [98, 32, 9],
+ *         config: {hardwareType: 3},
+ *         parameters: {
+ *             sequenceNumber: 32,
+ *             status: {
+ *                 isBatteryLow: true,
+ *                 isMagneticInfluence: false,
+ *                 isButtonReleased: false,
+ *                 isConnectionLost: true
  *             }
  *         }
- *     ]
+ *     }
  * }
  * ```
  *

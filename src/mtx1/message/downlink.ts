@@ -68,7 +68,7 @@
  * console.log('parsed message:', parsedMessage);
  * // output:
  * {
- *     messageId: 3,
+ *     messageId: 10,
  *     accessLevel: 3,
  *     commands: [
  *         {
@@ -79,7 +79,7 @@
  *             parameters: [Object]
  *         }
  *     ],
- *     bytes: [3,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+ *     bytes: [237, 116, 10, 174, 74, 186, 200, 66, 196, 27, 231, 245, 13, 60, 40, 132],
  *     lrc: {received: 119, calculated: 119}
  * }
  *
@@ -89,14 +89,15 @@
  * console.log('parsedFrame:', parsedFrame);
  * // output:
  * {
- *     bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+ *     bytes: [126, 80, 170, 170, 255, 255, 10, 125, 51, 237, 116, 10, 174, 74, 186, 200, 66, 196, 27, 231, 245, 13, 60, 40, 132, 97, 187, 126],
+ *     payload: [10, 19, 237, 116, 10, 174, 74, 186, 200, 66, 196, 27, 231, 245, 13, 60, 40, 132],
  *     crc: {calculated: 47969, received: 47969},
- *     header: {type: 80, destination: 43690, source: 65535}
+ *     header: {type: 80, typeName: 'DATA_REQUEST', destination: 43690, source: 65535}
  * }
  *
  * // parsed successfully
  * if ( 'bytes' in parsedFrame ) {
- *     const parsedMessage2 = message.fromBytes(parsedFrame.bytes, {aesKey});
+ *     const parsedMessage2 = message.fromBytes(parsedFrame.payload, {aesKey});
  *
  *     console.log('parsedMessage2:', parsedMessage2);
  *     // output:
@@ -112,7 +113,7 @@
  *                 parameters: [Object]
  *             }
  *         ],
- *         bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+ *         bytes: [237, 116, 10, 174, 74, 186, 200, 66, 196, 27, 231, 245, 13, 60, 40, 132],
  *         lrc: {received: 119, calculated: 119}
  *     }
  * }

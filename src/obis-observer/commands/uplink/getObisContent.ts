@@ -21,7 +21,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/uplink/GetContentByObis.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisContent.md#response)
  */
 
 import * as types from '../../../types.js';

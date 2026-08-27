@@ -1,5 +1,5 @@
 /**
- * Uplink command to write the block of the new image to the device. This command is part of update procedure.
+ * Uplink command to run the update on the device. This command is part of update procedure.
  *
  * @packageDocumentation
  *
@@ -20,7 +20,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/UpdateImageWrite.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/UpdateRun.md#response)
  */
 
 import * as command from '../../utils/command.js';

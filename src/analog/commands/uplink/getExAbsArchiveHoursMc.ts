@@ -11,7 +11,7 @@
  * const bytes = [0x2f, 0x97, 0x2c, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a];
  *
  * // decoded payload
- * const parameters = getExAbsArchiveHoursMc.fromBytes(commandBody);
+ * const parameters = getExAbsArchiveHoursMc.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
@@ -27,7 +27,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMC.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetExAbsArchiveHoursMC.md#response)
  */
 
 import * as types from '../../../types.js';

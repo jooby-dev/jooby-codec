@@ -10,9 +10,9 @@
  * const aesKey = [...Array(16).keys()];
  *
  * // a message with one getDeviceId command
- * const messageBytes = getBytesFromHex('0d13cf5fa5a836724fc97a0735f817d49651');
+ * const messageBytes = getBytesFromHex('0a13cf5fa5a836724fc97a0735f817d49651');
  * // the same message as a frame
- * const frameBytes = getBytesFromHex('7e51fffffffe0d7d33cf5fa5a836724fc97a0735f817d4965178de7e');
+ * const frameBytes = getBytesFromHex('7e51aaaaffff0a7d33cf5fa5a836724fc97a0735f817d49651fe547e');
  *
  * const parsedMessage = message.fromBytes(messageBytes, {aesKey});
  *
@@ -20,7 +20,7 @@
  * // output:
  * {
  *   messageId: 10,
- *   accessLevel: 0,
+ *   accessLevel: 3,
  *   commands: [
  *     {
  *       id: 5,
@@ -31,11 +31,10 @@
  *     }
  *   ],
  *   bytes: [
- *      10,  16, 16,  5,  8,  0,
- *      26, 121, 23, 20, 27, 29,
- *     106,   0, 68
+ *     207, 95, 165, 168, 54, 114, 79, 201,
+ *     122, 7, 53, 248, 23, 212, 150, 81
  *   ],
- *   lrc: { received: 68, calculated: 68 }
+ *   lrc: { received: 71, calculated: 71 }
  * }
  *
  * const parsedFrame = frame.fromBytes(frameBytes);
@@ -44,22 +43,22 @@
  * // output:
  * {
  *   bytes: [
- *     126, 81, 255, 255, 255, 254,  11,
- *      16, 16,   5,   8,   0,  26, 121,
- *      23, 20,  27,  29, 106,   0,  68,
- *     151, 22, 126
+ *     126, 81, 170, 170, 255, 255, 10, 125,
+ *     51, 207, 95, 165, 168, 54, 114, 79,
+ *     201, 122, 7, 53, 248, 23, 212, 150,
+ *     81, 254, 84, 126
  *   ],
  *   payload: [
- *      11,  16, 16,  5,  8,  0,
- *      26, 121, 23, 20, 27, 29,
- *     106,   0, 68
+ *     10, 19, 207, 95, 165, 168, 54, 114,
+ *     79, 201, 122, 7, 53, 248, 23, 212,
+ *     150, 81
  *   ],
- *   crc: { calculated: 5783, received: 5783 },
+ *   crc: { calculated: 21758, received: 21758 },
  *   header: {
  *     type: 81,
  *     typeName: 'DATA_RESPONSE',
- *     destination: 65535,
- *     source: 65534
+ *     destination: 43690,
+ *     source: 65535
  *   }
  * }
  *

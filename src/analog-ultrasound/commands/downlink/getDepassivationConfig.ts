@@ -14,7 +14,7 @@
  * [3, 34, 24]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog-ultrasound/commands/GetDepassivationConfig.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/water-frame.md#get_depassivationconfig)
  */
 
 import * as types from '../../../types.js';

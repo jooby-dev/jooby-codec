@@ -124,6 +124,7 @@ if ( 'error' in payload ) {
     [
         {
             id: 12,
+            name: 'correctTime2000',
             headerSize: 2,
             bytes: [ 12, 1, 0 ],
             parameters: { status: 0 }
@@ -153,26 +154,52 @@ if ( 'error' in payload ) {
 } else {
     console.log('message decoded:', payload.commands[0]);
     // output:
-    [
-        {
-            id: 96,
-            name: 'lastEvent',
-            headerSize: 1,
-            bytes: [98, 32, 9],
-            config: {hardwareType: 3},
-            parameters: {
-                sequenceNumber: 32,
-                status: {
-                    isBatteryLow: true,
-                    isMagneticInfluence: false,
-                    isButtonReleased: false,
-                    isConnectionLost: true
-                }
+    {
+        id: 96,
+        name: 'lastEvent',
+        headerSize: 1,
+        bytes: [98, 32, 9],
+        config: {hardwareType: 3},
+        parameters: {
+            sequenceNumber: 32,
+            status: {
+                isBatteryLow: true,
+                isMagneticInfluence: false,
+                isButtonReleased: false,
+                isConnectionLost: true
             }
         }
-    ]
+    }
 }
 ```
+
+
+## Usage of Analog ultrasound codecs
+
+Analog ultrasound commands are carried inside Analog `usWaterMeterCommand`. Encode the inner payload first, then wrap it:
+
+```js
+import * as ultrasoundMessage from 'jooby-codec/analog-ultrasound/message/downlink';
+import * as ultrasoundCommands from 'jooby-codec/analog-ultrasound/commands/downlink';
+import * as analogMessage from 'jooby-codec/analog/message/downlink';
+import * as analogCommands from 'jooby-codec/analog/commands/downlink';
+
+const innerBytes = ultrasoundMessage.toBytes([
+    {
+        id: ultrasoundCommands.setDepassivationConfig.id,
+        parameters: {resistanceStartThreshold: 24000, resistanceStopThreshold: 20000}
+    }
+]);
+
+const bytes = analogMessage.toBytes([
+    {
+        id: analogCommands.usWaterMeterCommand.id,
+        parameters: {data: innerBytes}
+    }
+]);
+```
+
+Decode the reverse way: Analog uplink `usWaterMeterCommand.parameters.data` is an Analog ultrasound message (`analog-ultrasound/message/uplink.fromBytes`).
 
 
 ## Usage of MTX codecs
@@ -275,7 +302,7 @@ const parsedMessage = message.fromBytes(messageBytes, {aesKey});
 console.log('parsed message:', parsedMessage);
 // output:
 /* {
-    messageId: 3,
+    messageId: 10,
     accessLevel: 3,
     commands: [
     {
@@ -286,7 +313,7 @@ console.log('parsed message:', parsedMessage);
         parameters: [Object]
     }
     ],
-    bytes: [3,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+    bytes: [237, 116, 10, 174, 74, 186, 200, 66, 196, 27, 231, 245, 13, 60, 40, 132],
     lrc: {received: 119, calculated: 119}
 } */
 
@@ -296,13 +323,14 @@ const parsedFrame = frame.fromBytes(frameBytes);
 console.log('parsedFrame:', parsedFrame);
 // output:
 /* {
-    bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+    bytes: [126, 80, 170, 170, 255, 255, 10, 125, 51, 237, 116, 10, 174, 74, 186, 200, 66, 196, 27, 231, 245, 13, 60, 40, 132, 97, 187, 126],
+    payload: [10, 19, 237, 116, 10, 174, 74, 186, 200, 66, 196, 27, 231, 245, 13, 60, 40, 132],
     crc: {calculated: 47969, received: 47969},
-    header: {type: 80, destination: 43690, source: 65535}
+    header: {type: 80, typeName: 'DATA_REQUEST', destination: 43690, source: 65535}
 } */
 
 if ( 'bytes' in parsedFrame ) {
-    const parsedMessage2 = message.fromBytes(parsedFrame.bytes, {aesKey});
+    const parsedMessage2 = message.fromBytes(parsedFrame.payload, {aesKey});
 
     console.log('parsedMessage2:', parsedMessage2);
     // output:
@@ -318,7 +346,7 @@ if ( 'bytes' in parsedFrame ) {
                 parameters: [Object]
             }
         ],
-        bytes: [10,19,237,116,10,174,74,186,200,66,196,27,231,245,13,60,40,132],
+        bytes: [237, 116, 10, 174, 74, 186, 200, 66, 196, 27, 231, 245, 13, 60, 40, 132],
         lrc: {received: 119, calculated: 119}
     } */
 }
@@ -334,9 +362,9 @@ import getBytesFromHex from 'jooby-codec/utils/getBytesFromHex.js';
 const aesKey = [...Array(16).keys()];
 
 // a message with one getDeviceId command
-const messageBytes = getBytesFromHex('0d13cf5fa5a836724fc97a0735f817d49651');
+const messageBytes = getBytesFromHex('0a13cf5fa5a836724fc97a0735f817d49651');
 // the same message as a frame
-const frameBytes = getBytesFromHex('7e51fffffffe0d7d33cf5fa5a836724fc97a0735f817d4965178de7e');
+const frameBytes = getBytesFromHex('7e51aaaaffff0a7d33cf5fa5a836724fc97a0735f817d49651fe547e');
 
 const parsedMessage = message.fromBytes(messageBytes, {aesKey});
 
@@ -344,7 +372,7 @@ console.log('parsed message:', parsedMessage);
 /* output:
 {
   messageId: 10,
-  accessLevel: 0,
+  accessLevel: 3,
   commands: [
     {
       id: 5,
@@ -355,11 +383,10 @@ console.log('parsed message:', parsedMessage);
     }
   ],
   bytes: [
-     10,  16, 16,  5,  8,  0,
-     26, 121, 23, 20, 27, 29,
-    106,   0, 68
+    207, 95, 165, 168, 54, 114, 79, 201,
+    122, 7, 53, 248, 23, 212, 150, 81
   ],
-  lrc: { received: 68, calculated: 68 }
+  lrc: { received: 71, calculated: 71 }
 } */
 
 const parsedFrame = frame.fromBytes(frameBytes);
@@ -368,22 +395,22 @@ console.log('parsed frame:', parsedFrame);
 /* output:
 {
   bytes: [
-    126, 81, 255, 255, 255, 254,  11,
-     16, 16,   5,   8,   0,  26, 121,
-     23, 20,  27,  29, 106,   0,  68,
-    151, 22, 126
+    126, 81, 170, 170, 255, 255, 10, 125,
+    51, 207, 95, 165, 168, 54, 114, 79,
+    201, 122, 7, 53, 248, 23, 212, 150,
+    81, 254, 84, 126
   ],
   payload: [
-     11,  16, 16,  5,  8,  0,
-     26, 121, 23, 20, 27, 29,
-    106,   0, 68
+    10, 19, 207, 95, 165, 168, 54, 114,
+    79, 201, 122, 7, 53, 248, 23, 212,
+    150, 81
   ],
-  crc: { calculated: 5783, received: 5783 },
+  crc: { calculated: 21758, received: 21758 },
   header: {
     type: 81,
     typeName: 'DATA_RESPONSE',
-    destination: 65535,
-    source: 65534
+    destination: 43690,
+    source: 65535
   }
 } */
 

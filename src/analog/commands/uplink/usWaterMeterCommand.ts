@@ -5,7 +5,7 @@
  *
  * @example
  * ```js
- * import * as usWaterMeterCommand from 'jooby-codec/analog/commands/downlink/usWaterMeterCommand.js';
+ * import * as usWaterMeterCommand from 'jooby-codec/analog/commands/uplink/usWaterMeterCommand.js';
  *
  * // response to usWaterMeterCommand downlink command
  * const bytes = [0x07, 0x22, 0x18, 0xc0, 0x5d, 0x20, 0x4e];

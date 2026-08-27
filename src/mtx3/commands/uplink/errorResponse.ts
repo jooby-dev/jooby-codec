@@ -23,7 +23,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/ErrorResponse.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/ErrorResponse.md)
  */
 
 import * as command from '../../../mtx1/utils/command.js';
