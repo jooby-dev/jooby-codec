@@ -90,7 +90,7 @@ describe('PLC MTX type', () => {
     });
 
     test('bytesFromMessage defaults to mtx1', () => {
-        const example = getValidExample(mtx1Commands.getDeviceId.examples['simple response']);
+        const example = getValidExample(mtx1Commands.getEnergy.examples['default A+ energy']);
         const commands = [{
             id: example.id,
             parameters: example.parameters,
@@ -104,5 +104,51 @@ describe('PLC MTX type', () => {
 
         expect(plcMessage.bytesFromMessage(commands, false, subsystemIds.MTX, options))
             .toEqual(mtx1Uplink.bytesFromMessage(commands, options));
+    });
+
+    test('messageFromBlock defaults to mtx1', () => {
+        const example = getValidExample(mtx1Commands.getEnergy.examples['default A+ energy']);
+        const commands = [{
+            id: example.id,
+            parameters: example.parameters,
+            accessLevel: example.accessLevel
+        }];
+        const payload = plcMessage.bytesFromMessage(commands, false, subsystemIds.MTX, {
+            accessLevel: example.accessLevel,
+            aesKey,
+            messageId: 1
+        });
+
+        expect(payload).toBeDefined();
+
+        if ( !payload ) {
+            throw new Error('expected encoded MTX1 payload');
+        }
+
+        const decoded = plcMessage.messageFromBlock(
+            {
+                kind: 'subsystem',
+                id: 1,
+                isDownlink: false,
+                shortAddress: 1,
+                hop: 0,
+                isEndDevice: true,
+                subsystemId: subsystemIds.MTX,
+                dataAttributes: 0,
+                accessLevel: example.accessLevel,
+                messageId: 1,
+                payload
+            },
+            {aesKey}
+        );
+
+        expect(decoded).toMatchObject({
+            commands: [
+                {
+                    id: example.id,
+                    parameters: example.parameters
+                }
+            ]
+        });
     });
 });
