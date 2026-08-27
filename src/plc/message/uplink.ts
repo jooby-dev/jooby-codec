@@ -5,7 +5,7 @@ import * as connection from './connection/uplink.js';
 import * as modem from './modem/uplink.js';
 
 import * as subsystemIds from '../constants/subsystemIds.js';
-import {TUint8} from '../types.js';
+import {TMtxType, TUint8} from '../types.js';
 import {ISubsystem} from './downlink.js';
 
 
@@ -28,7 +28,7 @@ const subsystems = {
 
 
 export const messageFromBytes = (
-    mtxType: 'mtx1' | 'mtx3',
+    mtxType: TMtxType,
     subsystemId: TUint8
 ): TMessageFromBytes | undefined => {
     const subsystem: ISubsystem = subsystems[mtxType][subsystemId];
@@ -37,7 +37,7 @@ export const messageFromBytes = (
 };
 
 export const bytesFromMessage = (
-    mtxType: 'mtx1' | 'mtx3',
+    mtxType: TMtxType,
     subsystemId: TUint8
 ): TBytesFromMessage | undefined => {
     const subsystem: ISubsystem = subsystems[mtxType][subsystemId];

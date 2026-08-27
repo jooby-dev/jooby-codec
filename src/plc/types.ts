@@ -17,3 +17,5 @@ export * from '../mtx1/types.js';
  */
 
 export type TSubsystemIds = BrandType<number, '1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9'>;
+
+export type TMtxType = 'mtx1' | 'mtx3';

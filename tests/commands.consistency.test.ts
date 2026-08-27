@@ -9,13 +9,20 @@ import fs from 'fs';
 import path from 'path';
 
 import {commands as analogCommands} from '../src/analog/index.js';
+import {commands as analogUltrasoundCommands} from '../src/analog-ultrasound/index.js';
 import {commands as mtx1Commands} from '../src/mtx1/index.js';
 import {commands as mtx3Commands} from '../src/mtx3/index.js';
 import {commands as obisObserverCommands} from '../src/obis-observer/index.js';
+import {commands as plcCommands} from '../src/plc/index.js';
 import * as analogMessage from '../src/analog/message/index.js';
+import * as analogUltrasoundMessage from '../src/analog-ultrasound/message/index.js';
 import * as mtx1Message from '../src/mtx1/message/index.js';
 import * as mtx3Message from '../src/mtx3/message/index.js';
 import * as obisObserverMessage from '../src/obis-observer/message/index.js';
+import * as plcModemDownlink from '../src/plc/message/modem/downlink.js';
+import * as plcModemUplink from '../src/plc/message/modem/uplink.js';
+import * as plcConnectionDownlink from '../src/plc/message/connection/downlink.js';
+import * as plcConnectionUplink from '../src/plc/message/connection/uplink.js';
 
 
 const ANALOG_DOWNLINK_PATH = path.resolve(__dirname, '../src/analog/commands/downlink');
@@ -46,33 +53,43 @@ const OBIS_OBSERVER_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/obis-o
 const OBIS_OBSERVER_DOWNLINK_INDEX_PATH = path.resolve(OBIS_OBSERVER_DOWNLINK_PATH, 'index.ts');
 const OBIS_OBSERVER_UPLINK_INDEX_PATH = path.resolve(OBIS_OBSERVER_UPLINK_PATH, 'index.ts');
 
+const ANALOG_ULTRASOUND_DOWNLINK_PATH = path.resolve(__dirname, '../src/analog-ultrasound/commands/downlink');
+const ANALOG_ULTRASOUND_UPLINK_PATH = path.resolve(__dirname, '../src/analog-ultrasound/commands/uplink');
+const ANALOG_ULTRASOUND_MESSAGE_DOWNLINK_PATH = path.resolve(__dirname, '../src/analog-ultrasound/message/downlink.ts');
+const ANALOG_ULTRASOUND_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/analog-ultrasound/message/uplink.ts');
+const ANALOG_ULTRASOUND_DOWNLINK_INDEX_PATH = path.resolve(ANALOG_ULTRASOUND_DOWNLINK_PATH, 'index.ts');
+const ANALOG_ULTRASOUND_UPLINK_INDEX_PATH = path.resolve(ANALOG_ULTRASOUND_UPLINK_PATH, 'index.ts');
 
-const getCommandIdsFromMessageImport = messageData => {
-    const result = {};
+const PLC_DOWNLINK_PATH = path.resolve(__dirname, '../src/plc/commands/downlink');
+const PLC_UPLINK_PATH = path.resolve(__dirname, '../src/plc/commands/uplink');
+const PLC_MESSAGE_DOWNLINK_PATH = path.resolve(__dirname, '../src/plc/message/modem/downlink.ts');
+const PLC_MESSAGE_UPLINK_PATH = path.resolve(__dirname, '../src/plc/message/modem/uplink.ts');
+const PLC_DOWNLINK_INDEX_PATH = path.resolve(PLC_DOWNLINK_PATH, 'index.ts');
+const PLC_UPLINK_INDEX_PATH = path.resolve(PLC_UPLINK_PATH, 'index.ts');
 
-    ['toBytesMap', 'fromBytesMap', 'nameMap'].forEach(key => {
-        result[key] = Object.keys(messageData[key]).map(Number);
-    });
 
-    return result;
-};
+const mergeMessageMaps = ( ...messages ) => ({
+    toBytesMap: Object.assign({}, ...messages.map(item => item.toBytesMap)),
+    fromBytesMap: Object.assign({}, ...messages.map(item => item.fromBytesMap)),
+    nameMap: Object.assign({}, ...messages.map(item => item.nameMap))
+});
 
-const checkIdConsistency = ( commands, messageIds, messagePath ) => {
-    Object.values(commands).forEach(({name, id}) => {
+const checkIdConsistency = ( commands, messageData, messagePath ) => {
+    Object.values(commands).forEach(({name, id, fromBytes, toBytes}) => {
         try {
-            expect(messageIds.toBytesMap).toContain(id);
+            expect(messageData.toBytesMap[id]).toBe(toBytes);
         } catch {
-            throw new Error(`Command ${name} (ID ${id}) is missing in toBytesMap at ${messagePath}`);
+            throw new Error(`Command ${name} (ID ${id}) toBytes is missing or not bound in toBytesMap at ${messagePath}`);
         }
 
         try {
-            expect(messageIds.fromBytesMap).toContain(id);
+            expect(messageData.fromBytesMap[id]).toBe(fromBytes);
         } catch {
-            throw new Error(`Command ${name} (ID ${id}) is missing in fromBytesMap at ${messagePath}`);
+            throw new Error(`Command ${name} (ID ${id}) fromBytes is missing or not bound in fromBytesMap at ${messagePath}`);
         }
 
         try {
-            expect(messageIds.nameMap).toContain(id);
+            expect(id in messageData.nameMap).toBe(true);
         } catch {
             throw new Error(`Command ${name} (ID ${id}) is missing in nameMap at ${messagePath}`);
         }
@@ -130,7 +147,7 @@ describe('commands consistency', () => {
     test('analog downlink IDs should match', () => {
         checkIdConsistency(
             analogCommands.downlink,
-            getCommandIdsFromMessageImport(analogMessage.downlink),
+            analogMessage.downlink,
             ANALOG_MESSAGE_DOWNLINK_PATH
         );
     });
@@ -138,7 +155,7 @@ describe('commands consistency', () => {
     test('analog uplink IDs should match', () => {
         checkIdConsistency(
             analogCommands.uplink,
-            getCommandIdsFromMessageImport(analogMessage.uplink),
+            analogMessage.uplink,
             ANALOG_MESSAGE_UPLINK_PATH
         );
     });
@@ -146,7 +163,7 @@ describe('commands consistency', () => {
     test('mtx1 downlink IDs should match', () => {
         checkIdConsistency(
             mtx1Commands.downlink,
-            getCommandIdsFromMessageImport(mtx1Message.downlink),
+            mtx1Message.downlink,
             MTX1_MESSAGE_DOWNLINK_PATH
         );
     });
@@ -154,7 +171,7 @@ describe('commands consistency', () => {
     test('mtx1 uplink IDs should match', () => {
         checkIdConsistency(
             mtx1Commands.uplink,
-            getCommandIdsFromMessageImport(mtx1Message.uplink),
+            mtx1Message.uplink,
             MTX1_MESSAGE_UPLINK_PATH
         );
     });
@@ -162,7 +179,7 @@ describe('commands consistency', () => {
     test('mtx3 downlink IDs should match', () => {
         checkIdConsistency(
             mtx3Commands.downlink,
-            getCommandIdsFromMessageImport(mtx3Message.downlink),
+            mtx3Message.downlink,
             MTX3_MESSAGE_DOWNLINK_PATH
         );
     });
@@ -170,7 +187,7 @@ describe('commands consistency', () => {
     test('mtx3 uplink IDs should match', () => {
         checkIdConsistency(
             mtx3Commands.uplink,
-            getCommandIdsFromMessageImport(mtx3Message.uplink),
+            mtx3Message.uplink,
             MTX3_MESSAGE_UPLINK_PATH
         );
     });
@@ -178,7 +195,7 @@ describe('commands consistency', () => {
     test('obis-observer downlink IDs should match', () => {
         checkIdConsistency(
             obisObserverCommands.downlink,
-            getCommandIdsFromMessageImport(obisObserverMessage.downlink),
+            obisObserverMessage.downlink,
             OBIS_OBSERVER_MESSAGE_DOWNLINK_PATH
         );
     });
@@ -186,8 +203,40 @@ describe('commands consistency', () => {
     test('obis-observer uplink IDs should match', () => {
         checkIdConsistency(
             obisObserverCommands.uplink,
-            getCommandIdsFromMessageImport(obisObserverMessage.uplink),
+            obisObserverMessage.uplink,
             OBIS_OBSERVER_MESSAGE_UPLINK_PATH
+        );
+    });
+
+    test('analog-ultrasound downlink IDs should match', () => {
+        checkIdConsistency(
+            analogUltrasoundCommands.downlink,
+            analogUltrasoundMessage.downlink,
+            ANALOG_ULTRASOUND_MESSAGE_DOWNLINK_PATH
+        );
+    });
+
+    test('analog-ultrasound uplink IDs should match', () => {
+        checkIdConsistency(
+            analogUltrasoundCommands.uplink,
+            analogUltrasoundMessage.uplink,
+            ANALOG_ULTRASOUND_MESSAGE_UPLINK_PATH
+        );
+    });
+
+    test('plc downlink IDs should match', () => {
+        checkIdConsistency(
+            plcCommands.downlink,
+            mergeMessageMaps(plcModemDownlink, plcConnectionDownlink),
+            PLC_MESSAGE_DOWNLINK_PATH
+        );
+    });
+
+    test('plc uplink IDs should match', () => {
+        checkIdConsistency(
+            plcCommands.uplink,
+            mergeMessageMaps(plcModemUplink, plcConnectionUplink),
+            PLC_MESSAGE_UPLINK_PATH
         );
     });
 
@@ -201,6 +250,10 @@ describe('commands consistency', () => {
 
     test('mtx3 uplink/downlink IDs should match', () => {
         checkUplinkDownlinkConsistency(mtx3Commands.uplink, mtx3Commands.downlink);
+    });
+
+    test('analog-ultrasound uplink/downlink IDs should match', () => {
+        checkUplinkDownlinkConsistency(analogUltrasoundCommands.uplink, analogUltrasoundCommands.downlink);
     });
 
     test('analog command file names should match imported commands', () => {
@@ -221,5 +274,23 @@ describe('commands consistency', () => {
     test('mtx3 command file names should match imported commands', () => {
         checkCommandNamesConsistency(MTX3_DOWNLINK_PATH, MTX3_DOWNLINK_INDEX_PATH, mtx3Commands.downlink);
         checkCommandNamesConsistency(MTX3_UPLINK_PATH, MTX3_UPLINK_INDEX_PATH, mtx3Commands.uplink);
+    });
+
+    test('analog-ultrasound command file names should match imported commands', () => {
+        checkCommandNamesConsistency(
+            ANALOG_ULTRASOUND_DOWNLINK_PATH,
+            ANALOG_ULTRASOUND_DOWNLINK_INDEX_PATH,
+            analogUltrasoundCommands.downlink
+        );
+        checkCommandNamesConsistency(
+            ANALOG_ULTRASOUND_UPLINK_PATH,
+            ANALOG_ULTRASOUND_UPLINK_INDEX_PATH,
+            analogUltrasoundCommands.uplink
+        );
+    });
+
+    test('plc command file names should match imported commands', () => {
+        checkCommandNamesConsistency(PLC_DOWNLINK_PATH, PLC_DOWNLINK_INDEX_PATH, plcCommands.downlink);
+        checkCommandNamesConsistency(PLC_UPLINK_PATH, PLC_UPLINK_INDEX_PATH, plcCommands.uplink);
     });
 });

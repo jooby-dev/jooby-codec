@@ -36,7 +36,7 @@ export type THalfHourEnergies3 = IEnergies<THalfHourEnergy3>;
 
 export type TTariffsEnergies = Array<IEnergies>;
 
-export type TTariffsPowerMax = Array<IEnergies<IPowerMax>>;
+export type TTariffsPowerMax = Array<IEnergies<IPowerMax> | null>;
 
 export const TARIFF_NUMBER = 4;
 
@@ -352,7 +352,7 @@ export const setAPlusTariffPowerMax = function ( buffer: IBinaryBuffer, energies
     if ( energies ) {
         setPowerMax(buffer, energies['A+']);
         setPowerMax(buffer, energies['A+R+']);
-        setPowerMax(buffer, energies['A+R+']);
+        setPowerMax(buffer, energies['A+R-']);
     }
 };
 

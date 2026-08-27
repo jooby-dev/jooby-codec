@@ -15,12 +15,15 @@ Install required dependencies:
 npm install jooby-codec
 ```
 
-This will provide 4 protocols of codecs:
+This will provide codecs for:
 
 - Analog
+- Analog ultrasound (carried inside Analog `usWaterMeterCommand`)
 - MTX1
 - MTX3
 - OBIS Observer
+
+PLC is implemented in source but is not part of the public package exports.
 
 There is a low-level documentation available in a separate [repository](https://github.com/jooby-dev/jooby-docs).
 
