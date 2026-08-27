@@ -21,7 +21,7 @@
  *
  * console.log('message encoded in HEX:', getHexFromBytes(bytes));
  * // output:
- * '07 22 19 b8 88 a8 61'
+ * '07 22 19 c0 5d 20 4e'
  * ```
  *
  * @packageDocumentation

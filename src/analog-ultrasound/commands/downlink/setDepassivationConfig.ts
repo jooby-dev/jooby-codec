@@ -19,7 +19,7 @@
  * [7, 34, 25, 192, 93, 32, 78]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog-ultrasound/commands/SetDepassivationConfig.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/water-frame.md#set_depassivationconfig)
  */
 
 import * as types from '../../../types.js';

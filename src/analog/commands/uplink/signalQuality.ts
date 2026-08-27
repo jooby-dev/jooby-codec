@@ -27,7 +27,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/uplink/SignalQuality.md)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetSignalQuality.md#response)
  */
 
 import * as types from '../../../types.js';

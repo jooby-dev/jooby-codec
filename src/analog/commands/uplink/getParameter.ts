@@ -14,13 +14,19 @@
  * const bytes = [0x01, 0x00, 0x00, 0x00, 0x04];
  *
  * // decoded payload
- * const parameters = getParameter.fromBytes(commandBody);
+ * const parameters = getParameter.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
  * {
  *     id: 1,
- *     data: {value: 2400}
+ *     name: 'REPORTING_DATA_INTERVAL',
+ *     data: {
+ *         specialSchedulePeriod: 0,
+ *         firstDaysSpecialSchedule: 0,
+ *         lastDaysSpecialSchedule: 0,
+ *         period: 2400
+ *     }
  * }
  * ```
  *

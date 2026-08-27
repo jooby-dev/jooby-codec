@@ -8,16 +8,16 @@
  * import * as getArchiveHoursMcEx from 'jooby-codec/analog/commands/uplink/getArchiveHoursMcEx.js';
  *
  * // response to getArchiveHoursMcEx downlink command
- * const bytes = [0x2f, 0x97, 0x0c, 0x02, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a];
+ * const bytes = [0x2f, 0x97, 0x0c, 0x01, 0x0f, 0x83, 0x01, 0x0a, 0x08, 0x0a, 0x08, 0x0a, 0x0c, 0x0a];
  *
  * // decoded payload
- * const parameters = getArchiveHoursMcEx.fromBytes(commandBody);
+ * const parameters = getArchiveHoursMcEx.fromBytes(bytes);
  *
  * console.log(parameters);
  * // output:
  * {
  *     startTime2000: 756648000,
- *     hour: 16,
+ *     hour: 12,
  *     hours: 1,
  *     channelList: [
  *         {value: 131, diff: [10], index: 1},
@@ -26,6 +26,7 @@
  *         {value: 12, diff: [10], index: 4}
  *     ]
  * }
+ * ```
  *
  * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/GetArchiveHoursMCEx.md#response)
  */

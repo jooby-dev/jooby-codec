@@ -10,10 +10,10 @@
  * import * as getGsmParameters from 'jooby-codec/mtx1/commands/downlink/getGsmParameters.js';
  *
  * const parameters = {
- *     blockIndex: 1
+ *     index: 1
  * };
  *
- * const bytes = getDayMaxDemand.toBytes(parameters);
+ * const bytes = getGsmParameters.toBytes(parameters);
  *
  * // command binary representation
  * console.log(bytes);

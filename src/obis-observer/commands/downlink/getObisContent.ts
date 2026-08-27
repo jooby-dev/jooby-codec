@@ -24,7 +24,7 @@
  * [78, 9, 3, 0, 0, 0, 8, 2, 0, 9, 1]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetContentByObis.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObisContent.md#request)
  */
 
 import * as types from '../../../types.js';

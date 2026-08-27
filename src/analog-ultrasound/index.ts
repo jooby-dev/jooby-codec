@@ -3,8 +3,8 @@
  *
  * @packageDocumentation
  *
- * There are some [basics](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/basics.md) available
- * in a separate [repository](https://github.com/jooby-dev/jooby-docs).
+ * Nested in Analog [`usWaterMeterCommand`](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/commands/USWaterMeterCommand.md).
+ * Inner frame: [water frame](https://github.com/jooby-dev/jooby-docs/blob/main/docs/analog/water-frame.md).
  */
 
 export {ANALOG_ULTRASOUND as name} from '../constants/protocols.js';
