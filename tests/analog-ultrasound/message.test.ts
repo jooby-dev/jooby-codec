@@ -133,6 +133,24 @@ const invalidDownlinkMessages: TMessageExamples = {
                 }
             }
         ]
+    },
+    'setDepassivationConfig truncated body': {
+        bytes: getBytesFromHex('06 22 19 c0 5d 20'),
+        commands: [
+            {
+                command: {
+                    id: downlinkCommands.setDepassivationConfig.id,
+                    name: 'setDepassivationConfig',
+                    headerSize: 3,
+                    bytes: getBytesFromHex('06 22 19 c0 5d 20')
+                },
+                error: {
+                    code: resultCodes.DECODE_ERROR,
+                    name: resultNames[resultCodes.DECODE_ERROR],
+                    message: 'Wrong buffer size for setDepassivationConfig: 3. Expected: 4. Payload: 0xc05d20.'
+                }
+            }
+        ]
     }
 };
 
