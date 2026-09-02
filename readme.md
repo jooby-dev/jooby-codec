@@ -60,7 +60,7 @@ import * as downlink from 'jooby-codec/analog/commands/downlink';
 import * as setTime2000 from 'jooby-codec/analog/commands/downlink/setTime2000.js';
 ```
 
-The last approach is preferred as it is more efficient and will init only a necessary commands.
+The last approach is preferred as it is more efficient and will initialize only the necessary commands.
 
 Prepare and parse downlink message:
 
@@ -232,7 +232,7 @@ import * as downlink from 'jooby-codec/mtx1/commands/downlink';
 import * as setDateTime from 'jooby-codec/mtx1/commands/downlink/setDateTime.js';
 ```
 
-The last approach is preferred as it is more efficient and will init only a necessary commands.
+The last approach is preferred as it is more efficient and will initialize only the necessary commands.
 
 Prepare and parse downlink message and frame:
 
@@ -457,7 +457,7 @@ import * as downlink from 'jooby-codec/obis-observer/commands/downlink';
 import * as getMeterInfo from 'jooby-codec/obis-observer/commands/downlink/getMeterInfo.js';
 ```
 
-The last approach is preferred as it is more efficient and will init only a necessary commands.
+The last approach is preferred as it is more efficient and will initialize only the necessary commands.
 
 Prepare and parse downlink message:
 

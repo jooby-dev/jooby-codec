@@ -1,7 +1,7 @@
 /**
  * Uplink command to get current values like voltage, power, etc.
  *
- * The corresponding downlink command: `setCurrentValues`.
+ * The corresponding downlink command: `getCurrentValues`.
  *
  * @packageDocumentation
  *
