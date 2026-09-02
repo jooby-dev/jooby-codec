@@ -1,7 +1,7 @@
 /**
  * Uplink command to get power-off information for a specific year and month.
  *
- * The corresponding downlink command: `getSaldoParameters`.
+ * The corresponding downlink command: `getQuality`.
  *
  * Supported in MTX1 and MTX3 devices.
  *
@@ -28,13 +28,13 @@
  *     powerOffSaidiCount: 3,
  *     powerOffMaidiMinutes: 0,
  *     powerOffMaifiCount: 3,
- *     badVoltagePhaseAMinutes: 34
- *     badVoltagePhaseAMinutes: 0
- *     badVoltagePhaseAMinutes: 0
+ *     badVoltagePhaseAMinutes: 34,
+ *     badVoltagePhaseBMinutes: 0,
+ *     badVoltagePhaseCMinutes: 0
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/getQuality.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetQuality.md#response)
  */
 
 import * as types from '../../types.js';

@@ -2,8 +2,7 @@
  * Sensor current time.
  *
  * It's a mandatory confirmation to getTime2000 request.
- * It is sent immediately after device power on.
- * After it a device sends it periodically (once per 24 hours).
+ * It is also sent immediately after device power on, and then periodically (once per `24` hours) without a request.
  *
  * @packageDocumentation
  *

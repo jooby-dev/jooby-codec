@@ -52,7 +52,7 @@ interface IGetArchiveHoursMcResponseParameters {
     startTime2000: TTime2000;
 
     /**
-     * It`s full value of pulse counter with diff for each previous hours (8 hours if reporting data interval is set to 4 hours).
+     * Number of hours.
      */
     hours: types.TUint8;
 }

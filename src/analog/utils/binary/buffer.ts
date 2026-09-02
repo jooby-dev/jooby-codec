@@ -95,7 +95,7 @@ export interface IEventGasStatus {
     isBatteryLow?: boolean,
     /** there is a magnetic field influence */
     isMagneticInfluence?: boolean,
-    /** button is release (device is unmounted) */
+    /** button is released (device is unmounted) */
     isButtonReleased?: boolean,
     /** the device has detected a loss of connection to the server */
     isConnectionLost?: boolean
@@ -135,7 +135,7 @@ export interface IEvent4ChannelStatus {
     isSecondChannelInactive?: boolean,
     /** the third channel is not active */
     isThirdChannelInactive?: boolean,
-    /** the forth channel is not active */
+    /** the fourth channel is not active */
     isForthChannelInactive?: boolean
 }
 
@@ -387,7 +387,7 @@ interface IParameterMtxPowerConfig {
 interface IParameterRx2Config {
     /**
      * The transmission speed or Data Rate of a LoRaWAN message, ranging from `SF7` (highest Data Rate) to `SF12` (lowest Data Rate).
-     * Making the spreading factor `1` step lower (from `SF10` to `SF9`) allows you to roughly send the same amount of data use half the time on air.
+     * Making the spreading factor `1` step lower (from `SF10` to `SF9`) allows you to roughly send the same amount of data using half the time on air.
      * Lowering the spreading factor makes it more difficult for the gateway to receive a transmission, as it will be more sensitive to noise.
      *
      * @see https://www.thethingsnetwork.org/docs/lorawan/spreading-factors/
