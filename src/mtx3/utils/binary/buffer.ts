@@ -860,13 +860,13 @@ export interface ITypeMeterOperatorParameter {
     /**
      * Reactive energy accumulation type.
      *
-     * `false` - reactive energy accumulation by quadrants `Q1`, `Q2`, `Q3`, `Q4`;
-     * `true` - reactive energy accumulation by `R+`, `R-`.
+     * `false` - reactive energy accumulation by `R+`, `R-`,
+     * `true` - reactive energy accumulation by quadrants `Q1`, `Q2`, `Q3`, `Q4`;
      *
      * Since version `302.19.XXX` (`XXX` - decimal number) for `G`-type meters, the energies `R+` and `R-` are accumulated and displayed similarly to `R`-type meters.
      * Reactive energy by quadrants is not accumulated.
      */
-    ACCUMULATE_BY_R_PLUS_MINUS: boolean;
+    ACCUMULATE_BY_QUADRANTS: boolean;
 }
 
 export interface IOperatorParameters {
@@ -1818,7 +1818,7 @@ export const relaySetMask = {
 const typeMeterMask = {
     TRANSFORMATION_RATIO: 1 << 0,
     METER_TYPE_R: 1 << 4,
-    ACCUMULATE_BY_R_PLUS_MINUS: 1 << 7
+    ACCUMULATE_BY_QUADRANTS: 1 << 7
 };
 
 export const define1Mask = {

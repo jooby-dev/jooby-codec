@@ -231,7 +231,7 @@ export const examples: command.TCommandExamples = {
             typeMeter: {
                 TRANSFORMATION_RATIO: false,
                 METER_TYPE_R: false,
-                ACCUMULATE_BY_R_PLUS_MINUS: false
+                ACCUMULATE_BY_QUADRANTS: false
             },
             phMin: 0,
             timeoutIMax: 5,
