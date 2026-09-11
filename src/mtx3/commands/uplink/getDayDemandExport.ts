@@ -49,6 +49,7 @@ import {
     getEnergies,
     setEnergies
 } from '../../utils/binary/buffer.js';
+import validateCommandPayload from '../../../utils/validateCommandPayload.js';
 import {getDate, setDate} from '../../../mtx1/utils/binary/buffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as dlms from '../../constants/dlms.js';
@@ -111,6 +112,8 @@ export const examples: command.TCommandExamples = {
  * @returns command payload
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetDayDemandExportResponseParameters => {
+    validateCommandPayload(name, bytes, maxSize);
+
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return {
