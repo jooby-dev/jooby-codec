@@ -11,10 +11,10 @@
  *
  * // simple response
  * const bytes = [
- *     0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x61, 0xa8, 0x00, 0x0f, 0x12, 0x06,
- *     0x00, 0x32, 0xe0, 0x64, 0x00, 0x12, 0xd6, 0x87, 0x00, 0x09, 0xfb, 0xf1,
- *     0x00, 0x00, 0x3a, 0x98, 0x00, 0x0c, 0x0b, 0xd0, 0x00, 0x01, 0xe2, 0x40,
- *     0x00, 0x20, 0xbd, 0x57, 0x00, 0x96, 0xb4, 0x3f, 0x00, 0x0c, 0x0a, 0x14
+ *     0x18, 0x03, 0x16, 0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x61, 0xa8, 0x00, 0x0f, 0x12, 0x06, 0x00,
+ *     0x32, 0xe0, 0x64, 0x00, 0x12, 0xd6, 0x87, 0x00, 0x09, 0xfb, 0xf1, 0x00, 0x00, 0x3a, 0x98, 0x00,
+ *     0x0c, 0x0b, 0xd0, 0x00, 0x01, 0xe2, 0x40, 0x00, 0x20, 0xbd, 0x57, 0x00, 0x96, 0xb4, 0x3f, 0x00,
+ *     0x0c, 0x0a, 0x14
  * ];
  *
  * // decoded payload
@@ -23,9 +23,16 @@
  * console.log(parameters);
  * // output:
  * {
- *     wh: [40301230, 3334244, 15000, 2145623],
- *     vari: [25000, 1234567, 789456, 9876543],
- *     vare: [987654, 654321, 123456, 789012]
+ *     date: {
+ *         year: 24,
+ *         month: 3,
+ *         date: 22
+ *     },
+ *     energies: {
+ *         wh: [40301230, 3334244, 15000, 2145623],
+ *         vari: [25000, 1234567, 789456, 9876543],
+ *         vare: [987654, 654321, 123456, 789012]
+ *     }
  * }
  * ```
  *
@@ -42,6 +49,7 @@ import {
     setEnergies
 } from '../../utils/binary/buffer.js';
 import validateCommandPayload from '../../../utils/validateCommandPayload.js';
+import {getDate, setDate} from '../../../mtx1/utils/binary/buffer.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
 import * as dlms from '../../constants/dlms.js';
 import {A_MINUS_R_PLUS_R_MINUS} from '../../constants/energyTypes.js';
@@ -49,13 +57,18 @@ import {getEnergyExportDayPrevious as commandId} from '../../constants/uplinkIds
 import commandNames from '../../constants/uplinkNames.js';
 
 
+interface IGetEnergyExportDayPreviousResponseParameters {
+    date: types.IDate,
+    energies: IEnergies
+}
+
 const isGreen = true;
 
 
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const maxSize = 48;
+export const maxSize = 51;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
@@ -67,12 +80,20 @@ export const examples: command.TCommandExamples = {
         maxSize,
         accessLevel,
         parameters: {
-            wh: [40301230, 3334244, 15000, 2145623],
-            vari: [25000, 1234567, 789456, 9876543],
-            vare: [987654, 654321, 123456, 789012]
+            date: {
+                year: 24,
+                month: 3,
+                date: 22
+            },
+            energies: {
+                wh: [40301230, 3334244, 15000, 2145623],
+                vari: [25000, 1234567, 789456, 9876543],
+                vare: [987654, 654321, 123456, 789012]
+            }
         },
         bytes: [
-            0x50, 0x30,
+            0x50, 0x33,
+            0x18, 0x03, 0x16, // date
             0x02, 0x66, 0xf2, 0xae, 0x00, 0x00, 0x61, 0xa8, 0x00, 0x0f, 0x12, 0x06, // tariff 1
             0x00, 0x32, 0xe0, 0x64, 0x00, 0x12, 0xd6, 0x87, 0x00, 0x09, 0xfb, 0xf1, // tariff 2
             0x00, 0x00, 0x3a, 0x98, 0x00, 0x0c, 0x0b, 0xd0, 0x00, 0x01, 0xe2, 0x40, // tariff 3
@@ -88,12 +109,15 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IEnergies => {
+export const fromBytes = ( bytes: types.TBytes ): IGetEnergyExportDayPreviousResponseParameters => {
     validateCommandPayload(name, bytes, maxSize);
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
-    return getEnergies(buffer);
+    return {
+        date: getDate(buffer),
+        energies: getEnergies(buffer)
+    };
 };
 
 
@@ -103,19 +127,26 @@ export const fromBytes = ( bytes: types.TBytes ): IEnergies => {
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IEnergies ): types.TBytes => {
+export const toBytes = ( parameters: IGetEnergyExportDayPreviousResponseParameters ): types.TBytes => {
     const buffer: IBinaryBuffer = new BinaryBuffer(maxSize, false);
 
-    setEnergies(buffer, parameters);
+    // body
+    setDate(buffer, parameters.date);
+    setEnergies(buffer, parameters.energies);
 
     return command.toBytes(id, buffer.data);
 };
 
 
-export const toJson = ( parameters: IEnergies, options: dlms.IJsonOptions = dlms.defaultJsonOptions ) => {
+export const toJson = ( parameters: IGetEnergyExportDayPreviousResponseParameters, options: dlms.IJsonOptions = dlms.defaultJsonOptions ) => {
     if ( !options.dlms ) {
         return JSON.stringify(parameters);
     }
 
-    return JSON.stringify(mapEnergiesToObisCodes(parameters, isGreen, A_MINUS_R_PLUS_R_MINUS));
+    const {date, energies} = parameters;
+
+    return JSON.stringify({
+        date,
+        ...mapEnergiesToObisCodes(energies, isGreen, A_MINUS_R_PLUS_R_MINUS)
+    });
 };
