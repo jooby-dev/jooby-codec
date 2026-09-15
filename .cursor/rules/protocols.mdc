@@ -1,0 +1,14 @@
+---
+description: Per-protocol wire differences in jooby-codec
+globs: src/analog/**/*.ts,src/analog-ultrasound/**/*.ts,src/mtx1/**/*.ts,src/mtx3/**/*.ts,src/obis-observer/**/*.ts,src/plc/**/*.ts
+alwaysApply: false
+---
+
+# Protocol differences
+
+- **analog:** Headers 1/2/3 bytes (`utils/header.ts`). Message = commands + LRC. `lastEvent` needs `{hardwareType}` on command `fromBytes`/`toBytes` and `message.fromBytes`. Command files use `new BinaryBuffer(..., false)` (BE). Ultrasound rides in `usWaterMeterCommand.data`.
+- **analog-ultrasound:** Header `[size, idHi, idLo, body]`. Commands joined with `0xff 0xff`, no LRC. Header writer is BE; body `new BinaryBuffer(bytes)` is LE. Errors are `{code, name, message}`.
+- **mtx1:** Header `[id, length, body]`. Message AES-ECB + LRC + 16-byte pad + `0x00`. HDLC in `mtx1/utils/frame.ts`. LoRa-only commands use `loraBuffer.ts`.
+- **mtx3:** Same wrappers as mtx1 (`mtx1/message/wrappers.js`). Re-export MTX1 when the payload matches; native file when it differs (energy/demand, operator parameters, display, events, …).
+- **obis-observer:** `[id, size, body]…`, no message LRC/AES. Keep `requestId` on commands that have it.
+- **plc:** Frame → block → inner MTX or modem/connection message. Not on the barrel or enumerated exports. Do not add those unless asked.

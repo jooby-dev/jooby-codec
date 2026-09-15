@@ -1,0 +1,28 @@
+---
+description: Wire-format and bundler invariants for jooby-codec
+globs: src/**/*.ts,tests/**/*.ts,AGENTS.md
+alwaysApply: false
+---
+
+# jooby-codec invariants
+
+- A command is an ESM module: `id`, `name`, `headerSize`, `examples`, `fromBytes(body)`, `toBytes(params)` (header+body). No command classes. File name is camelCase === `name`.
+- `examples` on the command file are the hardware contract. Roundtrip tests must keep passing.
+- Register commands **manually** in `message/{down,up}link.ts` (`toBytesMap` and `fromBytesMap`). Do not build maps via `Object.values` / iteration (Otto, QuickJS, TTN, Rollup).
+- Bytes are `number[]` (`TBytes`). Use `BinaryBuffer`, not `Uint8Array` or `DataView`.
+- MTX AES is `crypto-js` ECB NoPadding. Do not switch to `node:crypto` / WebCrypto.
+- Analog headers are 1/2/3 bytes (`src/analog/utils/header.ts`). Do not “simplify”.
+- MTX3 is an overlay of MTX1 (same wrappers). Shared MTX1 changes affect both.
+- `plc` is compiled and `./*` can resolve `dist/plc`. It is not on `src/index.ts` and not in enumerated `package.json` exports. Do not add those unless asked.
+- `DataSegmentsCollector` / `splitBytesToDataSegments` stay as deep imports (mtx-lora API), including the collector default export.
+- `tsconfig` has `strict: false`. Do not enable `strict` in the same change as a feature.
+- Deep imports (`jooby-codec/analog/commands/downlink/foo.js`) are public API.
+- Keep existing `eslint-disable`. Do not introduce a Makefile or kebab-case command files.
+
+```ts
+// BAD — bundlers drop or keep the wrong commands
+for (const cmd of Object.values(commands)) fromBytesMap[cmd.id] = cmd.fromBytes;
+
+// GOOD
+fromBytesMap[commands.softRestart.id] = commands.softRestart.fromBytes;
+```
