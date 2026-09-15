@@ -1,0 +1,13 @@
+---
+description: Known jooby-codec defects; do not rediscover or silently “fix”
+globs: src/**/*.ts,tests/**/*.ts,readme.md
+alwaysApply: false
+---
+
+# Known issues (do not treat as style nits)
+
+Fix only when the user asks. Do not “correct” as drive-by.
+
+- MTX `getToMessage` is an unimplemented TODO in `mtx1/message/wrappers.ts`.
+
+Do not start: Uint8Array/DataView, generated maps, `strict: true`, mtx-common package, barreling mtx-lora helpers, adding plc to the root barrel or enumerated exports.

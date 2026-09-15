@@ -1,0 +1,30 @@
+---
+description: Checklist when adding or changing a protocol command
+globs: src/**/commands/**/*.ts,src/**/message/**/*.ts,src/**/constants/**/*.ts
+alwaysApply: false
+---
+
+# Add or change a command
+
+All of these, in one change (skip none):
+
+1. Command module under `src/<proto>/commands/{downlink,uplink}/<name>.ts` (camelCase; file name === exported `name`)
+2. Re-export in `commands/{downlink,uplink}/index.ts` (`export * as name from './name.js'`)
+3. Id in `constants/{downlink,uplink}Ids.ts` (hardware-defined, not sequential). Names come from `invertObject` of ids
+4. **Both** `toBytesMap[id]` and `fromBytesMap[id]` in `message/{down,up}link.ts`
+5. At least one `examples` entry; `fromBytes` takes **body only** (no header)
+
+Matching uplink/downlink ids must stay equal when both directions exist.
+
+`tests/commands.consistency.test.ts` covers analog, analog-ultrasound, mtx1, mtx3, obis-observer, and plc.
+
+MTX3: re-export the MTX1 module when the payload is identical; add a native file when it differs.
+
+```ts
+// BAD — fromBytesMap pointed at the encoder
+fromBytesMap[cmd.id] = cmd.toBytes;
+
+// GOOD
+toBytesMap[cmd.id] = cmd.toBytes;
+fromBytesMap[cmd.id] = cmd.fromBytes;
+```
