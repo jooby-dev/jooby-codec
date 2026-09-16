@@ -103,6 +103,41 @@ export const examples: command.TCommandExamples = {
             // A+R-
             0x30, 0x00, 0x40, 0x00
         ]
+    },
+    'get missing halfhours energies': {
+        id,
+        headerSize,
+        name,
+        maxSize,
+        parameters: {
+            date: {
+                year: 26,
+                month: 9,
+                date: 14
+            },
+            firstHalfhour: 1,
+            halfhoursNumber: 2,
+            energies: {
+                'A+': [null, null],
+                'A+R+': [null, null],
+                'A+R-': [null, null]
+            }
+        },
+        bytes: [
+            0x6f, 0x11,
+            // date
+            0x35, 0x2e,
+            // energy flags
+            0x07,
+            // indexes
+            0x01, 0x02,
+            // A+
+            0xff, 0xff, 0xff, 0xff,
+            // A+R+
+            0xff, 0xff, 0xff, 0xff,
+            // A+R-
+            0xff, 0xff, 0xff, 0xff
+        ]
     }
 };
 
