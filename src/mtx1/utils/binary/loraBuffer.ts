@@ -28,8 +28,8 @@ interface IPowerMax {
 
 export type TEnergiesFlags = IEnergies<boolean>;
 
-type THalfHourEnergy1 = Array<{tariff: number; energy: number} | undefined>;
-type THalfHourEnergy3 = Array<number | undefined>;
+type THalfHourEnergy1 = Array<{tariff: number; energy: number} | null>;
+type THalfHourEnergy3 = Array<number | null>;
 
 export type THalfHourEnergies1 = IEnergies<THalfHourEnergy1>;
 export type THalfHourEnergies3 = IEnergies<THalfHourEnergy3>;
