@@ -21,9 +21,9 @@
  * // output:
  * {
  *     date: {
- *         year: 21,
- *         month: 2,
- *         date: 3
+ *         year: 26,
+ *         month: 9,
+ *         date: 14
  *     },
  *     firstHalfhour: 1,
  *     halfhoursNumber: 2,
