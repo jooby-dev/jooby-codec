@@ -43,7 +43,7 @@ export const TARIFF_NUMBER = 4;
 const ENERGY_NAMES = ['A+', 'A+R+', 'A+R-', 'A-', 'A-R+', 'A-R-'];
 
 
-const UNDEFINED_ENERGY_VALUE = 0xffffffff;
+const UNDEFINED_ENERGY_VALUE = 0xffff;
 
 const energiesMask = {
     'A+': 0x01,
@@ -121,13 +121,19 @@ export const getHalfHourEnergy1 = function ( buffer: IBinaryBuffer, halfhoursNum
     for ( let index = 0; index < halfhoursNumber; index++ ) {
         const value = buffer.getUint16();
 
+        if ( value === UNDEFINED_ENERGY_VALUE ) {
+            halfhours.push(null);
+            // eslint-disable-next-line no-continue
+            continue;
+        }
+
         // extract the top 2 bits (shift right by 14 positions)
         const tariff = (value >> 14) & 0b11;
 
         // extract the remaining 14 bits (0x3FFF as mask)
         const energy = value & 0b00111111_11111111;
 
-        halfhours.push(value === UNDEFINED_ENERGY_VALUE ? undefined : {tariff, energy});
+        halfhours.push({tariff, energy});
     }
 
     return halfhours;
@@ -136,14 +142,19 @@ export const getHalfHourEnergy1 = function ( buffer: IBinaryBuffer, halfhoursNum
 export const setHalfHourEnergy1 = function ( buffer: IBinaryBuffer, halfhours: THalfHourEnergy1 | undefined ) {
     if ( halfhours ) {
         for ( let index = 0; index < halfhours.length; index++ ) {
-            const {tariff, energy} = halfhours[index];
+            const value = halfhours[index];
 
+            if ( value === null ) {
+                buffer.setUint16(UNDEFINED_ENERGY_VALUE);
+                // eslint-disable-next-line no-continue
+                continue;
+            }
+
+            const {tariff, energy} = value;
             // combine the parts into a single uint16
             // - shift tariff left by 14 positions
             // - use bitwise OR to combine with energy
-            const value = (tariff << 14) | energy;
-
-            buffer.setUint16(value === undefined ? UNDEFINED_ENERGY_VALUE : value);
+            buffer.setUint16((tariff << 14) | energy);
         }
     }
 };
@@ -154,7 +165,7 @@ export const getHalfHourEnergy3 = function ( buffer: IBinaryBuffer, halfhoursNum
     for ( let index = 0; index < halfhoursNumber; index++ ) {
         const value = buffer.getUint16();
 
-        halfhours.push(value === UNDEFINED_ENERGY_VALUE ? undefined : value);
+        halfhours.push(value === UNDEFINED_ENERGY_VALUE ? null : value);
     }
 
     return halfhours;
@@ -165,7 +176,7 @@ export const setHalfHourEnergy3 = function ( buffer: IBinaryBuffer, halfhours: T
         for ( let index = 0; index < halfhours.length; index++ ) {
             const value = halfhours[index];
 
-            buffer.setUint16(value === undefined ? UNDEFINED_ENERGY_VALUE : value);
+            buffer.setUint16(value === null ? UNDEFINED_ENERGY_VALUE : value);
         }
     }
 };

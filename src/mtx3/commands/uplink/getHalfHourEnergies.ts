@@ -76,25 +76,31 @@ export const examples: command.TCommandExamples = {
         maxSize,
         parameters: {
             date: {
-                year: 21,
-                month: 2,
-                date: 3
+                year: 26,
+                month: 9,
+                date: 14
             },
             firstHalfhour: 1,
             halfhoursNumber: 2,
             energies: {
                 'A+': [0x1000, 0x2000],
-                'A-R+': [0x3000, 0x4000]
+                'A+R+': [0x3000, 0x4000],
+                'A+R-': [0x3000, 0x4000]
             }
         },
         bytes: [
-            0x6f, 0x0d,
+            0x6f, 0x11,
             // date
-            0x2a, 0x43, 0x11,
+            0x35, 0x2e,
+            // energy flags
+            0x07,
+            // indexes
             0x01, 0x02,
             // A+
             0x10, 0x00, 0x20, 0x00,
-            // A-R+
+            // A+R+
+            0x30, 0x00, 0x40, 0x00,
+            // A+R-
             0x30, 0x00, 0x40, 0x00
         ]
     }
