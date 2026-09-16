@@ -11,11 +11,12 @@
         "--name=jooby-codec"
     ],
 
-    // Host XDG git config (includes, allowed_signers).
-    // Copied ~/.gitconfig references these paths; initializeCommand creates the host dir if missing.
-    "initializeCommand": "mkdir -p \"${localEnv:HOME}${localEnv:USERPROFILE}/.config/git\"",
+    // Host XDG git / gh config. Copied ~/.gitconfig and `gh auth login` use these paths;
+    // initializeCommand creates the host dirs if missing.
+    "initializeCommand": "mkdir -p \"${localEnv:HOME}${localEnv:USERPROFILE}/.config/git\" \"${localEnv:HOME}${localEnv:USERPROFILE}/.config/gh\"",
     "mounts": [
-        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/git,target=/home/node/.config/git,type=bind,consistency=cached"
+        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/git,target=/home/node/.config/git,type=bind,consistency=cached",
+        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/gh,target=/home/node/.config/gh,type=bind,consistency=cached"
     ],
 
     "postCreateCommand": "npm ci && git config core.hooksPath .githooks"

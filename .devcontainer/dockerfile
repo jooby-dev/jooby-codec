@@ -1,10 +1,19 @@
 FROM node:lts-trixie-slim
 
+ARG GH_VERSION=2.99.0
+
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends git openssh-client \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        git \
+        openssh-client \
+    && arch="$(dpkg --print-architecture)" \
+    && curl -fsSL "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_${arch}.tar.gz" \
+        | tar -xz --strip-components=1 -C /usr/local \
     && rm -rf /var/lib/apt/lists/*
 
 USER node
 
-# Bind-mount parent must exist as `node`; Docker would otherwise create it as root.
-RUN mkdir -p /home/node/.config/git
+# Bind-mount parents must exist as `node`; Docker would otherwise create them as root.
+RUN mkdir -p /home/node/.config/git /home/node/.config/gh
