@@ -1,0 +1,22 @@
+{
+    "$schema": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json",
+    "name": "jooby-codec",
+    "build": {
+        "dockerfile": "dockerfile"
+    },
+    "remoteUser": "node",
+
+    "runArgs": [
+        "--hostname=jooby-codec",
+        "--name=jooby-codec"
+    ],
+
+    // Host XDG git config (includes, allowed_signers).
+    // Copied ~/.gitconfig references these paths; initializeCommand creates the host dir if missing.
+    "initializeCommand": "mkdir -p \"${localEnv:HOME}${localEnv:USERPROFILE}/.config/git\"",
+    "mounts": [
+        "source=${localEnv:HOME}${localEnv:USERPROFILE}/.config/git,target=/home/node/.config/git,type=bind,consistency=cached"
+    ],
+
+    "postCreateCommand": "npm ci && git config core.hooksPath .githooks"
+}
