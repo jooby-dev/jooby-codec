@@ -18,8 +18,7 @@
  * [13, 1, 7]
  * ```
  *
- * [Command format documentation](
- * https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetSingleMode.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/GetObserverSingleMode.md#request)
  */
 
 import * as types from '../../../types.js';
