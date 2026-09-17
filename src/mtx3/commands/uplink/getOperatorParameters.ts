@@ -29,7 +29,7 @@
  * // same as getDefaultOperatorParameters()
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetOpParams.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetOperatorParameters.md#response)
  */
 
 import * as types from '../../types.js';

@@ -20,7 +20,7 @@
  * [11, 2, 3, 1]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetObserverSingleMode.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/obis-observer/commands/SetSingleMode.md#request)
  */
 
 import * as command from '../../utils/command.js';
