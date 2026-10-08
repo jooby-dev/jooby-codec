@@ -141,6 +141,93 @@ export const examples: command.TCommandExamples = {
             0x17, 0x03, 0x0c, 0x02, 0x01, 0x0c, 0x21, 0x9d, 0x16, 0x19, 0x0c, 0x8f,
             0x01, 0x0c, 0x21, 0x79, 0x00, 0x0a, 0x16, 0x03, 0x04, 0x0c, 0x07, 0x18
         ]
+    },
+    'response with new saldo': {
+        id,
+        name,
+        headerSize,
+        accessLevel,
+        maxSize,
+        parameters: {
+            date: {
+                year: 23,
+                month: 3,
+                date: 12
+            },
+            eventsNumber: 1,
+            events: [
+                {
+                    hours: 1,
+                    minutes: 12,
+                    seconds: 33,
+                    event: 112,
+                    eventName: 'SET_NEW_SALDO',
+                    saldo: 16909060
+                }
+            ]
+        },
+        bytes: [
+            0x33, 0x0c,
+            0x17, 0x03, 0x0c, 0x01, 0x01, 0x0c, 0x21, 0x70, 0x01, 0x02, 0x03, 0x04
+        ]
+    },
+    'response with saldo zero': {
+        id,
+        name,
+        headerSize,
+        accessLevel,
+        maxSize,
+        parameters: {
+            date: {
+                year: 23,
+                month: 3,
+                date: 12
+            },
+            eventsNumber: 1,
+            events: [
+                {
+                    hours: 1,
+                    minutes: 12,
+                    seconds: 33,
+                    event: 188,
+                    eventName: 'SET_SALDO_ZERO',
+                    saldo: 84281096
+                }
+            ]
+        },
+        bytes: [
+            0x33, 0x0c,
+            0x17, 0x03, 0x0c, 0x01, 0x01, 0x0c, 0x21, 0xbc, 0x05, 0x06, 0x07, 0x08
+        ]
+    },
+    'response with relay off max power saldo': {
+        id,
+        name,
+        headerSize,
+        accessLevel,
+        maxSize,
+        parameters: {
+            date: {
+                year: 23,
+                month: 3,
+                date: 12
+            },
+            eventsNumber: 1,
+            events: [
+                {
+                    hours: 1,
+                    minutes: 12,
+                    seconds: 33,
+                    event: 189,
+                    eventName: 'RELAY_OFF_MAX_POWER_SALDO',
+                    power: 168496141
+                }
+            ]
+        },
+        bytes: [
+            0x33, 0x0c,
+            0x17, 0x03, 0x0c, 0x01, 0x01, 0x0c, 0x21, 0xbd, 0x0a, 0x0b, 0x0c, 0x0d
+        ]
     }
 };
 
