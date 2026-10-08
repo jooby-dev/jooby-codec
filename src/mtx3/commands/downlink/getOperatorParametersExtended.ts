@@ -15,7 +15,7 @@
  * [63, 0]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetOperatorParametersExtended.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetOperatorParametersExtended.md#request)
  */
 
 import * as types from '../../types.js';

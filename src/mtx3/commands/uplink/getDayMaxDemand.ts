@@ -78,7 +78,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/uplink/GetDayMaxDemand.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetDayMaxDemand.md#response)
  */
 
 import * as types from '../../types.js';

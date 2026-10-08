@@ -17,7 +17,7 @@
  * [30, 0]
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetOpParams.md#request)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx1/commands/GetOperatorParameters.md#request)
  */
 
 import * as types from '../../types.js';

@@ -77,7 +77,7 @@
  * }
  * ```
  *
- * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/uplink/GetMonthMaxDemandExport.md#response)
+ * [Command format documentation](https://github.com/jooby-dev/jooby-docs/blob/main/docs/mtx3/commands/GetMonthMaxDemandExport.md#response)
  */
 
 import * as types from '../../types.js';
