@@ -2275,13 +2275,13 @@ export const setEvent = function ( buffer: IBinaryBuffer, event: IEvent ) {
     switch ( event.event ) {
         case events.SET_NEW_SALDO:
         case events.SET_SALDO_ZERO:
-            buffer.setInt32(event.saldo);
+            buffer.setInt32(event.saldo == null ? 0xffffffff : event.saldo);
             break;
 
         case events.POWER_OVER_RELAY_OFF:
         case events.RELAY_OFF_REACTIVE_POWER_OVER:
         case events.RELAY_OFF_MAX_POWER_SALDO:
-            buffer.setInt32(event.power);
+            buffer.setInt32(event.power == null ? 0xffffffff : event.power);
             break;
 
         case events.CMD_SET_DATETIME:
