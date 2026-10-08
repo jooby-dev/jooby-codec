@@ -1012,6 +1012,21 @@ export const RESET_MAGNETIC_FLAG = 0xb3;
 export const RELAY_OFF_BAD_SALDO = 0xba;
 
 /**
+ * Relay switched OFF due to exceeding the reactive power limit.
+ */
+export const RELAY_OFF_REACTIVE_POWER_OVER = 0xbb;
+
+/**
+ * Balance reset to zero remotely.
+ */
+export const SET_SALDO_ZERO = 0xbc;
+
+/**
+ * Relay switched OFF due to exceeding the active power consumption limit in credit mode.
+ */
+export const RELAY_OFF_MAX_POWER_SALDO = 0xbd;
+
+/**
  * `1`-minute energy, voltage load profiles recording mode set.
  *
  * Indication code: `C.224`.

@@ -2231,12 +2231,23 @@ export const getEvent = function ( buffer: IBinaryBuffer ): IEvent {
     data.eventName = eventNames[event];
 
     switch ( event ) {
-        case events.POWER_OVER_RELAY_OFF:
+        case events.SET_NEW_SALDO:
+        case events.SET_SALDO_ZERO:
             if ( bytesLeft < 4 ) {
                 return data;
             }
 
-            data.power = [buffer.getUint8(), buffer.getUint8(), buffer.getUint8(), buffer.getUint8()];
+            data.saldo = buffer.getInt32();
+            break;
+
+        case events.POWER_OVER_RELAY_OFF:
+        case events.RELAY_OFF_REACTIVE_POWER_OVER:
+        case events.RELAY_OFF_MAX_POWER_SALDO:
+            if ( bytesLeft < 4 ) {
+                return data;
+            }
+
+            data.power = buffer.getInt32();
             break;
 
         case events.CMD_SET_DATETIME:
@@ -2262,10 +2273,15 @@ export const setEvent = function ( buffer: IBinaryBuffer, event: IEvent ) {
     buffer.setUint8(event.event);
 
     switch ( event.event ) {
+        case events.SET_NEW_SALDO:
+        case events.SET_SALDO_ZERO:
+            buffer.setInt32(event.saldo);
+            break;
+
         case events.POWER_OVER_RELAY_OFF:
-            for ( const item of event.power ) {
-                buffer.setUint8(item);
-            }
+        case events.RELAY_OFF_REACTIVE_POWER_OVER:
+        case events.RELAY_OFF_MAX_POWER_SALDO:
+            buffer.setInt32(event.power);
             break;
 
         case events.CMD_SET_DATETIME:
