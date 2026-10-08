@@ -36,7 +36,7 @@
  *             seconds: 33,
  *             event: 157,
  *             eventName: 'POWER_OVER_RELAY_OFF',
- *             power: [22, 25, 12, 143]
+ *             power: 370740367
  *         },
  *         {
  *             hours: 1,
@@ -103,7 +103,7 @@ export const examples: command.TCommandExamples = {
                     seconds: 33,
                     event: 157,
                     eventName: 'POWER_OVER_RELAY_OFF',
-                    power: [22, 25, 12, 143]
+                    power: 370740367
                 },
                 {
                     hours: 1,

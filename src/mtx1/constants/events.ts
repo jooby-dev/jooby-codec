@@ -509,6 +509,16 @@ export const CHANGE_PARAMETERS_CHANNEL = 0xb9;
 export const RELAY_OFF_BAD_SALDO = 0xba;
 
 /**
+ * Balance reset to zero remotely.
+ */
+export const SET_SALDO_ZERO = 0xbc;
+
+/**
+ * Relay switched OFF due to exceeding the active power consumption limit in credit mode.
+ */
+export const RELAY_OFF_MAX_POWER_SALDO = 0xbd;
+
+/**
  * `1`-minute energy (voltage) load profiles recording mode set.
  */
 export const SET_DEMAND_EN_1MIN = 0xe0;
