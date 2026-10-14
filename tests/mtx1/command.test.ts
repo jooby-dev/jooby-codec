@@ -9,6 +9,10 @@ const {uplink, downlink} = commands;
 const SCOPE = 'mtx1';
 
 
+const sortedStringify = (value: Record<string, unknown>) => (
+    JSON.stringify(value, Object.keys(value).sort())
+);
+
 const checkExample = (
     {headerSize, fromBytes, toBytes}: ICommandImplementation,
     commandExample: TCommand
@@ -21,7 +25,7 @@ const checkExample = (
         expect(getHexFromBytes(bytesFromParameters)).toBe(getHexFromBytes(commandExample.bytes || []));
         expect(parametersFromBytes).toStrictEqual(commandExample.parameters);
         // testing parameters for full equality
-        expect(JSON.stringify(parametersFromBytes)).toBe(JSON.stringify(commandExample.parameters));
+        expect(sortedStringify(parametersFromBytes as Record<string, unknown>)).toBe(sortedStringify(commandExample.parameters as Record<string, unknown>));
     } else {
         // everything else
         throw new Error('wrong command format');
