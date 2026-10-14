@@ -491,6 +491,7 @@ describe(`MTX device types (${deviceTypes.length})`, () => {
             expect(deviceType.type).toBe(type);
             expect(deviceType?.revision).toBe(revision);
             expect(getHexFromBytes(toBytes({type, revision, manufacturingFlag, descriptor}))).toBe(hex);
+            expect(deviceType.descriptor).toEqual(descriptor);
         });
     });
 });
