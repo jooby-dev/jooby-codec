@@ -4,8 +4,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
 const ADDITIONAL_HOUR = 25;
+const NO_DEMAND_VALUE = 0xffff;
 
-export interface TDemandValue {
+export interface IDemand {
     tariff?: number,
     energy?: number,
     voltage?: number,
@@ -13,6 +14,8 @@ export interface TDemandValue {
     /** The number of the additional hour that occurs during the transition to winter time. */
     lastSummerHour?: number
 }
+
+export type TDemandValue = IDemand | null;
 
 export const getRecordTime = ( index: number, periodMin ) => {
     const periodsInHour = 60 / periodMin;
@@ -27,7 +30,7 @@ export const getRecordIndex = ( hours, minutes, periodMin ) => Math.trunc(((hour
 export const getLastSummerHourIndex = periodMin => getRecordIndex(ADDITIONAL_HOUR, 0, periodMin);
 
 const energyFromWord = ( word, index, periodMin ) => {
-    if ( word === 0xffff) {
+    if ( word === NO_DEMAND_VALUE ) {
         return null;
     }
 
@@ -45,8 +48,8 @@ const energyFromWord = ( word, index, periodMin ) => {
 };
 
 export const energyToWord = data => {
-    if ( data === null ) {
-        return 0xffff;
+    if ( data == null ) {
+        return NO_DEMAND_VALUE;
     }
 
     const {energy, tariff, lastSummerHour} = data;
@@ -79,8 +82,8 @@ export const energyToBinary = energies => energies.reduce(
 );
 
 const voltageFromWord = ( word, index, periodMin ) => {
-    if ( word === 0xffff) {
-        return 0xffff;
+    if ( word === NO_DEMAND_VALUE ) {
+        return null;
     }
 
     const indexLastSummerRecord = getLastSummerHourIndex(periodMin);
@@ -90,7 +93,13 @@ const voltageFromWord = ( word, index, periodMin ) => {
         : {voltage: word};
 };
 
-export const voltageToWord = ( {voltage, lastSummerHour} ) => {
+export const voltageToWord = data => {
+    if ( data == null ) {
+        return NO_DEMAND_VALUE;
+    }
+
+    const {voltage, lastSummerHour} = data;
+
     if ( lastSummerHour ) {
         return (lastSummerHour << 8) | 0xff;
     }
@@ -116,4 +125,4 @@ export const voltageToBinary = energies => energies.reduce(
     []
 );
 
-export const validOnly = demands => demands.filter(value => value !== 0xffff);
+export const validOnly = demands => demands.filter(value => value !== NO_DEMAND_VALUE);

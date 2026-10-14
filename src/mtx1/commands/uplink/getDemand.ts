@@ -284,6 +284,74 @@ export const examples: command.TCommandExamples = {
         ]
     },
 
+    'response for A+ 60 min (with lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 27
+            },
+            demandType: demandTypes.A_PLUS,
+            firstIndex: 23,
+            count: 3,
+            period: 60,
+            demands: [
+                {energy: 2374},
+                {energy: 2365},
+                {lastSummerHour: 3}
+            ]
+        },
+        bytes: [
+            0x76, 0x0d,
+            0x31, 0x5b, 0x01, 0x00, 0x17, 0x03, 0x3c,
+            0x09, 0x46,
+            0x09, 0x3d,
+            0x03, 0xff
+        ]
+    },
+
+    'response for A+ 60 min (without lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 27
+            },
+            demandType: demandTypes.A_PLUS,
+            firstIndex: 18,
+            count: 7,
+            period: 60,
+            demands: [
+                {energy: 2375},
+                {energy: 2381},
+                {energy: 2372},
+                {energy: 2373},
+                {energy: 2374},
+                {energy: 2365},
+                null
+            ]
+        },
+        bytes: [
+            0x76, 0x15,
+            0x31, 0x5b, 0x01, 0x00, 0x12, 0x07, 0x3c,
+            0x09, 0x47,
+            0x09, 0x4d,
+            0x09, 0x44,
+            0x09, 0x45,
+            0x09, 0x46,
+            0x09, 0x3d,
+            0xff, 0xff
+        ]
+    },
+
     'response for voltage (period: 60, no tariff)': {
         id,
         name,
@@ -371,6 +439,44 @@ export const examples: command.TCommandExamples = {
             0x09, 0x46,
             0x09, 0x3d,
             0x03, 0xff
+        ]
+    },
+
+    'response for voltage 10 min (without lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 27
+            },
+            demandType: demandTypes.VOLTAGE_10,
+            firstIndex: 144,
+            count: 7,
+            period: 10,
+            demands: [
+                {voltage: 2375},
+                {voltage: 2381},
+                {voltage: 2372},
+                {voltage: 2373},
+                {voltage: 2374},
+                {voltage: 2365},
+                null
+            ]
+        },
+        bytes: [
+            0x76, 0x15,
+            0x31, 0x5b, 0x40, 0x00, 0x90, 0x07, 0x0a,
+            0x09, 0x47,
+            0x09, 0x4d,
+            0x09, 0x44,
+            0x09, 0x45,
+            0x09, 0x46,
+            0x09, 0x3d,
+            0xff, 0xff
         ]
     }
 };
