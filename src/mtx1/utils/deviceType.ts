@@ -72,13 +72,18 @@ const mtx3DeviceTypeDescriptorMask = {
     reactiveByQuadrants: 1 << 7
 };
 
-const mtx1DeviceTypeDescriptorFromByte = ( byte: number ): IMtxDeviceTypeDescriptor => {
-    const {notDowngradedToA, ...descriptor}: IMtx1DeviceTypeDescriptor = bitSet.toObject(mtx1DeviceTypeDescriptorMask, byte) as IMtx1DeviceTypeDescriptor;
+const mtx1DeviceTypeDescriptorFromByte = (
+    byte: number
+): IMtxDeviceTypeDescriptor => {
+    const mask = mtx1DeviceTypeDescriptorMask;
+    const typeMeterG = (byte & mask.typeMeterG) !== 0;
+    const notDowngradedToA = (byte & mask.notDowngradedToA) !== 0;
 
     return {
         meterType: 'mtx1',
-        ...descriptor,
-        downgradedToA: descriptor.typeMeterG && !notDowngradedToA
+        typeMeterG,
+        downgradedToA: typeMeterG && !notDowngradedToA,
+        supportMeterInfo: (byte & mask.supportMeterInfo) !== 0
     } as IMtxDeviceTypeDescriptor;
 };
 
