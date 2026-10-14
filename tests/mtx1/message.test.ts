@@ -1565,7 +1565,7 @@ const uplinkMessages: TMessageList = [
         messageId: 10,
         accessLevel: uplinkCommands.getDeviceType.accessLevel,
         commands: [
-            uplinkCommands.getDeviceType.examples['type 2']
+            uplinkCommands.getDeviceType.examples['mtx1 type G']
         ],
         lrc: 0xb0,
         crc: 0x5493,
