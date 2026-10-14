@@ -60,7 +60,7 @@ const nibbles12 = ['.', '0', '1', '2', '3', '4', '5', '6', '7', '8', 'I', 'X', '
 
 const mtx1DeviceTypeDescriptorMask = {
     typeMeterG: 1 << 0,
-    downgradedToA: 1 << 4,
+    notDowngradedToA: 1 << 4,
     supportMeterInfo: 1 << 6
 };
 
@@ -72,13 +72,21 @@ const mtx3DeviceTypeDescriptorMask = {
     reactiveByQuadrants: 1 << 7
 };
 
-const mtx1DeviceTypeDescriptorFromByte = ( byte: number ): IMtxDeviceTypeDescriptor => ({
-    meterType: 'mtx1',
-    ...bitSet.toObject(mtx1DeviceTypeDescriptorMask, byte)
-} as IMtxDeviceTypeDescriptor);
+const mtx1DeviceTypeDescriptorFromByte = ( byte: number ): IMtxDeviceTypeDescriptor => {
+    const {notDowngradedToA, ...descriptor}: IMtx1DeviceTypeDescriptor = bitSet.toObject(mtx1DeviceTypeDescriptorMask, byte) as IMtx1DeviceTypeDescriptor;
+
+    return {
+        meterType: 'mtx1',
+        ...descriptor,
+        downgradedToA: descriptor.typeMeterG && !notDowngradedToA
+    } as IMtxDeviceTypeDescriptor;
+};
 
 const mtx1DeviceTypeDescriptorToByte = ( descriptor: IMtx1DeviceTypeDescriptor ): number => (
-    bitSet.fromObject(mtx1DeviceTypeDescriptorMask, descriptor)
+    bitSet.fromObject(mtx1DeviceTypeDescriptorMask, {
+        ...descriptor,
+        notDowngradedToA: descriptor.typeMeterG && !descriptor.downgradedToA
+    })
 );
 
 // In the MTX1 protocol, the meter is of type G when the corresponding bit is set to 1.

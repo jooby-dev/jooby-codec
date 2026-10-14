@@ -79,7 +79,7 @@ export const examples: command.TCommandExamples = {
             descriptor: {
                 meterType: 'mtx1',
                 typeMeterG: true,
-                downgradedToA: true,
+                downgradedToA: false,
                 supportMeterInfo: false
             }
         },
