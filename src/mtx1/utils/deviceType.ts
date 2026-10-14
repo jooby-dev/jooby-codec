@@ -87,12 +87,22 @@ const mtx1DeviceTypeDescriptorFromByte = (
     } as IMtxDeviceTypeDescriptor;
 };
 
-const mtx1DeviceTypeDescriptorToByte = ( descriptor: IMtx1DeviceTypeDescriptor ): number => (
-    bitSet.fromObject(mtx1DeviceTypeDescriptorMask, {
-        ...descriptor,
-        notDowngradedToA: descriptor.typeMeterG && !descriptor.downgradedToA
-    })
-);
+const mtx1DeviceTypeDescriptorToByte = (
+    descriptor: IMtx1DeviceTypeDescriptor
+): number => {
+    const {typeMeterG, downgradedToA, supportMeterInfo} = descriptor;
+
+    if (!typeMeterG && downgradedToA) {
+        throw new Error('downgradedToA requires typeMeterG');
+    }
+
+    return bitSet.fromObject(mtx1DeviceTypeDescriptorMask, {
+        typeMeterG,
+        // Bit 4 is reserved for type A and is always encoded as 0.
+        notDowngradedToA: typeMeterG && !downgradedToA,
+        supportMeterInfo
+    });
+};
 
 // In the MTX1 protocol, the meter is of type G when the corresponding bit is set to 1.
 // In the MTX3 protocol, the meter is of type G when the corresponding bit is set to 0.
