@@ -46,7 +46,7 @@ export const maxSize = 9;
 export const isLoraOnly = false;
 
 export const examples: command.TCommandExamples = {
-    'type 1': {
+    'mtx1 type A': {
         id,
         name,
         headerSize,
@@ -67,7 +67,7 @@ export const examples: command.TCommandExamples = {
             0x00, 0x11, 0x21, 0x49, 0x21, 0xB6, 0x81, 0xC0, 0x00
         ]
     },
-    'type 2': {
+    'mtx1 type G': {
         id,
         name,
         headerSize,
@@ -86,6 +86,27 @@ export const examples: command.TCommandExamples = {
         bytes: [
             0x04, 0x09,
             0x00, 0x12, 0x16, 0x47, 0x21, 0xb3, 0x17, 0x2c, 0x11
+        ]
+    },
+    'mtx1 type G, downgraded to A': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        accessLevel,
+        parameters: {
+            type: 'MTX 1G05.DH.2L2-DOB4',
+            revision: 0x0b,
+            descriptor: {
+                meterType: 'mtx1',
+                typeMeterG: true,
+                downgradedToA: true,
+                supportMeterInfo: false
+            }
+        },
+        bytes: [
+            0x04, 0x09,
+            0x00, 0x12, 0x16, 0x47, 0x21, 0xb3, 0x17, 0x2c, 0x01
         ]
     }
 };
