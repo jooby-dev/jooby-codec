@@ -54,14 +54,7 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
     /**
      * Load or voltage data.
      */
-    demands?: Array<{
-        tariff?: number,
-        energy?: number,
-        voltage?: number,
-
-        /** The number of the additional hour that occurs during the transition to winter time. */
-        lastSummerHour?: number
-    }>
+    demands?: Array<demands.TDemandValue>
 }
 
 

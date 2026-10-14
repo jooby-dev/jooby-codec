@@ -5,6 +5,14 @@
 
 const ADDITIONAL_HOUR = 25;
 
+export interface TDemandValue {
+    tariff?: number,
+    energy?: number,
+    voltage?: number,
+
+    /** The number of the additional hour that occurs during the transition to winter time. */
+    lastSummerHour?: number
+}
 
 export const getRecordTime = ( index: number, periodMin ) => {
     const periodsInHour = 60 / periodMin;

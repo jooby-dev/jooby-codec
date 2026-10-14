@@ -72,14 +72,7 @@ export interface IGetCurrentDemandValues {
     /**
      * Load or voltage data.
      */
-    values: Array<{
-        tariff?: types.TUint8,
-        energy?: types.TUint8,
-        voltage?: types.TUint8,
-
-        /** The number of the additional hour that occurs during the transition to winter time. */
-        lastSummerHour?: types.TUint8
-    }>
+    values: Array<demandsUtils.TDemandValue>
 }
 
 export interface IGetCurrentDemandParameters {
