@@ -45,7 +45,7 @@ import {
 } from '../../utils/binary/buffer.js';
 import * as getDemandCommand from '../downlink/getDemand.js';
 import {READ_ONLY} from '../../../mtx1/constants/accessLevels.js';
-import {getLastSummerHourIndex} from '../../../mtx1/utils/demands.js';
+import * as demandsUtils from '../../../mtx1/utils/demands.js';
 import {getDemand as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 import * as demandTypes from '../../constants/demandTypes.js';
@@ -66,7 +66,7 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const maxSize = getDemandCommand.maxSize + 48;
+export const maxSize = getDemandCommand.maxSize + demandsUtils.MAX_DEMANDS_COUNT * 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
@@ -160,6 +160,36 @@ export const examples: command.TCommandExamples = {
         ]
     },
 
+    'response for A+ (without lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 2
+            },
+            demandType: demandTypes.ACTIVE_ENERGY_A_PLUS,
+            firstIndex: 23,
+            count: 3,
+            period: 60,
+            demands: [
+                2000,
+                43981,
+                null
+            ]
+        },
+        bytes: [
+            0x76, 0x0d,
+            0x31, 0x42, 0x81, 0x00, 0x17, 0x03, 0x3c,
+            0x07, 0xd0,
+            0xab, 0xcd,
+            0xff, 0xff
+        ]
+    },
+
     'response for A+ (lastSummerHour only)': {
         id,
         name,
@@ -203,9 +233,12 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters: IGetDemandParameters = getDemand(buffer);
-    const indexLastSummerRecord = getLastSummerHourIndex(parameters.period);
 
-    if ( bytes.length !== getDemandCommand.maxSize + (2 * parameters.count) ) {
+    demandsUtils.validateDemandCount(parameters.count);
+
+    const expectedLength = getDemandCommand.maxSize + demandsUtils.getDemandValuesSize(parameters, 2);
+
+    if ( bytes.length !== expectedLength ) {
         throw new Error('Invalid uplink GetDemand demands byte length.');
     }
 
@@ -214,13 +247,17 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
         .map((item, index) => {
             const value = buffer.getUint16();
 
-            if ( parameters.firstIndex + index === indexLastSummerRecord ) {
+            if ( value === NO_VALUE ) {
+                return null;
+            }
+
+            if ( demandsUtils.isLastSummerHourIndex(parameters.firstIndex + index, parameters.period) ) {
                 return {
                     lastSummerHour: (value >> 8) & 0xff
                 };
             }
 
-            return value === NO_VALUE ? null : value;
+            return value;
         });
 
     return {...parameters, demands};
@@ -234,21 +271,26 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDemandResponseParameters ): types.TBytes => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(getDemandCommand.maxSize + parameters.count * 2, false);
+    demandsUtils.validateDemandValues(parameters.demands, parameters, 'number');
+
+    const commandSize = getDemandCommand.maxSize + demandsUtils.getDemandValuesSize(parameters, 2);
+    const buffer: IBinaryBuffer = new BinaryBuffer(commandSize, false);
 
     setDemand(buffer, parameters);
 
-    parameters.demands.forEach(value => {
+    parameters.demands.forEach((value, index) => {
         if ( value == null ) {
             buffer.setUint16(NO_VALUE);
 
             return;
         }
 
-        if ( typeof value === 'number' ) {
-            buffer.setUint16(value);
+        const absoluteIndex = parameters.firstIndex + index;
+
+        if ( demandsUtils.isLastSummerHourIndex(absoluteIndex, parameters.period) ) {
+            buffer.setUint16(((value as {lastSummerHour: number}).lastSummerHour << 8) | 0xff);
         } else {
-            buffer.setUint16((value.lastSummerHour << 8) | 0xff);
+            buffer.setUint16(value as number);
         }
     });
 

@@ -72,14 +72,7 @@ export interface IGetCurrentDemandValues {
     /**
      * Load or voltage data.
      */
-    values: Array<{
-        tariff?: types.TUint8,
-        energy?: types.TUint8,
-        voltage?: types.TUint8,
-
-        /** The number of the additional hour that occurs during the transition to winter time. */
-        lastSummerHour?: types.TUint8
-    }>
+    values: Array<demandsUtils.TDemandValue>
 }
 
 export interface IGetCurrentDemandParameters {
@@ -201,10 +194,9 @@ const getCurrentDemandValues = ( buffer: IBinaryBuffer, parameters: IGetCurrentD
 
     for ( let demandParameterIndex = 0; demandParameterIndex < demandParametersSize; demandParameterIndex++ ) {
         const demandType = buffer.getUint8();
-        const isEnergiesDemand = demandType === demandTypes.A_PLUS || demandType === demandTypes.A_MINUS;
         const demandsBytes = new Array(parameters.count).fill(0).map(() => buffer.getUint16());
 
-        const values = isEnergiesDemand
+        const values = demandsUtils.isEnergyDemandType(demandType)
             ? demandsUtils.energyFromBinary(demandsBytes, parameters.firstIndex, parameters.period)
             : demandsUtils.voltageFromBinary(demandsBytes, parameters.firstIndex, parameters.period);
 
@@ -222,14 +214,20 @@ const setCurrentDemandParameters = ( buffer: IBinaryBuffer, parameters: IGetCurr
     buffer.setUint8(period);
 };
 
-const setCurrentDemandValues = ( buffer: IBinaryBuffer, demands: Array<IGetCurrentDemandValues> ): void => {
+const setCurrentDemandValues = (
+    buffer: IBinaryBuffer,
+    demands: Array<IGetCurrentDemandValues>,
+    parameters: IGetCurrentDemandParameters
+): void => {
     demands.forEach(demand => {
         const {demandType, values} = demand;
-        const isEnergiesDemand = demandType === demandTypes.A_PLUS || demandType === demandTypes.A_MINUS;
+        const isEnergyDemand = demandsUtils.isEnergyDemandType(demandType);
+
+        demandsUtils.validateDemandValues(values, parameters, isEnergyDemand ? 'energy' : 'voltage');
 
         buffer.setUint8(demandType);
 
-        const binaryValues: Array<number> = isEnergiesDemand
+        const binaryValues: Array<number> = isEnergyDemand
             ? demandsUtils.energyToBinary(values)
             : demandsUtils.voltageToBinary(values);
 
@@ -249,6 +247,9 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentDemandResponseParam
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters: IGetCurrentDemandParameters = getCurrentDemandParameters(buffer);
+
+    demandsUtils.validateDemandCount(parameters.count);
+
     const demands = getCurrentDemandValues(buffer, parameters);
 
     return {
@@ -266,6 +267,9 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentDemandResponseParam
  */
 export const toBytes = ( parameters: IGetCurrentDemandResponseParameters ): types.TBytes => {
     const {demands, ...demandParameters} = parameters;
+
+    demandsUtils.validateDemandCount(demandParameters.count);
+
     // demandTypeByteSize + parameters.count + demandSingleValueSize
     const demandChunkSize = 1 + demandParameters.count * 2;
     // demandParametersSize + (demands.length * demandChunkSize)
@@ -274,7 +278,7 @@ export const toBytes = ( parameters: IGetCurrentDemandResponseParameters ): type
 
     setDate(buffer, parameters.date);
     setCurrentDemandParameters(buffer, demandParameters);
-    setCurrentDemandValues(buffer, demands);
+    setCurrentDemandValues(buffer, demands, demandParameters);
 
     return command.toBytes(id, buffer.getBytesToOffset());
 };

@@ -50,22 +50,23 @@ import {getDemandCumulative as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
 
-type TGetDemandCumulativeValue = types.TUint32 | {
-    lastSummerHour: number
-};
+type TGetDemandCumulativeValue =
+    types.TUint32 | {
+        lastSummerHour: number
+    } | null;
 
 export interface IGetDemandCumulativeResponseParameters extends IGetDemandParameters {
     /**
      * Cumulative load data.
      */
-    demands?: Array<TGetDemandCumulativeValue | null>;
+    demands: Array<TGetDemandCumulativeValue>;
 }
 
 
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const maxSize = getDemandCommand.maxSize + 48;
+export const maxSize = getDemandCommand.maxSize + demands.MAX_DEMANDS_COUNT * 4;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
@@ -220,6 +221,36 @@ export const examples: command.TCommandExamples = {
         ]
     },
 
+    'response for A+ (without lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 2
+            },
+            demandType: demandTypes.A_PLUS,
+            firstIndex: 23,
+            count: 3,
+            period: 60,
+            demands: [
+                0x00000010,
+                0x00000020,
+                null
+            ]
+        },
+        bytes: [
+            0x77, 0x11,
+            0x31, 0x42, 0x01, 0x00, 0x17, 0x03, 0x3c,
+            0x00, 0x00, 0x00, 0x10,
+            0x00, 0x00, 0x00, 0x20,
+            0xff, 0xff
+        ]
+    },
+
     'response for A+ (lastSummerHour only)': {
         id,
         name,
@@ -248,7 +279,8 @@ export const examples: command.TCommandExamples = {
 };
 
 
-const NO_VALUE = 0xffffffff;
+const NO_LAST_SUMMER_HOUR_VALUE = 0xffff;
+const NO_CUMULATIVE_VALUE = 0xffffffff;
 
 
 /**
@@ -259,34 +291,39 @@ const NO_VALUE = 0xffffffff;
  */
 export const fromBytes = ( bytes: types.TBytes ): IGetDemandCumulativeResponseParameters => {
     if ( !bytes || bytes.length < getDemandCommand.maxSize ) {
-        throw new Error('Invalid uplink GetDemand byte length.');
+        throw new Error('Invalid uplink GetDemandCumulative byte length.');
     }
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
-    const parameters: IGetDemandCumulativeResponseParameters = getDemand(buffer);
-    const indexLastSummerRecord = demands.getLastSummerHourIndex(parameters.period);
-    const hasLastSummerHour = parameters.count > 0 && indexLastSummerRecord >= parameters.firstIndex && indexLastSummerRecord < (parameters.firstIndex + parameters.count);
-    const expectedLength = getDemandCommand.maxSize + (4 * parameters.count) - (hasLastSummerHour ? 2 : 0);
+    const parameters: IGetDemandParameters = getDemand(buffer);
+
+    demands.validateDemandCount(parameters.count);
+
+    const expectedLength = getDemandCommand.maxSize + demands.getDemandValuesSize(parameters, 4, 2);
 
     if ( bytes.length !== expectedLength ) {
         throw new Error('Invalid uplink GetDemandCumulative demands byte length.');
     }
 
-    parameters.demands = new Array(parameters.count)
+    const demandValues: Array<TGetDemandCumulativeValue> = new Array(parameters.count)
         .fill(0)
         .map((item, index) => {
-            if ( parameters.firstIndex + index === indexLastSummerRecord ) {
-                return {
-                    lastSummerHour: ((buffer.getUint16() >> 8) & 0xff)
+            let value;
+
+            if ( demands.isLastSummerHourIndex(parameters.firstIndex + index, parameters.period) ) {
+                value = buffer.getUint16();
+
+                return value === NO_LAST_SUMMER_HOUR_VALUE ? null : {
+                    lastSummerHour: (value >> 8) & 0xff
                 };
             }
 
-            const value = buffer.getUint32();
+            value = buffer.getUint32();
 
-            return value === NO_VALUE ? null : value;
+            return (value === NO_CUMULATIVE_VALUE ? null : value) as TGetDemandCumulativeValue;
         });
 
-    return parameters;
+    return {...parameters, demands: demandValues};
 };
 
 
@@ -297,29 +334,38 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandCumulativeResponsePa
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDemandCumulativeResponseParameters ): types.TBytes => {
-    const hasLastSummerHour = parameters.demands?.some(
-        d => d != null && typeof d !== 'number' && d.lastSummerHour != null
-    );
-    const demandsCount = parameters.demands?.length ?? 0;
-    const commandSize = demandsCount > 0
-        ? getDemandCommand.maxSize + (demandsCount * 4) - (hasLastSummerHour ? 2 : 0)
-        : getDemandCommand.maxSize;
+    demands.validateDemandValues(parameters.demands, parameters, 'number');
+
+    const indexLastSummerRecord = demands.getLastSummerHourIndex(parameters.period);
+    const commandSize = getDemandCommand.maxSize + demands.getDemandValuesSize(parameters, 4, 2);
     const buffer: IBinaryBuffer = new BinaryBuffer(commandSize, false);
 
     setDemand(buffer, parameters);
 
-    parameters.demands.forEach(value => {
-        if ( value == null ) {
-            buffer.setUint32(NO_VALUE);
+    parameters.demands.forEach((value, index) => {
+        const absoluteIndex = parameters.firstIndex + index;
+
+        if ( absoluteIndex === indexLastSummerRecord ) {
+            if ( value == null ) {
+                buffer.setUint16(NO_LAST_SUMMER_HOUR_VALUE);
+
+                return;
+            }
+
+            const {lastSummerHour} = value as {lastSummerHour: number};
+
+            buffer.setUint16((lastSummerHour << 8) | 0xff);
 
             return;
         }
 
-        if ( typeof value === 'number' ) {
-            buffer.setUint32(value);
-        } else {
-            buffer.setUint16((value.lastSummerHour << 8) | 0xff);
+        if ( value == null ) {
+            buffer.setUint32(NO_CUMULATIVE_VALUE);
+
+            return;
         }
+
+        buffer.setUint32(value as number);
     });
 
     return command.toBytes(id, buffer.data);

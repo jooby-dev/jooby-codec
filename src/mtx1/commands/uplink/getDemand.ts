@@ -54,21 +54,14 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
     /**
      * Load or voltage data.
      */
-    demands?: Array<{
-        tariff?: number,
-        energy?: number,
-        voltage?: number,
-
-        /** The number of the additional hour that occurs during the transition to winter time. */
-        lastSummerHour?: number
-    }>
+    demands: Array<demands.TDemandValue>
 }
 
 
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const maxSize = getDemandCommand.maxSize + 48;
+export const maxSize = getDemandCommand.maxSize + demands.MAX_DEMANDS_COUNT * 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
@@ -291,6 +284,66 @@ export const examples: command.TCommandExamples = {
         ]
     },
 
+    'response for A+ 60 min (with lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 27
+            },
+            demandType: demandTypes.A_PLUS,
+            firstIndex: 23,
+            count: 3,
+            period: 60,
+            demands: [
+                {energy: 2374},
+                {energy: 2365},
+                {lastSummerHour: 3}
+            ]
+        },
+        bytes: [
+            0x76, 0x0d,
+            0x31, 0x5b, 0x01, 0x00, 0x17, 0x03, 0x3c,
+            0x09, 0x46,
+            0x09, 0x3d,
+            0x03, 0xff
+        ]
+    },
+
+    'response for A+ 60 min (without lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 27
+            },
+            demandType: demandTypes.A_PLUS,
+            firstIndex: 23,
+            count: 3,
+            period: 60,
+            demands: [
+                {energy: 2374},
+                {energy: 2365},
+                null
+            ]
+        },
+        bytes: [
+            0x76, 0x0d,
+            0x31, 0x5b, 0x01, 0x00, 0x17, 0x03, 0x3c,
+            0x09, 0x46,
+            0x09, 0x3d,
+            0xff, 0xff
+        ]
+    },
+
     'response for voltage (period: 60, no tariff)': {
         id,
         name,
@@ -379,6 +432,44 @@ export const examples: command.TCommandExamples = {
             0x09, 0x3d,
             0x03, 0xff
         ]
+    },
+
+    'response for voltage 10 min (without lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 27
+            },
+            demandType: demandTypes.VOLTAGE_10,
+            firstIndex: 144,
+            count: 7,
+            period: 10,
+            demands: [
+                {voltage: 2375},
+                {voltage: 2381},
+                {voltage: 2372},
+                {voltage: 2373},
+                {voltage: 2374},
+                {voltage: 2365},
+                null
+            ]
+        },
+        bytes: [
+            0x76, 0x15,
+            0x31, 0x5b, 0x40, 0x00, 0x90, 0x07, 0x0a,
+            0x09, 0x47,
+            0x09, 0x4d,
+            0x09, 0x44,
+            0x09, 0x45,
+            0x09, 0x46,
+            0x09, 0x3d,
+            0xff, 0xff
+        ]
     }
 };
 
@@ -395,20 +486,23 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
     }
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
-    const parameters: IGetDemandResponseParameters = getDemand(buffer);
+    const parameters: IGetDemandParameters = getDemand(buffer);
 
-    if ( bytes.length !== getDemandCommand.maxSize + (2 * parameters.count) ) {
+    demands.validateDemandCount(parameters.count);
+
+    const expectedLength = getDemandCommand.maxSize + demands.getDemandValuesSize(parameters, 2);
+
+    if ( bytes.length !== expectedLength ) {
         throw new Error('Invalid uplink GetDemand demands byte length.');
     }
 
     const demandsBytes = new Array(parameters.count).fill(0).map(() => buffer.getUint16());
-    const isEnergiesDemand = parameters.demandType === demandTypes.A_PLUS || parameters.demandType === demandTypes.A_MINUS;
 
-    parameters.demands = isEnergiesDemand
+    const demandValues = demands.isEnergyDemandType(parameters.demandType)
         ? demands.energyFromBinary(demandsBytes, parameters.firstIndex, parameters.period)
         : demands.voltageFromBinary(demandsBytes, parameters.firstIndex, parameters.period);
 
-    return parameters;
+    return {...parameters, demands: demandValues};
 };
 
 
@@ -419,11 +513,16 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDemandResponseParameters ): types.TBytes => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(getDemandCommand.maxSize + parameters.count * 2, false);
+    const demandValueType = demands.isEnergyDemandType(parameters.demandType) ? 'energy' : 'voltage';
+
+    demands.validateDemandValues(parameters.demands, parameters, demandValueType);
+
+    const commandSize = getDemandCommand.maxSize + demands.getDemandValuesSize(parameters, 2);
+    const buffer: IBinaryBuffer = new BinaryBuffer(commandSize, false);
 
     setDemand(buffer, parameters);
 
-    if ( parameters.demandType === demandTypes.A_PLUS || parameters.demandType === demandTypes.A_MINUS ) {
+    if ( demands.isEnergyDemandType(parameters.demandType) ) {
         demands.energyToBinary(parameters.demands).forEach((value: number) => buffer.setUint16(value));
     } else {
         demands.voltageToBinary(parameters.demands).forEach((value: number) => buffer.setUint16(value));
