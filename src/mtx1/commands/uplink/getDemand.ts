@@ -54,14 +54,14 @@ export interface IGetDemandResponseParameters extends IGetDemandParameters {
     /**
      * Load or voltage data.
      */
-    demands?: Array<demands.TDemandValue>
+    demands: Array<demands.TDemandValue>
 }
 
 
 export const id: types.TCommandId = commandId;
 export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
-export const maxSize = getDemandCommand.maxSize + 48;
+export const maxSize = getDemandCommand.maxSize + demands.MAX_DEMANDS_COUNT * 2;
 export const accessLevel: types.TAccessLevel = READ_ONLY;
 export const isLoraOnly = false;
 
@@ -486,20 +486,23 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
     }
 
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
-    const parameters: IGetDemandResponseParameters = getDemand(buffer);
+    const parameters: IGetDemandParameters = getDemand(buffer);
 
-    if ( bytes.length !== getDemandCommand.maxSize + (2 * parameters.count) ) {
+    demands.validateDemandCount(parameters.count);
+
+    const expectedLength = getDemandCommand.maxSize + demands.getDemandValuesSize(parameters, 2);
+
+    if ( bytes.length !== expectedLength ) {
         throw new Error('Invalid uplink GetDemand demands byte length.');
     }
 
     const demandsBytes = new Array(parameters.count).fill(0).map(() => buffer.getUint16());
-    const isEnergiesDemand = parameters.demandType === demandTypes.A_PLUS || parameters.demandType === demandTypes.A_MINUS;
 
-    parameters.demands = isEnergiesDemand
+    const demandValues = demands.isEnergyDemandType(parameters.demandType)
         ? demands.energyFromBinary(demandsBytes, parameters.firstIndex, parameters.period)
         : demands.voltageFromBinary(demandsBytes, parameters.firstIndex, parameters.period);
 
-    return parameters;
+    return {...parameters, demands: demandValues};
 };
 
 
@@ -510,11 +513,16 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandResponseParameters =
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDemandResponseParameters ): types.TBytes => {
-    const buffer: IBinaryBuffer = new BinaryBuffer(getDemandCommand.maxSize + parameters.count * 2, false);
+    const demandValueType = demands.isEnergyDemandType(parameters.demandType) ? 'energy' : 'voltage';
+
+    demands.validateDemandValues(parameters.demands, parameters, demandValueType);
+
+    const commandSize = getDemandCommand.maxSize + demands.getDemandValuesSize(parameters, 2);
+    const buffer: IBinaryBuffer = new BinaryBuffer(commandSize, false);
 
     setDemand(buffer, parameters);
 
-    if ( parameters.demandType === demandTypes.A_PLUS || parameters.demandType === demandTypes.A_MINUS ) {
+    if ( demands.isEnergyDemandType(parameters.demandType) ) {
         demands.energyToBinary(parameters.demands).forEach((value: number) => buffer.setUint16(value));
     } else {
         demands.voltageToBinary(parameters.demands).forEach((value: number) => buffer.setUint16(value));
