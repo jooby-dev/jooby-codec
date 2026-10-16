@@ -50,15 +50,16 @@ import {getDemandCumulative as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
 
 
-type TGetDemandCumulativeValue = types.TUint32 | {
-    lastSummerHour: number
-};
+type TGetDemandCumulativeValue =
+    types.TUint32 | {
+        lastSummerHour: number
+    } | null;
 
 export interface IGetDemandCumulativeResponseParameters extends IGetDemandParameters {
     /**
      * Cumulative load data.
      */
-    demands?: Array<TGetDemandCumulativeValue | null>;
+    demands?: Array<TGetDemandCumulativeValue>;
 }
 
 
@@ -220,6 +221,36 @@ export const examples: command.TCommandExamples = {
         ]
     },
 
+    'response for A+ (without lastSummerHour)': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        parameters: {
+            date: {
+                year: 24,
+                month: 10,
+                date: 2
+            },
+            demandType: demandTypes.A_PLUS,
+            firstIndex: 23,
+            count: 3,
+            period: 60,
+            demands: [
+                0x00000010,
+                0x00000020,
+                null
+            ]
+        },
+        bytes: [
+            0x77, 0x11,
+            0x31, 0x42, 0x01, 0x00, 0x17, 0x03, 0x3c,
+            0x00, 0x00, 0x00, 0x10,
+            0x00, 0x00, 0x00, 0x20,
+            0xff, 0xff
+        ]
+    },
+
     'response for A+ (lastSummerHour only)': {
         id,
         name,
@@ -265,7 +296,8 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandCumulativeResponsePa
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const parameters: IGetDemandCumulativeResponseParameters = getDemand(buffer);
     const indexLastSummerRecord = demands.getLastSummerHourIndex(parameters.period);
-    const hasLastSummerHour = parameters.count > 0 && indexLastSummerRecord >= parameters.firstIndex && indexLastSummerRecord < (parameters.firstIndex + parameters.count);
+    const hasLastSummerHour = parameters.firstIndex <= indexLastSummerRecord
+        && parameters.firstIndex + parameters.demands.length > indexLastSummerRecord;
     const expectedLength = getDemandCommand.maxSize + (4 * parameters.count) - (hasLastSummerHour ? 2 : 0);
 
     if ( bytes.length !== expectedLength ) {
@@ -275,15 +307,19 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandCumulativeResponsePa
     parameters.demands = new Array(parameters.count)
         .fill(0)
         .map((item, index) => {
+            let value;
+
             if ( parameters.firstIndex + index === indexLastSummerRecord ) {
-                return {
-                    lastSummerHour: ((buffer.getUint16() >> 8) & 0xff)
+                value = buffer.getUint16();
+
+                return value === 0xffff ? null : {
+                    lastSummerHour: (value >> 8) & 0xff
                 };
             }
 
-            const value = buffer.getUint32();
+            value = buffer.getUint32();
 
-            return value === NO_VALUE ? null : value;
+            return (value === NO_VALUE ? null : value) as TGetDemandCumulativeValue;
         });
 
     return parameters;
@@ -297,9 +333,8 @@ export const fromBytes = ( bytes: types.TBytes ): IGetDemandCumulativeResponsePa
  * @returns full message (header with body)
  */
 export const toBytes = ( parameters: IGetDemandCumulativeResponseParameters ): types.TBytes => {
-    const hasLastSummerHour = parameters.demands?.some(
-        d => d != null && typeof d !== 'number' && d.lastSummerHour != null
-    );
+    const indexLastSummerRecord = demands.getLastSummerHourIndex(parameters.period);
+    const hasLastSummerHour = parameters.firstIndex + parameters.demands.length > indexLastSummerRecord;
     const demandsCount = parameters.demands?.length ?? 0;
     const commandSize = demandsCount > 0
         ? getDemandCommand.maxSize + (demandsCount * 4) - (hasLastSummerHour ? 2 : 0)
@@ -308,18 +343,36 @@ export const toBytes = ( parameters: IGetDemandCumulativeResponseParameters ): t
 
     setDemand(buffer, parameters);
 
-    parameters.demands.forEach(value => {
+    parameters.demands.forEach((value, index) => {
+        if ( parameters.firstIndex + index === indexLastSummerRecord ) {
+            if ( value == null ) {
+                buffer.setUint16(NO_VALUE);
+
+                return;
+            }
+
+            if ( typeof value === 'number' || value.lastSummerHour == null ) {
+                throw new Error('Invalid demand value: lastSummerHour expected. '
+                    + `First index: ${parameters.firstIndex}, index: ${index}, lastSummerHour index: ${indexLastSummerRecord}`);
+            }
+
+            buffer.setUint16((value.lastSummerHour << 8) | 0xff);
+
+            return;
+        }
+
         if ( value == null ) {
             buffer.setUint32(NO_VALUE);
 
             return;
         }
 
-        if ( typeof value === 'number' ) {
-            buffer.setUint32(value);
-        } else {
-            buffer.setUint16((value.lastSummerHour << 8) | 0xff);
+        if ( typeof value !== 'number' ) {
+            throw new Error('Invalid demand value: number expected. '
+                + `First index: ${parameters.firstIndex}, index: ${index}, lastSummerHour index: ${indexLastSummerRecord}`);
         }
+
+        buffer.setUint32(value);
     });
 
     return command.toBytes(id, buffer.data);
