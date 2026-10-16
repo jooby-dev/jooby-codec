@@ -125,4 +125,4 @@ export const voltageToBinary = energies => energies.reduce(
     []
 );
 
-export const validOnly = demands => demands.filter(value => value !== NO_DEMAND_VALUE);
+export const validOnly = demands => demands.filter(value => value != null);

@@ -326,26 +326,18 @@ export const examples: command.TCommandExamples = {
                 date: 27
             },
             demandType: demandTypes.A_PLUS,
-            firstIndex: 18,
-            count: 7,
+            firstIndex: 23,
+            count: 3,
             period: 60,
             demands: [
-                {energy: 2375},
-                {energy: 2381},
-                {energy: 2372},
-                {energy: 2373},
                 {energy: 2374},
                 {energy: 2365},
                 null
             ]
         },
         bytes: [
-            0x76, 0x15,
-            0x31, 0x5b, 0x01, 0x00, 0x12, 0x07, 0x3c,
-            0x09, 0x47,
-            0x09, 0x4d,
-            0x09, 0x44,
-            0x09, 0x45,
+            0x76, 0x0d,
+            0x31, 0x5b, 0x01, 0x00, 0x17, 0x03, 0x3c,
             0x09, 0x46,
             0x09, 0x3d,
             0xff, 0xff
