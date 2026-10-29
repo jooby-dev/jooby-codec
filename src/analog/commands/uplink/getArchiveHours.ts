@@ -1,7 +1,8 @@
 /**
  * Command to request/receive the archive data of hourly consumption.
  * In the data field of the command, it is necessary to set the start date and hour for reading the archive.
- * In case there is no data in the archive, a base value of `0xffffffff` will be provided.
+ * A missing base reading (`0xffffff` on the wire) is decoded to `null`; `0` is a valid reading.
+ * Hourly differences are preserved as received.
  * Since the length of the transmitted data from the sensor is limited, not all requested data will be transferred.
  *
  * @packageDocumentation
@@ -48,6 +49,20 @@ export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {
+    'missing reading (null)': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756648000, counter: {isMagneticInfluence: true, value: null}, diff: [{isMagneticInfluence: true, value: 10}]},
+        bytes: [0x05, 0x08, 0x2f, 0x97, 0x8c, 0xff, 0xff, 0xff, 0x80, 0x0a]
+    },
+    'valid zero reading': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756648000, counter: {isMagneticInfluence: true, value: 0}, diff: [{isMagneticInfluence: true, value: 10}]},
+        bytes: [0x05, 0x08, 0x2f, 0x97, 0x8c, 0x00, 0x00, 0x00, 0x80, 0x0a]
+    },
     '1 hour archive from 2023.12.23 12:00:00 GMT': {
         id,
         name,

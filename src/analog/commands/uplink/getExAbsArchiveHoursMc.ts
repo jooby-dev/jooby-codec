@@ -1,6 +1,10 @@
 /**
  * Command for retrieving hourly consumption (absolute values) of device channels from the archive.
  *
+ * Missing archive readings are `null`; `0` is a valid reading.
+ * Encoding `null` restores the protocol missing-value marker.
+ * This applies to the base `value`; `diff` entries are preserved as received.
+ *
  * @packageDocumentation
  *
  * @example
@@ -68,6 +72,27 @@ export const headerSize = 3;
 const COMMAND_BODY_MAX_SIZE = 164;
 
 export const examples: command.TCommandExamples = {
+    'valid zero base with unchanged diff marker': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756648000, hours: 2, channelList: [{value: 0, diff: [4294967295], index: 1}]},
+        bytes: [0x1f, 0x0c, 0x0a, 0x2f, 0x97, 0x2c, 0x01, 0x00, 0xff, 0xff, 0xff, 0xff, 0x0f]
+    },
+    'valid zero reading': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756648000, hours: 1, channelList: [{value: 0, diff: [], index: 1}]},
+        bytes: [0x1f, 0x0c, 0x05, 0x2f, 0x97, 0x0c, 0x01, 0x00]
+    },
+    'missing reading (null)': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756648000, hours: 1, channelList: [{value: null, diff: [], index: 1}]},
+        bytes: [0x1f, 0x0c, 0x09, 0x2f, 0x97, 0x0c, 0x01, 0xff, 0xff, 0xff, 0xff, 0x0f]
+    },
     '4 channels at 2023.12.23 12:00:00 GMT': {
         id,
         name,

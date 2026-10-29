@@ -44,8 +44,8 @@ export interface IChannel {
 }
 
 export interface IChannelValue extends IChannel {
-    /** pulse counter or absolute value of device channel */
-    value: types.TInt32
+    /** Pulse counter or absolute value; `null` means no archive reading, `0` is valid. */
+    value: types.TInt32 | null
 }
 
 export interface IChannelHours extends IChannelValue {
@@ -73,7 +73,8 @@ export interface IChannelHourAbsoluteValue extends IChannelHours {
 }
 
 export interface IChannelDays extends IChannel {
-    dayList: Array<number>
+    /** Values by days; `null` means no reading, `0` is valid. */
+    dayList: Array<number | null>
 }
 
 export interface IChannelAbsoluteValue extends IChannelValue {
@@ -82,8 +83,8 @@ export interface IChannelAbsoluteValue extends IChannelValue {
 }
 
 export interface IChannelArchiveDaysAbsolute extends IChannel {
-    /** values by days */
-    dayList: Array<number>,
+    /** Values by days; `null` means no reading, `0` is valid. */
+    dayList: Array<number | null>,
 
     /** Channel pulse coefficient */
     pulseCoefficient: TPulseCoefficient
@@ -922,9 +923,9 @@ export interface ILegacyCounter {
     isMagneticInfluence: boolean,
 
     /**
-     * It's a pulse counter value packed in `3` bytes.
+     * Pulse counter value packed in `3` bytes; `null` means no archive reading, `0` is valid.
      */
-    value: types.TUint24
+    value: types.TUint24 | null
 }
 
 export interface ILegacyHourCounterWithDiff {
@@ -2150,13 +2151,13 @@ export const getLegacyCounter = function ( buffer: IBinaryBuffer, byte = buffer.
 
     return {
         isMagneticInfluence: getMagneticInfluenceBit(byte),
-        value: isArchiveValue && value === archive.EMPTY_VALUE ? 0 : value
+        value: isArchiveValue && value === archive.LEGACY_EMPTY_VALUE ? null : value
     };
 };
 
 export const setLegacyCounter = function ( buffer: IBinaryBuffer, counter: ILegacyCounter, byte = 0, isArchiveValue = false ) {
     buffer.setUint8(setMagneticInfluenceBit(byte, counter.isMagneticInfluence));
-    setLegacyCounterValue(buffer, isArchiveValue && counter.value === 0 ? archive.EMPTY_VALUE : counter.value);
+    setLegacyCounterValue(buffer, isArchiveValue && counter.value === null ? archive.LEGACY_EMPTY_VALUE : counter.value);
 };
 
 
@@ -2284,7 +2285,7 @@ export const getChannelsValuesWithHourDiff = function (
         }
 
         channelList.push({
-            value: isArchiveValue && value === archive.EMPTY_VALUE ? 0 : value,
+            value: isArchiveValue && value === archive.EMPTY_VALUE ? null : value,
             diff,
             index: channelIndex
         });
@@ -2309,7 +2310,7 @@ export const setChannelsValuesWithHourDiff = function (
     setChannels(buffer, channelList);
 
     channelList.forEach(({value, diff}) => {
-        setExtendedValue(buffer, isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
+        setExtendedValue(buffer, isArchiveValue && value === null ? archive.EMPTY_VALUE : value);
         diff.forEach(diffValue => setExtendedValue(buffer, diffValue));
     });
 };
@@ -2705,7 +2706,7 @@ export const getLegacyHourCounterWithDiff = function ( buffer: IBinaryBuffer, is
     const value = getLegacyCounterValue(buffer);
     const counter = {
         isMagneticInfluence: getMagneticInfluenceBit(byte),
-        value: isArchiveValue && value === archive.EMPTY_VALUE ? 0 : value
+        value: isArchiveValue && value === archive.LEGACY_EMPTY_VALUE ? null : value
     };
     const diff = [];
 
@@ -2734,7 +2735,7 @@ export const setLegacyHourCounterWithDiff = function ( buffer: IBinaryBuffer, ho
     buffer.seek(buffer.offset - 1);
     buffer.setUint8(setMagneticInfluenceBit(byte, hourCounter.counter.isMagneticInfluence));
 
-    setLegacyCounterValue(buffer, isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
+    setLegacyCounterValue(buffer, isArchiveValue && value === null ? archive.LEGACY_EMPTY_VALUE : value);
     hourCounter.diff.forEach(diffItem => setLegacyHourDiff(buffer, diffItem));
 };
 
@@ -2760,7 +2761,7 @@ export const getChannelsValuesWithHourDiffExtended = function ( buffer: IBinaryB
         }
 
         channelList.push({
-            value: isArchiveValue && value === archive.EMPTY_VALUE ? 0 : value,
+            value: isArchiveValue && value === archive.EMPTY_VALUE ? null : value,
             diff,
             index: channelIndex
         });
@@ -2779,7 +2780,7 @@ export const setChannelsValuesWithHourDiffExtended = function ( buffer: IBinaryB
     setChannels(buffer, parameters.channelList);
 
     parameters.channelList.forEach(({value, diff}) => {
-        setExtendedValue(buffer, isArchiveValue && value === 0 ? archive.EMPTY_VALUE : value);
+        setExtendedValue(buffer, isArchiveValue && value === null ? archive.EMPTY_VALUE : value);
         diff.forEach(diffValue => setExtendedValue(buffer, diffValue));
     });
 };
