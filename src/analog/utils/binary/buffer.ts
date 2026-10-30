@@ -44,9 +44,13 @@ export interface IChannel {
 }
 
 export interface IChannelValue extends IChannel {
-    /** Pulse counter or absolute value; `null` means no archive reading, `0` is valid. */
-    value: types.TInt32 | null
+    /** Pulse counter or absolute value of a live device channel. */
+    value: types.TInt32
 }
+
+/** Archive base reading; `null` means no reading, `0` is valid. */
+export type IArchiveChannelHours = types.Modify<IChannelHours, {value: types.TInt32 | null}>;
+
 
 export interface IChannelHours extends IChannelValue {
     /** values differences between hours */
@@ -923,10 +927,17 @@ export interface ILegacyCounter {
     isMagneticInfluence: boolean,
 
     /**
-     * Pulse counter value packed in `3` bytes; `null` means no archive reading, `0` is valid.
+     * Pulse counter value or hourly difference; always numeric outside archive base readings.
      */
-    value: types.TUint24 | null
+    value: types.TUint24
 }
+
+/** Archive reading; `null` means no reading, `0` is valid. */
+export type IArchiveLegacyCounter = types.Modify<ILegacyCounter, {value: types.TUint24 | null}>;
+
+/** Only the archive base is nullable; hourly differences remain numeric. */
+export type IArchiveLegacyHourCounterWithDiff = types.Modify<ILegacyHourCounterWithDiff, {counter: IArchiveLegacyCounter}>;
+
 
 export interface ILegacyHourCounterWithDiff {
     startTime2000: TTime2000
@@ -941,6 +952,10 @@ export interface IDataSegment {
     isLast: boolean,
     data: types.TBytes
 }
+
+/** Extended archive readings with nullable bases and numeric differences. */
+export type IArchiveChannelValuesWithHourDiffExtended = types.Modify<IChannelValuesWithHourDiffExtended, {channelList: Array<IArchiveChannelHours>}>;
+
 
 export interface IChannelValuesWithHourDiffExtended {
     channelList: Array<IChannelHours>,
@@ -2018,7 +2033,7 @@ export const setMagneticInfluenceBit = ( byte: number, value: boolean ): number 
     fillBits(byte, 1, MAGNETIC_INFLUENCE_BIT_INDEX, +value)
 );
 
-export const getLegacyHourCounterSize = ( hourCounter: ILegacyHourCounterWithDiff ): number => (
+export const getLegacyHourCounterSize = ( hourCounter: IArchiveLegacyHourCounterWithDiff ): number => (
     LEGACY_HOUR_COUNTER_SIZE + (hourCounter.diff.length * LEGACY_HOUR_DIFF_SIZE)
 );
 
@@ -2146,19 +2161,50 @@ export const setLegacyCounterValue = function ( buffer: IBinaryBuffer, value: ty
     buffer.setUint24(value);
 };
 
-export const getLegacyCounter = function ( buffer: IBinaryBuffer, byte = buffer.getUint8(), isArchiveValue = false ): ILegacyCounter {
+export function getLegacyCounter (
+    buffer: IBinaryBuffer,
+    byte?: number,
+    isArchiveValue?: false
+): ILegacyCounter;
+export function getLegacyCounter<TArchive extends boolean> (
+    buffer: IBinaryBuffer,
+    byte: number | undefined,
+    isArchiveValue: TArchive
+): TArchive extends true ? IArchiveLegacyCounter : ILegacyCounter;
+export function getLegacyCounter (
+    buffer: IBinaryBuffer,
+    byte = buffer.getUint8(),
+    isArchiveValue = false
+): IArchiveLegacyCounter {
     const value = getLegacyCounterValue(buffer);
 
     return {
         isMagneticInfluence: getMagneticInfluenceBit(byte),
         value: isArchiveValue && value === archive.LEGACY_EMPTY_VALUE ? null : value
     };
-};
+}
 
-export const setLegacyCounter = function ( buffer: IBinaryBuffer, counter: ILegacyCounter, byte = 0, isArchiveValue = false ) {
+export function setLegacyCounter (
+    buffer: IBinaryBuffer,
+    counter: ILegacyCounter,
+    byte?: number,
+    isArchiveValue?: false
+): void;
+export function setLegacyCounter<TArchive extends boolean> (
+    buffer: IBinaryBuffer,
+    counter: TArchive extends true ? IArchiveLegacyCounter : ILegacyCounter,
+    byte: number | undefined,
+    isArchiveValue: TArchive
+): void;
+export function setLegacyCounter (
+    buffer: IBinaryBuffer,
+    counter: IArchiveLegacyCounter,
+    byte = 0,
+    isArchiveValue = false
+) {
     buffer.setUint8(setMagneticInfluenceBit(byte, counter.isMagneticInfluence));
     setLegacyCounterValue(buffer, isArchiveValue && counter.value === null ? archive.LEGACY_EMPTY_VALUE : counter.value);
-};
+}
 
 
 /**
@@ -2262,14 +2308,22 @@ export const setChannelValue = function ( buffer: IBinaryBuffer, value: number )
 };
 
 
-export const getChannelsValuesWithHourDiff = function (
+export function getChannelsValuesWithHourDiff (
+    buffer: IBinaryBuffer,
+    isArchiveValue?: false
+): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>};
+export function getChannelsValuesWithHourDiff<TArchive extends boolean> (
+    buffer: IBinaryBuffer,
+    isArchiveValue: TArchive
+): {hours: number, startTime2000: TTime2000, channelList: Array<TArchive extends true ? IArchiveChannelHours : IChannelHours>};
+export function getChannelsValuesWithHourDiff (
     buffer: IBinaryBuffer,
     isArchiveValue = false
-): {hours: number, startTime2000: TTime2000, channelList: Array<IChannelHours>} {
+): {hours: number, startTime2000: TTime2000, channelList: Array<IArchiveChannelHours>} {
     const date = getDate(buffer);
     const {hour, hours} = getHours(buffer);
     const channels = getChannels(buffer);
-    const channelList: Array<IChannelHours> = [];
+    const channelList: Array<IArchiveChannelHours> = [];
 
     date.setUTCHours(hour);
 
@@ -2291,15 +2345,33 @@ export const getChannelsValuesWithHourDiff = function (
         });
     });
 
-    return {startTime2000: getTime2000FromDate(date), hours, channelList};
-};
+    return {
+        startTime2000: getTime2000FromDate(date),
+        hours,
+        channelList
+    };
+}
 
 
-export const setChannelsValuesWithHourDiff = function (
+export function setChannelsValuesWithHourDiff (
     buffer: IBinaryBuffer,
     hours: number,
     startTime2000: TTime2000,
     channelList: Array<IChannelHours>,
+    isArchiveValue?: false
+): void;
+export function setChannelsValuesWithHourDiff<TArchive extends boolean> (
+    buffer: IBinaryBuffer,
+    hours: number,
+    startTime2000: TTime2000,
+    channelList: Array<TArchive extends true ? IArchiveChannelHours : IChannelHours>,
+    isArchiveValue: TArchive
+): void;
+export function setChannelsValuesWithHourDiff (
+    buffer: IBinaryBuffer,
+    hours: number,
+    startTime2000: TTime2000,
+    channelList: Array<IArchiveChannelHours>,
     isArchiveValue = false
 ) {
     const date = getDateFromTime2000(startTime2000);
@@ -2313,7 +2385,7 @@ export const setChannelsValuesWithHourDiff = function (
         setExtendedValue(buffer, isArchiveValue && value === null ? archive.EMPTY_VALUE : value);
         diff.forEach(diffValue => setExtendedValue(buffer, diffValue));
     });
-};
+}
 
 
 /**
@@ -2699,7 +2771,18 @@ export const setLegacyHourDiff = function ( buffer: IBinaryBuffer, diff: ILegacy
 };
 
 
-export const getLegacyHourCounterWithDiff = function ( buffer: IBinaryBuffer, isArchiveValue = false ): ILegacyHourCounterWithDiff {
+export function getLegacyHourCounterWithDiff (
+    buffer: IBinaryBuffer,
+    isArchiveValue?: false
+): ILegacyHourCounterWithDiff;
+export function getLegacyHourCounterWithDiff<TArchive extends boolean> (
+    buffer: IBinaryBuffer,
+    isArchiveValue: TArchive
+): TArchive extends true ? IArchiveLegacyHourCounterWithDiff : ILegacyHourCounterWithDiff;
+export function getLegacyHourCounterWithDiff (
+    buffer: IBinaryBuffer,
+    isArchiveValue = false
+): IArchiveLegacyHourCounterWithDiff {
     const date = getDate(buffer);
     const byte = buffer.getUint8();
     const {hour} = getHours(buffer, byte);
@@ -2717,10 +2800,24 @@ export const getLegacyHourCounterWithDiff = function ( buffer: IBinaryBuffer, is
     date.setUTCHours(hour);
 
     return {startTime2000: getTime2000FromDate(date), counter, diff};
-};
+}
 
 
-export const setLegacyHourCounterWithDiff = function ( buffer: IBinaryBuffer, hourCounter: ILegacyHourCounterWithDiff, isArchiveValue = false ): void {
+export function setLegacyHourCounterWithDiff (
+    buffer: IBinaryBuffer,
+    hourCounter: ILegacyHourCounterWithDiff,
+    isArchiveValue?: false
+): void;
+export function setLegacyHourCounterWithDiff<TArchive extends boolean> (
+    buffer: IBinaryBuffer,
+    hourCounter: TArchive extends true ? IArchiveLegacyHourCounterWithDiff : ILegacyHourCounterWithDiff,
+    isArchiveValue: TArchive
+): void;
+export function setLegacyHourCounterWithDiff (
+    buffer: IBinaryBuffer,
+    hourCounter: IArchiveLegacyHourCounterWithDiff,
+    isArchiveValue = false
+): void {
     const date = getDateFromTime2000(hourCounter.startTime2000);
     const hour = date.getUTCHours();
     const {value} = hourCounter.counter;
@@ -2737,10 +2834,21 @@ export const setLegacyHourCounterWithDiff = function ( buffer: IBinaryBuffer, ho
 
     setLegacyCounterValue(buffer, isArchiveValue && value === null ? archive.LEGACY_EMPTY_VALUE : value);
     hourCounter.diff.forEach(diffItem => setLegacyHourDiff(buffer, diffItem));
-};
+}
 
 
-export const getChannelsValuesWithHourDiffExtended = function ( buffer: IBinaryBuffer, isArchiveValue = false ): IChannelValuesWithHourDiffExtended {
+export function getChannelsValuesWithHourDiffExtended (
+    buffer: IBinaryBuffer,
+    isArchiveValue?: false
+): IChannelValuesWithHourDiffExtended;
+export function getChannelsValuesWithHourDiffExtended<TArchive extends boolean> (
+    buffer: IBinaryBuffer,
+    isArchiveValue: TArchive
+): TArchive extends true ? IArchiveChannelValuesWithHourDiffExtended : IChannelValuesWithHourDiffExtended;
+export function getChannelsValuesWithHourDiffExtended (
+    buffer: IBinaryBuffer,
+    isArchiveValue = false
+): IArchiveChannelValuesWithHourDiffExtended {
     const date = getDate(buffer);
     const hour = buffer.getUint8();
     const hours = buffer.getUint8();
@@ -2768,10 +2876,24 @@ export const getChannelsValuesWithHourDiffExtended = function ( buffer: IBinaryB
     });
 
     return {startTime2000: getTime2000FromDate(date), hour, hours, channelList};
-};
+}
 
 
-export const setChannelsValuesWithHourDiffExtended = function ( buffer: IBinaryBuffer, parameters: IChannelValuesWithHourDiffExtended, isArchiveValue = false ): void {
+export function setChannelsValuesWithHourDiffExtended (
+    buffer: IBinaryBuffer,
+    parameters: IChannelValuesWithHourDiffExtended,
+    isArchiveValue?: false
+): void;
+export function setChannelsValuesWithHourDiffExtended<TArchive extends boolean> (
+    buffer: IBinaryBuffer,
+    parameters: TArchive extends true ? IArchiveChannelValuesWithHourDiffExtended : IChannelValuesWithHourDiffExtended,
+    isArchiveValue: TArchive
+): void;
+export function setChannelsValuesWithHourDiffExtended (
+    buffer: IBinaryBuffer,
+    parameters: IArchiveChannelValuesWithHourDiffExtended,
+    isArchiveValue = false
+): void {
     const date = getDateFromTime2000(parameters.startTime2000);
 
     setDate(buffer, date);
@@ -2783,7 +2905,7 @@ export const setChannelsValuesWithHourDiffExtended = function ( buffer: IBinaryB
         setExtendedValue(buffer, isArchiveValue && value === null ? archive.EMPTY_VALUE : value);
         diff.forEach(diffValue => setExtendedValue(buffer, diffValue));
     });
-};
+}
 
 
 export const getDataSegment = function ( buffer: IBinaryBuffer ): IDataSegment {
