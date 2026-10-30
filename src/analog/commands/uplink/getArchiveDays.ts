@@ -1,6 +1,6 @@
 /**
  * Uplink command for requesting the archive of daily data from the pulse counter sensor.
- * If there is no data available in the archive, `0xffffffff` will be returned.
+ * Missing readings (`0xffffff` on the wire) are decoded to `null`; `0` is a valid reading.
  * Due to the limited length of transmitted data from the sensor, not all requested data will be transferred.
  *
  * @packageDocumentation
@@ -33,7 +33,7 @@ import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
-    ILegacyCounter,
+    IArchiveLegacyCounter,
     getLegacyCounter,
     setLegacyCounter,
     getDate,
@@ -49,7 +49,7 @@ interface IGetArchiveDaysResponseParameters {
      */
     startTime2000: TTime2000,
 
-    dayList: Array<ILegacyCounter>
+    dayList: Array<IArchiveLegacyCounter>
 }
 
 
@@ -62,6 +62,20 @@ const COMMAND_BODY_MIN_SIZE = 2;
 const DAY_COUNTER_SIZE = 4;
 
 export const examples: command.TCommandExamples = {
+    'missing reading (null)': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756604800, dayList: [{isMagneticInfluence: true, value: null}]},
+        bytes: [0x06, 0x06, 0x2f, 0x97, 0x80, 0xff, 0xff, 0xff]
+    },
+    'valid zero reading': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756604800, dayList: [{isMagneticInfluence: true, value: 0}]},
+        bytes: [0x06, 0x06, 0x2f, 0x97, 0x80, 0x00, 0x00, 0x00]
+    },
     'get day values from 2001.03.10': {
         id,
         name,
@@ -89,7 +103,7 @@ export const examples: command.TCommandExamples = {
 export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysResponseParameters => {
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const date = getDate(buffer);
-    const dayList = [];
+    const dayList: Array<IArchiveLegacyCounter> = [];
 
     while ( buffer.offset < buffer.data.length ) {
         dayList.push(getLegacyCounter(buffer, undefined, true));

@@ -1,7 +1,8 @@
 /**
  * Command to request/receive the archive data of hourly consumption.
  * In the data field of the command, it is necessary to set the start date and hour for reading the archive.
- * In case there is no data in the archive, a base value of `0xffffffff` will be provided.
+ * A missing base reading (`0xffffff` on the wire) is decoded to `null`; `0` is a valid reading.
+ * Hourly differences are preserved as received.
  * Since the length of the transmitted data from the sensor is limited, not all requested data will be transferred.
  *
  * @packageDocumentation
@@ -34,7 +35,7 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
-    ILegacyHourCounterWithDiff,
+    IArchiveLegacyHourCounterWithDiff,
     getLegacyHourCounterSize,
     getLegacyHourCounterWithDiff,
     setLegacyHourCounterWithDiff
@@ -48,6 +49,20 @@ export const name: types.TCommandName = commandNames[commandId];
 export const headerSize = 2;
 
 export const examples: command.TCommandExamples = {
+    'missing reading (null)': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756648000, counter: {isMagneticInfluence: true, value: null}, diff: [{isMagneticInfluence: true, value: 10}]},
+        bytes: [0x05, 0x08, 0x2f, 0x97, 0x8c, 0xff, 0xff, 0xff, 0x80, 0x0a]
+    },
+    'valid zero reading': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756648000, counter: {isMagneticInfluence: true, value: 0}, diff: [{isMagneticInfluence: true, value: 10}]},
+        bytes: [0x05, 0x08, 0x2f, 0x97, 0x8c, 0x00, 0x00, 0x00, 0x80, 0x0a]
+    },
     '1 hour archive from 2023.12.23 12:00:00 GMT': {
         id,
         name,
@@ -73,7 +88,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): ILegacyHourCounterWithDiff => {
+export const fromBytes = ( bytes: types.TBytes ): IArchiveLegacyHourCounterWithDiff => {
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return getLegacyHourCounterWithDiff(buffer, true);
@@ -86,7 +101,7 @@ export const fromBytes = ( bytes: types.TBytes ): ILegacyHourCounterWithDiff => 
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: ILegacyHourCounterWithDiff ): types.TBytes => {
+export const toBytes = ( parameters: IArchiveLegacyHourCounterWithDiff ): types.TBytes => {
     const buffer: IBinaryBuffer = new BinaryBuffer(getLegacyHourCounterSize(parameters), false);
 
     setLegacyHourCounterWithDiff(buffer, parameters, true);

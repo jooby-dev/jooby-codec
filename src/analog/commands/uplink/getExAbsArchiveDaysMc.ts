@@ -1,6 +1,9 @@
 /**
  * Command for retrieving daily consumption (absolute values) of device channels from the archive.
  *
+ * Missing archive readings are `null`; `0` is a valid reading.
+ * Encoding `null` restores the protocol missing-value marker.
+ *
  * @packageDocumentation
  *
  * @example
@@ -75,6 +78,20 @@ export const headerSize = 3;
 const COMMAND_BODY_MAX_SIZE = 255;
 
 export const examples: command.TCommandExamples = {
+    'valid zero reading': {
+        id,
+        name,
+        headerSize,
+        parameters: {channelList: [{pulseCoefficient: 100, dayList: [0], index: 1}], days: 1, startTime2000: 339897600},
+        bytes: [0x1f, 0x0d, 0x06, 0x15, 0x49, 0x01, 0x01, 0x83, 0x00]
+    },
+    'missing reading (null)': {
+        id,
+        name,
+        headerSize,
+        parameters: {channelList: [{pulseCoefficient: 100, dayList: [null], index: 1}], days: 1, startTime2000: 339897600},
+        bytes: [0x1f, 0x0d, 0x0a, 0x15, 0x49, 0x01, 0x01, 0x83, 0xff, 0xff, 0xff, 0xff, 0x0f]
+    },
     'archive days values at 4 channel from 2023.03.10 00:00:00 GMT': {
         id,
         name,
@@ -112,7 +129,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetExAbsArchiveDaysMcResponse
     const channelList: Array<IChannelArchiveDaysAbsolute> = [];
 
     channels.forEach(channelIndex => {
-        const dayList: Array<number> = [];
+        const dayList: Array<number | null> = [];
         const pulseCoefficient = getPulseCoefficient(buffer);
 
         channelList.push({
@@ -124,7 +141,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetExAbsArchiveDaysMcResponse
         for ( let day = 0; day < days; ++day ) {
             const value = getExtendedValue(buffer);
 
-            dayList.push(value === archive.EMPTY_VALUE ? 0 : value);
+            dayList.push(value === archive.EMPTY_VALUE ? null : value);
         }
     });
 
@@ -150,7 +167,7 @@ export const toBytes = ( parameters: IGetExAbsArchiveDaysMcResponseParameters ):
         setPulseCoefficient(buffer, pulseCoefficient);
 
         dayList.forEach(value => {
-            setExtendedValue(buffer, value === 0 ? archive.EMPTY_VALUE : value);
+            setExtendedValue(buffer, value === null ? archive.EMPTY_VALUE : value);
         });
     });
 

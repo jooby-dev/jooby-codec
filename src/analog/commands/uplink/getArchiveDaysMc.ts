@@ -1,6 +1,9 @@
 /**
  * Command to receive day pulse counter's values from device archive.
  *
+ * Missing archive readings are `null`; `0` is a valid reading.
+ * Encoding `null` restores the protocol missing-value marker.
+ *
  * @packageDocumentation
  *
  * @example
@@ -67,6 +70,20 @@ export const headerSize = 2;
 const COMMAND_BODY_MAX_SIZE = 255;
 
 export const examples: command.TCommandExamples = {
+    'valid zero reading': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 339897600, days: 1, channelList: [{dayList: [0], index: 1}]},
+        bytes: [0x1b, 0x05, 0x15, 0x49, 0x01, 0x01, 0x00]
+    },
+    'missing reading (null)': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 339897600, days: 1, channelList: [{dayList: [null], index: 1}]},
+        bytes: [0x1b, 0x09, 0x15, 0x49, 0x01, 0x01, 0xff, 0xff, 0xff, 0xff, 0x0f]
+    },
     'get day values from 2001.03.10 12:00:00 GMT for channel 1': {
         id,
         name,
@@ -88,7 +105,7 @@ export const examples: command.TCommandExamples = {
         parameters: {
             startTime2000: 339897600,
             days: 1,
-            channelList: [{dayList: [0], index: 1}]
+            channelList: [{dayList: [null], index: 1}]
         },
         bytes: [
             0x1b, 0x09,
@@ -112,14 +129,14 @@ export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysMcResponseParam
     const channelList: Array<IChannelDays> = [];
 
     channels.forEach(channelIndex => {
-        const dayList: Array<number> = [];
+        const dayList: Array<number | null> = [];
 
         channelList.push({dayList, index: channelIndex});
 
         for ( let day = 0; day < days; ++day ) {
             const value = getExtendedValue(buffer);
 
-            dayList.push(value === archive.EMPTY_VALUE ? 0 : value);
+            dayList.push(value === archive.EMPTY_VALUE ? null : value);
         }
     });
 
@@ -143,7 +160,7 @@ export const toBytes = ( parameters: IGetArchiveDaysMcResponseParameters ): type
 
     channelList.forEach(({dayList}) => {
         dayList.forEach(value => {
-            setExtendedValue(buffer, value === 0 ? archive.EMPTY_VALUE : value);
+            setExtendedValue(buffer, value === null ? archive.EMPTY_VALUE : value);
         });
     });
 

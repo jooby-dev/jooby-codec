@@ -7,6 +7,23 @@
 This library contains message encoders and decoders for [Jooby](https://jooby.eu) LoRaWAN devices.
 
 
+## Missing readings (all codecs)
+
+All codecs must represent an absent meter reading as `null`. Numeric `0` is a valid
+reading. Decode protocol missing-reading markers to `null` and encode `null` back
+to the marker. This convention also applies to new codecs and commands; it does
+not change unrelated optional fields or status flags.
+
+Analog `getArchiveDaysMc` and `getExAbsArchiveDaysMc` map `0xffffffff` to `null`
+in `channelList[].dayList`. `getArchiveHoursMc`, `getExAbsArchiveHoursMc` and
+`getArchiveHoursMcEx` do the same for the base `channelList[].value`.
+Legacy Analog `getArchiveDays` and `getArchiveHours` use the 24-bit marker
+`0xffffff`, mapped to `null` in `dayList[].value` and `counter.value`, respectively.
+Encoding `null` restores `FF FF FF`; numeric zero remains `00 00 00`.
+Hourly `diff` entries are preserved without this substitution.
+This changes the previous archive behavior: check `value === null` or
+`dayList[i] === null` for an absent reading, rather than checking for zero.
+
 ## Installation
 
 Install required dependencies:

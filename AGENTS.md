@@ -91,3 +91,11 @@ Checklist: `.cursor/rules/add-command.mdc`. In one change: module, folder `index
 ## Known issues
 
 See `.cursor/rules/known-issues.mdc`. Remaining defect: MTX `getToMessage` is an unimplemented TODO.
+
+## Missing meter readings
+
+All codecs must represent an absent meter reading as `null`, never numeric `0`.
+Decode protocol missing-reading markers to `null` and encode `null` back to the marker.
+Preserve valid zero readings. Document this distinction and include missing/zero examples
+when adding or changing reading commands. Do not apply a reading sentinel to hourly
+differences unless the protocol explicitly defines it for those fields.

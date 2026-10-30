@@ -1,6 +1,10 @@
 /**
  * Command to receive hour pulse counter's values from device archive.
  *
+ * Missing archive readings are `null`; `0` is a valid reading.
+ * Encoding `null` restores the protocol missing-value marker.
+ * This applies to the base `value`; `diff` entries are preserved as received.
+ *
  * @packageDocumentation
  *
  * @example
@@ -35,7 +39,7 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
-    IChannelValuesWithHourDiffExtended,
+    IArchiveChannelValuesWithHourDiffExtended,
     getChannelsValuesWithHourDiffExtended,
     setChannelsValuesWithHourDiffExtended
 } from '../../utils/binary/buffer.js';
@@ -50,6 +54,27 @@ export const headerSize = 3;
 const COMMAND_BODY_MAX_SIZE = 255;
 
 export const examples: command.TCommandExamples = {
+    'valid zero base with unchanged diff marker': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756648000, hour: 12, hours: 1, channelList: [{value: 0, diff: [4294967295], index: 1}]},
+        bytes: [0x1f, 0x30, 0x0b, 0x2f, 0x97, 0x0c, 0x01, 0x01, 0x00, 0xff, 0xff, 0xff, 0xff, 0x0f]
+    },
+    'valid zero reading': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756648000, hour: 12, hours: 0, channelList: [{value: 0, diff: [], index: 1}]},
+        bytes: [0x1f, 0x30, 0x06, 0x2f, 0x97, 0x0c, 0x00, 0x01, 0x00]
+    },
+    'missing reading (null)': {
+        id,
+        name,
+        headerSize,
+        parameters: {startTime2000: 756648000, hour: 12, hours: 0, channelList: [{value: null, diff: [], index: 1}]},
+        bytes: [0x1f, 0x30, 0x0a, 0x2f, 0x97, 0x0c, 0x00, 0x01, 0xff, 0xff, 0xff, 0xff, 0x0f]
+    },
     '4 channels at 2023.12.23 12:00:00 GMT': {
         id,
         name,
@@ -94,7 +119,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IChannelValuesWithHourDiffExtended => {
+export const fromBytes = ( bytes: types.TBytes ): IArchiveChannelValuesWithHourDiffExtended => {
     if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
@@ -111,7 +136,7 @@ export const fromBytes = ( bytes: types.TBytes ): IChannelValuesWithHourDiffExte
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IChannelValuesWithHourDiffExtended ): types.TBytes => {
+export const toBytes = ( parameters: IArchiveChannelValuesWithHourDiffExtended ): types.TBytes => {
     const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
 
     setChannelsValuesWithHourDiffExtended(buffer, parameters, true);
