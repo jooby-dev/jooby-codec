@@ -35,7 +35,7 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
-    ILegacyHourCounterWithDiff,
+    IArchiveLegacyHourCounterWithDiff,
     getLegacyHourCounterSize,
     getLegacyHourCounterWithDiff,
     setLegacyHourCounterWithDiff
@@ -88,7 +88,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): ILegacyHourCounterWithDiff => {
+export const fromBytes = ( bytes: types.TBytes ): IArchiveLegacyHourCounterWithDiff => {
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
 
     return getLegacyHourCounterWithDiff(buffer, true);
@@ -101,7 +101,7 @@ export const fromBytes = ( bytes: types.TBytes ): ILegacyHourCounterWithDiff => 
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: ILegacyHourCounterWithDiff ): types.TBytes => {
+export const toBytes = ( parameters: IArchiveLegacyHourCounterWithDiff ): types.TBytes => {
     const buffer: IBinaryBuffer = new BinaryBuffer(getLegacyHourCounterSize(parameters), false);
 
     setLegacyHourCounterWithDiff(buffer, parameters, true);

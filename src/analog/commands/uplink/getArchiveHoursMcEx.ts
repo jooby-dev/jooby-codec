@@ -39,7 +39,7 @@ import * as types from '../../../types.js';
 import * as command from '../../utils/command.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
-    IChannelValuesWithHourDiffExtended,
+    IArchiveChannelValuesWithHourDiffExtended,
     getChannelsValuesWithHourDiffExtended,
     setChannelsValuesWithHourDiffExtended
 } from '../../utils/binary/buffer.js';
@@ -119,7 +119,7 @@ export const examples: command.TCommandExamples = {
  * @param bytes - only body (without header)
  * @returns command payload
  */
-export const fromBytes = ( bytes: types.TBytes ): IChannelValuesWithHourDiffExtended => {
+export const fromBytes = ( bytes: types.TBytes ): IArchiveChannelValuesWithHourDiffExtended => {
     if ( bytes.length > COMMAND_BODY_MAX_SIZE ) {
         throw new Error(`Wrong buffer size: ${bytes.length}.`);
     }
@@ -136,7 +136,7 @@ export const fromBytes = ( bytes: types.TBytes ): IChannelValuesWithHourDiffExte
  * @param parameters - command payload
  * @returns full message (header with body)
  */
-export const toBytes = ( parameters: IChannelValuesWithHourDiffExtended ): types.TBytes => {
+export const toBytes = ( parameters: IArchiveChannelValuesWithHourDiffExtended ): types.TBytes => {
     const buffer: IBinaryBuffer = new BinaryBuffer(COMMAND_BODY_MAX_SIZE, false);
 
     setChannelsValuesWithHourDiffExtended(buffer, parameters, true);

@@ -33,7 +33,7 @@ import * as command from '../../utils/command.js';
 import {TTime2000, getTime2000FromDate} from '../../utils/time.js';
 import BinaryBuffer, {IBinaryBuffer} from '../../../utils/binary/BinaryBuffer.js';
 import {
-    ILegacyCounter,
+    IArchiveLegacyCounter,
     getLegacyCounter,
     setLegacyCounter,
     getDate,
@@ -49,7 +49,7 @@ interface IGetArchiveDaysResponseParameters {
      */
     startTime2000: TTime2000,
 
-    dayList: Array<ILegacyCounter>
+    dayList: Array<IArchiveLegacyCounter>
 }
 
 
@@ -103,7 +103,7 @@ export const examples: command.TCommandExamples = {
 export const fromBytes = ( bytes: types.TBytes ): IGetArchiveDaysResponseParameters => {
     const buffer: IBinaryBuffer = new BinaryBuffer(bytes, false);
     const date = getDate(buffer);
-    const dayList = [];
+    const dayList: Array<IArchiveLegacyCounter> = [];
 
     while ( buffer.offset < buffer.data.length ) {
         dayList.push(getLegacyCounter(buffer, undefined, true));
