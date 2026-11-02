@@ -92,6 +92,49 @@ const absent: number | null = binary.getLegacyCounter(buffer, 0, true).value;
 // @ts-expect-error archive mode returns a nullable reading
 const invalid: number = binary.getLegacyCounter(buffer, 0, true).value;
 `);
+    assertions.push(`
+declare const archiveMode: boolean;
+const numeric = {isMagneticInfluence: false, value: 0};
+const missingChannel = {index: 1, value: null, diff: [0]};
+const numericChannel = {index: 1, value: 0, diff: [0]};
+const missingHour = {startTime2000: 756604800, counter: missing, diff: [numeric]};
+const numericHour = {startTime2000: 756604800, counter: numeric, diff: [numeric]};
+const missingExtended = {startTime2000: 756604800, hour: 0, hours: 1, channelList: [missingChannel]};
+const numericExtended = {startTime2000: 756604800, hour: 0, hours: 1, channelList: [numericChannel]};
+`);
+
+    const setters = [
+        {name: 'setLegacyCounter', prefix: 'buffer, ', missing: 'missing, 0', numeric: 'numeric, 0'},
+        {name: 'setLegacyHourCounterWithDiff', prefix: 'buffer, ', missing: 'missingHour', numeric: 'numericHour'},
+        {name: 'setChannelsValuesWithHourDiff', prefix: 'buffer, 1, 756604800, ', missing: '[missingChannel]', numeric: '[numericChannel]'},
+        {name: 'setChannelsValuesWithHourDiffExtended', prefix: 'buffer, ', missing: 'missingExtended', numeric: 'numericExtended'}
+    ];
+
+    for ( const {name, prefix, missing, numeric} of setters ) {
+        assertions.push(`binary.${name}(${prefix}${missing}, true);`);
+        assertions.push(`binary.${name}(${prefix}${numeric}, archiveMode);`);
+        assertions.push(`if (archiveMode) { binary.${name}(${prefix}${missing}, archiveMode); }`);
+
+        for ( const flag of ['', ', false', ', archiveMode'] ) {
+            assertions.push(`// @ts-expect-error nullable data requires a definitely true archive flag
+binary.${name}(${prefix}${missing}${flag});`);
+        }
+    }
+
+    assertions.push(`
+// @ts-expect-error archive hourly differences remain numeric
+binary.setLegacyHourCounterWithDiff(buffer, {...missingHour, diff: [missing]}, true);
+// @ts-expect-error archive multichannel differences remain numeric
+binary.setChannelsValuesWithHourDiff(buffer, 1, 756604800, [{...missingChannel, diff: [null]}], true);
+// @ts-expect-error extended archive differences remain numeric
+binary.setChannelsValuesWithHourDiffExtended(buffer, {...missingExtended, channelList: [{...missingChannel, diff: [null]}]}, true);
+const uncertainLegacy: number | null = binary.getLegacyCounter(buffer, 0, archiveMode).value;
+const uncertainHour: number | null = binary.getLegacyHourCounterWithDiff(buffer, archiveMode).counter.value;
+const uncertainChannels: number | null = binary.getChannelsValuesWithHourDiff(buffer, archiveMode).channelList[0].value;
+const uncertainExtended: number | null = binary.getChannelsValuesWithHourDiffExtended(buffer, archiveMode).channelList[0].value;
+// @ts-expect-error unknown mode may return a missing reading
+const uncertainNumber: number = binary.getLegacyCounter(buffer, 0, archiveMode).value;
+`);
     files.set(consumer, imports.concat(assertions).join('\n'));
 
     const options: ts.CompilerOptions = {

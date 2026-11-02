@@ -2192,7 +2192,7 @@ export function setLegacyCounter (
 ): void;
 export function setLegacyCounter<TArchive extends boolean> (
     buffer: IBinaryBuffer,
-    counter: TArchive extends true ? IArchiveLegacyCounter : ILegacyCounter,
+    counter: [TArchive] extends [true] ? IArchiveLegacyCounter : ILegacyCounter,
     byte: number | undefined,
     isArchiveValue: TArchive
 ): void;
@@ -2364,7 +2364,7 @@ export function setChannelsValuesWithHourDiff<TArchive extends boolean> (
     buffer: IBinaryBuffer,
     hours: number,
     startTime2000: TTime2000,
-    channelList: Array<TArchive extends true ? IArchiveChannelHours : IChannelHours>,
+    channelList: Array<[TArchive] extends [true] ? IArchiveChannelHours : IChannelHours>,
     isArchiveValue: TArchive
 ): void;
 export function setChannelsValuesWithHourDiff (
@@ -2810,7 +2810,7 @@ export function setLegacyHourCounterWithDiff (
 ): void;
 export function setLegacyHourCounterWithDiff<TArchive extends boolean> (
     buffer: IBinaryBuffer,
-    hourCounter: TArchive extends true ? IArchiveLegacyHourCounterWithDiff : ILegacyHourCounterWithDiff,
+    hourCounter: [TArchive] extends [true] ? IArchiveLegacyHourCounterWithDiff : ILegacyHourCounterWithDiff,
     isArchiveValue: TArchive
 ): void;
 export function setLegacyHourCounterWithDiff (
@@ -2886,7 +2886,7 @@ export function setChannelsValuesWithHourDiffExtended (
 ): void;
 export function setChannelsValuesWithHourDiffExtended<TArchive extends boolean> (
     buffer: IBinaryBuffer,
-    parameters: TArchive extends true ? IArchiveChannelValuesWithHourDiffExtended : IChannelValuesWithHourDiffExtended,
+    parameters: [TArchive] extends [true] ? IArchiveChannelValuesWithHourDiffExtended : IChannelValuesWithHourDiffExtended,
     isArchiveValue: TArchive
 ): void;
 export function setChannelsValuesWithHourDiffExtended (
