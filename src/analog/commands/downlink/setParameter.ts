@@ -921,6 +921,41 @@ export const examples: command.TCommandExamples = {
             0x3d, 0x01
         ]
     },
+    '62_LoRa_4PU: activation and deactivation timeout': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: deviceParameters.ACTIVATION_TIMEOUT,
+            name: deviceParameterNames[deviceParameters.ACTIVATION_TIMEOUT],
+            data: {
+                activation: 120,
+                deactivation: 5
+            }
+        },
+        bytes: [
+            0x03, 0x03,
+            0x3e, 0x18, 0x01
+        ]
+    },
+    '63_NB-IoT: set apn config': {
+        id,
+        name,
+        headerSize,
+        parameters: {
+            id: deviceParameters.NBIOT_APN_CONFIG,
+            name: deviceParameterNames[deviceParameters.NBIOT_APN_CONFIG],
+            data: {
+                login: 'user',
+                password: 'pass',
+                protocol: 1
+            }
+        },
+        bytes: [
+            0x03, 0x0c,
+            0x3f, 0x04, 0x75, 0x73, 0x65, 0x72, 0x04, 0x70, 0x61, 0x73, 0x73, 0x01
+        ]
+    },
     '64_MTX: set current demand schedule config': {
         id,
         name,

@@ -842,6 +842,27 @@ interface IParameterActivateModule {
 }
 
 /**
+ * Activation and deactivation timeout.
+ *
+ * `deviceParameters.ACTIVATION_TIMEOUT = 62`
+ */
+interface IParameterActivationTimeout {
+    activation: types.TUint8
+    deactivation: types.TUint8
+}
+
+/**
+ * Set NB-IoT APN config.
+ *
+ * `deviceParameters.NBIOT_APN_CONFIG = 63`
+ */
+interface IParameterNbiotApnConfig {
+    login: string,
+    password: string,
+    protocol: types.TUint8
+}
+
+/**
  * MTX Schedule of the different demand types for uplink command - `getCurrentDemand`.
  *
  * `deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG = 64`
@@ -1029,6 +1050,8 @@ type TParameterData =
     IParameterKeepLoraConnectionOnRemoval |
     IParameterNbiotNtpServer |
     IParameterActivateModule |
+    IParameterActivationTimeout |
+    IParameterNbiotApnConfig |
     IParameterMtxGetCurrentDemandScheduleConfig;
 
 type TRequestParameterData =
@@ -1075,6 +1098,8 @@ type TResponseParameterData =
     IParameterExtraPayloadEnable |
     IParameterNbiotNtpServer |
     IParameterActivateModule |
+    IParameterActivationTimeout |
+    IParameterNbiotApnConfig |
     IParameterMtxGetCurrentDemandScheduleConfig;
 
 const INITIAL_YEAR = 2000;
@@ -1085,6 +1110,7 @@ const UNKNOWN_BATTERY_VOLTAGE = 4095;
 const EXTEND_BIT_MASK = 0x80;
 const LAST_BIT_INDEX = 7;
 const DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT = 600;
+const ACTIVATION_SECONDS_COEFFICIENT = 5;
 /** 'reserved' bytes which not used */
 const PARAMETER_RX2_FREQUENCY_COEFFICIENT = 100;
 const SERIAL_NUMBER_SIZE = 6;
@@ -1242,7 +1268,8 @@ const parametersSizeMap = {
     [deviceParameters.EXTRA_PAYLOAD_ENABLE]: 1 + 1,
     [deviceParameters.TIME_SYNCHRONIZATION_PERIOD_VIA_MAC]: 1 + 4,
     [deviceParameters.KEEP_LORA_CONNECTION_ON_REMOVAL]: 1 + 1,
-    [deviceParameters.ACTIVATE_MODULE]: 1 + 1
+    [deviceParameters.ACTIVATE_MODULE]: 1 + 1,
+    [deviceParameters.ACTIVATION_TIMEOUT]: 1 + 2
 };
 
 const fourChannelsBitMask = {
@@ -1810,6 +1837,28 @@ const deviceParameterConvertersMap = {
             buffer.setUint8(parameter.enable);
         }
     },
+    [deviceParameters.ACTIVATION_TIMEOUT]: {
+        get: ( buffer: IBinaryBuffer ): IParameterActivationTimeout => ({
+            activation: buffer.getUint8() * ACTIVATION_SECONDS_COEFFICIENT,
+            deactivation: buffer.getUint8() * ACTIVATION_SECONDS_COEFFICIENT
+        }),
+        set: ( buffer: IBinaryBuffer, parameter: IParameterActivationTimeout ) => {
+            buffer.setUint8(parameter.activation / ACTIVATION_SECONDS_COEFFICIENT);
+            buffer.setUint8(parameter.deactivation / ACTIVATION_SECONDS_COEFFICIENT);
+        }
+    },
+    [deviceParameters.NBIOT_APN_CONFIG]: {
+        get: ( buffer: IBinaryBuffer ): IParameterNbiotApnConfig => ({
+            login: buffer.getString(),
+            password: buffer.getString(),
+            protocol: buffer.getUint8()
+        }),
+        set: ( buffer: IBinaryBuffer, parameter: IParameterNbiotApnConfig ) => {
+            buffer.setString(parameter.login);
+            buffer.setString(parameter.password);
+            buffer.setUint8(parameter.protocol);
+        }
+    },
     [deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG]: {
         get: ( buffer: IBinaryBuffer ): IParameterMtxGetCurrentDemandScheduleConfig => {
             const schedules = [];
@@ -1941,6 +1990,13 @@ export const getParameterSize = ( parameter: IParameter ): number => {
 
             break;
 
+        case deviceParameters.NBIOT_APN_CONFIG:
+            data = parameter.data as IParameterNbiotApnConfig;
+            // size: parameter id + string length + login string + string length + password string + protocol
+            size = 1 + 1 + data.login.length + 1 + data.password.length + 1;
+
+            break;
+
         case deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG:
             data = parameter.data as IParameterMtxGetCurrentDemandScheduleConfig;
             // size: parameter id + data.schedules.length * (id + transmissionPeriod + demandType0 + demandType1 + demandType2)
@@ -2008,6 +2064,7 @@ export const getResponseParameterSize = ( parameter: IParameter ): number => {
         case deviceParameters.NBIOT_APN:
         case deviceParameters.CHANNEL_TYPE:
         case deviceParameters.NBIOT_NTP_SERVER:
+        case deviceParameters.NBIOT_APN_CONFIG:
         case deviceParameters.MTX_GET_CURRENT_DEMAND_SCHEDULE_CONFIG:
             size = getParameterSize(parameter);
 

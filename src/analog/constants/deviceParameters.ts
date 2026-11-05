@@ -178,6 +178,12 @@ export const NBIOT_NTP_SERVER = 60;
  */
 export const ACTIVATE_MODULE = 61;
 
+/** Activation and deactivation timeout */
+export const ACTIVATION_TIMEOUT = 62;
+
+/** Set NB-IoT APN config */
+export const NBIOT_APN_CONFIG = 63;
+
 /**
  * setup the schedule of the different demand types for uplink command - getCurrentDemand, for mtx-lora devices
  *
