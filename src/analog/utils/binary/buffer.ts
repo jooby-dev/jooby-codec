@@ -847,7 +847,9 @@ interface IParameterActivateModule {
  * `deviceParameters.ACTIVATION_TIMEOUT = 62`
  */
 interface IParameterActivationTimeout {
-    activation: types.TUint8
+    /** Seconds in range `0-1275`. Stored in units of 5 seconds, so the value is rounded to the nearest multiple of 5. */
+    activation: types.TUint8,
+    /** Seconds in range `0-1275`. Stored in units of 5 seconds, so the value is rounded to the nearest multiple of 5. */
     deactivation: types.TUint8
 }
 
@@ -1111,6 +1113,7 @@ const EXTEND_BIT_MASK = 0x80;
 const LAST_BIT_INDEX = 7;
 const DATA_SENDING_INTERVAL_SECONDS_COEFFICIENT = 600;
 const ACTIVATION_SECONDS_COEFFICIENT = 5;
+const MAX_ACTIVATION_TIMEOUT_SECONDS = 255 * ACTIVATION_SECONDS_COEFFICIENT;
 /** 'reserved' bytes which not used */
 const PARAMETER_RX2_FREQUENCY_COEFFICIENT = 100;
 const SERIAL_NUMBER_SIZE = 6;
@@ -1312,6 +1315,18 @@ const byteToPulseCoefficientMap = {
 const pulseCoefficientToByteMap = invertObject(byteToPulseCoefficientMap);
 
 const isMSBSet = ( value: number ): boolean => !!(value & 0x80);
+
+/**
+ * Convert seconds to the single byte stored on the device (units of 5 seconds).
+ * Values within the range are rounded to the nearest multiple of 5: 7 -> 5, 8 -> 10.
+ */
+const getActivationTimeoutByte = ( name: string, seconds: number ): number => {
+    if ( seconds < 0 || seconds > MAX_ACTIVATION_TIMEOUT_SECONDS ) {
+        throw new Error(`${name} must be in range 0-${MAX_ACTIVATION_TIMEOUT_SECONDS} seconds, got ${seconds}`);
+    }
+
+    return Math.round(seconds / ACTIVATION_SECONDS_COEFFICIENT);
+};
 
 const getNbiotSslWrite = ( buffer: IBinaryBuffer ) => ({
     size: buffer.getUint16(),
@@ -1843,8 +1858,11 @@ const deviceParameterConvertersMap = {
             deactivation: buffer.getUint8() * ACTIVATION_SECONDS_COEFFICIENT
         }),
         set: ( buffer: IBinaryBuffer, parameter: IParameterActivationTimeout ) => {
-            buffer.setUint8(parameter.activation / ACTIVATION_SECONDS_COEFFICIENT);
-            buffer.setUint8(parameter.deactivation / ACTIVATION_SECONDS_COEFFICIENT);
+            const activation = getActivationTimeoutByte('activation', parameter.activation);
+            const deactivation = getActivationTimeoutByte('deactivation', parameter.deactivation);
+
+            buffer.setUint8(activation);
+            buffer.setUint8(deactivation);
         }
     },
     [deviceParameters.NBIOT_APN_CONFIG]: {
