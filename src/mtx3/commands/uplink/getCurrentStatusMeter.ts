@@ -58,6 +58,8 @@
  *         keyPress2Test: false,
  *         keyOpenModuleTest: false
  *     },
+ *     // deprecated bit-0 alias of calibrationFlags.calibrationEnable
+ *     calEnableFlag: true,
  *     currentTariffs: {
  *         'A+': 1,
  *         maximumPowers: 2,
@@ -227,7 +229,15 @@ interface IGetCurrentStatusMeterResponseParameters {
     /**
      * Calibration flags.
      */
-    calibrationFlags: ICalibrationFlags;
+    calibrationFlags?: ICalibrationFlags;
+
+    /**
+     * Deprecated bit-0 alias of `calibrationFlags.calibrationEnable`.
+     * Legacy-only encoding cannot represent bits 1-7.
+     *
+     * @deprecated Use `calibrationFlags.calibrationEnable`. Removed in the next major release.
+     */
+    calEnableFlag: boolean
 
     /**
      * Current tariffs for the 1st to 3rd tariff grids.
@@ -341,6 +351,7 @@ export const examples: command.TCommandExamples = {
                 keyPress2Test: false,
                 keyOpenModuleTest: true
             },
+            calEnableFlag: true,
             currentTariffs: {
                 'A+': 1,
                 maximumPowers: 2,
@@ -424,6 +435,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponse
         statusEvent: (bitSet.toObject(eventStatusMask, statusEventValue) as unknown) as IEventStatus,
         centerAlert,
         calibrationFlags,
+        calEnableFlag: calibrationFlags.calibrationEnable,
         currentTariffs,
         isSummerTime
     };
@@ -457,7 +469,10 @@ export const toBytes = ( parameters: IGetCurrentStatusMeterResponseParameters ):
     buffer.setUint8(bitSet.fromObject(relayStatusMask, (parameters.relayStatus as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(statusEventValue & 0xff);
     buffer.setUint8(parameters.centerAlert ? 1 : 0);
-    buffer.setUint8(bitSet.fromObject(calibrationFlagsMask, (parameters.calibrationFlags as unknown) as bitSet.TBooleanObject));
+
+    const calibrationFlags = parameters.calibrationFlags ?? {calibrationEnable: parameters.calEnableFlag};
+
+    buffer.setUint8(bitSet.fromObject(calibrationFlagsMask, (calibrationFlags as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(parameters.currentTariffs['A+']);
     buffer.setUint8(parameters.currentTariffs.maximumPowers);
     buffer.setUint8(parameters.currentTariffs['A-']);
