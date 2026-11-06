@@ -79,15 +79,15 @@ const downlinkMessages: TMessageList = [
 const uplinkMessages: TMessageList = [
     {
         name: 'getCurrentStatusMeter',
-        hex: '0a 13 cd 8b 0b ef e9 3a 93 85 80 a9 7f 29 e6 fd ea a7 2f 65 27 8a 47 4c e7 12 3d c0 b4 8e 6e 7e 4e 02 a2 94 45 77 ff 55 03 6a 10 89 76 82 1e 97 44 82',
-        frameHex: '7e 51 aa aa ff ff 0a 7d 33 cd 8b 0b ef e9 3a 93 85 80 a9 7f 29 e6 fd ea a7 2f 65 27 8a 47 4c e7 12 3d c0 b4 8e 6e 7d 5e 4e 02 a2 94 45 77 ff 55 03 6a 10 89 76 82 1e 97 44 82 88 04 7e',
+        hex: '0a 13 cd 8b 0b ef e9 3a 93 85 80 a9 7f 29 e6 fd ea a7 2f 65 27 8a 47 4c e7 12 3d c0 b4 8e 6e 7e 4e 02 08 e1 30 97 d1 3d 0e d6 39 9c fc ed 2e e6 9c dd',
+        frameHex: '7e 51 aa aa ff ff 0a 7d 33 cd 8b 0b ef e9 3a 93 85 80 a9 7f 29 e6 fd ea a7 2f 65 27 8a 47 4c e7 12 3d c0 b4 8e 6e 7d 5e 4e 02 08 e1 30 97 d1 3d 0e d6 39 9c fc ed 2e e6 9c dd 04 4f 7e',
         messageId: 10,
         accessLevel: uplinkCommands.getCurrentStatusMeter.accessLevel,
         commands: [
             uplinkCommands.getCurrentStatusMeter.examples['simple response']
         ],
-        lrc: 0x42,
-        crc: 0x0488,
+        lrc: 0xd2,
+        crc: 0x4f04,
         frameType: frameTypes.DATA_RESPONSE,
         source: 0xffff,
         destination: 0xaaaa
