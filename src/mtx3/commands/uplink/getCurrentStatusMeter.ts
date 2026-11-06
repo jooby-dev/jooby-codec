@@ -48,7 +48,16 @@
  *         PROTECTION_RESET_MAGNETIC: false
  *     },
  *     centerAlert: true,
- *     calEnableFlag: true,
+ *     calibrationFlags: {
+ *         calibrationEnable: true,
+ *         hardkey: false,
+ *         keyPressTest: false,
+ *         keyOpenkeyTest: false,
+ *         keyGerkonTest: false,
+ *         keyOpenKlemaTest: false,
+ *         keyPress2Test: false,
+ *         keyOpenModuleTest: false
+ *     },
  *     currentTariffs: {
  *         'A+': 1,
  *         maximumPowers: 2,
@@ -70,6 +79,33 @@ import * as bitSet from '../../../utils/bitSet.js';
 import * as types from '../../types.js';
 import {getCurrentStatusMeter as commandId} from '../../constants/uplinkIds.js';
 import commandNames from '../../constants/uplinkNames.js';
+
+
+interface ICalibrationFlags {
+    /** Is calibration enabled or not. */
+    calibrationEnable: boolean,
+
+    /** For factory testing only.  */
+    hardkey: boolean,
+
+    /** For factory testing only.  */
+    keyPressTest: boolean,
+
+    /** For factory testing only.  */
+    keyOpenkeyTest: boolean,
+
+    /** For factory testing only.  */
+    keyGerkonTest: boolean,
+
+    /** For factory testing only.  */
+    keyOpenKlemaTest: boolean,
+
+    /** For factory testing only.  */
+    keyPress2Test: boolean,
+
+    /** For factory testing only.  */
+    keyOpenModuleTest: boolean
+}
 
 
 interface IRelayStatus {
@@ -191,7 +227,7 @@ interface IGetCurrentStatusMeterResponseParameters {
     /**
      * Calibration enable flag.
      */
-    calEnableFlag: boolean;
+    calibrationFlags: ICalibrationFlags;
 
     /**
      * Current tariffs for the 1st to 3rd tariff grids.
@@ -204,6 +240,16 @@ interface IGetCurrentStatusMeterResponseParameters {
     isSummerTime: boolean;
 }
 
+const calibrationFlagsMask = {
+    calibrationEnable: 0x01,
+    hardkey: 0x02,
+    keyPressTest: 0x04,
+    keyOpenkeyTest: 0x08,
+    keyGerkonTest: 0x10,
+    keyOpenKlemaTest: 0x20,
+    keyPress2Test: 0x40,
+    keyOpenModuleTest: 0x80
+};
 
 const relayStatusMask = {
     RELAY_STATE: 2 ** 0,
@@ -285,7 +331,16 @@ export const examples: command.TCommandExamples = {
                 PROTECTION_RESET_MAGNETIC: false
             },
             centerAlert: true,
-            calEnableFlag: true,
+            calibrationFlags: {
+                calibrationEnable: true,
+                hardkey: false,
+                keyPressTest: false,
+                keyOpenkeyTest: false,
+                keyGerkonTest: false,
+                keyOpenKlemaTest: false,
+                keyPress2Test: false,
+                keyOpenModuleTest: false
+            },
             currentTariffs: {
                 'A+': 1,
                 maximumPowers: 2,
@@ -344,7 +399,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponse
     const relayStatus = bitSet.toObject(relayStatusMask, buffer.getUint8()) as unknown as IRelayStatus;
     const statusEvent1 = buffer.getUint8();
     const centerAlert = !!(buffer.getUint8() & 1);
-    const calEnableFlag = !!(buffer.getUint8() & 1);
+    const calibrationFlags = bitSet.toObject(calibrationFlagsMask, buffer.getUint8()) as unknown as ICalibrationFlags;
     const currentTariffs = {
         'A+': buffer.getUint8(),
         maximumPowers: buffer.getUint8(),
@@ -368,7 +423,7 @@ export const fromBytes = ( bytes: types.TBytes ): IGetCurrentStatusMeterResponse
         relayStatus,
         statusEvent: (bitSet.toObject(eventStatusMask, statusEventValue) as unknown) as IEventStatus,
         centerAlert,
-        calEnableFlag,
+        calibrationFlags,
         currentTariffs,
         isSummerTime
     };
@@ -402,7 +457,7 @@ export const toBytes = ( parameters: IGetCurrentStatusMeterResponseParameters ):
     buffer.setUint8(bitSet.fromObject(relayStatusMask, (parameters.relayStatus as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(statusEventValue & 0xff);
     buffer.setUint8(parameters.centerAlert ? 1 : 0);
-    buffer.setUint8(parameters.calEnableFlag ? 1 : 0);
+    buffer.setUint8(bitSet.fromObject(calibrationFlagsMask, (parameters.calibrationFlags as unknown) as bitSet.TBooleanObject));
     buffer.setUint8(parameters.currentTariffs['A+']);
     buffer.setUint8(parameters.currentTariffs.maximumPowers);
     buffer.setUint8(parameters.currentTariffs['A-']);
