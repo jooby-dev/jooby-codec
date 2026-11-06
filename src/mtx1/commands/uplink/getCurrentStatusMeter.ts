@@ -114,7 +114,7 @@ interface IGetCurrentStatusMeterResponseParameters {
     /** Critical event status. */
     statusEvent: IEventStatus,
 
-    /** Calibration enable flag. */
+    /** Calibration flags. */
     calibrationFlags: ICalibrationFlags,
 
     currentTariffs: ITariffs,

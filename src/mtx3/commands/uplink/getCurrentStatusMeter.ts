@@ -225,7 +225,7 @@ interface IGetCurrentStatusMeterResponseParameters {
     centerAlert: boolean;
 
     /**
-     * Calibration enable flag.
+     * Calibration flags.
      */
     calibrationFlags: ICalibrationFlags;
 
@@ -336,10 +336,10 @@ export const examples: command.TCommandExamples = {
                 hardkey: false,
                 keyPressTest: false,
                 keyOpenkeyTest: false,
-                keyGerkonTest: false,
+                keyGerkonTest: true,
                 keyOpenKlemaTest: false,
                 keyPress2Test: false,
-                keyOpenModuleTest: false
+                keyOpenModuleTest: true
             },
             currentTariffs: {
                 'A+': 1,
@@ -361,7 +361,7 @@ export const examples: command.TCommandExamples = {
             0x01,
             0x85, // statusEvent part 1
             0x01,
-            0x01,
+            0x91,
             0x01,
             0x02,
             0x03,
