@@ -1112,6 +1112,7 @@ export interface IDefine1OperatorParameterExtended {
 
     /**
      * `true` - optoport is unlocked by button, `false` - optoport is always unlocked.
+     * Decoding accepts bit 2 or bit 3; encoding sets both bits when enabled.
      */
     BLOCK_KEY_OPTOPORT: boolean,
 
@@ -1824,7 +1825,8 @@ const typeMeterMask = {
 export const define1Mask = {
     RESET_DAY_MAX_POWER_KEY: 1 << 0,
     RESET_MONTH_MAX_POWER_KEY: 1 << 1,
-    BLOCK_KEY_OPTOPORT: 1 << 2,
+    // Some devices use bit 3 instead of bit 2; support both for reading and writing.
+    BLOCK_KEY_OPTOPORT: (1 << 2) | (1 << 3),
     MAGNET_SCREEN_CONST: 1 << 5,
     ALLOW_BROWNOUT_INDICATION: 1 << 7
 };
