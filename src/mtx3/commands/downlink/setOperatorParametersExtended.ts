@@ -81,6 +81,62 @@ export const examples: command.TCommandExamples = {
             0x00, 0x00, 0x00, 0x00, // reserved1
             0x00 // reserved2
         ]
+    },
+    'optoport button control enabled request': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        accessLevel,
+        parameters: {
+            timeoutRelayOn: 1,
+            define1: {
+                RESET_DAY_MAX_POWER_KEY: false,
+                RESET_MONTH_MAX_POWER_KEY: false,
+                BLOCK_KEY_OPTOPORT: true,
+                MAGNET_SCREEN_CONST: false,
+                ALLOW_BROWNOUT_INDICATION: false
+            },
+            timeoutRelayKey: 0,
+            timeoutRelayAuto: 5
+        },
+        bytes: [
+            0x40, 0x09,
+            0x01,
+            0x0c, // BLOCK_KEY_OPTOPORT: bit 2 and bit 3
+            0x00,
+            0x05,
+            0x00, 0x00, 0x00, 0x00, // reserved1
+            0x00 // reserved2
+        ]
+    },
+    'all define1 flags enabled request': {
+        id,
+        name,
+        headerSize,
+        maxSize,
+        accessLevel,
+        parameters: {
+            timeoutRelayOn: 1,
+            define1: {
+                RESET_DAY_MAX_POWER_KEY: true,
+                RESET_MONTH_MAX_POWER_KEY: true,
+                BLOCK_KEY_OPTOPORT: true,
+                MAGNET_SCREEN_CONST: true,
+                ALLOW_BROWNOUT_INDICATION: true
+            },
+            timeoutRelayKey: 0,
+            timeoutRelayAuto: 5
+        },
+        bytes: [
+            0x40, 0x09,
+            0x01,
+            0xaf, // all define1 flags, including both BLOCK_KEY_OPTOPORT bits
+            0x00,
+            0x05,
+            0x00, 0x00, 0x00, 0x00, // reserved1
+            0x00 // reserved2
+        ]
     }
 };
 
