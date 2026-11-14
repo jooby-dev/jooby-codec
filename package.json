@@ -1,11 +1,12 @@
 {
     "name": "jooby-codec",
-    "version": "8.0.1",
+    "version": "8.1.0",
     "description": "Jooby message encoders/decoders",
     "type": "module",
     "main": "./dist/index.js",
     "repository": {
-        "url": "https://github.com/jooby-dev/jooby-codec"
+        "type": "git",
+        "url": "git+https://github.com/jooby-dev/jooby-codec.git"
     },
     "exports": {
         ".": "./dist/index.js",
